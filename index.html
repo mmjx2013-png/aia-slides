@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ทำไมเราถึงต้องซื้อประกัน</title>
+<!--
+  v3 "หน้าบ้าน": an editorial sales deck. Flat AIA red marks the moments of relief
+  (cover, the turn to insurance, tax, the call to action); risks sit on ink and white.
+  Fonts (SIL OFL): Kanit (display), Sarabun (text). Photos: Pexels.
+  Facts: brain/*.md (verified 28 Oct 2026). Keys: arrows/space, f fullscreen, p notes, Esc overview.
+-->
+<style>
+@font-face{font-family:"Kanit";src:url(fonts/Kanit-Medium.ttf) format("truetype");font-weight:500;font-display:block}
+@font-face{font-family:"Kanit";src:url(fonts/Kanit-SemiBold.ttf) format("truetype");font-weight:600;font-display:block}
+@font-face{font-family:"Kanit";src:url(fonts/Kanit-Bold.ttf) format("truetype");font-weight:700;font-display:block}
+@font-face{font-family:"Sarabun";src:url(fonts/Sarabun-Regular.ttf) format("truetype");font-weight:400;font-display:block}
+@font-face{font-family:"Sarabun";src:url(fonts/Sarabun-Medium.ttf) format("truetype");font-weight:500;font-display:block}
+@font-face{font-family:"Sarabun";src:url(fonts/Sarabun-SemiBold.ttf) format("truetype");font-weight:600;font-display:block}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#D31145; --red-dk:#A80D37; --red-lt:#FF5C80;
+  --ink:#231F20; --paper:#FFFFFF; --stone:#EFECEA;
+  --grey:#6B6466; --rule:#D8D2D0;
+  --disp:"Kanit",system-ui,sans-serif; --body:"Sarabun",system-ui,sans-serif;
+}
+html,body{height:100%;background:#151213;overflow:hidden}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,1));overflow:hidden;background:var(--paper);user-select:none;-webkit-user-select:none;touch-action:pan-y}
+
+/* ---------- slides & tones ---------- */
+.slide{position:absolute;inset:0;visibility:hidden;overflow:hidden;font-size:23px;line-height:1.55;
+  --fg:var(--ink);--mut:var(--grey);--acc:var(--red);--rl:var(--rule);--bg:var(--paper);background:var(--bg);color:var(--fg)}
+.slide.cur,.slide.out{visibility:visible}
+.slide.out{z-index:1}.slide.cur{z-index:2}
+.t-stone{--bg:var(--stone);--rl:#CFC8C5}
+.t-ink{--bg:var(--ink);--fg:#fff;--mut:rgba(255,255,255,.68);--acc:var(--red-lt);--rl:rgba(255,255,255,.2)}
+.t-red{--bg:var(--red);--fg:#fff;--mut:rgba(255,255,255,.84);--acc:#fff;--rl:rgba(255,255,255,.38)}
+.at{position:absolute}
+.slide .notes{display:none}
+.ph{position:absolute;overflow:hidden;background:#cfc8c5}
+.ph img{display:block;width:100%;height:100%;object-fit:cover}
+.fill{position:absolute}
+
+/* ---------- type ---------- */
+.d0,.d1,.d2,.d3,.h3,.h4{font-family:var(--disp);font-weight:600;letter-spacing:-.005em}
+.d0{font-size:200px;line-height:1.08;font-weight:600}
+.d1{font-size:124px;line-height:1.14}
+.d2{font-size:96px;line-height:1.16}
+.d3{font-size:72px;line-height:1.2}
+.h3{font-size:40px;line-height:1.3}
+.h4{font-size:30px;line-height:1.35}
+.lead{font-size:30px;line-height:1.5}
+.p{font-size:23px;line-height:1.55}
+.sm{font-size:20px;line-height:1.5}
+.mut{color:var(--mut)}
+.acc{color:var(--acc)}
+.en{font-family:var(--body);font-weight:500;font-size:.62em;color:var(--mut);letter-spacing:0}
+.num{font-family:var(--disp);font-weight:600;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
+.src{position:absolute;left:120px;right:120px;top:966px;font-size:16px;line-height:1.45;color:var(--mut)}
+.ln{display:block;overflow:hidden;padding:.2em 0 .14em;margin:-.2em 0 -.14em}
+.ln>span{display:inline-block}
+.rule{height:2px;background:var(--fg);transform-origin:left}
+.hr{border-top:1px solid var(--rl)}
+.bar-l{border-left:4px solid var(--acc);padding-left:22px}
+b,strong{font-weight:600}
+p,h3,h4{text-wrap:pretty}
+
+/* ---------- 1 cover ---------- */
+.s1 .mark{font-family:var(--disp);font-weight:500;font-size:24px}
+.s1 .mark i{display:inline-block;width:40px;height:3px;background:#fff;vertical-align:middle;margin-right:16px}
+
+/* ---------- 2 hook ---------- */
+.week{display:flex;gap:10px}
+.week span{position:relative;width:74px;height:74px;border:2px solid var(--ink);display:grid;place-items:center;overflow:hidden}
+.week span i{position:absolute;inset:0;background:var(--red);transform-origin:bottom}
+.week span b{position:relative;font-family:var(--disp);font-weight:500;font-size:24px;color:#fff}
+.qs>div{display:grid;grid-template-columns:430px 1fr;gap:36px;padding:22px 0 20px;border-top:1px solid var(--rl)}
+.qs>div:last-child{border-bottom:1px solid var(--rl)}
+
+/* ---------- 3 risk ---------- */
+.dots{display:grid;grid-template-columns:repeat(59,10px);gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--red-lt)}
+.cap-band{position:absolute;left:0;bottom:52px;right:0;padding:22px 40px 24px;background:var(--ink);color:#fff;font-size:21px;line-height:1.45}
+
+/* ---------- 4 cost ---------- */
+.bars .row{display:grid;grid-template-columns:1fr auto;align-items:end;column-gap:24px}
+.bars .track{grid-column:1/-1;height:26px;margin-top:10px;background:#EDE8E6}
+.bars .track i{display:block;height:100%;transform-origin:left}
+.people{display:flex;gap:10px}
+.people svg{width:34px;height:54px}
+
+/* ---------- 5 welfare ---------- */
+.wtab{display:grid;grid-template-columns:420px 1fr 1fr;column-gap:48px}
+.wtab .hd{font-family:var(--disp);font-weight:500;font-size:22px;color:var(--mut);padding-bottom:12px}
+.wtab .cell{padding:20px 0 22px;border-top:1px solid var(--rl);font-size:21px;line-height:1.5}
+.wtab .cell p+p{margin-top:4px}
+.wtab .gap p{padding-left:26px;position:relative}
+.wtab .gap p::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:3px;background:var(--red)}
+.wtab .ok p{padding-left:26px;position:relative}
+.wtab .ok p::before{content:"";position:absolute;left:2px;top:.4em;width:7px;height:12px;border:solid var(--ink);border-width:0 3px 3px 0;transform:rotate(40deg)}
+
+/* ---------- 6 pivot ---------- */
+.xfer .sq{position:absolute;width:30px;height:30px;background:#fff}
+.xfer .big{position:absolute;background:#fff;color:var(--red)}
+.film figure{position:absolute;top:0;width:375px}
+.film .ph{position:relative;width:375px;height:250px}
+.film figcaption{padding-top:18px}
+
+/* ---------- type slides ---------- */
+.ltab>div{display:grid;grid-template-columns:270px 1fr;gap:28px;padding:15px 0 14px;border-top:1px solid var(--rl)}
+.ltab>div:last-child{border-bottom:1px solid var(--rl)}
+.ltab .fit{font-size:19px;color:var(--acc);font-family:var(--disp);font-weight:500;margin-top:2px}
+.big3{font-family:var(--disp);font-weight:600;font-size:110px;line-height:1;color:var(--acc)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
+.pt{border-top:1px solid var(--rl);padding-top:16px}
+.pt .tag{font-family:var(--disp);font-weight:500;font-size:19px;color:var(--acc)}
+.shade{position:absolute;inset:0;background:rgba(24,20,21,.58)}
+
+/* ---------- 11 compare ---------- */
+.ctab{display:grid;grid-template-columns:250px repeat(4,1fr);column-gap:36px}
+.ctab>div{padding:24px 0 26px;border-top:1px solid var(--rl);font-size:25px;line-height:1.45}
+.ctab .ch{border-top:0;padding-top:0}
+.ctab .ch b{display:block;font-family:var(--disp);font-weight:600;font-size:40px;line-height:1.2}
+.ctab .ch small{font-size:19px;color:var(--mut)}
+.ctab .rl{font-family:var(--disp);font-weight:500;font-size:24px;color:var(--mut)}
+.ctab .row-top{border-top:2px solid var(--ink)}
+
+/* ---------- 12 before ---------- */
+.rules3>div{display:grid;grid-template-columns:190px 1fr;gap:28px;padding:20px 0;border-top:1px solid var(--rl)}
+.rules3 .tag{font-family:var(--disp);font-weight:500;font-size:21px;color:var(--acc);padding-top:6px}
+.tl2 .line{position:absolute;left:0;right:0;top:30px;height:3px;background:rgba(255,255,255,.35);transform-origin:left}
+.tl2 .run{position:absolute;left:0;right:0;top:30px;height:3px;background:var(--red-lt);transform-origin:left}
+.tl2 .dot{position:absolute;top:20px;width:23px;height:23px;border-radius:50%;background:#fff}
+
+/* ---------- 13 after ---------- */
+.ruler{position:absolute;left:300px;top:540px;width:1480px;height:2px;background:var(--ink)}
+.ruler .tk{position:absolute;top:-8px;width:1px;height:18px;background:var(--ink)}
+.ruler .cursor{position:absolute;left:0;top:-26px;width:3px;height:54px;background:var(--red)}
+.ruler .band{position:absolute;top:-7px;height:16px;background:#E8A0B3}
+.ruler .pin{position:absolute;top:-11px;width:24px;height:24px;margin-left:-12px;border-radius:50%;background:var(--red)}
+.mk{position:absolute;width:400px}
+.mk .num{font-size:68px;line-height:1.05;color:var(--red)}
+.mk .num small{font-size:28px;margin-left:8px;color:var(--ink);font-weight:500}
+.mk h4{font-family:var(--disp);font-weight:600;font-size:25px;line-height:1.3;margin-top:2px}
+.mk p{font-size:19px;line-height:1.45;color:var(--mut)}
+.mk.up{bottom:calc(1080px - 520px)}
+.mk.dn{top:574px}
+
+/* ---------- 14 tax ---------- */
+.tax .row{display:grid;grid-template-columns:560px 1fr;align-items:center;gap:40px;padding:16px 0;border-top:1px solid var(--rl)}
+.tax .row:last-child{border-bottom:1px solid var(--rl)}
+.tax .tr{display:flex;align-items:center;gap:22px}
+.tax .tr i{display:block;height:34px;background:#fff;transform-origin:left;flex:none}
+.tax .tr .num{font-size:46px;line-height:1}
+.tax .tr .num small{font-size:22px;font-weight:500;margin-left:6px}
+.exbox{background:#fff;color:var(--ink);padding:26px 32px}
+
+/* ---------- 15 stages ---------- */
+.stg{position:absolute;width:400px}
+.stg .ph{position:relative;width:400px;height:260px}
+.stg h3{margin-top:20px}
+.stg .need{font-family:var(--disp);font-weight:500;font-size:22px;color:var(--red);margin-top:10px}
+
+/* ---------- plans ---------- */
+.plist>div{padding:13px 0 14px;border-top:1px solid var(--rl)}
+.plist h4{font-family:var(--disp);font-weight:600;font-size:29px;line-height:1.3}
+.plist h4 small{font-family:var(--body);font-weight:500;font-size:18px;color:var(--acc);margin-left:12px}
+.plist p{font-size:20px;line-height:1.48;color:var(--mut)}
+.big .plist h4{font-size:34px}.big .plist p{font-size:22px}.big .plist>div{padding:26px 0 28px}
+.ghd{font-family:var(--disp);font-weight:500;font-size:22px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+
+/* ---------- 18 myths ---------- */
+.myths{display:grid;grid-template-columns:1fr 1fr;column-gap:96px;row-gap:72px}
+.myth .m{position:relative;display:inline;font-family:var(--disp);font-weight:500;font-size:40px;line-height:1.35;color:rgba(255,255,255,.6)}
+.myth .say{position:relative;display:inline-block}
+.myth .strike{position:absolute;left:-4px;right:-4px;top:47%;height:3px;background:var(--red-lt);transform-origin:left}
+.myth p{margin-top:18px;font-size:25px;line-height:1.55}
+
+/* ---------- 19 summary ---------- */
+.sum>div{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:20px 0;border-top:1px solid var(--rl)}
+.sum svg{width:40px;height:40px;margin-top:4px}
+
+/* ---------- 20 CTA ---------- */
+.card{background:#fff;color:var(--ink);padding:30px 40px 32px}
+.card .ph-n{font-family:var(--disp);font-weight:600;font-size:52px;line-height:1.15;color:var(--red)}
+
+/* ---------- chrome ---------- */
+#chrome{position:absolute;left:0;right:0;bottom:0;height:52px;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 120px;font-size:16px;pointer-events:none;color:var(--ink);background:var(--paper);transition:background-color .3s,color .3s}
+#chrome.c-stone{background:var(--stone)}
+#chrome.c-ink{background:var(--ink);color:#fff}
+#chrome.c-red{background:var(--red);color:#fff}
+#chrome .chap{font-family:var(--disp);font-weight:500;font-size:18px;min-width:330px}
+#chrome .disc{opacity:.72}
+#chrome .rt{display:flex;align-items:center;gap:22px;min-width:330px;justify-content:flex-end}
+#chrome .pg{font-family:var(--disp);font-weight:500;font-size:18px;font-variant-numeric:tabular-nums}
+#ticks{display:flex;gap:8px}
+#ticks span{display:flex;gap:3px}
+#ticks i{width:12px;height:3px;background:currentColor;opacity:.25;transition:opacity .3s}
+#ticks i.on{opacity:1}
+#chrome::before{content:"";position:absolute;left:120px;right:120px;top:0;border-top:1px solid currentColor;opacity:.16}
+
+/* ---------- notes, hint, overview ---------- */
+#notes{position:fixed;left:24px;right:24px;bottom:24px;max-height:42vh;overflow:auto;z-index:50;background:#1d1a1b;color:#f4f1f0;padding:22px 28px;font:18px/1.7 var(--body);display:none;border-top:3px solid var(--red)}
+#notes.show{display:block}
+#notes .hd{display:flex;gap:24px;font:500 15px var(--disp);color:#bdb4b6;margin-bottom:8px}
+#notes .hd b{color:#fff}
+#hint{position:fixed;right:24px;top:20px;z-index:50;font:500 14px var(--disp);color:#fff;background:#1d1a1b;padding:8px 14px;opacity:0;transition:opacity .4s;pointer-events:none}
+#hint.show{opacity:.9}
+#stage.ov{background:#151213}
+#stage.ov .slide{visibility:visible;cursor:pointer;outline:2px solid transparent}
+#stage.ov .slide.cur{outline:8px solid var(--red)}
+#stage.ov #chrome{display:none}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;height:auto;background:#fff}
+  #stage{position:static;transform:none;height:auto}
+  .slide{position:relative;visibility:visible;height:1080px;break-after:page}
+  #chrome,#notes,#hint{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ===== 1 COVER ===== -->
+<section class="slide t-red s1" data-ch="เริ่มต้น" data-title="ทำไมเราถึงต้องซื้อประกัน">
+  <div class="ph" style="left:760px;top:0;width:1160px;height:1028px"><img data-a="push" src="images/px-36214980.jpg" alt="พ่อแม่และลูกน้อยนั่งยิ้มด้วยกันบนโซฟา" style="object-position:45% 40%"></div>
+  <div class="fill" data-a="wipe-r" data-d="0" style="left:0;top:0;width:760px;height:1080px;background:var(--red)"></div>
+  <p class="at mark" data-a="fade" data-d="200" style="left:120px;top:84px;width:600px"><i></i>คุยเรื่องประกัน กับ [ชื่อตัวแทน]</p>
+  <h1 class="at d1" style="left:120px;top:286px;width:620px">
+    <span class="ln"><span data-a="line" data-d="220">ทำไมเรา</span></span>
+    <span class="ln"><span data-a="line" data-d="300">ถึงต้องซื้อ</span></span>
+    <span class="ln"><span data-a="line" data-d="380">ประกัน?</span></span>
+  </h1>
+  <div class="at rule" data-a="rule" data-d="620" style="left:120px;top:752px;width:96px;background:#fff;height:4px"></div>
+  <p class="at lead" data-a="up" data-d="700" style="left:120px;top:780px;width:620px">ไม่ใช่เพราะกลัว<br>แต่เพราะไม่อยากให้คนที่เรารัก<br>ต้องแบกภาระแทนเรา</p>
+  <p class="at sm mut" data-a="fade" data-d="900" style="left:120px;top:944px;width:600px">ข้อมูล ณ ตุลาคม 2569</p>
+  <aside class="notes">สวัสดีค่ะ ขอบคุณที่สละเวลามาคุยกันนะคะ วันนี้ไม่ได้มาขายของค่ะ แต่อยากชวนคุยเรื่องประกันแบบตรงไปตรงมา ว่าทำไมหลายครอบครัวถึงมี และแบบไหนเหมาะกับใคร ใช้เวลาประมาณ 20–30 นาที มีคำถามตรงไหน ถามได้ตลอดเลยนะคะ</aside>
+</section>
+
+<!-- ===== 2 HOOK ===== -->
+<section class="slide s2" data-ch="เริ่มต้น" data-title="ถ้าพรุ่งนี้ต้องนอนโรงพยาบาล">
+  <div class="ph" data-a="wipe-l" data-d="0" style="left:1140px;top:0;width:780px;height:1028px"><img data-a="push" src="images/px-6129232.jpg" alt="พยาบาลดูแลผู้ป่วยที่นอนโรงพยาบาล" style="object-position:38% 50%"></div>
+  <h2 class="at d2" style="left:120px;top:96px;width:1000px">
+    <span class="ln"><span data-a="line" data-d="80">ถ้าพรุ่งนี้ต้องนอน</span></span>
+    <span class="ln"><span data-a="line" data-d="160">โรงพยาบาลหนึ่งสัปดาห์</span></span>
+  </h2>
+  <div class="at week" data-a="week" data-d="420" style="left:120px;top:362px"><span><i></i><b>จ</b></span><span><i></i><b>อ</b></span><span><i></i><b>พ</b></span><span><i></i><b>พฤ</b></span><span><i></i><b>ศ</b></span><span><i></i><b>ส</b></span><span><i></i><b>อา</b></span></div>
+  <p class="at sm mut" data-a="fade" data-d="860" style="left:722px;top:368px;width:380px">เจ็ดวันที่งานหยุด<br>แต่ค่าใช้จ่ายไม่หยุดตามเรา</p>
+  <div class="at qs" style="left:120px;top:516px;width:960px">
+    <div data-a="up" data-d="760"><h3 class="h3">ค่ารักษา ใครจ่าย?</h3><p class="p mut">ใช้สิทธิไหน ต้องรอคิวไหม อยากเลือกโรงพยาบาลเองได้หรือเปล่า</p></div>
+    <div data-a="up" data-d="840"><h3 class="h3">ช่วงพักฟื้น<br>รายได้มาจากไหน?</h3><p class="p mut">ค่าบ้าน ค่ารถ ค่าเทอมลูก ยังเดินต่อทุกเดือน แม้เราจะหยุดงาน</p></div>
+    <div data-a="up" data-d="920"><h3 class="h3">เงินเก็บ<br>จะเหลือเท่าไร?</h3><p class="p mut">เงินเกษียณ เงินเรียนลูก ไม่ควรต้องถูกดึงมาจ่ายค่ารักษา</p></div>
+  </div>
+  <aside class="notes">ลองนึกภาพตามนะคะ ถ้าพรุ่งนี้ต้องนอนโรงพยาบาลสักหนึ่งสัปดาห์ จะมีคำถามสามข้อเกิดขึ้นทันที หนึ่ง ค่ารักษาใครจ่าย สอง รายได้ช่วงที่หยุดงานมาจากไหน และสาม เงินเก็บที่ตั้งใจไว้จะเหลือเท่าไร (ชี้ที่กล่องเจ็ดวัน) เจ็ดวันที่เราทำงานไม่ได้ แต่ค่าบ้าน ค่ารถ ค่าเทอมลูก ยังเดินต่อค่ะ</aside>
+</section>
+
+<!-- ===== 3 RISK ===== -->
+<section class="slide t-ink s3" data-ch="ความเสี่ยง" data-title="ความเสี่ยงใกล้ตัว">
+  <div class="ph" style="left:0;top:0;width:720px;height:1028px"><img data-a="push" src="images/px-35697429.jpg" alt="มือลูกกุมมือผู้สูงอายุบนเตียงโรงพยาบาล" style="object-position:50% 40%"></div>
+  <p class="cap-band" data-a="wipe-u" data-d="500" style="width:720px">เล่าไม่ใช่เพื่อให้กลัว แต่อยากให้เห็นภาพตรงกัน แล้ววางแผนได้ทัน</p>
+  <p class="at h4 mut" data-a="up" data-d="100" style="left:840px;top:92px;width:960px">สาเหตุการเสียชีวิตอันดับ 1 ของคนไทย ปี 2566</p>
+  <h2 class="at d0" style="left:836px;top:126px;width:960px"><span class="ln"><span data-a="line" data-d="180">มะเร็ง</span></span></h2>
+  <div class="at" style="left:840px;top:400px;width:960px;display:flex;align-items:baseline;gap:22px">
+    <span class="num acc" style="font-size:116px;line-height:1"><span class="count" data-to="86310" data-d="380">86,310</span></span>
+    <span class="h4" data-a="fade" data-d="420">คน เสียชีวิตจากมะเร็งในปี 2566</span>
+  </div>
+  <div class="at dots" data-a="dots" data-d="620" data-n="236" style="left:840px;top:566px"></div>
+  <p class="at sm mut" data-a="fade" data-d="1000" style="left:840px;top:640px;width:960px">1 จุด คือ 1 คน &nbsp;เฉลี่ยวันละราว <b style="color:#fff">236</b> คน (คำนวณจาก 86,310 ÷ 365)</p>
+  <div class="at" style="left:840px;top:730px;width:960px;display:grid;grid-template-columns:1fr 1fr;gap:56px">
+    <div class="pt" data-a="up" data-d="1050"><div class="num" style="font-size:64px;line-height:1.1"><span style="font-size:.5em">มากกว่า</span> <span class="count" data-to="140000">140,000</span></div><p class="p mut">ผู้ป่วยมะเร็งรายใหม่ในแต่ละปี</p></div>
+    <div class="pt" data-a="up" data-d="1120"><div class="num" style="font-size:64px;line-height:1.1"><span class="count" data-to="17477">17,477</span> <span style="font-size:.5em">คน</span></div><p class="p mut">เสียชีวิตจากอุบัติเหตุทางถนน ปี 2567</p></div>
+  </div>
+  <p class="src" style="left:840px" data-a="fade" data-d="1200">ที่มา: สำนักงานสถิติแห่งชาติ และ Thai PBS (มะเร็ง ปี 2566) / ทะเบียนมะเร็ง 2565 ผ่าน Thai PBS และกรุงเทพธุรกิจ / กรมควบคุมโรค และ TNN (อุบัติเหตุทางถนน ปี 2567)</p>
+  <aside class="notes">ตัวเลขชุดนี้มาจากหน่วยงานรัฐค่ะ มะเร็งเป็นสาเหตุการเสียชีวิตอันดับหนึ่งของคนไทย ปี 2566 มีผู้เสียชีวิตจากมะเร็งกว่าแปดหมื่นหกพันคน (ชี้จุด) จุดแต่ละจุดคือหนึ่งคน เฉลี่ยวันละราวสองร้อยสามสิบหกคน และมีผู้ป่วยรายใหม่มากกว่าหนึ่งแสนสี่หมื่นคนต่อปี ส่วนอุบัติเหตุทางถนน ปี 2567 มีผู้เสียชีวิตกว่าหนึ่งหมื่นเจ็ดพันคน ที่หยิบมาเล่าไม่ใช่ให้กลัวนะคะ แต่อยากให้เห็นว่า เรื่องเหล่านี้วางแผนรับมือล่วงหน้าได้</aside>
+</section>
+
+<!-- ===== 4 COST ===== -->
+<section class="slide s4" data-ch="ความเสี่ยง" data-title="ค่ารักษาแพงขึ้นทุกปี" data-chrome="split">
+  <div class="fill" data-a="wipe-l" data-d="0" style="left:1060px;top:0;width:860px;height:1080px;background:var(--ink)"></div>
+  <h2 class="at d2" style="left:120px;top:96px;width:900px">
+    <span class="ln"><span data-a="line" data-d="80">ค่ารักษาขึ้นเร็ว</span></span>
+    <span class="ln"><span data-a="line" data-d="160">กว่าข้าวของทั่วไป</span></span>
+  </h2>
+  <div class="at bars" style="left:120px;top:390px;width:840px">
+    <div class="row" data-a="fade" data-d="300"><div class="h4">ค่ารักษาพยาบาล ปี 2568</div><div class="num acc" style="font-size:88px;line-height:1">+<span class="count" data-to="10.8" data-dec="1" data-d="360">10.8</span>%</div>
+      <div class="track"><i data-a="grow" data-d="360" style="width:100%;background:var(--red)"></i></div></div>
+    <div class="row" data-a="fade" data-d="420" style="margin-top:42px"><div class="h4">เงินเฟ้อทั่วไป ปี 2568<br><span class="sm mut">CPI (ดัชนีราคาผู้บริโภค)</span></div><div class="num mut" style="font-size:88px;line-height:1">+<span class="count" data-to="0.7" data-dec="1" data-d="460">0.7</span>%</div>
+      <div class="track"><i data-a="grow" data-d="460" style="width:6.5%;background:var(--grey)"></i></div></div>
+  </div>
+  <div class="at hr" data-a="up" data-d="900" style="left:120px;top:800px;width:840px;padding-top:26px;display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:start">
+    <div class="people" data-a="people" data-d="950">
+      <svg viewBox="0 0 34 54"><circle cx="17" cy="9" r="8" fill="#D31145"/><rect x="3" y="20" width="28" height="34" rx="12" fill="#D31145"/></svg>
+      <svg viewBox="0 0 34 54"><circle cx="17" cy="9" r="8" fill="#CFC8C5"/><rect x="3" y="20" width="28" height="34" rx="12" fill="#CFC8C5"/></svg>
+      <svg viewBox="0 0 34 54"><circle cx="17" cy="9" r="8" fill="#CFC8C5"/><rect x="3" y="20" width="28" height="34" rx="12" fill="#CFC8C5"/></svg>
+      <svg viewBox="0 0 34 54"><circle cx="17" cy="9" r="8" fill="#CFC8C5"/><rect x="3" y="20" width="28" height="34" rx="12" fill="#CFC8C5"/></svg>
+      <svg viewBox="0 0 34 54"><circle cx="17" cy="9" r="8" fill="#CFC8C5"/><rect x="3" y="20" width="28" height="34" rx="12" fill="#CFC8C5"/></svg>
+    </div>
+    <p class="sm">และเราอายุยืนขึ้น คนไทยอายุ 60 ปีขึ้นไปมีมากกว่า <b>20%</b><br>หรือมากกว่า 1 ใน 5 คน ไทยเป็น “สังคมสูงอายุโดยสมบูรณ์” แล้ว</p>
+  </div>
+  <!-- ink panel: worked example -->
+  <div class="at" style="left:1160px;top:100px;width:660px;color:#fff">
+    <p class="h4" data-a="up" data-d="300" style="color:rgba(255,255,255,.7)">ตัวอย่างคำนวณ</p>
+    <p class="lead" data-a="up" data-d="360" style="margin-top:8px">ค่ารักษา <b>100,000</b> บาท วันนี้<br>ถ้าเพิ่มปีละ 10.8%</p>
+    <p class="h3" data-a="up" data-d="560" style="margin-top:46px">อีก <span class="count" data-to="10" data-d="600">10</span> ปี อาจกลายเป็นราว</p>
+    <div class="num" style="font-size:150px;line-height:1.05;margin-top:4px;color:#fff"><span class="count" data-to="279000" data-d="600">279,000</span></div>
+    <p class="h4" data-a="fade" data-d="700">บาท</p>
+    <svg class="at" viewBox="0 0 700 210" style="left:0;top:560px;width:660px;height:230px" fill="none">
+      <path d="M0 200 H700" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+      <path data-a="draw" data-d="600" pathLength="1" d="M0 200 L70 189 L140 177 L210 164 L280 149 L350 133 L420 115 L490 94 L560 72 L630 47 L700 20" stroke="#FF5C80" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="sm" data-a="fade" data-d="700" style="position:absolute;top:800px;left:0;width:660px;display:flex;justify-content:space-between;color:rgba(255,255,255,.7)"><span>วันนี้</span><span>อีก 10 ปี</span></p>
+    <p class="sm" data-a="fade" data-d="1100" style="position:absolute;top:850px;color:rgba(255,255,255,.7)">เป็นตัวอย่างประกอบการอธิบาย ไม่ใช่การพยากรณ์</p>
+  </div>
+  <p class="src" style="right:900px" data-a="fade" data-d="1150">ที่มา: ทะเบียนราษฎร ธ.ค. 2566 (ThaiPublica) และ Thai PBS Policy Watch (ผู้สูงอายุ) / WTW และ The Standard (ค่ารักษา 10.8%) / The Standard และ Thai PBS (เงินเฟ้อทั่วไป 0.7%)</p>
+  <aside class="notes">สองเรื่องที่เกิดขึ้นพร้อมกันค่ะ หนึ่ง ค่ารักษาพยาบาลปี 2568 เพิ่มราวสิบจุดแปดเปอร์เซ็นต์ ขณะที่ข้าวของทั่วไปขึ้นแค่ศูนย์จุดเจ็ด ตัวอย่างด้านขวาเป็นการคำนวณประกอบนะคะ ไม่ใช่การพยากรณ์ แต่ช่วยให้เห็นว่า ค่ารักษาแสนบาทวันนี้ อีกสิบปีอาจกลายเป็นเกือบสามแสน สอง คนไทยอายุยืนขึ้น ผู้สูงอายุเกินยี่สิบเปอร์เซ็นต์แล้ว แปลว่าเราอาจต้องดูแลตัวเองหลังเกษียณอีกหลายสิบปี ถ้าเริ่มวางแผนเร็ว ภาระจะเบากว่ามากค่ะ</aside>
+</section>
+
+<!-- ===== 5 WELFARE ===== -->
+<section class="slide t-stone s5" data-ch="ความเสี่ยง" data-title="สวัสดิการรัฐ">
+  <h2 class="at d3" style="left:120px;top:84px;width:1300px">
+    <span class="ln"><span data-a="line" data-d="80">สิทธิรัฐช่วยได้จริง</span></span>
+    <span class="ln"><span data-a="line" data-d="160">แต่ไม่ได้ดูแลทุกเรื่อง</span></span>
+  </h2>
+  <div class="at wtab" style="left:120px;top:300px;width:1680px">
+    <div class="hd" data-a="fade" data-d="260">สิทธิ</div><div class="hd" data-a="fade" data-d="260">ช่วยอะไรได้</div><div class="hd" data-a="fade" data-d="260" style="color:var(--red)">ที่ยังขาด</div>
+    <div class="cell" data-a="up" data-d="320"><h3 class="h4" style="font-size:34px">บัตรทอง</h3><p class="sm mut" style="font-size:18px">สิทธิหลักประกันสุขภาพแห่งชาติ ดูแลโดย สปสช. (สำนักงานหลักประกันสุขภาพแห่งชาติ)</p></div>
+    <div class="cell ok" data-a="up" data-d="380"><p>รักษาฟรีในหน่วยบริการตามสิทธิ ครอบคลุมโรคส่วนใหญ่</p><p>ฉุกเฉินวิกฤตเข้าได้ทุกโรงพยาบาล ตามสิทธิ UCEP (เจ็บป่วยฉุกเฉินวิกฤต มีสิทธิทุกที่)</p></div>
+    <div class="cell gap" data-a="wipe-r" data-d="700"><p>ต้องใช้หน่วยบริการและระบบส่งต่อตามสิทธิ</p><p>ยาและการรักษาตามบัญชีที่กำหนด</p><p>ไม่มีเงินชดเชยรายได้ที่หายไป</p></div>
+    <div class="cell" data-a="up" data-d="420"><h3 class="h4" style="font-size:34px">ประกันสังคม มาตรา 33</h3><p class="sm mut" style="font-size:18px">ดูแลโดย สปส. (สำนักงานประกันสังคม)</p></div>
+    <div class="cell ok" data-a="up" data-d="480"><p>รักษาที่โรงพยาบาลตามสิทธิที่เลือกไว้</p><p>เงินทดแทนการขาดรายได้ช่วงเจ็บป่วย ตามเงื่อนไข</p><p>บำนาญหรือบำเหน็จชราภาพ เมื่อส่งเงินสมทบครบเงื่อนไข</p></div>
+    <div class="cell gap" data-a="wipe-r" data-d="800"><p>ใช้ได้เฉพาะโรงพยาบาลตามสิทธิ</p><p>เงินทดแทนคิดจากค่าจ้างไม่เกิน <b class="num" style="font-size:26px"><span class="count" data-to="17500" data-d="800">17,500</span></b> บาท/เดือน (ตั้งแต่ปี 2569)</p><p>บำนาญอาจไม่พอค่าใช้จ่ายหลังเกษียณ</p></div>
+    <div class="cell" data-a="up" data-d="520"><h3 class="h4" style="font-size:34px">สวัสดิการข้าราชการ</h3><p class="sm mut" style="font-size:18px">CSMBS (สวัสดิการรักษาพยาบาลข้าราชการ) ดูแลโดยกรมบัญชีกลาง</p></div>
+    <div class="cell ok" data-a="up" data-d="580"><p>เบิกค่ารักษาในโรงพยาบาลรัฐ</p><p>ครอบคลุมพ่อแม่ คู่สมรส และบุตร ตามเงื่อนไข</p></div>
+    <div class="cell gap" data-a="wipe-r" data-d="900"><p>โรงพยาบาลเอกชนเบิกได้จำกัด เช่น กรณีฉุกเฉิน</p><p>ค่าห้องพิเศษเบิกได้ตามอัตราที่กำหนด</p></div>
+  </div>
+  <p class="at h4 bar-l" data-a="up" data-d="1100" style="left:120px;top:880px;width:1500px;font-size:27px">ทุกสิทธิช่วยค่ารักษาพื้นฐานได้ดี แต่ไม่ได้ออกแบบมาเพื่อทดแทนรายได้ทั้งหมด หรือให้เงินก้อนแก่ครอบครัว</p>
+  <p class="src" data-a="fade" data-d="1150">ที่มา: เพดานค่าจ้างประกันสังคม 17,500 บาท จากไทยรัฐ, Thai PBS และกรุงศรี / ข้อมูลสิทธิทั่วไปจาก สปสช., สำนักงานประกันสังคม และกรมบัญชีกลาง</p>
+  <aside class="notes">ต้องบอกก่อนว่าสวัสดิการรัฐของไทยดีมากนะคะ ทั้งบัตรทอง ประกันสังคม และสวัสดิการข้าราชการ ช่วยค่ารักษาพื้นฐานได้จริง แต่แต่ละสิทธิมีเงื่อนไข (ชี้คอลัมน์สีแดง) เช่น ต้องใช้โรงพยาบาลตามสิทธิ ใช้ยาตามบัญชี และไม่ได้ชดเชยรายได้ทั้งหมดตอนเราหยุดงาน อย่างประกันสังคม เงินทดแทนคิดจากค่าจ้างไม่เกินหนึ่งหมื่นเจ็ดพันห้าร้อยบาทต่อเดือน ตั้งแต่ปี 2569 ประกันเอกชนจึงไม่ได้มาแทนสิทธิรัฐ แต่มาเติมส่วนที่ขาด ตามที่แต่ละบ้านต้องการ</aside>
+</section>
+
+<!-- ===== 6 PIVOT ===== -->
+<section class="slide t-red s6" data-ch="ทางออก" data-title="ประกัน คือการโอนความเสี่ยง">
+  <h2 class="at d1" style="left:120px;top:84px;width:900px;font-size:112px">
+    <span class="ln"><span data-a="line" data-d="80">ประกัน คือการ</span></span>
+    <span class="ln"><span data-a="line" data-d="160">โอนความเสี่ยง</span></span>
+  </h2>
+  <p class="at lead" data-a="up" data-d="320" style="left:120px;top:386px;width:860px">จ่ายเงินก้อนเล็กอย่างสม่ำเสมอ ให้บริษัทประกันช่วยรับก้อนใหญ่<br>ที่เราไม่อยากให้ครอบครัวต้องแบกเอง</p>
+  <div class="at xfer" style="left:1080px;top:110px;width:740px;height:380px">
+    <p class="h4" data-a="fade" data-d="200" style="position:absolute;left:0;top:0">ครอบครัวจ่าย</p>
+    <p class="h4" data-a="fade" data-d="200" style="position:absolute;left:470px;top:0">บริษัทประกันรับ</p>
+    <div data-a="squares" data-d="900" style="position:absolute;left:0;top:120px;width:230px;height:70px"></div>
+    <svg style="position:absolute;left:250px;top:130px;width:190px;height:50px" viewBox="0 0 190 50" fill="none"><path data-a="draw" data-d="760" pathLength="1" d="M4 25 H180 M164 11 L180 25 L164 39" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="big" data-a="xfer" data-d="250" style="left:470px;top:62px;width:270px;height:220px;padding:20px 22px"><p class="h4" style="position:absolute;left:22px;bottom:16px;font-size:30px;line-height:1.25">ค่าใช้จ่าย<br>ก้อนใหญ่</p></div>
+    <p class="sm" data-a="fade" data-d="1100" style="position:absolute;left:0;top:216px;width:240px">เบี้ยก้อนเล็ก จ่ายสม่ำเสมอ</p>
+    <p class="sm" data-a="fade" data-d="1100" style="position:absolute;left:470px;top:296px;width:270px">เมื่อเกิดเรื่อง บริษัทช่วยรับตามกรมธรรม์</p>
+  </div>
+  <div class="at film" style="left:120px;top:560px;width:1680px;height:420px">
+    <figure style="left:0" data-a="up" data-d="560"><div class="ph"><img src="images/px-11686456.jpg" alt="" style="object-position:50% 30%"></div><figcaption><b class="h4" style="font-size:34px">ชีวิต</b><p class="sm">เงินก้อนให้ครอบครัว เมื่อเราจากไป</p></figcaption></figure>
+    <figure style="left:435px" data-a="up" data-d="630"><div class="ph"><img src="images/px-6129676.jpg" alt="" style="object-position:40% 50%"></div><figcaption><b class="h4" style="font-size:34px">สุขภาพ</b><p class="sm">ค่ารักษาพยาบาล เมื่อเจ็บป่วยหรือบาดเจ็บ</p></figcaption></figure>
+    <figure style="left:870px" data-a="up" data-d="700"><div class="ph"><img src="images/px-39192385.jpg" alt="" style="object-position:62% 40%"></div><figcaption><b class="h4" style="font-size:34px">โรคร้ายแรง</b><p class="sm">CI ย่อมาจาก Critical Illness<br>เงินก้อนตอนป่วยหนัก</p></figcaption></figure>
+    <figure style="left:1305px" data-a="up" data-d="770"><div class="ph"><img src="images/px-36072047.jpg" alt="" style="object-position:55% 60%"></div><figcaption><b class="h4" style="font-size:34px">อุบัติเหตุ</b><p class="sm">PA ย่อมาจาก Personal Accident<br>เหตุไม่คาดฝัน เริ่มคุ้มครองทันที</p></figcaption></figure>
+  </div>
+  <aside class="notes">(จังหวะเปลี่ยนเรื่อง) แล้วเราจะรับมือยังไงดีคะ คำตอบคือการโอนความเสี่ยง เราจ่ายเงินก้อนเล็กอย่างสม่ำเสมอ (ชี้กล่องเล็ก) เพื่อให้บริษัทประกันช่วยรับภาระก้อนใหญ่ (ชี้กล่องใหญ่) ที่เราไม่อยากให้ครอบครัวต้องแบกเอง ประกันไม่ได้ทำให้เราไม่ป่วยนะคะ แต่ช่วยย้ายภาระออกจากกระเป๋าของครอบครัว ประกันที่คนส่วนใหญ่พูดถึงมีสี่แบบหลัก ชีวิต สุขภาพ โรคร้ายแรง และอุบัติเหตุ แต่ละแบบดูแลคนละเรื่อง เดี๋ยวเราดูทีละแบบนะคะ</aside>
+</section>
+
+<!-- ===== 7 LIFE ===== -->
+<section class="slide s7" data-ch="ประกัน 4 แบบ" data-title="ประกันชีวิต">
+  <div class="ph" data-a="wipe-r" data-d="0" style="left:0;top:0;width:800px;height:1028px"><img data-a="push" src="images/px-11686456.jpg" alt="พ่อแม่หอมแก้มลูกน้อย" style="object-position:52% 35%"></div>
+  <h2 class="at d1" style="left:880px;top:72px;width:920px"><span class="ln"><span data-a="line" data-d="120">ประกันชีวิต</span></span></h2>
+  <p class="at lead" data-a="up" data-d="260" style="left:880px;top:238px;width:920px;font-size:28px">ถ้าวันหนึ่งเราไม่อยู่ ครอบครัวยังมีเงินก้อนไว้ตั้งตัว<br>และบางแบบใช้ออมระยะยาวได้ด้วย</p>
+  <div class="at ltab" style="left:880px;top:366px;width:920px">
+    <div data-a="up" data-d="380"><h4 class="h4">ชั่วระยะเวลา <span class="en">Term</span></h4><div><p class="sm">คุ้มครองตามช่วงเวลาที่กำหนด เบี้ยต่ำ ไม่มีเงินคืนเมื่อครบสัญญา</p><p class="fit">เหมาะกับ: มีภาระหนี้ ลูกยังเล็ก</p></div></div>
+    <div data-a="up" data-d="440"><h4 class="h4">ตลอดชีพ <span class="en">Whole life</span></h4><div><p class="sm">คุ้มครองยาวถึงอายุสูง มีมูลค่าเงินสดสะสม</p><p class="fit">เหมาะกับ: ส่งต่อมรดก วางแผนระยะยาว</p></div></div>
+    <div data-a="up" data-d="500"><h4 class="h4">สะสมทรัพย์ <span class="en">Endowment</span></h4><div><p class="sm">จ่ายเมื่อเสียชีวิตหรือครบสัญญา คุ้มครองพร้อมออม</p><p class="fit">เหมาะกับ: มีเป้าหมายเงินออมชัดเจน</p></div></div>
+    <div data-a="up" data-d="560"><h4 class="h4">บำนาญ <span class="en">Annuity</span></h4><div><p class="sm">จ่ายเบี้ยช่วงทำงาน รับเงินเป็นงวดเมื่อถึงอายุที่กำหนด</p><p class="fit">เหมาะกับ: วางแผนเกษียณ ใช้สิทธิลดหย่อน</p></div></div>
+    <div data-a="up" data-d="620"><h4 class="h4">ยูนิตลิงค์ <span class="en">Unit-Linked</span></h4><div><p class="sm">ประกันชีวิตควบการลงทุนในกองทุนรวม ผลตอบแทนไม่รับประกัน</p><p class="fit">เหมาะกับ: รับความเสี่ยงการลงทุนได้</p></div></div>
+  </div>
+  <p class="at sm bar-l" data-a="up" data-d="800" style="left:880px;top:872px;width:920px"><b>สัญญาหลัก กับสัญญาเพิ่มเติม (Rider):</b> ความคุ้มครองสุขภาพ โรคร้ายแรง และอุบัติเหตุ มักซื้อเป็นสัญญาเพิ่มเติม ที่แนบกับกรมธรรม์ประกันชีวิตหลัก</p>
+  <p class="src" style="left:880px" data-a="fade" data-d="900">ที่มา: คู่มือประกันภัยฉบับประชาชน ของ คปภ. (สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย) และ AIA Thailand</p>
+  <aside class="notes">ประกันชีวิตมีห้าแบบหลักค่ะ ชั่วระยะเวลา เหมาะกับคนที่มีภาระหนี้หรือลูกยังเล็ก เพราะได้ทุนประกันสูงด้วยเบี้ยไม่มาก แต่ไม่มีเงินคืนเมื่อครบสัญญา ตลอดชีพ เหมาะกับการส่งต่อมรดก สะสมทรัพย์ เหมาะกับคนที่อยากออมไปพร้อมความคุ้มครอง บำนาญ สำหรับวางแผนเกษียณ และยูนิตลิงค์ ที่ควบการลงทุน ยืดหยุ่นแต่มีความเสี่ยงจากการลงทุน อีกเรื่องที่ควรรู้คือ ประกันสุขภาพของบริษัทประกันชีวิต มักเป็นสัญญาเพิ่มเติมที่แนบกับสัญญาหลักนะคะ</aside>
+</section>
+
+<!-- ===== 8 HEALTH ===== -->
+<section class="slide t-stone s8" data-ch="ประกัน 4 แบบ" data-title="ประกันสุขภาพ">
+  <div class="ph" data-a="wipe-l" data-d="0" style="left:1200px;top:0;width:720px;height:1028px"><img data-a="push" src="images/px-6129676.jpg" alt="พยาบาลดูแลผู้ป่วยบนเตียง" style="object-position:28% 50%"></div>
+  <h2 class="at d1" style="left:120px;top:72px;width:1040px"><span class="ln"><span data-a="line" data-d="120">ประกันสุขภาพ</span></span></h2>
+  <p class="at lead" data-a="up" data-d="260" style="left:120px;top:238px;width:1000px;font-size:28px">ช่วยจ่ายค่ารักษาเมื่อเจ็บป่วยหรือบาดเจ็บ ตามเงื่อนไขและวงเงินในกรมธรรม์</p>
+  <div class="at grid2" style="left:120px;top:330px;width:1000px">
+    <div data-a="up" data-d="360"><div class="big3">IPD</div><h4 class="h4" style="margin-top:6px">ผู้ป่วยใน</h4><p class="sm mut">แอดมิตนอนโรงพยาบาล ตามที่แพทย์เห็นว่าจำเป็น</p></div>
+    <div data-a="up" data-d="440"><div class="big3">OPD</div><h4 class="h4" style="margin-top:6px">ผู้ป่วยนอก</h4><p class="sm mut">ไปหาหมอแล้วกลับบ้านได้ มักซื้อเพิ่มแยกต่างหาก</p></div>
+  </div>
+  <div class="at grid2" style="left:120px;top:640px;width:1000px">
+    <div class="pt" data-a="up" data-d="560"><p class="tag">ยืดหยุ่น</p><h4 class="h4">แบบเหมาจ่าย</h4><p class="sm mut">จ่ายตามจริงภายในวงเงินรวมต่อปีหรือต่อครั้ง ไม่แบ่งวงเงินย่อยมาก</p></div>
+    <div class="pt" data-a="up" data-d="620"><p class="tag">คุมงบ</p><h4 class="h4">แบบแยกค่าใช้จ่าย</h4><p class="sm mut">แบ่งวงเงินเป็นหมวด เช่น ค่าห้อง ค่าผ่าตัด ค่าแพทย์ เบี้ยมักถูกกว่า</p></div>
+  </div>
+  <p class="at sm bar-l" data-a="up" data-d="760" style="left:120px;top:850px;width:1000px"><b>มาตรฐานใหม่ ของ คปภ.:</b> กรมธรรม์สุขภาพที่ออกตั้งแต่ 8 พ.ย. 2564 ใช้หมวดความคุ้มครองและเงื่อนไขมาตรฐานเดียวกันทุกบริษัท และกำหนดกรณีที่บริษัทปฏิเสธการต่ออายุได้ไว้ชัดเจน เช่น การฉ้อฉลประกันภัย</p>
+  <p class="src" style="right:760px" data-a="fade" data-d="860">คปภ. = สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย / ที่มา: คำสั่งนายทะเบียน 14/2564 ผ่านกรุงเทพประกันชีวิต และ Prudential Thailand</p>
+  <aside class="notes">ประกันสุขภาพแบ่งง่าย ๆ เป็นผู้ป่วยใน หรือ IPD คือแอดมิตนอนโรงพยาบาล กับผู้ป่วยนอก หรือ OPD คือไปหาหมอแล้วกลับบ้าน ส่วนรูปแบบการจ่าย มีแบบเหมาจ่าย ที่จ่ายตามจริงในวงเงินรวม กับแบบแยกค่าใช้จ่าย ที่มีวงเงินแต่ละหมวด ตั้งแต่มีมาตรฐานใหม่ของ คปภ. เมื่อปลายปี 2564 เงื่อนไขหลักของทุกบริษัทเป็นแบบเดียวกัน เปรียบเทียบง่ายขึ้นค่ะ</aside>
+</section>
+
+<!-- ===== 9 CI ===== -->
+<section class="slide t-ink s9" data-ch="ประกัน 4 แบบ" data-title="ประกันโรคร้ายแรง">
+  <div class="ph" data-a="wipe-d" data-d="0" style="left:0;top:0;width:1920px;height:420px"><img data-a="push" src="images/px-39192385.jpg" alt="แพทย์อธิบายผลเอกซเรย์ให้ผู้ป่วยฟัง" style="object-position:60% 34%"></div>
+  <h2 class="at d2" style="left:120px;top:448px;width:1100px"><span class="ln"><span data-a="line" data-d="240">ประกันโรคร้ายแรง</span></span></h2>
+  <p class="at h4 mut" data-a="fade" data-d="380" style="left:1000px;top:500px;width:800px;text-align:right">CI ย่อมาจาก Critical Illness แปลว่า โรคร้ายแรง</p>
+  <div class="at rule" data-a="rule" data-d="340" style="left:120px;top:590px;width:1680px;height:1px;background:rgba(255,255,255,.3)"></div>
+  <p class="at h3" data-a="up" data-d="420" style="left:120px;top:620px;width:720px;line-height:1.35">แพทย์วินิจฉัยตามเงื่อนไข<br>รับเป็นเงินก้อน<br><span class="acc">ไม่ต้องรอใบเสร็จค่ารักษา</span></p>
+  <p class="at sm" data-a="up" data-d="520" style="left:120px;top:812px;width:700px;color:rgba(255,255,255,.82)">ประกันสุขภาพช่วย “ค่ารักษา” ส่วน CI ช่วย “ชีวิตระหว่างรักษา” ทั้งรายได้ที่หายไป และค่าใช้จ่ายนอกโรงพยาบาล</p>
+  <div class="at grid2" style="left:940px;top:620px;width:860px;row-gap:26px;column-gap:48px">
+    <div class="pt" data-a="up" data-d="560"><h4 class="h4">เงินก้อนใช้ได้อิสระ</h4><p class="sm mut">เป็นรายได้ช่วงพักรักษา หรือค่ารักษาที่เกินวงเงินประกันสุขภาพ</p></div>
+    <div class="pt" data-a="up" data-d="620"><h4 class="h4">ระยะเริ่มต้น / รุนแรง</h4><p class="sm mut">บางแบบจ่ายตั้งแต่ระยะเริ่มต้น บางแบบจ่ายเฉพาะระยะรุนแรง</p></div>
+    <div class="pt" data-a="up" data-d="680"><h4 class="h4">โรคที่พบบ่อย</h4><p class="sm mut">มะเร็ง กล้ามเนื้อหัวใจตาย โรคหลอดเลือดสมอง ไตวาย (ขึ้นกับแบบประกัน)</p></div>
+    <div class="pt" data-a="up" data-d="740"><h4 class="h4">ระยะเวลารอคอย <span class="acc num">60–90</span> วัน</h4><p class="sm mut">โดยประมาณ นับจากวันที่กรมธรรม์มีผล ขึ้นกับแบบประกัน</p></div>
+  </div>
+  <p class="src" data-a="fade" data-d="900">ที่มา (ระยะเวลารอคอย): KTC และหน้าผลิตภัณฑ์สัญญาเพิ่มเติมของ AIA / ตัวเลขต่างกันตามแบบประกัน ควรดูในกรมธรรม์จริง</p>
+  <aside class="notes">ประกันโรคร้ายแรง หรือ CI จ่ายเป็นเงินก้อนตอนที่แพทย์วินิจฉัยตามเงื่อนไข ไม่ต้องรอใบเสร็จ เงินก้อนนี้ใช้ได้อิสระ เช่น เป็นรายได้ระหว่างพักรักษา ค่าเดินทาง หรือค่ารักษาที่เกินวงเงินประกันสุขภาพ สิ่งที่ต้องดูคือ นิยามโรค ระยะของโรคที่จ่าย และระยะเวลารอคอย ซึ่งมักอยู่ราวหกสิบถึงเก้าสิบวัน แล้วแต่แบบประกันค่ะ</aside>
+</section>
+
+<!-- ===== 10 PA ===== -->
+<section class="slide t-ink s10" data-ch="ประกัน 4 แบบ" data-title="ประกันอุบัติเหตุ">
+  <div class="ph" style="left:0;top:0;width:1920px;height:1028px"><img data-a="push" src="images/px-36072047.jpg" alt="ผู้ขับขี่จักรยานยนต์บนถนนยามค่ำ" style="object-position:50% 62%"></div>
+  <div class="shade" style="height:1028px"></div>
+  <h2 class="at d2" style="left:120px;top:84px;width:1100px"><span class="ln"><span data-a="line" data-d="120">ประกันอุบัติเหตุ</span></span></h2>
+  <p class="at h4" data-a="fade" data-d="260" style="left:120px;top:214px;width:1100px;color:rgba(255,255,255,.8)">PA ย่อมาจาก Personal Accident แปลว่า อุบัติเหตุส่วนบุคคล</p>
+  <div class="at" style="left:112px;top:262px;display:flex;align-items:center;gap:36px">
+    <span class="num" style="font-size:300px;line-height:1.05;color:#fff;min-width:200px"><span class="count" data-to="0" data-from="30" data-d="300">0</span></span>
+    <div data-a="up" data-d="500"><p class="d3" style="font-size:64px">วัน ระยะรอคอย</p><p class="lead" style="color:rgba(255,255,255,.85)">อุบัติเหตุเกิดได้ทุกเมื่อ ความคุ้มครองจึงเริ่มทันที</p><p class="sm" style="color:rgba(255,255,255,.62)">(เทียบกับประกันสุขภาพ โรคทั่วไปรอ 30 วัน)</p></div>
+  </div>
+  <div class="at" style="left:120px;top:640px;width:1680px;display:grid;grid-template-columns:repeat(3,1fr);column-gap:56px">
+    <div class="pt" data-a="up" data-d="700" style="border-color:rgba(255,255,255,.35)"><h4 class="h4">เสียชีวิต สูญเสียอวัยวะ ทุพพลภาพ</h4><p class="sm" style="color:rgba(255,255,255,.8)">จ่ายตามตารางผลประโยชน์ เช่น แบบ อ.บ.1 หรือ อ.บ.2</p></div>
+    <div class="pt" data-a="up" data-d="760" style="border-color:rgba(255,255,255,.35)"><h4 class="h4">ค่ารักษาจากอุบัติเหตุ</h4><p class="sm" style="color:rgba(255,255,255,.8)">จ่ายค่ารักษาตามจริงต่อครั้ง ไม่เกินวงเงินที่เลือก</p></div>
+    <div class="pt" data-a="up" data-d="820" style="border-color:rgba(255,255,255,.35)"><h4 class="h4">เบี้ยตามชั้นอาชีพ</h4><p class="sm" style="color:rgba(255,255,255,.8)">อาชีพเสี่ยงมากเบี้ยสูงกว่า อายุไม่ใช่ปัจจัยหลักเหมือนประกันสุขภาพ</p></div>
+  </div>
+  <p class="at sm bar-l" data-a="up" data-d="920" style="left:120px;top:838px;width:1400px;--acc:#fff"><b>มี พ.ร.บ. รถแล้วพอไหม?</b> พ.ร.บ. รถ (ประกันภัยรถภาคบังคับ) มีวงเงินคุ้มครองจำกัด อาจไม่พอสำหรับอุบัติเหตุรุนแรง ประกันอุบัติเหตุช่วยเติมทั้งค่ารักษาและเงินก้อน</p>
+  <p class="src" style="color:rgba(255,255,255,.7)" data-a="fade" data-d="1000">อ.บ.1 = จ่ายกรณีเสียชีวิต สูญเสียอวัยวะ สายตา หรือทุพพลภาพถาวรสิ้นเชิง / อ.บ.2 = แบบ อ.บ.1 ที่ขยายรวมทุพพลภาพถาวรบางส่วน</p>
+  <aside class="notes">ประกันอุบัติเหตุ หรือ PA คุ้มครองทันทีไม่มีระยะรอคอย (ชี้เลขศูนย์) จ่ายทั้งค่ารักษาจากอุบัติเหตุ และเงินก้อนกรณีเสียชีวิต สูญเสียอวัยวะ หรือทุพพลภาพ เบี้ยขึ้นกับอาชีพมากกว่าอายุ หลายคนคิดว่ามี พ.ร.บ. รถแล้วพอ แต่วงเงิน พ.ร.บ. มีเพดาน ถ้าอุบัติเหตุหนักอาจไม่พอค่ะ</aside>
+</section>
+
+<!-- ===== 11 COMPARE ===== -->
+<section class="slide s11" data-ch="ประกัน 4 แบบ" data-title="เทียบ 4 แบบ">
+  <h2 class="at d3" style="left:120px;top:84px;width:1100px"><span class="ln"><span data-a="line" data-d="80">4 แบบ ดูแลคนละเรื่อง</span></span></h2>
+  <p class="at p mut" data-a="fade" data-d="240" style="left:1240px;top:112px;width:560px">ไม่จำเป็นต้องมีครบทุกแบบพร้อมกัน แต่ควรรู้ว่าบ้านเราเปิดรับความเสี่ยงด้านไหนอยู่</p>
+  <div class="at ctab" style="left:120px;top:268px;width:1680px">
+    <div class="ch"></div>
+    <div class="ch" data-a="up" data-d="200"><b>ชีวิต</b><small>ดูแลครอบครัว</small></div>
+    <div class="ch" data-a="up" data-d="260"><b>สุขภาพ</b><small>ดูแลค่ารักษา</small></div>
+    <div class="ch" data-a="up" data-d="320"><b>โรคร้ายแรง</b><small>CI (Critical Illness)</small></div>
+    <div class="ch" data-a="up" data-d="380"><b>อุบัติเหตุ</b><small>PA (Personal Accident)</small></div>
+    <div class="rl row-top" data-a="fade" data-d="460">ช่วยเรื่องอะไร</div>
+    <div class="row-top" data-a="up" data-d="480">ครอบครัวมีเงินก้อน เมื่อเราจากไป</div><div class="row-top" data-a="up" data-d="500">ค่ารักษาพยาบาล</div><div class="row-top" data-a="up" data-d="520">เงินก้อนตอนป่วยหนัก</div><div class="row-top" data-a="up" data-d="540">บาดเจ็บ ทุพพลภาพ เสียชีวิตจากอุบัติเหตุ</div>
+    <div class="rl" data-a="fade" data-d="600">จ่ายเงินแบบไหน</div>
+    <div data-a="up" data-d="620">ทุนประกันตามสัญญา</div><div data-a="up" data-d="640">ตามจริง ไม่เกินวงเงิน</div><div data-a="up" data-d="660">เงินก้อนตอนวินิจฉัย</div><div data-a="up" data-d="680">ตามตาราง และค่ารักษาตามจริง</div>
+    <div class="rl" data-a="fade" data-d="740">ระยะเวลารอคอย</div>
+    <div data-a="up" data-d="760">ไม่มี สำหรับการเสียชีวิตทั่วไป</div><div data-a="up" data-d="780"><b class="num acc" style="font-size:30px">30</b> วัน (บางโรค <b>120</b> วัน)</div><div data-a="up" data-d="800">ราว <b class="num acc" style="font-size:30px">60–90</b> วัน (ขึ้นกับแบบประกัน)</div><div data-a="up" data-d="820"><b class="num acc" style="font-size:30px">0</b> ไม่มี</div>
+    <div class="rl" data-a="fade" data-d="880">ลดหย่อนภาษี</div>
+    <div data-a="up" data-d="900">ได้ (กรมธรรม์ 10 ปีขึ้นไป)</div><div data-a="up" data-d="920">ได้ ไม่เกิน 25,000 บาท</div><div data-a="up" data-d="940">นับรวมกับประกันสุขภาพ</div><div data-a="up" data-d="960">นับเป็นประกันสุขภาพได้เฉพาะส่วนค่ารักษา ทุพพลภาพ และสูญเสียอวัยวะ</div>
+  </div>
+  <p class="src" data-a="fade" data-d="1000">ที่มา: ภาษี จากกรมสรรพากร (คู่มือ ภ.ง.ด.91 ปีภาษี 2568) และสมาคมประกันชีวิตไทย / ระยะเวลารอคอย จากเงื่อนไขมาตรฐานใหม่ (aia-fa.com) และ KTC ควรตรวจในกรมธรรม์จริง</p>
+  <aside class="notes">สรุปง่าย ๆ ค่ะ ชีวิตดูแลครอบครัว สุขภาพดูแลค่ารักษา โรคร้ายแรงดูแลชีวิตระหว่างรักษา และอุบัติเหตุดูแลเหตุไม่คาดฝัน ระยะรอคอยและสิทธิลดหย่อนก็ต่างกัน ไม่จำเป็นต้องมีทุกแบบพร้อมกัน แต่ควรรู้ว่าบ้านเราเปิดรับความเสี่ยงด้านไหนอยู่</aside>
+</section>
+
+<!-- ===== 12 BEFORE ===== -->
+<section class="slide t-ink s12" data-ch="กติกาและภาษี" data-title="ก่อนเซ็น">
+  <div class="ph" data-a="wipe-l" data-d="0" style="left:1180px;top:0;width:740px;height:560px"><img data-a="push" src="images/px-6129446.jpg" alt="แพทย์คุยกับผู้หญิงพร้อมเอกสาร" style="object-position:50% 40%"></div>
+  <h2 class="at d1" style="left:120px;top:72px;width:1000px"><span class="ln"><span data-a="line" data-d="100">ก่อนเซ็น</span></span></h2>
+  <p class="at d3" data-a="up" data-d="220" style="left:120px;top:236px;width:1000px;font-size:58px">ตอบตามจริงทุกข้อ<br>จะได้เคลมราบรื่น</p>
+  <div class="at rules3" style="left:120px;top:460px;width:980px">
+    <div data-a="up" data-d="360"><p class="tag">การแถลงสุขภาพ</p><div><h4 class="h4">แถลงสุขภาพตามจริง</h4><p class="sm mut">ถ้าปกปิดหรือแถลงเท็จ บริษัทอาจบอกล้างสัญญาได้ ตาม ป.พ.พ. (ประมวลกฎหมายแพ่งและพาณิชย์) มาตรา 865</p></div></div>
+    <div data-a="up" data-d="440"><p class="tag">ข้อยกเว้น</p><div><h4 class="h4">โรคที่เป็นมาก่อน</h4><p class="sm mut">โรคหรืออาการที่เป็นอยู่ก่อนทำประกัน อาจเป็นข้อยกเว้นตามเงื่อนไขกรมธรรม์ จึงควรแถลงให้ครบตั้งแต่ตอนสมัคร</p></div></div>
+    <div data-a="up" data-d="520"><p class="tag">ข้อโต้แย้ง</p><div><h4 class="h4">ข้อโต้แย้งความไม่สมบูรณ์ของสัญญา</h4><p class="sm mut">ประกันชีวิตที่มีผลมาแล้ว 2 ปี บริษัทจะยกเรื่องการแถลงไม่ครบมาบอกล้างสัญญาไม่ได้ (ยกเว้นกรณีฉ้อฉล)</p></div></div>
+  </div>
+  <div class="at tl2" style="left:1240px;top:640px;width:560px;height:300px">
+    <p class="sm mut" data-a="fade" data-d="500" style="position:absolute;left:0;top:-36px">นับจากวันที่กรมธรรม์มีผล</p>
+    <div class="line" data-a="rule" data-d="560"></div>
+    <div class="run" data-a="run" data-d="700"></div>
+    <div class="dot" style="left:-4px" data-a="fade" data-d="560"></div>
+    <div class="dot" style="left:540px;background:var(--red-lt)" data-a="pop" data-d="1200"></div>
+    <p class="sm" data-a="fade" data-d="600" style="position:absolute;left:0;top:64px">วันที่ 0</p>
+    <p class="num" style="position:absolute;right:0;top:56px;font-size:88px;line-height:1;color:#fff;text-align:right">ครบ <span class="count acc" data-to="2" data-d="700">2</span> ปี</p>
+    <p class="sm" data-a="up" data-d="1250" style="position:absolute;left:0;top:176px;width:560px;color:rgba(255,255,255,.85)">บริษัทยกเรื่องการแถลงไม่ครบมาโต้แย้งไม่ได้แล้ว (เฉพาะประกันชีวิต)</p>
+  </div>
+  <p class="src" data-a="fade" data-d="1100">ที่มา: ไทยรัฐ Money และ Legardy (ระยะโต้แย้ง 2 ปี) / ป.พ.พ. มาตรา 865 / คปภ. และ AIA Thailand (การแถลงข้อมูลและข้อยกเว้น)</p>
+  <aside class="notes">ก่อนเซ็นมีสามเรื่องค่ะ หนึ่ง ตอบคำถามสุขภาพตามจริง เพราะถ้าปกปิด บริษัทอาจบอกล้างสัญญาได้ สอง โรคที่เป็นมาก่อนทำประกันมักเป็นข้อยกเว้น ยิ่งซื้อตอนสุขภาพดียิ่งได้เปรียบ และสาม สำหรับประกันชีวิต เมื่อกรมธรรม์มีผลครบสองปี บริษัทจะยกเรื่องการแถลงไม่ครบมาโต้แย้งไม่ได้แล้ว ยกเว้นกรณีฉ้อฉล แต่ทางที่ดีที่สุดคือแถลงตามจริงตั้งแต่แรกค่ะ</aside>
+</section>
+
+<!-- ===== 13 AFTER ===== -->
+<section class="slide s13" data-ch="กติกาและภาษี" data-title="หลังได้กรมธรรม์">
+  <h2 class="at d3" style="left:120px;top:84px;width:1400px">
+    <span class="ln"><span data-a="line" data-d="80">หลังได้กรมธรรม์</span></span>
+    <span class="ln"><span data-a="line" data-d="160">ตัวเลขวันที่ควรจำ</span></span>
+  </h2>
+  <p class="at sm mut" data-a="fade" data-d="300" style="left:120px;top:512px;width:160px;line-height:1.3">วันที่ 0<br>เริ่มนับ</p>
+  <div class="ruler" data-a="rule" data-d="280">
+    <i class="tk" style="left:0"></i><i class="tk" style="left:123px"></i><i class="tk" style="left:247px"></i><i class="tk" style="left:370px"></i><i class="tk" style="left:493px"></i><i class="tk" style="left:617px"></i><i class="tk" style="left:740px"></i><i class="tk" style="left:863px"></i><i class="tk" style="left:987px"></i><i class="tk" style="left:1110px"></i><i class="tk" style="left:1233px"></i><i class="tk" style="left:1357px"></i><i class="tk" style="left:1480px"></i>
+    <i class="band" style="left:740px;width:370px" data-a="grow" data-d="750"></i>
+    <i class="pin" style="left:185px" data-a="pop" data-d="410"></i>
+    <i class="pin" style="left:370px;background:var(--ink)" data-a="pop" data-d="520"></i>
+    <i class="pin" style="left:1480px;background:var(--ink)" data-a="pop" data-d="1200"></i>
+    <i class="cursor" data-a="cursor" data-d="300"></i>
+  </div>
+  <div class="mk up" style="left:473px" data-a="up" data-d="420"><div class="num"><span class="count" data-to="15" data-d="420">15</span><small>วัน</small></div><h4>ระยะเวลาพิจารณากรมธรรม์ <span class="en">Free-look period</span></h4><p>ซื้อผ่านตัวแทน เปลี่ยนใจขอยกเลิกและรับเบี้ยคืนได้ (ซื้อทางโทรศัพท์ 30 วัน)</p></div>
+  <div class="mk dn" style="left:658px" data-a="up" data-d="530"><div class="num" style="color:var(--ink)"><span class="count" data-to="30" data-d="530">30</span><small>วัน</small></div><h4>รอคอยโรคทั่วไป ประกันสุขภาพ</h4><p>อุบัติเหตุคุ้มครองทันที ไม่ต้องรอ</p></div>
+  <div class="mk up" style="left:1028px" data-a="up" data-d="760"><div class="num">60–90<small>วัน</small></div><h4>รอคอยโรคร้ายแรง CI</h4><p>ขึ้นกับแบบประกัน</p></div>
+  <div class="mk dn" style="left:1380px;text-align:right" data-a="up" data-d="1200"><div class="num" style="color:var(--ink)"><span class="count" data-to="120" data-d="1150">120</span><small>วัน</small></div><h4>รอคอยโรคเฉพาะ ประกันสุขภาพ</h4><p>เช่น เนื้องอก ซีสต์ นิ่ว ริดสีดวงทวาร ไส้เลื่อน ต้อกระจก</p></div>
+  <div class="at" style="left:120px;top:800px;width:1680px;display:grid;grid-template-columns:480px 1fr;column-gap:64px">
+    <div class="pt" data-a="up" data-d="900" style="border-top:2px solid var(--ink)"><p class="num" style="font-size:52px;line-height:1.05"><span class="count" data-to="31" data-d="900">31</span> <span style="font-size:26px;font-weight:500">วัน ระยะผ่อนผันชำระเบี้ย</span></p><p class="sm mut">Grace period: จ่ายเบี้ยช้าได้ โดยความคุ้มครองยังมีผล นับจากวันครบกำหนดชำระแต่ละงวด</p></div>
+    <div class="pt" data-a="up" data-d="980" style="border-top:2px solid var(--red)"><h4 class="h4" style="font-size:25px">ต่ออายุ และการร่วมจ่าย (Copayment คือการร่วมจ่ายค่ารักษาเป็นสัดส่วนร้อยละ)</h4><p class="sm mut" style="font-size:18.5px;line-height:1.45">กรมธรรม์สุขภาพที่เริ่มคุ้มครองตั้งแต่ 20 มี.ค. 2568 เมื่อต่ออายุ ถ้าปีที่ผ่านมาเคลมผู้ป่วยในตั้งแต่ 3 ครั้ง และยอดเคลมโรคทั่วไปไม่รุนแรงถึง 200% ของเบี้ย หรือเคลมโรคทั่วไปถึง 400% ของเบี้ย ปีถัดไปต้องร่วมจ่าย 30% (เข้าทั้งสองเกณฑ์ 50%) และพิจารณาใหม่ทุกปี</p></div>
+  </div>
+  <p class="src" data-a="fade" data-d="1100">ที่มา: คปภ. และสภาองค์กรของผู้บริโภค (Free-look) / aia-fa.com (รอคอย 30 และ 120 วัน) / KTC (CI) / AIA Thailand และ Prudential (ผ่อนผัน) / InfoQuest และไทยรัฐ (Copayment)</p>
+  <aside class="notes">หลังได้กรมธรรม์ มีตัวเลขวันที่ควรจำค่ะ สิบห้าวัน คือระยะเวลาพิจารณากรมธรรม์ ถ้าเปลี่ยนใจขอยกเลิกและรับเบี้ยคืนได้ตามเงื่อนไข สามสิบวัน คือระยะรอคอยโรคทั่วไปของประกันสุขภาพ บางโรคต้องรอหนึ่งร้อยยี่สิบวัน ส่วนโรคร้ายแรงราวหกสิบถึงเก้าสิบวัน ระยะผ่อนผันการจ่ายเบี้ยคือสามสิบเอ็ดวัน และเรื่องใหม่คือการร่วมจ่ายตอนต่ออายุ สำหรับกรมธรรม์สุขภาพที่เริ่มตั้งแต่ยี่สิบมีนาคม 2568 ถ้าเคลมโรคเล็กน้อยบ่อยเกินเกณฑ์ ปีต่อไปอาจต้องร่วมจ่ายบางส่วน ซึ่งพิจารณาใหม่ทุกปีค่ะ</aside>
+</section>
+
+<!-- ===== 14 TAX ===== -->
+<section class="slide t-red s14" data-ch="กติกาและภาษี" data-title="ลดหย่อนภาษี">
+  <h2 class="at d2" style="left:120px;top:72px;width:1200px">
+    <span class="ln"><span data-a="line" data-d="80">ลดหย่อนภาษีได้</span></span>
+    <span class="ln"><span data-a="line" data-d="160">พร้อมความคุ้มครอง</span></span>
+  </h2>
+  <div class="at" data-a="up" data-d="260" style="left:1380px;top:110px;width:420px;text-align:right"><p class="h3">ปีภาษี 2568–2569</p><p class="sm" style="color:rgba(255,255,255,.84)">เพดานยังเท่าเดิมทั้งสองปีภาษี</p></div>
+  <div class="at tax" style="left:120px;top:340px;width:1680px">
+    <div class="row" data-a="fade" data-d="300"><div><h4 class="h4">เบี้ยประกันชีวิต</h4><p class="sm mut">กรมธรรม์ 10 ปีขึ้นไป</p></div><div class="tr"><i data-a="grow" data-d="340" style="width:390px"></i><span class="num"><span class="count" data-to="100000" data-d="340">100,000</span><small>บาท</small></span></div></div>
+    <div class="row" data-a="fade" data-d="380"><div><h4 class="h4">เบี้ยประกันสุขภาพตัวเอง</h4><p class="sm mut">รวมกับประกันชีวิตแล้วไม่เกิน 100,000 บาท</p></div><div class="tr"><i data-a="grow" data-d="420" style="width:98px"></i><span class="num"><span class="count" data-to="25000" data-d="420">25,000</span><small>บาท</small></span></div></div>
+    <div class="row" data-a="fade" data-d="460"><div><h4 class="h4">เบี้ยประกันสุขภาพพ่อแม่</h4><p class="sm mut">พ่อแม่ต้องมีเงินได้ไม่เกิน 30,000 บาทต่อปี</p></div><div class="tr"><i data-a="grow" data-d="500" style="width:59px"></i><span class="num"><span class="count" data-to="15000" data-d="500">15,000</span><small>บาท</small></span></div></div>
+    <div class="row" data-a="fade" data-d="540"><div><h4 class="h4">เบี้ยประกันชีวิตแบบบำนาญ</h4><p class="sm mut">15% ของเงินได้ และรวมกับกองทุนเพื่อการเกษียณอื่นไม่เกิน 500,000 บาท</p></div><div class="tr"><i data-a="grow" data-d="580" style="width:780px"></i><span class="num"><span class="count" data-to="200000" data-d="580">200,000</span><small>บาท</small></span></div></div>
+  </div>
+  <div class="at exbox" data-a="wipe-r" data-d="850" style="left:120px;top:812px;width:1060px;padding:20px 30px">
+    <p class="sm" style="font-size:20px"><b>ตัวอย่าง</b> ถ้าเงินได้ส่วนที่ลดหย่อนอยู่ในขั้นภาษี 10% การลดหย่อนเบี้ยประกันชีวิตและสุขภาพรวม 100,000 บาท ช่วยลดภาษีได้ <b class="num" style="font-size:32px;color:var(--red)"><span class="count" data-to="10000" data-d="950">10,000</span> บาท</b> (ขั้น 20% ลดได้ 20,000 บาท)</p>
+  </div>
+  <p class="at sm" data-a="up" data-d="1000" style="left:1240px;top:812px;width:560px;font-size:19px;line-height:1.45"><b>อย่าลืม</b> แจ้งความประสงค์ให้บริษัทประกันส่งข้อมูลเบี้ยให้กรมสรรพากร (กรมธรรม์ที่เริ่มตั้งแต่ 1 ม.ค. 2563) และหักได้เฉพาะเบี้ยส่วนที่เข้าเงื่อนไข ตามหนังสือรับรองของบริษัท</p>
+  <p class="src" data-a="fade" data-d="1100">ที่มา: กรมสรรพากร (คู่มือ ภ.ง.ด.91 ปีภาษี 2568 และรายการกฎหมายออกใหม่ ถึง 27 ต.ค. 2569) / สมาคมประกันชีวิตไทย / กองทุนเพื่อการเกษียณอื่น เช่น กองทุนสำรองเลี้ยงชีพ และ RMF (กองทุนรวมเพื่อการเลี้ยงชีพ)</p>
+  <aside class="notes">ข้อดีอีกอย่างคือสิทธิลดหย่อนภาษีค่ะ เบี้ยประกันชีวิตลดหย่อนได้ถึงหนึ่งแสน ประกันสุขภาพตัวเองสองหมื่นห้า แต่รวมกับประกันชีวิตแล้วไม่เกินหนึ่งแสน ประกันสุขภาพพ่อแม่อีกหนึ่งหมื่นห้า และประกันบำนาญอีกสองแสน ตัวอย่างคือถ้าอยู่ขั้นภาษีสิบเปอร์เซ็นต์ ลดหย่อนแสนบาทก็ประหยัดภาษีได้ราวหนึ่งหมื่น อย่าลืมแจ้งให้บริษัทส่งข้อมูลให้กรมสรรพากรด้วยนะคะ</aside>
+</section>
+
+<!-- ===== 15 STAGES ===== -->
+<section class="slide s15" data-ch="วางแผน" data-title="เลือกตามช่วงชีวิต">
+  <h2 class="at d3" style="left:120px;top:84px;width:1000px">
+    <span class="ln"><span data-a="line" data-d="80">เลือกให้ตรง</span></span>
+    <span class="ln"><span data-a="line" data-d="160">กับช่วงชีวิต</span></span>
+  </h2>
+  <p class="at sm mut" data-a="fade" data-d="260" style="left:1400px;top:120px;width:400px;text-align:right">ตัวอย่างแนวคิด<br>ไม่ใช่คำแนะนำเฉพาะบุคคล</p>
+  <svg class="at" style="left:120px;top:250px;width:1680px;height:200px" viewBox="0 0 1680 200" fill="none"><path data-a="draw" data-d="300" pathLength="1" d="M0 170 H400 V140 H850 V110 H1300 V80 H1680" stroke="#D31145" stroke-width="3"/></svg>
+  <div class="stg" style="left:120px;top:430px" data-a="up" data-d="340"><div class="ph"><img src="images/px-7643884.jpg" alt="" style="object-position:50% 30%"></div><h3 class="h3">วัยเริ่มทำงาน</h3><p class="sm mut">ประมาณ 22–30 ปี</p><p class="sm" style="margin-top:6px">สร้างฐานความคุ้มครองตอนสุขภาพดี เบี้ยยังไม่สูง เริ่มออมและใช้สิทธิลดหย่อน</p><p class="need">ควรดู: สุขภาพ อุบัติเหตุ</p></div>
+  <div class="stg" style="left:570px;top:400px" data-a="up" data-d="460"><div class="ph"><img src="images/px-37049848.jpg" alt="" style="object-position:60% 40%"></div><h3 class="h3">มีครอบครัว</h3><p class="sm mut">ประมาณ 30–45 ปี</p><p class="sm" style="margin-top:6px">มีคนพึ่งพิงและภาระหนี้ ทุนประกันชีวิตควรครอบคลุมหนี้และค่าเลี้ยงดู ทบทวนผู้รับประโยชน์</p><p class="need">ควรดู: ชีวิต สุขภาพ โรคร้ายแรง</p></div>
+  <div class="stg" style="left:1020px;top:370px" data-a="up" data-d="580"><div class="ph"><img src="images/px-8101754.jpg" alt="" style="object-position:62% 40%"></div><h3 class="h3">วัยกลางคน</h3><p class="sm mut">ประมาณ 45–60 ปี</p><p class="sm" style="margin-top:6px">ความเสี่ยงโรคร้ายแรงสูงขึ้น เตรียมวงเงินสุขภาพให้พอ เริ่มวางแผนเกษียณ เช่น ประกันบำนาญ</p><p class="need">ควรดู: โรคร้ายแรง สุขภาพ ชีวิต</p></div>
+  <div class="stg" style="left:1470px;top:340px;width:330px" data-a="up" data-d="700"><div class="ph" style="width:330px"><img src="images/px-5637581.jpg" alt="" style="object-position:50% 35%"></div><h3 class="h3">วัยเกษียณ</h3><p class="sm mut">60 ปีขึ้นไป</p><p class="sm" style="margin-top:6px">ดูแลค่ารักษาระยะยาว วางแผนส่งต่อให้ลูกหลาน และตรวจเงื่อนไขการต่ออายุสัญญา</p><p class="need">ควรดู: สุขภาพ ชีวิต</p></div>
+  <aside class="notes">ความต้องการเปลี่ยนตามช่วงชีวิตค่ะ วัยเริ่มทำงาน เน้นสร้างฐานสุขภาพและอุบัติเหตุตอนเบี้ยยังถูก มีครอบครัวแล้ว ประกันชีวิตสำคัญขึ้นมาก เพราะมีคนพึ่งพาเรา วัยกลางคน ความเสี่ยงโรคร้ายแรงสูงขึ้น และควรเริ่มวางแผนเกษียณ ส่วนวัยเกษียณ เน้นค่ารักษาระยะยาวและการส่งต่อ นี่เป็นตัวอย่างแนวคิดนะคะ แต่ละบ้านควรดูจากรายได้ ภาระ และสุขภาพจริงค่ะ</aside>
+</section>
+
+<!-- ===== 16 PLANS HEALTH ===== -->
+<section class="slide s16" data-ch="วางแผน" data-title="แผนสุขภาพและโรคร้ายแรง">
+  <h2 class="at d3" style="left:120px;top:84px;width:560px;font-size:64px">
+    <span class="ln"><span data-a="line" data-d="80">แผนจริงของ AIA</span></span>
+    <span class="ln"><span data-a="line" data-d="160" class="mut">สุขภาพ และ</span></span>
+    <span class="ln"><span data-a="line" data-d="220" class="mut">โรคร้ายแรง</span></span>
+  </h2>
+  <p class="at sm mut" data-a="fade" data-d="300" style="left:120px;top:362px;width:500px">ไม่ระบุราคา เพราะเบี้ยขึ้นกับอายุ เพศ สุขภาพ และแผนที่เลือก</p>
+  <div class="at pt" data-a="up" data-d="400" style="left:120px;top:500px;width:500px"><p class="num acc" style="font-size:80px;line-height:1.1">พ.ศ. 2481</p><p class="sm">AIA เริ่มดำเนินธุรกิจในไทย</p></div>
+  <div class="at pt" data-a="up" data-d="480" style="left:120px;top:700px;width:500px"><p class="num acc" style="font-size:80px;line-height:1.1"><span class="count" data-to="26.2" data-dec="1" data-d="480">26.2</span>%</p><p class="sm">ส่วนแบ่งตลาดเบี้ยประกันชีวิตรวม อันดับ 1 ปี 2568</p></div>
+  <div class="at" style="left:720px;top:96px;width:1080px">
+    <p class="ghd" data-a="fade" data-d="260">ประกันสุขภาพ <span class="mut" style="font-size:19px">สัญญาเพิ่มเติม ต้องแนบกับสัญญาหลัก</span></p>
+    <div class="plist">
+      <div data-a="up" data-d="320"><h4>AIA Infinite Care<small>มาตรฐานใหม่ / ค่ารักษาพยาบาล</small></h4><p>ค่ารักษาแบบเหมาจ่าย สูงสุด 120 ล้านบาทต่อปี เลือกพื้นที่คุ้มครองได้ถึงทั่วโลก รับอายุ 18–75 ปี</p></div>
+      <div data-a="up" data-d="380"><h4>AIA Health Starter<small>เปิดตัว ม.ค. 2569 / ค่ารักษาพยาบาล</small></h4><p>แผน Begin และ Balanced แบบมีส่วนร่วมจ่าย (Copayment) เบี้ยเข้าถึงง่าย รับอายุ 15 วัน–75 ปี</p></div>
+      <div data-a="up" data-d="440"><h4>AIA HB Extra<small>ชดเชยรายได้</small></h4><p>เงินชดเชยรายได้รายวันเมื่อนอนโรงพยาบาล รับอายุ 15 วัน–70 ปี</p></div>
+    </div>
+    <p class="ghd" data-a="fade" data-d="500" style="margin-top:30px">โรคร้ายแรง (CI)</p>
+    <div class="plist">
+      <div data-a="up" data-d="560"><h4>AIA CI ProCare<small>สัญญาหลัก</small></h4><p>คุ้มครองชีวิตและโรคร้ายแรง 62 โรคทุกระยะ เคลมได้หลายครั้ง คุ้มครองถึงอายุ 99 ปี</p></div>
+      <div data-a="up" data-d="620"><h4>AIA Multi-Pay CI Plus<small>สัญญาเพิ่มเติม</small></h4><p>โรคร้ายแรง 62 โรคทุกระดับ เคลมซ้ำได้สูงสุด 11 ครั้ง</p></div>
+      <div data-a="up" data-d="680"><h4>AIA CI Plus<small>สัญญาเพิ่มเติม</small></h4><p>โรคร้ายแรงระดับรุนแรง 44 โรค จ่ายครั้งเดียว</p></div>
+      <div data-a="up" data-d="740"><h4>AIA Health CI Hero<small>สัญญาเพิ่มเติม เปิดตัว ส.ค. 2569</small></h4><p>ค่ารักษาแบบเหมาจ่ายหลังตรวจพบโรคร้ายแรง 62 โรค สูงสุด 12 ล้านบาทต่อปี</p></div>
+    </div>
+  </div>
+  <p class="src" data-a="fade" data-d="900">ข้อมูลจากหน้าผลิตภัณฑ์บน aia.co.th ณ 28 ต.ค. 2569 และสมาคมประกันชีวิตไทย (ส่วนแบ่งตลาด) ความคุ้มครองเป็นไปตามกรมธรรม์ ควรทำความเข้าใจรายละเอียดก่อนตัดสินใจ</p>
+  <aside class="notes">ตัวอย่างแผนจริงของ AIA ในกลุ่มสุขภาพและโรคร้ายแรงค่ะ AIA อยู่ในไทยมาตั้งแต่ปี 2481 และเป็นอันดับหนึ่งด้านเบี้ยประกันชีวิตรวมในปี 2568 ที่ไม่ใส่ราคาเพราะเบี้ยขึ้นกับอายุ เพศ และสุขภาพของแต่ละคน ถ้าสนใจแผนไหน เดี๋ยวช่วยคำนวณให้ตามข้อมูลจริงได้ค่ะ</aside>
+</section>
+
+<!-- ===== 17 PLANS LIFE ===== -->
+<section class="slide t-stone s17 big" data-ch="วางแผน" data-title="แผนชีวิต ออม และอุบัติเหตุ">
+  <h2 class="at d3" style="left:120px;top:84px;width:1200px">
+    <span class="ln"><span data-a="line" data-d="80">แผนชีวิต ออม</span></span>
+    <span class="ln"><span data-a="line" data-d="160">และอุบัติเหตุ</span></span>
+  </h2>
+  <p class="at sm mut" data-a="fade" data-d="260" style="left:1300px;top:120px;width:500px;text-align:right">ตัวอย่างแผนจริงของ AIA (ไม่ระบุราคา)<br>Non Par คือแบบไม่มีเงินปันผล</p>
+  <div class="at" style="left:120px;top:330px;width:520px">
+    <p class="ghd" data-a="fade" data-d="300">ประกันชีวิต ตลอดชีพ</p>
+    <div class="plist">
+      <div data-a="up" data-d="360"><h4>AIA Pay Life Plus<small>Non Par / สัญญาหลัก</small></h4><p>ตลอดชีพ คุ้มครองถึงอายุ 99 ปี เลือกชำระเบี้ย 10, 15 หรือ 20 ปี</p></div>
+      <div data-a="up" data-d="420"><h4>AIA 20 Pay Life<small>Non Par / สัญญาหลัก</small></h4><p>ชำระเบี้ย 20 ปี คุ้มครองถึงอายุ 99 ปี รับ 100% ของทุนประกันเมื่อเสียชีวิตหรือครบสัญญา</p></div>
+    </div>
+  </div>
+  <div class="at" style="left:700px;top:330px;width:520px">
+    <p class="ghd" data-a="fade" data-d="380">ออมทรัพย์และบำนาญ</p>
+    <div class="plist">
+      <div data-a="up" data-d="440"><h4>AIA Endowment 15/25<small>Non Par</small></h4><p>แบบสะสมทรัพย์ ออมพร้อมความคุ้มครองชีวิต</p></div>
+      <div data-a="up" data-d="500"><h4>AIA Annuity Fix<small>บำนาญ มั่นคง</small></h4><p>ประกันบำนาญ รับเงินเป็นงวดหลังเกษียณ</p></div>
+      <div data-a="up" data-d="560"><h4>AIA Annuity Sure<small>บำนาญ ได้ชัวร์</small></h4><p>ประกันบำนาญ คุ้มครองถึงอายุ 90 ปี</p></div>
+    </div>
+  </div>
+  <div class="at" style="left:1280px;top:330px;width:520px">
+    <p class="ghd" data-a="fade" data-d="460">ยูนิตลิงค์ และอุบัติเหตุ</p>
+    <div class="plist">
+      <div data-a="up" data-d="520"><h4>AIA Issara Plus<small>Unit Linked / สัญญาหลัก</small></h4><p>ควบการลงทุน รับอายุ 15 วัน–70 ปี คุ้มครองถึงอายุ 99 ปี มีความเสี่ยงจากการลงทุน</p></div>
+      <div data-a="up" data-d="580"><h4>AIANPA<small>อุบัติเหตุส่วนบุคคล / คุ้มครอง 1 ปี</small></h4><p>ตัวอย่าง AIANPA4600: เสียชีวิต สูญเสียอวัยวะ ทุพพลภาพถาวรสิ้นเชิง 600,000 บาท ค่ารักษาจากอุบัติเหตุสูงสุด 100,000 บาทต่อครั้ง</p></div>
+    </div>
+  </div>
+  <p class="at sm bar-l" data-a="up" data-d="760" style="left:120px;top:868px;width:1500px"><b>AIA Vitality:</b> สะสมคะแนนจากการดูแลสุขภาพ รับสิทธิประโยชน์ตามสถานะ 4 ระดับ</p>
+  <p class="src" data-a="fade" data-d="860">ข้อมูลจาก aia.co.th ณ 28 ต.ค. 2569 / ยูนิตลิงค์มีความเสี่ยงจากการลงทุน ผู้ซื้อควรศึกษาข้อมูลก่อนตัดสินใจ</p>
+  <aside class="notes">ส่วนนี้เป็นตัวอย่างแผนชีวิต ออมทรัพย์ บำนาญ และอุบัติเหตุค่ะ แผนที่เหมาะขึ้นกับเป้าหมาย เช่น อยากให้ครอบครัวมีทุนประกันสูง อยากออม หรืออยากลดหย่อนภาษี ยูนิตลิงค์มีความเสี่ยงจากการลงทุนนะคะ ควรศึกษาก่อนตัดสินใจ</aside>
+</section>
+
+<!-- ===== 18 MYTHS ===== -->
+<section class="slide t-ink s18" data-ch="สรุป" data-title="ความเชื่อ กับ ความจริง">
+  <h2 class="at d3" style="left:120px;top:84px;width:1400px"><span class="ln"><span data-a="line" data-d="80">ได้ยินบ่อย แต่ไม่จริงเสมอไป</span></span></h2>
+  <div class="at myths" style="left:120px;top:300px;width:1680px">
+    <div class="myth" data-a="up" data-d="200"><span class="say"><span class="m">“มีบัตรทองหรือประกันสังคมแล้ว ไม่ต้องมีประกัน”</span><i class="strike" data-a="strike" data-d="560"></i></span><p data-a="fade" data-d="720">สิทธิรัฐดูแลค่ารักษาพื้นฐานได้ดี แต่มีเงื่อนไขเรื่องสถานพยาบาล และไม่ได้ทดแทนรายได้ทั้งหมด ประกันช่วยเติมส่วนนี้</p></div>
+    <div class="myth" data-a="up" data-d="260"><span class="say"><span class="m">“ยังหนุ่มสาว แข็งแรง ไว้ค่อยซื้อ”</span><i class="strike" data-a="strike" data-d="640"></i></span><p data-a="fade" data-d="800">ซื้อตอนสุขภาพดี ผ่านการพิจารณาง่ายกว่าและเบี้ยมักถูกกว่า ถ้าป่วยก่อนซื้อ โรคนั้นอาจกลายเป็นข้อยกเว้น</p></div>
+    <div class="myth" data-a="up" data-d="320"><span class="say"><span class="m">“ซื้อประกันเหมือนแช่งตัวเอง”</span><i class="strike" data-a="strike" data-d="720"></i></span><p data-a="fade" data-d="880">ประกันไม่ได้ทำให้ป่วย แค่ทำให้วันที่ป่วย ครอบครัวไม่ต้องกังวลเรื่องเงิน</p></div>
+    <div class="myth" data-a="up" data-d="380"><span class="say"><span class="m">“ประกันเคลมยาก ไม่จ่ายจริง”</span><i class="strike" data-a="strike" data-d="800"></i></span><p data-a="fade" data-d="960">ปี 2567 บริษัทประกันชีวิตจ่ายเงินตามกรมธรรม์และค่าสินไหมรวมราว <b class="num" style="font-size:30px;line-height:1;color:var(--red-lt)"><span class="count" data-to="456000" data-d="960">456,000</span> ล้านบาท</b> ปัญหาส่วนใหญ่เกิดจากการแถลงไม่ครบหรือไม่เข้าใจเงื่อนไข ร้องเรียนได้ที่สายด่วน คปภ. 1186</p></div>
+  </div>
+  <p class="src" data-a="fade" data-d="1100">ที่มา: สมาคมประกันชีวิตไทย สถิติธุรกิจประกันชีวิตรายปี 2567 (เงินตามกรมธรรม์ 389,394 ล้านบาท และค่าสินไหม 66,937 ล้านบาท) / สายด่วน คปภ. 1186</p>
+  <aside class="notes">ความเชื่อที่ได้ยินบ่อยค่ะ หนึ่ง มีสิทธิรัฐแล้วไม่ต้องมีประกัน จริง ๆ สิทธิรัฐช่วยค่ารักษาพื้นฐานได้ดี แต่ไม่ได้ทดแทนรายได้ สอง ยังหนุ่มสาวไว้ค่อยซื้อ แต่ถ้าป่วยก่อน โรคนั้นอาจถูกยกเว้น สาม ซื้อประกันเหมือนแช่งตัวเอง ประกันไม่ได้ทำให้ป่วยค่ะ และสี่ ประกันเคลมยาก ตัวเลขจริงคือปี 2567 บริษัทประกันชีวิตจ่ายเงินให้ลูกค้ารวมราวสี่แสนห้าหมื่นหกพันล้านบาท ปัญหาส่วนใหญ่มาจากการแถลงไม่ครบ ถ้ามีปัญหา ร้องเรียน คปภ. ได้ที่สายด่วน 1186 ค่ะ</aside>
+</section>
+
+<!-- ===== 19 SUMMARY ===== -->
+<section class="slide s19" data-ch="สรุป" data-title="สรุปสั้น ๆ">
+  <div class="ph" data-a="wipe-r" data-d="0" style="left:0;top:0;width:760px;height:1028px"><img data-a="push" src="images/px-5637704.jpg" alt="ครอบครัวสามรุ่นถือดอกไม้ยิ้มด้วยกัน" style="object-position:45% 45%"></div>
+  <h2 class="at d2" style="left:860px;top:84px;width:960px">
+    <span class="ln"><span data-a="line" data-d="120">สรุปสั้น ๆ</span></span>
+    <span class="ln"><span data-a="line" data-d="200" class="mut">ก่อนตัดสินใจ</span></span>
+  </h2>
+  <div class="at sum" style="left:860px;top:360px;width:940px">
+    <div data-a="up" data-d="340"><svg viewBox="0 0 40 40" fill="none"><path data-a="draw" data-d="520" pathLength="1" d="M7 21 L16 30 L34 10" stroke="#D31145" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4 class="h4">สิทธิรัฐคือฐาน</h4><p class="sm mut">ประกันมาเติมส่วนที่ขาด เช่น ทางเลือกโรงพยาบาล รายได้ และเงินก้อนให้ครอบครัว</p></div></div>
+    <div data-a="up" data-d="420"><svg viewBox="0 0 40 40" fill="none"><path data-a="draw" data-d="600" pathLength="1" d="M7 21 L16 30 L34 10" stroke="#D31145" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4 class="h4">เลือกให้ตรงความเสี่ยง</h4><p class="sm mut">ชีวิต สุขภาพ โรคร้ายแรง อุบัติเหตุ ดูแลคนละเรื่อง เริ่มจากเรื่องที่บ้านเราเปิดรับความเสี่ยงมากที่สุด</p></div></div>
+    <div data-a="up" data-d="500"><svg viewBox="0 0 40 40" fill="none"><path data-a="draw" data-d="680" pathLength="1" d="M7 21 L16 30 L34 10" stroke="#D31145" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4 class="h4">แถลงตามจริง อ่านเงื่อนไข</h4><p class="sm mut">รู้ระยะรอคอย ข้อยกเว้น และระยะเวลาพิจารณากรมธรรม์ ก่อนตัดสินใจ</p></div></div>
+    <div data-a="up" data-d="580"><svg viewBox="0 0 40 40" fill="none"><path data-a="draw" data-d="760" pathLength="1" d="M7 21 L16 30 L34 10" stroke="#D31145" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4 class="h4">ทบทวนเมื่อชีวิตเปลี่ยน</h4><p class="sm mut">แต่งงาน มีลูก ซื้อบ้าน เปลี่ยนงาน หรือใกล้เกษียณ เป็นจังหวะที่ควรดูแผนใหม่</p></div></div>
+  </div>
+  <aside class="notes">สรุปสี่ข้อค่ะ สิทธิรัฐคือฐาน ประกันมาเติม เลือกให้ตรงความเสี่ยงของบ้านเรา แถลงตามจริงและอ่านเงื่อนไข และทบทวนแผนทุกครั้งที่ชีวิตเปลี่ยน</aside>
+</section>
+
+<!-- ===== 20 CTA ===== -->
+<section class="slide t-red s20" data-ch="สรุป" data-title="คุยกันวันนี้">
+  <div class="ph" data-a="wipe-l" data-d="0" style="left:1200px;top:0;width:720px;height:1028px"><img data-a="push" src="images/px-8298446.jpg" alt="คุณตาเล่นตบมือกับหลานสาว" style="object-position:62% 45%"></div>
+  <h2 class="at d1" style="left:120px;top:56px;width:1060px;font-size:104px">
+    <span class="ln"><span data-a="line" data-d="120">คุยกันวันนี้</span></span>
+    <span class="ln"><span data-a="line" data-d="200">ตอนที่ทุกคน</span></span>
+    <span class="ln"><span data-a="line" data-d="280">ยังแข็งแรง</span></span>
+  </h2>
+  <p class="at lead" data-a="up" data-d="440" style="left:120px;top:496px;width:1000px;font-size:28px">ซื้อตอนสุขภาพดี ผ่านการพิจารณาง่ายกว่า และเบี้ยมักถูกกว่า<br>ช่วยดูสิทธิที่มีอยู่ หาช่องว่าง และเทียบแผนให้เหมาะกับงบของบ้านคุณ ไม่มีข้อผูกมัด</p>
+  <div class="at card" data-a="wipe-u" data-d="620" style="left:120px;top:640px;width:980px">
+    <p class="h3" style="color:var(--ink)">[ชื่อตัวแทน]</p>
+    <p class="sm" style="color:var(--grey)">ตัวแทนประกันชีวิต / เลขที่ใบอนุญาต [เลขที่ใบอนุญาตตัวแทน]</p>
+    <div style="display:flex;gap:56px;align-items:baseline;margin-top:14px"><p class="ph-n">โทร [เบอร์โทร]</p><p class="h4">LINE: [LINE ID]</p></div>
+  </div>
+  <p class="at sm" data-a="fade" data-d="900" style="left:120px;top:916px;width:1040px;font-size:18px;line-height:1.45;color:rgba(255,255,255,.88)">ตรวจสอบใบอนุญาตตัวแทนได้ที่เว็บไซต์ คปภ. (สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย) / สายด่วน คปภ. 1186</p>
+  <aside class="notes">ขอบคุณมากค่ะ ถ้าวันนี้ทุกคนยังแข็งแรงดี นี่คือจังหวะที่ดีที่สุดในการเริ่ม เพราะซื้อตอนสุขภาพดีผ่านการพิจารณาง่ายกว่า ถ้าอยากให้ช่วยดูว่าสิทธิที่มีอยู่ครอบคลุมแค่ไหน หรืออยากเทียบแผนให้เหมาะกับงบ คุยต่อได้เลยหลังจบ หรือทักมาตามช่องทางนี้ ไม่มีข้อผูกมัดค่ะ และตรวจสอบใบอนุญาตตัวแทนได้ที่เว็บไซต์ คปภ. ทุกครั้งนะคะ</aside>
+</section>
+
+  <div id="chrome"><span class="chap" id="chap">เริ่มต้น</span><span class="disc">เอกสารประกอบการให้ข้อมูลโดยตัวแทน ไม่ใช่เอกสารทางการของบริษัท</span><span class="rt"><span id="ticks"></span><span class="pg" id="pg">01 / 20</span></span></div>
+</div>
+<div id="notes"><div class="hd"><b id="nt-title"></b><span id="nt-next"></span><span id="nt-time">00:00</span><span>กด p เพื่อปิด</span></div><div id="nt-tx"></div></div>
+<div id="hint">← → เปลี่ยนสไลด์ &nbsp; f เต็มจอ &nbsp; p โน้ต &nbsp; Esc ภาพรวม</div>
+
+<script>
+(()=>{
+'use strict';
+const stage=document.getElementById('stage');
+const slides=[...stage.querySelectorAll('.slide')],N=slides.length;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const OUT='cubic-bezier(.2,.7,.2,1)';          // quick, calm ease-out; no overshoot anywhere
+const $$=(s,r)=>[...(r||document).querySelectorAll(s)];
+
+/* ---------- fit 1920x1080 to the window ---------- */
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.setProperty('--s',s);stage._s=s}
+addEventListener('resize',fit);fit();
+
+/* ---------- generated bits ---------- */
+$$('[data-a="dots"]').forEach(el=>{for(let i=0;i<+el.dataset.n;i++)el.appendChild(document.createElement('i'))});
+$$('[data-a="squares"]').forEach(el=>{for(let i=0;i<12;i++){const q=document.createElement('i');q.className='sq';q.style.left=(i%6)*40+'px';q.style.top=Math.floor(i/6)*40+'px';el.appendChild(q)}});
+
+/* ---------- counters ---------- */
+const fmt=(v,dec)=>v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+let token=0;
+function count(el,d){
+  const to=parseFloat(el.dataset.to),from=parseFloat(el.dataset.from||0),dec=+(el.dataset.dec||0),my=token,dur=to<50&&!el.dataset.from?500:700;
+  const t0=performance.now()+d;el.textContent=fmt(from,dec);
+  (function step(now){
+    if(my!==token){el.textContent=fmt(to,dec);return}
+    const t=Math.min(1,Math.max(0,(now-t0)/dur)),e=1-Math.pow(1-t,3);
+    el.textContent=fmt(t>=1?to:from+(to-from)*e,dec);if(t<1)requestAnimationFrame(step);
+  })(performance.now());
+}
+
+/* ---------- the move library: every move 300–700 ms, ease-out ---------- */
+const run=(el,k,d,dur,ease,extra)=>el.animate(k,Object.assign({duration:dur,delay:d,easing:ease||OUT,fill:'both'},extra||{}));
+const clip={'wipe-r':'inset(0 100% 0 0)','wipe-l':'inset(0 0 0 100%)','wipe-u':'inset(100% 0 0 0)','wipe-d':'inset(0 0 100% 0)'};
+const A={
+  line:(el,d)=>run(el,[{transform:'translateY(105%)'},{transform:'none'}],d,560),
+  up:(el,d)=>run(el,[{opacity:0,transform:'translateY(26px)'},{opacity:1,transform:'none'}],d,460),
+  fade:(el,d)=>run(el,[{opacity:0},{opacity:1}],d,380,'ease-out'),
+  rule:(el,d)=>run(el,[{transform:'scaleX(0)'},{transform:'none'}],d,520),
+  grow:(el,d)=>run(el,[{transform:'scaleX(0)'},{transform:'none'}],d,640),
+  pop:(el,d)=>run(el,[{opacity:0,transform:'scale(.4)'},{opacity:1,transform:'none'}],d,300),
+  draw:(el,d)=>{el.style.strokeDasharray='1 1';run(el,[{strokeDashoffset:1},{strokeDashoffset:0}],d,600,'cubic-bezier(.4,0,.2,1)')},
+  strike:(el,d)=>run(el,[{transform:'scaleX(0)'},{transform:'none'}],d,320,'cubic-bezier(.6,0,.3,1)'),
+  push:(el,d,dir)=>run(el,[{transform:`scale(1.14) translateX(${dir*2.5}%)`},{transform:'none'}],d,700,'cubic-bezier(.15,.6,.2,1)'),
+  /* hook: seven days fill one after another */
+  week:(el,d)=>$$('i',el).forEach((f,i)=>run(f,[{transform:'scaleY(0)'},{transform:'none'}],d+i*60,300)),
+  /* risk: 236 people, filled column by column */
+  dots:(el,d)=>$$('i',el).forEach((f,i)=>run(f,[{opacity:0,transform:'scale(0)'},{opacity:1,transform:'none'}],d+(i%59)*7+Math.floor(i/59)*24,260)),
+  /* ageing: five people, the fifth one is us */
+  people:(el,d)=>$$('svg',el).forEach((f,i)=>run(f,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],d+(i===0?320:i*50),340)),
+  /* pivot: the big bill leaves the family and lands with the insurer */
+  xfer:(el,d)=>run(el,[{opacity:0,transform:'translateX(-470px) scale(.92)'},{opacity:1,transform:'translateX(-470px) scale(.92)',offset:.35},{opacity:1,transform:'none'}],d,900,OUT),
+  squares:(el,d)=>$$('i',el).forEach((f,i)=>run(f,[{opacity:0,transform:'translateY(-18px)'},{opacity:1,transform:'none'}],d+i*30,300)),
+  /* rules: the clock runs from day 0 to two years */
+  run:(el,d)=>run(el,[{transform:'scaleX(0)'},{transform:'none'}],d,560,'cubic-bezier(.4,0,.2,1)'),
+  /* after: the cursor walks the day ruler 0 → 120; markers arrive as it passes */
+  cursor:(el,d)=>run(el,[{transform:'translateX(0)'},{transform:'translateX(1480px)'}],d,900,'linear'),
+};
+for(const k in clip)A[k]=(el,d)=>run(el,[{clipPath:clip[k]},{clipPath:'inset(0 0 0 0)'}],d,560,'cubic-bezier(.3,.6,.15,1)');
+
+function build(sl,dir){
+  let auto=0;
+  $$('[data-a]',sl).forEach(el=>{
+    const t=el.dataset.a;const d=el.dataset.d!=null?+el.dataset.d:Math.min(1100,120+70*auto++);
+    A[t]&&A[t](el,Math.min(d,1100),dir);
+  });
+  $$('.count',sl).forEach(el=>count(el,Math.min(1100,+(el.dataset.d||300))));
+}
+function settle(sl){sl.getAnimations({subtree:true}).forEach(a=>a.cancel());$$('.count',sl).forEach(el=>el.textContent=fmt(parseFloat(el.dataset.to),+(el.dataset.dec||0)))}
+
+/* ---------- chrome ---------- */
+const chrome=document.getElementById('chrome'),pg=document.getElementById('pg'),chap=document.getElementById('chap'),ticksEl=document.getElementById('ticks');
+const chapters=[];slides.forEach((s,i)=>{const c=s.dataset.ch;if(!chapters.length||chapters[chapters.length-1].n!==c)chapters.push({n:c,ix:[]});chapters[chapters.length-1].ix.push(i)});
+const tickEls=[];chapters.forEach(c=>{const g=document.createElement('span');c.ix.forEach(i=>{const t=document.createElement('i');g.appendChild(t);tickEls[i]=t});ticksEl.appendChild(g)});
+const tone=s=>s.classList.contains('t-red')?'c-red':s.classList.contains('t-ink')?'c-ink':s.classList.contains('t-stone')?'c-stone':'c-white';
+
+/* ---------- navigation ---------- */
+let idx=-1,ov=false,busy=0;
+function go(n,instant){
+  n=Math.max(0,Math.min(N-1,n));if(n===idx)return;
+  const old=slides[idx],nw=slides[n],dir=n>idx?1:-1;idx=n;token++;
+  chrome.className=tone(nw);chap.textContent=nw.dataset.ch;pg.textContent=String(n+1).padStart(2,'0')+' / '+N;
+  tickEls.forEach((t,i)=>t.classList.toggle('on',i<=n));
+  if(location.hash!=='#'+(n+1))history.replaceState(null,'','#'+(n+1));
+  updNotes();
+  slides.forEach(s=>{if(s!==nw&&s!==old){settle(s);s.classList.remove('cur','out')}});
+  if(old)settle(old);
+  nw.classList.remove('out');nw.classList.add('cur');
+  if(!old||instant||RM){if(old)old.classList.remove('cur','out');settle(nw);if(!RM&&!instant)build(nw,dir);return}
+  old.classList.remove('cur');old.classList.add('out');
+  /* page turn: the new page slides in over the old one, 480 ms */
+  nw.animate([{clipPath:dir>0?'inset(0 0 0 100%)':'inset(0 100% 0 0)'},{clipPath:'inset(0 0 0 0)'}],{duration:480,easing:'cubic-bezier(.65,0,.25,1)'});
+  const oa=old.animate([{transform:'none'},{transform:`translateX(${-dir*90}px)`}],{duration:480,easing:'cubic-bezier(.65,0,.25,1)',fill:'forwards'});
+  const me=idx;oa.onfinish=()=>{oa.cancel();if(slides[me]!==old)old.classList.remove('out')};
+  build(nw,dir);
+}
+const next=()=>go(idx+1),prev=()=>go(idx-1);
+
+/* ---------- overview (Esc) ---------- */
+function setOv(on){
+  ov=on;stage.classList.toggle('ov',on);
+  if(on){const s=.19,gx=18,gy=22,cols=5,W=1920*s,H=1080*s,ox=(1920-(cols*W+(cols-1)*gx))/2,oy=(1080-(4*H+3*gy))/2;
+    slides.forEach((sl,i)=>{settle(sl);sl.style.transformOrigin='0 0';sl.style.transform=`translate(${ox+(i%cols)*(W+gx)}px,${oy+Math.floor(i/cols)*(H+gy)}px) scale(${s})`;
+      if(!RM)sl.animate([{opacity:0},{opacity:1}],{duration:260,delay:i*14,fill:'backwards'})});
+  }else slides.forEach(sl=>{sl.style.transform='';sl.style.transformOrigin=''});
+}
+stage.addEventListener('click',e=>{
+  if(ov){const sl=e.target.closest('.slide');if(sl){const n=slides.indexOf(sl);setOv(false);const c=idx;idx=-1;slides[c].classList.remove('cur');go(n)}return}
+  const r=stage.getBoundingClientRect();((e.clientX-r.left)/r.width>.3?next:prev)();
+});
+
+/* ---------- notes (p) ---------- */
+const notes=document.getElementById('notes');const tStart=Date.now();
+function updNotes(){const s=slides[idx];document.getElementById('nt-title').textContent=(idx+1)+'. '+s.dataset.title;
+  document.getElementById('nt-next').textContent=idx<N-1?'ถัดไป: '+slides[idx+1].dataset.title:'สไลด์สุดท้าย';
+  document.getElementById('nt-tx').textContent=(s.querySelector('.notes')||{}).textContent||''}
+setInterval(()=>{const t=Math.floor((Date.now()-tStart)/1000);document.getElementById('nt-time').textContent=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')},1000);
+
+/* ---------- input ---------- */
+addEventListener('keydown',e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key;
+  if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(k)){e.preventDefault();if(ov)setOv(false);else next()}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){e.preventDefault();if(!ov)prev()}
+  else if(k==='Home'){e.preventDefault();if(ov)setOv(false);go(0)}
+  else if(k==='End'){e.preventDefault();if(ov)setOv(false);go(N-1)}
+  else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}
+  else if(k==='p'||k==='P'){notes.classList.toggle('show')}
+  else if(k==='Escape'||k==='o'||k==='O'){if(k==='Escape'&&notes.classList.contains('show')&&!ov){notes.classList.remove('show');return}setOv(!ov)}
+});
+let tx=null,ty=null;
+addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;tx=null;
+  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){e.preventDefault();dx<0?next():prev()}},{passive:false});
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1))-1;if(!isNaN(n)&&n!==idx)go(n)});
+
+/* ---------- start ---------- */
+const start=()=>{const n=parseInt(location.hash.slice(1))-1;go(isNaN(n)?0:n);
+  const h=document.getElementById('hint');h.classList.add('show');setTimeout(()=>h.classList.remove('show'),2600)};
+Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1200))]).then(start);
+window.__deck={go:(n,instant)=>go(n,instant),get idx(){return idx},N};
+})();
+</script>
+</body>
+</html>
