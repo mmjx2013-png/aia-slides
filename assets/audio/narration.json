@@ -43,68 +43,68 @@
  "bolt": {
   "stop": null,
   "title": "Stop 1 \u00b7 One bolt",
-  "duration": 67.71,
+  "duration": 62.71,
   "src": "assets/audio/bolt.mp3",
   "lufs": -16.4,
-  "truePeak": -1.6,
+  "truePeak": -1.8,
   "cues": [
    {
     "t0": 0.49,
-    "t1": 3.03,
+    "t1": 3.19,
     "text": "Watch the cloth before you read anything.",
     "frame": 0
    },
    {
-    "t0": 3.25,
-    "t1": 9.41,
+    "t0": 3.41,
+    "t1": 9.51,
     "text": "This roll is a tanmono, a bolt. In the old reckoning, one bolt is one kimono.",
     "frame": 18
    },
    {
-    "t0": 9.63,
-    "t1": 21.09,
+    "t0": 9.73,
+    "t1": 21.21,
     "text": "Its width is settled before any tailor begins. In sixteen thirty-six the shogunate went further, and fixed by law how long and how wide a bolt of silk had to be.",
     "frame": 50
    },
    {
-    "t0": 21.39,
-    "t1": 26.53,
-    "text": "Keep that width in mind. Every measurement that follows is counted from it.",
+    "t0": 21.47,
+    "t1": 26.59,
+    "text": "Keep that width in mind. The width of every part that follows derives from it.",
     "frame": 96
    },
    {
-    "t0": 26.87,
-    "t1": 35.37,
-    "text": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
+    "t0": 26.81,
+    "t1": 32.07,
+    "text": "Now the cut. There is no paper pattern. The tailor only divides.",
     "frame": 120
    },
    {
-    "t0": 35.59,
-    "t1": 42.87,
-    "text": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
+    "t0": 32.29,
+    "t1": 38.21,
+    "text": "Straight cuts give eight pieces. Every strip has a place, and nothing is thrown away.",
     "frame": 150
    },
    {
-    "t0": 43.09,
-    "t1": 46.23,
+    "t0": 38.43,
+    "t1": 41.59,
     "text": "Then the pieces are joined again, by hand.",
     "frame": 210
    },
    {
-    "t0": 46.45,
-    "t1": 54.63,
-    "text": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
+    "t0": 41.81,
+    "t1": 49.83,
+    "text": "The stitches are sewn so that they barely show on the face. Follow the seams: they run straight, because every piece is straight.",
     "frame": 236
    },
    {
-    "t0": 54.85,
-    "t1": 61.27,
+    "t0": 50.05,
+    "t1": 56.69,
     "text": "There is no dart, and no curve. Hung on its rack, the robe is as flat as the bolt it came from.",
     "frame": 274
    },
    {
-    "t0": 61.49,
-    "t1": 66.75,
+    "t0": 56.91,
+    "t1": 61.91,
     "text": "And yet it has to close around a person. Come round to the front, and see how.",
     "frame": 308
    }
@@ -113,57 +113,57 @@
  "parts": {
   "stop": null,
   "title": "Stop 2 \u00b7 The parts",
-  "duration": 70.49,
+  "duration": 66.51,
   "src": "assets/audio/parts.mp3",
   "lufs": -16.4,
   "truePeak": -1.8,
   "cues": [
    {
     "t0": 0.49,
-    "t1": 3.15,
+    "t1": 3.16,
     "text": "Now the front of the robe turns towards you.",
     "frame": 330
    },
    {
-    "t0": 3.37,
-    "t1": 12.08,
+    "t0": 3.38,
+    "t1": 11.35,
     "text": "Find the narrow strip on either side of the opening. That is the okumi. It gives each front enough width to cross the other.",
     "frame": 340
    },
    {
-    "t0": 12.3,
-    "t1": 16.46,
+    "t0": 11.57,
+    "t1": 15.59,
     "text": "When the robe is worn, the wearer's left front lies over her right.",
     "frame": 360
    },
    {
-    "t0": 16.68,
-    "t1": 28.06,
-    "text": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+    "t0": 15.89,
+    "t1": 24.25,
+    "text": "Nothing here is cut to a figure. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
     "frame": 368
    },
    {
-    "t0": 28.3,
-    "t1": 43.82,
+    "t0": 24.53,
+    "t1": 39.75,
     "text": "So a kimono could be taken apart. Where kimono were everyday wear, robes were unpicked and remade as seasons, uses and owners changed: a panel swapped, a piece extended, the silk washed flat and sewn up again.",
     "frame": 390
    },
    {
-    "t0": 44.12,
-    "t1": 49.26,
+    "t0": 40.01,
+    "t1": 45.23,
     "text": "There is a saying for it: unpick a kimono, and it turns back into cloth.",
     "frame": 400
    },
    {
-    "t0": 49.48,
-    "t1": 59.0,
+    "t0": 45.45,
+    "t1": 54.93,
     "text": "There is no crest on it. In one Tottori town in the late nineteen-sixties, crests had all but left clothes, except on ceremonial dress.",
     "frame": 408
    },
    {
-    "t0": 59.22,
-    "t1": 69.58,
-    "text": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
+    "t0": 55.15,
+    "t1": 65.549,
+    "text": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins with the cloth.",
     "frame": 414
    }
   ]
@@ -171,79 +171,79 @@
  "cloth": {
   "stop": null,
   "title": "Stop 3 \u00b7 Cloth and season",
-  "duration": 63.9,
+  "duration": 63.7,
   "src": "assets/audio/cloth.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.7,
+  "lufs": -16.4,
+  "truePeak": -1.9,
   "cues": [
    {
     "t0": 0.47,
-    "t1": 10.19,
-    "text": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+    "t1": 8.93,
+    "text": "Look at the robes on this wall. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
     "photo": 0
    },
    {
-    "t0": 10.41,
-    "t1": 23.47,
+    "t0": 9.15,
+    "t1": 22.45,
     "text": "What changes is the cloth. Three Japanese design researchers put it plainly: the shape is the same from formal wear to everyday wear. The fabric, and what is dyed or woven into it, decides the use.",
     "photo": 1
    },
    {
-    "t0": 23.69,
-    "t1": 33.99,
+    "t0": 22.67,
+    "t1": 32.95,
     "text": "Changing one wardrobe for the next has its own name, koromogae. Druet counts it among the care rituals, beside airing a whole collection at once.",
     "photo": 2
    },
    {
-    "t0": 34.33,
-    "t1": 53.69,
+    "t0": 33.23,
+    "t1": 53.33,
     "text": "Is summer kimono cool? A Japanese laboratory study dressed women in summer kimono in a hot room. The robe is full of openings: collar, cuffs, sleeve slits, hem. Even so, over the stomach the humidity passed ninety per cent. In one wearer's trials, silk stayed drier than polyester.",
-    "photo": 3
+    "photo": 2
    },
    {
-    "t0": 53.91,
-    "t1": 63.21,
+    "t0": 53.63,
+    "t1": 63.01,
     "text": "The season is also worn early. A summer robe may already carry the bellflower of autumn. Further along this wall, the pattern begins to say more than the month.",
-    "photo": 4
+    "photo": 3
    }
   ]
  },
  "pattern": {
   "stop": null,
   "title": "Stop 4 \u00b7 Pattern",
-  "duration": 60.82,
+  "duration": 64.1,
   "src": "assets/audio/pattern.mp3",
-  "lufs": -16.6,
+  "lufs": -16.4,
   "truePeak": -1.8,
   "cues": [
    {
-    "t0": 0.49,
-    "t1": 14.77,
-    "text": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
+    "t0": 0.51,
+    "t1": 16.03,
+    "text": "Start with the small repeat, then walk on to the large designs. Guides call the large, continuous kind ceremonial. It treats the whole robe as one picture, and the motifs gather below the obi and at the left shoulder.",
     "photo": 0
    },
    {
-    "t0": 15.09,
-    "t1": 26.65,
-    "text": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
+    "t0": 16.29,
+    "t1": 27.89,
+    "text": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she turned to paintings, and counted nearly a thousand robes in them.",
     "photo": 1
    },
    {
-    "t0": 26.87,
-    "t1": 33.97,
+    "t0": 28.11,
+    "t1": 35.47,
     "text": "Her finding is that no style stood alone. Each borrowed elements from the others, and in exchange made the next.",
     "photo": 3
    },
    {
-    "t0": 34.29,
-    "t1": 44.81,
+    "t0": 36.17,
+    "t1": 46.63,
     "text": "Koide ties the Kanbun style to a wider public. As the shogun's order settled, townspeople came to enjoy the kosode, in quality and in number.",
     "photo": 5
    },
    {
-    "t0": 45.07,
-    "t1": 59.87,
-    "text": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
+    "t0": 46.95,
+    "t1": 63.15,
+    "text": "Among the young women Becke interviewed, the code was read less closely. Asked about the flowers on her own furisode, one told her: flowers are flowers, right? Colour mattered more to them. In the next room, the flat picture meets a body.",
     "photo": 6
    }
   ]
@@ -251,44 +251,44 @@
  "dressing": {
   "stop": null,
   "title": "Stop 5 \u00b7 Dressing",
-  "duration": 69.68,
+  "duration": 68.66,
   "src": "assets/audio/dressing.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.7,
+  "lufs": -16.4,
+  "truePeak": -1.8,
   "cues": [
    {
     "t0": 0.47,
-    "t1": 18.31,
-    "text": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+    "t1": 17.83,
+    "text": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
     "frame": 492
    },
    {
-    "t0": 18.53,
-    "t1": 37.11,
-    "text": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+    "t0": 18.05,
+    "t1": 36.25,
+    "text": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, a board, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
     "frame": 564
    },
    {
-    "t0": 37.33,
-    "t1": 45.21,
+    "t0": 36.89,
+    "t1": 44.13,
     "text": "Left over right is old. Becke traces it to a clothing code of the year 718, which followed Chinese fashion.",
     "frame": 580
    },
    {
-    "t0": 45.43,
-    "t1": 55.11,
+    "t0": 44.39,
+    "t1": 53.83,
     "text": "The fold at the waist is easily disturbed. In the yukata study, a bow made kneeling on the floor shifted it most; a standing bow, least.",
     "frame": 596
    },
    {
-    "t0": 55.41,
-    "t1": 64.41,
+    "t0": 54.07,
+    "t1": 63.17,
     "text": "Women today tie the obi high, from under the bust to the waist. About a century ago, cords and obi sat low, at the hip bones.",
     "frame": 626
    },
    {
-    "t0": 64.63,
-    "t1": 68.89,
+    "t0": 63.39,
+    "t1": 67.85,
     "text": "The knot is tied last, at the back. Walk round and look.",
     "frame": 660
    }
@@ -297,44 +297,44 @@
  "body": {
   "stop": null,
   "title": "Stop 6 \u00b7 Body",
-  "duration": 68.8,
+  "duration": 68.27,
   "src": "assets/audio/body.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.7,
+  "lufs": -16.4,
+  "truePeak": -1.9,
   "cues": [
    {
     "t0": 0.49,
-    "t1": 4.85,
+    "t1": 5.19,
     "text": "Walk round behind the figure. This is the view the wearer never has.",
     "frame": 684
    },
    {
-    "t0": 5.07,
-    "t1": 27.73,
+    "t0": 5.41,
+    "t1": 28.17,
     "text": "Now the collar. Becke quotes Dalby: in Japan the nape is a primary erotic focus of the female body, the equivalent of the breasts in the West. Today's magazines keep it covered. Paris, around 1907, let the neckband fall to show it. The two sources point in different directions, and neither settles the matter.",
     "frame": 720
    },
    {
-    "t0": 28.69,
-    "t1": 36.49,
+    "t0": 29.17,
+    "t1": 36.87,
     "text": "Furisode magazines go well beyond walking. They cover getting in and out of a car, behaving at a meal, even using the bathroom.",
     "frame": 776
    },
    {
-    "t0": 36.71,
-    "t1": 46.07,
+    "t0": 37.09,
+    "t1": 45.79,
     "text": "Posture is measured too. In one laboratory study, wearing an obi eased the load on the shoulder muscles when leaning forward to lift a tea bowl.",
     "frame": 810
    },
    {
-    "t0": 46.29,
-    "t1": 56.37,
+    "t0": 46.01,
+    "t1": 56.13,
     "text": "On the wall, the older pictures. For a geisha, one writer says, choosing and wearing a kimono is as much a part of training as dance or the shamisen.",
     "photo": 2
    },
    {
-    "t0": 56.59,
-    "t1": 67.85,
+    "t0": 56.35,
+    "t1": 67.37,
     "text": "The robe after the bath is a yukata, cut on the same plan as the silk robes before it. It belongs to a larger family of garments, and that family is next.",
     "photo": 5
    }
@@ -343,50 +343,50 @@
  "family": {
   "stop": null,
   "title": "Stop 7 \u00b7 The family",
-  "duration": 70.53,
+  "duration": 72.61,
   "src": "assets/audio/family.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.7,
+  "lufs": -16.4,
+  "truePeak": -1.8,
   "cues": [
    {
     "t0": 0.47,
-    "t1": 16.95,
+    "t1": 16.41,
     "text": "Begin with the long sleeves. In the late Edo period, the writer Kitagawa Morisada sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern.",
     "photo": 0
    },
    {
-    "t0": 17.17,
-    "t1": 23.35,
-    "text": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy.",
+    "t0": 16.71,
+    "t1": 25.19,
+    "text": "One study of a kimono magazine calls the long-sleeved robe the kimono a Japanese woman today is most likely ever to buy.",
     "photo": 0
    },
    {
-    "t0": 23.59,
-    "t1": 37.19,
+    "t0": 25.41,
+    "t1": 39.67,
     "text": "Sleeves could also be cut down. In wartime, brides wore a black furisode with a train, because its sleeves could later be shortened to make a tomesode, a married woman's formal robe.",
     "photo": 1
    },
    {
-    "t0": 37.41,
-    "t1": 44.95,
-    "text": "A survey in one Tottori town, in the late nineteen-sixties, counted two hundred and six different crests.",
+    "t0": 39.97,
+    "t1": 47.05,
+    "text": "A survey in one Tottori city, in the late nineteen-sixties, counted two hundred and six different crests.",
     "photo": 2
    },
    {
-    "t0": 45.17,
-    "t1": 55.19,
+    "t0": 47.27,
+    "t1": 57.35,
     "text": "The jacket is the easiest member to borrow. In Kyoto's flea markets, visitors take to the haori because it needs no obi and no wrapping.",
     "photo": 3
    },
    {
-    "t0": 55.41,
-    "t1": 64.75,
+    "t0": 57.57,
+    "t1": 67.07,
     "text": "Rules reached even the plainest cloth. Edo law told peasants to wear plain dark blue, and the order went out across the whole country.",
     "photo": 6
    },
    {
-    "t0": 64.97,
-    "t1": 69.59,
+    "t0": 67.29,
+    "t1": 71.65,
     "text": "Each rule had its date. The next stretch of wall walks through them.",
     "photo": 6
    }
@@ -444,7 +444,7 @@
   "duration": 72.09,
   "src": "assets/audio/abroad.mp3",
   "lufs": -16.4,
-  "truePeak": -1.8,
+  "truePeak": -1.9,
   "cues": [
    {
     "t0": 0.51,
@@ -490,7 +490,7 @@
   "duration": 66.86,
   "src": "assets/audio/answer.mp3",
   "lufs": -16.4,
-  "truePeak": -1.9,
+  "truePeak": -1.8,
   "cues": [
    {
     "t0": 0.47,
