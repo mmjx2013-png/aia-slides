@@ -38,7 +38,7 @@ function project(cam, P) {          // world point -> normalised frame coords (0
   const c = rotInv(cam.q, V.sub(P, cam.p));
   if (c[2] > -0.05) return null;
   const k = L.focal_mm / L.sensor_w_mm;
-  const u = k * c[0] / -c[2] - (L.shift_x || 0), v = k * c[1] / -c[2] - (L.shift_y || 0);   // Blender lens shift moves the frame, so the image moves the other way
+  const u = k * c[0] / -c[2] + (L.shift_x || 0), v = k * c[1] / -c[2] + (L.shift_y || 0);   // sign as exported by three_d/export_meta.py (checked against its anchors)
   return [0.5 + u, 0.5 - v * W / H];
 }
 // CSS matrix3d that maps an element of size w x h onto the quad tl, tr, br, bl (screen px)
