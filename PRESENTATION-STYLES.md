@@ -20,3 +20,10 @@ When the owner asks for a presentation "แบบที่หนึ่ง" (type
 
 ## Never
 A scroll website that turns into a wall of text. Slides, not pages.
+
+## Lessons for next time (the owner's feedback, 24 Nov 2026)
+- **Few shots, extreme detail.** Model and render only a few 3D images, but make each one look like a real photograph. Then build the explanation around those images. The 3D replaces AI image generation: we make the pictures ourselves.
+- **Too perfect reads as fake.** The kimono 3D sat alone in the middle of a tidy, empty room: unmarked wood, everything aligned. Real places have clutter, wear, scratches, asymmetry and things slightly out of place.
+- **Light must look like real light, not a simulation.** Grade like a camera: rolled-off highlights, real exposure falloff, lens character, grain. Try a colour grade first.
+- **No film mode next time.** Type 1 slides only.
+- **Downloaded models are fine** when the licence allows it (CC0 / CC BY, credited): Poly Haven, Smithsonian Open Access 3D (real scanned museum objects), Sketchfab (CC filters, needs an API token), BlenderKit and Fab, each checked one by one.
