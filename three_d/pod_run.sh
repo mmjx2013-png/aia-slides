@@ -25,10 +25,11 @@ export DEBIAN_FRONTEND=noninteractive
 mkdir -p build/frames build/stills
 
 echo "[pod] 1/7 system libraries"
-if ! dpkg -s libxi6 libxkbcommon0 libgl1 libegl1 libsm6 libxrender1 libxfixes3 >/dev/null 2>&1; then
+LIBS="libxi6 libxkbcommon0 libgl1 libegl1 libsm6 libice6 libx11-6 libxext6 libxrender1 libxfixes3 libxxf86vm1 libgomp1 libvulkan1"
+# shellcheck disable=SC2086
+if ! dpkg -s $LIBS >/dev/null 2>&1; then
   apt-get update -y
-  apt-get install -y --no-install-recommends libxi6 libxkbcommon0 libgl1 libegl1 libsm6 libxrender1 \
-    libxfixes3 ca-certificates curl
+  apt-get install -y --no-install-recommends $LIBS ca-certificates curl
 fi
 echo "[pod] 2/7 python 3.13 with bpy"
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"

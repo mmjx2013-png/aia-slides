@@ -19,7 +19,13 @@ How it is made (code only, no simulation)
     once into tables; every wrapped layer (juban, kimono, ohashori, obi, obi-age, cord) is that
     hull at its own level, so layers can never cross. A robe arrives by its two halves sweeping
     round the body from centre back (right half first, left half over it). Sleeves are a half tube
-    over the arm with a two-layer bag hanging from it.
+    over the arm with a two-layer bag hanging from it. The ohashori is a second layer of the kimono
+    from the fold line (6.6 cm below the sash) upwards; the sash (15.5 cm) sits snug on whatever is
+    under it; the otaiko is a closed drum 28 x 26 cm standing 7 cm proud, with its tail below.
+    build() takes about 10 s, update() about 0.1-0.2 s (numpy only; no modifiers but Solidify).
+
+Run this file directly to render a turntable contact sheet and a build-up strip (env: DF_OUT,
+DF_RES=640x800, DF_SPP, DF_WHICH=sheet,strip,mid,close, DF_CLOSE="az,z,dist;...", DF_T="obi=0,...").
 
 UV CONVENTION (the 'kimono' material reads the design atlas through UVs)
     body panels: common.worn_uv(c, h, c_ref) per face corner.

@@ -115,3 +115,39 @@ CC0 or public domain). Look at each cut-out once: a bad one is removed with
 See the last lines of this file, appended when the pod was started or when the bundle failed.
 Rules from the user: one pod, Community cloud, total spend at most $2.50, terminate it as soon as
 the frames are fetched, never touch the four older pods on the account.
+
+## Film mode (approved by the user; NOT built; a final-integration task)
+
+A "Play as film" button: one press plays the whole exhibition by itself. Chapter title cards
+centred on screen ("Chapter 1 · One bolt"), shown only while the camera walks between rooms,
+never while it is on a garment, fading after about 2.5 s. Captions bottom centre. A timeline
+with chapter ticks (click to jump), pause/play, captions toggle. Reduced motion falls back to
+the scroll mode. The scroll mode stays as it is. This replaces the separate film.
+
+Cheapest way to build it (no video encoding needed): the engine already plays a room as a film.
+`Guide.toggle(id)` in `site/js/app.js` starts a room's audio and, in `Guide.tick()`, scrolls the
+page so the picture follows the narration: each cue in `site/assets/audio/narration.json` carries
+the `frame` (3D rooms) or `photo` (wall rooms) it is keyed to. Film mode is then: on the audio's
+`ended` event, scroll to the next room's section and call `Guide.toggle(nextId)`; do not cancel
+the guided walk on wheel/touch while film mode is on (offer a "Leave film" button instead); draw
+the title card when a room starts; build the timeline from the room durations below.
+If real video is wanted instead: encode `site/assets/seq/d/f_%04d.webp` per range with FFmpeg
+(H.264 + WebM), but wall rooms have no frames of their own (they slide the stop frame sideways
+in the canvas), so video would lose the photographs. The guided route keeps them.
+
+| Chapter | Room id | Audio (site/assets/audio/) | Length | Picture |
+|---|---|---|---|---|
+| Welcome | threshold | threshold.mp3 | 0:43 | frame 0, held |
+| 1 One bolt | bolt | bolt.mp3 | 1:03 | frames 0-329 |
+| 2 The parts | parts | parts.mp3 | 1:07 | frames 329-419 |
+| 3 Cloth and season | cloth | cloth.mp3 | 1:04 | frames 420-491, then the wall at stop S1 (frame 491) |
+| 4 Pattern | pattern | pattern.mp3 | 1:04 | the wall at S1, further along |
+| 5 Dressing | dressing | dressing.mp3 | 1:09 | frames 492-683 |
+| 6 Body | body | body.mp3 | 1:08 | frames 684-845, then the wall at stop S2 (frame 845) |
+| 7 The family | family | family.mp3 | 1:13 | the wall at S2 |
+| 8 Four centuries | history | history.mp3 | 1:15 | the wall at S2 |
+| 9 Abroad | abroad | abroad.mp3 | 1:12 | the wall at S2 |
+| 10 The answer | answer | answer.mp3 | 1:07 | frames 846-983 |
+
+Camera walks between rooms (where a title card may show): 420-491, 492-563, 774-845, 846-953.
+Captions: `site/assets/audio/<id>.vtt`. Room tone and effects are already inside each MP3.
