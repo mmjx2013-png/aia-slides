@@ -1,0 +1,40 @@
+{
+  "voice": "Alice",
+  "model": "tts-elevenlabs-turbo-v2-5",
+  "respell": {
+    "kiru mono": "kee-roo moh-noh",
+    "kitsuke": "kee-tsoo-keh",
+    "kosode": "koh-soh-deh",
+    "furisode": "foo-ree-soh-deh",
+    "obi": "oh-bee"
+  },
+  "chapters": [
+    {
+      "id": "threshold",
+      "stop": 0,
+      "title": "Welcome",
+      "cues": [
+        {"show": "Welcome. Take your time in here."},
+        {"show": "The word on the wall comes from kiru mono, which means, quite simply, a thing to wear."},
+        {"show": "It is a plain name. Almost nothing else about the kimono is plain."},
+        {"show": "So before you scroll, pick a side, and hold on to your answer. We will come back for it at the end."},
+        {"show": "Every room has a voice like this one. Press play whenever you want company."}
+      ]
+    },
+    {
+      "id": "bolt",
+      "stop": 1,
+      "title": "One bolt",
+      "cues": [
+        {"show": "Watch the cloth, not the labels.", "frame": 0},
+        {"show": "It leaves the roll at one width, and nobody will ever cut a curve into it.", "frame": 20},
+        {"show": "A few straight cuts across. That is all the cutting there is.", "frame": 120},
+        {"show": "Then the rectangles are sewn back together, edge to edge.", "frame": 180},
+        {"show": "Lift it by the shoulders and the whole garment is there.", "frame": 215},
+        {"show": "Lay it down again, and it is as flat as the bolt it came from.", "frame": 270},
+        {"show": "Nothing in it has been shaped to a body. No dart, no tuck, no curve.", "frame": 295},
+        {"show": "So here is the puzzle of this exhibition. If the body is not in the cloth, where is it?", "frame": 315, "end_frame": 329}
+      ]
+    }
+  ]
+}

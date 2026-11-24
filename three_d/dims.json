@@ -1,0 +1,74 @@
+{
+  "_note": "All lengths in metres, Z up. Edit numbers here only; code derives everything else.",
+
+  "bolt": {
+    "width": 0.36,
+    "length": 11.4,
+    "thickness": 0.0005,
+    "core_radius": 0.012,
+    "free_end_y": -2.0
+  },
+
+  "garment": {
+    "body_length": 1.60,
+    "sleeve_drop": 0.49,
+    "okumi_width": 0.15,
+    "okumi_length": 1.36,
+    "okumi_seam_allowance": 0.03,
+    "collar_width": 0.055,
+    "collar_length": 1.90,
+    "over_collar_length": 0.90,
+    "neck_half_width": 0.09,
+    "sleeve_attach": 0.23,
+    "side_seam_top": 0.36,
+    "okumi_collar_section": 2.80
+  },
+
+  "world": {
+    "table_z": 0.12,
+    "dais_x": [-0.80, 0.80],
+    "dais_y": [-2.2, 11.6],
+    "room_x": [-6.5, 8.5],
+    "room_y": [-9.0, 14.0],
+    "room_h": 4.6,
+    "post_x": 0.86,
+    "post_h": 1.98,
+    "rod_radius": 0.018,
+    "rod_z_end": 1.86,
+    "form_origin": [2.7, 0.0, 0.0]
+  },
+
+  "palette": {
+    "ground_light": "#e6dece",
+    "ground_dark": "#d9cfbd",
+    "aubergine": "#5a4353",
+    "ochre": "#b8864a",
+    "grey_blue": "#8a9198",
+    "vermilion": "#d4583a",
+    "juban": "#f1ede4",
+    "mannequin": "#cfc7b8",
+    "room": "#151311",
+    "dais": "#a69c8c",
+    "lacquer": "#1a1210"
+  },
+
+  "stages": [
+    {"id": "A", "name": "bolt",    "start": 0,   "end": 119},
+    {"id": "B", "name": "cut",     "start": 120, "end": 209},
+    {"id": "C", "name": "sewn",    "start": 210, "end": 329},
+    {"id": "D", "name": "turn",    "start": 330, "end": 419},
+    {"id": "E", "name": "dressed", "start": 420, "end": 569},
+    {"id": "F", "name": "back",    "start": 570, "end": 659},
+    {"id": "G", "name": "rules",   "start": 660, "end": 719}
+  ],
+
+  "fps": 24,
+  "frames": 720,
+
+  "form_camera": {
+    "_note": "Framing of the dress form in stages E-F; adjusted to dressform.py's real proportions.",
+    "look_z": 0.98,
+    "distance": 4.3,
+    "height": 1.12
+  }
+}
