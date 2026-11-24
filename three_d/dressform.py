@@ -1262,7 +1262,7 @@ def _test_hall(scene, xy):
     bp.inputs["Distance"].default_value = 0.001
     nt.links.new(wv.outputs["Fac"], bp.inputs["Height"])
     nt.links.new(bp.outputs["Normal"], nt.nodes["Principled BSDF"].inputs["Normal"])
-    wall = plain("T_wall", (0.74, 0.70, 0.62), 0.9)
+    wall = plain("T_wall", (0.62, 0.58, 0.50), 0.9)
     gold = plain("T_gold", (0.62, 0.47, 0.20), 0.45)
     quad("T_floor", [(fx - S, fy - S, 0), (fx + S, fy - S, 0), (fx + S, fy + S, 0), (fx - S, fy + S, 0)], tat)
     quad("T_ceil", [(fx - S, fy - S, Hh), (fx - S, fy + S, Hh), (fx + S, fy + S, Hh), (fx + S, fy - S, Hh)], wall)
@@ -1273,7 +1273,7 @@ def _test_hall(scene, xy):
     ld = bpy.data.lights.new("T_shoji", "AREA")
     ld.shape = "RECTANGLE"
     ld.size, ld.size_y = 7.0, 2.4
-    ld.energy = 2600.0
+    ld.energy = 900.0
     ld.color = (1.0, 0.96, 0.90)
     lo = bpy.data.objects.new("T_shoji", ld)
     lo.location = (fx + 3.6, fy + 0.4, 1.5)
@@ -1284,7 +1284,7 @@ def _test_hall(scene, xy):
     w.use_nodes = True
     bg = w.node_tree.nodes.get("Background")
     bg.inputs[0].default_value = (0.95, 0.97, 1.0, 1)
-    bg.inputs[1].default_value = 0.35
+    bg.inputs[1].default_value = 0.30
 
 
 def _camera(scene, name, target, az_deg, dist=3.1, height=1.25, lens=52.0):
@@ -1364,9 +1364,18 @@ def _main():
                 tt[k] = float(v)
         shoot("one%s" % tagname, az, tt)
     if "close" in which:
-        az = float(os.environ.get("DF_AZ", "0"))
-        zz = float(os.environ.get("DF_Z", "1.2"))
-        shoot("close%s" % tagname, az, full, target=(0, 0, zz), dist=1.5, height=zz + 0.12, lens=50.0)
+        # DF_CLOSE="az,z,dist;az,z,dist;..." close views of the fully dressed figure (or DF_T overrides)
+        tt = dict(full)
+        for kv in os.environ.get("DF_T", "").split(","):
+            if "=" in kv:
+                k, v = kv.split("=")
+                tt[k] = float(v)
+        shots = []
+        for i, spec in enumerate(os.environ.get("DF_CLOSE", "0,1.25,1.3").split(";")):
+            az, zz, dd = (float(v) for v in spec.split(","))
+            shots.append(shoot("c_%d%s" % (i, tagname), az, tt, target=(0, 0, zz), dist=dd, height=zz + 0.08 * dd,
+                               lens=50.0))
+        sheet(shots, "sheet_close%s.png" % tagname)
     if "strip" in which:
         half = (res[0] // 2, res[1] // 2)
         tt = {k: 0.0 for k in LAYERS}

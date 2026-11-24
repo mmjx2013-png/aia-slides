@@ -395,44 +395,44 @@
  "history": {
   "stop": null,
   "title": "Stop 8 \u00b7 Four centuries",
-  "duration": 76.71,
+  "duration": 74.51,
   "src": "assets/audio/history.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.7,
+  "lufs": -16.4,
+  "truePeak": -1.8,
   "cues": [
    {
     "t0": 0.47,
-    "t1": 15.69,
-    "text": "Begin before any print on this wall. At the Heian court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+    "t1": 17.03,
+    "text": "Begin before any print on this wall. At the Heian court, by the mid-twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
     "photo": 0
    },
    {
-    "t0": 16.03,
-    "t1": 32.27,
-    "text": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in 1666 records the new Kanbun style, a wide empty back with large, moving motifs.",
+    "t0": 17.25,
+    "t1": 32.43,
+    "text": "By the early Edo period its shape was not far from today's kimono. A pattern book printed in 1666 shows the large, flowing designs of the Kanbun style: a wide empty back with large, moving motifs.",
     "photo": 0
    },
    {
-    "t0": 33.09,
-    "t1": 42.71,
+    "t0": 33.23,
+    "t1": 42.03,
     "text": "Meiji changed the words. Many garment names collapsed into one: kimono. Becke argues that one shape was frozen in time in these years.",
     "photo": 3
    },
    {
-    "t0": 42.93,
-    "t1": 52.03,
-    "text": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
+    "t0": 42.39,
+    "t1": 50.15,
+    "text": "In one kimono magazine, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
     "photo": 6
    },
    {
-    "t0": 52.35,
-    "t1": 70.49,
-    "text": "In 1981 the kimono retail market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono became something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
+    "t0": 50.47,
+    "t1": 68.59,
+    "text": "In 1981 the kimono market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono came to be seen as something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
     "photo": 6
    },
    {
-    "t0": 70.71,
-    "t1": 75.79,
+    "t0": 68.81,
+    "t1": 73.57,
     "text": "By then the shape had long since travelled. The wall goes on, abroad.",
     "photo": 6
    }
@@ -441,44 +441,44 @@
  "abroad": {
   "stop": null,
   "title": "Stop 9 \u00b7 Abroad",
-  "duration": 74.26,
+  "duration": 72.09,
   "src": "assets/audio/abroad.mp3",
-  "lufs": -16.7,
-  "truePeak": -1.6,
+  "lufs": -16.4,
+  "truePeak": -1.8,
   "cues": [
    {
-    "t0": 0.49,
-    "t1": 16.01,
-    "text": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
+    "t0": 0.51,
+    "t1": 15.05,
+    "text": "Start with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
     "photo": 0
    },
    {
-    "t0": 16.27,
-    "t1": 27.91,
-    "text": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
+    "t0": 15.27,
+    "t1": 26.17,
+    "text": "Two centuries later, Western women took the kimono up, but loosely. They wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
     "photo": 1
    },
    {
-    "t0": 28.27,
-    "t1": 38.37,
+    "t0": 26.43,
+    "t1": 36.47,
     "text": "In London, a Japanese village opened in Knightsbridge in January 1885. Gilbert is said to have learned from its people when he staged The Mikado.",
     "photo": 2
    },
    {
-    "t0": 38.63,
-    "t1": 48.67,
+    "t0": 36.69,
+    "t1": 46.61,
     "text": "Nearer Japan, the comparisons turn to cloth and climate. In Korea, one lecture notes, the full skirt caught the warmth rising from heated floors.",
     "photo": 4
    },
    {
-    "t0": 50.99,
-    "t1": 60.41,
+    "t0": 48.49,
+    "t1": 57.83,
     "text": "Ryukyuan bingata absorbed Javanese and Indian chintz and Chinese printed cloth. Since 1972 it has been sold as Japanese kimono and obi.",
     "photo": 5
    },
    {
-    "t0": 61.13,
-    "t1": 73.15,
+    "t0": 58.69,
+    "t1": 71.21,
     "text": "The Ainu word attus means cloth from the inner bark of trees such as elm and linden. Now turn round. The robe on its rack waits at the far end of the hall.",
     "photo": 6
    }
@@ -487,56 +487,56 @@
  "answer": {
   "stop": null,
   "title": "Stop 10 \u00b7 The answer",
-  "duration": 69.45,
+  "duration": 66.86,
   "src": "assets/audio/answer.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.8,
+  "lufs": -16.4,
+  "truePeak": -1.9,
   "cues": [
    {
     "t0": 0.47,
-    "t1": 5.97,
+    "t1": 5.89,
     "text": "Walk back down the hall now. Past the prints, past the robes, to the flat robe on its rack.",
     "frame": 846
    },
    {
-    "t0": 6.65,
-    "t1": 16.03,
-    "text": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one. It covers the whole family you have just passed.",
+    "t0": 6.51,
+    "t1": 13.05,
+    "text": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one.",
     "frame": 872
    },
    {
-    "t0": 16.25,
-    "t1": 25.01,
+    "t0": 13.27,
+    "t1": 22.37,
     "text": "The shape is the plain part. Unworn, a kimono is completely flat. No darts, no tucks, nothing to hold a body's form.",
     "frame": 898
    },
    {
-    "t0": 25.23,
-    "t1": 39.43,
-    "text": "The practice is the rest. A kimono maker, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement.",
+    "t0": 22.59,
+    "t1": 36.95,
+    "text": "The practice is the rest. The head of an old kimono house, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is his view, not a measurement.",
     "frame": 914
    },
    {
-    "t0": 39.65,
-    "t1": 47.96,
+    "t0": 37.17,
+    "t1": 45.43,
     "text": "And the practice has a history. Laws on cloth under the shoguns. After the war, one book with three hundred and ninety rules.",
     "frame": 936
    },
    {
-    "t0": 48.18,
-    "t1": 56.76,
+    "t0": 45.65,
+    "t1": 54.31,
     "text": "So the answer is both. A garment, and a set of rules. Whichever you chose at the entrance, you were holding half of it.",
     "frame": 954
    },
    {
-    "t0": 57.36,
-    "t1": 62.78,
+    "t0": 54.83,
+    "t1": 60.07,
     "text": "Becke adds one more thing. Rules can be bent, she writes, and clothes altered.",
     "frame": 966
    },
    {
-    "t0": 63.0,
-    "t1": 68.76,
+    "t0": 60.29,
+    "t1": 66.19,
     "text": "The robe stays on its rack, flat, until someone puts it on. Thank you for walking with us.",
     "frame": 976
    }

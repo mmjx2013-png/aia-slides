@@ -97,7 +97,7 @@ def main():
         write_wav24(stem, y)
         # ambience and effects, synthesised in code, as separate stems
         n = len(y); dur_s = n / SR
-        amb = synth.room_tone(dur_s)[:n]
+        amb = synth.room_tone(dur_s + 0.1)[:n]
         fx = np.zeros((n, 2))
         pts = sorted((c["t0"], c["frame"]) for c in new if "frame" in c)
         def t_of_frame(f):
