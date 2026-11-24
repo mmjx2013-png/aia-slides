@@ -12,7 +12,8 @@ Every quote was read in the source text during the build session and is 25 words
 | 3 | "Kimono: elucidating meanings of Japanese textile artifacts for a museum audience." SciELO. | **Not read, not cited.** SciELO returned a bot challenge (HTTP 403). |
 | 4 | Becke, C. *Negotiating Gendered Identities Through Dress: Kimono at the Coming-of-age Day in Contemporary Japan*. PhD thesis, School of East Asian Studies, The University of Sheffield, January 2022. https://etheses.whiterose.ac.uk/id/eprint/30197/ | **Read in full** (211 pages). Page numbers are the printed pages, which equal the PDF pages. |
 | 5 | Fukai, A. "Japonism in Fashion." Kyoto Costume Institute; carried in the exhibition catalogue *Japonism in Fashion* (Tokyo). https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf | **Read in full** (13 pages). The file has no printed page numbers, so pages are PDF pages. |
-| 6–8 | Extra open-access sources | **None added.** See "Extra sources" below. |
+| 6 | Druet, L. "Dressed by Nature, Adorned by Design: Seeing and reading the Seasons with Kimono." *Mutual Images Journal* 12 (2024): 16–36. https://doi.org/10.32926/2024.druet | **Read in full** (21 pages). Added for the fabric and season gap. Page numbers are the printed pages (PDF page + 15). |
+| 7–8 | Further extra sources | **None added.** See "Extra sources" below. |
 
 Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the coming-of-age day. Rows marked *furisode* must not be read as claims about all kimono. Rows marked *reported* are views that Becke reports from another author, a guide or a magazine; where that author is Dalby (source 1), the words were read in Becke, not in Dalby.
 
@@ -28,9 +29,9 @@ Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the
 | 6 | 3 | It has no tucks or darts. | 4 | p.10 | "no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape" | general |
 | 7 | 3, 10 | Unworn, it has a completely flat surface. | 4 | p.10 | "In its unworn form, a kimono has a completely flat surface." | general |
 | 8 | 4 | Kimono emphasized the material, the fabric. | 5 | PDF p.7 | "Japanese kimono emphasized the material, the fabric of clothing, and held the beauty of textiles in the highest regard." | written from the angle of Western reception |
-| 9 | 4 | One guide author's books advise on suitable materials, colours, patterns and obi. | 4 | p.76 | "advising the readers on topics such as suitability and appropriateness of kimono materials, colours, patterns and obi" | reported: Ōkubo's publications |
-| 10 | 4 | Guide authors remind readers to be aware of the season when choosing a pattern. | 4 | p.62 | "established authors reminding their readers to be aware of the season when it comes to choosing a kimono pattern design" | reported: Kimura, Ōkubo |
-| 11 | 4 | Wear a flower pattern from about one month before the flower blooms until just before it blooms. | 4 | p.62 | "start wearing a specific flower pattern about one month ahead of the actual blossoming of the drawn flower" | reported: Becke quoting Shimada 2017, a guide; advice, not observed practice |
+| 9 | cut | (No longer on a slide; replaced by rows 58–63.) One guide author's books advise on suitable materials, colours, patterns and obi. | 4 | p.76 | "advising the readers on topics such as suitability and appropriateness of kimono materials, colours, patterns and obi" | reported: Ōkubo's publications |
+| 10 | 10 | (Now only behind the line "which season" on the back of the robe.) Guide authors remind readers to be aware of the season when choosing a pattern. | 4 | p.62 | "established authors reminding their readers to be aware of the season when it comes to choosing a kimono pattern design" | reported: Kimura, Ōkubo |
+| 11 | 4 | One guide says to wear a flower pattern about one month ahead of the actual blossoming. | 4 | p.62 | "start wearing a specific flower pattern about one month ahead of the actual blossoming of the drawn flower" | reported: Becke quoting Shimada 2017, a guide; advice, not observed practice |
 | 12 | 4 | Many young women may not recognise the importance of the pattern. | 4 | p.138 | "Many young women might not be able to recognise this importance, however." | furisode; Becke's interviewees |
 | 13 | 5 | Flat cloth is an ideal canvas. | 4 | p.11 | "an ideal canvas for dyers, painters and embroiderers" | general |
 | 14 | 5 | Komon: repeated all-over patterns are considered less formal. | 4 | p.62 | "pervasive and repetitive patterns called komon are generally considered less formal" | reported: Dalby, Ōkubo, kimono association |
@@ -77,6 +78,12 @@ Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the
 | 55 | 9 | "One garment. Two meanings." (the deck's own reading of rows 41–47, marked as such on the slide). | 5; 4 | PDF p.4; p.123 | "adopted them as dressing gowns" / "very similar to a school uniform" | the deck's reading of two sourced cases |
 | 56 | 7 | The coming-of-age day is a public holiday on the second Monday of January. | 4 | p.37 | "Celebrated annually as a public holiday on the second Monday of January, the coming-of-age day (seijin-no-hi)" | general |
 | 57 | 8 | Period label: Edo period, 1600–1868. | 4 | p.164 | "the high-profile courtesans of the Edo period (1600-1868)" | date range as Becke gives it |
+| 58 | 4 | Awase, the lined kimono, is appropriate from October until May. | 6 | p.20 | "with awase (袷 lined kimono), one can enjoy an outfit that would be appropriate from October until May" | author's general statement on present-day practice |
+| 59 | 4 | Hitoe, the unlined kimono, is for the warm months from June to September. | 6 | p.20 | "With hitoe (単衣 unlined kimono) it is the lightness of the fabric that is appreciated, especially during the warm months" | the sentence ends "that spread from June to September" |
+| 60 | 4 | Ro and sha are semi-transparent "breathable" weaves worn in the hot, humid days of August. | 6 | p.20 | "semi-transparent summer kimono made of ro (絽) or sha (紗) \"breathable\" weave, usually happens while the hot and humid days of August linger" | August, not the whole summer |
+| 61 | 4 | The rotation of the wardrobe is called koromogae. | 6 | p.20 | "the rotation of outfits inside one's wardrobe known as koromogae (衣替え)" | described as a care practice, not a dated rule |
+| 62 | 4 | Seasonal dress is a convention, not a law. | 6 | p.22 | "a guiding principle, not mandatory but strongly encouraged" | about seasonal kimono as presented in monthly magazines |
+| 63 | — | (Supports the "patterns run ahead" line; not quoted on a slide.) Sakidori: dressing for a season that has not come yet. | 6 | p.27 | "sakidori (先取り) culture, which is to convey feelings towards a season that hasn't come yet" | author's general statement |
 
 The words on the back of the kimono on slide 10 repeat rows 10, 14–16, 21, 22 and 26. Slide 10 says on screen that most of these are rules recorded for the furisode at the coming-of-age day, and that the season and pattern lines come from kimono guides.
 
@@ -91,10 +98,10 @@ These came from the brief's hypothesis list. Nothing in sources 4 or 5 supports 
 - Crests (mon) coding formality by number.
 
 **Fabric and season**
-- Ro and sha as summer gauze weaves.
-- Awase (lined) versus hitoe (unlined) by month. Becke's "awase" hits are the verb *awaseru*, "to match", and her one "hitoe" is a type of obi.
-- The seasonal change of dress as a rule.
 - Meisen and tsumugi as fabrics. Only komon is in the sources (row 14).
+- Hakkake as the lower lining of a lined kimono.
+- "Season coding is a rule, not a preference": corrected, not dropped. Source 6 calls it "a guiding principle, not mandatory but strongly encouraged" (row 62), and the slide says so.
+- Ro and sha, awase and hitoe by month, and the seasonal change of dress were dropped in the first build and restored from source 6 (rows 58–61).
 
 **Kitsuke**
 - Tabi first, and every numbered step between the under-kimono and the obi knot. The source orders only the first and last step (row 21).
@@ -123,14 +130,18 @@ These came from the brief's hypothesis list. Nothing in sources 4 or 5 supports 
 
 ## Extra sources
 
-None added. The search ran inside the first ten minutes and aimed at fabric, season and dressing order.
-- Blocked by the environment's network policy (proxy 403): www.jstage.jst.go.jp, digitalcommons.unl.edu, mutualimages-journal.org.
-- No response: ora.ox.ac.uk, mdpi.com, core.ac.uk, doaj.org and several university repositories.
-- etheses.whiterose.ac.uk was reachable, but its search returned no kimono thesis other than source 4.
+One added: source 6 (Druet 2024), a journal article with a DOI, read in full, to fill the fabric and season gap that sources 4 and 5 leave.
+
+Not added:
+- Textile Society of America papers on digitalcommons.unl.edu: the record pages opened, but each PDF request returned a bot challenge (HTTP 403). It was not bypassed, so nothing was read and nothing is cited.
+- J-STAGE papers on dressing order: not attempted for lack of time, so the dressing order still rests on row 21 alone.
+- etheses.whiterose.ac.uk: its search returned no kimono thesis other than source 4.
+
+The three hosts mutualimages-journal.org, digitalcommons.unl.edu and www.jstage.jst.go.jp were blocked by the network policy during the first fan-out and opened later in the session.
 
 ## Photographs
 
-One photograph, from Wikimedia Commons: "Robe (Kosode) with Fishing Net and Characters", Japan, probably ca. 1660s, The Metropolitan Museum of Art, CC0 1.0, no individual photographer named. It is shown whole on slide 1; from slide 2 on, its studio background is masked out and the robe stays on every slide, with hand-written SVG lines and labels on top. Captions repeat only what the Commons file page states; they are not counted as academic claims. The lines and outlines on slides 3, 6 and 7 are approximate, and each of those slides says that the robe is a 1660s kosode, not a dressed modern kimono.
+Two photographs, both from Wikimedia Commons, both The Metropolitan Museum of Art, CC0 1.0, no individual photographer named. (1) "Kosode moyo hinagata bon: Book of Painted Kosode Designs, Volume 2", Japan, second half of the 17th century, shown on slides 5 and 8. (2) "Robe (Kosode) with Fishing Net and Characters", Japan, probably ca. 1660s, The Metropolitan Museum of Art, CC0 1.0, no individual photographer named. It is shown whole on slide 1; from slide 2 on, its studio background is masked out and the robe stays on every slide, with hand-written SVG lines and labels on top. Captions repeat only what the Commons file page states; they are not counted as academic claims. The lines and outlines on slides 3, 6 and 7 are approximate, and each of those slides says that the robe is a 1660s kosode, not a dressed modern kimono.
 
 ## Fonts
 
