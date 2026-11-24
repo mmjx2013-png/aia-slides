@@ -216,8 +216,9 @@
    ]
   },
   "hdri_strength": 10.0,
-  "paper_visible": 3.4,
-  "shoji_radiance": 6.0,
-  "transom_radiance": 3.2
+  "paper_visible": 4.2,
+  "shoji_radiance": 9.0,
+  "shoji_shade": 0.4,
+  "eave_z": 1.3
  }
 }

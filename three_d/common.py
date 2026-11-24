@@ -1070,26 +1070,39 @@ def hall_material(kind, name=None, strength=None):
         val = N("ShaderNodeValue")
         val.name = val.label = "strength"
         val.outputs[0].default_value = 4.0 if strength is None else strength
-        # slow variation of the daylight behind the paper + a gentle falloff towards the eaves
-        nz = N("ShaderNodeTexNoise")
-        nz.inputs["Scale"].default_value = 0.55
-        nz.inputs["Detail"].default_value = 2.0
-        nz.inputs["Roughness"].default_value = 0.45
-        L(tc.outputs["Object"], nz.inputs["Vector"])
-        m1 = N("ShaderNodeMapRange")
-        m1.inputs["From Min"].default_value = 0.25
-        m1.inputs["From Max"].default_value = 0.75
-        m1.inputs["To Min"].default_value = 0.60
-        m1.inputs["To Max"].default_value = 1.12
-        L(nz.outputs["Fac"], m1.inputs["Value"])
+        eave = N("ShaderNodeValue")                 # world height of the eave's shadow line on the paper;
+        eave.name = eave.label = "eave_z"           # the default (very high) means "all in the sun"
+        eave.outputs[0].default_value = 1000.0
+        shade = N("ShaderNodeValue")                # brightness of paper in shadow, relative to sunlit
+        shade.name = shade.label = "shade"
+        shade.outputs[0].default_value = 0.40
         sp = N("ShaderNodeSeparateXYZ")
         L(tc.outputs["Object"], sp.inputs[0])
-        m2 = N("ShaderNodeMapRange")
-        m2.inputs["From Min"].default_value = 0.4
-        m2.inputs["From Max"].default_value = 2.8
-        m2.inputs["To Min"].default_value = 1.0
-        m2.inputs["To Max"].default_value = 0.40
-        L(sp.outputs["Z"], m2.inputs["Value"])
+
+        def sstep(v, lo, hi, a=0.0, b=1.0):
+            mr = N("ShaderNodeMapRange")
+            mr.interpolation_type = "SMOOTHSTEP"
+            mr.inputs["From Min"].default_value = lo
+            mr.inputs["From Max"].default_value = hi
+            mr.inputs["To Min"].default_value = a
+            mr.inputs["To Max"].default_value = b
+            L(v, mr.inputs["Value"])
+            return mr.outputs["Result"]
+        # the eave's shadow: sunlit below the line, shade above it
+        s_eave = sstep(_math(nt, "SUBTRACT", sp.outputs["Z"], eave.outputs[0]), -0.035, 0.035, 1.0, 0.0)
+        # shadows of the veranda posts: one soft upright band per ken
+        tp = _math(nt, "FRACT", _math(nt, "MULTIPLY_ADD", sp.outputs["Y"], 1.0 / 1.82, 0.31))
+        s_post = sstep(_math(nt, "ABSOLUTE", _math(nt, "SUBTRACT", tp, 0.5)), 0.028, 0.046)
+        # leaves outside: soft dapples
+        nz = N("ShaderNodeTexNoise")
+        nz.inputs["Scale"].default_value = 1.9
+        nz.inputs["Detail"].default_value = 3.0
+        nz.inputs["Roughness"].default_value = 0.55
+        L(tc.outputs["Object"], nz.inputs["Vector"])
+        s_leaf = sstep(nz.outputs["Fac"], 0.40, 0.58, 0.45, 1.0)
+        sun = _math(nt, "MULTIPLY", _math(nt, "MULTIPLY", s_eave, s_post), s_leaf)
+        lvl = _math(nt, "ADD", shade.outputs[0],
+                    _math(nt, "MULTIPLY", sun, _math(nt, "SUBTRACT", 1.0, shade.outputs[0])))
         # paper fibres: faint long streaks
         mpf = N("ShaderNodeMapping")
         mpf.inputs["Scale"].default_value = (1.0, 6.0, 40.0)
@@ -1099,11 +1112,10 @@ def hall_material(kind, name=None, strength=None):
         nf.inputs["Detail"].default_value = 3.0
         L(mpf.outputs["Vector"], nf.inputs["Vector"])
         m3 = N("ShaderNodeMapRange")
-        m3.inputs["To Min"].default_value = 0.93
-        m3.inputs["To Max"].default_value = 1.05
+        m3.inputs["To Min"].default_value = 0.92
+        m3.inputs["To Max"].default_value = 1.06
         L(nf.outputs["Fac"], m3.inputs["Value"])
-        e = _math(nt, "MULTIPLY", _math(nt, "MULTIPLY", m1.outputs["Result"], m2.outputs["Result"]),
-                  _math(nt, "MULTIPLY", m3.outputs["Result"], val.outputs[0]))
+        e = _math(nt, "MULTIPLY", lvl, _math(nt, "MULTIPLY", m3.outputs["Result"], val.outputs[0]))
         # The camera sees the paper at an exposure where its tone still reads; the light it gives the
         # room comes from area lights of the same shape just in front of it (clean at low samples).
         lp = N("ShaderNodeLightPath")
@@ -1111,7 +1123,7 @@ def hall_material(kind, name=None, strength=None):
         bsdf.inputs["Base Color"].default_value = (0.80, 0.77, 0.70, 1.0)
         bsdf.inputs["Roughness"].default_value = 0.85
         bsdf.inputs["Specular IOR Level"].default_value = 0.15
-        bsdf.inputs["Emission Color"].default_value = (1.0, 0.925, 0.80, 1.0)
+        L(_mixc(nt, sun, (0.80, 0.90, 1.0), (1.0, 0.90, 0.74)), bsdf.inputs["Emission Color"])
         L(e, bsdf.inputs["Emission Strength"])
 
     elif kind == "gold":

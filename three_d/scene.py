@@ -355,6 +355,8 @@ def build_hall():
     hin, brd, plk = C.hall_material("hinoki"), C.hall_material("board"), C.hall_material("planks")
     pla, lq, gil = C.hall_material("plaster"), C.hall_material("lacquer"), C.hall_material("gilt")
     washi = C.hall_material("washi", strength=HL["paper_visible"])
+    washi.node_tree.nodes["eave_z"].outputs[0].default_value = HL["eave_z"]
+    washi.node_tree.nodes["shade"].outputs[0].default_value = HL["shoji_shade"]
     felt = C.hall_material("felt")
     wood, thin, lac, gilt, plas, paper, ceil = MB(), MB(), MB(), MB(), MB(), MB(), MB()
 
@@ -547,15 +549,19 @@ def build_daylight():
     except Exception:
         pass
     coll = _coll("Lights")
-    # the shoji as light: one long rectangle for the sliding panels, one for the transoms
+    # The shoji as light. Sun reaches the paper below the eave's shadow line; above it the paper is in
+    # shade. Three long rectangles in front of the paper carry that into the room.
     zt0, zt1 = NAG_Z + NAG_H + 0.035, NAG2_Z - 0.035
-    for nm, z0, z1, rad in (("ShojiLight", 0.42, KAMOI_Z - 0.036, HL["shoji_radiance"]),
-                            ("TransomLight", zt0, zt1, HL["transom_radiance"])):
+    ez, rs, sh = HL["eave_z"], HL["shoji_radiance"], HL["shoji_shade"]
+    warm, cool = (1.0, 0.90, 0.74), (0.86, 0.92, 1.0)
+    for nm, z0, z1, rad, col in (("ShojiSun", 0.42, ez, rs * 0.80, warm),
+                                 ("ShojiShade", ez, KAMOI_Z - 0.036, rs * sh, cool),
+                                 ("TransomLight", zt0, zt1, rs * sh, cool)):
         li = bpy.data.lights.new(nm, "AREA")
         li.shape = "RECTANGLE"
         li.size, li.size_y = (YN - YS), (z1 - z0)
         li.energy = AREA_W * rad * li.size * li.size_y * 0.82      # 0.82: posts, frames and lattice
-        li.color = (1.0, 0.925, 0.80)
+        li.color = col
         ob = _obj(nm, li, coll)
         ob.location = (XW - 0.002, 0.5 * (YS + YN), 0.5 * (z0 + z1))
         ob.rotation_mode = "QUATERNION"
