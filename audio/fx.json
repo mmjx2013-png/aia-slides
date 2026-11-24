@@ -1,0 +1,26 @@
+{
+  "_note": "Effects are synthesised in code (tools/synth.py) and placed against the narration's picture cues. frame = the 3D frame a cue is keyed to; photo = the wall picture a cue is keyed to.",
+  "threshold": [],
+  "bolt": [
+    {"frame": 18, "kind": "unroll", "dur": 9.0, "gain": -4},
+    {"frame": 120, "kind": "chalk", "dur": 0.8, "repeat": 4, "every": 1.3, "gain": -3},
+    {"frame": 210, "kind": "rustle", "dur": 4.5, "gain": -2},
+    {"frame": 274, "kind": "rustle", "dur": 2.2, "gain": -8}
+  ],
+  "parts": [{"frame": 330, "kind": "steps", "count": 5, "every": 0.95, "gain": -6}],
+  "cloth": [{"photo": 0, "kind": "steps", "count": 3, "every": 0.9, "gain": -6, "lead": 2.4}],
+  "pattern": [{"photo": 1, "kind": "steps", "count": 3, "every": 0.9, "gain": -6, "lead": 2.6}],
+  "dressing": [
+    {"frame": 492, "kind": "steps", "count": 5, "every": 0.95, "gain": -6},
+    {"frame": 564, "kind": "rustle", "dur": 2.4, "gain": -4},
+    {"frame": 580, "kind": "rustle", "dur": 3.0, "gain": -3},
+    {"frame": 596, "kind": "rustle", "dur": 1.8, "gain": -6},
+    {"frame": 626, "kind": "rustle", "dur": 2.6, "gain": -4},
+    {"frame": 660, "kind": "rustle", "dur": 1.6, "gain": -7}
+  ],
+  "body": [{"frame": 684, "kind": "steps", "count": 6, "every": 0.95, "gain": -6}, {"frame": 776, "kind": "steps", "count": 4, "every": 0.95, "gain": -7}],
+  "family": [{"photo": 1, "kind": "steps", "count": 3, "every": 0.9, "gain": -6, "lead": 2.6}],
+  "history": [{"photo": 3, "kind": "steps", "count": 3, "every": 0.9, "gain": -6, "lead": 2.6}],
+  "abroad": [{"photo": 1, "kind": "steps", "count": 3, "every": 0.9, "gain": -6, "lead": 2.6}],
+  "answer": [{"frame": 846, "kind": "steps", "count": 7, "every": 1.0, "gain": -6}]
+}

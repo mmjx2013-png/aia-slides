@@ -56,7 +56,7 @@
       "title": "Where the pressure falls",
       "jp": "帯",
       "body": [
-        "In a study of nine women aged 20 to 26, clothing pressure was highest at the obi's upper edge, near the armpit {21:p.53}.",
+        "In a study of nine young women, clothing pressure was highest at the obi's upper edge, near the armpit {21:p.53}.",
         "Of 333 graduating students in kimono, about eight in ten felt it two to three times as constricting as Western clothes {21:p.56}."
       ]
     },
@@ -76,11 +76,11 @@
     "title": "Stop 5 · Dressing",
     "cues": [
       {
-        "show": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+        "show": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
         "frame": 492
       },
       {
-        "show": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+        "show": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, a board, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
         "frame": 564
       },
       {
@@ -132,6 +132,14 @@
       "page": "p.774",
       "quote": "日本では着物8.6％（11/128 人），ゆかた35.9％（46/128 人）が自分自身で着ることができる",
       "scope": "Tr. \"in Japan 8.6% (11/128) could put on a kimono and 35.9% (46/128) a yukata by themselves\". 128 Otsuma Women's University students, July 2006.",
+      "where": "label 1"
+    },
+    {
+      "text": "The Japanese survey: 128 students of Otsuma Women's University, July 2006.",
+      "src": 27,
+      "page": "p.772",
+      "quote": "日本では2006 年７月に大妻女子大学生128 名",
+      "scope": "Tr.: \"in Japan, 128 students of Otsuma Women's University in July 2006\". Added by verifier.",
       "where": "label 1"
     },
     {
@@ -195,7 +203,7 @@
       "src": 21,
       "page": "p.53",
       "quote": "the clothing pressure was high at the upper edge of obi, especially in the axially region",
-      "scope": "authors' English abstract ('axially' as printed); 9 subjects aged 20-26",
+      "scope": "authors' English abstract ('axially' as printed; the text layer reads 'especialy', the page image 'especially'); 9 subjects; 'young women'",
       "where": "label 4"
     },
     {
@@ -204,6 +212,14 @@
       "page": "p.56",
       "quote": "和服の圧迫感は洋服の2倍から3倍と回答した者が全体の約8割であった",
       "scope": "Tr. \"about 80% answered that the feeling of pressure in kimono was two to three times that of Western clothes\". Kyoto Women's University graduation, March 2005; 71% wore hakama.",
+      "where": "label 4"
+    },
+    {
+      "text": "The 333 were students who attended their graduation in March 2005 in furisode, hōmongi or hakama.",
+      "src": 21,
+      "page": "p.54",
+      "quote": "平成17年3月に京都女子大学の卒業式で振袖や訪問着，袴を着て参列した333人の学生",
+      "scope": "Tr.: \"333 students who attended the Kyoto Women's University graduation in March 2005 in furisode, hōmongi or hakama\". Added by verifier.",
       "where": "label 4"
     },
     {
@@ -239,7 +255,15 @@
       "where": "narration 1"
     },
     {
-      "text": "One professional furisode dressing listed sixteen components.",
+      "text": "The women's outfits were put on by one certified professional dresser; one outfit was furisode with fukuro obi.",
+      "src": 20,
+      "page": "p.21",
+      "quote": "女子の着物の着付けは，資格を持った専門家１名が行い",
+      "scope": "Tr.: \"the women's kimono were dressed by one qualified professional\". The same page lists the outfits: 振袖に袋帯を文庫に結ぶ (furisode with fukuro obi tied in bunko). Lecture; case study. Added by verifier.",
+      "where": "narration 2"
+    },
+    {
+      "text": "One professional dressing of a furisode with fukuro obi listed sixteen components (only one is a board, maeita).",
       "src": 20,
       "page": "p.22",
       "quote": "胸増し綿＋ガーゼ＋肌襦袢＋長襦袢＋帯下締め＋長着＋第１腰紐＋きものベルト＋第２腰紐＋伊達締め＋前板＋帯＋紐＋帯枕＋帯揚げ＋帯〆",

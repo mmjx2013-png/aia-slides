@@ -17,9 +17,9 @@
     "No motifs of a season that has passed {6:p.27}",
     "The flower a month before it blooms {4:p.62}",
     "Long sleeves for the unmarried {4:p.53}",
-    "Small repeats are less formal {4:p.62}",
+    "All-over repeats are less formal {4:p.62}",
     "Black crested haori: the most formal {37:P-386}",
-    "Edo: silk above, cotton and hemp below {39:p.438}",
+    "Early Edo: silk above, cotton and hemp below {39:p.438}",
     "<q>Rules can be bended</q> {4:p.123}"
   ],
   "line": {"from": 960, "to": 983, "text": "Both: the cloth, and the way it is worn."},
@@ -28,10 +28,10 @@
     "title": "Stop 10 · The answer",
     "cues": [
       {"frame": 846, "show": "Walk back down the hall now. Past the prints, past the robes, to the flat robe on its rack."},
-      {"frame": 872, "show": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one. It covers the whole family you have just passed."},
+      {"frame": 872, "show": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one."},
       {"frame": 898, "show": "The shape is the plain part. Unworn, a kimono is completely flat. No darts, no tucks, nothing to hold a body's form."},
-      {"frame": 914, "show": "The practice is the rest. A kimono maker, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement.",
-       "say": "The practice is the rest. A kimono maker, Yah-mah-goo-chee Ghen-bay, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement."},
+      {"frame": 914, "show": "The practice is the rest. The head of an old kimono house, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is his view, not a measurement.",
+       "say": "The practice is the rest. The head of an old kimono house, Yah-mah-goo-chee Ghen-bay, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is his view, not a measurement."},
       {"frame": 936, "show": "And the practice has a history. Laws on cloth under the shoguns. After the war, one book with three hundred and ninety rules."},
       {"frame": 954, "show": "So the answer is both. A garment, and a set of rules. Whichever you chose at the entrance, you were holding half of it."},
       {"frame": 966, "show": "Becke adds one more thing. Rules can be bent, she writes, and clothes altered."},
@@ -56,7 +56,7 @@
     {"text": "Repeated all-over komon patterns are considered less formal.", "src": 4, "page": "p.62", "quote": "pervasive and repetitive patterns called komon are generally considered less formal", "scope": "reported: Dalby, Ōkubo, kimono association, via Becke", "where": "rule 9"},
     {"text": "The furisode is mainly for unmarried women.", "src": 4, "page": "p.53", "quote": "mainly reserved for unmarried women to wear at formal occasions", "scope": "Becke, citing Dalby 2001: 172 and others", "where": "rule 8"},
     {"text": "In mid-Edo the black crested haori became the most formal.", "src": 37, "page": "P-386", "quote": "江戸中期には黒紋付（羽二重・縮緬など）が最も正式なものとなる。 (Tr. \"in mid-Edo the black crested [haori] (habutae, crepe) became the most formal\")", "scope": "Yokogawa 2008, invited essay, not refereed; men's haori", "where": "rule 10"},
-    {"text": "In the early shogunate rank was shown by material: silk above, then pongee, cotton and hemp.", "src": 39, "page": "p.438", "quote": "幕政初期には上位の者に絹,続いて紬,木綿,布と衣服材料でもって身分差を示そうとした (Tr. \"in the early shogunate they tried to show rank by material: silk for those above, then tsumugi, cotton and hemp cloth\")", "scope": "Nishimura 1980, refereed; Edo period, hence 'Edo:' on the rule", "where": "rule 11"}
+    {"text": "In the early shogunate rank was shown by material: silk above, then pongee, cotton and hemp.", "src": 39, "page": "p.438", "quote": "幕政初期には上位の者に絹,続いて紬,木綿,布と衣服材料でもって身分差を示そうとした (Tr. \"in the early shogunate they tried to show rank by material: silk for those above, then tsumugi, cotton and hemp cloth\")", "scope": "Nishimura 1980, refereed; early shogunate, hence 'Early Edo:' on the rule", "where": "rule 11"}
   ],
   "dropped": [
     "A single date when 'the rules' were fixed: the sources point to Meiji for the shape (4 p.72) and to the post-war decades for standardised dressing (4 p.11), so no one date is given.",

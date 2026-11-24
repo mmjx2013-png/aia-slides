@@ -68,7 +68,7 @@
         "title": "Order Book of Kosode Patterns (Chūmon no hiinagata/Hiinagata chūmon chō)",
         "meta": "Imura Katsukichi · Japan · Edo period · 1716",
         "material": "Woodblock-printed book; ink on paper",
-        "insight": "Koide finds many Kanbun-style designs in a Kyoto draper's order books {10:p.599} and in a pattern book printed in 1666 {10:p.599}."
+        "insight": "Many Kanbun kosode, Koide notes, are recorded in a draper's order books of 1661–64 {10:p.599}; she also cites a pattern book printed in 1666 {10:p.599}."
       }
     }
   ],
@@ -113,8 +113,8 @@
       "at": 7,
       "title": "Colour, age, marriage",
       "body": [
-        "In late-Edo formal dress, the older the wearer, the more restrained the pattern {29:p.25}. Today the long-sleeved furisode is <q>mainly reserved for unmarried women</q> {4:p.53}.",
-        "Becke's young interviewees expressed themselves through colour more than pattern {4:p.134}."
+        "In late-Edo women's formal dress, the older the wearer, the more restrained the pattern {29:p.25}. Today the long-sleeved furisode is <q>mainly reserved for unmarried women</q> {4:p.53}.",
+        "Becke's young interviewees expressed themselves through colour more than pattern {4:p.134} {4:p.137}."
       ]
     }
   ],
@@ -122,11 +122,11 @@
     "title": "Stop 4 · Pattern",
     "cues": [
       {
-        "show": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
+        "show": "Start with the small repeat, then walk on to the large designs. Guides call the large, continuous kind ceremonial. It treats the whole robe as one picture, and the motifs gather below the obi and at the left shoulder.",
         "photo": 0
       },
       {
-        "show": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
+        "show": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she turned to paintings, and counted nearly a thousand robes in them.",
         "photo": 1
       },
       {
@@ -138,7 +138,7 @@
         "photo": 5
       },
       {
-        "show": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
+        "show": "Among the young women Becke interviewed, the code was read less closely. Asked about the flowers on her own furisode, one told her: flowers are flowers, right? Colour mattered more to them. In the next room, the flat picture meets a body.",
         "photo": 6
       }
     ]
@@ -189,7 +189,7 @@
       "src": 5,
       "page": "p.6",
       "quote": "a painterly approach to pattern design (eba-moyo in Japanese), in which the entire surface of the garment is treated as a single design field",
-      "scope": "Fukai, defining eba-moyō while writing about Worth; supports 'runs across the seams as one picture'",
+      "scope": "Fukai, defining eba-moyō while writing about Worth; supports 'treats the whole robe as one picture'",
       "where": "narration 1"
     },
     {
@@ -285,15 +285,15 @@
       "src": 10,
       "page": "p.599",
       "quote": "寛文小袖が多く収録されている",
-      "scope": "Tr. \"in which many Kanbun kosode are recorded\". Qualifies the Karigane-ya order books (1661-64) and the 1666 pattern book named in the same sentence. Not about objects 42669 or 74149.",
+      "scope": "Tr. \"in which many Kanbun kosode are recorded\". Qualifies the Karigane-ya order books (1661-64) and the 1666 pattern book named in the same sentence. Not about objects 42669 or 74149. Grammatically the clause qualifies the order books; the 1666 book is only named alongside, so the label says 'also cites' (verifier).",
       "where": "photo 74149"
     },
     {
-      "text": "The order books were those of the Kyoto draper Karigane-ya, for Tōfukumon-in.",
+      "text": "The order books were those of the draper Karigane-ya, relating to Tōfukumon-in.",
       "src": 10,
       "page": "p.599",
       "quote": "呉服商雁金屋の東福門院関係の注文帳",
-      "scope": "Tr. \"the draper Karigane-ya's order books relating to Tōfukumon-in\". Checked on the page text.",
+      "scope": "Tr. \"the draper Karigane-ya's order books relating to Tōfukumon-in\". Checked on the page text. The text does not say Kyoto (verifier).",
       "where": "photo 74149"
     },
     {
@@ -361,12 +361,20 @@
       "where": "card 2; narration 5"
     },
     {
-      "text": "Many young wearers cannot name the flowers on their furisode.",
+      "text": "Several of Becke's interviewees could not name the flowers on their furisode; one said flowers are flowers.",
       "src": 4,
       "page": "p.137",
       "quote": "I mean, flowers are flowers, right?",
       "scope": "interviewee (Mako), quoted by Becke; furisode",
       "where": "narration 5"
+    },
+    {
+      "text": "The interviewees cared less about pattern than about colour.",
+      "src": 4,
+      "page": "p.137",
+      "quote": "the different sentiment in the young womens’ engagement with the pattern design compared to the preoccupation with the furisode’s colour",
+      "scope": "Becke on her interviewees; furisode. Apostrophe placement as printed. Added by verifier.",
+      "where": "card 2; narration 5"
     }
   ],
   "dropped": [

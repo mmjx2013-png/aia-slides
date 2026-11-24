@@ -105,15 +105,15 @@
     "frame": 50
    },
    {
-    "show": "Keep that width in mind. Every measurement that follows is counted from it.",
+    "show": "Keep that width in mind. The width of every part that follows derives from it.",
     "frame": 96
    },
    {
-    "show": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
+    "show": "Now the cut. There is no paper pattern. The tailor only divides.",
     "frame": 120
    },
    {
-    "show": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
+    "show": "Straight cuts give eight pieces. Every strip has a place, and nothing is thrown away.",
     "frame": 150
    },
    {
@@ -121,7 +121,7 @@
     "frame": 210
    },
    {
-    "show": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
+    "show": "The stitches are sewn so that they barely show on the face. Follow the seams: they run straight, because every piece is straight.",
     "frame": 236
    },
    {
@@ -216,7 +216,7 @@
    "where": "label 4"
   },
   {
-   "text": "Kimono are traditionally sewn by hand, without large stitches on the face.",
+   "text": "Kimono are traditionally sewn by hand, without large stitches on the face, so that the stitches do not stand out.",
    "src": 7,
    "page": "p.76",
    "quote": "縫製は伝統的に手縫いで行われ，表に大きく縫い目を出さず，目立たないような縫い方で仕立てられる",
@@ -230,6 +230,14 @@
    "quote": "６）脇縫いをほどく。７）背縫いをほどく。８）袖をほどく。",
    "scope": "Tr.: \"6) unpick the side seams. 7) unpick the back seam. 8) unpick the sleeves.\". Disassembly order for one sample; names the seams.",
    "where": "label 5"
+  },
+  {
+   "text": "Cutting the cloth in large straight pieces means few seams, and straight ones.",
+   "src": 7,
+   "page": "p.80",
+   "quote": "布を大きく使った直線的な形は，縫う箇所が少なく直線であり",
+   "scope": "Tr.: \"the straight form that uses the cloth in large pieces has few places to sew, and they are straight\". Authors' discussion. Added by verifier.",
+   "where": "narration 8"
   },
   {
    "text": "Unworn, a kimono has a completely flat surface.",

@@ -271,12 +271,11 @@ def strands(coll, name, lines, radius, mat, parent=None):
     """Many fine threads as one native curves object (rendered as real round strands)."""
     cu = bpy.data.hair_curves.new(name)
     cu.add_curves([len(ln) for ln in lines])
+    cu.set_types(type="POLY")                                    # taut straight spans
     flat = [c for ln in lines for p in ln for c in p]
     cu.attributes["position"].data.foreach_set("vector", flat)
     rad = cu.attributes.get("radius") or cu.attributes.new("radius", "FLOAT", "POINT")
     rad.data.foreach_set("value", [radius] * (len(flat) // 3))
-    ct = cu.attributes.get("curve_type") or cu.attributes.new("curve_type", "INT8", "CURVE")
-    ct.data.foreach_set("value", [1] * len(lines))               # 1 = poly: taut straight spans
     cu.materials.append(mat)
     return _link(coll, bpy.data.objects.new(name, cu), parent)
 
@@ -585,7 +584,7 @@ def plain_material(name, hexcol, rough=0.6, spec=0.3, metallic=0.0, bump=None, s
     return mat
 
 
-def paper_material(name="W_washi", strength=5.0):
+def paper_material(name="W_washi", strength=16.0):
     """Shoji paper with daylight behind it: the room's only light. A diffusing sheet seen from
     inside is a lambertian emitter; brighter towards the sky, with faint fibre clouding."""
     if name in _MATS:
@@ -622,18 +621,18 @@ def materials():
     ivory = PAL["ground_light"]
     return {
         # the loom: old, handled timber
-        "loom": wood_material("W_loom", value=0.62, sat=0.95, tint=(1.0, 0.86, 0.70), rough=(0.38, 0.62)),
+        "loom": wood_material("W_loom", value=0.88, sat=0.95, tint=(1.0, 0.86, 0.70), rough=(0.38, 0.62)),
         "loom_light": wood_material("W_loom_light", value=0.90, sat=0.85, tint=(1.0, 0.92, 0.80),
                                     rough=(0.35, 0.6), scale=1.6),
         "shuttle": wood_material("W_shuttle", asset="wood_table_001", tile=1.5, scale=6.0, value=1.5,
                                  sat=0.9, rough=(0.16, 0.32), bump=0.12, fallback="#5a3320"),
         # the room
-        "post": wood_material("W_post", value=0.50, sat=0.9, tint=(1.0, 0.84, 0.68), rough=(0.5, 0.8)),
+        "post": wood_material("W_post", value=0.66, sat=0.9, tint=(1.0, 0.84, 0.68), rough=(0.5, 0.8)),
         "shoji": wood_material("W_shoji", value=1.0, sat=0.8, tint=(1.0, 0.93, 0.80), rough=(0.45, 0.7),
                                scale=2.0),
         "ceiling": wood_material("W_ceiling", value=0.85, sat=0.85, tint=(1.0, 0.90, 0.76),
                                  rough=(0.55, 0.85)),
-        "floor": uv_material("W_floor", "wood_floor_worn", 2.0, value=0.95, sat=0.80,
+        "floor": uv_material("W_floor", "wood_floor_worn", 2.0, value=1.15, sat=0.80,
                              tint=(1.0, 0.95, 0.88), rough=(0.25, 0.75), fallback="#8a5a35"),
         "plaster": uv_material("W_plaster", "plastered_wall", 2.0, value=1.32, sat=0.55,
                                rough=(0.75, 1.0), normal=0.6, spec=0.15),

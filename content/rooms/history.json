@@ -12,7 +12,7 @@
       "title": "Group before the Echigo-ya Dry-goods Shop on New Year's Day",
       "meta": "Torii Kiyonaga · Japan · Edo period · ca. 1789",
       "material": "One of a triptych of woodblock prints (nishiki-e); ink and color on paper",
-      "insight": "A trade manual of 1789: such silks <q>should be valued on the basis of the quality of the fabric and the popularity of their designs</q> {13:p.73}."}},
+      "insight": "A trade manual of 1789: starched silks such as brocade and satin <q>should be valued on the basis of the quality of the fabric and the popularity of their designs</q> {13:p.73}."}},
     {"objectID": 55287, "label": {
       "title": "Mitsui Shop at Surugachō in Edo (Edo Surugachō Mitsui mise ryaku zu), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
       "meta": "Katsushika Hokusai · Japan · Edo period · ca. 1830–32",
@@ -49,19 +49,19 @@
      "body": ["The Tokugawa government issued <q>sumptuary laws on the type of clothes members of each class were allowed to wear</q> {4:p.99}: 132 times between 1615 and 1866 {39:p.432}.",
               "Their purpose, in Nishimura's summary: <q>to maintain the class hierarchy</q> {39:p.432}."]},
     {"kind": "text", "at": 5, "title": "Meisen, the everyday silk",
-     "body": ["Meisen is a plain-weave silk of pre-dyed yarn {14:p.1}. From Taishō into post-war Shōwa it was the mass-market kimono {15:p.37}, its picture-like patterns drawn from Art Nouveau and Art Deco {15:p.37}. Output peaked in 1930 {14:p.3}."]}
+     "body": ["Meisen is a plain-weave silk of pre-dyed yarn {14:p.1}. From Taishō into post-war Shōwa it was the mass-market kimono {15:p.37}, its picture-like patterns influenced by Art Nouveau and Art Deco {15:p.37}. Output peaked in 1930 {14:p.3}."]}
   ],
   "narration": {
     "title": "Stop 8 · Four centuries",
     "cues": [
-      {"photo": 0, "show": "Begin before any print on this wall. At the Heian court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
-       "say": "Begin before any print on this wall. At the Hay-ahn court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface."},
-      {"photo": 0, "show": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in 1666 records the new Kanbun style, a wide empty back with large, moving motifs.",
-       "say": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in sixteen sixty-six records the new Kanbun style, a wide empty back with large, moving motifs."},
+      {"photo": 0, "show": "Begin before any print on this wall. At the Heian court, by the mid-twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+       "say": "Begin before any print on this wall. At the Hay-ahn court, by the mid-twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface."},
+      {"photo": 0, "show": "By the early Edo period its shape was not far from today's kimono. A pattern book printed in 1666 shows the large, flowing designs of the Kanbun style: a wide empty back with large, moving motifs.",
+       "say": "By the early Edo period its shape was not far from today's kimono. A pattern book printed in sixteen sixty-six shows the large, flowing designs of the Kanbun style: a wide empty back with large, moving motifs."},
       {"photo": 3, "show": "Meiji changed the words. Many garment names collapsed into one: kimono. Becke argues that one shape was frozen in time in these years."},
-      {"photo": 6, "show": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono."},
-      {"photo": 6, "show": "In 1981 the kimono retail market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono became something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
-       "say": "In nineteen eighty-one the kimono retail market was worth nearly one point eight trillion yen. By twenty twenty it was about a seventh of that. Kimono became something rented rather than owned; by twenty twenty-one Kyoto alone had about forty rental shops."},
+      {"photo": 6, "show": "In one kimono magazine, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono."},
+      {"photo": 6, "show": "In 1981 the kimono market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono came to be seen as something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
+       "say": "In nineteen eighty-one the kimono market was worth nearly one point eight trillion yen. By twenty twenty it was about a seventh of that. Kimono came to be seen as something rented rather than owned; by twenty twenty-one Kyoto alone had about forty rental shops."},
       {"photo": 6, "show": "By then the shape had long since travelled. The wall goes on, abroad."}
     ]
   },
@@ -70,7 +70,7 @@
     {"text": "As court dress was simplified, the outer robes came off and the kosode came to the surface.", "src": 30, "page": "p.516", "quote": "それまで中心服飾であった衣(きぬ)が脱がれ,衣の下に着られていた小袖が表層化してきた (Tr. \"the kinu robes that had been central were taken off, and the kosode worn beneath them came to the surface\")", "scope": "Saitō 1979, refereed; Heian court", "where": "narration"},
     {"text": "Kosode were the precursor of the modern kimono.", "src": 5, "page": "p.4", "quote": "kosode (precursor of the modern kimono)", "scope": "Fukai; PDF page", "where": "narration (kosode as the kimono's ancestor)"},
     {"text": "By the early Edo period the kosode's shape was not very different from today's kimono.", "src": 31, "page": "p.29", "quote": "小袖の形も現在の着物とそれほど変らないものになった (Tr. \"the shape of the kosode also became not very different from today's kimono\")", "scope": "Imamura 2005, commentary for a costume show, not refereed; 17th century", "where": "narration"},
-    {"text": "A pattern book printed in 1666 records Kanbun-style designs.", "src": 10, "page": "p.599", "quote": "寛文 6 年（1666）刊 行の『新撰御ひいなかた』 (Tr. \"Shinsen on-hiinakata, published in Kanbun 6 (1666)\")", "scope": "Koide 2012, refereed; Kanbun era", "where": "narration"},
+    {"text": "A pattern book printed in 1666 shows large flowing-water designs, named with order books full of Kanbun kosode.", "src": 10, "page": "p.599", "quote": "寛文6年（1666）刊行の『新撰御ひいなかた』に見られる大柄な流水文様 (Tr. \"the large flowing-water patterns seen in the Shinsen on-hiinakata, published in Kanbun 6 (1666)\")", "scope": "Koide 2012, refereed; the same sentence pairs it with the Karigane-ya order books that contain many Kanbun kosode", "where": "narration"},
     {"text": "Kanbun style: a large empty area on the back with big, dynamic motifs.", "src": 10, "page": "p.592", "quote": "背面に余白を大きく取り動的で大柄な文様を配し (Tr. \"leaving a large empty area on the back and placing large, dynamic motifs\")", "scope": "Koide 2012, refereed; Kanbun era 1661-73", "where": "narration"},
     {"text": "A 1789 trade manual: brocade and satin are valued by fabric quality and design popularity.", "src": 13, "page": "p.73", "quote": "These fabrics should be valued on the basis of the quality of the fabric and the popularity of their designs", "scope": "Kenpu chōhō ki (1789), quoted by Suzuki 2022; silk fabrics such as brocade and satin. The print is not claimed to show them.", "where": "photo 54670"},
     {"text": "Mitsukoshi began as the draper Echigoya, founded at Surugachō.", "src": 14, "page": "p.3", "quote": "三越は、延宝７年（1673）に駿河町で創業した呉服店「越後屋」が始まりである (Tr. \"Mitsukoshi began as Echigoya, a draper founded at Surugachō in Enpō 7 (1673)\")", "scope": "Goto 2023, university bulletin. The source's era name and year disagree (Enpō 7 is 1679), so no year is shown.", "where": "photo 55287"},
@@ -92,8 +92,8 @@
     {"text": "Meisen's great feature is picture-like design influenced by Art Nouveau and Art Deco.", "src": 15, "page": "p.37", "quote": "アール・ヌーボーやアール・デコの影響を受けた、まるで絵画といってもよいデザインにある (Tr. \"lies in design influenced by Art Nouveau and Art Deco, which one could almost call painting\")", "scope": "Shiba 2018, conference abstract; author's characterisation", "where": "card 2"},
     {"text": "Meisen production peaked in 1930 and then declined.", "src": 14, "page": "p.3", "quote": "昭和 5 年（1930）のピークをさかいに減少していく (Tr. \"declines after its peak in Shōwa 5 (1930)\")", "scope": "Goto 2023, from Nihon bōseki nenkan", "where": "card 2"},
     {"text": "In a kimono magazine, tsukesage hardly appeared in recent years and was merged into hōmongi.", "src": 33, "page": "p.422", "quote": "近年では付け下げの掲載がほとんどなくなり訪問着に一元化されている (Tr. \"recently tsukesage has hardly been featured and has been unified into hōmongi\")", "scope": "Okamoto, Numata, Kōyama 2008, magazine review, not refereed; Utsukushii Kimono 1975-2005", "where": "narration"},
-    {"text": "The kimono retail market shrank from 1,766.7 billion yen in 1981 to 238 billion yen in 2020, about one seventh.", "src": 25, "page": "p.11", "quote": "1981年の17,667 億円の市場規模から2020 年には2380 億円と7 分の1 程度に縮小している (Tr. \"from a market of 1,766.7 billion yen in 1981 it shrank to 238 billion yen in 2020, about one seventh\")", "scope": "Araki 2022; industry figures cited by the author", "where": "narration"},
-    {"text": "After the 1990s crash, kimono became something rented rather than owned.", "src": 4, "page": "p.118", "quote": "resulting in a shift of the general image of kimono from a garment which is owned towards one which is rented", "scope": "Becke, citing Valk 2018: 113", "where": "narration"},
+    {"text": "The kimono market shrank from 1,766.7 billion yen in 1981 to 238 billion yen in 2020, about one seventh.", "src": 25, "page": "p.11", "quote": "1981年の17,667 億円の市場規模から2020 年には2380 億円と7 分の1 程度に縮小している (Tr. \"from a market of 1,766.7 billion yen in 1981 it shrank to 238 billion yen in 2020, about one seventh\")", "scope": "Araki 2022; industry figures cited by the author", "where": "narration"},
+    {"text": "After the 1990s crash, the image of kimono shifted from owned to rented.", "src": 4, "page": "p.118", "quote": "resulting in a shift of the general image of kimono from a garment which is owned towards one which is rented", "scope": "Becke, citing Valk 2018: 113", "where": "narration"},
     {"text": "Kyoto had about forty rental shops in January 2021.", "src": 12, "page": "p.72", "quote": "As of January 2021, the city counts about forty different rental shops and twenty second-hand kimono shops.", "scope": "Druet 2021; Kyoto, author's count", "where": "narration"}
   ],
   "dropped": [

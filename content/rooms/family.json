@@ -5,7 +5,7 @@
   "theme": "The kimono family",
   "title": "The family",
   "heading": "One shape, many relatives",
-  "intro": "Over-robe, jacket, trousers, under-robe: one family. Each member signals the occasion and season, and the wearer's age and standing {4:p.11}.",
+  "intro": "Over-robe, jacket, trousers, under-robe: one family. In kimono, design signals the occasion and season, and the wearer's age and standing {4:p.11}.",
   "stop": "S2",
   "photos": [
     {"objectID": 785521, "label": {
@@ -22,12 +22,12 @@
       "title": "Kosode",
       "meta": "Japan · Edo period (1615–1868)",
       "material": "Crests, perhaps bamboo, reserved in white.",
-      "insight": "A Kyoto dealer's manual of the 1760s tags dyed cloth by whether family crests were put on it {13:p.71}. By 1968 one town kept crests mainly for ceremonial dress {32:p.63}."}},
+      "insight": "A Kyoto dealer's manual of the 1760s {13:p.70} tags dyed cloth by whether family crests were put on it {13:p.71}. A 1967-68 survey of one Tottori city found crests rare except on ceremonial dress {32:p.63}."}},
     {"objectID": 45403, "label": {
       "title": "Man's Formal Jacket (Haori)",
       "meta": "Japan · Meiji period · early 20th century",
       "material": "Dye-patterned and painted plain-weave silk",
-      "insight": "First men's dress, layered over the kosode {37:P-386}. Under the clothing laws, merchants hid colour and embroidery on the inner layer of the haori {4:pp.99-100}."}},
+      "insight": "Originally men's dress, layered over the kosode {37:P-386}. Under the clothing laws, merchants hid colour and embroidery on the inner layer of the haori {4:pp.99-100}."}},
     {"objectID": 68272, "label": {
       "title": "Man's Trousers (Hakama)",
       "meta": "Japan · 19th century",
@@ -37,7 +37,7 @@
       "title": "Inner garment (nagajuban)",
       "meta": "Japan · 19th century",
       "material": "Silk",
-      "insight": "The first layer on, in magazine dressing columns {4:p.72}. It changes with the season too: silk or polyester October to May, ro or sha June to September {6:p.20}."}},
+      "insight": "The first thing put on, in furisode magazines' dressing columns {4:p.72}. It changes with the season too: silk or polyester October to May, ro or sha June to September {6:p.20}."}},
     {"objectID": 82175, "label": {
       "title": "Fireman’s Jacket (Hikeshi-Banten) with Susanoo-no-mikoto Deity Scene",
       "meta": "Japanese · Edo or Meiji period · mid-19th century",
@@ -57,19 +57,19 @@
        ["Komon", "Small patterns repeated all over {12:p.67}"],
        ["Yukata", "Unlined, light cotton {6:p.20}"]
      ]},
-    {"kind": "text", "at": 5, "title": "The same ladder, for men",
+    {"kind": "text", "at": 5, "title": "A ladder for men",
      "body": ["By the mid-Edo period a black crested haori was the most formal; plain, then komon, then stripes were each less formal {37:P-386}.",
-              "When the Meiji Restoration abolished the kamishimo, haori and hakama became men's formal dress, as they still are {37:P-386}."]}
+              "Since the kamishimo was abolished after the Meiji Restoration, haori and hakama have been men's formal dress {37:P-386}."]}
   ],
   "narration": {
     "title": "Stop 7 · The family",
     "cues": [
       {"photo": 0, "show": "Begin with the long sleeves. In the late Edo period, the writer Kitagawa Morisada sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern.",
        "say": "Begin with the long sleeves. In the late Edo period, the writer Kee-tah-gah-wah Moh-ree-sah-dah sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern."},
-      {"photo": 0, "show": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy."},
+      {"photo": 0, "show": "One study of a kimono magazine calls the long-sleeved robe the kimono a Japanese woman today is most likely ever to buy."},
       {"photo": 1, "show": "Sleeves could also be cut down. In wartime, brides wore a black furisode with a train, because its sleeves could later be shortened to make a tomesode, a married woman's formal robe."},
-      {"photo": 2, "show": "A survey in one Tottori town, in the late nineteen-sixties, counted two hundred and six different crests.",
-       "say": "A survey in one Toh-toh-ree town, in the late nineteen-sixties, counted two hundred and six different crests."},
+      {"photo": 2, "show": "A survey in one Tottori city, in the late nineteen-sixties, counted two hundred and six different crests.",
+       "say": "A survey in one Toh-toh-ree city, in the late nineteen-sixties, counted two hundred and six different crests."},
       {"photo": 3, "show": "The jacket is the easiest member to borrow. In Kyoto's flea markets, visitors take to the haori because it needs no obi and no wrapping."},
       {"photo": 6, "show": "Rules reached even the plainest cloth. Edo law told peasants to wear plain dark blue, and the order went out across the whole country."},
       {"photo": 6, "show": "Each rule had its date. The next stretch of wall walks through them."}
@@ -84,6 +84,9 @@
     {"text": "After the war, shiromuku for the Shinto rite and a coloured uchikake for the reception became usual.", "src": 38, "page": "p.43", "quote": "神前結婚式では白無垢、披露宴で色打掛が主流となった (Tr. \"white shiromuku became mainstream for Shinto weddings and coloured uchikake for receptions\")", "scope": "Dōmae 2015, college bulletin, not refereed; post-war", "where": "photo 44529"},
     {"text": "In wartime the black trailing furisode became the main bridal dress because its sleeves could be shortened to make a tomesode.", "src": 38, "page": "p.43", "quote": "袖を詰めて留袖として生かせる黒引き振袖が主流となった (Tr. \"the black trailing furisode, which could be reused as a tomesode by shortening the sleeves, became mainstream\")", "scope": "Dōmae 2015, college bulletin, not refereed; Shōwa wartime", "where": "narration"},
     {"text": "In 18th-century Kyoto, dyed fabrics were tagged by whether family crests were put on them.", "src": 13, "page": "p.71", "quote": "distinguished by tags attached, on the basis of whether or not family crests are put on them", "scope": "Suzuki 2022, on the Daikokuya manual, Kyoto, 1768-69; crests dyed in before sale", "where": "photo 61847"},
+    {"text": "The Daikokuya manual for its Kyoto store dates from 1768-1769.", "src": 13, "page": "p.70", "quote": "Kyō dana shiire mono shiirehō no tome. Tsuketari sai (tachi) mono no hikae [Purchasing methods of the Kyoto store. Appendix: Sewing patterns] 1768–1769", "scope": "Suzuki 2022, source line of Figure 1 (price tags of Daikokuya); added by verifier", "where": "photo 61847"},
+    {"text": "The crest survey covered Kurayoshi City, Tottori.", "src": 32, "page": "p.59", "quote": "鳥取県倉吉市全部の169部落(14,250戸)中、4,000戸を調査対象にして (Tr. \"of all 169 hamlets (14,250 households) in Kurayoshi City, Tottori Prefecture, 4,000 households were surveyed\")", "scope": "Fukui 1970; a city, not a town; added by verifier", "where": "photo 61847; narration"},
+    {"text": "The questionnaire ran from late December 1967 to July 1968.", "src": 32, "page": "p.61", "quote": "アンケート調査は、昭和42年12月下旬から、昭和43年7月までの7ヵ月間 (Tr. \"the questionnaire survey: seven months, from late December 1967 to July 1968\")", "scope": "Fukui 1970; added by verifier", "where": "photo 61847; narration"},
     {"text": "By the late 1960s crests on clothing were seldom seen except on ceremonial dress.", "src": 32, "page": "p.63", "quote": "被服に紋章をとり入れる傾向は、式服を除いてはあまりみられなくなった (Tr. \"the tendency to put crests on clothing is seldom seen now, except on ceremonial dress\")", "scope": "Fukui 1970, refereed short report; one town (Kurayoshi, Tottori), 1967-68", "where": "photo 61847"},
     {"text": "One town's survey found 206 kinds of crest.", "src": 32, "page": "p.61", "quote": "紋章の種類は206種類である (Tr. \"there are 206 kinds of crest\")", "scope": "Fukui 1970, refereed short report; Kurayoshi, Tottori, questionnaire 1967-68", "where": "narration"},
     {"text": "The haori was originally men's dress, layered over the kosode.", "src": 37, "page": "P-386", "quote": "元来、羽織は男装であり、小袖の上に表衣として着重ねられる着衣である (Tr. \"originally the haori was men's dress, a garment layered over the kosode as the outer robe\")", "scope": "Yokogawa 2008, invited essay, not refereed", "where": "photo 45403"},

@@ -9,20 +9,6 @@
  "from": 420,
  "to": 491,
  "stop": "S1",
- "stills": [
-  {
-   "file": "weave_1",
-   "caption": "A floor loom stands by a window in daylight."
-  },
-  {
-   "file": "weave_2",
-   "caption": "Warp threads held taut on the loom, and a shuttle resting on them."
-  },
-  {
-   "file": "weave_3",
-   "caption": "A finished bolt of cloth, rolled."
-  }
- ],
  "photos": [
   {
    "objectID": 813665,
@@ -67,7 +53,7 @@
    "at": 2,
    "title": "The kimono year",
    "body": [
-    "Druet's account of present-day practice. Monthly magazines present it as <q>a guiding principle, not mandatory but strongly encouraged</q> {6:p.22}."
+    "Druet's account of present-day practice. She reads its steady presence in monthly magazines as <q>a guiding principle, not mandatory but strongly encouraged</q> {6:p.22}."
    ],
    "head": [
     "",
@@ -106,7 +92,7 @@
   "title": "Stop 3 · Cloth and season",
   "cues": [
    {
-    "show": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+    "show": "Look at the robes on this wall. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
     "photo": 0
    },
    {
@@ -311,6 +297,7 @@
   "Season of irises: no source ties the iris motif to a month.",
   "Any fact about weaving or the loom in the stills: no source read describes it; the captions describe only the pictures.",
   "The exact June/September hitoe and July-August usumono calendar used in many guides: only Druet's broader months were read.",
-  "The nagajuban photograph moved to room 7 (the family) to avoid showing it twice."
+  "The nagajuban photograph moved to room 7 (the family) to avoid showing it twice.",
+  "The weaving-room pictures: not rendered (cut to save time), so the room opens on the wall."
  ]
 }

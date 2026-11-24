@@ -1051,8 +1051,8 @@ def hall_material(kind, name=None, strength=None):
         mp = N("ShaderNodeMapping")
         mp.inputs["Scale"].default_value = (0.5, 0.5, 1.0)
         L(tc.outputs["UV"], mp.inputs["Vector"])
-        sc = _scan(nt, "white_plaster_02", mp.outputs["Vector"], target=(0.74, 0.715, 0.66), flat=0.55,
-                   rough=(0.72, 0.95), normal=0.35)
+        sc = _scan(nt, "white_plaster_02", mp.outputs["Vector"], target=(0.80, 0.775, 0.72), flat=0.82,
+                   rough=(0.72, 0.95), normal=0.30)
         if sc:
             col, rgh, nrm = sc
             L(col, bsdf.inputs["Base Color"])
@@ -1156,21 +1156,21 @@ def hall_material(kind, name=None, strength=None):
         nw.inputs["Roughness"].default_value = 0.6
         L(uvn.outputs["UV"], nw.inputs["Vector"])
         wear = N("ShaderNodeMapRange")
-        wear.inputs["From Min"].default_value = 0.56
-        wear.inputs["From Max"].default_value = 0.80
+        wear.inputs["From Min"].default_value = 0.60
+        wear.inputs["From Max"].default_value = 0.85
         wear.inputs["To Min"].default_value = 0.0
-        wear.inputs["To Max"].default_value = 0.22
+        wear.inputs["To Max"].default_value = 0.07
         L(nw.outputs["Fac"], wear.inputs["Value"])
         tone = N("ShaderNodeMapRange")
         tone.inputs["To Min"].default_value = 0.90
         tone.inputs["To Max"].default_value = 1.0
         L(rnd.outputs["Blue"], tone.inputs["Value"])
-        col = _mixc(nt, 1.0, (1.0, 0.70, 0.29), tone.outputs["Result"], "MULTIPLY")
+        col = _mixc(nt, 1.0, (1.0, 0.74, 0.34), tone.outputs["Result"], "MULTIPLY")
         col = _mixc(nt, _math(nt, "MULTIPLY", edge, 0.35), col, (0.86, 0.56, 0.20))
         col = _mixc(nt, wear.outputs["Result"], col, (0.42, 0.20, 0.08))
         L(col, bsdf.inputs["Base Color"])
         L(_math(nt, "SUBTRACT", 1.0, _math(nt, "MULTIPLY", wear.outputs["Result"], 0.6)), bsdf.inputs["Metallic"])
-        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.10, 0.30),
+        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.10, 0.44),
                    _math(nt, "ADD", _math(nt, "MULTIPLY", edge, 0.08), wear.outputs["Result"]))
         L(rg, bsdf.inputs["Roughness"])
 
@@ -1204,9 +1204,9 @@ def hall_material(kind, name=None, strength=None):
         L(bump2.outputs["Normal"], bsdf.inputs["Normal"])
         bsdf.inputs["Roughness"].default_value = 0.95
         bsdf.inputs["Specular IOR Level"].default_value = 0.12
-        bsdf.inputs["Sheen Weight"].default_value = 0.85
-        bsdf.inputs["Sheen Roughness"].default_value = 0.55
-        bsdf.inputs["Sheen Tint"].default_value = (1.0, 0.55, 0.45, 1.0)
+        bsdf.inputs["Sheen Weight"].default_value = 0.22
+        bsdf.inputs["Sheen Roughness"].default_value = 0.6
+        bsdf.inputs["Sheen Tint"].default_value = (1.0, 0.45, 0.35, 1.0)
 
     elif kind == "lacquer":
         bsdf.inputs["Base Color"].default_value = hex_rgb("#0b0808", 1.0)

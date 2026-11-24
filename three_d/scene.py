@@ -1,11 +1,15 @@
-"""scene.py - the museum, the cloth stages A-D, the rack, the vitrine and the camera path.
+"""scene.py - the shoin hall, the rack, the cloth stages A-D, the mannequin and the camera path.
 
     import scene
     scene.build()            # once: creates everything in the current bpy scene
-    scene.apply_frame(f)     # f = full-rate frame 0..1079; stateless (any order)
+    scene.apply_frame(f)     # f = full-rate frame 0..983; stateless (any order)
     scene.anchors_world(f)   # dict name -> (x, y, z) world points for meta.json (after apply_frame(f))
+    scene.walls_meta()       # the two display-wall stops for meta.json
+    scene.apply_clay()       # clay pass: every object (and every part of it) a flat random colour
 
-Coordinates: Z up, metres, floor z = 0. Building layout from README v2 (numbers in dims.json "museum").
+Coordinates: Z up, metres, floor z = 0. The hall is README v3 "Set 1"; numbers in dims.json "hall".
+One ken = 1.82 m. Interior x -3.64..3.64, y -7.28..10.92. West = shoji (the light), east = the plain
+plaster display wall, north = tokonoma and shelves on gold, south = gold fusuma.
 """
 import math
 import os
@@ -20,9 +24,10 @@ from common import DIMS, ramp, smootherstep, smoothstep, clamp01, hex_rgb  # noq
 import bpy  # noqa: E402
 from mathutils import Vector, Euler, Matrix  # noqa: E402
 
-M = DIMS["museum"]
+HL = DIMS["hall"]
+M = HL                           # the cloth code reads its frame tables from here
 WD = DIMS["world"]
-T = WD["table_z"]
+T = WD["table_z"]                # top of the felt runner: the surface the cloth lies on
 ROD_R = WD["rod_radius"]
 ROD_TOP = WD["rod_z_end"]
 L_BOLT = DIMS["bolt"]["length"]
@@ -30,18 +35,21 @@ W = DIMS["bolt"]["width"]
 H_CLOTH = DIMS["bolt"]["thickness"]
 RC = DIMS["bolt"]["core_radius"]
 Y0 = DIMS["bolt"]["free_end_y"]
-D0 = 0.0016                      # base layer height of cloth above the dais
+D0 = 0.0016                      # base layer height of cloth above the runner
 FPS = 24
 N_FRAMES = DIMS["frames"]
-CAM_Z = M["camera_z"]
-SHIFT_Y = M["shift_y"]
+KEN = HL["ken"]
+HX = HL["half_x"]
+YS, YN = HL["y_south"], HL["y_north"]
+HC = HL["ceiling"]
+CAM_Z = HL["camera_z"]
+SHIFT_Y = HL["shift_y"]
 SHIFT_T = SHIFT_Y * 36.0 / 30.0  # tangent of the vertical shift angle
-FORM = tuple(M["form_xy"])
-VIT = tuple(M["vitrine_xy"])
+FOCAL, SENSOR = 30.0, 36.0
+FORM = tuple(HL["form_xy"])
 STAGE = {s["id"]: (s["start"], s["end"]) for s in DIMS["stages"]}
 
 S = {}          # registry of built things
-
 
 # =========================================================================== small helpers
 
@@ -75,35 +83,6 @@ def plain(name, hexcol, rough=0.6, spec=0.3, metallic=0.0, emit=0.0, coat=0.0):
     if emit:
         b.inputs["Emission Color"].default_value = hex_rgb(hexcol, 1.0)
         b.inputs["Emission Strength"].default_value = emit
-    return m
-
-
-def glass_mat():
-    m = bpy.data.materials.get("Glass")
-    if m:
-        return m
-    m = bpy.data.materials.new("Glass")
-    if not m.node_tree:
-        m.use_nodes = True
-    nt = m.node_tree
-    for n in list(nt.nodes):
-        nt.nodes.remove(n)
-    out = nt.nodes.new("ShaderNodeOutputMaterial")
-    tr = nt.nodes.new("ShaderNodeBsdfTransparent")
-    tr.inputs["Color"].default_value = (0.96, 0.97, 0.96, 1)
-    gl = nt.nodes.new("ShaderNodeBsdfGlossy")
-    gl.inputs["Roughness"].default_value = 0.02
-    lw = nt.nodes.new("ShaderNodeLayerWeight")
-    lw.inputs["Blend"].default_value = 0.08
-    mr = nt.nodes.new("ShaderNodeMapRange")
-    mr.inputs["To Min"].default_value = 0.015
-    mr.inputs["To Max"].default_value = 0.35
-    nt.links.new(lw.outputs["Fresnel"], mr.inputs["Value"])
-    mix = nt.nodes.new("ShaderNodeMixShader")
-    nt.links.new(mr.outputs["Result"], mix.inputs["Fac"])
-    nt.links.new(tr.outputs[0], mix.inputs[1])
-    nt.links.new(gl.outputs[0], mix.inputs[2])
-    nt.links.new(mix.outputs[0], out.inputs["Surface"])
     return m
 
 
@@ -170,203 +149,429 @@ def set_coords(ob, co):
     me.update()
 
 
-def spot(name, pos, target, energy, size_deg, blend=0.75, radius=0.05, coll=None, kelvin=3000, fitting=True):
-    li = bpy.data.lights.new(name, "SPOT")
-    li.energy = energy
-    li.spot_size = math.radians(size_deg)
-    li.spot_blend = blend
-    li.shadow_soft_size = radius
-    li.use_temperature = True
-    li.temperature = kelvin
-    ob = _obj(name, li, coll)
-    p, t = Vector(pos), Vector(target)
-    d = (t - p).normalized()
-    ob.location = p
-    ob.rotation_mode = "QUATERNION"
-    ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
-    if fitting:
-        # visible fitting: a short black can behind the light, and a stem up to the track
-        mat = plain("TrackBlack", "#0d0c0c", rough=0.45, spec=0.5)
-        cylinder(name + "_can", p - d * 0.16, p - d * 0.005, 0.042, mat, coll, n=16)
-        top = Vector((p.x, p.y, M["ceiling"] - 0.04))
-        cylinder(name + "_stem", p - d * 0.09, top, 0.008, mat, coll, n=8, cap=False)
-    return ob
+
+class MB:
+    """Mesh builder: boxes, quads and plates with UVs in metres, merged into one object.
+    Box UVs run U along the grain (the longest side unless given), so wood grain follows each member."""
+
+    def __init__(self):
+        self.v, self.f, self.uv, self.mi, self.mats = [], [], [], [], []
+        self.recalc = False
+
+    def _m(self, mat):
+        if mat not in self.mats:
+            self.mats.append(mat)
+        return self.mats.index(mat)
+
+    def box(self, x0, x1, y0, y1, z0, z1, mat, grain=None):
+        lo = (min(x0, x1), min(y0, y1), min(z0, z1))
+        hi = (max(x0, x1), max(y0, y1), max(z0, z1))
+        g = grain if grain is not None else int(np.argmax([hi[i] - lo[i] for i in range(3)]))
+        if isinstance(g, str):
+            g = "xyz".index(g)
+        b = len(self.v)
+        vs = [(lo[0], lo[1], lo[2]), (hi[0], lo[1], lo[2]), (hi[0], hi[1], lo[2]), (lo[0], hi[1], lo[2]),
+              (lo[0], lo[1], hi[2]), (hi[0], lo[1], hi[2]), (hi[0], hi[1], hi[2]), (lo[0], hi[1], hi[2])]
+        self.v += vs
+        mi = self._m(mat)
+        for face, n in (((0, 3, 2, 1), 2), ((4, 5, 6, 7), 2), ((0, 1, 5, 4), 1), ((1, 2, 6, 5), 0),
+                        ((2, 3, 7, 6), 1), ((3, 0, 4, 7), 0)):
+            a, c = [i for i in range(3) if i != n]
+            ua, va = (c, a) if g == c else (a, c)
+            self.f.append(tuple(b + i for i in face))
+            self.uv.append([(vs[i][ua], vs[i][va]) for i in face])
+            self.mi.append(mi)
+
+    def quad(self, pts, mat, uv=None):
+        """pts: 4 corners, counter-clockwise seen from the visible side. uv defaults to metres along
+        the first edge (U) and the last edge (V)."""
+        b = len(self.v)
+        p = [Vector(q) for q in pts]
+        self.v += [tuple(q) for q in p]
+        if uv is None:
+            lu, lv = (p[1] - p[0]).length, (p[3] - p[0]).length
+            uv = [(0, 0), (lu, 0), (lu, lv), (0, lv)]
+        self.f.append((b, b + 1, b + 2, b + 3))
+        self.uv.append(list(uv))
+        self.mi.append(self._m(mat))
+
+    def plate(self, c, axis, r, depth, n, mat, rot=0.0):
+        """n-sided plate centred at c; it grows by `depth` along +axis (negative depth: along -axis)."""
+        a, b_ = [i for i in range(3) if i != axis]
+        base = len(self.v)
+        ring = []
+        for lvl in (0.0, depth):
+            for k in range(n):
+                t = rot + 2 * math.pi * k / n
+                p = [c[0], c[1], c[2]]
+                p[a] += r * math.cos(t)
+                p[b_] += r * math.sin(t)
+                p[axis] += lvl
+                ring.append(tuple(p))
+        self.v += ring
+        mi = self._m(mat)
+        faces = [tuple(base + k for k in range(n)), tuple(base + n + k for k in range(n))]
+        for k in range(n):
+            k2 = (k + 1) % n
+            faces.append((base + k, base + k2, base + n + k2, base + n + k))
+        for fc in faces:
+            self.f.append(fc)
+            self.uv.append([(self.v[i][a], self.v[i][b_]) for i in fc])
+            self.mi.append(mi)
+        self.recalc = True
+
+    def build(self, name, coll, bevel=0.0):
+        me = bpy.data.meshes.new(name)
+        me.from_pydata(self.v, [], self.f)
+        uvl = me.uv_layers.new(name="UVMap")
+        uvl.data.foreach_set("uv", [float(c) for face in self.uv for uvc in face for c in uvc])
+        me.polygons.foreach_set("material_index", self.mi)
+        for m in self.mats:
+            me.materials.append(m)
+        if self.recalc:
+            import bmesh
+            bm = bmesh.new()
+            bm.from_mesh(me)
+            bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+            bm.to_mesh(me)
+            bm.free()
+        me.update()
+        ob = _obj(name, me, coll)
+        if bevel:
+            md = ob.modifiers.new("chamfer", "BEVEL")
+            md.width = bevel
+            md.segments = 1
+            md.limit_method = "ANGLE"
+            md.angle_limit = math.radians(40)
+        return ob
 
 
-def area(name, pos, target, energy, sx, sy, coll, kelvin=3000, spread=180):
-    li = bpy.data.lights.new(name, "AREA")
-    li.shape = "RECTANGLE"
-    li.size, li.size_y = sx, sy
-    li.energy = energy
-    li.spread = math.radians(spread)
-    li.use_temperature = True
-    li.temperature = kelvin
-    ob = _obj(name, li, coll)
-    ob.location = pos
-    ob.rotation_mode = "QUATERNION"
-    ob.rotation_quaternion = (Vector(target) - Vector(pos)).normalized().to_track_quat("-Z", "Y")
-    return ob
+def gold_panel(name, p0, pu, pv, coll, mat=None):
+    """A gold-leaf surface as its own object: 'UVMap' is a clean 0..1 square (for a painting later),
+    'leaf' is in metres (drives the leaf squares). Visible side: pu x pv."""
+    p0, pu, pv = Vector(p0), Vector(pu), Vector(pv)
+    me = bpy.data.meshes.new(name)
+    me.from_pydata([tuple(p0), tuple(p0 + pu), tuple(p0 + pu + pv), tuple(p0 + pv)], [], [(0, 1, 2, 3)])
+    me.uv_layers.new(name="UVMap").data.foreach_set("uv", [0, 0, 1, 0, 1, 1, 0, 1])
+    lu, lv = pu.length, pv.length
+    ox, oy = (abs(hash(name)) % 97) * 0.0113, (abs(hash(name)) % 89) * 0.0127
+    me.uv_layers.new(name="leaf").data.foreach_set("uv", [ox, oy, ox + lu, oy, ox + lu, oy + lv, ox, oy + lv])
+    me.materials.append(mat or C.hall_material("gold"))
+    return _obj(name, me, coll)
 
 
-# =========================================================================== the building
-
-def _walls():
-    """Axis-aligned wall slabs: (name, axis, fixed0, fixed1, run0, run1, doors[(a,b)])."""
-    t = 0.2
-    return [
-        ("W_west", "x", -3.6, -3.4, -7.7, 24.2, []),
-        ("W_r1south", "y", -7.7, -7.5, -3.6, 3.6, []),
-        ("W_mid_x", "x", 3.4, 3.6, -7.5, 24.0, [(3.2, 5.2), (19.6, 21.6)]),
-        ("W_east", "x", 11.6, 11.8, 0.4, 24.2, []),
-        ("W_r2south", "y", 0.4, 0.6, 3.4, 11.8, []),
-        ("W_r2r3", "y", 7.8, 8.0, 3.6, 11.6, [(6.4, 8.4)]),
-        ("W_r3r4", "y", 15.2, 15.4, 3.6, 11.6, [(6.4, 8.4)]),
-        ("W_north", "y", 24.0, 24.2, -3.6, 11.8, []),
-        ("W_r1r5", "y", 13.2, 13.4, -3.4, 3.4, [(-1.1, 1.1)]),
-    ]
+def _stable_hash(s):
+    h = 0
+    for ch in s:
+        h = (h * 131 + ord(ch)) % 1000003
+    return h
 
 
-def build_building():
-    coll = _coll("Museum")
-    H = M["ceiling"]
-    DH = M["door_h"]
-    gap = 0.07
-    wall = C.fabric_material("room", name="Wall", color=M["wall_hex"])
-    black = plain("ShadowGap", "#050404", rough=0.9, spec=0.05)
-    floor_m = C.fabric_material("floor", name="Floor", color=M["floor_hex"])
-    ceil_m = plain("Ceiling", "#141211", rough=0.95, spec=0.05)
-    for (nm, ax, f0, f1, r0, r1, doors) in _walls():
-        cuts = sorted(doors)
-        runs, a = [], r0
-        for (d0, d1) in cuts:
-            runs.append((a, d0, 0.0, H))
-            runs.append((d0, d1, DH, H))
-            a = d1
-        runs.append((a, r1, 0.0, H))
-        for k, (a0, a1, z0, z1) in enumerate(runs):
-            zb = max(z0, gap) if z0 == 0.0 else z0
-            if ax == "x":
-                box("%s_%d" % (nm, k), f0, f1, a0, a1, zb, z1, wall, coll)
-                if z0 == 0.0:
-                    box("%s_%d_g" % (nm, k), f0 + 0.015, f1 - 0.015, a0, a1, 0, gap, black, coll)
-            else:
-                box("%s_%d" % (nm, k), a0, a1, f0, f1, zb, z1, wall, coll)
-                if z0 == 0.0:
-                    box("%s_%d_g" % (nm, k), a0, a1, f0 + 0.015, f1 - 0.015, 0, gap, black, coll)
-    box("Floor", -3.6, 11.8, -7.7, 24.2, -0.05, 0.0, floor_m, coll)
-    box("Ceiling", -3.6, 11.8, -7.7, 24.2, H, H + 0.05, ceil_m, coll)
-    # tracks (thin black bars) along each room
-    tb = plain("TrackBlack", "#0d0c0c", rough=0.45, spec=0.5)
-    for (x0, x1, y0, y1) in M["tracks"]:
-        box("Track_%.1f_%.1f" % (x0, y0), x0 - 0.02, x1 + 0.02, y0 - 0.02, y1 + 0.02, H - 0.04, H, tb, coll)
-    # numerals
-    font = bpy.data.fonts.load(M["numeral_font"])
-    paint = plain("NumeralPaint", "#b3a68f", rough=0.85, spec=0.1)
-    for (txt, pos, rotz) in M["numerals"]:
-        cu = bpy.data.curves.new("Num" + txt, "FONT")
-        cu.body = txt
-        cu.font = font
-        cu.size = 0.62
-        cu.align_x = "CENTER"
-        cu.align_y = "CENTER"
-        cu.materials.append(paint)
-        ob = _obj("Numeral_%s_%.1f" % (txt, pos[0]), cu, coll)
-        ob.location = pos
-        ob.rotation_euler = (math.pi / 2, 0, math.radians(rotz))
-    # placards on picture walls + bench
-    cream = plain("Placard", "#e3dccb", rough=0.7, spec=0.2)
-    for wl in M["picture_walls"]:
-        for c in wl["pools"]:
-            px, py = _wall_point(wl, c + wl["placard_off"])
-            nx, ny = wl["normal"]
-            ax, ay = wl["along"]
-            hw, hh = 0.08, 0.055
-            x0, x1 = sorted((px - ax * hw + nx * 0.0, px + ax * hw + nx * 0.006))
-            y0, y1 = sorted((py - ay * hw + ny * 0.0, py + ay * hw + ny * 0.006))
-            box("Placard_%s_%.1f" % (wl["id"], c), x0, x1, y0, y1, 1.25 - hh, 1.25 + hh, cream, coll)
-    bench_m = plain("Bench", "#2a211c", rough=0.55, spec=0.3)
-    bx, by = M["bench_xy"]
-    box("Bench_top", bx - 0.24, bx + 0.24, by - 0.85, by + 0.85, 0.40, 0.46, bench_m, coll)
-    for sy in (-0.7, 0.7):
-        box("Bench_leg%.1f" % sy, bx - 0.20, bx + 0.20, by + sy - 0.03, by + sy + 0.03, 0.0, 0.40, bench_m, coll)
-    # world: almost black, warm
-    wo = bpy.data.worlds.new("Museum")
+# =========================================================================== the hall
+
+XW = -HX                      # west wall line (shoji)
+PIN = 0.04                    # how far the posts stand into the room
+NAG_Z, NAG_H = HL["nageshi_z"], HL["nageshi_h"]
+NAG2_Z, NAG2_H = HL["nageshi2_z"], HL["nageshi2_h"]
+KAMOI_Z = NAG_Z - 0.045
+PANEL_W = (KEN - 0.14 + 0.03) / 2.0     # two sliding panels per bay, overlapping by one stile
+
+
+def build_floor(coll):
+    """Tatami: 0.91 x 1.82, long side along Y, in a plain grid; one quad per mat with its own tone."""
+    rs = np.random.RandomState(12)
+    verts, faces, uvs, tones = [], [], [], []
+    nx, ny = int(round(2 * HX / 0.91)), int(round((YN - YS) / KEN))
+    for i in range(nx):
+        for j in range(ny):
+            x0, y0 = -HX + i * 0.91, YS + j * KEN
+            b = len(verts)
+            verts += [(x0, y0, 0.0), (x0 + 0.91, y0, 0.0), (x0 + 0.91, y0 + KEN, 0.0), (x0, y0 + KEN, 0.0)]
+            faces.append((b, b + 1, b + 2, b + 3))
+            v0 = 0.5 * rs.randint(0, 2)
+            ua, ub = (0.0, 1.0) if rs.rand() < 0.5 else (1.0, 0.0)
+            ku = float(rs.randint(0, 5))
+            uvs += [ua + ku, v0, ua + ku, v0 + 0.5, ub + ku, v0 + 0.5, ub + ku, v0]
+            g = 0.93 + 0.12 * rs.rand()
+            tone = (g * (1.0 + 0.03 * rs.randn()), g, g * (1.0 + 0.04 * rs.randn()), 1.0)
+            tones += list(tone) * 4
+    me = bpy.data.meshes.new("Tatami")
+    me.from_pydata(verts, [], faces)
+    me.uv_layers.new(name="UVMap").data.foreach_set("uv", uvs)
+    ca = me.color_attributes.new("tone", "FLOAT_COLOR", "CORNER")
+    ca.data.foreach_set("color", tones)
+    me.materials.append(C.hall_material("tatami"))
+    return _obj("Tatami", me, coll)
+
+
+def _shoji_panel(wood, thin, paper, ya, yb, xc, z0, z1, koshi=0.33, cols=4, rows=6):
+    """One sliding shoji in the west wall: frame, hip board, lattice on the room side, paper behind."""
+    hin, brd = C.hall_material("hinoki"), C.hall_material("board")
+    xa, xb = xc - 0.015, xc + 0.015
+    st = 0.030
+    wood.box(xa, xb, ya, ya + st, z0, z1, hin, "z")
+    wood.box(xa, xb, yb - st, yb, z0, z1, hin, "z")
+    wood.box(xa, xb, ya + st, yb - st, z1 - 0.036, z1, hin, "y")
+    wood.box(xa, xb, ya + st, yb - st, z0, z0 + 0.05, hin, "y")
+    zk = z0 + 0.05 + koshi
+    if koshi > 0:
+        wood.box(xa, xb, ya + st, yb - st, zk, zk + 0.028, hin, "y")
+        thin.box(xc - 0.004, xc + 0.004, ya + st, yb - st, z0 + 0.05, zk, brd, "z")
+        zp0 = zk + 0.028
+    else:
+        zp0 = z0 + 0.05
+    zp1 = z1 - 0.036
+    ka, kb = xc - 0.003, xc + 0.011          # lattice bars sit proud of the paper, towards the room
+    for i in range(1, cols):
+        y = ya + st + (yb - ya - 2 * st) * i / cols
+        thin.box(ka, kb, y - 0.004, y + 0.004, zp0, zp1, hin, "z")
+    for j in range(1, rows):
+        z = zp0 + (zp1 - zp0) * j / rows
+        thin.box(ka, kb, ya + st, yb - st, z - 0.004, z + 0.004, hin, "y")
+    xp = xc - 0.004
+    paper.quad([(xp, ya + st, zp0), (xp, yb - st, zp0), (xp, yb - st, zp1), (xp, ya + st, zp1)],
+               C.hall_material("washi"))
+
+
+def _fusuma(lac, gilt, coll, idx, xa, xb, yc, z0, z1, pull_x):
+    """One gold fusuma in the south wall (seen from the north): lacquer frame, gold leaf, a round pull."""
+    lq = C.hall_material("lacquer")
+    fw = 0.022
+    ya, yb = yc - 0.015, yc + 0.015
+    lac.box(xa, xa + fw, ya, yb, z0, z1, lq, "z")
+    lac.box(xb - fw, xb, ya, yb, z0, z1, lq, "z")
+    lac.box(xa + fw, xb - fw, ya, yb, z1 - fw, z1, lq, "x")
+    lac.box(xa + fw, xb - fw, ya, yb, z0, z0 + fw, lq, "x")
+    yg = yb - 0.004
+    gold_panel("gold_south_%d" % idx, (xb - fw, yg, z0 + fw), (-(xb - xa - 2 * fw), 0, 0), (0, 0, z1 - z0 - 2 * fw),
+               coll)
+    gilt.plate((pull_x, yg, 0.80), 1, 0.034, 0.005, 24, C.hall_material("gilt"))
+    gilt.plate((pull_x, yg + 0.004, 0.80), 1, 0.022, 0.003, 24, lq)
+
+
+def build_hall():
+    coll = _coll("Hall")
+    hin, brd, plk = C.hall_material("hinoki"), C.hall_material("board"), C.hall_material("planks")
+    pla, lq, gil = C.hall_material("plaster"), C.hall_material("lacquer"), C.hall_material("gilt")
+    washi = C.hall_material("washi", strength=HL["paper_strength"])
+    felt = C.hall_material("felt")
+    wood, thin, lac, gilt, plas, paper, ceil = MB(), MB(), MB(), MB(), MB(), MB(), MB()
+
+    build_floor(coll)
+    ys = [YS + k * KEN for k in range(int(round((YN - YS) / KEN)) + 1)]
+    open_bay = HL.get("open_bay", -1)
+
+    # ---- posts along the long walls
+    for y in ys:
+        wood.box(XW - 0.10, XW + PIN, y - 0.07, y + 0.07, 0.0, HC, hin, "z")
+        wood.box(HX - PIN, HX + 0.10, y - 0.07, y + 0.07, 0.0, HC, hin, "z")
+    # ---- west wall: shoji below, paper transoms above, plaster under the ceiling
+    wood.box(XW - 0.10, XW + 0.005, YS, YN, -0.03, 0.004, hin, "y")               # floor track
+    wood.box(XW - 0.10, XW + 0.005, YS, YN, KAMOI_Z, NAG_Z, hin, "y")             # head track
+    wood.box(XW - 0.02, XW + 0.065, YS, YN, NAG_Z, NAG_Z + NAG_H, hin, "y")       # nageshi
+    wood.box(XW - 0.055, XW - 0.005, YS, YN, NAG_Z + NAG_H, NAG_Z + NAG_H + 0.035, hin, "y")
+    wood.box(XW - 0.055, XW - 0.005, YS, YN, NAG2_Z - 0.035, NAG2_Z, hin, "y")
+    wood.box(XW - 0.02, XW + 0.05, YS, YN, NAG2_Z, NAG2_Z + NAG2_H, hin, "y")     # upper nageshi
+    plas.quad([(XW, YS, NAG2_Z), (XW, YN, NAG2_Z), (XW, YN, HC), (XW, YS, HC)], pla)
+    for k in range(len(ys) - 1):
+        ya, yb = ys[k] + 0.07, ys[k + 1] - 0.07
+        if k == open_bay:       # the south panel is slid open behind the north one
+            _shoji_panel(wood, thin, paper, yb - PANEL_W, yb, XW - 0.020, 0.006, KAMOI_Z)
+        else:
+            _shoji_panel(wood, thin, paper, ya, ya + PANEL_W, XW - 0.020, 0.006, KAMOI_Z)
+        _shoji_panel(wood, thin, paper, yb - PANEL_W, yb, XW - 0.055, 0.006, KAMOI_Z)
+        # transom: one fixed paper light per bay
+        zt0, zt1 = NAG_Z + NAG_H + 0.035, NAG2_Z - 0.035
+        for i in range(1, 8):
+            y = ya + (yb - ya) * i / 8
+            thin.box(XW - 0.034, XW - 0.020, y - 0.004, y + 0.004, zt0, zt1, hin, "z")
+        for j in range(1, 3):
+            z = zt0 + (zt1 - zt0) * j / 3
+            thin.box(XW - 0.034, XW - 0.020, ya, yb, z - 0.004, z + 0.004, hin, "y")
+        paper.quad([(XW - 0.037, ya, zt0), (XW - 0.037, yb, zt0), (XW - 0.037, yb, zt1), (XW - 0.037, ya, zt1)],
+                   washi)
+    # ---- east wall: the display wall. One plaster plane; sill, nageshi and posts lie on it
+    plas.quad([(HX, YN, 0.0), (HX, YS, 0.0), (HX, YS, HC), (HX, YN, HC)], pla)
+    wood.box(HX - 0.035, HX + 0.02, YS, YN, 0.0, 0.10, hin, "y")
+    wood.box(HX - 0.065, HX + 0.02, YS, YN, NAG_Z, NAG_Z + NAG_H, hin, "y")
+    wood.box(HX - 0.05, HX + 0.02, YS, YN, NAG2_Z, NAG2_Z + NAG2_H, hin, "y")
+    # ---- south wall: gold fusuma
+    plas.quad([(HX + 0.1, YS - 0.09, -0.05), (XW - 0.1, YS - 0.09, -0.05), (XW - 0.1, YS - 0.09, HC),
+               (HX + 0.1, YS - 0.09, HC)], pla)
+    plas.quad([(HX, YS, NAG_Z), (XW, YS, NAG_Z), (XW, YS, HC), (HX, YS, HC)], pla)
+    for x in (-KEN, 0.0, KEN):
+        wood.box(x - 0.07, x + 0.07, YS - 0.10, YS + PIN, 0.0, HC, hin, "z")
+    wood.box(XW, HX, YS - 0.10, YS + 0.005, -0.03, 0.004, hin, "x")
+    wood.box(XW, HX, YS - 0.10, YS + 0.005, KAMOI_Z, NAG_Z, hin, "x")
+    wood.box(XW, HX, YS - 0.02, YS + 0.065, NAG_Z, NAG_Z + NAG_H, hin, "x")
+    wood.box(XW, HX, YS - 0.02, YS + 0.05, NAG2_Z, NAG2_Z + NAG2_H, hin, "x")
+    n = 0
+    for b in range(4):
+        xa, xb = XW + b * KEN + 0.07, XW + (b + 1) * KEN - 0.07
+        n += 1
+        _fusuma(lac, gilt, coll, n, xa, xa + PANEL_W, YS - 0.055, 0.006, KAMOI_Z, xa + PANEL_W - 0.10)
+        n += 1
+        _fusuma(lac, gilt, coll, n, xb - PANEL_W, xb, YS - 0.020, 0.006, KAMOI_Z, xb - PANEL_W + 0.10)
+    # ---- north wall: tokonoma in the middle two ken, shelves alcove west, gold wall east
+    TD = 0.91                                             # depth of the tokonoma
+    plas.quad([(XW - 0.1, YN + TD + 0.04, -0.05), (HX + 0.1, YN + TD + 0.04, -0.05), (HX + 0.1, YN + TD + 0.04, HC),
+               (XW - 0.1, YN + TD + 0.04, HC)], pla)
+    plas.quad([(XW, YN, NAG_Z), (-KEN, YN, NAG_Z), (-KEN, YN, HC), (XW, YN, HC)], pla)
+    plas.quad([(KEN, YN, NAG_Z), (HX, YN, NAG_Z), (HX, YN, HC), (KEN, YN, HC)], pla)
+    plas.quad([(-KEN, YN, 2.13), (KEN, YN, 2.13), (KEN, YN, HC), (-KEN, YN, HC)], pla)
+    for x in (-KEN, KEN):
+        wood.box(x - 0.07, x + 0.07, YN - PIN, YN + 0.10, 0.0, HC, hin, "z")
+    wood.box(XW, HX, YN - 0.05, YN + 0.02, NAG2_Z, NAG2_Z + NAG2_H, hin, "x")
+    for xa, xb in ((XW, -KEN), (KEN, HX)):
+        wood.box(xa, xb, YN - 0.065, YN + 0.02, NAG_Z, NAG_Z + NAG_H, hin, "x")
+        wood.box(xa, xb, YN - 0.035, YN + 0.035, KAMOI_Z, NAG_Z, hin, "x")
+    # tokonoma
+    tx = KEN - 0.07
+    lac.box(-tx, tx, YN - 0.03, YN + 0.06, 0.0, 0.115, lq, "x")                    # toko-gamachi
+    wood.box(-tx, tx, YN + 0.06, YN + TD, 0.085, 0.11, plk, "x")
+    wood.box(-tx, tx, YN - 0.035, YN + 0.035, 2.05, 2.13, hin, "x")                # otoshigake
+    gold_panel("gold_north", (-tx, YN + TD, 0.11), (2 * tx, 0, 0), (0, 0, 2.52), coll)
+    gold_panel("gold_north_side_w", (-tx, YN + 0.10, 0.11), (0, TD - 0.10, 0), (0, 0, 2.52), coll)
+    gold_panel("gold_north_side_e", (tx, YN + TD, 0.11), (0, -(TD - 0.10), 0), (0, 0, 2.52), coll)
+    ceil.quad([(-tx, YN + TD, 2.63), (tx, YN + TD, 2.63), (tx, YN, 2.63), (-tx, YN, 2.63)], brd)
+    plas.quad([(-tx, YN + 0.036, 2.13), (-tx, YN + 0.036, 2.63), (tx, YN + 0.036, 2.63), (tx, YN + 0.036, 2.13)],
+              pla)
+    # east bay: plain gold wall
+    wood.box(KEN, HX, YN - 0.035, YN + 0.03, 0.0, 0.10, hin, "x")
+    gold_panel("gold_north_e", (KEN + 0.07, YN + 0.012, 0.10), (KEN - 0.07 - PIN, 0, 0), (0, 0, KAMOI_Z - 0.10),
+               coll)
+    # west bay: staggered shelves (chigaidana) in a shallow alcove with a small cupboard above
+    AD = 0.60
+    ax0, ax1 = XW + PIN, -KEN - 0.07
+    wood.box(ax0, ax1, YN - 0.03, YN + AD, 0.06, 0.09, plk, "x")
+    wood.box(ax0, ax1, YN - 0.03, YN + 0.0, 0.0, 0.06, hin, "x")
+    gold_panel("gold_north_w", (ax0, YN + AD, 0.09), (ax1 - ax0, 0, 0), (0, 0, KAMOI_Z - 0.09), coll)
+    gold_panel("gold_north_w_side_w", (ax0, YN + 0.02, 0.09), (0, AD - 0.02, 0), (0, 0, KAMOI_Z - 0.09), coll)
+    gold_panel("gold_north_w_side_e", (ax1, YN + AD, 0.09), (0, -(AD - 0.02), 0), (0, 0, KAMOI_Z - 0.09), coll)
+    ceil.quad([(ax0, YN + AD, KAMOI_Z), (ax1, YN + AD, KAMOI_Z), (ax1, YN, KAMOI_Z), (ax0, YN, KAMOI_Z)], brd)
+    wood.box(ax0, ax0 + 1.02, YN + 0.14, YN + AD - 0.01, 0.76, 0.79, hin, "x")      # lower shelf
+    wood.box(ax1 - 0.98, ax1, YN + 0.14, YN + AD - 0.01, 0.98, 1.01, hin, "x")      # upper shelf
+    xm = 0.5 * ((ax0 + 1.02) + (ax1 - 0.98))
+    wood.box(xm - 0.014, xm + 0.014, YN + 0.22, YN + 0.248, 0.79, 0.98, hin, "z")   # the little post between
+    wood.box(ax0, ax1, YN + 0.10, YN + AD, 1.36, 1.385, hin, "x")                   # cupboard floor
+    dw = (ax1 - ax0) / 4.0
+    for i in range(4):
+        xa, xb = ax0 + i * dw, ax0 + (i + 1) * dw
+        yc = YN + (0.125 if i % 2 == 0 else 0.145)
+        lac.box(xa, xb, yc - 0.008, yc + 0.006, 1.385, 1.40, lq, "x")
+        lac.box(xa, xb, yc - 0.008, yc + 0.006, 1.74, KAMOI_Z, lq, "x")
+        lac.box(xa, xa + 0.014, yc - 0.008, yc + 0.006, 1.40, 1.74, lq, "z")
+        lac.box(xb - 0.014, xb, yc - 0.008, yc + 0.006, 1.40, 1.74, lq, "z")
+        gold_panel("gold_cupboard_%d" % (i + 1), (xa + 0.014, yc - 0.004, 1.40), (dw - 0.028, 0, 0), (0, 0, 0.34),
+                   coll)
+        gilt.plate((xa + (0.07 if i % 2 else dw - 0.07), yc - 0.004, 1.57), 1, 0.016, -0.004, 16, gil)
+    # ---- coffered ceiling: boards and plain wooden ribs, three coffers to a ken
+    ceil.quad([(XW - 0.12, YS - 0.12, HC), (XW - 0.12, YN + 0.05, HC), (HX + 0.12, YN + 0.05, HC),
+               (HX + 0.12, YS - 0.12, HC)], brd)
+    cs = KEN / 3.0
+    nxr, nyr = int(round(2 * HX / cs)), int(round((YN - YS) / cs))
+    for i in range(nxr + 1):
+        x = XW + i * cs
+        wood.box(x - 0.0225, x + 0.0225, YS, YN, HC - 0.055, HC, hin, "y")
+    for j in range(nyr + 1):
+        y = YS + j * cs
+        wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.05, HC, hin, "x")
+    for (x0, x1, y0, y1) in ((XW - 0.02, XW + 0.07, YS, YN), (HX - 0.07, HX + 0.02, YS, YN),
+                             (XW, HX, YS - 0.02, YS + 0.07), (XW, HX, YN - 0.07, YN + 0.02)):
+        wood.box(x0, x1, y0, y1, HC - 0.085, HC, hin)                                # cornice
+    # ---- gilt nail covers on the nageshi, one at every post
+    zc = NAG_Z + NAG_H / 2
+    for y in ys[1:-1]:
+        for (x, d) in ((XW + 0.065, 1), (HX - 0.065, -1)):
+            gilt.plate((x, y, zc), 0, 0.043, 0.005 * d, 6, gil, rot=math.pi / 6)
+            gilt.plate((x + 0.005 * d, y, zc), 0, 0.017, 0.006 * d, 12, gil)
+    for x in (-KEN, 0.0, KEN):
+        gilt.plate((x, YS + 0.065, zc), 1, 0.043, 0.005, 6, gil, rot=math.pi / 6)
+        gilt.plate((x, YS + 0.070, zc), 1, 0.017, 0.006, 12, gil)
+    # ---- outside: the veranda boards beyond the shoji, and a dark base under everything
+    wood.box(XW - 1.70, XW - 0.10, YS - 0.6, YN + 0.6, -0.07, -0.03, plk, "y")
+    dark = plain("Underside", "#0c0b0a", rough=0.9, spec=0.05)
+    plas.quad([(XW - 2.6, YS - 0.8, -0.075), (HX + 0.3, YS - 0.8, -0.075), (HX + 0.3, YN + 1.2, -0.075),
+               (XW - 2.6, YN + 1.2, -0.075)], dark)
+
+    S["hall"] = {
+        "wood": wood.build("Hall_wood", coll, bevel=0.004),
+        "lattice": thin.build("Hall_lattice", coll),
+        "lacquer": lac.build("Hall_lacquer", coll, bevel=0.003),
+        "gilt": gilt.build("Hall_gilt", coll),
+        "plaster": plas.build("Hall_plaster", coll),
+        "paper": paper.build("Shoji_paper", coll),
+        "ceiling": ceil.build("Hall_ceiling", coll),
+    }
+    # ---- the felt runner under the cloth, in two halves with the rod's groove between them
+    rx0, rx1 = WD["runner_x"]
+    pad = WD["runner_pad"]
+    g = 0.022
+    run = MB()
+    run.box(rx0, rx1, Y0 - pad, -g, 0.0, T, felt, "y")
+    run.box(rx0, rx1, g, Y0 + L_BOLT + pad, 0.0, T, felt, "y")
+    S["runner"] = run.build("Runner", coll, bevel=0.002)
+
+
+def build_daylight():
+    """World = the garden HDRI seen through the open shoji; a far, narrow 'sun' through that opening.
+    The room itself is lit by the paper (emissive, so every surface samples it directly)."""
+    sc = bpy.context.scene
+    wo = bpy.data.worlds.new("Garden")
     if not wo.node_tree:
         wo.use_nodes = True
-    bg = [n for n in wo.node_tree.nodes if n.bl_idname == "ShaderNodeBackground"][0]
-    bg.inputs["Color"].default_value = hex_rgb("#0b0a09", 1.0)
-    bg.inputs["Strength"].default_value = 0.3
-    bpy.context.scene.world = wo
-
-
-def _wall_point(wl, c):
-    """Point on a picture wall surface at along-coordinate c (the varying world coordinate)."""
-    if wl["axis"] == "x":   # wall at fixed x, c is y
-        return wl["plane"], c
-    return c, wl["plane"]
-
-
-def build_lights():
+    nt = wo.node_tree
+    for n in list(nt.nodes):
+        nt.nodes.remove(n)
+    out = nt.nodes.new("ShaderNodeOutputWorld")
+    bg = nt.nodes.new("ShaderNodeBackground")
+    nt.links.new(bg.outputs[0], out.inputs["Surface"])
+    hp = C.hdri_path()
+    if hp:
+        tc = nt.nodes.new("ShaderNodeTexCoord")
+        mp = nt.nodes.new("ShaderNodeMapping")
+        mp.inputs["Rotation"].default_value = (0.0, 0.0, math.radians(HL.get("hdri_rot", 0.0)))
+        env = nt.nodes.new("ShaderNodeTexEnvironment")
+        env.image = bpy.data.images.load(hp, check_existing=True)
+        nt.links.new(tc.outputs["Generated"], mp.inputs["Vector"])
+        nt.links.new(mp.outputs["Vector"], env.inputs["Vector"])
+        nt.links.new(env.outputs["Color"], bg.inputs["Color"])
+        bg.inputs["Strength"].default_value = HL.get("hdri_strength", 1.6)
+    else:
+        bg.inputs["Color"].default_value = (0.75, 0.85, 1.0, 1.0)
+        bg.inputs["Strength"].default_value = 3.0
+    sc.world = wo
+    try:
+        wo.cycles.sampling_method = "NONE"       # it only shows through one opening: BSDF sampling is enough
+    except Exception:
+        pass
+    k = HL.get("open_bay", -1)
+    if k < 0 or HL.get("sun_strength", 0) <= 0:
+        return
     coll = _coll("Lights")
-    H = M["ceiling"] - 0.10
-    E = M["light_scale"]
-    # R1: a row of narrow spots down the dais, plus the rack keys
-    for k, y in enumerate(M["dais_spot_y"]):
-        sx = 1.25 if k % 2 == 0 else -1.25
-        spot("L_dais_%d" % k, (sx, y - 0.6, H), (0.0, y, T), 520 * E, 34, 0.8, 0.06, coll)
-    for nm, p, t, e in (("L_rack_bk_l", (-1.6, -2.4, H), (0, 0, 1.0), 900),
-                        ("L_rack_bk_r", (1.7, -2.6, H), (0, 0, 1.15), 700),
-                        ("L_rack_fr_l", (-1.5, 2.6, H), (0, 0, 1.05), 750),
-                        ("L_rack_fr_r", (1.6, 2.4, H), (0, 0, 1.0), 600)):
-        spot(nm, p, t, e * E, 32, 0.8, 0.08, coll)
-    # R1 wall washes (quiet, low)
-    for k, (p, t) in enumerate(M["r1_washes"]):
-        spot("L_wash_%d" % k, p, t, 260 * E, 50, 1.0, 0.1, coll)
-    # numerals
-    for (txt, pos, rotz) in M["numerals"]:
-        rz = math.radians(rotz)
-        nx, ny = -math.sin(rz), math.cos(rz)       # text faces local -Y after the X rotation... see below
-        p = (pos[0] - nx * 1.3, pos[1] - ny * 1.3, H)
-        spot("L_num_%s_%.1f" % (txt, pos[0]), p, pos, 160 * E, 26, 0.9, 0.05, coll)
-    # picture walls: identical spots 2.1 m apart
-    for wl in M["picture_walls"]:
-        nx, ny = wl["normal"]
-        for c in wl["pools"] + wl.get("extra_pools", []):
-            px, py = _wall_point(wl, c)
-            spot("L_pic_%s_%.1f" % (wl["id"], c), (px + nx * 1.25, py + ny * 1.25, H), (px, py, 1.45),
-                 420 * E, 40, 0.9, 0.05, coll)
-    # R3 dress form
-    fx, fy = FORM
-    for nm, p, t, e in (("L_form_fl", (fx - 1.4, fy - 2.3, H), (fx, fy, 1.15), 900),
-                        ("L_form_fr", (fx + 1.6, fy - 2.0, H), (fx, fy, 1.2), 600),
-                        ("L_form_bk", (fx + 0.6, fy + 2.3, H), (fx, fy, 1.2), 650),
-                        ("L_form_bl", (fx - 1.5, fy + 1.8, H), (fx, fy, 1.1), 400)):
-        spot(nm, p, t, e * E, 30, 0.8, 0.08, coll)
-    # R5 vitrine: ceiling spots plus a soft light inside the top frame
-    vx, vy = VIT
-    for nm, p, t, e in (("L_vit_s_l", (vx - 1.6, vy - 2.6, H), (vx, vy, 1.1), 900),
-                        ("L_vit_s_r", (vx + 1.7, vy - 2.4, H), (vx, vy, 1.2), 650),
-                        ("L_vit_n", (vx + 0.8, vy + 2.6, H), (vx, vy, 1.1), 500)):
-        spot(nm, p, t, e * E, 30, 0.8, 0.08, coll)
-    area("L_vit_top", (vx, vy - 0.15, 2.36), (vx, vy - 0.15, 0.0), 40 * E, 1.9, 0.5, coll)
-    # R2/R4 general dim fill so that the rooms read
-    for k, (p, t) in enumerate(M["fills"]):
-        spot("L_fill_%d" % k, p, t, 220 * E, 70, 1.0, 0.2, coll)
+    ya = YS + k * KEN + 0.07
+    tgt = Vector((XW, ya + 0.5 * (PANEL_W - 0.03), 0.88))
+    el, az = math.radians(HL.get("sun_elevation", 34.0)), math.radians(HL.get("sun_azimuth", 14.0))
+    d = Vector((math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), -math.sin(el)))
+    dist = 26.0
+    li = bpy.data.lights.new("Sun", "SPOT")
+    li.energy = HL["sun_strength"] * 4.0 * math.pi ** 2 * dist ** 2
+    li.spot_size = 2.0 * math.atan(1.25 / dist)
+    li.spot_blend = 0.06
+    li.shadow_soft_size = dist * math.tan(math.radians(0.27))
+    li.color = (1.0, 0.86, 0.68)
+    ob = _obj("Sun", li, coll)
+    ob.location = tgt - d * dist
+    ob.rotation_mode = "QUATERNION"
+    ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
+    ob.visible_camera = False
+    S["sun"] = ob
 
 
-# =========================================================================== dais, rack, vitrine
+# =========================================================================== rack
 
 def build_furniture():
-    coll = _coll("Furniture")
-    dais_m = C.fabric_material("dais", name="Dais", color=M["dais_hex"])
-    lac = C.fabric_material("lacquer", name="Lacquer")
-    x0, x1 = WD["dais_x"]
-    y0, y1 = WD["dais_y"]
-    g = 0.022                                    # the slot in which the rod lies flush
-    box("Dais_s", x0, x1, y0, -g, 0.0, T, dais_m, coll)
-    box("Dais_n", x0, x1, g, y1, 0.0, T, dais_m, coll)
-    box("Dais_slot", x0, x1, -g, g, 0.0, T - 2 * ROD_R - 0.003, dais_m, coll)
-    # rack (iko): posts beside the dais on small feet, top rail, sliding collars, the rod
+    lac = C.hall_material("lacquer")
     rack = _coll("Rack")
     S["rack_static"] = _build_rack(rack, lac, (0.0, 0.0))
     rod = cylinder("Rod", (-0.95, 0, 0), (0.95, 0, 0), ROD_R, lac, rack, n=24)
@@ -375,26 +580,6 @@ def build_furniture():
         cols.append(box("RodCollar_%d" % sx, sx * WD["post_x"] - 0.03, sx * WD["post_x"] + 0.03, -0.03, 0.03,
                         -0.03, 0.03, lac, rack))
     S["rod"], S["collars"] = rod, cols
-    # vitrine in R5
-    vx, vy = VIT
-    vc = _coll("Vitrine")
-    base_m = plain("VitBase", "#141110", rough=0.5, spec=0.3)
-    hw, hd = 1.18, 0.55
-    box("Vit_base", vx - hw - 0.04, vx + hw + 0.04, vy - hd - 0.04, vy + hd + 0.04, 0.0, 0.12, base_m, vc)
-    box("Vit_lid", vx - hw - 0.02, vx + hw + 0.02, vy - hd - 0.02, vy + hd + 0.02, 2.40, 2.52, base_m, vc)
-    gm = glass_mat()
-    t = 0.006
-    box("Vit_glass_s", vx - hw, vx + hw, vy - hd - t, vy - hd, 0.12, 2.40, gm, vc)
-    box("Vit_glass_n", vx - hw, vx + hw, vy + hd, vy + hd + t, 0.12, 2.40, gm, vc)
-    box("Vit_glass_w", vx - hw - t, vx - hw, vy - hd, vy + hd, 0.12, 2.40, gm, vc)
-    box("Vit_glass_e", vx + hw, vx + hw + t, vy - hd, vy + hd, 0.12, 2.40, gm, vc)
-    rodv = cylinder("Vit_rod", (vx - 0.95, vy, ROD_TOP), (vx + 0.95, vy, ROD_TOP), ROD_R, lac, vc)
-    _build_rack(vc, lac, (vx, vy), floor_z=0.12)
-    for sx in (-1, 1):
-        box("Vit_collar_%d" % sx, vx + sx * WD["post_x"] - 0.03, vx + sx * WD["post_x"] + 0.03, vy - 0.03,
-            vy + 0.03, ROD_TOP - 0.03, ROD_TOP + 0.03, lac, vc)
-    for p in rodv, :
-        pass
 
 
 def _build_rack(coll, lac, xy, floor_z=0.0):
@@ -926,67 +1111,34 @@ def update_cloth(f):
         c.location.z = zc
 
 
-def snapshot_vitrine():
-    """Copy the finished T (state at the end of C) into the vitrine."""
-    update_cloth(STAGE["C"][1])
-    vc = _coll("Vitrine")
-    vx, vy = VIT
-    objs = [p.ob for p in S["pieces"].values() if p.kind != "remnant"] + [l[0] for l in S["linings"]] + \
-           [s[0] for s in S["seams"]]
-    for ob in objs:
-        if ob.type == "CURVE":
-            me = bpy.data.meshes.new_from_object(ob.evaluated_get(bpy.context.evaluated_depsgraph_get()))
-        else:
-            me = ob.data.copy()
-        if not me.materials:
-            for m in ob.data.materials:
-                me.materials.append(m)
-        nob = _obj("Vit_" + ob.name, me, vc)
-        nob.location = (vx, vy, 0.0)
 
-
-# =========================================================================== dress form
+# =========================================================================== mannequin
 
 def build_dressform():
+    """The mannequin from dressform.py at FORM, facing south; a plain proxy if that module fails."""
     coll = _coll("DressForm")
-    fx, fy = FORM
-    piv = bpy.data.objects.new("FormPivot", None)
-    coll.objects.link(piv)
-    piv.location = (fx, fy, 0.0)
-    piv.rotation_euler = (0, 0, math.pi)            # built facing +Y, we want it facing -Y (south)
-    S["form_pivot"] = piv
     S["form_state"] = None
+    fx, fy = FORM
     try:
         import importlib
         dressform = importlib.import_module("dressform")
-        sub = bpy.data.collections.new("DressFormBuilt")
-        coll.children.link(sub)
-        mats = None
-        st = dressform.build(sub, origin=(0.0, 0.0, 0.0), materials=mats)
-        for ob in sub.all_objects:
-            if ob.parent is None:
-                ob.parent = piv
+        st = dressform.build(coll, origin=(fx, fy, 0.0), materials=None)
+        root = st["root"]
+        root.rotation_euler = (0.0, 0.0, math.pi)       # built facing +Y; it must face south
         S["form_state"] = st
         S["dressform"] = dressform
         print("[scene] dressform.py built")
     except Exception as e:  # noqa: BLE001
-        print("[scene] dressform unavailable (%s); using proxy" % e)
+        print("[scene] dressform unavailable (%r); using a proxy" % (e,))
         mq = C.fabric_material("mannequin")
-        torso = cylinder("FormProxy_torso", (0, 0, 1.0), (0, 0, 1.55), 0.15, mq, coll, n=32)
-        torso.parent = piv
-        torso.location = (0, 0, 1.0)
-        stand = cylinder("FormProxy_stand", (0, 0, 0.12), (0, 0, 1.0), 0.015, mq, coll, n=12)
-        stand.parent = piv
-        stand.location = (0, 0, 0.12)
-    plinth = plain("Plinth", "#1c1816", rough=0.6, spec=0.25)
-    box("FormPlinth", fx - 0.45, fx + 0.45, fy - 0.45, fy + 0.45, 0.0, 0.10, plinth, coll)
+        cylinder("FormProxy_torso", (fx, fy, 0.95), (fx, fy, 1.42), 0.15, mq, coll, n=32)
+        cylinder("FormProxy_neck", (fx, fy, 1.42), (fx, fy, 1.50), 0.05, mq, coll, n=16)
+        cylinder("FormProxy_stand", (fx, fy, 0.03), (fx, fy, 0.95), 0.015, mq, coll, n=12)
+        cylinder("FormProxy_base", (fx, fy, 0.0), (fx, fy, 0.03), 0.18, mq, coll, n=32)
 
 
 def form_t(f):
-    out = {}
-    for k, (a, b) in M["dress_frames"].items():
-        out[k] = ramp(f, a, b)
-    return out
+    return {k: ramp(f, a, b) for k, (a, b) in M["dress_frames"].items()}
 
 
 def update_dressform(f):
@@ -1055,117 +1207,221 @@ def _hermite_path(keys, u):
             + (t3 - t2) * h * tang[i + 1])
 
 
+RACK_DIST = 4.05          # frontal distance from the rack at the rests of C, D and W4
+RACK_ORBIT_RX = 3.0       # the D orbit passes on the east side, looking west at the shoji
+FORM_Z = 1.20             # camera height in front of the mannequin (so its hem stays in frame)
+FORM_ORBIT_RX = 2.6       # the F orbit passes on the west side, looking east at the plaster wall
+G_Z = 1.30
+
+
 def _camera_segments():
     z = CAM_Z
     fx, fy = FORM
-    vx, vy = VIT
-    st = {s["id"]: s for s in M["stops"]}
-    Ak = M["cam"]
-    segs = []
-    # A: special (tracks the roll), B, C: R1 keys
-    a0 = _key(Ak["A0"][0], Ak["A0"][1])
-    a1 = _key(Ak["A1"][0], Ak["A1"][1])
-    b1 = _key(Ak["B1"][0], Ak["B1"][1])
-    c1 = _key((0.0, -Ak["C_dist"], z), yaw=90)
-    d1 = _key((0.0, Ak["C_dist"], z), yaw=-90)
-    segs.append(("A", 0, 119, [a0, _key(Ak["Amid"][0], Ak["Amid"][1]), a1]))
-    segs.append(("B", 120, 209, [a1, _key(Ak["Bmid"][0], Ak["Bmid"][1]), b1]))
-    segs.append(("C", 210, 329, [b1, _key(Ak["Cmid"][0], Ak["Cmid"][1]), c1]))
-    segs.append(("D", 330, 419, "orbitD"))
-    s2 = _key((st["S2"]["x"], st["S2"]["y"], z), yaw=st["S2"]["yaw"])
-    segs.append(("W1", 420, 491, [d1, _key((1.6, 4.25, z), yaw=-40), _key((3.5, 4.2, z), yaw=-4),
-                                  _key((5.6, 4.2, z), yaw=0), s2]))
-    e0 = _key((fx, fy - M["form_dist"], z), yaw=90)
-    segs.append(("W2", 492, 563, [s2, _key((8.0, 5.4, z), yaw=55), _key((7.55, 7.1, z), yaw=86), e0]))
-    e1 = _key((fx, fy - M["form_dist"] + 0.22, z), yaw=90)
-    segs.append(("E", 564, 683, [e0, e1]))
-    segs.append(("F", 684, 773, "orbitF"))
-    f1 = _key((fx, fy + M["form_dist"] - 0.22, z), yaw=-90)
-    s3 = _key((st["S3"]["x"], st["S3"]["y"], z), yaw=st["S3"]["yaw"])
-    segs.append(("W3", 774, 821, [f1, _key((7.95, 13.6, z), yaw=-40), s3]))
-    s4a = _key((st["S4a"]["x"], st["S4a"]["y"], z), yaw=st["S4a"]["yaw"])
-    segs.append(("W4", 822, 893, [s3, _key((7.75, 14.2, z), yaw=70), _key((7.4, 15.3, z), yaw=88),
-                                  _key((7.7, 17.0, z), yaw=45), s4a]))
-    s4b = _key((st["S4b"]["x"], st["S4b"]["y"], z), yaw=st["S4b"]["yaw"])
-    segs.append(("W5", 894, 941, [s4a, _key((7.85, 19.6, z), yaw=45), s4b]))
-    g0 = _key((vx, vy - M["vit_dist"], z), yaw=90)
-    g1 = _key((vx, vy - M["vit_dist"] + 0.10, z), yaw=90)
-    segs.append(("W6", 942, 1049, [s4b, _key((6.2, 20.6, z), yaw=150), _key((3.5, 20.6, z), yaw=182),
-                                   _key((2.0, 18.4, z), yaw=200), _key((1.9, 15.6, z), yaw=130), g0]))
-    segs.append(("G", 1050, 1079, [g0, g1]))
-    return segs
+    fd = HL["form_dist"]
+    s1x, s1y = HL["stops"]["S1"]["xy"]
+    s2x, s2y = HL["stops"]["S2"]["xy"]
+    a0 = _key((0.06, Y0 - 1.38, 0.33), yaw=90.0)                       # frame 0: low on the axis, level
+    a1 = _key((0.55, -3.3, 1.55), (0.0, 1.8, 0.0))
+    b1 = _key((0.0, -3.5, 2.55), (0.0, 0.15, 0.0))
+    c1 = _key((0.0, -RACK_DIST, z), yaw=90.0)
+    d1 = _key((0.0, RACK_DIST, z), yaw=270.0)
+    s1 = _key((s1x, s1y, z), yaw=360.0)
+    e0 = _key((fx, fy - fd, FORM_Z), yaw=450.0)
+    e1 = _key((fx, fy - fd + 0.10, FORM_Z), yaw=450.0)
+    f1 = _key((fx, fy + fd - 0.10, FORM_Z), yaw=270.0)
+    s2 = _key((s2x, s2y, z), yaw=360.0)
+    g0 = _key((0.0, -RACK_DIST, G_Z), yaw=90.0)
+    g1 = _key((0.0, -RACK_DIST + 0.08, G_Z), yaw=90.0)
+    segs = [
+        ("A", [a0, _key((0.42, -5.4, 0.85), (0.0, -2.2, 0.0)), a1]),
+        ("B", [a1, _key((0.32, -3.7, 2.2), (0.0, 0.8, 0.0)), b1]),
+        ("C", [b1, _key((0.0, -4.1, 2.0), (0.0, 0.0, 0.95)), c1]),
+        ("D", "orbitD"),
+        ("W1", [d1, s1]),
+        ("W2", [s1, _key((0.40, 4.36, 1.36), yaw=404.0), e0]),
+        ("E", [e0, e1]),
+        ("F", "orbitF"),
+        ("W3", [f1, _key((1.30, 9.45, 1.30), yaw=259.0), _key((1.90, 7.40, 1.42), yaw=264.0),
+                _key((1.60, 5.00, z), yaw=285.0), _key((0.70, 3.40, z), yaw=326.0), s2]),
+        ("W4", [s2, _key((1.50, 2.20, z), yaw=300.0), _key((2.45, 0.60, z), yaw=215.0),
+                _key((2.30, -1.90, 1.42), yaw=150.0), _key((1.10, -3.60, 1.34), yaw=110.0), g0]),
+        ("G", [g0, g1]),
+    ]
+    return [(sid, STAGE[sid][0], STAGE[sid][1], keys) for sid, keys in segs]
 
 
 _SEGS = None
 
 
-def camera_state(f):
-    """(x, y, z, yaw, pitch) at full-rate frame f (float allowed)."""
+def _segment(f):
     global _SEGS
     if _SEGS is None:
         _SEGS = _camera_segments()
-    f = min(max(f, 0.0), N_FRAMES - 1.0)
-    for (sid, f0, f1, keys) in _SEGS:
-        if f <= f1 + 0.999 or sid == "G":
-            break
-    u = smootherstep((f - f0) / float(f1 - f0)) if f1 > f0 else 1.0
-    z = CAM_Z
+    for seg in _SEGS:
+        if f <= seg[2]:
+            return seg
+    return _SEGS[-1]
+
+
+def camera_state(f):
+    """(x, y, z, yaw, pitch) at full-rate frame f (float allowed). Every stage runs on smootherstep
+    time from its first frame - 1 (the previous rest) to its last frame, so velocity is zero at every
+    stage boundary."""
+    f = min(max(float(f), 0.0), N_FRAMES - 1.0)
+    sid, f0, f1, keys = _segment(f)
+    fa = f0 - 1 if f0 > 0 else 0          # the previous stage's rest frame is this stage's start pose
+    u = smootherstep((f - fa) / float(f1 - fa)) if f1 > fa else 1.0
     if keys == "orbitD":
-        r = M["cam"]["C_dist"]
-        rx = M["cam"]["D_rx"]
         ph = -math.pi / 2 + math.pi * u
-        pos = (rx * math.cos(ph), r * math.sin(ph), z)
-        yaw = math.atan2(-pos[1], -pos[0]) if abs(pos[0]) > 1e-6 or abs(pos[1]) > 1e-6 else 0
-        # look at the pivot (0, 0, 1.1) horizontally: yaw toward the pivot, level
-        yaw = math.atan2(0 - pos[1], 0 - pos[0])
-        return np.array([pos[0], pos[1], pos[2], yaw, 0.0])
+        x, y = RACK_ORBIT_RX * math.cos(ph), RACK_DIST * math.sin(ph)
+        yaw = math.atan2(-y, -x)
+        if yaw < 0.25 * math.pi:
+            yaw += 2 * math.pi
+        return np.array([x, y, CAM_Z, yaw, 0.0])
     if keys == "orbitF":
         fx, fy = FORM
-        r = M["form_dist"] - 0.22
-        rx = M["form_orbit_rx"]
-        ph = -math.pi / 2 + math.pi * u
-        pos = (fx + rx * math.cos(ph), fy + r * math.sin(ph), z)
-        yaw = math.atan2(fy - pos[1], fx - pos[0])
-        return np.array([pos[0], pos[1], pos[2], yaw, 0.0])
-    if sid == "A":
-        st = _hermite_path(keys, u)
-        # look target follows the roll, then settles far down the bolt
-        f0r, f1r = M["roll_frames"]
-        sc = 0.05 + (L_BOLT - 0.05) * ramp(f, f0r, f1r, smoothstep)
-        tgt0 = np.array(M["cam"]["A0"][1], float)
-        tgt1 = np.array(M["cam"]["A1"][1], float)
-        roll_t = np.array([0.0, Y0 + sc + 0.15, 0.17])
-        k = smoothstep(f / 119.0)
-        follow = math.sin(math.pi * k) * 0.55
-        base = tgt0 + (tgt1 - tgt0) * k
-        tgt = base + (roll_t - base) * follow
-        yw, pt = _yaw_pitch(st[:3], tgt)
-        st[3], st[4] = yw, pt
-        return st
+        r = HL["form_dist"] - 0.10
+        ph = -math.pi / 2 - math.pi * u
+        x, y = fx + FORM_ORBIT_RX * math.cos(ph), fy + r * math.sin(ph)
+        yaw = math.atan2(fy - y, fx - x) + 2 * math.pi
+        return np.array([x, y, FORM_Z, yaw, 0.0])
     return _hermite_path(keys, u)
+
+
+def _focus_subject(name, cam, f):
+    if name == "roll":
+        rc = S.get("roll_state", ((0.0, Y0, 0.05), RC))[0]
+        return min((Vector(rc) - cam).length, 4.2)
+    if name == "layout":
+        return (Vector((0.0, 0.2, 0.0)) - cam).length
+    if name == "rack":
+        return max((Vector((0.0, 0.0, 1.1)) - cam).length, 2.0)
+    if name == "form":
+        return max((Vector((FORM[0], FORM[1], 1.1)) - cam).length, 2.0)
+    return 3.5        # the display wall
+
+
+_FOCUS = {"A": ("roll", "roll"), "B": ("roll", "layout"), "C": ("layout", "rack"), "D": ("rack", "rack"),
+          "W1": ("rack", "wall"), "W2": ("wall", "form"), "E": ("form", "form"), "F": ("form", "form"),
+          "W3": ("form", "wall"), "W4": ("wall", "rack"), "G": ("rack", "rack")}
+
+
+def focus_state(f):
+    """(focus distance, f-stop) at frame f."""
+    sid, f0, f1, _ = _segment(f)
+    fa = f0 - 1 if f0 > 0 else 0
+    u = smootherstep((f - fa) / float(f1 - fa)) if f1 > fa else 1.0
+    st = camera_state(f)
+    cam = Vector((st[0], st[1], st[2]))
+    a, b = _FOCUS[sid]
+    d = (1 - u) * _focus_subject(a, cam, f) + u * _focus_subject(b, cam, f)
+    fstop = 5.6 if sid == "A" else (5.6 + (4.0 - 5.6) * u if sid == "B" else 4.0)
+    return d, fstop
 
 
 def build_camera():
     cd = bpy.data.cameras.new("Cam")
-    cd.lens = 30.0
-    cd.sensor_width = 36.0
+    cd.lens = FOCAL
+    cd.sensor_width = SENSOR
     cd.sensor_fit = "HORIZONTAL"
     cd.shift_y = SHIFT_Y
     cd.shift_x = 0.0
     cd.clip_start = 0.05
-    cd.clip_end = 80.0
+    cd.clip_end = 120.0
+    cd.dof.use_dof = True
+    cd.dof.aperture_blades = 7
     ob = bpy.data.objects.new("Cam", cd)
     bpy.context.scene.collection.objects.link(ob)
     bpy.context.scene.camera = ob
     S["cam"] = ob
 
 
-def update_camera(f):
+def camera_matrix(f):
+    """World matrix of the camera at frame f (Blender convention: looks down local -Z, +Y up)."""
     st = camera_state(f)
+    rot = Euler((math.pi / 2 + st[4], 0.0, st[3] - math.pi / 2), "XYZ").to_matrix().to_4x4()
+    return Matrix.Translation((st[0], st[1], st[2])) @ rot
+
+
+def update_camera(f, motion=True):
+    """Pose the camera. With motion=True the poses of f-1, f, f+1 are keyed so Cycles can blur the
+    camera move over a half-frame shutter; frames where the camera is still render without blur."""
+    sc = bpy.context.scene
     ob = S["cam"]
-    ob.location = (st[0], st[1], st[2])
-    ob.rotation_mode = "XYZ"
-    ob.rotation_euler = (math.pi / 2 + st[4], 0.0, st[3] - math.pi / 2)
+    ob.animation_data_clear()
+    ob.rotation_mode = "QUATERNION"
+    mats = {k: camera_matrix(f + k) for k in (-1, 0, 1)}
+    moving = (mats[1].translation - mats[-1].translation).length > 2e-4 or \
+        mats[1].to_quaternion().rotation_difference(mats[-1].to_quaternion()).angle > 1e-4
+    prev = None
+    for k in (-1, 0, 1):
+        q = mats[k].to_quaternion()
+        if prev is not None and q.dot(prev) < 0:
+            q.negate()
+        prev = q
+        ob.location = mats[k].translation
+        ob.rotation_quaternion = q
+        if motion and moving:
+            ob.keyframe_insert("location", frame=f + k)
+            ob.keyframe_insert("rotation_quaternion", frame=f + k)
+    if motion and moving:
+        try:
+            for fc in ob.animation_data.action.fcurves:
+                for kp in fc.keyframe_points:
+                    kp.interpolation = "LINEAR"
+        except Exception:
+            pass
+    sc.render.use_motion_blur = bool(motion and moving)
+    sc.render.motion_blur_shutter = 0.5
+    ob.location = mats[0].translation
+    q0 = mats[0].to_quaternion()
+    ob.rotation_quaternion = q0
+    d, fstop = focus_state(f)
+    ob.data.dof.focus_distance = d
+    ob.data.dof.aperture_fstop = fstop
+    sc.frame_set(int(f))
+    if not (motion and moving):
+        ob.location = mats[0].translation
+        ob.rotation_quaternion = q0
+
+
+# =========================================================================== clay pass
+
+def apply_clay():
+    """Every object, and every separate part inside a merged object, a flat random colour.
+    The paper keeps glowing so the light stays the same."""
+    m = bpy.data.materials.new("Clay")
+    if not m.node_tree:
+        m.use_nodes = True
+    nt = m.node_tree
+    for n in list(nt.nodes):
+        nt.nodes.remove(n)
+    out = nt.nodes.new("ShaderNodeOutputMaterial")
+    bs = nt.nodes.new("ShaderNodeBsdfDiffuse")
+    geo = nt.nodes.new("ShaderNodeNewGeometry")
+    oi = nt.nodes.new("ShaderNodeObjectInfo")
+    add = nt.nodes.new("ShaderNodeMath")
+    add.operation = "ADD"
+    nt.links.new(geo.outputs["Random Per Island"], add.inputs[0])
+    nt.links.new(oi.outputs["Random"], add.inputs[1])
+    fr = nt.nodes.new("ShaderNodeMath")
+    fr.operation = "FRACT"
+    nt.links.new(add.outputs[0], fr.inputs[0])
+    hsv = nt.nodes.new("ShaderNodeCombineColor")
+    hsv.mode = "HSV"
+    nt.links.new(fr.outputs[0], hsv.inputs[0])
+    hsv.inputs[1].default_value = 0.42
+    hsv.inputs[2].default_value = 0.78
+    nt.links.new(hsv.outputs[0], bs.inputs["Color"])
+    nt.links.new(bs.outputs[0], out.inputs["Surface"])
+    for ob in bpy.data.objects:
+        if ob.type not in ("MESH", "CURVE", "FONT"):
+            continue
+        for slot in ob.material_slots:
+            if slot.material is not None and slot.material.name.startswith("H_washi"):
+                continue
+            slot.material = m
+    S["clay"] = True
 
 
 # =========================================================================== public API
@@ -1173,30 +1429,31 @@ def update_camera(f):
 _BUILT = False
 
 
-def build(res=(1920, 1080), samples=64, preview=False):
+def build(res=(1920, 1080), samples=64, preview=False, clay=False, form=True):
     global _BUILT
     if _BUILT:
         return
     bpy.ops.wm.read_factory_settings(use_empty=True)
     sc = bpy.context.scene
     C.setup_cycles(sc, res=res, samples=samples, preview=preview)
-    sc.view_settings.exposure = M["exposure"]
-    build_building()
-    build_lights()
+    sc.view_settings.exposure = HL.get("exposure", 0.0)
+    build_hall()
+    build_daylight()
     build_furniture()
     build_pieces()
-    snapshot_vitrine()
-    build_dressform()
+    if form:
+        build_dressform()
     build_camera()
+    if clay:
+        apply_clay()
     _BUILT = True
 
 
-def apply_frame(f):
+def apply_frame(f, motion=True):
     f = int(f)
-    bpy.context.scene.frame_current = f
     update_cloth(f)
     update_dressform(f)
-    update_camera(f)
+    update_camera(f, motion=motion)
 
 
 def anchors_world(f):
@@ -1208,28 +1465,23 @@ def anchors_world(f):
     out["cloth_free_end"] = (0.0, Y0, T + D0)
     for (ob, pa, pb, f0, f1) in S["chalk"][:5]:
         nm = ob.name.replace("Chalk_", "")
-        ox, oy = 0.0, 0.0
-        out[nm] = ((pa[0] + pb[0]) / 2 + ox, (pa[1] + pb[1]) / 2 + oy, T + D0)
+        out[nm] = ((pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2, T + D0)
     for nm, p in S["pieces"].items():
-        if nm in ("remnant", "over_collar"):
+        if nm in ("remnant", "over_collar", "okumi_r"):
             continue
-        me = p.ob.data
-        co = np.zeros(len(me.vertices) * 3, np.float32)
-        me.vertices.foreach_get("co", co)
-        co = co.reshape(p.nb, p.na, 3)
-        c = co[p.nb // 2, p.na // 2] if fc >= STAGE["B"][0] else None
-        if c is None:   # stage A: the piece's place on the bolt
+        if fc >= STAGE["B"][0]:
+            me = p.ob.data
+            co = np.zeros(len(me.vertices) * 3, np.float32)
+            me.vertices.foreach_get("co", co)
+            c = co.reshape(p.nb, p.na, 3)[p.nb // 2, p.na // 2]
+        else:   # stage A: the piece's place on the bolt
             bx, by = p.bolt_xy()
             c = (float(bx[p.nb // 2, p.na // 2]), float(by[p.nb // 2, p.na // 2]), T + D0)
-        key = "piece_okumi" if nm == "okumi_l" else ("piece_" + nm)
-        if nm == "okumi_r":
-            continue
-        out[key] = tuple(float(v) for v in c)
-    rz = rod_z(fc)
-    out["rod"] = (0.0, 0.0, rz + ROD_R)
+        out["piece_okumi" if nm == "okumi_l" else "piece_" + nm] = tuple(float(v) for v in c)
+    out["rod"] = (0.0, 0.0, rod_z(fc) + ROD_R)
 
-    def hm(x, y, d=D0 + 0.004, ff=fc):
-        return tuple(float(v) for v in hang_map(np.array([x]), np.array([y]), d, ff)[0])
+    def hm(x, y, d=D0 + 0.004):
+        return tuple(float(v) for v in hang_map(np.array([x]), np.array([y]), d, fc)[0])
     out["seam_centre_back"] = hm(0.0, -0.8)
     out["seam_sleeve_l"] = hm(-C.W, -0.12)
     out["seam_side_l"] = hm(-C.W, -1.0)
@@ -1242,40 +1494,20 @@ def anchors_world(f):
     out["collar_front"] = hm(-0.02, 0.30, D0 + 0.006)
     out["overlap_front"] = hm(C.OKUMI_W, 1.05, D0 + 0.006)
     out["hem_front"] = hm(0.0, C.BODY)
-    vx, vy = VIT
-    endc = STAGE["C"][1]
-    for nm, (x, y) in (("vit_back_tl", (-C.W, -0.03)), ("vit_back_tr", (C.W, -0.03)),
-                       ("vit_back_bl", (-C.W, -C.BODY)), ("vit_back_br", (C.W, -C.BODY)),
-                       ("vit_collar", (0.0, -0.028))):
-        p = hm(x, y, D0 + 0.006, endc)
-        out[nm] = (p[0] + vx, p[1] + vy, p[2])
     st = S.get("form_state")
     if st is not None:
         try:
-            fa = S["dressform"].anchors(st)
-            for k, v in fa.items():
-                key = k if k.startswith("form_") else "form_" + k
-                out[key] = tuple(float(c) for c in v)
+            for k, v in S["dressform"].anchors(st).items():
+                out[k if k.startswith("form_") else "form_" + k] = tuple(float(c) for c in v)
         except Exception as e:  # noqa: BLE001
             print("[scene] dressform.anchors failed:", e)
-    for stp in M["stops"]:
-        wl = [w for w in M["picture_walls"] if w["id"] == stp["wall"]][0]
-        c = stp["y"] if wl["axis"] == "x" else stp["x"]
-        ax, ay = wl["along"]
-        for nm, da, dz in (("tl", -0.625, 0.8), ("tr", 0.625, 0.8), ("bl", -0.625, -0.8), ("br", 0.625, -0.8)):
-            px, py = _wall_point(wl, c)
-            out["hang_%s_%s" % (stp["id"], nm)] = (px + ax * da, py + ay * da, 1.40 + dz)
     return out
 
 
 def walls_meta():
+    """The two stops in front of the display wall (README meta.json 'walls')."""
     out = {}
-    for stp in M["stops"]:
-        wl = [w for w in M["picture_walls"] if w["id"] == stp["wall"]][0]
-        c = stp["y"] if wl["axis"] == "x" else stp["x"]
-        px, py = _wall_point(wl, c)
-        ax, ay = wl["along"]
-        out[stp["id"]] = {"frame": stp["frame"], "pool0": [round(px, 4), round(py, 4), 1.40],
-                          "along": [ax, ay, 0.0], "normal": [wl["normal"][0], wl["normal"][1], 0.0],
-                          "spacing": 2.1, "placard_offset": [wl["placard_off_screen"], 1.25 - 1.40]}
+    for sid, st in HL["stops"].items():
+        out[sid] = {"frame": st["frame"], "pool0": [HX, st["xy"][1], 1.30], "along": [0, -1, 0],
+                    "normal": [-1, 0, 0], "spacing": KEN}
     return out

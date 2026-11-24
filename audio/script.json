@@ -55,7 +55,15 @@
   "ro": "roh",
   "sha": "shah",
   "shaku": "shah-koo",
-  "Japonse rok": "yah-pon-seh rock"
+  "Japonse rok": "yah-pon-seh rock",
+  "Becke": "Becker",
+  "Koide": "Koy-deh",
+  "Druet": "Droo-ay",
+  "Fukai": "Foo-kye",
+  "Poiret": "Pwah-ray",
+  "shoin": "show-in",
+  "Rokumeikan": "Roh-koo-may-kahn",
+  "tsukesage": "tsoo-keh-sah-geh"
  },
  "chapters": [
   {
@@ -109,18 +117,18 @@
      "frame": 50
     },
     {
-     "show": "Keep that width in mind. Every measurement that follows is counted from it.",
-     "say": "Keep that width in mind. Every measurement that follows is counted from it.",
+     "show": "Keep that width in mind. The width of every part that follows derives from it.",
+     "say": "Keep that width in mind. The width of every part that follows derives from it.",
      "frame": 96
     },
     {
-     "show": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
-     "say": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
+     "show": "Now the cut. There is no paper pattern. The tailor only divides.",
+     "say": "Now the cut. There is no paper pattern. The tailor only divides.",
      "frame": 120
     },
     {
-     "show": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
-     "say": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
+     "show": "Straight cuts give eight pieces. Every strip has a place, and nothing is thrown away.",
+     "say": "Straight cuts give eight pieces. Every strip has a place, and nothing is thrown away.",
      "frame": 150
     },
     {
@@ -129,8 +137,8 @@
      "frame": 210
     },
     {
-     "show": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
-     "say": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
+     "show": "The stitches are sewn so that they barely show on the face. Follow the seams: they run straight, because every piece is straight.",
+     "say": "The stitches are sewn so that they barely show on the face. Follow the seams: they run straight, because every piece is straight.",
      "frame": 236
     },
     {
@@ -165,8 +173,8 @@
      "frame": 360
     },
     {
-     "show": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
-     "say": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+     "show": "Nothing here is cut to a figure. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+     "say": "Nothing here is cut to a figure. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
      "frame": 368
     },
     {
@@ -185,8 +193,8 @@
      "frame": 408
     },
     {
-     "show": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
-     "say": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
+     "show": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins with the cloth.",
+     "say": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins with the cloth.",
      "frame": 414
     }
    ]
@@ -196,8 +204,8 @@
    "title": "Stop 3 · Cloth and season",
    "cues": [
     {
-     "show": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
-     "say": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+     "show": "Look at the robes on this wall. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+     "say": "Look at the robes on this wall. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
      "photo": 0
     },
     {
@@ -227,13 +235,13 @@
    "title": "Stop 4 · Pattern",
    "cues": [
     {
-     "show": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
-     "say": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
+     "show": "Start with the small repeat, then walk on to the large designs. Guides call the large, continuous kind ceremonial. It treats the whole robe as one picture, and the motifs gather below the obi and at the left shoulder.",
+     "say": "Start with the small repeat, then walk on to the large designs. Guides call the large, continuous kind ceremonial. It treats the whole robe as one picture, and the motifs gather below the obi and at the left shoulder.",
      "photo": 0
     },
     {
-     "show": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
-     "say": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
+     "show": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she turned to paintings, and counted nearly a thousand robes in them.",
+     "say": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she turned to paintings, and counted nearly a thousand robes in them.",
      "photo": 1
     },
     {
@@ -247,8 +255,8 @@
      "photo": 5
     },
     {
-     "show": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
-     "say": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
+     "show": "Among the young women Becke interviewed, the code was read less closely. Asked about the flowers on her own furisode, one told her: flowers are flowers, right? Colour mattered more to them. In the next room, the flat picture meets a body.",
+     "say": "Among the young women Becke interviewed, the code was read less closely. Asked about the flowers on her own furisode, one told her: flowers are flowers, right? Colour mattered more to them. In the next room, the flat picture meets a body.",
      "photo": 6
     }
    ]
@@ -258,13 +266,13 @@
    "title": "Stop 5 · Dressing",
    "cues": [
     {
-     "show": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
-     "say": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+     "show": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+     "say": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
      "frame": 492
     },
     {
-     "show": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
-     "say": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+     "show": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, a board, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+     "say": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, a board, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
      "frame": 564
     },
     {
@@ -335,8 +343,8 @@
      "photo": 0
     },
     {
-     "show": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy.",
-     "say": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy.",
+     "show": "One study of a kimono magazine calls the long-sleeved robe the kimono a Japanese woman today is most likely ever to buy.",
+     "say": "One study of a kimono magazine calls the long-sleeved robe the kimono a Japanese woman today is most likely ever to buy.",
      "photo": 0
     },
     {
@@ -345,8 +353,8 @@
      "photo": 1
     },
     {
-     "show": "A survey in one Tottori town, in the late nineteen-sixties, counted two hundred and six different crests.",
-     "say": "A survey in one Toh-toh-ree town, in the late nineteen-sixties, counted two hundred and six different crests.",
+     "show": "A survey in one Tottori city, in the late nineteen-sixties, counted two hundred and six different crests.",
+     "say": "A survey in one Toh-toh-ree city, in the late nineteen-sixties, counted two hundred and six different crests.",
      "photo": 2
     },
     {
@@ -371,13 +379,13 @@
    "title": "Stop 8 · Four centuries",
    "cues": [
     {
-     "show": "Begin before any print on this wall. At the Heian court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
-     "say": "Begin before any print on this wall. At the Hay-ahn court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+     "show": "Begin before any print on this wall. At the Heian court, by the mid-twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+     "say": "Begin before any print on this wall. At the Hay-ahn court, by the mid-twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
      "photo": 0
     },
     {
-     "show": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in 1666 records the new Kanbun style, a wide empty back with large, moving motifs.",
-     "say": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in sixteen sixty-six records the new Kanbun style, a wide empty back with large, moving motifs.",
+     "show": "By the early Edo period its shape was not far from today's kimono. A pattern book printed in 1666 shows the large, flowing designs of the Kanbun style: a wide empty back with large, moving motifs.",
+     "say": "By the early Edo period its shape was not far from today's kimono. A pattern book printed in sixteen sixty-six shows the large, flowing designs of the Kanbun style: a wide empty back with large, moving motifs.",
      "photo": 0
     },
     {
@@ -386,13 +394,13 @@
      "photo": 3
     },
     {
-     "show": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
-     "say": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
+     "show": "In one kimono magazine, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
+     "say": "In one kimono magazine, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
      "photo": 6
     },
     {
-     "show": "In 1981 the kimono retail market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono became something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
-     "say": "In nineteen eighty-one the kimono retail market was worth nearly one point eight trillion yen. By twenty twenty it was about a seventh of that. Kimono became something rented rather than owned; by twenty twenty-one Kyoto alone had about forty rental shops.",
+     "show": "In 1981 the kimono market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono came to be seen as something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
+     "say": "In nineteen eighty-one the kimono market was worth nearly one point eight trillion yen. By twenty twenty it was about a seventh of that. Kimono came to be seen as something rented rather than owned; by twenty twenty-one Kyoto alone had about forty rental shops.",
      "photo": 6
     },
     {
@@ -407,13 +415,13 @@
    "title": "Stop 9 · Abroad",
    "cues": [
     {
-     "show": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
-     "say": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
+     "show": "Start with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
+     "say": "Start with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
      "photo": 0
     },
     {
-     "show": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
-     "say": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
+     "show": "Two centuries later, Western women took the kimono up, but loosely. They wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
+     "say": "Two centuries later, Western women took the kimono up, but loosely. They wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
      "photo": 1
     },
     {
@@ -448,8 +456,8 @@
      "frame": 846
     },
     {
-     "show": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one. It covers the whole family you have just passed.",
-     "say": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one. It covers the whole family you have just passed.",
+     "show": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one.",
+     "say": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one.",
      "frame": 872
     },
     {
@@ -458,8 +466,8 @@
      "frame": 898
     },
     {
-     "show": "The practice is the rest. A kimono maker, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement.",
-     "say": "The practice is the rest. A kimono maker, Yah-mah-goo-chee Ghen-bay, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement.",
+     "show": "The practice is the rest. The head of an old kimono house, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is his view, not a measurement.",
+     "say": "The practice is the rest. The head of an old kimono house, Yah-mah-goo-chee Ghen-bay, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is his view, not a measurement.",
      "frame": 914
     },
     {

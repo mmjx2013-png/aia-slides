@@ -5,7 +5,7 @@
  "theme": "Structure",
  "title": "The parts",
  "heading": "The front, the fit, the re-making",
- "intro": "Turn to the front of the T. Each piece has a name, the fit is a matter of length, and the whole robe could be taken apart again.",
+ "intro": "Turn to the front of the T. Each piece has a name, the fit is a matter of measurement, and the whole robe could be taken apart again.",
  "from": 329,
  "to": 419,
  "labels": [
@@ -27,7 +27,7 @@
    "from": 362,
    "to": 388,
    "side": "right",
-   "kicker": "Fitted by length",
+   "kicker": "Fitted to her",
    "title": "As long as she is tall",
    "jp": "身丈・裄",
    "body": [
@@ -65,7 +65,7 @@
     "frame": 360
    },
    {
-    "show": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+    "show": "Nothing here is cut to a figure. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
     "frame": 368
    },
    {
@@ -81,7 +81,7 @@
     "frame": 408
    },
    {
-    "show": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
+    "show": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins with the cloth.",
     "frame": 414
    }
   ]
@@ -196,7 +196,7 @@
    "src": 32,
    "page": "p.63",
    "quote": "被服に紋章をとり入れる傾向は、式服を除いてはあまりみられなくなった",
-   "scope": "Tr.: \"the tendency to put crests on clothing is seldom seen now, except on ceremonial dress\". Kurayoshi, Tottori; questionnaire 1967-68; one town.",
+   "scope": "Tr.: \"the tendency to put crests on clothing is seldom seen now, except on ceremonial dress\". Kurayoshi, Tottori; questionnaire 1967-68; one town. Survey dates (Dec 1967 to Jul 1968) on p.61; city of Kurayoshi on p.59 (rows below).",
    "where": "narration 7"
   },
   {
@@ -214,6 +214,22 @@
    "quote": "it is just the tailoring, the weaving (and whether there is lining or not) that makes a kimono appropriate for cold or warm months",
    "scope": "Druet; general.",
    "where": "narration 8"
+  },
+  {
+   "text": "The questionnaire went to housewives across the city of Kurayoshi, Tottori.",
+   "src": 32,
+   "page": "p.59",
+   "quote": "A questionnaire was administered to 4,000 housewives in the whole city of Kurayoshi in Tottori Prefecture.",
+   "scope": "Author's English summary. Added by verifier.",
+   "where": "narration 7"
+  },
+  {
+   "text": "The questionnaire ran from late December 1967 to July 1968.",
+   "src": 32,
+   "page": "p.61",
+   "quote": "アンケート調査は、昭和42年12月下旬から、昭和43年7月までの7ヵ月間",
+   "scope": "Tr.: \"the questionnaire survey ran for 7 months, from late December Shōwa 42 [1967] to July Shōwa 43 [1968]\". Added by verifier.",
+   "where": "narration 7"
   }
  ],
  "dropped": [

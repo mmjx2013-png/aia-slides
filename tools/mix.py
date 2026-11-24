@@ -5,7 +5,8 @@ For each chapter in audio/timing.json:
   1. decode audio/raw/<id>.mp3 to 48 kHz float
   2. re-pace: lead-in, a minimum breath between cues, a tail (cuts fall in the silences)
   3. write the paced narration stem   build/stems/narration/<id>.wav  (48 kHz, 24-bit)
-  4. add the ambience bed if audio/beds/<id>.wav exists (written by tools/synth.py)
+  4. synthesise the ambience (room tone) and the effects (audio/fx.json) as separate stems:
+     build/stems/ambience/<id>.wav and build/stems/effects/<id>.wav
   5. loudness-normalise the web mix to -16 LUFS integrated, true peak <= -1 dBTP (two-pass
      ffmpeg loudnorm), encode site/assets/audio/<id>.mp3, then MEASURE the encoded file
   6. write site/assets/audio/narration.json and <id>.vtt with the re-paced cue times
@@ -15,7 +16,10 @@ import json, sys, subprocess, pathlib, re
 import numpy as np
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / 'tools'))
+import synth
 SR = 48000
+FX = json.loads((ROOT / 'audio/fx.json').read_text()) if (ROOT / 'audio/fx.json').exists() else {}
 LEAD, GAP, TAIL = 0.45, 0.62, 0.9
 
 
@@ -91,17 +95,41 @@ def main():
             a["t1"] = min(a["t1"], b["t0"])
         stem = ROOT / f"build/stems/narration/{cid}.wav"
         write_wav24(stem, y)
-        src = stem
-        bed = ROOT / f"audio/beds/{cid}.wav"
-        if bed.exists():
-            mixed = ROOT / f"build/mix/{cid}.premix.wav"
-            mixed.parent.mkdir(parents=True, exist_ok=True)
-            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(stem), "-i", str(bed), "-filter_complex",
-                            "[0:a]aformat=channel_layouts=stereo[n];[1:a]aformat=channel_layouts=stereo[b];"
-                            "[n][b]amix=inputs=2:duration=first:normalize=0[m]", "-map", "[m]", "-c:a", "pcm_s24le", str(mixed)], check=True)
-            src = mixed
+        # ambience and effects, synthesised in code, as separate stems
+        n = len(y); dur_s = n / SR
+        amb = synth.room_tone(dur_s)[:n]
+        fx = np.zeros((n, 2))
+        pts = sorted((c["t0"], c["frame"]) for c in new if "frame" in c)
+        def t_of_frame(f):
+            if not pts: return None
+            if f <= pts[0][1]: return pts[0][0]
+            for (t0, f0), (t1, f1) in zip(pts, pts[1:]):
+                if f0 <= f <= f1: return t0 + (t1 - t0) * (f - f0) / max(1, f1 - f0)
+            return pts[-1][0]
+        for e in FX.get(cid, []):
+            if "frame" in e: t0 = t_of_frame(e["frame"])
+            else:
+                hit = [c["t0"] for c in new if c.get("photo") == e.get("photo")]
+                t0 = (hit[0] - e.get("lead", 2.4)) if hit else None
+            if t0 is None: continue
+            t0 = max(0.2, t0); g = 10 ** (e.get("gain", 0) / 20)
+            if e["kind"] == "unroll": clip = synth.unroll(e["dur"])
+            elif e["kind"] == "rustle": clip = synth.cloth_rustle(e["dur"])
+            elif e["kind"] == "chalk":
+                k = e.get("repeat", 1); clip = np.zeros((int((e["dur"] + e.get("every", 1) * (k - 1) + 0.1) * SR), 2))
+                for j in range(k):
+                    c1 = synth.chalk(e["dur"]); a = int(j * e.get("every", 1) * SR); clip[a:a + len(c1)] += c1
+            elif e["kind"] == "steps": clip = synth.footsteps([j * e.get("every", 0.95) for j in range(e.get("count", 4))], e.get("count", 4) * e.get("every", 0.95) + 0.6, level=-34)
+            else: continue
+            a = int(t0 * SR); b = min(n, a + len(clip))
+            if b > a: fx[a:b] += clip[: b - a] * g
+        write_wav24(ROOT / f"build/stems/ambience/{cid}.wav", amb, 2)
+        write_wav24(ROOT / f"build/stems/effects/{cid}.wav", fx, 2)
+        mixed = ROOT / f"build/mix/{cid}.premix.wav"
+        write_wav24(mixed, np.stack([y, y], 1) * 1.0 + amb + fx, 2)
+        src = mixed
         dst = ROOT / f"site/assets/audio/{cid}.mp3"
-        loudnorm(src, dst, ("-c:a", "libmp3lame", "-b:a", "128k" if not bed.exists() else "160k"))
+        loudnorm(src, dst, ("-c:a", "libmp3lame", "-b:a", "160k"))
         i, tp, lra = measure(dst)
         dur = len(y) / SR
         ok = abs(i + 16) <= 1.0 and tp <= -1.0

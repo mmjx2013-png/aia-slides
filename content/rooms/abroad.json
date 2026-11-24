@@ -32,7 +32,7 @@
       "title": "Dallyeong (Official’s robe)",
       "meta": "Korea · Joseon dynasty · late 19th–early 20th century",
       "material": "Silk",
-      "insight": "A lecture on Asian dress in museum collections: every traditional garment studied uses its full cloth width, cut with no waste at all, as the kimono does {41:p.16}."}},
+      "insight": "A lecture on Asian dress that began from a comparison of Japanese and Korean dress {41:p.13}: every garment it studied used the full cloth width, cut with no waste {41:p.16}."}},
     {"objectID": 61851, "label": {
       "title": "Robe",
       "meta": "Japan (Ryūkyū Islands) · 19th century",
@@ -42,20 +42,20 @@
       "title": "Ainu costume",
       "meta": "Japan · Meiji period · 19th century",
       "material": "Elm-bark fiber with appliqué of indigo-dyed tabby (atsushi)",
-      "insight": "From the mid-18th century Ainu attus became a trade good, reached Osaka, and gave its name to a work coat there: atsushi {43:p.1}."}}
+      "insight": "From the mid-18th century Ainu attus became a trade good, reached Osaka, and gave its name to a work garment: atsushi {43:p.1}."}}
   ],
   "cards": [
     {"kind": "text", "at": 3, "title": "What the West took",
      "body": ["Fukai's verdict: <q>The most important point was the rectangular cut that followed the warp and weft of the fabric and the unconfined garment that resulted from it.</q> {5:p.8}",
               "In 1906 Poiret freed the silhouette from the corset {5:p.8}."]},
-    {"kind": "text", "at": 4, "title": "Neighbours: the same cross",
+    {"kind": "text", "at": 4, "title": "Neighbours: hanfu",
      "body": ["A 2024 study of Chinese hanfu finds that <q>the cross-shaped structure of Hanfu did not change</q> {40:p.39}. Its front closes left over right, as Japanese dress does {40:p.44}."]}
   ],
   "narration": {
     "title": "Stop 9 · Abroad",
     "cues": [
-      {"photo": 0, "show": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer."},
-      {"photo": 1, "show": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed."},
+      {"photo": 0, "show": "Start with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer."},
+      {"photo": 1, "show": "Two centuries later, Western women took the kimono up, but loosely. They wore it without an obi, and often right over left: in Japan, the way the dead are dressed."},
       {"photo": 2, "show": "In London, a Japanese village opened in Knightsbridge in January 1885. Gilbert is said to have learned from its people when he staged The Mikado.",
        "say": "In London, a Japanese village opened in Knightsbridge in January eighteen eighty-five. Gilbert is said to have learned from its people when he staged The Mikado."},
       {"photo": 4, "show": "Nearer Japan, the comparisons turn to cloth and climate. In Korea, one lecture notes, the full skirt caught the warmth rising from heated floors."},
@@ -91,11 +91,12 @@
     {"text": "Hanfu closes with the wearer's left front over the right, as Japanese dress does.", "src": 40, "page": "p.44", "quote": "右衽は着用者から見て左の衽を右の衽に重ねる着方（和服と同様）である (Tr. \"youren is the way of wearing in which, seen by the wearer, the left front is lapped over the right (as in wafuku)\")", "scope": "Yang, Kimata, Satō 2024, refereed. About hanfu, not about the Qing robe nearby.", "where": "card 2"},
     {"text": "Every Asian traditional garment studied uses its full cloth width, cut with no waste.", "src": 41, "page": "p.16", "quote": "いずれの伝統服もそれぞれの布幅いっぱいを使い切り，まったく無駄のない裁断がなされている (Tr. \"every traditional garment uses its full cloth width, cut with no waste at all\")", "scope": "Tamura 2005, a written-up lecture, not refereed; museum-collection study, Asia broadly. The dallyeong is not claimed to be among the garments studied.", "where": "photo 853921"},
     {"text": "The Korean chima traps heat rising from the heated floor.", "src": 41, "page": "p.13", "quote": "床からの熱が膨らんだチマに捕えられ，絶大な保温効果を発揮した (Tr. \"heat from the floor was caught by the puffed-out chima, giving a great warming effect\")", "scope": "Tamura 2005, lecture, not refereed", "where": "narration"},
+    {"text": "The lecturer had compared the warmth of Japanese and Korean dress.", "src": 41, "page": "p.13", "quote": "和服と韓服の保温性の比較を取り上げた (Tr. \"I took up a comparison of the heat retention of wafuku and hanbok\")", "scope": "Tamura 2005, lecture, not refereed; her paper at a Korea-Japan home economics symposium over 20 years earlier; added by verifier", "where": "photo 853921"},
     {"text": "Bingata was used mainly for the uchikake robes of royal and gentry women.", "src": 42, "page": "p.458", "quote": "主に王家や士族の婦女子の裲襠(うちかけ)として用いられてきた (Tr. \"it was used mainly as uchikake robes of women of the royal and gentry families\")", "scope": "Satō 2003, commentary by a bingata craftsman, not refereed. The robe on the wall is not claimed to be royal.", "where": "photo 61851"},
     {"text": "Yellow was a colour allowed only to royalty.", "src": 42, "page": "p.458", "quote": "黄色は王族のみに許された色 (Tr. \"yellow, a colour allowed only to royalty\")", "scope": "Satō 2003, commentary, not refereed", "where": "photo 61851"},
     {"text": "Bingata absorbed Javanese and Indian chintz techniques and Chinese printed cloth.", "src": 42, "page": "p.456", "quote": "大交易時代に紅型は,ジャワ更紗,インド更紗などの技法や中国の印花布の影響をうけた (Tr. \"in the age of great trade bingata was influenced by Javanese and Indian chintz techniques and Chinese yinhuabu\")", "scope": "Satō 2003, commentary, not refereed", "where": "narration"},
     {"text": "Since Okinawa's 1972 reversion, bingata circulates as Japanese kimono and obi.", "src": 42, "page": "p.457", "quote": "日本の伝統の着物の中にも取り入れられて,日本の着物や帯として流通するようになり (Tr. \"it was taken into traditional Japanese kimono and came to circulate as Japanese kimono and obi\")", "scope": "Satō 2003, commentary, not refereed; after 1972", "where": "narration"},
-    {"text": "From the mid-18th century attus became a trade good, reached Osaka and gave its name to the work coat atsushi.", "src": 43, "page": "p.1", "quote": "十八世紀半ば以降には交易品として産物化し、のちに大阪へももたらされて、「厚司」という作業着の呼称のもととなった (Tr. \"from the mid-18th century it became a trade product, was later brought to Osaka, and became the source of the name atsushi for a work garment\")", "scope": "Nakano 2006, museum bulletin, not refereed; read on page image", "where": "photo 51082"},
+    {"text": "From the mid-18th century attus became a trade good, reached Osaka and gave its name to the work garment atsushi.", "src": 43, "page": "p.1", "quote": "十八世紀半ば以降には交易品として産物化し、のちに大坂へももたらされて、「厚司」という作業着の呼称のもととなった (Tr. \"from the mid-18th century it became a trade product, was later brought to Osaka, and became the source of the name atsushi for a work garment\")", "scope": "Nakano 2006, museum bulletin, not refereed; read on page image", "where": "photo 51082"},
     {"text": "Attus means cloth of the bark fibre of trees such as ohyō elm, Japanese elm and linden.", "src": 43, "page": "p.9", "quote": "オヒョウ、ハルニレ、シナノキなどの落葉樹の靱皮繊維で製作された布を意味する語である (Tr. \"a word meaning cloth made from the bast fibre of deciduous trees such as ohyō, harunire and shinanoki\")", "scope": "Nakano 2006, museum bulletin, note 1, not refereed", "where": "narration"}
   ],
   "dropped": [

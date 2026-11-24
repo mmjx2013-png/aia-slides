@@ -45,7 +45,7 @@
   "room": "#151311",
   "dais": "#a69c8c",
   "lacquer": "#1a1210",
-  "felt": "#84201d"
+  "felt": "#6e1a19"
  },
  "stages": [
   {
@@ -130,7 +130,7 @@
   "nageshi2_z": 2.84,
   "nageshi2_h": 0.09,
   "open_bay": 8,
-  "paper_strength": 4.2,
+  "paper_strength": 6.0,
   "sun_strength": 1.0,
   "exposure": 0.0,
   "camera_z": 1.45,
