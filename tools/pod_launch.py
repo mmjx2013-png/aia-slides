@@ -18,7 +18,7 @@ CARDS = [("NVIDIA GeForce RTX 4090", 0.34, 12500), ("NVIDIA GeForce RTX 4070 Ti"
          ("NVIDIA GeForce RTX 3090", 0.22, 6000), ("NVIDIA RTX 4000 Ada Generation", 0.20, 5000),
          ("NVIDIA GeForce RTX 3090 Ti", 0.27, 6500), ("NVIDIA GeForce RTX 5090", 0.69, 15500),
          ("NVIDIA RTX A6000", 0.33, 5600)]
-WORK_MID, WORK_MAX = 122.0, 145.0        # GPU-minutes on one 4090 (the scene agent's estimate, unmeasured)
+WORK_MID, WORK_MAX = 145.0, 170.0        # GPU-minutes on one 4090 (the scene agent's estimate, unmeasured)
 SETUP, SERVE = 12.0, 40.0                # minutes: boot + install, and serving after the render
 CAP = 2.30                               # leave margin under the $2.50 cap
 opts = []
@@ -36,7 +36,7 @@ for gid, n, price, mid, cost, mx in opts:
            "containerDiskInGb": 20, "volumeInGb": 20, "volumeMountPath": "/workspace", "ports": "8000/http",
            "minVcpuCount": 4, "minMemoryInGb": 15, "startJupyter": False, "startSsh": False,
            "env": [{"key": "POD_TOKEN", "value": token}, {"key": "MAX_SECONDS", "value": str(mx)},
-                   {"key": "SERVE_AFTER", "value": str(int(SERVE * 60))}, {"key": "NVIDIA_DRIVER_CAPABILITIES", "value": "all"}]}
+                   {"key": "SERVE_AFTER", "value": str(int(SERVE * 60))}, {"key": "CLIP_SAMPLES", "value": "48"}, {"key": "NVIDIA_DRIVER_CAPABILITIES", "value": "all"}]}
     r = subprocess.run(["curl", "-s", "-m", "90", "-X", "POST", "https://api.runpod.io/graphql", "-H", "Content-Type: application/json",
                         "-d", json.dumps({"query": Q, "variables": {"input": inp}})], capture_output=True, text=True)
     try:

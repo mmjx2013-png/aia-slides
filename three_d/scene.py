@@ -871,11 +871,15 @@ def build_byobu(coll):
     fr.build("Byobu_frame", coll)
 
 
-def set_groups(iko=True, cloth=False, form=False):
-    """Which of the movable things are rendered: the iko with the robe and the screen; the procedural
-    bolt and pieces (call after update_cloth, which sets their own visibility); the mannequin."""
+def set_groups(iko=True, cloth=False, form=False, robe=None):
+    """Which of the movable things are rendered: the iko with the screen (and, unless robe=False, the
+    museum robe); the procedural bolt and pieces (call after update_cloth / update_exploded, which
+    set their own visibility); the mannequin."""
     for ob in _coll("Iko").all_objects:
         ob.hide_render = ob.hide_viewport = not iko
+    if robe is not None and S.get("robe"):
+        for ob in S["robe"]:
+            ob.hide_render = ob.hide_viewport = not robe
     if not cloth:
         for ob in _coll("Cloth").all_objects:
             ob.hide_render = ob.hide_viewport = True
@@ -1799,16 +1803,119 @@ def build(res=(1920, 1080), samples=64, preview=False, clay=False, form=True):
 
 def apply_frame(f, motion=True):
     f = int(f)
+    set_light(None)
     update_cloth(f)
     update_dressform(f)
     update_camera(f, motion=motion)
 
 
+# The eight pieces of the drawn-textile kimono, exploded: world offsets (x, y, z) from each piece's
+# place in the assembled T. The T is turned half round so its front faces south, like the robe.
+EXPLODE = {
+    "sleeve_l": (0.62, -0.95, 0.0), "sleeve_r": (-0.62, -0.95, 0.0),
+    "body_l": (0.34, -0.95, 0.0), "body_r": (-0.34, -0.95, 0.0),
+    "okumi_l": (-0.08, -1.20, 0.0), "okumi_r": (0.08, -1.20, 0.0),
+}
+# the collar band and the over-collar hang as straight strips at the two ends of the row:
+# piece -> (x of the strip's middle, y, z of its top)
+EXPLODE_STRAIGHT = {"collar": (-1.75, -0.95, 2.25), "over_collar": (1.75, -0.95, 2.25)}
+_ASSEMBLED = {}
+
+
+def update_exploded(t):
+    """t = 0: the eight pieces float apart in front of the iko; t = 1: assembled as the T on its bar."""
+    t = clamp01(t)
+    fa = STAGE["C"][1]
+    for ob in _coll("Cloth").all_objects:
+        ob.hide_render = ob.hide_viewport = True
+    for nm in list(EXPLODE) + list(EXPLODE_STRAIGHT):
+        p = S["pieces"][nm]
+        if nm not in _ASSEMBLED:
+            if p.kind == "main":
+                x, y = p.flat_xy()
+                co = hang_map(x, y, p.d, fa)
+            else:
+                co = _acc_hung(p, fa)
+            co = np.array(co, np.float64).reshape(-1, 3)
+            co[:, 0] *= -1.0
+            co[:, 1] *= -1.0
+            _ASSEMBLED[nm] = co
+        if nm in EXPLODE:
+            co = _ASSEMBLED[nm] + np.array(EXPLODE[nm]) * (1.0 - t)
+        else:
+            xc, yc, ztop = EXPLODE_STRAIGHT[nm]
+            flat = np.stack([xc + p.wa / 2.0 - p.A, np.full_like(p.A, yc), ztop - p.B], -1).reshape(-1, 3)
+            co = flat * (1.0 - t) + _ASSEMBLED[nm] * t
+        set_coords(p.ob, co)
+        p.ob.hide_render = p.ob.hide_viewport = False
+
+
+# Per-shot lighting. set_light() always restores the day first, so a preset cannot leak.
+LIGHT_PRESETS = {
+    "dusk": dict(sun_elevation=9.0, sun_azimuth=-10.0, sun_gain=1.5, sun_color=(1.0, 0.50, 0.22),
+                 shoji_gain=0.45, shoji_color=(1.0, 0.66, 0.40), shade_gain=0.40, shade_color=(0.70, 0.78, 1.0),
+                 paper_gain=0.55, paper_sun=(1.0, 0.62, 0.34), eave_z=1.74, exposure=0.7),
+}
+_DAY = {}
+
+
+def _paper_nodes():
+    nt = bpy.data.materials["H_washi"].node_tree
+    bsdf = [n for n in nt.nodes if n.bl_idname == "ShaderNodeBsdfPrincipled"][0]
+    return nt.nodes["strength"], nt.nodes["eave_z"], bsdf.inputs["Emission Color"].links[0].from_node
+
+
+def set_light(preset=None):
+    sc = bpy.context.scene
+    lights = [ob for ob in _coll("Lights").all_objects if ob.type == "LIGHT"]
+    strength, eave, mix = _paper_nodes()
+    if not _DAY:
+        _DAY["lights"] = {ob.name: (ob.data.energy, tuple(ob.data.color), ob.location.copy(),
+                                    ob.rotation_quaternion.copy()) for ob in lights}
+        _DAY["paper"] = (strength.outputs[0].default_value, eave.outputs[0].default_value,
+                         tuple(mix.inputs[7].default_value))
+        _DAY["exposure"] = sc.view_settings.exposure
+    for ob in lights:
+        e, c, loc, rot = _DAY["lights"][ob.name]
+        ob.data.energy, ob.data.color = e, c
+        ob.location, ob.rotation_quaternion = loc, rot
+    strength.outputs[0].default_value, eave.outputs[0].default_value = _DAY["paper"][:2]
+    mix.inputs[7].default_value = _DAY["paper"][2]
+    sc.view_settings.exposure = _DAY["exposure"]
+    if not preset:
+        return
+    L = LIGHT_PRESETS[preset]
+    el, az = math.radians(L["sun_elevation"]), math.radians(L["sun_azimuth"])
+    d = Vector((math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), -math.sin(el)))
+    for ob in lights:
+        e, c, loc, rot = _DAY["lights"][ob.name]
+        if ob.name.startswith("Sun_"):
+            dist = 26.0
+            d0 = rot @ Vector((0.0, 0.0, -1.0))
+            tgt = loc + d0 * dist
+            ob.location = tgt - d * dist
+            ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
+            ob.data.energy, ob.data.color = e * L["sun_gain"], L["sun_color"]
+        elif ob.name == "ShojiSun":
+            ob.data.energy, ob.data.color = e * L["shoji_gain"], L["shoji_color"]
+        else:
+            ob.data.energy, ob.data.color = e * L["shade_gain"], L["shade_color"]
+    strength.outputs[0].default_value = _DAY["paper"][0] * L["paper_gain"]
+    eave.outputs[0].default_value = L["eave_z"]
+    mix.inputs[7].default_value = tuple(L["paper_sun"]) + (1.0,)
+    sc.view_settings.exposure = _DAY["exposure"] + L["exposure"]
+
+
 def apply_shot(st):
     """Put the scene in the state of one slide-deck shot (a dict from shots.py)."""
-    update_cloth(st.get("cloth_f", 0))
+    if "explode" in st:
+        update_exploded(st["explode"])
+    else:
+        update_cloth(st.get("cloth_f", 0))
     g = st.get("groups", {})
-    set_groups(iko=g.get("iko", False), cloth=g.get("cloth", False), form=g.get("form", False))
+    set_groups(iko=g.get("iko", False), cloth=g.get("cloth", False), form=g.get("form", False),
+               robe=g.get("robe", g.get("iko", False)))
+    set_light(st.get("light"))
     if g.get("form", False) and S.get("form_state") is not None:
         for ob in _coll("DressForm").all_objects:
             ob.hide_render = ob.hide_viewport = False
