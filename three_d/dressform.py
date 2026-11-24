@@ -1,33 +1,38 @@
-"""dressform.py - the museum dress form and the dressing layers (kitsuke), stages E and F.
+"""dressform.py - the display mannequin and the dressing layers (kitsuke), stages E and F.
 
 API (called by scene.py / render.py)
-    state = build(collection, origin=(2.7, 0.0, 0.0), materials=None)
-    update(state, t)      t: dict of 0..1 floats: juban, kimono, ohashori, obi, obiage, obijime, knot
-    anchors(state)        dict name -> world (x, y, z), after any parent transform of state["root"]
+    state = build(collection, origin=(x, y, 0.0), materials=None)
+    update(state, t)      t: dict of 0..1 floats: juban, kimono, ohashori, obi, obiage, obijime, knot.
+                          Stateless: any combination of values gives the right picture.
+    anchors(state)        dict name -> WORLD (x, y, z), read through state["root"].matrix_world:
+                          form_juban_collar, form_overlap, form_ohashori, form_obi, form_obiage,
+                          form_obijime, form_knot, form_nape, form_hem, form_sleeve
 
-Everything build() creates is parented to one empty, state["root"], placed at `origin` and facing
-+Y. Rotate / move / re-parent that empty freely; anchors() reads evaluated world matrices.
+Everything build() creates is parented to one empty, state["root"], placed at `origin`; the figure
+stands on z = 0 and FACES +Y (the wearer's left is -X). Rotate / move / re-parent the root freely.
 `materials` may be a dict kind -> bpy material overriding common.fabric_material(kind) for the
-kinds 'kimono', 'lining', 'juban', 'obi', 'obiage', 'obijime', 'mannequin', 'lacquer'.
+kinds 'kimono', 'lining', 'juban', 'obi', 'obiage', 'obijime', 'mannequin'.
 
-Geometry is built in code only: a smooth signed-distance "padded body" (the hull) defines nested
-iso-surfaces; every cloth layer is a ray-cast of the hull at its own iso level, so layers can never
-cross (no z-fighting). The mannequin is a surface-nets mesh of its own SDF.
+How it is made (code only, no simulation)
+    The mannequin is a surface-nets mesh of a smooth signed-distance figure (head, neck, torso,
+    arms 25 degrees out, mitten hands, legs, feet). A second SDF, the padded "hull", is ray-cast
+    once into tables; every wrapped layer (juban, kimono, ohashori, obi, obi-age, cord) is that
+    hull at its own level, so layers can never cross. A robe arrives by its two halves sweeping
+    round the body from centre back (right half first, left half over it). Sleeves are a half tube
+    over the arm with a two-layer bag hanging from it.
 
-UV CONVENTION (kimono surfaces, the 'kimono' material reads the design atlas through UVs):
-    body panels: common.worn_uv(c, h, c_ref) per face corner, where
-        c = (arc length round the robe from centre back, measured on the hull at hip height) / K,
-            negative towards the wearer's LEFT. K (about 0.70, stored in state["uv_k"]) is chosen so
-            that the left front edge c = -0.87 lands about 9 cm right of centre front; i.e. the
-            garment's width is compressed by K round the body (side seams at the sides, okumi seam
-            near centre front).
-        h = metres below the shoulder ridge above the ohashori fold line; below the fold (the
-            skirt after the fold) h = 1.60 - (z - hem z), so the hem is at h = 1.60.
-    sleeves: common.garment_uv(x, y) with x = +/-(0.36 + metres along the arm from the sleeve
-        seam), y = +d on the front layer / -d on the back layer, d = metres from the top fold.
-    collar band: common.collar_uv(a, b), a across the band 0.02..0.075, b along it from the
-        wearer's-right lower end.
-    obi and knot: metres, u along the sash, v across (as the 'obi' material expects).
+UV CONVENTION (the 'kimono' material reads the design atlas through UVs)
+    body panels: common.worn_uv(c, h, c_ref) per face corner.
+        c = distance round the body from centre back, negative towards the wearer's LEFT, mapped
+            from arc length at hip height so that the front edge of each half is c = -/+0.87. The
+            body is narrower than the flat garment, so the map is compressed: about 0.9 true scale
+            at centre back and centre front, tighter at the sides (under the sleeves).
+        h = metres below the shoulder ridge for everything above the ohashori fold line; below it
+            h = 1.60 - (z - hem z), so the hem composition sits exactly on the hem.
+    sleeves: common.garment_uv(x, y), x = +/-(0.36 + metres along the arm from the sleeve seam),
+        y = +d on the front layer, -d on the back layer, d = metres of cloth from the top fold.
+    collar band: common.collar_uv(a, b), a across the band, b along it.
+    obi, otaiko knot and its tail: metres (u along the sash, v across), as the 'obi' material expects.
 """
 import math
 import os
@@ -40,34 +45,38 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import common  # noqa: E402
 
+LAYERS = ("juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot")
+
 # --------------------------------------------------------------------------- numbers (metres, local)
 
-Z_HEM = 0.045            # kimono hem, just above the feet
-Z_HEM_JUBAN = 0.10
-Z_SH = 1.36              # shoulder line at the neck base
-Z_NECK_TOP = 1.48
-OBI_BOT, OBI_TOP = 0.955, 1.110
-Z_FOLD = OBI_BOT - 0.066         # ohashori lower edge
-Z_KOSHI = Z_FOLD + 0.145         # waist tie under the obi (hidden)
-Z_C = 1.20               # centre of the upper (elevation) ray fan
-R_UP = 0.16
-ARM_DEG = 35.0
-J = np.array([0.168, 0.0, 1.295])        # right shoulder joint (mirrored for the left)
-CA, SA = math.cos(math.radians(ARM_DEG)), math.sin(math.radians(ARM_DEG))
-D_ARM = np.array([CA, 0.0, -SA])
-N_ARM = np.array([SA, 0.0, CA])
-ARM_LEN = 0.29
+Z_HEM = 0.050                      # kimono hem, just above the feet
+ROW_STEP = 0.012
+Z_HEM_J = Z_HEM + 4 * ROW_STEP     # juban hem (hidden)
+OBI_BOT, OBI_TOP = 0.945, 1.100    # 15.5 cm sash
+Z_FOLD = OBI_BOT - 0.066           # lower edge of the ohashori
+Z_KOSHI = OBI_BOT + 0.070          # hidden waist tie: where the fold starts from
+Z_C = 1.130                        # centre of the upper ray fan (shoulders, neck)
 
-ISO_J = 0.000            # juban surface
-DJ = 0.008               # juban left-over-right lift
-ISO_K = 0.019            # kimono surface
-DK = 0.013               # kimono left-over-right lift
-FOLD = 0.009             # ohashori layer
-THK_K, THK_J = 0.003, 0.002
+ARM_DEG = 25.0
+J = np.array([0.170, 0.0, 1.280])  # right shoulder joint (mirrored for the left)
+SA, CA = math.sin(math.radians(ARM_DEG)), math.cos(math.radians(ARM_DEG))
+D_ARM = np.array([SA, 0.0, -CA])   # along the arm
+N_ARM = np.array([CA, 0.0, SA])    # outward/up normal of the arm in the frontal plane
+L_ELBOW, L_WRIST = 0.275, 0.520
+CAP_LEN, CAP_R = 0.110, 0.053      # the part of the upper arm the body panels cover
 
-# collar lines, front view: x of the wearer's LEFT panel's edge as a function of z (panel at x < edge)
-KIMONO_EDGE = ((0.0, 0.095), (1.02, 0.095), (1.215, 0.0), (1.33, -0.048), (1.40, -0.066), (1.60, -0.072))
-JUBAN_EDGE = ((0.0, 0.06), (1.00, 0.06), (1.25, 0.0), (1.34, -0.036), (1.41, -0.053), (1.60, -0.058))
+LV_J, DJ = 0.000, 0.006            # juban level, left-over-right lift
+LV_K, DK = 0.014, 0.009            # kimono level, left-over-right lift
+NAPE = 0.006                       # the kimono collar closes in on the nape by this much
+FOLD = 0.008                       # ohashori: extra layer
+THK_K, THK_J = 0.0025, 0.002
+LV_OBI = LV_K + DK + FOLD + 0.003  # inner face of the obi
+OBI_THK = 0.010
+Z_BACK_K, Z_BACK_J = 1.400, 1.408  # collar tops at the nape
+
+# front view: x of the wearer's LEFT half's edge as a function of z (the half covers x < edge)
+KIMONO_EDGE = ((0.0, 0.095), (1.02, 0.095), (1.245, 0.0), (1.33, -0.036), (1.40, -0.050), (1.70, -0.052))
+JUBAN_EDGE = ((0.0, 0.080), (1.09, 0.080), (1.28, 0.0), (1.36, -0.034), (1.41, -0.042), (1.70, -0.043))
 
 
 # --------------------------------------------------------------------------- SDF primitives (numpy)
@@ -81,12 +90,18 @@ def _smax(a, b, k):
     return -_smin(-a, -b, k)
 
 
-def _ellipsoid(p, c, r):
-    q = (p - np.asarray(c)) / np.asarray(r)
-    k0 = np.sqrt((q * q).sum(-1))
-    q1 = q / np.asarray(r)
-    k1 = np.sqrt((q1 * q1).sum(-1)) + 1e-9
+def _ell(q, r):
+    """Approximate distance to an origin-centred ellipsoid; q (...,3) local coordinates."""
+    r = np.asarray(r, float)
+    a = q / r
+    k0 = np.sqrt((a * a).sum(-1))
+    b = a / r
+    k1 = np.sqrt((b * b).sum(-1)) + 1e-9
     return k0 * (k0 - 1.0) / k1
+
+
+def _ellipsoid(p, c, r):
+    return _ell(p - np.asarray(c, float), r)
 
 
 def _ellcyl(p, A, B):
@@ -97,48 +112,73 @@ def _ellcyl(p, A, B):
 
 
 def _capsule(p, a, b, ra, rb):
-    a, b = np.asarray(a), np.asarray(b)
+    a, b = np.asarray(a, float), np.asarray(b, float)
     ba = b - a
     t = np.clip(((p - a) * ba).sum(-1) / (ba @ ba), 0.0, 1.0)
     q = a + t[..., None] * ba
     return np.sqrt(((p - q) ** 2).sum(-1)) - (ra + (rb - ra) * t)
 
 
-_HZ = np.array([0.00, 0.50, 0.85, 1.00, 1.15, 1.26])
-_HA = np.array([0.172, 0.180, 0.187, 0.182, 0.183, 0.185])
-_HB = np.array([0.138, 0.143, 0.149, 0.145, 0.147, 0.145])
+def _mirror(p):
+    q = p.copy()
+    q[..., 0] = np.abs(q[..., 0])
+    return q
+
+
+_HZ = np.array([0.00, 0.45, 0.86, 1.00, 1.16, 1.27])
+_HA = np.array([0.150, 0.156, 0.163, 0.160, 0.160, 0.160])
+_HB = np.array([0.118, 0.123, 0.128, 0.126, 0.126, 0.122])
+
+
+def tube_sdf(p):
+    """The padded body below the arms: a long, slightly tapering tube."""
+    z = p[..., 2]
+    return _ellcyl(p, np.interp(z, _HZ, _HA), np.interp(z, _HZ, _HB))
 
 
 def hull_sdf(p):
-    """The padded, dressed body (iso 0 = the juban). Symmetric in x, no arms."""
+    """The padded, dressed body (level 0 = the juban). Symmetric in x; arms only as shoulder caps."""
     z = p[..., 2]
-    A, B = np.interp(z, _HZ, _HA), np.interp(z, _HZ, _HB)
-    d = _smax(_ellcyl(p, A, B), z - 1.25, 0.08)
-    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.265), (0.214, 0.124, 0.094)), 0.06)
-    for s in (-1, 1):
-        d = _smin(d, _ellipsoid(p, (s * 0.172, 0.0, 1.272), (0.072, 0.072, 0.072)), 0.05)
-    d = _smin(d, _capsule(p, (0, -0.01, 1.20), (0, -0.01, 1.62), 0.060, 0.060), 0.03)
+    q = _mirror(p)
+    d = _smax(tube_sdf(p), z - 1.26, 0.08)
+    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.285), (0.203, 0.112, 0.090)), 0.06)
+    d = _smin(d, _ellipsoid(q, J, (0.053, 0.053, 0.053)), 0.05)
+    d = _smin(d, _capsule(q, J, J + CAP_LEN * D_ARM, CAP_R, CAP_R), 0.035)
+    d = _smin(d, _capsule(p, (0, -0.012, 1.20), (0, 0.012, 1.62), 0.051, 0.051), 0.03)
     return d
 
 
-_MZ = np.array([0.70, 0.85, 0.95, 1.03, 1.12, 1.20, 1.26])
-_MA = np.array([0.150, 0.168, 0.152, 0.132, 0.146, 0.160, 0.160])
-_MB = np.array([0.112, 0.126, 0.114, 0.100, 0.114, 0.124, 0.116])
+_MZ = np.array([0.72, 0.84, 0.94, 1.04, 1.13, 1.22, 1.30])
+_MA = np.array([0.128, 0.150, 0.146, 0.122, 0.134, 0.150, 0.148])
+_MB = np.array([0.094, 0.106, 0.102, 0.088, 0.098, 0.106, 0.100])
 
 
 def mannequin_sdf(p):
+    """An abstract display figure: no face, no fingers."""
     z = p[..., 2]
-    A, B = np.interp(z, _MZ, _MA), np.interp(z, _MZ, _MB)
-    d = _smax(_ellcyl(p, A, B), z - 1.25, 0.07)
-    d = _smax(d, 0.735 - z, 0.02)
-    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.262), (0.196, 0.110, 0.080)), 0.05)
-    for s in (-1, 1):
-        js = J * np.array([s, 1, 1])
-        ds = D_ARM * np.array([s, 1, 1])
-        d = _smin(d, _ellipsoid(p, (s * 0.168, 0.0, 1.268), (0.060, 0.060, 0.060)), 0.04)
-        d = _smin(d, _capsule(p, js, js + ARM_LEN * ds, 0.046, 0.035), 0.03)
-    neck = _smax(_capsule(p, (0, -0.01, 1.22), (0, -0.01, 1.70), 0.050, 0.050), z - Z_NECK_TOP, 0.006)
-    return _smin(d, neck, 0.03)
+    q = _mirror(p)
+    d = _smax(_ellcyl(p, np.interp(z, _MZ, _MA), np.interp(z, _MZ, _MB)), z - 1.27, 0.07)
+    d = _smax(d, 0.745 - z, 0.06)
+    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.283), (0.196, 0.100, 0.082)), 0.05)
+    # shoulders, arms, mitten hands
+    elbow, wrist = J + L_ELBOW * D_ARM, J + L_WRIST * D_ARM
+    d = _smin(d, _ellipsoid(q, J, (0.046, 0.046, 0.046)), 0.04)
+    d = _smin(d, _capsule(q, J, elbow, 0.041, 0.034), 0.03)
+    d = _smin(d, _capsule(q, elbow, wrist, 0.034, 0.025), 0.02)
+    rel = q - (J + (L_WRIST + 0.082) * D_ARM)
+    loc = np.stack([(rel * D_ARM).sum(-1), (rel * N_ARM).sum(-1), rel[..., 1]], -1)
+    d = _smin(d, _ell(loc, (0.094, 0.017, 0.038)), 0.022)
+    # legs and feet
+    hip, knee, ank = (0.080, 0.0, 0.84), (0.074, 0.006, 0.47), (0.068, -0.012, 0.085)
+    d = _smin(d, _capsule(q, hip, knee, 0.077, 0.050), 0.04)
+    d = _smin(d, _capsule(q, knee, ank, 0.049, 0.033), 0.03)
+    d = _smin(d, _ellipsoid(q, (0.071, -0.016, 0.335), (0.047, 0.052, 0.125)), 0.03)
+    foot = _smax(_ellipsoid(q, (0.068, 0.040, 0.028), (0.040, 0.100, 0.036)), -z, 0.006)
+    d = _smin(d, foot, 0.022)
+    # neck and an egg for a head
+    d = _smin(d, _capsule(p, (0, -0.006, 1.30), (0, 0.006, 1.52), 0.047, 0.044), 0.03)
+    d = _smin(d, _ellipsoid(p, (0, 0.012, 1.560), (0.070, 0.086, 0.105)), 0.022)
+    return d
 
 
 def _grad(f, p, e=1e-3):
@@ -154,22 +194,27 @@ def _unit(v):
     return v / (np.linalg.norm(v, axis=-1, keepdims=True) + 1e-12)
 
 
-def _cast(o, d, iso, f=hull_sdf, hi=0.45, it=22):
-    """First crossing of f = iso along rays o + s d (o inside). Vectorised bisection."""
-    o, d = np.broadcast_arrays(o, d)
-    shape = o.shape[:-1]
-    lo = np.zeros(shape)
-    hh = np.full(shape, hi)
-    iso = np.broadcast_to(iso, shape)
+def _bisect(f, o, d, lo, hi, iso=0.0, it=18):
+    lo = np.broadcast_to(lo, o.shape[:-1]).astype(float).copy()
+    hi = np.broadcast_to(hi, o.shape[:-1]).astype(float).copy()
     for _ in range(it):
-        m = 0.5 * (lo + hh)
+        m = 0.5 * (lo + hi)
         out = f(o + m[..., None] * d) > iso
-        hh = np.where(out, m, hh)
+        hi = np.where(out, m, hi)
         lo = np.where(out, lo, m)
-    return o + (0.5 * (lo + hh))[..., None] * d
+    return 0.5 * (lo + hi)
 
 
-def _project(p, iso, f=hull_sdf, it=3):
+def _first_hit(f, o, d, hi=0.48, step=0.006):
+    """Distance of the FIRST crossing of f = 0 along rays o + s d (o inside)."""
+    s = np.arange(0.0, hi + step, step)
+    F = f(o[..., None, :] + s[:, None] * d[..., None, :]) > 0.0
+    k = np.where(F.any(-1), F.argmax(-1), len(s) - 1)
+    k = np.maximum(k, 1)
+    return _bisect(f, o, d, s[k - 1], s[k], 0.0, 14)
+
+
+def _project(p, iso, f=hull_sdf, it=2):
     for _ in range(it):
         g = _grad(f, p)
         gg = (g * g).sum(-1, keepdims=True) + 1e-9
@@ -184,6 +229,108 @@ def _ss(x):
 
 def _ramp(t, a, b):
     return float(_ss((t - a) / (b - a)))
+
+
+# --------------------------------------------------------------------------- the hull, tabulated
+
+class _Hull:
+    """Ray-cast tables of the hull. Rows 0..n0-1 are horizontal rings (tube only, z = self.z);
+    rows n0.. are a fan of elevation self.phi from (0, 0, Z_C) over the shoulders to the neck.
+    Azimuth psi runs from centre back (0) round one side (sx) to the front (pi) and beyond."""
+    LEVELS = np.array([0.0, 0.025, 0.060])
+
+    def __init__(self):
+        self.z = np.r_[np.arange(Z_HEM, 0.842, ROW_STEP), np.arange(0.850, 1.0201, 0.005),
+                       np.arange(1.030, Z_C - 0.004, 0.010)]
+        self.n0 = len(self.z)
+        psd = np.radians(np.arange(0.0, 181.0))
+
+        def fan_od(phi, psi):
+            phi, psi = np.broadcast_arrays(phi, psi)
+            d = np.stack([np.sin(psi) * np.cos(phi), -np.cos(psi) * np.cos(phi), np.sin(phi)], -1)
+            o = np.zeros_like(d)
+            o[..., 2] = Z_C
+            return o, d
+
+        # fan rows: even spacing along the back / side / front profiles, up to the juban collar top
+        ph = np.linspace(0.0, 1.45, 360)
+        prof, arcs = {}, []
+        for a in (0.0, 90.0, 180.0):
+            o, d = fan_od(ph, np.radians(a))
+            r = _first_hit(hull_sdf, o, d)
+            pts = o + r[:, None] * d
+            prof[a] = (o, d, r, pts)
+            s = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(pts, axis=0), axis=1))]
+            arcs.append(s)
+        o, d, r, pts = prof[0.0]
+        phi_j = float(np.interp(Z_BACK_J, pts[:, 2], ph))
+        rk = _bisect(hull_sdf, o, d, r, r + 0.1, LV_K - NAPE)
+        phi_k = float(np.interp(Z_BACK_K, (o + rk[:, None] * d)[:, 2], ph))
+        m = ph <= phi_j
+        par = sum(s[m] / s[m][-1] for s in arcs) / 3.0
+        nf = 50
+        phis = np.interp(np.linspace(0.0, 1.0, nf), par, ph[m])
+        phis[-1] = phi_j
+        kk = int(np.argmin(np.abs(phis - phi_k)))
+        phis[kk] = phi_k
+        self.phi = phis
+        self.row_top_k = self.n0 + kk
+        self.nrows = self.n0 + nf
+        self.zback = np.interp(phis, ph, pts[:, 2])
+
+        tab = np.zeros((len(self.LEVELS), self.nrows, 181))
+        # rings
+        zz, pp = np.meshgrid(self.z, psd, indexing="ij")
+        o = np.stack([np.zeros_like(zz), np.zeros_like(zz), zz], -1)
+        d = np.stack([np.sin(pp), -np.cos(pp), np.zeros_like(pp)], -1)
+        for li, lv in enumerate(self.LEVELS):
+            tab[li, :self.n0] = _bisect(tube_sdf, o, d, 0.03, 0.42, lv, 20)
+        # fan
+        ff, pp = np.meshgrid(self.phi, psd, indexing="ij")
+        o, d = fan_od(ff, pp)
+        r0 = _first_hit(hull_sdf, o, d)
+        tab[0, self.n0:] = r0
+        for li in (1, 2):
+            tab[li, self.n0:] = _bisect(hull_sdf, o, d, r0, r0 + 0.16, self.LEVELS[li], 18)
+        self.tab = np.concatenate([tab, tab[:, :, -2::-1]], axis=2)      # 0..360 degrees
+        # nominal height of each row (for wrinkle placement) and how far up the neck it is
+        self.zn = np.r_[self.z, Z_C + 0.19 * np.sin(self.phi)]
+        self.top = np.r_[np.zeros(self.n0), _ss((self.zback - 1.335) / 0.045)]
+
+    def radius(self, ri, psi, level):
+        ri, psi, level = np.broadcast_arrays(np.asarray(ri, float), psi, level)
+        pd = np.mod(np.degrees(psi), 360.0)
+        j0 = np.minimum(np.floor(pd).astype(int), 359)
+        fj = pd - j0
+        i0 = np.clip(np.floor(ri).astype(int), 0, self.nrows - 2)
+        fi = ri - i0
+        out = []
+        for li in range(3):
+            T = self.tab[li]
+            a = T[i0, j0] * (1 - fj) + T[i0, j0 + 1] * fj
+            b = T[i0 + 1, j0] * (1 - fj) + T[i0 + 1, j0 + 1] * fj
+            out.append(a * (1 - fi) + b * fi)
+        L = self.LEVELS
+        lo = out[0] + (out[1] - out[0]) * (level / L[1])
+        hi = out[1] + (out[2] - out[1]) * ((level - L[1]) / (L[2] - L[1]))
+        return np.where(level <= L[1], lo, hi)
+
+    def pts(self, rows, psi, level, sx):
+        """Points for integer row indices (arrays broadcast)."""
+        rows, psi, level = np.broadcast_arrays(rows, psi, level)
+        r = self.radius(rows, psi, level)
+        fan = rows >= self.n0
+        phi = np.where(fan, self.phi[np.clip(rows - self.n0, 0, len(self.phi) - 1)], 0.0)
+        oz = np.where(fan, Z_C, self.z[np.clip(rows, 0, self.n0 - 1)])
+        cp = np.cos(phi)
+        return np.stack([sx * r * np.sin(psi) * cp, -r * np.cos(psi) * cp, oz + r * np.sin(phi)], -1)
+
+    def ring(self, z, psi, level, sx=-1):
+        """Points on the tube at height z (below the arms). psi in the LEFT half's convention."""
+        z, psi, level = np.broadcast_arrays(np.asarray(z, float), psi, level)
+        ri = np.interp(z, self.z, np.arange(self.n0, dtype=float))
+        r = self.radius(np.minimum(ri, self.n0 - 1.0), psi, level)
+        return np.stack([sx * r * np.sin(psi), -r * np.cos(psi), z], -1)
 
 
 # --------------------------------------------------------------------------- mesh helpers
@@ -218,16 +365,12 @@ def _mat(state, kind):
     return m if m is not None else common.fabric_material(kind)
 
 
-def _new_obj(state, name, verts, faces, mats, smooth=True, uv=False):
+def _new_obj(state, name, verts, faces, mats, uv=False):
     import bpy
     me = bpy.data.meshes.new(name)
-    me.from_pydata([tuple(p) for p in verts], [], [tuple(int(k) for k in q) for q in faces])
+    me.from_pydata(np.asarray(verts, float).tolist(), [], np.asarray(faces, int).tolist())
     me.update()
-    if smooth:
-        try:
-            me.shade_smooth()
-        except AttributeError:
-            me.polygons.foreach_set("use_smooth", [True] * len(me.polygons))
+    me.polygons.foreach_set("use_smooth", [True] * len(me.polygons))
     if uv:
         me.uv_layers.new(name="UVMap")
     for m in mats:
@@ -246,9 +389,8 @@ def _set_co(ob, v):
 
 
 def _set_uv(ob, uv):
-    me = ob.data
     arr = np.ascontiguousarray(uv, dtype=np.float32).ravel()
-    lay = me.uv_layers[0]
+    lay = ob.data.uv_layers[0]
     try:
         lay.uv.foreach_set("vector", arr)
     except Exception:
@@ -267,42 +409,8 @@ def _solidify(ob, thk, mat_off=1):
     m.use_even_offset = True
     m.use_rim = True
     m.material_offset = mat_off
-    m.material_offset_rim = mat_off
+    m.material_offset_rim = 0
     return m
-
-
-def _sweep(C, N, U, prof, closed_curve=False):
-    """Sweep a closed 2D profile (m,2) in the (N, U) frame along points C (n,3).
-    Profile may be (n,m,2) for per-sample profiles. Returns verts (n*m,3), faces, uv (loops)."""
-    n = len(C)
-    prof = np.broadcast_to(prof, (n,) + np.shape(prof)[-2:])
-    m = prof.shape[1]
-    V = C[:, None, :] + prof[..., 0:1] * N[:, None, :] + prof[..., 1:2] * U[:, None, :]
-    return V.reshape(-1, 3), m
-
-
-def _sweep_faces(n, m, closed_curve=False):
-    # profile ring closed (m), curve open/closed
-    return _grid_faces(n + (1 if closed_curve else 0), m, close_c=True) if not closed_curve else \
-        _grid_faces(n, m, close_c=True)
-
-
-def _sweep_uv(C, prof, faces, m):
-    n = len(C)
-    seg = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
-    p = np.asarray(prof)
-    if p.ndim == 3:
-        p = p[len(p) // 2]
-    pl = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(np.vstack([p, p[:1]]), axis=0), axis=1))]
-    i_row = faces // m
-    j_col = faces % m
-    # unwrap ring seam per face
-    jj = j_col.astype(float)
-    wrap = (jj.max(1, keepdims=True) == m - 1) & (jj.min(1, keepdims=True) == 0)
-    jj = np.where(wrap & (jj == 0), m, jj)
-    u = seg[i_row]
-    v = pl[jj.astype(int)]
-    return np.stack([u, v], -1).reshape(-1, 2)
 
 
 def _stadium(w0, w1, t0, t1, k=24, r=None):
@@ -319,17 +427,57 @@ def _stadium(w0, w1, t0, t1, k=24, r=None):
     return np.array(pts)
 
 
-def _circle(r, k=10, cn=0.0, cu=0.0):
+def _circle(r, k=10):
     a = np.linspace(0, 2 * math.pi, k, endpoint=False)
-    return np.stack([cn + r * np.cos(a), cu + r * np.sin(a)], -1)
+    return np.stack([r * np.cos(a), r * np.sin(a)], -1)
 
 
-def _frames_from_normal(C, N):
-    T = np.gradient(C, axis=0)
-    T = _unit(T)
+def _close_prof(prof):
+    return np.vstack([prof, prof[:1]])
+
+
+def _frames(C, N):
+    T = _unit(np.gradient(C, axis=0))
     N = _unit(N - (N * T).sum(-1, keepdims=True) * T)
-    U = np.cross(T, N)
-    return T, N, U
+    return T, N, np.cross(T, N)
+
+
+def _sweep_verts(C, N, U, prof, scale=None):
+    pr = _close_prof(prof)
+    pr = np.broadcast_to(pr, (len(C),) + pr.shape)
+    if scale is not None:
+        pr = pr * scale[:, None, None]
+    V = C[:, None, :] + pr[..., 0:1] * N[:, None, :] + pr[..., 1:2] * U[:, None, :]
+    return V.reshape(-1, 3)
+
+
+def _tube_obj(state, name, n, prof, kind, uv=False):
+    faces = _grid_faces(n, len(prof) + 1)
+    ob = _new_obj(state, name, np.zeros((n * (len(prof) + 1), 3)), faces, [_mat(state, kind)], uv=uv)
+    return dict(ob=ob, prof=prof, n=n, faces=faces, flip=None)
+
+
+def _tube_set(td, C, N, scale=None):
+    """Sweep td's profile along C; the face winding is fixed on first use (outward)."""
+    T, N, U = _frames(C, N)
+    V = _sweep_verts(C, N, U, td["prof"], scale)
+    if td["flip"] is None:
+        m = len(td["prof"]) + 1
+        f = td["faces"]
+        cen = np.repeat(C, m, axis=0)
+        s = ((V[f].mean(1) - cen[f].mean(1)) * _face_normals(V, f)).sum(-1)
+        td["flip"] = bool((s < 0).sum() > (s > 0).sum())
+        if td["flip"]:
+            me = td["ob"].data
+            me.flip_normals() if hasattr(me, "flip_normals") else None
+    _set_co(td["ob"], V)
+    return V
+
+
+def _resample(P, n):
+    L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))]
+    s = np.linspace(0, L[-1], n)
+    return np.stack([np.interp(s, L, P[:, k]) for k in range(P.shape[1])], -1)
 
 
 # --------------------------------------------------------------------------- the mannequin
@@ -340,10 +488,11 @@ def _surface_nets(f, lo, hi, h):
     zs = np.arange(lo[2], hi[2] + h, h)
     X, Y, Z = np.meshgrid(xs, ys, zs, indexing="ij")
     F = f(np.stack([X, Y, Z], -1))
+    del X, Y, Z
     nx, ny, nz = F.shape
     inside = F < 0
-    S = np.zeros((nx - 1, ny - 1, nz - 1, 3))
-    Cn = np.zeros((nx - 1, ny - 1, nz - 1))
+    S = np.zeros((nx - 1, ny - 1, nz - 1, 3), np.float32)
+    Cn = np.zeros((nx - 1, ny - 1, nz - 1), np.float32)
     corners = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0), (0, 0, 1), (1, 0, 1), (0, 1, 1), (1, 1, 1)]
     edges = [(0, 1), (2, 3), (4, 5), (6, 7), (0, 2), (1, 3), (4, 6), (5, 7), (0, 4), (1, 5), (2, 6), (3, 7)]
 
@@ -354,31 +503,27 @@ def _surface_nets(f, lo, hi, h):
         fa, fb = F[sl(ca)], F[sl(cb)]
         m = (fa < 0) != (fb < 0)
         t = np.where(m, fa / np.where(m, fa - fb, 1.0), 0.0)
-        pa = np.array(ca, float)
-        pb = np.array(cb, float)
-        pos = pa + t[..., None] * (pb - pa)
-        S += np.where(m[..., None], pos, 0.0)
+        pa = np.array(ca, np.float32)
+        pb = np.array(cb, np.float32)
+        S += np.where(m[..., None], pa + t[..., None] * (pb - pa), 0.0)
         Cn += m
     act = Cn > 0
     idx = -np.ones(act.shape, dtype=np.int64)
     idx[act] = np.arange(act.sum())
     ii, jj, kk = np.nonzero(act)
-    local = S[act] / Cn[act][:, None]
-    V = np.stack([xs[ii], ys[jj], zs[kk]], -1) + local * h
+    V = np.stack([xs[ii], ys[jj], zs[kk]], -1) + (S[act] / Cn[act][:, None]) * h
     faces = []
-    # x-edges
+    dims = [nx, ny, nz]
     for axis in range(3):
-        a0 = inside
         sl0 = [slice(None)] * 3
         sl1 = [slice(None)] * 3
         sl0[axis] = slice(0, -1)
         sl1[axis] = slice(1, None)
-        ch = a0[tuple(sl0)] != a0[tuple(sl1)]
-        e = np.argwhere(ch)
+        e = np.argwhere(inside[tuple(sl0)] != inside[tuple(sl1)])
         o1, o2 = [ax for ax in range(3) if ax != axis]
-        ok = (e[:, o1] > 0) & (e[:, o2] > 0) & (e[:, o1] < [nx, ny, nz][o1] - 1) & (e[:, o2] < [nx, ny, nz][o2] - 1)
+        ok = (e[:, o1] > 0) & (e[:, o2] > 0) & (e[:, o1] < dims[o1] - 1) & (e[:, o2] < dims[o2] - 1)
         e = e[ok]
-        flip = a0[tuple(e.T)]
+        flip = inside[tuple(e.T)]
 
         def cell(d1, d2):
             c = e.copy()
@@ -388,69 +533,21 @@ def _surface_nets(f, lo, hi, h):
         q = np.stack([cell(1, 1), cell(0, 1), cell(0, 0), cell(1, 0)], -1)
         if axis == 1:
             flip = ~flip
-        q = np.where(flip[:, None], q[:, ::-1], q)
-        faces.append(q)
+        faces.append(np.where(flip[:, None], q[:, ::-1], q))
     Fc = np.vstack(faces)
-    Fc = Fc[(Fc >= 0).all(1)]
-    return V, Fc
+    return V, Fc[(Fc >= 0).all(1)]
 
 
 def _build_mannequin(state):
-    V, Fc = _surface_nets(mannequin_sdf, (-0.48, -0.16, 0.70), (0.48, 0.16, 1.50), 0.0055)
+    V, Fc = _surface_nets(mannequin_sdf, (-0.50, -0.150, -0.014), (0.50, 0.170, 1.680), 0.006)
     V = _project(V, 0.0, mannequin_sdf, it=3)
-    ref = np.zeros_like(V[Fc].mean(1))
     cen = V[Fc].mean(1)
-    # inside reference: nearest point on the body axis / arm axis is good enough via gradient
-    g = _grad(mannequin_sdf, cen)
-    n = _face_normals(V, Fc)
-    if ((g * n).sum(-1) < 0).sum() > len(Fc) / 2:
+    if ((_grad(mannequin_sdf, cen) * _face_normals(V, Fc)).sum(-1) < 0).sum() > len(Fc) / 2:
         Fc = Fc[:, ::-1]
-    del ref
     _new_obj(state, "DF_mannequin", V, Fc, [_mat(state, "mannequin")])
-    # stand: a lathe (base disc + slim pole)
-    prof = [(0.0, 0.0), (0.205, 0.0), (0.21, 0.004), (0.21, 0.016), (0.204, 0.022), (0.03, 0.024),
-            (0.014, 0.028), (0.0125, 0.04), (0.0125, 0.745), (0.0, 0.745)]
-    k = 64
-    pts, faces = [], []
-    for (r, z) in prof:
-        for a in range(k):
-            ang = 2 * math.pi * a / k
-            pts.append((r * math.cos(ang), r * math.sin(ang), z))
-    for i in range(len(prof) - 1):
-        for a in range(k):
-            b = (a + 1) % k
-            faces.append((i * k + a, i * k + b, (i + 1) * k + b, (i + 1) * k + a))
-    pts = np.array(pts)
-    faces = np.array(faces)
-    faces = _orient(pts, faces, np.array([0, 0, 0.38]))
-    ob = _new_obj(state, "DF_stand", pts, faces, [_mat(state, "lacquer")])
-    ob.data.polygons.foreach_set("use_smooth", [True] * len(ob.data.polygons)) if False else None
 
 
-# --------------------------------------------------------------------------- robe panels
-
-def _rows(z_hem, phi_top):
-    zl = list(np.arange(z_hem, 0.86, 0.010)) + list(np.arange(0.86, 1.06, 0.004)) + \
-        list(np.arange(1.06, Z_C, 0.008))
-    zl[0] = z_hem
-    nu = 34
-    ph = list(np.linspace(0.0, phi_top, nu + 1)[1:])
-    kind = [0] * len(zl) + [1] * len(ph)
-    val = zl + ph
-    return np.array(kind), np.array(val)
-
-
-def _ray(kind, val, psi, sx):
-    """Ray origins/directions for row (kind, val) and azimuth psi (radians, from centre back
-    towards the panel's side sx = -1 left / +1 right). Arrays broadcast."""
-    kind, val, psi = np.broadcast_arrays(kind, val, psi)
-    cp = np.where(kind == 0, 1.0, np.cos(val))
-    sp = np.where(kind == 0, 0.0, np.sin(val))
-    d = np.stack([sx * np.sin(psi) * cp, -np.cos(psi) * cp, sp], -1)
-    oz = np.where(kind == 0, val, Z_C)
-    o = np.stack([np.zeros_like(oz), np.zeros_like(oz), oz], -1)
-    return o, d
-
+# --------------------------------------------------------------------------- robe halves
 
 def _edge_x(z, table):
     zz, xx = zip(*table)
@@ -458,98 +555,90 @@ def _edge_x(z, table):
 
 
 def _ridge(x):
-    return 1.365 - 0.33 * np.maximum(0.0, np.abs(x) - 0.07)
+    return 1.375 - 0.36 * np.maximum(0.0, np.abs(x) - 0.06)
 
 
 class _Panel:
-    """One wrapped half of a robe (left or right), described by rows and a final edge per row."""
+    """One wrapped half of a robe (wearer's left sx = -1 or right sx = +1)."""
 
-    def __init__(self, sx, iso, lift, edge_tab, z_hem, z_top_back, ncols, fold=False):
-        self.sx, self.iso, self.lift, self.fold = sx, iso, lift, fold
-        # top row: elevation at which the back of the neck reaches z_top_back
-        phis = np.linspace(0.9, 1.45, 200)
-        o, d = _ray(np.ones_like(phis), phis, np.zeros_like(phis), sx)
-        p = _cast(o, d, iso)
-        self.phi_top = float(np.interp(z_top_back, p[:, 2], phis))
-        self.kind, self.val = _rows(z_hem, self.phi_top)
-        nr = len(self.kind)
-        # final edge per row: first psi (from the side towards the front) where x' < x'_edge(z)
-        ps = np.radians(np.arange(60.0, 250.0, 0.5))
-        K, P = np.meshgrid(self.kind, ps, indexing="ij")
-        Vv, _ = np.meshgrid(self.val, ps, indexing="ij")
-        o, d = _ray(K, Vv, P, sx)
-        pts = _cast(o, d, iso + self.overlap(P))
-        xprime = sx * pts[..., 0]
-        g = xprime - (-_edge_x(pts[..., 2], edge_tab))
-        edge = np.empty(nr)
-        for i in range(nr):
+    def __init__(self, hull, sx, base, lift, edge_tab, row0, row_top, ncols, kimono):
+        self.hull, self.sx, self.base, self.lift, self.kimono = hull, sx, base, lift, kimono
+        self.rows = np.arange(row0, row_top + 1)
+        self.nr, self.nc = len(self.rows), ncols
+        self.zn = hull.zn[self.rows]
+        self.top = hull.top[self.rows]
+        # final edge per row: first azimuth past the side where the surface crosses the edge line
+        ps = np.radians(np.arange(88.0, 250.0, 0.5))
+        R, P = np.meshgrid(self.rows, ps, indexing="ij")
+        pts = hull.pts(R, P, self.level(np.arange(self.nr)[:, None], P), sx)
+        g = sx * pts[..., 0] + _edge_x(pts[..., 2], edge_tab)
+        edge = np.empty(self.nr)
+        for i in range(self.nr):
             k = np.nonzero(g[i] < 0)[0]
-            if len(k) == 0:
-                edge[i] = ps[-1]
+            if len(k) == 0 or k[0] == 0:
+                edge[i] = ps[-1] if len(k) == 0 else ps[0]
             else:
                 k = k[0]
-                g0, g1 = g[i, k - 1], g[i, k]
-                edge[i] = ps[k - 1] + (ps[k] - ps[k - 1]) * g0 / (g0 - g1)
+                edge[i] = ps[k - 1] + (ps[k] - ps[k - 1]) * g[i, k - 1] / (g[i, k - 1] - g[i, k])
         self.edge = edge
-        self.nr, self.nc = nr, ncols
-        self.faces = _grid_faces(nr, ncols)
+        self.faces = _grid_faces(self.nr, ncols)
 
-    def overlap(self, psi):
-        if self.lift <= 0:
-            return 0.0 * psi
-        return self.lift * _ss((np.degrees(psi) - 125.0) / 23.0)
-
-    def wrinkles(self, psi, z, kind):
-        """Outward-only soft undulation (metres of iso)."""
-        dpsi = np.degrees(psi)
-        w = np.zeros_like(psi)
-        low = kind == 0
-        # skirt: very soft vertical folds, a little stronger towards the back and the hem
-        a = 0.0018 * (0.6 + 0.4 * np.cos(psi)) * (1.0 - 0.5 * _ss((z - 0.2) / 0.6))
-        w += np.where(low & (z < OBI_BOT), a * (0.5 + 0.5 * np.sin(psi * 9.0 + 1.7 * np.sin(psi * 4.0 + 0.4))), 0)
-        # bunching just above the obi: horizontal soft ridges, mostly at the sides and back
-        side = 0.35 + 0.65 * _ss(1.0 - np.abs(dpsi - 70.0) / 80.0)
-        band = _ss((z - OBI_TOP + 0.01) / 0.02) * (1.0 - _ss((z - OBI_TOP - 0.07) / 0.06))
-        ridges = 0.5 + 0.5 * np.sin((z - OBI_TOP) * 2 * math.pi / 0.028 + 2.2 * np.sin(psi * 3.0) + psi)
-        w += np.where(low, 0.0032 * side * band * ridges, 0)
-        # diagonal back folds from the shoulder blades towards the waist sides
-        diag = 0.5 + 0.5 * np.sin((dpsi * 0.9 + (z - 1.0) * 160.0) * math.pi / 30.0)
-        wb = _ss(1.0 - np.abs(dpsi - 45.0) / 35.0) * _ss((z - OBI_TOP) / 0.05) * (1 - _ss((z - 1.30) / 0.05))
-        w += 0.0016 * diag * wb
-        return w
-
-    def fold_iso(self, z, s):
-        if not self.fold or s <= 0:
-            return 0.0 * z
-        zf = Z_KOSHI - 0.01 + (Z_FOLD - (Z_KOSHI - 0.01)) * s
-        amp = FOLD * min(1.0, 3.0 * s)
-        up = _ss((z - zf) / 0.007)
-        lip = 0.0022 * np.exp(-((z - zf - 0.005) / 0.004) ** 2)
-        top = 1.0 - _ss((z - Z_KOSHI - 0.005) / 0.05)
-        return (amp * up + lip * min(1.0, 3 * s) * up) * top
+    def level(self, i, psi, wr=False, s_fold=0.0):
+        """Hull level of the cloth at local row index i (int array) and azimuth psi."""
+        dps = np.degrees(psi)
+        lv = self.base + self.lift * _ss((dps - 125.0) / 23.0) + 0.0 * i
+        if self.kimono:
+            lv = lv - NAPE * self.top[i] * (1.0 - _ss((dps - 80.0) / 40.0))
+        if wr:
+            lv = lv + self.wrinkles(psi, self.zn[i], s_fold)
+        return lv
 
     def fold_z(self, s):
-        if not self.fold or s <= 0:
-            return -1.0
-        return Z_KOSHI - 0.01 + (Z_FOLD - (Z_KOSHI - 0.01)) * s
+        return Z_KOSHI + (Z_FOLD - Z_KOSHI) * s
 
-    def positions(self, extent, s_fold=0.0, lead_lift=0.022):
-        """extent: radians reached by the wrap. Returns verts (nr*nc,3), psi grid, z grid."""
+    def wrinkles(self, psi, z, s_fold):
+        """Outward-only soft undulation (metres of level); zero near the collar."""
+        dps = np.degrees(psi)
+        front = _ss((dps - 118.0) / 30.0)                      # 1 on the overlapped front
+        w = np.zeros(np.broadcast(psi, z).shape)
+        # skirt: long soft vertical folds, deeper towards the hem and at the back / sides
+        dn = 1.0 - _ss((z - 0.10) / 0.70)
+        a = 0.0034 * (0.45 + 0.55 * dn) * (1.0 - 0.6 * front)
+        f1 = 0.5 + 0.5 * np.sin(psi * 7.0 + 1.3 * np.sin(psi * 3.0 + 0.7 * self.sx) + 2.2 * z)
+        f2 = 0.5 + 0.5 * np.sin(psi * 17.0 + 3.0 * z + 1.0)
+        w = w + np.where(z < Z_FOLD + 0.01, a * (0.75 * f1 ** 2 + 0.25 * f2), 0.0)
+        # bunching above the sash: soft horizontal rolls, mostly at the sides and the back
+        side = 0.30 + 0.70 * _ss(1.0 - np.abs(dps - 75.0) / 75.0)
+        band = _ss((z - OBI_TOP + 0.015) / 0.02) * (1.0 - _ss((z - OBI_TOP - 0.015) / 0.085))
+        roll = 0.5 + 0.5 * np.sin((z - OBI_TOP) * 2 * math.pi / 0.034 + 2.0 * np.sin(psi * 2.6 + self.sx) + psi)
+        w = w + 0.0042 * side * band * roll * (1.0 - 0.55 * front)
+        # drag folds from the shoulder blades / chest down towards the waist
+        diag = 0.5 + 0.5 * np.sin((dps * 1.1 + (z - 1.0) * 190.0) * math.pi / 34.0)
+        wb = _ss(1.0 - np.abs(dps - 50.0) / 40.0) * _ss((z - OBI_TOP) / 0.05) * (1.0 - _ss((z - 1.21) / 0.07))
+        w = w + 0.0022 * diag ** 2 * wb
+        if self.kimono and s_fold > 0:
+            # the ohashori: a second layer from the fold line up to the waist tie, with a soft lip
+            zf = self.fold_z(s_fold)
+            zf = zf + 0.0025 * np.sin(psi * 5.0 + 0.6) * min(1.0, 2.0 * s_fold)      # the edge is hand-set
+            amp = min(1.0, 3.0 * s_fold)
+            up = _ss((z - zf) / 0.006)
+            lip = 0.0030 * np.exp(-((z - zf - 0.006) / 0.005) ** 2)
+            puff = 0.0020 * (0.5 + 0.5 * np.sin(psi * 9.0 + 1.0)) * np.exp(-((z - zf - 0.035) / 0.03) ** 2)
+            top = 1.0 - _ss((z - Z_KOSHI - 0.005) / 0.05)
+            w = w + (FOLD * up + (lip + puff) * up) * amp * top
+        return w
+
+    def positions(self, extent, s_fold=0.0, lead_lift=0.024):
+        """extent: radians reached by the wrap. Returns verts (nr, nc, 3) and the psi grid."""
         e_row = np.minimum(self.edge, extent)
-        frac = np.linspace(0.0, 1.0, self.nc)
-        psi = e_row[:, None] * frac[None, :]
-        K = np.broadcast_to(self.kind[:, None], psi.shape)
-        Vv = np.broadcast_to(self.val[:, None], psi.shape)
-        o, d = _ray(K, Vv, psi, self.sx)
-        zrow = np.where(K == 0, Vv, Z_C + 0.25 * np.sin(Vv))
-        iso = self.iso + self.overlap(psi) + self.wrinkles(psi, zrow, K)
-        iso = iso + np.where(K == 0, self.fold_iso(zrow, s_fold), 0.0)
-        # leading edge curls out while it is still travelling
-        pend = _ss((self.edge - extent) / math.radians(15.0))[:, None]
-        near = _ss((psi - (e_row[:, None] - math.radians(9.0))) / math.radians(9.0))
-        iso = iso + lead_lift * pend * near ** 2
-        P = _cast(o, d, iso)
-        return P.reshape(-1, 3), psi, P[..., 2]
+        psi = e_row[:, None] * np.linspace(0.0, 1.0, self.nc)[None, :]
+        i = np.arange(self.nr)[:, None]
+        lv = self.level(i, psi, True, s_fold)
+        # the leading edge curls away from the body while it is still travelling
+        pend = _ss((self.edge - extent) / math.radians(14.0))[:, None]
+        near = _ss((psi - (e_row[:, None] - math.radians(11.0))) / math.radians(11.0))
+        lv = lv + lead_lift * pend * near ** 2
+        return self.hull.pts(self.rows[:, None], psi, lv, self.sx), psi
 
 
 def _worn_uv_np(c, h, cr):
@@ -569,17 +658,399 @@ def _worn_uv_np(c, h, cr):
     return np.stack([u, v], -1)
 
 
+def _c_table(hull, edge_low):
+    """psi -> worn-canvas c (positive), see the UV convention in the module docstring."""
+    ps = np.radians(np.linspace(0.0, 260.0, 521))
+    p = hull.ring(0.60, ps, LV_K)
+    seg = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(p[:, :2], axis=0), axis=1))]
+    side = np.where(ps < math.pi, np.sin(ps) ** 2, 0.0)
+    dseg = np.diff(seg)
+    s2 = np.r_[0.0, np.cumsum(0.5 * (side[1:] + side[:-1]) * dseg)]
+    a1, a2 = np.interp(edge_low, ps, seg), np.interp(edge_low, ps, s2)
+    b = 1.12
+    q = (0.87 / b - a1) / a2
+    if q < 0:
+        b, q = 0.87 / a1, 0.0
+    return ps, b * (seg + q * s2)
+
+
+def _panel_uv(state, p, P, psi, s_fold):
+    ps, cv = state["c_tab"]
+    c = np.interp(psi.ravel(), ps, cv) * (-1.0 if p.sx < 0 else 1.0)
+    P = P.reshape(-1, 3)
+    z = P[:, 2]
+    h_up = np.maximum(_ridge(P[:, 0]) - z, 0.0)
+    h_sk = common.BODY - (z - Z_HEM)
+    zf = p.fold_z(s_fold) if s_fold > 0 else Z_KOSHI
+    f = p.faces
+    skirt = z[f].mean(1) < zf
+    cl = c[f]
+    hl = np.where(skirt[:, None], h_sk[f], h_up[f])
+    return _worn_uv_np(cl.ravel(), hl.ravel(), np.repeat(cl.mean(1), 4))
+
+
+# --------------------------------------------------------------------------- sleeves
+
+_X0 = J[0] + 0.07 * SA             # x of the innermost sleeve station
+_XOUT = J[0] + 0.50 * SA           # x of the wrist end
+
+
+class _Sleeve:
+    """A half tube over the arm; from its two flanks a two-layer bag hangs straight down."""
+    NA, NT, NH, NB = 44, 9, 40, 5
+    L0 = 0.07
+
+    def __init__(self, sx, tag):
+        k = tag == "K"
+        self.sx, self.tag = sx, tag
+        self.l1 = 0.50 if k else 0.48
+        self.rt = (np.array([0.0, 0.09, 0.13, 0.30, 0.50]),
+                   np.array([0.035, 0.055, 0.063, 0.052, 0.037]) if k else
+                   np.array([0.033, 0.046, 0.047, 0.042, 0.031]))
+        self.g0 = 0.014 if k else 0.008
+        self.zb = (0.470, 0.400) if k else (0.495, 0.425)       # bag bottom: inner, outer
+        self.xin = 0.0 if k else 0.004
+        self.nring = 2 * (self.NT + self.NH + self.NB) - 1
+        self.faces = _grid_faces(self.NA, self.nring)
+        self.ob = None
+
+    def positions(self, grow):
+        NA, NT, NH, NB = self.NA, self.NT, self.NH, self.NB
+        g0 = self.g0
+        a = max(grow, 1e-3) * np.linspace(0.0, 1.0, NA)                 # fraction of the full width
+        ln = self.L0 + (self.l1 - self.L0) * a
+        Q = J[None, :] + ln[:, None] * D_ARM[None, :]
+        R = np.interp(ln, *self.rt)
+        # ---- half tube over the arm (front quarter; the back mirrors it)
+        th = np.linspace(0.0, 0.5 * math.pi, NT)
+        Xt = Q[:, 0:1] + R[:, None] * np.cos(th)[None, :] * N_ARM[0]
+        Zt = Q[:, 2:3] + R[:, None] * np.cos(th)[None, :] * N_ARM[2]
+        Yt = R[:, None] * np.sin(th)[None, :]
+        Dt = R[:, None] * th[None, :]
+        # ---- the bag
+        zq = Q[:, 2]
+        zb = self.zb[0] + (self.zb[1] - self.zb[0]) * a
+        rcn = 0.27                                                      # rounded outer-bottom corner
+        e = np.clip((a - (1.0 - rcn)) / rcn, 0.0, 1.0)
+        zb = zb + 0.052 * (1.0 - np.sqrt(1.0 - e ** 2)) * (grow >= 1.0)
+        e = np.clip((0.10 - a) / 0.10, 0.0, 1.0)
+        zb = zb + 0.020 * (1.0 - np.sqrt(1.0 - e ** 2))
+        H = zq - zb - g0
+        tau = np.r_[np.linspace(0.0, 0.30, 15)[1:], np.linspace(0.30, 1.0, NH - 13)[1:]]
+        dh = H[:, None] * tau[None, :]
+        Zh = zq[:, None] - dh
+        dfold = Dt[:, -1:] + dh                                         # cloth distance from the top fold
+        # pinches: the inner edge below the armpit, the sewn part of the outer edge
+        ap = 0.07
+        pin = np.sqrt(np.clip(1.0 - (1.0 - np.clip(a / ap, 0, 1)) ** 2, 0, 1))[:, None]
+        pin = 1.0 - (1.0 - pin) * _ss((1.14 - Zh) / 0.04)
+        pout = np.sqrt(np.clip(1.0 - np.clip((a - (1.0 - ap)) / ap, 0, 1) ** 2, 0, 1))[:, None]
+        pout = 1.0 - (1.0 - pout) * _ss((dfold - 0.215) / 0.03)
+        pinch = pin * pout
+        gap = (g0 + (R[:, None] - g0) * np.exp(-(dh / 0.07) ** 2)) * pinch
+        # horizontal placement: follow the arm above, stand clear of the sash and skirt below
+        xc = Q[:, 0:1]
+        xin = 0.214 + self.xin + 0.018 * _ss((Zh - 0.86) / 0.06)
+        xt = xin + (_XOUT - xin) * (xc - _X0) / (_XOUT - _X0)
+        s = _ss((1.15 - Zh) / 0.05) * _ss(dh / 0.10)
+        Xh = xc + s * (xt - xc) + 0.030 * a[:, None] * (dh / H[:, None]) ** 2
+        # soft hanging folds, shared by both layers (and by juban and kimono, so they stay nested)
+        u = (Xh - 0.21) / 0.19
+        hang = _ss((dh - 0.03) / 0.22)
+        fold = 0.0065 * hang * np.sin(2 * math.pi * (1.45 * u + 0.30 * np.sin(Zh * 7.0 + self.sx)) + 0.8 * self.sx)
+        fold = fold + 0.0025 * hang * np.sin(2 * math.pi * 3.1 * u + Zh * 11.0)
+        fold = fold * (0.35 + 0.65 * np.sin(math.pi * np.clip(a, 0, 1))[:, None] ** 0.5)
+        breath = 1.0 + 0.30 * hang * np.sin(2 * math.pi * 0.9 * u + 2.0 + 3.0 * Zh) * pinch
+        Yf, Yb = gap * breath + fold, -gap * breath + fold
+        # ---- bottom fold: a quarter circle from each layer to the shared lowest line
+        be = np.linspace(0.0, 0.5 * math.pi, NB + 1)[1:]
+        Zbt = zb[:, None] + g0 * (1.0 - np.sin(be))[None, :]
+        Xbt = np.repeat(Xh[:, -1:], NB, axis=1)
+        gl, fl = (gap * breath)[:, -1:], fold[:, -1:]
+        Ybf = gl * np.cos(be)[None, :] + fl
+        Ybb = -gl * np.cos(be)[None, :] + fl
+        Db = dfold[:, -1:] + g0 * be[None, :]
+        # ---- ring: bottom -> front layer -> ridge -> back layer -> bottom
+        Xf = np.c_[Xt, Xh, Xbt]
+        Zf = np.c_[Zt, Zh, Zbt]
+        Df = np.c_[Dt, dfold, Db]
+        Yfr = np.c_[Yt, Yf, Ybf]
+        Ybk = np.c_[-Yt, Yb, Ybb]
+        X = np.c_[Xf[:, ::-1], Xf[:, 1:]]
+        Z = np.c_[Zf[:, ::-1], Zf[:, 1:]]
+        Y = np.c_[Yfr[:, ::-1], Ybk[:, 1:]]
+        self.d = np.c_[Df[:, ::-1], -Df[:, 1:]]
+        self.ln = np.broadcast_to(ln[:, None], X.shape)
+        return np.stack([X * self.sx, Y, Z], -1)
+
+    def uv(self):
+        x = self.sx * (common.W + np.clip(self.ln - 0.135, 0.0, common.W))
+        uvv = np.stack(common.garment_uv(x, self.d), -1).reshape(-1, 2)
+        return uvv[self.faces].reshape(-1, 2)
+
+    def opening(self, P):
+        """The open part of the wrist edge, front-bottom -> over the arm -> back-bottom."""
+        return P[-1][np.abs(self.d[-1]) < 0.222]
+
+
+# --------------------------------------------------------------------------- collars and edge rolls
+
+def _collar_setup(state):
+    state["collars"] = {}
+    for tag, low, width, thk, over, kind in (("K", (0.99, 1.15), 0.055, 0.0042, 0.005, "kimono"),
+                                             ("J", (1.05, 1.19), 0.050, 0.0030, 0.004, "juban")):
+        prof = _stadium(-(width - over), over, 0.0, thk, k=20, r=0.0019)
+        n_each = 120
+        n = 2 * n_each - 1
+        faces = _grid_faces(n, len(prof) + 1)
+        ob = _new_obj(state, "DF_%s_collar" % tag, np.zeros((n * (len(prof) + 1), 3)), faces,
+                      [_mat(state, kind)], uv=(tag == "K"))
+        state["collars"][tag] = dict(ob=ob, pan=state["kim" if tag == "K" else "jub"], low=low, prof=prof,
+                                     n_each=n_each, faces=faces, width=width, over=over, flip=None)
+
+
+def _update_collar(state, tag, ext):
+    cd = state["collars"][tag]
+    hull = state["hull"]
+    halves = []
+    for side, lowz in (("L", cd["low"][0]), ("R", cd["low"][1])):
+        p = cd["pan"][side]
+        i0 = int(np.nonzero(p.zn >= lowz)[0][0])
+        ii = np.r_[np.arange(i0, p.nr), np.full(49, p.nr - 1)]
+        ps = np.r_[p.edge[i0:], np.linspace(p.edge[-1], 0.0, 50)[1:]]
+        if ps.min() > ext[side]:
+            return False
+        vis = ps <= ext[side] + 1e-6
+        k0 = int(np.argmax(vis))
+        ii, ps = ii[k0:], np.minimum(ps[k0:], ext[side])
+        C = hull.pts(p.rows[ii], ps, p.level(ii, ps) + 0.0008, p.sx)
+        if len(C) < 4:
+            return False
+        halves.append(_resample(C, cd["n_each"]))
+    C = np.vstack([halves[0], halves[1][::-1][1:]])
+    iso = hull_sdf(C)
+    N = _unit(_grad(hull_sdf, C))
+    T, N, U = _frames(C, N)
+    pr = _close_prof(cd["prof"])
+    V = C[:, None, :] + pr[None, :, 1:2] * U[:, None, :]
+    shp = V.shape
+    V = _project(V.reshape(-1, 3), np.repeat(iso, len(pr)), it=2)
+    Nv = _unit(_grad(hull_sdf, V))
+    V = (V + np.tile(pr[:, 0], len(C))[:, None] * Nv).reshape(shp)
+    tap = np.ones(len(C))
+    tap[[0, -1]] = 0.3
+    tap[[1, -2]] = 0.8
+    cen = V.mean(1, keepdims=True)
+    V = cen + (V - cen) * tap[:, None, None]
+    if cd["flip"] is None:
+        f = cd["faces"]
+        Vf = V.reshape(-1, 3)
+        cc = np.repeat(C, len(pr), axis=0)
+        s = ((Vf[f].mean(1) - cc[f].mean(1)) * _face_normals(Vf, f)).sum(-1)
+        cd["flip"] = bool((s < 0).sum() > (s > 0).sum())
+        if cd["flip"]:
+            cd["ob"].data.flip_normals()
+    _set_co(cd["ob"], V.reshape(-1, 3))
+    if tag == "K":
+        L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
+        a = pr[:, 1] + (cd["width"] - cd["over"]) + 0.02
+        uvv = np.stack(common.collar_uv(a[None, :] + 0 * L[:, None], L[:, None] + 0 * a[None, :]), -1).reshape(-1, 2)
+        _set_uv(cd["ob"], uvv[cd["faces"]].reshape(-1, 2))
+    return True
+
+
+# --------------------------------------------------------------------------- obi and accessories
+
+def _obi_setup(state):
+    H = (OBI_TOP - OBI_BOT) / 2
+    th, r, k = OBI_THK, 0.005, 7
+    prof = [(0.0, -H + r + (2 * H - 2 * r) * i / (k - 1)) for i in range(k)]            # inner face, up
+    prof += [(th / 2 - th / 2 * math.cos(math.pi * i / 6), H - r + r * math.sin(math.pi * i / 6)) for i in range(1, 6)]
+    for i in range(k):                                                                  # outer face, down
+        u = H - r - (2 * H - 2 * r) * i / (k - 1)
+        prof.append((th + 0.0025 * (1 - (u / H) ** 2), u))
+    prof += [(th / 2 + th / 2 * math.cos(math.pi * i / 6), -H + r - r * math.sin(math.pi * i / 6)) for i in range(1, 6)]
+    state["obi"] = _tube_obj(state, "DF_obi", 220, np.array(prof), "obi", uv=True)
+    state["cord"] = _tube_obj(state, "DF_obijime", 200, _circle(0.0048, 10), "obijime")
+    state["cordknot"] = _tube_obj(state, "DF_obijime_knot", 96, _circle(0.0046, 10), "obijime")
+    state["obiage"] = _tube_obj(state, "DF_obiage", 140, _circle(1.0, 16), "obiage")
+    nx_, kp = 44, 48
+    faces = _grid_faces(nx_, kp + 1)
+    ob = _new_obj(state, "DF_knot", np.zeros((nx_ * (kp + 1), 3)), faces, [_mat(state, "obi")], uv=True)
+    state["knot"] = dict(ob=ob, n=nx_, kp=kp, faces=faces, flip=None)
+    tp = _stadium(-0.5, 0.5, 0.0, 0.007, k=16, r=0.003)
+    state["tare"] = _tube_obj(state, "DF_knot_tail", 30, tp, "obi", uv=True)
+
+
+def _obi_face(state, psi, z, extra=0.0):
+    """Point on the outer face of the obi."""
+    return state["hull"].ring(z, psi, LV_OBI + OBI_THK + 0.0025 + extra)
+
+
+def _update_obi(state, s):
+    od, hull = state["obi"], state["hull"]
+    n = od["n"]
+    psi = np.linspace(0.0, math.radians(363.0) * s, n)
+    zc = 0.5 * (OBI_BOT + OBI_TOP)
+    lv = LV_OBI + 0.0035 * _ss((np.degrees(psi) - 335.0) / 25.0)          # the end laps over the start
+    C = hull.ring(zc, psi, lv)
+    N = _unit(C * np.array([1.0, 1.0, 0.0]))
+    U = np.broadcast_to(np.array([0.0, 0.0, 1.0]), C.shape)
+    pr = _close_prof(od["prof"])
+    tap = np.ones(n)
+    if s < 1.0:
+        tap[-1], tap[-2], tap[-3] = 0.5, 0.82, 0.95
+    V = C[:, None, :] + pr[None, :, 0:1] * N[:, None, :] + (pr[None, :, 1:2] * tap[:, None, None]) * U[:, None, :]
+    V = V.reshape(-1, 3)
+    if od["flip"] is None:
+        f = od["faces"]
+        cc = np.repeat(C + 0.5 * OBI_THK * N, len(pr), axis=0)
+        sg = ((V[f].mean(1) - cc[f].mean(1)) * _face_normals(V, f)).sum(-1)
+        od["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
+        if od["flip"]:
+            od["ob"].data.flip_normals()
+    _set_co(od["ob"], V)
+    L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
+    uvv = np.stack([np.broadcast_to(L[:, None], (n, len(pr))),
+                    np.broadcast_to(pr[None, :, 1] + 0.08, (n, len(pr)))], -1).reshape(-1, 2)
+    _set_uv(od["ob"], uvv[od["faces"]].reshape(-1, 2))
+
+
+def _update_cord(state, s):
+    cd = state["cord"]
+    zc = 0.5 * (OBI_BOT + OBI_TOP) - 0.004
+    half = math.pi * (0.02 + 0.98 * _ramp(s, 0.0, 0.8))
+    psi = np.linspace(-half, half, cd["n"])                     # from centre back round both sides
+    C = _obi_face(state, psi, zc, 0.0040)
+    C[:, 2] += 0.0015 * np.sin(psi * 3.0)
+    _tube_set(cd, C, _unit(C * np.array([1.0, 1.0, 0.0])))
+    # a small flat knot at centre front
+    kd = state["cordknot"]
+    sk = _ramp(s, 0.75, 1.0)
+    base = _obi_face(state, np.array([math.pi]), np.array([zc]), 0.0055)[0]
+    state["cordknot_pt"] = base + np.array([0.0, 0.008, 0.0])
+    if sk <= 0.0:
+        return False
+    ph = np.linspace(0.0, 2 * math.pi, kd["n"])
+    sc = 0.0062 * (0.3 + 0.7 * sk)
+    C = base[None, :] + np.stack([(np.sin(ph) + 2 * np.sin(2 * ph)) * sc,
+                                  0.004 + 0.0042 * np.sin(3 * ph) * sk,
+                                  (np.cos(ph) - 2 * np.cos(2 * ph)) * sc * 0.8 + 0.004], -1)
+    _tube_set(kd, C, np.broadcast_to(np.array([0.0, 1.0, 0.0]), C.shape).copy())
+    return True
+
+
+def _update_obiage(state, s):
+    ad, hull = state["obiage"], state["hull"]
+    n = ad["n"]
+    half = math.radians(118.0) * (0.25 + 0.75 * s)
+    k = np.linspace(-1.0, 1.0, n)
+    psi = math.pi + half * k
+    w = np.clip(1.0 - np.abs(k) ** 6, 0.0, 1.0) ** 0.5                      # tucks into the sash at both ends
+    r = (0.0125 * w * (0.90 + 0.10 * np.sin(k * 23.0 + 1.0)) + 0.0015) * (0.25 + 0.75 * s)
+    zc = OBI_TOP + 0.0045 - 0.012 * (1.0 - w) + 0.002 * np.sin(k * 7.0)
+    C = hull.ring(zc, psi, LV_OBI + 0.002 + 0.25 * r)
+    N = _unit(C * np.array([1.0, 1.0, 0.0]))
+    T = _unit(np.gradient(C, axis=0))
+    U = np.cross(T, N)
+    pr = _close_prof(ad["prof"])
+    ang = np.arctan2(pr[:, 1], pr[:, 0])[None, :]
+    rr = r[:, None] * (1.0 + 0.10 * np.sin(k[:, None] * 55.0 + 3.0 * ang) + 0.06 * np.sin(k[:, None] * 19.0 - 2.0 * ang))
+    V = C[:, None, :] + (pr[None, :, 0] * rr)[..., None] * N[:, None, :] + \
+        (pr[None, :, 1] * rr * 1.12)[..., None] * U[:, None, :]
+    V = V.reshape(-1, 3)
+    if ad["flip"] is None:
+        f = ad["faces"]
+        cc = np.repeat(C, len(pr), axis=0)
+        sg = ((V[f].mean(1) - cc[f].mean(1)) * _face_normals(V, f)).sum(-1)
+        ad["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
+        if ad["flip"]:
+            ad["ob"].data.flip_normals()
+    _set_co(ad["ob"], V)
+
+
+KNOT_W, KNOT_H, KNOT_PROUD = 0.28, 0.26, 0.072
+
+
+def _update_knot(state, s):
+    """The otaiko: a soft drum on the back, rolled over its pad at the top, with the tail below."""
+    kd = state["knot"]
+    nx_, kp = kd["n"], kd["kp"]
+    yb = _obi_face(state, np.array([0.0]), np.array([1.0]))[0][1]          # obi face at centre back (negative)
+    zt = OBI_TOP + 0.078
+    hgt = KNOT_H * (0.25 + 0.75 * s)
+    zb = zt - hgt
+    dtop, dbot = KNOT_PROUD * (0.35 + 0.65 * s), 0.042 * (0.35 + 0.65 * s)
+    rr = 0.5 * dtop
+    pts = []
+    for u in np.linspace(0.0, 1.0, kp):
+        if u < 0.22:                        # inner face, bottom -> top (against the sash)
+            q = u / 0.22
+            pts.append((0.0, zb + 0.014 + (zt - rr - zb - 0.014) * q))
+        elif u < 0.45:                      # rolled over the pad
+            a = math.pi * (u - 0.22) / 0.23
+            pts.append((rr - rr * math.cos(a), zt - rr + 1.05 * rr * math.sin(a)))
+        elif u < 0.86:                      # outer face, top -> bottom, gently convex
+            q = (u - 0.45) / 0.41
+            pts.append((dtop + (dbot - dtop) * q + 0.007 * math.sin(math.pi * q), zt - rr + (zb + 0.014 - (zt - rr)) * q))
+        else:                               # folded under
+            a = math.pi * (u - 0.86) / 0.14
+            pts.append((dbot / 2 + dbot / 2 * math.cos(a), zb + 0.014 - 0.014 * math.sin(a)))
+    pr = np.array(pts)
+    pr = np.vstack([pr, pr[:1]])
+    xs = np.linspace(-KNOT_W / 2, KNOT_W / 2, nx_)
+    e = np.clip((np.abs(xs) - (KNOT_W / 2 - 0.014)) / 0.014, 0, 1)
+    tap = np.sqrt(np.clip(1 - e ** 2, 0, 1)) * 0.90 + 0.10
+    cen = np.array([0.5 * dtop * 0.8, 0.5 * (zt + zb)])
+    V = np.zeros((nx_, kp + 1, 3))
+    for i, x in enumerate(xs):
+        p = cen + (pr - cen) * np.array([tap[i], 0.55 + 0.45 * tap[i]])
+        bow = 0.006 * math.cos(math.pi * x / KNOT_W) ** 2                 # the face bellies a little
+        sag = 0.005 * math.cos(math.pi * x / KNOT_W)
+        V[i, :, 0] = x
+        V[i, :, 1] = yb - 0.001 - p[:, 0] - bow * (p[:, 0] > 0.6 * dbot)
+        V[i, :, 2] = p[:, 1] - sag * (p[:, 1] < 0.5 * (zb + zt))
+    V = V.reshape(-1, 3)
+    if kd["flip"] is None:
+        f = kd["faces"]
+        ref = np.array([0.0, yb - 0.5 * dbot, 0.5 * (zt + zb)])
+        sg = ((V[f].mean(1) - ref) * _face_normals(V, f)).sum(-1)
+        kd["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
+        if kd["flip"]:
+            kd["ob"].data.flip_normals()
+    _set_co(kd["ob"], V)
+    L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(pr, axis=0), axis=1))]
+    uvv = np.stack([np.broadcast_to(xs[:, None] + 0.14, (nx_, kp + 1)), np.broadcast_to(L[None, :], (nx_, kp + 1))],
+                   -1).reshape(-1, 2)
+    _set_uv(kd["ob"], uvv[kd["faces"]].reshape(-1, 2))
+    state["knot_pt"] = np.array([0.0, yb - dtop - 0.008, 0.5 * (zt + zb)])
+    # the tail (tare): a flat tongue of the sash hanging below the drum
+    td = state["tare"]
+    wt = 0.262
+    xs = np.linspace(-wt / 2, wt / 2, td["n"])
+    drop = 0.075 * s
+    zmid = zb + 0.03 - 0.5 * (drop + 0.03)
+    C = np.stack([xs, np.full_like(xs, yb - 0.0035 - 0.004 * np.cos(math.pi * xs / wt) ** 2), np.full_like(xs, zmid)], -1)
+    N = np.broadcast_to(np.array([0.0, -1.0, 0.0]), C.shape).copy()
+    T, N, U = _frames(C, N)
+    pr = _close_prof(td["prof"]) * np.array([1.0, drop + 0.03])
+    V = (C[:, None, :] + pr[None, :, 0:1] * N[:, None, :] + pr[None, :, 1:2] * U[:, None, :]).reshape(-1, 3)
+    if td["flip"] is None:
+        f = td["faces"]
+        cc = np.repeat(C + 0.0035 * N, len(pr), axis=0)
+        sg = ((V[f].mean(1) - cc[f].mean(1)) * _face_normals(V, f)).sum(-1)
+        td["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
+        if td["flip"]:
+            td["ob"].data.flip_normals()
+    _set_co(td["ob"], V)
+    uvv = np.stack([np.broadcast_to(xs[:, None] + 0.14, (td["n"], len(pr))),
+                    np.broadcast_to(pr[None, :, 1] + 0.3, (td["n"], len(pr)))], -1).reshape(-1, 2)
+    _set_uv(td["ob"], uvv[td["faces"]].reshape(-1, 2))
+
+
 # --------------------------------------------------------------------------- build
 
-def _arc_table(iso):
-    ps = np.radians(np.linspace(0, 360, 1441))
-    o, d = _ray(np.zeros_like(ps), np.full_like(ps, 0.6), ps, -1)
-    p = _cast(o, d, iso)
-    seg = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(p[:, :2], axis=0), axis=1))]
-    return ps, seg
-
-
-def build(collection, origin=(2.7, 0.0, 0.0), materials=None):
+def build(collection, origin=(0.0, 0.0, 0.0), materials=None):
     import bpy
     state = {"collection": collection, "materials": materials or {}, "objects": {}}
     root = bpy.data.objects.new("DF_root", None)
@@ -589,517 +1060,62 @@ def build(collection, origin=(2.7, 0.0, 0.0), materials=None):
     state["root"] = root
 
     _build_mannequin(state)
-
-    # arc length / UV scale
-    ps, seg = _arc_table(ISO_K)
-    state["arc"] = (ps, seg)
-
-    # ---- panels
-    zb_k, zb_j = 1.425, 1.437
-    kim = {"L": _Panel(-1, ISO_K, DK, KIMONO_EDGE, Z_HEM, zb_k, 120, fold=True),
-           "R": _Panel(+1, ISO_K, 0.0, KIMONO_EDGE, Z_HEM, zb_k, 120, fold=True)}
-    jub = {"L": _Panel(-1, ISO_J, DJ, JUBAN_EDGE, Z_HEM_JUBAN, zb_j, 90),
-           "R": _Panel(+1, ISO_J, 0.0, JUBAN_EDGE, Z_HEM_JUBAN, zb_j, 90)}
+    hull = state["hull"] = _Hull()
+    row_j0 = int(round((Z_HEM_J - Z_HEM) / ROW_STEP))
+    kim = {"L": _Panel(hull, -1, LV_K, DK, KIMONO_EDGE, 0, hull.row_top_k, 124, True),
+           "R": _Panel(hull, +1, LV_K, 0.0, KIMONO_EDGE, 0, hull.row_top_k, 124, True)}
+    jub = {"L": _Panel(hull, -1, LV_J, DJ, JUBAN_EDGE, row_j0, hull.nrows - 1, 96, False),
+           "R": _Panel(hull, +1, LV_J, 0.0, JUBAN_EDGE, row_j0, hull.nrows - 1, 96, False)}
     state["kim"], state["jub"] = kim, jub
-    edge_low = kim["L"].edge[0]
-    state["uv_k"] = float(np.interp(edge_low, ps, seg) / 0.87)
+    state["c_tab"] = _c_table(hull, kim["L"].edge[0])
 
     for tag, pan, matk, thk in (("K", kim, ("kimono", "lining"), THK_K), ("J", jub, ("juban", "juban"), THK_J)):
         for side, p in pan.items():
-            v, _, _ = p.positions(p.edge.max() + 0.1)
-            ref = np.zeros_like(v[p.faces].mean(1))
-            ref[:, 2] = v[p.faces].mean(1)[:, 2].clip(0, Z_C)
+            v, _ = p.positions(p.edge.max() + 0.1)
+            v = v.reshape(-1, 3)
+            ref = np.zeros((len(p.faces), 3))
+            ref[:, 2] = v[p.faces].mean(1)[:, 2].clip(0, Z_C + 0.1)
             p.faces = _orient(v, p.faces, ref)
             ob = _new_obj(state, "DF_%s_panel_%s" % (tag, side), v, p.faces,
                           [_mat(state, matk[0]), _mat(state, matk[1])], uv=(tag == "K"))
             _solidify(ob, thk)
 
-    # ---- sleeves (kimono and juban)
-    for tag, scale, iso_push in (("K", 1.0, ISO_K + 0.028), ("J", 0.93, ISO_J + 0.012)):
+    state["sleeves"] = []
+    for tag in ("K", "J"):
         for sx in (-1, 1):
-            sl = _Sleeve(sx, scale, iso_push, tag)
-            state.setdefault("sleeves", []).append(sl)
-            v = sl.positions(1.0)
-            sl.faces = _orient(v, sl.faces, sl.ref(v))
-            mats = [_mat(state, "kimono"), _mat(state, "lining")] if tag == "K" else [_mat(state, "juban")] * 2
-            ob = _new_obj(state, "DF_%s_sleeve_%s" % (tag, "L" if sx < 0 else "R"), v, sl.faces, mats,
-                          uv=(tag == "K"))
-            _solidify(ob, THK_K if tag == "K" else THK_J)
-            sl.ob = ob
+            sl = _Sleeve(sx, tag)
+            v = sl.positions(1.0).reshape(-1, 3)
+            cen = v[sl.faces].mean(1)
+            sg = _face_normals(v, sl.faces)[:, 1] * cen[:, 1]
+            if (sg < 0).sum() > (sg > 0).sum():
+                sl.faces = sl.faces[:, ::-1].copy()
+            mats = [_mat(state, "kimono")] if tag == "K" else [_mat(state, "juban")]
+            sl.ob = _new_obj(state, "DF_%s_sleeve_%s" % (tag, "L" if sx < 0 else "R"), v, sl.faces, mats,
+                             uv=(tag == "K"))
+            state["sleeves"].append(sl)
 
-    # ---- collars, hem rolls, sleeve rolls, obi & co: created with full geometry, then update()
+    # rolled edges (the lining peeping out): hem + front edge of each kimono half, sleeve openings
+    state["rolls"] = {}
+    rp = _circle(0.0028, 8)
+    for side, p in kim.items():
+        p.i_roll = int(np.nonzero(p.zn >= (1.00 if side == "L" else 0.93))[0][0])
+        state["rolls"][side] = _tube_obj(state, "DF_K_edge_%s" % side, p.nc + p.i_roll - 1, rp, "lining")
+    for sl in state["sleeves"]:
+        if sl.tag == "K":
+            state["rolls"][sl.ob.name] = _tube_obj(state, sl.ob.name + "_edge", 48, rp, "lining")
+
     _collar_setup(state)
     _obi_setup(state)
-    update(state, {k: 1.0 for k in ("juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot")})
+    update(state, {k: 1.0 for k in LAYERS})
     state["anchors_local"] = _anchor_points(state)
     update(state, {})
     return state
 
 
-# --------------------------------------------------------------------------- sleeves
-
-class _Sleeve:
-    A0 = 0.055
-    WIDTH = 0.36
-    NA, NR = 46, 72
-
-    def __init__(self, sx, scale, iso_push, tag):
-        self.sx, self.scale, self.iso_push, self.tag = sx, scale, iso_push, tag
-        self.width = self.WIDTH * (0.97 if tag == "J" else 1.0)
-        self.faces = _grid_faces(self.NA, self.NR + 1)   # ring opened at the bottom (seam duplicated)
-        self.ob = None
-
-    def ref(self, v):
-        vv = v.reshape(self.NA, self.NR + 1, 3)
-        axis = vv.mean(1, keepdims=True)
-        axis = np.broadcast_to(axis, vv.shape).reshape(-1, 3)
-        return axis[self.faces[:, 0]]
-
-    def positions(self, grow):
-        sc = self.scale
-        a = np.linspace(0.0, self.width * max(grow, 1e-3), self.NA)
-        amax = self.width
-        Q = J[None, :] + (self.A0 + a)[:, None] * D_ARM[None, :]
-        rT = 0.062 * sc if self.tag == "K" else 0.054
-        ztop = Q[:, 2] + rT / CA
-        drop = 0.44 if self.tag == "K" else 0.40
-        z_out = (J[2] + (self.A0 + amax) * D_ARM[2]) + rT / CA - drop
-        zb = z_out + 0.05 * (1.0 - a / amax)
-        # rounded bottom corners
-        rc = 0.04
-        zb = zb + np.where(a > amax - rc, rc - np.sqrt(np.clip(rc ** 2 - (a - (amax - rc)) ** 2, 0, None)), 0)
-        zb = zb + np.where(a < rc, rc - np.sqrt(np.clip(rc ** 2 - (rc - a) ** 2, 0, None)), 0) * 0.8
-        gb = 0.014
-        # front half profile: u in [0,1] from top (0) to bottom centre (1)
-        m = self.NR // 2
-        u = np.linspace(0.0, 1.0, m + 1)
-        col = []
-        for k in range(self.NA):
-            qz, top = Q[k, 2], ztop[k]
-            # arc around the arm: first 22% of u
-            ua = np.clip(u / 0.22, 0, 1)
-            beta = ua * 0.5 * math.pi
-            y_arc = rT * np.sin(beta)
-            z_arc = qz + (top - qz) * np.cos(beta)
-            uh = np.clip((u - 0.22) / 0.70, 0, 1)
-            zh = qz - uh * (qz - (zb[k] + gb))
-            yh = gb + (rT - gb) * (1 - uh) ** 1.6
-            ub = np.clip((u - 0.92) / 0.08, 0, 1)
-            gam = ub * 0.5 * math.pi
-            yb = gb * np.cos(gam)
-            zbb = zb[k] + gb - gb * np.sin(gam)
-            y = np.where(u <= 0.22, y_arc, np.where(u <= 0.92, yh, yb))
-            z = np.where(u <= 0.22, z_arc, np.where(u <= 0.92, zh, zbb))
-            col.append((y, z))
-        Y = np.array([c[0] for c in col])            # (NA, m+1) front half
-        Z = np.array([c[1] for c in col])
-        # cumulative cloth distance from the top fold (for UVs)
-        dist = np.c_[np.zeros(self.NA), np.cumsum(np.hypot(np.diff(Y, axis=1), np.diff(Z, axis=1)), axis=1)]
-        # wrist end: sewn below the opening, open above it
-        aa = a[:, None]
-        d_open = 0.21
-        pinch_closed = 0.10 + 0.90 * _ss((amax - aa) / 0.035)
-        pinch_open = 0.65 + 0.35 * _ss((amax - aa) / 0.03)
-        w_open = _ss((dist - d_open) / 0.03)
-        pinch = np.where(grow < 1.0, 1.0, pinch_open * (1 - w_open) + pinch_closed * w_open)
-        Y = Y * pinch
-        # folds: soft diagonal undulation of both layers, growing towards the bottom
-        hang = _ss((dist - 0.05) / 0.25)
-        fold = 0.0045 * hang * np.sin((aa * 1.0 + dist * 0.55) * 2 * math.pi / 0.095 + 0.8 * self.sx) * \
-            _ss((amax - aa) / 0.04) * _ss(aa / 0.04)
-        Yf = np.maximum(Y + fold, 0.25 * Y)
-        Yb = np.maximum(Y - 0.6 * fold, 0.25 * Y)
-        X = np.broadcast_to(Q[:, 0:1], Y.shape) + 0.006 * hang * np.sin(dist * 21 + aa * 30)
-        # ring: bottom(front) -> top -> bottom(back): front reversed then back
-        Yr = np.c_[Yf[:, ::-1], -Yb[:, 1:]]
-        Zr = np.c_[Z[:, ::-1], Z[:, 1:]]
-        Xr = np.c_[X[:, ::-1], X[:, 1:]]
-        self.d = np.c_[dist[:, ::-1], -dist[:, 1:]]
-        self.a = np.broadcast_to(a[:, None], self.d.shape)
-        P = np.stack([Xr * self.sx, Yr, Zr], -1).reshape(-1, 3)
-        # rest against the hips instead of passing through them
-        for _ in range(2):
-            fval = hull_sdf(P)
-            bad = fval < self.iso_push
-            if bad.any():
-                g = _unit(_grad(hull_sdf, P[bad]))
-                P[bad] = P[bad] + (self.iso_push - fval[bad])[:, None] * g
-        return P
-
-    def uv(self):
-        x = self.sx * (common.W + self.a)
-        y = np.clip(self.d, -common.SLEEVE, common.SLEEVE)
-        uvv = np.stack(common.garment_uv(x, y), -1).reshape(-1, 2)
-        return uvv[self.faces].reshape(-1, 2)
-
-    def opening_edge(self, P):
-        """Points along the wrist opening (last column), front-bottom -> top -> back-bottom."""
-        vv = P.reshape(self.NA, self.NR + 1, 3)[-1]
-        dd = self.d[-1]
-        m = np.abs(dd) < 0.21
-        return vv[m]
-
-
-# --------------------------------------------------------------------------- collars, rolls
-
-def _collar_curve(p, extent, lower_z, n=110):
-    """Param-space path along the panel edge: from the lower end (row z >= lower_z) up the edge,
-    then along the top row back to centre back. Clipped to the wrap extent. Returns (kind,val,psi)."""
-    rows = np.arange(p.nr)
-    zrow = np.where(p.kind == 0, p.val, Z_C + 0.25 * np.sin(p.val))
-    i0 = int(np.nonzero(zrow >= lower_z)[0][0])
-    # edge part (descending rows reversed later)
-    ek, ev, ep = p.kind[i0:], p.val[i0:], p.edge[i0:]
-    top = rows[-1]
-    tps = np.linspace(p.edge[top], 0.0, 40)[1:]
-    K = np.r_[ek, np.full(len(tps), p.kind[top])]
-    Vv = np.r_[ev, np.full(len(tps), p.val[top])]
-    Ps = np.r_[ep, tps]
-    # param-space arc to resample: use (zeta, psi*R)
-    zeta = np.where(K == 0, Vv, Z_C + R_UP * Vv)
-    L = np.r_[0.0, np.cumsum(np.hypot(np.diff(zeta), np.diff(Ps) * 0.18))]
-    # visible: psi <= extent. The path's psi is monotone decreasing along it.
-    vis = Ps <= extent + 1e-6
-    if not vis.any():
-        return None
-    s0 = L[np.argmax(vis)]
-    s = np.linspace(s0, L[-1], n)
-    return (np.interp(s, L, K) > 0.5).astype(int), np.interp(s, L, Vv), np.minimum(np.interp(s, L, Ps), extent)
-
-
-def _collar_setup(state):
-    state["collars"] = {}
-    for tag, pan, low, width, thk, inner, kind in (
-            ("K", state["kim"], (0.99, 1.15), 0.055, 0.007, 0.006, "kimono"),
-            ("J", state["jub"], (1.05, 1.19), 0.050, 0.0055, 0.006, "juban")):
-        prof = _stadium(-(width - inner), inner, 0.0, thk, k=20, r=0.0032)
-        n_each = 110
-        n = 2 * n_each - 1
-        m = len(prof)
-        faces = _grid_faces(n, m + 1)
-        V = np.zeros((n * (m + 1), 3))
-        mats = [_mat(state, kind)]
-        ob = _new_obj(state, "DF_%s_collar" % tag, V, faces, mats, uv=(tag == "K"))
-        state["collars"][tag] = dict(ob=ob, pan=pan, low=low, prof=prof, n_each=n_each, faces=faces,
-                                     width=width, inner=inner, thk=thk)
-    # hem rolls (fuki) for both kimono panels and the sleeve openings
-    state["rolls"] = {}
-    prof = _circle(0.0034, 10)
-    for side in ("L", "R"):
-        n = state["kim"][side].nc
-        faces = _grid_faces(n, len(prof) + 1)
-        ob = _new_obj(state, "DF_K_hemroll_%s" % side, np.zeros((n * (len(prof) + 1), 3)), faces,
-                      [_mat(state, "lining")])
-        state["rolls"][side] = dict(ob=ob, prof=prof, faces=faces)
-    for sl in state["sleeves"]:
-        if sl.tag != "K":
-            continue
-        n = 40
-        faces = _grid_faces(n, len(prof) + 1)
-        ob = _new_obj(state, sl.ob.name + "_roll", np.zeros((n * (len(prof) + 1), 3)), faces, [_mat(state, "lining")])
-        state["rolls"][sl.ob.name] = dict(ob=ob, prof=prof, faces=faces, n=n)
-
-
-def _close_prof(prof):
-    return np.vstack([prof, prof[:1]])
-
-
-def _sweep_verts(C, N, U, prof, taper=None):
-    pr = _close_prof(prof)
-    if taper is not None:
-        cen = prof.mean(0)
-        pr = cen + (pr[None] - cen) * taper[:, None, None]
-    else:
-        pr = np.broadcast_to(pr, (len(C),) + pr.shape)
-    V = C[:, None, :] + pr[..., 0:1] * N[:, None, :] + pr[..., 1:2] * U[:, None, :]
-    return V.reshape(-1, 3)
-
-
-def _resample(P, n):
-    L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))]
-    s = np.linspace(0, L[-1], n)
-    return np.stack([np.interp(s, L, P[:, k]) for k in range(3)], -1)
-
-
-def _update_collar(state, tag, ext):
-    cd = state["collars"][tag]
-    pan = cd["pan"]
-    pieces = []
-    for side, lowz in (("L", cd["low"][0]), ("R", cd["low"][1])):
-        p = pan[side]
-        r = _collar_curve(p, ext[side], lowz, cd["n_each"])
-        if r is None:
-            return False
-        K, Vv, Ps = r
-        o, d = _ray(K, Vv, Ps, p.sx)
-        iso = p.iso + p.overlap(Ps) + 0.0015
-        C = _cast(o, d, iso)
-        pieces.append((C, iso))
-    (CL, isoL), (CR, isoR) = pieces
-    C = np.vstack([CL, CR[::-1][1:]])
-    iso = np.r_[isoL, isoR[::-1][1:]]
-    N = _unit(_grad(hull_sdf, C))
-    T, N, U = _frames_from_normal(C, N)
-    prof = cd["prof"]
-    pr = _close_prof(prof)
-    # conform each lateral offset to the surface
-    V = C[:, None, :] + pr[None, :, 1:2] * U[:, None, :]
-    fv = hull_sdf(V) - iso[:, None]
-    V = V - fv[..., None] * N[:, None, :] + pr[None, :, 0:1] * N[:, None, :]
-    # taper the two ends so a travelling end reads as a rolled edge
-    n = len(C)
-    tap = np.ones(n)
-    tap[0] = tap[-1] = 0.35
-    tap[1] = tap[-2] = 0.8
-    cen = V.mean(1, keepdims=True)
-    V = cen + (V - cen) * tap[:, None, None]
-    _set_co(cd["ob"], V.reshape(-1, 3))
-    if tag == "K":
-        L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
-        a = (pr[:, 1] + (cd["width"] - cd["inner"])) + 0.02
-        uvv = np.stack(common.collar_uv(a[None, :] + 0 * L[:, None], L[:, None] + 0 * a[None, :]), -1).reshape(-1, 2)
-        _set_uv(cd["ob"], uvv[cd["faces"]].reshape(-1, 2))
-    return True
-
-
-def _roll_along(ob_d, C, N):
-    T, N, U = _frames_from_normal(C, N)
-    V = _sweep_verts(C, N, U, ob_d["prof"])
-    _set_co(ob_d["ob"], V)
-
-
-# --------------------------------------------------------------------------- obi and accessories
-
-def _obi_setup(state):
-    # obi: a closed band swept round the waist, 362 degrees, seam at centre back
-    nobi = 200
-    H = (OBI_TOP - OBI_BOT) / 2
-    prof = []
-    # profile in (n, u): inner face, rounded top, outer face (slightly barrel), rounded bottom
-    th = 0.012
-    k = 7
-    for i in range(k):                                     # inner face, bottom -> top
-        prof.append((0.0, -H + 0.006 + (2 * H - 0.012) * i / (k - 1)))
-    for i in range(1, 6):
-        a = math.pi - math.pi * i / 6
-        prof.append((th / 2 + th / 2 * math.cos(a) * -1 * -1 if False else th / 2 - th / 2 * math.cos(math.pi * i / 6),
-                     H - 0.006 + 0.006 * math.sin(math.pi * i / 6)))
-    for i in range(k):                                     # outer face top -> bottom
-        u = H - 0.006 - (2 * H - 0.012) * i / (k - 1)
-        prof.append((th + 0.002 * (1 - (u / H) ** 2), u))
-    for i in range(1, 6):
-        prof.append((th / 2 + th / 2 * math.cos(math.pi * i / 6), -H + 0.006 - 0.006 * math.sin(math.pi * i / 6)))
-    prof = np.array(prof)
-    faces = _grid_faces(nobi, len(prof) + 1)
-    ob = _new_obj(state, "DF_obi", np.zeros((nobi * (len(prof) + 1), 3)), faces, [_mat(state, "obi")], uv=True)
-    state["obi"] = dict(ob=ob, prof=prof, n=nobi, faces=faces, th=th)
-    # obijime cord
-    ncord = 180
-    cprof = _circle(0.0045, 10)
-    faces = _grid_faces(ncord, len(cprof) + 1)
-    ob = _new_obj(state, "DF_obijime", np.zeros((ncord * (len(cprof) + 1), 3)), faces, [_mat(state, "obijime")])
-    state["cord"] = dict(ob=ob, prof=cprof, n=ncord, faces=faces)
-    nk = 90
-    faces = _grid_faces(nk, len(cprof) + 1)
-    ob = _new_obj(state, "DF_obijime_knot", np.zeros((nk * (len(cprof) + 1), 3)), faces, [_mat(state, "obijime")])
-    state["cordknot"] = dict(ob=ob, prof=cprof, n=nk, faces=faces)
-    # obiage: a soft roll at the obi's top edge across the front
-    nag = 120
-    aprof = _circle(1.0, 14)
-    faces = _grid_faces(nag, len(aprof) + 1)
-    ob = _new_obj(state, "DF_obiage", np.zeros((nag * (len(aprof) + 1), 3)), faces, [_mat(state, "obiage")])
-    state["obiage"] = dict(ob=ob, prof=aprof, n=nag, faces=faces)
-    # otaiko knot: a rounded box swept across x
-    nx_, kp = 40, 44
-    faces = _grid_faces(nx_, kp + 1)
-    ob = _new_obj(state, "DF_knot", np.zeros((nx_ * (kp + 1), 3)), faces, [_mat(state, "obi")], uv=True)
-    state["knot"] = dict(ob=ob, n=nx_, kp=kp, faces=faces)
-
-
-def _waist_iso(theta_world):
-    """Outermost kimono iso at the waist for a world azimuth measured from centre back via the
-    wearer's left (the left panel's psi)."""
-    return ISO_K + DK * _ss((np.degrees(theta_world) - 125.0) / 23.0) * (np.degrees(theta_world) < 300)
-
-
-def _band_points(psi_l, z, iso):
-    """Horizontal ray hits at local azimuth psi (left-panel convention, may exceed 2pi)."""
-    o, d = _ray(np.zeros_like(psi_l), z, psi_l, -1)
-    return _cast(o, d, iso)
-
-
-def _obi_iso_in(psi):
-    p = np.mod(psi, 2 * math.pi)
-    return _waist_iso(p) + FOLD + 0.003
-
-
-def _update_obi(state, s):
-    od = state["obi"]
-    n = od["n"]
-    ext = math.radians(362.0) * s
-    psi = np.linspace(0.0, ext, n)
-    zc = (OBI_BOT + OBI_TOP) / 2
-    iso = _obi_iso_in(psi) + 0.003 * _ss((np.degrees(psi) - 340.0) / 20.0)
-    C = _band_points(psi, np.full(n, zc), iso)
-    N = _unit(_grad(hull_sdf, C) * np.array([1, 1, 0]))
-    U = np.broadcast_to(np.array([0.0, 0.0, 1.0]), C.shape).copy()
-    prof = od["prof"]
-    pr = _close_prof(prof)
-    tap = np.ones(n)
-    if s < 1.0:
-        tap[-1], tap[-2] = 0.4, 0.85
-    V = C[:, None, :] + pr[None, :, 0:1] * N[:, None, :] + (pr[None, :, 1:2] * tap[:, None, None]) * U[:, None, :]
-    # the lower outer corner at the leading end tucks in slightly
-    _set_co(od["ob"], V.reshape(-1, 3))
-    L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
-    uvv = np.stack([np.broadcast_to(L[:, None], pr.shape[:1][::-1] + (0,) if False else (n, len(pr))),
-                    np.broadcast_to(pr[None, :, 1] + 0.08, (n, len(pr)))], -1).reshape(-1, 2)
-    _set_uv(od["ob"], uvv[od["faces"]].reshape(-1, 2))
-    state["obi_outer"] = (psi, C, N)
-
-
-def _obi_surface(psi, z):
-    """Point on the outer face of the obi (local)."""
-    iso = _obi_iso_in(psi) + 0.012 + 0.002
-    return _band_points(psi, z, iso)
-
-
-def _update_cord(state, s):
-    cd = state["cord"]
-    n = cd["n"]
-    zc = 1.031
-    # starts at the front-left, runs round the back and returns to the front
-    start = math.radians(160.0)
-    psi = start + np.linspace(0.0, math.radians(362.0) * s, n)
-    C = _obi_surface(psi, np.full(n, zc))
-    N = _unit(_grad(hull_sdf, C) * np.array([1, 1, 0]))
-    C = C + 0.0045 * N
-    _roll_along(cd, C, N)
-    # knot at centre front
-    kd = state["cordknot"]
-    sk = _ramp(s, 0.75, 1.0)
-    m = kd["n"]
-    ph = np.linspace(0, 2 * math.pi, m)
-    # a flat square knot: two interlaced lobes
-    xk = 0.021 * np.sin(ph) * (0.25 + 0.75 * sk)
-    zk = 0.010 * np.sin(2 * ph) * (0.25 + 0.75 * sk)
-    nk = 0.004 + 0.004 * np.cos(ph) ** 2 * sk + 0.003 * np.sin(ph + 0.6)
-    # centre front of the obi
-    base = _obi_surface(np.array([math.pi]), np.array([zc]))[0]
-    Nf = np.array([0.0, 1.0, 0.0])
-    C = base[None, :] + np.stack([xk, nk, zk], -1) * np.array([1, 1, 1]) + Nf * 0.0045
-    C[:, 1] = base[1] + 0.0045 + nk
-    C[:, 0] = base[0] + xk
-    C[:, 2] = base[2] + zk
-    N = np.broadcast_to(Nf, C.shape).copy()
-    _roll_along(kd, C, N)
-    state["cordknot_pt"] = base + np.array([0, 0.012, 0])
-    return sk
-
-
-def _update_obiage(state, s):
-    ad = state["obiage"]
-    n = ad["n"]
-    half = math.radians(68.0) * (0.35 + 0.65 * s)
-    psi = math.pi + np.linspace(-half, half, n)
-    w = np.cos(np.linspace(-0.5 * math.pi, 0.5 * math.pi, n)) ** 0.8          # bell across the front
-    rise = s
-    r = 0.0105 * w * (0.92 + 0.08 * np.sin(np.linspace(0, 26 * math.pi, n))) * rise + 0.002
-    zc = OBI_TOP - 0.006 + r * 0.85
-    iso = _obi_iso_in(psi) - 0.002 + r * 0.9
-    C = _band_points(psi, zc, iso)
-    N = _unit(_grad(hull_sdf, C) * np.array([1, 1, 0]))
-    T = _unit(np.gradient(C, axis=0))
-    U = np.cross(T, N)
-    # soft gathers: an elliptical, slightly wavy cross-section
-    pr = _close_prof(ad["prof"])
-    k = np.linspace(0, 1, n)[:, None]
-    sx = r[:, None] * (1.0 + 0.12 * np.sin(k * 60 + pr[None, :, 1] * 2))
-    sy = r[:, None] * 1.15
-    V = C[:, None, :] + (pr[None, :, 0] * sx)[..., None] * N[:, None, :] + (pr[None, :, 1] * sy)[..., None] * U[:, None, :]
-    _set_co(ad["ob"], V.reshape(-1, 3))
-
-
-def _update_knot(state, s):
-    kd = state["knot"]
-    nx_, kp = kd["n"], kd["kp"]
-    width = 0.28
-    hgt = 0.26 * (0.15 + 0.85 * s)
-    proud = 0.07
-    ytop = OBI_TOP + 0.072
-    # base: the obi's outer surface at centre back
-    back = _obi_surface(np.array([0.0]), np.array([(OBI_BOT + OBI_TOP) / 2]))[0]
-    yb = back[1]            # negative
-    # side profile (y, z) of the drum, closed loop: inner face, top roll, outer face, bottom fold
-    t = np.linspace(0, 1, kp)
-    pts = []
-    zt, zb_ = ytop, ytop - hgt
-    dtop, dbot = proud * (0.4 + 0.6 * s), 0.035 * (0.4 + 0.6 * s)
-    rr = 0.5 * dtop
-    for u in t:
-        if u < 0.25:                    # inner face, bottom -> top (against the obi)
-            q = u / 0.25
-            pts.append((0.004 + 0.002 * math.sin(q * math.pi), zb_ + 0.012 + (zt - rr - zb_ - 0.012) * q))
-        elif u < 0.45:                  # top roll over the pillow
-            q = (u - 0.25) / 0.20
-            a = math.pi * q
-            pts.append((rr - rr * math.cos(a), zt - rr + rr * math.sin(a) + 0.006 * math.sin(a)))
-        elif u < 0.85:                  # outer face, top -> bottom, gently convex
-            q = (u - 0.45) / 0.40
-            d = dtop + (dbot - dtop) * q + 0.006 * math.sin(math.pi * q)
-            pts.append((d, zt - rr + (zb_ + 0.012 - (zt - rr)) * q))
-        else:                           # bottom fold back to the obi
-            q = (u - 0.85) / 0.15
-            a = math.pi * q
-            pts.append((dbot / 2 + dbot / 2 * math.cos(a), zb_ + 0.012 - 0.012 * math.sin(a)))
-    pr = np.array(pts)
-    pr = np.vstack([pr, pr[:1]])
-    xs = np.linspace(-width / 2, width / 2, nx_)
-    # rounded ends: shrink the profile towards its middle near |x| -> w/2
-    e = np.clip((np.abs(xs) - (width / 2 - 0.016)) / 0.016, 0, 1)
-    tap = np.sqrt(np.clip(1 - e ** 2, 0, 1)) * 0.92 + 0.08
-    cen = pr.mean(0)
-    V = np.zeros((nx_, kp + 1, 3))
-    for i, x in enumerate(xs):
-        p = cen + (pr - cen) * np.array([tap[i], 0.35 + 0.65 * tap[i]])
-        # slight sag of the lower edge at the middle, cloth-like
-        sag = 0.004 * math.cos(math.pi * x / width)
-        V[i, :, 0] = x
-        V[i, :, 1] = yb - p[:, 0] - 0.001
-        V[i, :, 2] = p[:, 1] - sag * (p[:, 1] < (zb_ + zt) / 2)
-    _set_co(kd["ob"], V.reshape(-1, 3))
-    L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(pr, axis=0), axis=1))]
-    uvv = np.stack([np.broadcast_to(xs[:, None] + 0.14, (nx_, kp + 1)), np.broadcast_to(L[None, :], (nx_, kp + 1))],
-                   -1).reshape(-1, 2)
-    _set_uv(kd["ob"], uvv[kd["faces"]].reshape(-1, 2))
-    state["knot_pt"] = np.array([0.0, yb - dtop - 0.005, (zt + zb_) / 2])
-
-
 # --------------------------------------------------------------------------- update
 
-def _panel_uv(state, p, P, psi, s_fold):
-    ps, seg = state["arc"]
-    kk = state["uv_k"]
-    c = -p.sx * 0.0 + np.interp(psi.ravel(), ps, seg) / kk
-    c = c * (-1.0 if p.sx < 0 else 1.0)
-    z = P[:, 2]
-    h_up = _ridge(P[:, 0]) - z
-    h_sk = common.BODY - (z - Z_HEM)
-    zf = p.fold_z(s_fold) if p.fold else -1.0
-    if zf < 0:
-        zf = Z_KOSHI - 0.01
-    f = p.faces
-    zface = z[f].mean(1)
-    skirt = zface < zf
-    cl = c[f]
-    hl = np.where(skirt[:, None], h_sk[f], np.maximum(h_up[f], 0.0))
-    cr = np.repeat(cl.mean(1), 4)
-    return _worn_uv_np(cl.ravel(), hl.ravel(), cr)
-
-
 def update(state, t):
-    t = {k: float(min(1.0, max(0.0, (t or {}).get(k, 0.0)))) for k in
-         ("juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot")}
+    t = {k: float(min(1.0, max(0.0, (t or {}).get(k, 0.0)))) for k in LAYERS}
     ob = state["objects"]
     eps = 1e-3
     for tag, key, pan in (("J", "juban", state["jub"]), ("K", "kimono", state["kim"])):
@@ -1107,56 +1123,52 @@ def update(state, t):
         on = tv > eps
         emax = max(pan["L"].edge.max(), pan["R"].edge.max()) + 0.02
         ext = {"R": emax * _ramp(tv, 0.0, 0.72), "L": emax * _ramp(tv, 0.22, 1.0)}
-        s_fold = t["ohashori"] if (tag == "K") else 0.0
+        s_fold = t["ohashori"] if tag == "K" else 0.0
         for side, p in pan.items():
             o = ob["DF_%s_panel_%s" % (tag, side)]
             vis = on and ext[side] > math.radians(2.0)
             _show(o, vis)
-            if vis:
-                P, psi, _ = p.positions(ext[side], s_fold if tv >= 1.0 - eps else s_fold * tv)
-                _set_co(o, P)
-                if tag == "K":
-                    _set_uv(o, _panel_uv(state, p, P, psi, s_fold))
-                if tag == "K":
-                    rd = state["rolls"][side]
-                    bot = P.reshape(p.nr, p.nc, 3)[0]
-                    Nb = _unit(bot * np.array([1, 1, 0]))
-                    C = bot - 0.0012 * Nb + np.array([0, 0, -0.0016])
-                    _roll_along(rd, C, Nb)
             if tag == "K":
                 _show(state["rolls"][side]["ob"], vis)
-        # collar
+            if not vis:
+                continue
+            P, psi = p.positions(ext[side], s_fold)
+            _set_co(o, P.reshape(-1, 3))
+            if tag == "K":
+                _set_uv(o, _panel_uv(state, p, P, psi, s_fold))
+                # the rolled edge: along the hem, then up the front edge to where the collar starts
+                C = np.vstack([P[0, :, :], P[1:p.i_roll, -1, :]])
+                Nn = _unit(C * np.array([1.0, 1.0, 0.0]))
+                out = np.zeros_like(C)
+                out[:p.nc, 2] = -1.0
+                tang = _unit(np.cross(np.array([0.0, 0.0, 1.0]), Nn[p.nc:])) * p.sx
+                out[p.nc:] = tang
+                _tube_set(state["rolls"][side], C - 0.0012 * Nn + 0.0012 * out, Nn)
         cd = state["collars"][tag]
         cvis = on and min(ext["L"], ext["R"]) > math.radians(4.0)
         if cvis:
             cvis = _update_collar(state, tag, ext)
         _show(cd["ob"], cvis)
-        # sleeves
-        g = _ramp(tv, 0.12, 0.62)
+        g = _ramp(tv, 0.10, 0.70)
         for sl in state["sleeves"]:
             if sl.tag != tag:
                 continue
             vis = on and g > 0.02
             _show(sl.ob, vis)
-            rname = sl.ob.name + "_roll"
+            rd = state["rolls"].get(sl.ob.name)
             if vis:
                 P = sl.positions(g)
-                _set_co(sl.ob, P)
+                _set_co(sl.ob, P.reshape(-1, 3))
                 if tag == "K":
                     _set_uv(sl.ob, sl.uv())
-                    rd = state["rolls"][rname]
-                    E = sl.opening_edge(P)
-                    if len(E) > 3 and g >= 1.0:
-                        E = _resample(E, rd["n"])
-                        Nn = np.broadcast_to(np.array([sl.sx * 1.0, 0, 0]), E.shape).copy()
-                        Nn = _unit(Nn + 0.3 * _unit(E - E.mean(0)))
-                        _roll_along(rd, E + 0.0005 * Nn, Nn)
-                    else:
-                        vis = False
-            if rname in state["rolls"]:
-                _show(state["rolls"][rname]["ob"], vis)
+                    E = _resample(sl.opening(P), rd["n"])
+                    Nn = _unit(E - np.array([sl.sx * (_XOUT - 0.02), 0.0, 0.0]) * np.array([1.0, 0.0, 0.0])
+                               - np.array([0.0, 0.0, 1.0]) * E[:, 2:3] * np.array([0.0, 0.0, 1.0]))
+                    Nn = _unit(Nn * np.array([0.25, 1.0, 0.0]) + np.array([sl.sx * 0.5, 0.0, 0.0]))
+                    _tube_set(rd, E + np.array([sl.sx * 0.0006, 0.0, 0.0]), Nn)
+            if rd is not None:
+                _show(rd["ob"], vis)
 
-    # obi family
     so = t["obi"]
     _show(ob["DF_obi"], so > eps)
     if so > eps:
@@ -1164,46 +1176,45 @@ def update(state, t):
     sa = t["obiage"]
     _show(ob["DF_obiage"], sa > eps)
     if sa > eps:
-        _update_obiage(state, _ss(sa))
+        _update_obiage(state, float(_ss(sa)))
     sj = t["obijime"]
     _show(ob["DF_obijime"], sj > eps)
-    _show(ob["DF_obijime_knot"], sj > 0.75)
-    if sj > eps:
-        _update_cord(state, _ss(sj))
+    kv = _update_cord(state, sj) if sj > eps else False
+    _show(ob["DF_obijime_knot"], bool(kv))
     sk = t["knot"]
     _show(ob["DF_knot"], sk > eps)
+    _show(ob["DF_knot_tail"], sk > eps)
     if sk > eps:
-        _update_knot(state, _ss(sk))
+        _update_knot(state, float(_ss(sk)))
 
 
 # --------------------------------------------------------------------------- anchors
 
 def _anchor_points(state):
-    kim = state["kim"]
+    hull, kim, jub = state["hull"], state["kim"], state["jub"]
     A = {}
-    # juban collar: on the wearer's right side of the V, mid height
-    pts = []
-    for z in (1.33,):
-        pass
-    pj = state["jub"]["R"]
-    o, d = _ray(np.array([1]), np.array(0.62), np.array(math.radians(150.0)), +1)
-    A["form_juban_collar"] = _cast(o, d, np.array(ISO_J + 0.008))[0] + np.array([0, 0.004, 0])
-    # crossing of the kimono collars
-    o, d = _ray(np.array([1]), np.array(0.08), np.array(math.pi), -1)
-    A["form_overlap"] = _cast(o, d, np.array(ISO_K + DK + 0.008))[0]
-    psi_f = np.array([math.pi])
-    A["form_ohashori"] = _band_points(psi_f, np.array([Z_FOLD + 0.03]), np.array([ISO_K + DK + FOLD + 0.002]))[0]
-    A["form_obi"] = _obi_surface(psi_f, np.array([OBI_BOT + 0.035]))[0]
-    A["form_obiage"] = _obi_surface(psi_f, np.array([OBI_TOP + 0.006]))[0]
-    A["form_obijime"] = np.asarray(state.get("cordknot_pt", A["form_obi"]))
-    A["form_knot"] = np.asarray(state.get("knot_pt", (0, -0.3, 1.0)))
-    o, d = _ray(np.array([1]), np.array(kim["L"].phi_top - 0.12), np.array(0.0), -1)
-    A["form_nape"] = _cast(o, d, np.array(ISO_K + 0.012))[0]
-    A["form_hem"] = _band_points(np.array([0.0]), np.array([Z_HEM + 0.02]), np.array([ISO_K + 0.003]))[0]
+    fr = np.array([math.pi])
+    # the white juban collar where it shows on the wearer's right of the V
+    p = jub["R"]
+    i = int(np.argmin(np.abs(p.zn - 1.0))) if False else int(np.argmin(np.abs(hull.zback[np.clip(p.rows - hull.n0, 0, None)] - 1.33)))
+    A["form_juban_collar"] = hull.pts(p.rows[i], p.edge[i] - 0.10, LV_J + 0.006, p.sx)
+    # where the left collar crosses over the right one
+    p = kim["L"]
+    P, _ = p.positions(p.edge.max() + 0.1)
+    E = P[:, -1, :]
+    i = int(np.argmin(np.abs(E[:, 0]) + 10.0 * (E[:, 2] < 1.15)))
+    A["form_overlap"] = E[i] + np.array([0.0, 0.006, 0.0])
+    A["form_ohashori"] = hull.ring(np.array([Z_FOLD + 0.033]), fr, LV_K + DK + FOLD + 0.002)[0]
+    A["form_obi"] = _obi_face(state, fr, np.array([OBI_BOT + 0.040]))[0]
+    A["form_obiage"] = _obi_face(state, fr, np.array([OBI_TOP + 0.008]))[0]
+    A["form_obijime"] = np.asarray(state["cordknot_pt"])
+    A["form_knot"] = np.asarray(state["knot_pt"])
+    A["form_nape"] = hull.pts(p.rows[-3], np.array(0.0), LV_K, p.sx)
+    A["form_hem"] = hull.ring(np.array([Z_HEM + 0.015]), fr, LV_K + DK + 0.002)[0]
     sl = [s for s in state["sleeves"] if s.tag == "K" and s.sx < 0][0]
-    P = sl.positions(1.0).reshape(sl.NA, sl.NR + 1, 3)
-    A["form_sleeve"] = P[sl.NA // 2, sl.NR // 4]
-    return {k: np.asarray(v, float) for k, v in A.items()}
+    S = sl.positions(1.0)
+    A["form_sleeve"] = S[sl.NA // 2, sl.NB + sl.NH // 2]
+    return {k: np.asarray(v, float).reshape(3) for k, v in A.items()}
 
 
 def anchors(state):
@@ -1213,62 +1224,70 @@ def anchors(state):
         bpy.context.view_layer.update()
     except Exception:
         pass
-    root = state["root"]
-    mw = root.matrix_world.copy()
-    return {k: tuple(mw @ Vector(tuple(v))) for k, v in state["anchors_local"].items()}
+    mw = state["root"].matrix_world.copy()
+    return {k: tuple(mw @ Vector(tuple(float(c) for c in v))) for k, v in state["anchors_local"].items()}
 
 
 # --------------------------------------------------------------------------- test harness
 
-def _test_studio(scene, form_xy):
+def _test_hall(scene, xy):
+    """A bright stand-in for the hall: tatami-coloured floor, pale walls, a wall of daylight."""
     import bpy
-    # dark warm room: floor + far walls
-    fx, fy = form_xy
-    me = bpy.data.meshes.new("T_room")
-    S = 6.0
-    v = [(-S, -S, 0), (S, -S, 0), (S, S, 0), (-S, S, 0), (-S, -S, 4), (S, -S, 4), (S, S, 4), (-S, S, 4)]
-    f = [(0, 1, 2, 3), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)]
-    me.from_pydata(v, [], f)
-    room = bpy.data.objects.new("T_room", me)
-    room.location = (fx, fy, 0)
-    scene.collection.objects.link(room)
-    room.data.materials.append(common.fabric_material("floor"))
-    # plinth
-    bpy.ops.mesh.primitive_cylinder_add(radius=0.45, depth=0.08, location=(fx, fy, 0.04), vertices=96)
-    pl = bpy.context.active_object
-    pl.data.materials.append(common.fabric_material("dais"))
-    warm = (1.0, 0.70, 0.45)
+    fx, fy = xy
 
-    def spot(name, loc, energy, size, angle=0.6):
-        ld = bpy.data.lights.new(name, "SPOT")
-        ld.energy = energy
-        ld.color = warm
-        ld.spot_size = angle
-        ld.spot_blend = 0.6
-        ld.shadow_soft_size = size
-        ob = bpy.data.objects.new(name, ld)
-        ob.location = loc
-        scene.collection.objects.link(ob)
-        tgt = bpy.data.objects.new(name + "_t", None)
-        tgt.location = (fx, fy, 1.0)
-        scene.collection.objects.link(tgt)
-        c = ob.constraints.new("TRACK_TO")
-        c.target = tgt
-        c.track_axis = "TRACK_NEGATIVE_Z"
-        c.up_axis = "UP_Y"
-    spot("T_key", (fx - 1.6, fy + 2.4, 3.6), 900, 0.35)
-    spot("T_fill", (fx + 2.4, fy + 1.4, 2.6), 260, 0.6, 0.9)
-    spot("T_back", (fx + 0.8, fy - 2.6, 3.4), 520, 0.35)
-    spot("T_back2", (fx - 1.8, fy - 1.6, 3.0), 260, 0.4)
+    def plain(name, rgb, rough=0.8):
+        m = bpy.data.materials.new(name)
+        m.use_nodes = True
+        b = m.node_tree.nodes.get("Principled BSDF")
+        b.inputs["Base Color"].default_value = tuple(rgb) + (1.0,)
+        b.inputs["Roughness"].default_value = rough
+        return m
+
+    def quad(name, pts, mat):
+        me = bpy.data.meshes.new(name)
+        me.from_pydata(pts, [], [(0, 1, 2, 3)])
+        o = bpy.data.objects.new(name, me)
+        scene.collection.objects.link(o)
+        me.materials.append(mat)
+        return o
+
+    S, Hh = 4.2, 3.4
+    tat = plain("T_tatami", (0.52, 0.47, 0.27), 0.65)
+    nt = tat.node_tree
+    wv = nt.nodes.new("ShaderNodeTexWave")
+    wv.inputs["Scale"].default_value = 260.0
+    wv.inputs["Distortion"].default_value = 0.4
+    bp = nt.nodes.new("ShaderNodeBump")
+    bp.inputs["Strength"].default_value = 0.35
+    bp.inputs["Distance"].default_value = 0.001
+    nt.links.new(wv.outputs["Fac"], bp.inputs["Height"])
+    nt.links.new(bp.outputs["Normal"], nt.nodes["Principled BSDF"].inputs["Normal"])
+    wall = plain("T_wall", (0.74, 0.70, 0.62), 0.9)
+    gold = plain("T_gold", (0.62, 0.47, 0.20), 0.45)
+    quad("T_floor", [(fx - S, fy - S, 0), (fx + S, fy - S, 0), (fx + S, fy + S, 0), (fx - S, fy + S, 0)], tat)
+    quad("T_ceil", [(fx - S, fy - S, Hh), (fx - S, fy + S, Hh), (fx + S, fy + S, Hh), (fx + S, fy - S, Hh)], wall)
+    quad("T_back", [(fx - S, fy - 3.4, 0), (fx - S, fy - 3.4, Hh), (fx + S, fy - 3.4, Hh), (fx + S, fy - 3.4, 0)], gold)
+    quad("T_front", [(fx - S, fy + S, 0), (fx + S, fy + S, 0), (fx + S, fy + S, Hh), (fx - S, fy + S, Hh)], wall)
+    quad("T_east", [(fx - 3.6, fy - S, 0), (fx - 3.6, fy + S, 0), (fx - 3.6, fy + S, Hh), (fx - 3.6, fy - S, Hh)], wall)
+    # the shoji side: a tall, wide, soft source (the figure faces +Y here, so west is at +X)
+    ld = bpy.data.lights.new("T_shoji", "AREA")
+    ld.shape = "RECTANGLE"
+    ld.size, ld.size_y = 7.0, 2.4
+    ld.energy = 2600.0
+    ld.color = (1.0, 0.96, 0.90)
+    lo = bpy.data.objects.new("T_shoji", ld)
+    lo.location = (fx + 3.6, fy + 0.4, 1.5)
+    lo.rotation_euler = (0.0, math.radians(90.0), 0.0)
+    scene.collection.objects.link(lo)
     w = scene.world or bpy.data.worlds.new("T_world")
     scene.world = w
     w.use_nodes = True
     bg = w.node_tree.nodes.get("Background")
-    bg.inputs[0].default_value = (0.010, 0.008, 0.007, 1)
-    bg.inputs[1].default_value = 1.0
+    bg.inputs[0].default_value = (0.95, 0.97, 1.0, 1)
+    bg.inputs[1].default_value = 0.35
 
 
-def _camera(scene, name, target, az_deg, dist=3.1, height=1.05, lens=50):
+def _camera(scene, name, target, az_deg, dist=3.1, height=1.25, lens=52.0):
     import bpy
     from mathutils import Vector
     cd = bpy.data.cameras.new(name)
@@ -1290,66 +1309,79 @@ def _main():
     out = os.environ.get("DF_OUT", "/tmp/claude-0/-home-user-aia-slides/d08b3256-05de-5c3d-9318-a3845ce8df89/"
                          "scratchpad/blender-form")
     os.makedirs(out, exist_ok=True)
-    res = tuple(int(v) for v in os.environ.get("DF_RES", "400x720").split("x"))
-    spp = int(os.environ.get("DF_SPP", "24"))
+    res = tuple(int(v) for v in os.environ.get("DF_RES", "640x800").split("x"))
+    spp = int(os.environ.get("DF_SPP", "40"))
     which = os.environ.get("DF_WHICH", "sheet,strip").split(",")
+    tagname = os.environ.get("DF_TAG", "")
     bpy.ops.wm.read_factory_settings(use_empty=True)
     sc = bpy.context.scene
     common.setup_cycles(sc, res=res, samples=spp, preview=True)
-    origin = (2.7, 0.0, 0.08)
+    sc.render.threads_mode = "FIXED"
+    sc.render.threads = int(os.environ.get("DF_THREADS", "3"))
+    origin = (0.0, 0.0, 0.0)
     coll = bpy.data.collections.new("dressform")
     sc.collection.children.link(coll)
     t0 = time.time()
     st = build(coll, origin=origin)
     t1 = time.time()
-    full = {k: 1.0 for k in ("juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot")}
+    full = {k: 1.0 for k in LAYERS}
     update(st, full)
     t2 = time.time()
-    print("build %.2fs  update %.3fs" % (t1 - t0, t2 - t1 if False else t2 - t1))
-    _test_studio(sc, origin[:2])
-    tgt = (origin[0], origin[1], 0.92 + origin[2])
+    update(st, {"juban": 1.0, "kimono": 0.55})
+    t3 = time.time()
+    print("build %.2fs  update(all ones) %.3fs  update(mid wrap) %.3fs" % (t1 - t0, t2 - t1, t3 - t2))
+    _test_hall(sc, origin[:2])
+    tgt = (origin[0], origin[1], 0.86)
 
-    def shoot(name, az, tt, cam_res=None):
+    def shoot(name, az, tt, cam_res=None, **kw):
         update(st, tt)
-        cam = _camera(sc, "C_" + name, tgt, az)
+        cam = _camera(sc, "C_" + name, kw.pop("target", tgt), az, **kw)
         sc.camera = cam
-        if cam_res:
-            sc.render.resolution_x, sc.render.resolution_y = cam_res
+        sc.render.resolution_x, sc.render.resolution_y = cam_res or res
         p = os.path.join(out, name + ".png")
         sc.render.filepath = p
         bpy.ops.render.render(write_still=True)
         return p
 
+    def sheet(paths, name):
+        ims = [Image.open(p) for p in paths]
+        W_, H_ = ims[0].size
+        sh = Image.new("RGB", (W_ * len(ims), H_))
+        for i, im in enumerate(ims):
+            sh.paste(im, (i * W_, 0))
+        sh.save(os.path.join(out, name))
+        print("wrote", os.path.join(out, name))
+
     if "sheet" in which:
         views = [("front", 0), ("q34", 40), ("side", 90), ("back", 180)]
-        ims = [Image.open(shoot("v_" + n, a, full, res)) for n, a in views]
-        W_, H_ = ims[0].size
-        sheet = Image.new("RGB", (W_ * 4, H_))
-        for i, im in enumerate(ims):
-            sheet.paste(im, (i * W_, 0))
-        sheet.save(os.path.join(out, "sheet_turntable.png"))
+        sheet([shoot("v_" + n, a, full) for n, a in views], "sheet_turntable%s.png" % tagname)
+    if "one" in which:
+        az = float(os.environ.get("DF_AZ", "0"))
+        tt = dict(full)
+        for kv in os.environ.get("DF_T", "").split(","):
+            if "=" in kv:
+                k, v = kv.split("=")
+                tt[k] = float(v)
+        shoot("one%s" % tagname, az, tt)
+    if "close" in which:
+        az = float(os.environ.get("DF_AZ", "0"))
+        zz = float(os.environ.get("DF_Z", "1.2"))
+        shoot("close%s" % tagname, az, full, target=(0, 0, zz), dist=1.5, height=zz + 0.12, lens=50.0)
     if "strip" in which:
-        order = ["juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot"]
-        tt = {k: 0.0 for k in order}
-        frames = [shoot("s_0", 0, tt, (res[0] // 2, res[1] // 2))]
-        for i, k in enumerate(order):
+        half = (res[0] // 2, res[1] // 2)
+        tt = {k: 0.0 for k in LAYERS}
+        frames = [shoot("s_0", 0, dict(tt), half)]
+        for i, k in enumerate(LAYERS):
             tt[k] = 1.0
-            frames.append(shoot("s_%d" % (i + 1), 0 if k != "knot" else 150, dict(tt), (res[0] // 2, res[1] // 2)))
-        W_, H_ = Image.open(frames[0]).size
-        strip = Image.new("RGB", (W_ * len(frames), H_))
-        for i, f in enumerate(frames):
-            strip.paste(Image.open(f), (i * W_, 0))
-        strip.save(os.path.join(out, "strip_buildup.png"))
+            frames.append(shoot("s_%d" % (i + 1), 0, dict(tt), half))
+        frames.append(shoot("s_%d" % (len(LAYERS) + 1), 180, dict(tt), half))
+        sheet(frames, "strip_buildup%s.png" % tagname)
     if "mid" in which:
-        mids = [{"juban": 1, "kimono": 0.3}, {"juban": 1, "kimono": 0.6}, {"juban": 1, "kimono": 1, "ohashori": 0.5},
-                {"juban": 1, "kimono": 1, "ohashori": 1, "obi": 0.5},
-                {"juban": 1, "kimono": 1, "ohashori": 1, "obi": 1, "obiage": 1, "obijime": 0.5, "knot": 0.5}]
-        frames = [shoot("m_%d" % i, 30, m, (res[0] // 2, res[1] // 2)) for i, m in enumerate(mids)]
-        W_, H_ = Image.open(frames[0]).size
-        strip = Image.new("RGB", (W_ * len(frames), H_))
-        for i, f in enumerate(frames):
-            strip.paste(Image.open(f), (i * W_, 0))
-        strip.save(os.path.join(out, "strip_mid.png"))
+        half = (res[0] // 2, res[1] // 2)
+        mids = [{"juban": 0.5}, {"juban": 1, "kimono": 0.3}, {"juban": 1, "kimono": 0.6}, {"juban": 1, "kimono": 0.85},
+                {"juban": 1, "kimono": 1, "ohashori": 0.5}, {"juban": 1, "kimono": 1, "ohashori": 1, "obi": 0.5},
+                {"juban": 1, "kimono": 1, "ohashori": 1, "obi": 1, "obiage": 0.5, "obijime": 0.5, "knot": 0.5}]
+        sheet([shoot("m_%d" % i, 30, m, half) for i, m in enumerate(mids)], "strip_mid%s.png" % tagname)
     print("anchors", {k: tuple(round(c, 3) for c in v) for k, v in anchors(st).items()})
 
 

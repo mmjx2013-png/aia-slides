@@ -1024,7 +1024,7 @@ def hall_material(kind, name=None, strength=None):
 
     elif kind in ("hinoki", "board", "planks"):
         aid, target, scale, rr, flat = {
-            "hinoki": ("ash_veneer", (0.56, 0.385, 0.20), (0.9, 1.6), (0.36, 0.62), 0.0),
+            "hinoki": ("ash_veneer", (0.60, 0.44, 0.255), (0.9, 1.6), (0.36, 0.62), 0.0),
             "board": ("okoume_veneer", (0.50, 0.335, 0.175), (0.55, 0.9), (0.42, 0.68), 0.0),
             "planks": ("japanese_cedar_planks", (0.30, 0.165, 0.07), (0.5, 0.5), (0.30, 0.60), 0.0)}[kind]
         vec, geo = _island_uv(nt, scale)
@@ -1078,16 +1078,16 @@ def hall_material(kind, name=None, strength=None):
         m1 = N("ShaderNodeMapRange")
         m1.inputs["From Min"].default_value = 0.25
         m1.inputs["From Max"].default_value = 0.75
-        m1.inputs["To Min"].default_value = 0.80
-        m1.inputs["To Max"].default_value = 1.10
+        m1.inputs["To Min"].default_value = 0.60
+        m1.inputs["To Max"].default_value = 1.12
         L(nz.outputs["Fac"], m1.inputs["Value"])
         sp = N("ShaderNodeSeparateXYZ")
         L(tc.outputs["Object"], sp.inputs[0])
         m2 = N("ShaderNodeMapRange")
-        m2.inputs["From Min"].default_value = 0.3
-        m2.inputs["From Max"].default_value = 3.0
+        m2.inputs["From Min"].default_value = 0.4
+        m2.inputs["From Max"].default_value = 2.8
         m2.inputs["To Min"].default_value = 1.0
-        m2.inputs["To Max"].default_value = 0.78
+        m2.inputs["To Max"].default_value = 0.40
         L(sp.outputs["Z"], m2.inputs["Value"])
         # paper fibres: faint long streaks
         mpf = N("ShaderNodeMapping")

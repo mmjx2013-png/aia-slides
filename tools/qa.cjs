@@ -57,7 +57,8 @@ const fs = require('fs');
             }
           }
           const overflow = el.scrollHeight > el.clientHeight + 2 && getComputedStyle(el).overflowY !== 'visible' && getComputedStyle(el).overflowY !== 'auto';
-          const offscreen = r.left < -1 || r.right > innerWidth + 1 || (r.bottom > innerHeight + 1 && getComputedStyle(el).position === 'fixed');
+          const wallObject = el.classList.contains('panel');   // wall text belongs to the room, neighbours may run off screen
+          const offscreen = !wallObject && (r.left < -1 || r.right > innerWidth + 1 || (r.bottom > innerHeight + 1 && getComputedStyle(el).position === 'fixed'));
           res.push({ cls: el.className.baseVal ?? el.className, box: [r.left, r.top, r.width, r.height], runs, overflow, offscreen });
         });
         // overlapping glass panels (two visible panels on top of each other)

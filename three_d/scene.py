@@ -1130,6 +1130,8 @@ def build_dressform():
         print("[scene] dressform.py built")
     except Exception as e:  # noqa: BLE001
         print("[scene] dressform unavailable (%r); using a proxy" % (e,))
+        for ob in list(coll.all_objects):               # drop whatever a failed build left behind
+            bpy.data.objects.remove(ob, do_unlink=True)
         mq = C.fabric_material("mannequin")
         cylinder("FormProxy_torso", (fx, fy, 0.95), (fx, fy, 1.42), 0.15, mq, coll, n=32)
         cylinder("FormProxy_neck", (fx, fy, 1.42), (fx, fy, 1.50), 0.05, mq, coll, n=16)
