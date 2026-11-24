@@ -14,7 +14,7 @@
   function setPlates(s){
     var want={};(A(s,'plates','')).split(' ').forEach(function(p){if(p){var q=p.split(':');want[q[0]]=q[1]||'on';}});
     plates.forEach(function(p){var m=want[p.id];p.classList.remove('on','half','lhalf');if(m){p.classList.add(m);p.classList.remove('out');lazy(p);
-      var v=p.querySelector('video');if(v&&!doc.classList.contains('rm')){try{v.play();}catch(e){}}}else{var v2=p.querySelector('video');if(v2)v2.pause();}});
+      var v=p.querySelector('video');if(v&&!doc.classList.contains('rm')){try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}}}else{var v2=p.querySelector('video');if(v2)v2.pause();}});
     var vs=(A(s,'veil','')).split(' ');veils.forEach(function(v){v.classList.toggle('on',vs.indexOf(v.id)>=0);});
   }
   function render(dir,changed){
@@ -22,7 +22,7 @@
     stage.setAttribute('data-s',s.id);stage.setAttribute('data-step',st);stage.setAttribute('data-dir',dir);
     for(var g=1;g<=6;g++)stage.classList.toggle('ge'+g,st>=g);
     stage.classList.toggle('dark',A(s,'dark','')==='1');
-    stage.classList.toggle('robe-left',A(s,'robe','')==='left');
+    stage.classList.toggle('robe-left',A(s,'robe','')==='left');stage.classList.toggle('robe-off',A(s,'robe','')==='off'||(A(s,'plates','').indexOf('pIko')>=0));
     var c=A(s,'card','');var cs=c.split('|'),cpos=cs[0],flipAt=+(cs[1]||99);
     card.setAttribute('data-c',cpos);card.classList.toggle('flipped',st>=flipAt);
     lcs.forEach(function(l){l.classList.toggle('show',l.getAttribute('data-k')===cpos);});
