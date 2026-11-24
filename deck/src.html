@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kimono: a garment, or a set of rules?</title>
+<meta name="description" content="A cinematic slide deck about the kimono: one bolt of cloth, eight rectangles, and the rules of wearing it.">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');</script>
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<main id="vp" aria-roledescription="slide deck" aria-label="Kimono">
+<div id="stage" data-s="object" data-step="0" data-dir="fwd">
+  <div id="ground"></div>
+  <!--PLATES-->
+  <div class="veil vL" id="vL"></div><div class="veil vD" id="vD"></div><div class="veil vB" id="vB"></div>
+
+  <!-- the robe that travels: Met 2011.155, front; its back is shown as a plain mirror of the cloth -->
+  <div id="robe" aria-hidden="true"><div class="flip">
+    <div class="side front"><img src="media/met-76731-cut-1068.webp" alt="" width="1068" height="1246"></div>
+    <div class="side back"><img src="media/met-76731-cut-1068.webp" alt="" width="1068" height="1246">
+      <div class="rules"><h3>On the back: the rules</h3><ol>
+        <li style="--i:0">Left side over right<span class="src">[4] p.69</span></li>
+        <li style="--i:1">Under-kimono first, obi knot last<span class="src">[4] p.72</span></li>
+        <li style="--i:2">A fold of cloth beneath the obi<span class="src">[4] p.71</span></li>
+        <li style="--i:3">Lined from October until May<span class="src">[6] p.20</span></li>
+        <li style="--i:4">No motifs of a season that has passed<span class="src">[6] p.27</span></li>
+        <li style="--i:5">The flower a month before it blooms<span class="src">[4] p.62</span></li>
+        <li style="--i:6">Long sleeves for the unmarried<span class="src">[4] p.53</span></li>
+        <li style="--i:7">All-over repeats are less formal<span class="src">[4] p.62</span></li>
+        <li style="--i:8">Silk above; cotton and hemp below<span class="src">[39] p.438</span></li>
+        <li style="--i:9">“Rules can be bended”<span class="src">[4] p.123</span></li>
+      </ol></div>
+    </div>
+  </div></div>
+
+  <!-- the wall label: one card that grows, moves and turns -->
+  <div id="card" aria-hidden="true"><div class="flip">
+    <div class="face front">
+      <div class="lc wall" data-k="wall"><p class="t">Robe (Kosode) with Fishing Net and Characters</p><p class="m">Japan, Edo period, probably ca. 1660s. Silk and metallic-thread embroidery, tied-resist dyeing on satin damask.</p><span class="c">The Met · 2011.155 · CC0</span></div>
+      <div class="lc ask" data-k="ask"><span class="k">The question</span><h1>Is a kimono a <em>garment</em>, or a set of <i>rules</i>?</h1><p>Hold your answer. We settle it on the last slide.</p></div>
+      <!--TAGS-->
+      <div class="lc ask" data-k="ans" style="padding:0 40px"><span class="k" style="margin-bottom:16px">Garment or rules?</span><h1 style="font-size:64px">Turn it over.</h1></div>
+    </div>
+    <div class="face back">
+      <div class="lc both" data-k="ans"><span class="k">The answer</span><b>Both.</b><p>The cloth, and the way it is worn.</p></div>
+    </div>
+  </div></div>
+
+<!--SLIDES-->
+
+  <div class="hud" aria-hidden="true"><span id="cnt">01</span><i></i><span>KIMONO</span></div>
+  <div id="chap" aria-hidden="true"><span></span><b></b></div>
+  <div class="grain"></div>
+</div>
+</main>
+<div id="sub" aria-hidden="true"></div>
+<div id="tl" aria-hidden="true"><b></b></div>
+<nav id="ctl" aria-label="Deck controls">
+  <button id="bPrev" type="button" aria-label="Previous">←</button>
+  <span id="pos" aria-hidden="true"></span>
+  <button id="bNext" type="button" aria-label="Next">→</button>
+  <button id="bSay" type="button" aria-pressed="false">▶ Narration</button>
+  <button id="bMute" type="button" aria-pressed="false">Sound on</button>
+  <button id="bFilm" type="button" aria-pressed="false">Play as film</button>
+  <button id="bMotion" type="button" aria-pressed="true" class="wide">Motion on</button>
+  <button id="bFull" type="button" class="wide">Full screen</button>
+  <a href="read/" class="wide">Read the full exhibition</a>
+</nav>
+<div id="live" class="sr" aria-live="polite"></div>
+<script src="deck.js"></script>
+</body>
+</html>
