@@ -351,6 +351,40 @@ def _fusuma(lac, gilt, coll, idx, xa, xb, yc, z0, z1, pull_x):
     gilt.plate((pull_x, yg + 0.004, 0.80), 1, 0.022, 0.003, 24, lq)
 
 
+def _fusuma_east(lac, gilt, coll, idx, ya, yb, xc, z0, z1, pull_y):
+    """One gold fusuma in the east wall (seen from the west)."""
+    lq = C.hall_material("lacquer")
+    fw = 0.022
+    xa, xb = xc - 0.015, xc + 0.015
+    lac.box(xa, xb, ya, ya + fw, z0, z1, lq, "z")
+    lac.box(xa, xb, yb - fw, yb, z0, z1, lq, "z")
+    lac.box(xa, xb, ya + fw, yb - fw, z1 - fw, z1, lq, "y")
+    lac.box(xa, xb, ya + fw, yb - fw, z0, z0 + fw, lq, "y")
+    xg = xa + 0.004
+    gold_panel("gold_east_%d" % idx, (xg, yb - fw, z0 + fw), (0, -(yb - ya - 2 * fw), 0), (0, 0, z1 - z0 - 2 * fw),
+               coll)
+    gilt.plate((xg, pull_y, 0.80), 0, 0.034, -0.005, 24, C.hall_material("gilt"))
+    gilt.plate((xg - 0.004, pull_y, 0.80), 0, 0.022, -0.003, 24, lq)
+
+
+def _ranma(mb, axis, a0, a1, d0, d1, z0, z1, mat, pitch=0.03, bar=0.011):
+    """Openwork transom: fine upright slats (osa-ranma) with two thin rails, spanning a0..a1 along
+    `axis` ('x' or 'y'); d0..d1 is its depth range on the other horizontal axis."""
+    n = max(2, int(round((a1 - a0) / pitch)))
+    for i in range(1, n):
+        a = a0 + (a1 - a0) * i / n
+        if axis == "y":
+            mb.box(d0, d1, a - bar / 2, a + bar / 2, z0, z1, mat, "z")
+        else:
+            mb.box(a - bar / 2, a + bar / 2, d0, d1, z0, z1, mat, "z")
+    for j in (1, 2):
+        z = z0 + (z1 - z0) * j / 3
+        if axis == "y":
+            mb.box(d0 - 0.002, d1 + 0.002, a0, a1, z - 0.007, z + 0.007, mat, "y")
+        else:
+            mb.box(a0, a1, d0 - 0.002, d1 + 0.002, z - 0.007, z + 0.007, mat, "x")
+
+
 def build_hall():
     coll = _coll("Hall")
     hin, brd, plk = C.hall_material("hinoki"), C.hall_material("board"), C.hall_material("planks")
@@ -384,19 +418,33 @@ def build_hall():
         else:
             _shoji_panel(wood, thin, paper, ya, ya + PANEL_W, XW - 0.020, 0.006, KAMOI_Z)
         _shoji_panel(wood, thin, paper, yb - PANEL_W, yb, XW - 0.055, 0.006, KAMOI_Z)
-        # transom: one fixed paper light per bay
+        # transom (ranma): fine upright slats in front of the paper
         zt0, zt1 = NAG_Z + NAG_H + 0.035, NAG2_Z - 0.035
-        for i in range(1, 8):
-            y = ya + (yb - ya) * i / 8
-            thin.box(XW - 0.034, XW - 0.020, y - 0.004, y + 0.004, zt0, zt1, hin, "z")
-        for j in range(1, 3):
-            z = zt0 + (zt1 - zt0) * j / 3
-            thin.box(XW - 0.034, XW - 0.020, ya, yb, z - 0.004, z + 0.004, hin, "y")
+        _ranma(thin, "y", ya, yb, XW - 0.034, XW - 0.020, zt0, zt1, hin)
         paper.quad([(XW - 0.037, ya, zt0), (XW - 0.037, yb, zt0), (XW - 0.037, yb, zt1), (XW - 0.037, ya, zt1)],
                    washi)
     # ---- east wall: the display wall. One plaster plane; sill, nageshi and posts lie on it
     plas.quad([(HX, YN, 0.0), (HX, YS, 0.0), (HX, YS, HC), (HX, YN, HC)], pla)
-    wood.box(HX - 0.035, HX + 0.02, YS, YN, 0.0, 0.10, hinw, "y")
+    east_f = HL.get("east_fusuma_bays", [])
+    void = plain("RanmaVoid", "#2b2219", rough=0.9, spec=0.05)       # the dim room seen through a transom
+    zt0, zt1 = NAG_Z + NAG_H + 0.035, NAG2_Z - 0.035
+    n_e = 0
+    for k in range(len(ys) - 1):
+        ya, yb = ys[k] + 0.07, ys[k + 1] - 0.07
+        if k not in east_f:
+            wood.box(HX - 0.035, HX + 0.02, ys[k], ys[k + 1], 0.0, 0.10, hinw, "y")       # sill under plaster
+            continue
+        # a gold fusuma pair in this bay, with an openwork transom above it
+        wood.box(HX - 0.04, HX + 0.02, ys[k], ys[k + 1], -0.03, 0.004, hinw, "y")
+        wood.box(HX - 0.04, HX + 0.02, ys[k], ys[k + 1], KAMOI_Z, NAG_Z, hinw, "y")
+        ym = 0.5 * (ya + yb)
+        for (a0, a1, pull) in ((ym, yb, ym + 0.10), (ya, ym, ym - 0.10)):
+            n_e += 1
+            _fusuma_east(lac, gilt, coll, n_e, a0, a1, HX - 0.018, 0.006, KAMOI_Z, pull)
+        wood.box(HX - 0.036, HX - 0.006, ya, yb, NAG_Z + NAG_H, zt0, hinw, "y")
+        wood.box(HX - 0.036, HX - 0.006, ya, yb, zt1, NAG2_Z, hinw, "y")
+        _ranma(thin, "y", ya, yb, HX - 0.032, HX - 0.018, zt0, zt1, hinw)
+        plas.quad([(HX - 0.004, yb, zt0), (HX - 0.004, ya, zt0), (HX - 0.004, ya, zt1), (HX - 0.004, yb, zt1)], void)
     wood.box(HX - 0.065, HX + 0.02, YS, YN, NAG_Z, NAG_Z + NAG_H, hinw, "y")
     wood.box(HX - 0.05, HX + 0.02, YS, YN, NAG2_Z, NAG2_Z + NAG2_H, hinw, "y")
     # ---- south wall: gold fusuma
@@ -412,6 +460,10 @@ def build_hall():
     n = 0
     for b in range(4):
         xa, xb = XW + b * KEN + 0.07, XW + (b + 1) * KEN - 0.07
+        wood.box(xa, xb, YS + 0.006, YS + 0.036, NAG_Z + NAG_H, zt0, hin, "x")
+        wood.box(xa, xb, YS + 0.006, YS + 0.036, zt1, NAG2_Z, hin, "x")
+        _ranma(thin, "x", xa, xb, YS + 0.018, YS + 0.032, zt0, zt1, hin)
+        plas.quad([(xb, YS + 0.004, zt0), (xa, YS + 0.004, zt0), (xa, YS + 0.004, zt1), (xb, YS + 0.004, zt1)], void)
         n += 1
         _fusuma(lac, gilt, coll, n, xa, xa + PANEL_W, YS - 0.055, 0.006, KAMOI_Z, xa + PANEL_W - 0.10)
         n += 1
@@ -476,13 +528,13 @@ def build_hall():
     nxr, nyr = int(round(2 * HX / cs)), int(round((YN - YS) / cs))
     for i in range(nxr + 1):
         x = XW + i * cs
-        wood.box(x - 0.0225, x + 0.0225, YS, YN, HC - 0.055, HC, hin, "y")
+        wood.box(x - 0.0225, x + 0.0225, YS, YN, HC - 0.115, HC, hin, "y")
     for j in range(nyr + 1):
         y = YS + j * cs
-        wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.05, HC, hin, "x")
+        wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, hin, "x")
     for (x0, x1, y0, y1) in ((XW - 0.02, XW + 0.07, YS, YN), (HX - 0.07, HX + 0.02, YS, YN),
                              (XW, HX, YS - 0.02, YS + 0.07), (XW, HX, YN - 0.07, YN + 0.02)):
-        wood.box(x0, x1, y0, y1, HC - 0.085, HC, hin)                                # cornice
+        wood.box(x0, x1, y0, y1, HC - 0.15, HC, hin)                                 # cornice
     # ---- gilt nail covers on the nageshi, one at every post
     zc = NAG_Z + NAG_H / 2
     for y in ys[1:-1]:
@@ -611,32 +663,227 @@ def build_daylight():
 
 # =========================================================================== rack
 
+IKO_X = WD["post_x"]            # the iko's posts
+BAR_Z = ROD_TOP                 # centre height of its crossbar
+BAR_R = 0.019
+ROBE_W, ROBE_H = 1.276, 1.534   # the Met robe: width and height in metres (museum record)
+ROBE_SRC = os.path.join(C.ROOT, "site", "assets", "photos", "met-76731-cut-1068.webp")
+
+
 def build_furniture():
+    """The iko (kimono rack) with the museum robe on it and a gold folding screen behind: collection
+    'Iko'. The v2 rising rod is still created (the cloth code moves it) but never rendered."""
     lac = C.hall_material("lacquer")
-    rack = _coll("Rack")
-    S["rack_static"] = _build_rack(rack, lac, (0.0, 0.0))
-    rod = cylinder("Rod", (-0.95, 0, 0), (0.95, 0, 0), ROD_R, lac, rack, n=24)
-    cols = []
-    for sx in (-1, 1):
-        cols.append(box("RodCollar_%d" % sx, sx * WD["post_x"] - 0.03, sx * WD["post_x"] + 0.03, -0.03, 0.03,
-                        -0.03, 0.03, lac, rack))
+    hidden = _coll("RackHidden")
+    rod = cylinder("Rod", (-0.95, 0, 0), (0.95, 0, 0), ROD_R, lac, hidden, n=12)
+    cols = [box("RodCollar_%d" % sx, sx * IKO_X - 0.03, sx * IKO_X + 0.03, -0.03, 0.03, -0.03, 0.03, lac, hidden)
+            for sx in (-1, 1)]
+    for ob in [rod] + cols:
+        ob.hide_render = ob.hide_viewport = True
     S["rod"], S["collars"] = rod, cols
+    coll = _coll("Iko")
+    build_iko(coll, lac)
+    S["robe"] = build_robe(coll)
+    build_byobu(coll)
+
+
+def build_iko(coll, lq):
+    """Black-lacquered wooden rack: two posts on long feet, a lower stretcher, a crossbar whose ends
+    turn up a little."""
+    b = MB()
+    for sx in (-1, 1):
+        x = sx * IKO_X
+        b.box(x - 0.0225, x + 0.0225, -0.0225, 0.0225, 0.06, BAR_Z + 0.075, lq, "z")
+        b.box(x - 0.031, x + 0.031, -0.30, 0.30, 0.0, 0.062, lq, "y")
+        b.box(x - 0.026, x + 0.026, -0.13, 0.13, 0.062, 0.098, lq, "y")
+    b.box(-IKO_X, IKO_X, -0.015, 0.015, 0.30, 0.348, lq, "x")
+    b.build("Iko_frame", coll, bevel=0.005)
+    # the crossbar: an eight-sided section swept along x, rising at both ends
+    xs = np.linspace(-1.06, 1.06, 61)
+    zs = BAR_Z + 0.06 * np.clip((np.abs(xs) - 0.90) / 0.16, 0, 1) ** 2
+    k = 8
+    prof = [(BAR_R * math.cos(2 * math.pi * (j + 0.5) / k) / math.cos(math.pi / k) * 0.92,
+             BAR_R * math.sin(2 * math.pi * (j + 0.5) / k) / math.cos(math.pi / k) * 0.92) for j in range(k)]
+    vs, fs = [], []
+    for x, z in zip(xs, zs):
+        vs += [(float(x), py, float(z) + pz) for (py, pz) in prof]
+    for i in range(len(xs) - 1):
+        for j in range(k):
+            a, b2 = i * k + j, i * k + (j + 1) % k
+            fs.append((a, b2, b2 + k, a + k))
+    fs.append(tuple(range(k))[::-1])
+    fs.append(tuple((len(xs) - 1) * k + j for j in range(k)))
+    me = bpy.data.meshes.new("Iko_bar")
+    me.from_pydata(vs, [], fs)
+    import bmesh
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    bm.to_mesh(me)
+    bm.free()
+    me.materials.append(lq)
+    _obj("Iko_bar", me, coll)
+
+
+def robe_material(png, back=False):
+    name = "Robe_back" if back else "Robe_front"
+    mat = bpy.data.materials.get(name)
+    if mat:
+        return mat
+    mat = C._new_mat(name)
+    nt = C._nodes(mat)
+    N, L = nt.nodes.new, nt.links.new
+    out = N("ShaderNodeOutputMaterial")
+    bsdf = N("ShaderNodeBsdfPrincipled")
+    L(bsdf.outputs["BSDF"], out.inputs["Surface"])
+    tc = N("ShaderNodeTexCoord")
+    tex = N("ShaderNodeTexImage")
+    tex.image = bpy.data.images.load(png, check_existing=True)
+    tex.interpolation = "Cubic"
+    tex.extension = "CLIP"
+    L(tc.outputs["UV"], tex.inputs["Vector"])
+    L(tex.outputs["Alpha"], bsdf.inputs["Alpha"])
+    ivory = (0.66, 0.60, 0.50, 1.0)
+    if back:
+        bsdf.inputs["Base Color"].default_value = ivory
+    else:
+        geo = N("ShaderNodeNewGeometry")
+        lift = C._mixc(nt, 1.0, tex.outputs["Color"], (1.28, 1.26, 1.22), "MULTIPLY")    # the photo is a little dark
+        L(C._mixc(nt, geo.outputs["Backfacing"], lift, ivory), bsdf.inputs["Base Color"])
+    # the weave: relief from the photograph's own light and dark, plus a fine thread grain
+    bw = N("ShaderNodeRGBToBW")
+    L(tex.outputs["Color"], bw.inputs["Color"])
+    b1 = N("ShaderNodeBump")
+    b1.inputs["Strength"].default_value = 0.0 if back else 0.22
+    b1.inputs["Distance"].default_value = 0.0008
+    L(bw.outputs["Val"], b1.inputs["Height"])
+    mp = N("ShaderNodeMapping")
+    mp.inputs["Scale"].default_value = (ROBE_W, ROBE_H, 1.0)
+    L(tc.outputs["UV"], mp.inputs["Vector"])
+    b2, _ = C._grain(nt, mp.outputs["Vector"], 2200.0, 0.18, 0.0002)
+    L(b1.outputs["Normal"], b2.inputs["Normal"])
+    L(b2.outputs["Normal"], bsdf.inputs["Normal"])
+    C._silk(nt, bsdf, rough=0.52, sheen=0.32, spec=0.40)
+    return mat
+
+
+def build_robe(coll):
+    """The museum object: the Met's photograph of the robe (front, laid flat) on a fine sheet of the
+    robe's true size, cut to the photograph's outline, hung from the crossbar by its shoulder line
+    and draped in code: folds that grow towards the hem, falling sleeves, a plain back."""
+    if not os.path.exists(ROBE_SRC):
+        print("[scene] robe photograph missing:", ROBE_SRC)
+        return None
+    from PIL import Image
+    im = Image.open(ROBE_SRC).convert("RGBA")
+    png = os.path.join(C.TEX_DIR, "met_76731_front.png")
+    if not os.path.exists(png):
+        os.makedirs(C.TEX_DIR, exist_ok=True)
+        im.save(png + ".tmp.png")
+        os.replace(png + ".tmp.png", png)
+    al = np.asarray(im)[:, :, 3]
+    hh, ww = al.shape
+    yy, xx = np.where(al > 128)
+    x0, x1, y0, y1 = xx.min(), xx.max() + 1, yy.min(), yy.max() + 1
+    wrow = (al[:, x0:x1] > 128).sum(1)
+    ysh = int(np.argmax(wrow > 0.8 * (x1 - x0)))                 # the shoulder line in the photograph
+    nx, nz = 170, 200
+    px = np.linspace(x0, x1, nx + 1)
+    py = np.linspace(y0, y1, nz + 1)
+    X, PY = np.meshgrid((px - 0.5 * (x0 + x1)) / (x1 - x0) * ROBE_W, py)
+    s = (PY - ysh) / (y1 - y0) * ROBE_H                          # metres below the shoulder line
+    sp = np.clip(s, 0, None)
+    hem = (y1 - ysh) / (y1 - y0) * ROBE_H
+    sn = np.clip(sp / hem, 0, 1)
+    body = np.abs(X) < 0.30
+    ss = np.clip(sp / 0.49, 0, 1)                                # fraction of the sleeve drop
+    amp = np.where(body, 0.003 + 0.034 * sn ** 1.4, 0.003 + 0.020 * ss ** 1.3)
+    wander = 0.9 * np.sin(1.7 * sp)
+    folds = (0.55 * np.sin(2 * np.pi * X / 0.215 + wander + 0.4) + 0.30 * np.sin(2 * np.pi * X / 0.128 + 1.3 + 0.6 * sp)
+             + 0.15 * np.sin(2 * np.pi * X / 0.37 - 0.8))
+    d = amp * folds + np.where(body, 0.014 * np.sin(np.pi * sn) * np.cos(np.pi * X / 0.62), 0.0)
+    t_out = np.clip((np.abs(X) - 0.30) / 0.34, 0, 1)
+    Xc = X * (1.0 - np.where(body, 0.045 * sn ** 1.5, 0.02 * ss)) - np.sign(X) * 0.014 * t_out * ss
+    dz = -0.024 * t_out ** 2 * ss + np.where(body, 0.012 * np.sin(2 * np.pi * X / 0.215 + 0.4) * sn ** 3, 0.0)
+    zsh = BAR_Z + BAR_R + 0.002
+    over = np.clip(-s, 0, None)                                  # the collar stands above the bar, leaning back
+    k = np.clip(sp / 0.05, 0, 1)
+    k = k * k * (3 - 2 * k)
+    Yw = -(0.004 + (BAR_R + 0.004) * k) - d * k + 0.20 * over
+    Zw = zsh - sp + 0.97 * over + dz
+    co = np.stack([Xc, Yw, Zw], -1).reshape(-1, 3)
+    uv = np.stack([np.broadcast_to(px / ww, X.shape), 1.0 - PY / hh], -1).reshape(-1, 2)
+    ai = al[np.clip(PY.astype(int), 0, hh - 1), np.clip(np.broadcast_to(px, X.shape).astype(int), 0, ww - 1)]
+    faces = []
+    n1 = nx + 1
+    for j in range(nz):
+        row = ai[j:j + 2].max(0)
+        for i in range(nx):
+            if max(row[i], row[i + 1]) > 8:
+                a = j * n1 + i
+                faces.append((a, a + n1, a + n1 + 1, a + 1))
+    obs = []
+    for nm, off, back in (("Robe", 0.0, False), ("Robe_back", 0.006, True)):
+        me = bpy.data.meshes.new(nm)
+        me.from_pydata((co + np.array([0.0, off, 0.0])).tolist(), [], faces)
+        lv = np.zeros(len(me.loops), np.int32)
+        me.loops.foreach_get("vertex_index", lv)
+        me.uv_layers.new(name="UVMap").data.foreach_set("uv", uv[lv].ravel().astype(np.float32))
+        me.polygons.foreach_set("use_smooth", np.ones(len(me.polygons), bool))
+        me.materials.append(robe_material(png, back))
+        me.update()
+        obs.append(_obj(nm, me, coll))
+    return obs
+
+
+def build_byobu(coll):
+    """A six-panel gold-leaf folding screen standing in a zig-zag behind the iko."""
+    lq = C.hall_material("lacquer")
+    back = plain("ByobuBack", "#3b3026", rough=0.85, spec=0.1)
+    w, h, z0 = 0.60, 1.72, 0.025
+    ang = math.radians(13.0)
+    y_near = HL.get("byobu_y", 1.15)
+    fr = MB()
+    p = Vector((-3 * w * math.cos(ang), y_near + w * math.sin(ang), z0))
+    up = Vector((0, 0, 1))
+    for i in range(6):
+        sgn = -1.0 if i % 2 == 0 else 1.0
+        pu = Vector((w * math.cos(ang), sgn * w * math.sin(ang), 0.0))
+        e = pu.normalized()
+        nrm = e.cross(up)                         # towards the south (the viewer)
+        gold_panel("gold_byobu_%d" % (i + 1), p + nrm * 0.011, pu, up * h, coll)
+        b = 0.022
+        q = p + nrm * 0.0125
+        for (a0, a1, c0, c1) in ((0.0, w, 0.0, b), (0.0, w, h - b, h), (0.0, b, b, h - b), (w - b, w, b, h - b)):
+            fr.quad([q + e * a0 + up * c0, q + e * a1 + up * c0, q + e * a1 + up * c1, q + e * a0 + up * c1], lq)
+        fr.quad([p + pu - nrm * 0.011, p - nrm * 0.011, p - nrm * 0.011 + up * h, p + pu - nrm * 0.011 + up * h], back)
+        for (a, sg) in ((0.0, -1.0), (w, 1.0)):   # the panel's edges
+            c = p + e * a
+            pts = [c - nrm * 0.011, c + nrm * 0.011, c + nrm * 0.011 + up * h, c - nrm * 0.011 + up * h]
+            fr.quad(pts if sg > 0 else pts[::-1], lq)
+        fr.quad([p - nrm * 0.011 + up * h, p + nrm * 0.011 + up * h, p + pu + nrm * 0.011 + up * h,
+                 p + pu - nrm * 0.011 + up * h], lq)
+        p = p + pu
+    fr.build("Byobu_frame", coll)
+
+
+def set_groups(iko=True, cloth=False, form=False):
+    """Which of the movable things are rendered: the iko with the robe and the screen; the procedural
+    bolt and pieces (call after update_cloth, which sets their own visibility); the mannequin."""
+    for ob in _coll("Iko").all_objects:
+        ob.hide_render = ob.hide_viewport = not iko
+    if not cloth:
+        for ob in _coll("Cloth").all_objects:
+            ob.hide_render = ob.hide_viewport = True
+    for ob in _coll("DressForm").all_objects:
+        if not form:
+            ob.hide_render = ob.hide_viewport = True
+        elif S.get("form_state") is None:
+            ob.hide_render = ob.hide_viewport = False
 
 
 def _build_rack(coll, lac, xy, floor_z=0.0):
-    ox, oy = xy
-    px = WD["post_x"]
-    ph = WD["post_h"]
-    obs = []
-    for sx in (-1, 1):
-        x = ox + sx * px
-        obs.append(box("Post_%d_%.0f" % (sx, oy), x - 0.0175, x + 0.0175, oy - 0.0175, oy + 0.0175, floor_z,
-                       ph, lac, coll))
-        obs.append(box("Foot_%d_%.0f" % (sx, oy), x - 0.025, x + 0.025, oy - 0.22, oy + 0.22, floor_z,
-                       floor_z + 0.04, lac, coll))
-    obs.append(box("Rail_%.0f" % oy, ox - px - 0.14, ox + px + 0.14, oy - 0.025, oy + 0.025, ph, ph + 0.035,
-                   lac, coll))
-    return obs
+    return []
 
 
 # =========================================================================== cloth: geometry functions
@@ -1473,6 +1720,7 @@ def update_camera(f, motion=True):
     q0 = mats[0].to_quaternion()
     ob.rotation_quaternion = q0
     d, fstop = focus_state(f)
+    ob.data.lens, ob.data.shift_y = FOCAL, SHIFT_Y
     ob.data.dof.focus_distance = d
     ob.data.dof.aperture_fstop = fstop
     sc.frame_set(int(f))
@@ -1550,6 +1798,32 @@ def apply_frame(f, motion=True):
     update_cloth(f)
     update_dressform(f)
     update_camera(f, motion=motion)
+
+
+def apply_shot(st):
+    """Put the scene in the state of one slide-deck shot (a dict from shots.py)."""
+    update_cloth(st.get("cloth_f", 0))
+    g = st.get("groups", {})
+    set_groups(iko=g.get("iko", False), cloth=g.get("cloth", False), form=g.get("form", False))
+    if g.get("form", False) and S.get("form_state") is not None:
+        for ob in _coll("DressForm").all_objects:
+            ob.hide_render = ob.hide_viewport = False
+        lay = {k: 0.0 for k in M["dress_frames"]}
+        lay.update(st.get("layers", {}))
+        S["dressform"].update(S["form_state"], lay)
+    sc = bpy.context.scene
+    ob = S["cam"]
+    ob.animation_data_clear()
+    pos, tgt = Vector(st["pos"]), Vector(st["target"])
+    ob.rotation_mode = "QUATERNION"
+    ob.location = pos
+    ob.rotation_quaternion = (tgt - pos).normalized().to_track_quat("-Z", "Y")
+    cd = ob.data
+    cd.lens = st.get("focal", FOCAL)
+    cd.shift_y = st.get("shift_y", 0.0)
+    cd.dof.focus_distance = st.get("focus") or (tgt - pos).length
+    cd.dof.aperture_fstop = st.get("fstop", 4.0)
+    sc.render.use_motion_blur = False          # the deck's moves are slow: no blur worth its noise
 
 
 def anchors_world(f):

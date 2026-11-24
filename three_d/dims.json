@@ -224,6 +224,13 @@
    8
   ],
   "paper_shade_visible": 0.3,
-  "runner": false
+  "runner": false,
+  "east_fusuma_bays": [
+   2,
+   3,
+   4,
+   5
+  ],
+  "byobu_y": 1.15
  }
 }

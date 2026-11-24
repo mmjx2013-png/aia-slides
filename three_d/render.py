@@ -59,6 +59,10 @@ def parse():
     ap.add_argument("--only-missing", action="store_true")
     ap.add_argument("--priority", action="store_true")
     ap.add_argument("--shard", type=str, default="", help="K/N: frames K, K+N, K+2N ... of the ordered list")
+    ap.add_argument("--shot", type=str, default="", help="slide-deck shots (three_d/shots.py): a name, a comma "
+                    "list, or ALL. Stills go to build/stills/NAME.png; with --clip, clips go to "
+                    "build/clips/NAME/f_NNNN.png")
+    ap.add_argument("--clip", action="store_true", help="with --shot: render clips instead of stills")
     ap.add_argument("--clay", action="store_true", help="clay pass: every object a flat random colour")
     ap.add_argument("--no-motion", action="store_true", help="no camera motion blur")
     return ap.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:])
@@ -139,11 +143,74 @@ def frame_list(a):
     return fr
 
 
-def main():
-    a = parse()
+def shot_jobs(a):
+    """(output path, shot name, clip frame or None) for --shot, ordered, sharded."""
+    import shots
+    root = os.path.dirname(HERE)
+    table = shots.CLIPS if a.clip else shots.STILLS
+    names = list(table) if a.shot.upper() == "ALL" else [n.strip() for n in a.shot.split(",") if n.strip()]
+    for n in names:
+        if n not in table:
+            sys.exit("[render] unknown %s %r; known: %s" % ("clip" if a.clip else "still", n, ", ".join(table)))
+    jobs = []
+    if a.clip:
+        base = a.out if a.out_given else os.path.join(root, "build", "clips")
+        for n in names:
+            for i in range(shots.N_CLIP):
+                jobs.append((os.path.join(base, n, "f_%04d.png" % i), n, i))
+    else:
+        base = a.out if a.out_given else os.path.join(root, "build", "stills")
+        pre = a.prefix if a.prefix != "f_" else ""
+        for n in names:
+            jobs.append((os.path.join(base, "%s%s.png" % (pre, n)), n, None))
+    if a.shard:
+        k, n = (int(v) for v in a.shard.split("/"))
+        jobs = jobs[k::n]
+    return jobs
+
+
+def main_shots(a, q):
     import bpy
     import scene
+    import shots
+    rx, ry = (int(v) for v in a.res.lower().split("x"))
+    jobs = shot_jobs(a)
+    todo = [j for j in jobs if not (a.only_missing and os.path.exists(j[0]))]
+    if not todo:
+        print("[render] nothing to do (%d shots frames requested, all exist)" % len(jobs), flush=True)
+        return
+    t0 = time.time()
+    scene.build(res=(rx, ry), samples=q["samples"], preview=(a.quality != "final"), clay=a.clay)
+    sc = bpy.context.scene
+    apply_quality(sc, q, a)
+    dev = setup_device(a.device)
+    print("[render] shots, quality %s on %s, %dx%d, %d samples; %d images to do (%d requested); build %.0fs"
+          % (a.quality, dev, rx, ry, sc.cycles.samples, len(todo), len(jobs), time.time() - t0), flush=True)
+    t_all = time.time()
+    for n, (out, name, i) in enumerate(todo):
+        if a.only_missing and os.path.exists(out):
+            continue
+        t0 = time.time()
+        os.makedirs(os.path.dirname(out), exist_ok=True)
+        scene.apply_shot(shots.state(name, i))
+        tmp = os.path.join(os.path.dirname(out), ".tmp_%d_%s" % (os.getpid(), os.path.basename(out)))
+        sc.render.filepath = tmp
+        bpy.ops.render.render(write_still=True)
+        os.replace(tmp, out)
+        eta = (time.time() - t_all) / (n + 1) * (len(todo) - n - 1)
+        print("[render] %s%s  %.1fs  (%d/%d, eta %.0f min)" % (name, "" if i is None else " %04d" % i,
+                                                             time.time() - t0, n + 1, len(todo), eta / 60), flush=True)
+    print("[render] done: %d images in %.1f min" % (len(todo), (time.time() - t_all) / 60), flush=True)
+
+
+def main():
+    a = parse()
+    a.out_given = any(x == "--out" or x.startswith("--out=") for x in sys.argv)
     q = QUALITY[a.quality]
+    if a.shot:
+        return main_shots(a, q)
+    import bpy
+    import scene
     rx, ry = (int(v) for v in a.res.lower().split("x"))
     t0 = time.time()
     scene.build(res=(rx, ry), samples=q["samples"], preview=(a.quality != "final"), clay=a.clay)
