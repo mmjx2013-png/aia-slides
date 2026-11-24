@@ -14,7 +14,8 @@ cd "$WT"
 git reset -q --hard origin/gh-pages
 # keep v2 reachable at /v2/
 if [ ! -f v2/index.html ] && [ -f index.html ] && grep -q "Ten slides" index.html; then mkdir -p v2 && cp index.html v2/index.html; fi
-rsync -a --delete --exclude '.git' --exclude 'v2' --exclude '.nojekyll' "$ROOT/site/" "$WT/"
+find . -mindepth 1 -maxdepth 1 ! -name .git ! -name v2 ! -name .nojekyll -exec rm -rf {} +
+cp -a "$ROOT/site/." "$WT/"
 touch .nojekyll
 git add -A
 if git diff --cached --quiet; then echo "nothing to deploy"; exit 0; fi
