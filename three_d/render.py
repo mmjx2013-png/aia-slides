@@ -4,7 +4,11 @@
   python3 three_d/render.py --quality final --device OPTIX --only-missing [--shard K/N]
   # CPU first pass at draft quality: even frames plus every stage-end rest frame, README order:
   python3 three_d/render.py --quality draft --step 2 --rests --priority --only-missing
-  # stills and the clay pass:
+  # the slide deck's final shot list (three_d/shots.py): stills, clay stills, clips with motion blur
+  python3 three_d/render.py --quality final --shot ALL
+  python3 three_d/render.py --quality final --shot hall_wide_morning,kosode_iko --clay --prefix clay_
+  python3 three_d/render.py --quality final --shot ALL --clip --samples 64
+  # stills and the clay pass of the old 984-frame sequence:
   python3 three_d/render.py --quality final --frames 0,329,419,491,683,773,983 --out build/stills
   python3 three_d/render.py --quality final --frames 0,329,683 --clay --prefix clay_ --out build/stills
   # motion preview:
@@ -183,6 +187,8 @@ def main_shots(a, q):
     scene.build(res=(rx, ry), samples=q["samples"], preview=(a.quality != "final"), clay=a.clay)
     sc = bpy.context.scene
     apply_quality(sc, q, a)
+    if a.clip:                      # only the camera moves inside a clip: keep the scene on the device
+        sc.render.use_persistent_data = True
     dev = setup_device(a.device)
     print("[render] shots, quality %s on %s, %dx%d, %d samples; %d images to do (%d requested); build %.0fs"
           % (a.quality, dev, rx, ry, sc.cycles.samples, len(todo), len(jobs), time.time() - t0), flush=True)
@@ -190,6 +196,9 @@ def main_shots(a, q):
     for n, (out, name, i) in enumerate(todo):
         if a.only_missing and os.path.exists(out):
             continue
+        if os.path.exists(os.path.join(os.path.dirname(HERE), "build", "STOP")):
+            print("[render] build/STOP exists: stopping here", flush=True)
+            break
         t0 = time.time()
         os.makedirs(os.path.dirname(out), exist_ok=True)
         if i is None or a.no_motion:

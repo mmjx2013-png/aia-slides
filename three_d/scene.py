@@ -274,6 +274,12 @@ XW = -HX                      # west wall line (shoji)
 SHOJI = {}                    # (bay, 'S' | 'N') -> the objects of that sliding panel
 EX = XW - 1.70                # outer edge of the veranda
 GROUND_Z = -0.52              # the garden ground
+YJ = HL["y_south"] + 6 * HL["ken"]   # where the jodan (the raised upper level) begins: its north four ken
+JD = 0.16                     # its height: one step
+
+
+def floor_z(y):
+    return JD if y >= YJ - 1e-6 else 0.0
 PIN = 0.04                    # how far the posts stand into the room
 NAG_Z, NAG_H = HL["nageshi_z"], HL["nageshi_h"]
 NAG2_Z, NAG2_H = HL["nageshi2_z"], HL["nageshi2_h"]
@@ -291,7 +297,8 @@ def build_floor(coll):
         for j in range(ny):
             x0, y0 = -HX + i * 0.91, YS + j * KEN
             b = len(verts)
-            verts += [(x0, y0, 0.0), (x0 + 0.91, y0, 0.0), (x0 + 0.91, y0 + KEN, 0.0), (x0, y0 + KEN, 0.0)]
+            fz = floor_z(y0)
+            verts += [(x0, y0, fz), (x0 + 0.91, y0, fz), (x0 + 0.91, y0 + KEN, fz), (x0, y0 + KEN, fz)]
             faces.append((b, b + 1, b + 2, b + 3))
             v0 = 0.5 * rs.randint(0, 2)
             ua, ub = (0.0, 1.0) if rs.rand() < 0.5 else (1.0, 0.0)
@@ -370,6 +377,44 @@ def _fusuma_east(lac, gilt, coll, idx, ya, yb, xc, z0, z1, pull_y):
     gilt.plate((xg - 0.004, pull_y, 0.80), 0, 0.022, -0.003, 24, lq)
 
 
+CHODAI = (6, 7)               # east-wall bays that carry the chodaigamae (the ornamental doors)
+
+
+def _chodai(lac, gilt, coll, k, ya, yb):
+    """One bay of the chodaigamae in the east wall: a raised black-lacquer sill, a lowered lintel, two
+    gold-leaf doors in broad lacquer frames with gilt corner plates, and on each a vermilion tassel
+    hung from a gilt boss. Plain leaf where the real ones are painted."""
+    lq, gil = C.hall_material("lacquer"), C.hall_material("gilt")
+    red = S.get("tassel_mat") or plain("TasselSilk", "#9c2318", rough=0.62, spec=0.25)
+    S["tassel_mat"] = red
+    z0, z1, fw = JD + 0.20, 1.69, 0.055
+    lac.box(HX - 0.085, HX + 0.02, ya - 0.07, yb + 0.07, 0.0, z0, lq, "y")              # the raised sill
+    lac.box(HX - 0.070, HX + 0.02, ya, yb, z1, z1 + 0.10, lq, "y")                      # the lowered lintel
+    ym = 0.5 * (ya + yb)
+    xf = HX - 0.050                                                                     # face of the frames
+    for n, (a0, a1) in enumerate(((ya, ym), (ym, yb))):
+        lac.box(xf, HX, a0, a0 + fw, z0, z1, lq, "z")
+        lac.box(xf, HX, a1 - fw, a1, z0, z1, lq, "z")
+        lac.box(xf, HX, a0 + fw, a1 - fw, z1 - fw, z1, lq, "y")
+        lac.box(xf, HX, a0 + fw, a1 - fw, z0, z0 + fw, lq, "y")
+        gold_panel("gold_chodai_%d_%d" % (k, n), (HX - 0.022, a1 - fw, z0 + fw), (0, -(a1 - a0 - 2 * fw), 0),
+                   (0, 0, z1 - z0 - 2 * fw), coll)
+        for (y, z) in ((a0 + fw / 2, z0 + fw / 2), (a1 - fw / 2, z0 + fw / 2), (a0 + fw / 2, z1 - fw / 2),
+                       (a1 - fw / 2, z1 - fw / 2), (a0 + fw / 2, 0.5 * (z0 + z1)), (a1 - fw / 2, 0.5 * (z0 + z1))):
+            gilt.plate((xf, y, z), 0, 0.034, -0.003, 4, gil, rot=math.pi / 4)
+        yc, zt = 0.5 * (a0 + a1), 1.31
+        gilt.plate((HX - 0.022, yc, zt), 0, 0.050, -0.006, 8, gil, rot=math.pi / 8)
+        gilt.plate((HX - 0.028, yc, zt), 0, 0.022, -0.012, 12, gil)
+        x = HX - 0.046
+        for dy in (-0.035, 0.035):                                                      # the looped cord
+            cylinder("Tassel_cord_%d_%d_%d" % (k, n, dy > 0), (x, yc + dy * 0.2, zt - 0.01), (x, yc + dy, zt - 0.20),
+                     0.0045, red, coll, n=8)
+            cylinder("Tassel_cord2_%d_%d_%d" % (k, n, dy > 0), (x, yc + dy, zt - 0.20), (x, yc, zt - 0.33),
+                     0.0045, red, coll, n=8)
+        cylinder("Tassel_knot_%d_%d" % (k, n), (x, yc, zt - 0.31), (x, yc, zt - 0.37), 0.021, red, coll, n=14)
+        cylinder("Tassel_%d_%d" % (k, n), (x, yc, zt - 0.37), (x, yc, zt - 0.66), 0.027, red, coll, n=14)
+
+
 def _ranma(mb, axis, a0, a1, d0, d1, z0, z1, mat, pitch=0.03, bar=0.011):
     """Openwork transom: fine upright slats (osa-ranma) with two thin rails, spanning a0..a1 along
     `axis` ('x' or 'y'); d0..d1 is its depth range on the other horizontal axis."""
@@ -427,9 +472,9 @@ def build_garden(coll):
     g.quad([(EX + 0.06, YS - 30.0, GROUND_Z), (EX + 0.06, YN + 30.0, GROUND_Z), (EX - 45.0, YN + 30.0, GROUND_Z),
             (EX - 45.0, YS - 30.0, GROUND_Z)], grv)
     g.build("Garden_gravel", coll)
-    _stone("Stone_step", (EX - 0.72, 0.95, -0.42), 0.62, 1.05, 0.26, coll, rock, 3)
-    for n, (x, y, r) in enumerate(((EX - 1.95, 1.25, 0.30), (EX - 2.75, 1.62, 0.27), (EX - 3.6, 1.40, 0.31),
-                                   (EX - 4.45, 1.85, 0.26))):
+    _stone("Stone_step", (EX - 0.94, 2.70, -0.40), 0.86, 1.30, 0.25, coll, rock, 3)
+    for n, (x, y, r) in enumerate(((EX - 2.25, 3.55, 0.31), (EX - 3.05, 4.30, 0.27), (EX - 3.9, 4.95, 0.32),
+                                   (EX - 4.8, 5.85, 0.27), (EX - 5.7, 6.5, 0.30))):
         _stone("Stone_%d" % n, (x, y, GROUND_Z - 0.03), r, r * 1.12, 0.09, coll, rock, 11 + n)
 
 
@@ -467,6 +512,8 @@ def build_hall():
         wood.box(HX - PIN, HX + 0.10, y - 0.07, y + 0.07, 0.0, HC, hinw, "z")
     # ---- west wall: shoji below, paper transoms above, plaster under the ceiling
     wood.box(XW - 0.10, XW + 0.005, YS, YN, -0.03, 0.004, hin, "y")               # floor track
+    wood.box(XW - 0.10, XW + 0.005, YJ, YN, 0.0, JD + 0.004, hin, "y")            # the same on the jodan
+    lac.box(XW + PIN, HX - PIN, YJ - 0.05, YJ, 0.0, JD + 0.003, lq, "x")          # the jodan's lacquered step
     wood.box(XW - 0.10, XW + 0.005, YS, YN, KAMOI_Z, NAG_Z, hin, "y")             # head track
     wood.box(XW - 0.02, XW + 0.065, YS, YN, NAG_Z, NAG_Z + NAG_H, hin, "y")       # nageshi
     wood.box(XW - 0.055, XW - 0.005, YS, YN, NAG_Z + NAG_H, NAG_Z + NAG_H + 0.035, hin, "y")
@@ -478,7 +525,7 @@ def build_hall():
         # both panels are their own objects, built shut, so a shot can slide either one open
         for side, (pa, xc) in (("S", (ya, XW - 0.020)), ("N", (yb - PANEL_W, XW - 0.055))):
             pw, pt = MB(), MB()
-            _shoji_panel(pw, pt, pt, pa, pa + PANEL_W, xc, 0.006, KAMOI_Z)
+            _shoji_panel(pw, pt, pt, pa, pa + PANEL_W, xc, floor_z(ys[k]) + 0.006, KAMOI_Z)
             SHOJI[(k, side)] = [pw.build("Shoji_%d%s_frame" % (k, side), coll, bevel=0.004),
                                 pt.build("Shoji_%d%s_paper" % (k, side), coll)]
         # transom (ranma): fine upright slats in front of the paper
@@ -494,8 +541,11 @@ def build_hall():
     n_e = 0
     for k in range(len(ys) - 1):
         ya, yb = ys[k] + 0.07, ys[k + 1] - 0.07
+        if k in CHODAI:
+            _chodai(lac, gilt, coll, k, ya, yb)
+            continue
         if k not in east_f:
-            wood.box(HX - 0.035, HX + 0.02, ys[k], ys[k + 1], 0.0, 0.10, hinw, "y")       # sill under plaster
+            wood.box(HX - 0.035, HX + 0.02, ys[k], ys[k + 1], 0.0, floor_z(ys[k]) + 0.10, hinw, "y")   # sill under plaster
             continue
         # a gold fusuma pair in this bay, with an openwork transom above it
         wood.box(HX - 0.04, HX + 0.02, ys[k], ys[k + 1], -0.03, 0.004, hinw, "y")
@@ -546,32 +596,34 @@ def build_hall():
         wood.box(xa, xb, YN - 0.035, YN + 0.035, KAMOI_Z, NAG_Z, hin, "x")
     # tokonoma
     tx = KEN - 0.07
-    lac.box(-tx, tx, YN - 0.03, YN + 0.06, 0.0, 0.115, lq, "x")                    # toko-gamachi
-    wood.box(-tx, tx, YN + 0.06, YN + TD, 0.085, 0.11, plk, "x")
+    lac.box(-tx, tx, YN - 0.03, YN + 0.06, 0.0, JD + 0.115, lq, "x")               # toko-gamachi
+    wood.box(-tx, tx, YN + 0.06, YN + TD, JD + 0.085, JD + 0.11, plk, "x")
     wood.box(-tx, tx, YN - 0.035, YN + 0.035, 2.05, 2.13, hin, "x")                # otoshigake
-    gold_panel("gold_north", (-tx, YN + TD, 0.11), (2 * tx, 0, 0), (0, 0, 2.52), coll)
-    gold_panel("gold_north_side_w", (-tx, YN + 0.10, 0.11), (0, TD - 0.10, 0), (0, 0, 2.52), coll)
-    gold_panel("gold_north_side_e", (tx, YN + TD, 0.11), (0, -(TD - 0.10), 0), (0, 0, 2.52), coll)
+    gold_panel("gold_north", (-tx, YN + TD, JD + 0.11), (2 * tx, 0, 0), (0, 0, 2.52 - JD), coll)
+    gold_panel("gold_north_side_w", (-tx, YN + 0.10, JD + 0.11), (0, TD - 0.10, 0), (0, 0, 2.52 - JD), coll)
+    gold_panel("gold_north_side_e", (tx, YN + TD, JD + 0.11), (0, -(TD - 0.10), 0), (0, 0, 2.52 - JD), coll)
     ceil.quad([(-tx, YN + TD, 2.63), (tx, YN + TD, 2.63), (tx, YN, 2.63), (-tx, YN, 2.63)], brd)
     plas.quad([(-tx, YN + 0.036, 2.13), (-tx, YN + 0.036, 2.63), (tx, YN + 0.036, 2.63), (tx, YN + 0.036, 2.13)],
               pla)
     # east bay: plain gold wall
-    wood.box(KEN, HX, YN - 0.035, YN + 0.03, 0.0, 0.10, hin, "x")
-    gold_panel("gold_north_e", (KEN + 0.07, YN + 0.012, 0.10), (KEN - 0.07 - PIN, 0, 0), (0, 0, KAMOI_Z - 0.10),
-               coll)
+    wood.box(KEN, HX, YN - 0.035, YN + 0.03, 0.0, JD + 0.10, hin, "x")
+    gold_panel("gold_north_e", (KEN + 0.07, YN + 0.012, JD + 0.10), (KEN - 0.07 - PIN, 0, 0),
+               (0, 0, KAMOI_Z - 0.10 - JD), coll)
     # west bay: staggered shelves (chigaidana) in a shallow alcove with a small cupboard above
     AD = 0.60
     ax0, ax1 = XW + PIN, -KEN - 0.07
-    wood.box(ax0, ax1, YN - 0.03, YN + AD, 0.06, 0.09, plk, "x")
-    wood.box(ax0, ax1, YN - 0.03, YN + 0.0, 0.0, 0.06, hin, "x")
-    gold_panel("gold_north_w", (ax0, YN + AD, 0.09), (ax1 - ax0, 0, 0), (0, 0, KAMOI_Z - 0.09), coll)
-    gold_panel("gold_north_w_side_w", (ax0, YN + 0.02, 0.09), (0, AD - 0.02, 0), (0, 0, KAMOI_Z - 0.09), coll)
-    gold_panel("gold_north_w_side_e", (ax1, YN + AD, 0.09), (0, -(AD - 0.02), 0), (0, 0, KAMOI_Z - 0.09), coll)
+    wood.box(ax0, ax1, YN - 0.03, YN + AD, JD + 0.06, JD + 0.09, plk, "x")
+    wood.box(ax0, ax1, YN - 0.03, YN + 0.0, 0.0, JD + 0.06, hin, "x")
+    gold_panel("gold_north_w", (ax0, YN + AD, JD + 0.09), (ax1 - ax0, 0, 0), (0, 0, KAMOI_Z - 0.09 - JD), coll)
+    gold_panel("gold_north_w_side_w", (ax0, YN + 0.02, JD + 0.09), (0, AD - 0.02, 0), (0, 0, KAMOI_Z - 0.09 - JD),
+               coll)
+    gold_panel("gold_north_w_side_e", (ax1, YN + AD, JD + 0.09), (0, -(AD - 0.02), 0), (0, 0, KAMOI_Z - 0.09 - JD),
+               coll)
     ceil.quad([(ax0, YN + AD, KAMOI_Z), (ax1, YN + AD, KAMOI_Z), (ax1, YN, KAMOI_Z), (ax0, YN, KAMOI_Z)], brd)
-    wood.box(ax0, ax0 + 1.02, YN + 0.14, YN + AD - 0.01, 0.76, 0.79, hin, "x")      # lower shelf
-    wood.box(ax1 - 0.98, ax1, YN + 0.14, YN + AD - 0.01, 0.98, 1.01, hin, "x")      # upper shelf
+    wood.box(ax0, ax0 + 1.02, YN + 0.14, YN + AD - 0.01, 0.80, 0.83, hin, "x")      # lower shelf
+    wood.box(ax1 - 0.98, ax1, YN + 0.14, YN + AD - 0.01, 1.02, 1.05, hin, "x")      # upper shelf
     xm = 0.5 * ((ax0 + 1.02) + (ax1 - 0.98))
-    wood.box(xm - 0.014, xm + 0.014, YN + 0.22, YN + 0.248, 0.79, 0.98, hin, "z")   # the little post between
+    wood.box(xm - 0.014, xm + 0.014, YN + 0.22, YN + 0.248, 0.83, 1.02, hin, "z")   # the little post between
     wood.box(ax0, ax1, YN + 0.10, YN + AD, 1.36, 1.385, hin, "x")                   # cupboard floor
     dw = (ax1 - ax0) / 4.0
     for i in range(4):
@@ -589,12 +641,23 @@ def build_hall():
                (HX + 0.12, YS - 0.12, HC)], brd)
     cs = KEN / 3.0
     nxr, nyr = int(round(2 * HX / cs)), int(round((YN - YS) / cs))
+    # over the jodan the coffers are the richest of the hall: black-lacquer ribs, and plain aged gold
+    # leaf where the painted panels would be
+    gold_panel("gold_ceiling", (XW, YN, HC - 0.004), (2 * HX, 0, 0), (0, -(YN - YJ), 0), coll)
+    wood.box(XW, HX, YJ - 0.07, YJ + 0.07, HC - 0.32, HC, hin, "x")                  # the beam that marks it
     for i in range(nxr + 1):
         x = XW + i * cs
-        wood.box(x - 0.0225, x + 0.0225, YS, YN, HC - 0.115, HC, hin, "y")
+        wood.box(x - 0.0225, x + 0.0225, YS, YJ, HC - 0.115, HC, hin, "y")
+        lac.box(x - 0.0225, x + 0.0225, YJ + 0.07, YN, HC - 0.115, HC, lq, "y")
     for j in range(nyr + 1):
         y = YS + j * cs
-        wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, hin, "x")
+        if y > YJ + 0.1:
+            lac.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, lq, "x")
+        elif y < YJ - 0.1:
+            wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, hin, "x")
+    for i in range(1, nxr):                                                          # gilt plates under the crossings
+        for j in range(1, nyr):
+            gilt.plate((XW + i * cs, YS + j * cs, HC - 0.115), 2, 0.046, -0.0025, 4, gil)
     for (x0, x1, y0, y1) in ((XW - 0.02, XW + 0.07, YS, YN), (HX - 0.07, HX + 0.02, YS, YN),
                              (XW, HX, YS - 0.02, YS + 0.07), (XW, HX, YN - 0.07, YN + 0.02)):
         wood.box(x0, x1, y0, y1, HC - 0.15, HC, hin)                                 # cornice
@@ -602,21 +665,22 @@ def build_hall():
     zc = NAG_Z + NAG_H / 2
     for y in ys[1:-1]:
         for (x, d) in ((XW + 0.065, 1), (HX - 0.065, -1)):
-            gilt.plate((x, y, zc), 0, 0.043, 0.005 * d, 6, gil, rot=math.pi / 6)
-            gilt.plate((x + 0.005 * d, y, zc), 0, 0.017, 0.006 * d, 12, gil)
+            gilt.plate((x, y, zc), 0, 0.056, 0.005 * d, 6, gil, rot=math.pi / 6)
+            gilt.plate((x + 0.005 * d, y, zc), 0, 0.024, 0.007 * d, 12, gil)
     for x in (-KEN, 0.0, KEN):
         gilt.plate((x, YS + 0.065, zc), 1, 0.043, 0.005, 6, gil, rot=math.pi / 6)
         gilt.plate((x, YS + 0.070, zc), 1, 0.017, 0.006, 12, gil)
     # ---- outside: the veranda boards beyond the shoji, and a dark base under everything
-    wood.box(EX, XW - 0.10, YS - 0.6, YN + 0.6, -0.07, -0.03, plk, "y")
-    wood.box(EX - 0.075, EX + 0.02, YS - 0.6, YN + 0.6, -0.19, -0.022, plk, "y")       # the edge beam
+    plo = C.hall_material("planks_out")          # weathered: it stands in the full light of the garden
+    wood.box(EX, XW - 0.10, YS - 0.6, YN + 0.6, -0.07, -0.03, plo, "y")
+    wood.box(EX - 0.075, EX + 0.02, YS - 0.6, YN + 0.6, -0.19, -0.022, plo, "y")       # the edge beam
     for y in ys[::2]:                                                                # veranda posts
-        wood.box(EX + 0.03, EX + 0.15, y - 0.06, y + 0.06, -0.03, 2.57, plk, "z")
-    wood.box(EX + 0.02, EX + 0.16, YS - 0.6, YN + 0.6, 2.57, 2.71, plk, "y")           # the beam they carry
+        wood.box(EX + 0.03, EX + 0.15, y - 0.06, y + 0.06, -0.03, 2.57, plo, "z")
+    wood.box(EX + 0.02, EX + 0.16, YS - 0.6, YN + 0.6, 2.57, 2.71, plo, "y")           # the beam they carry
     # the eave: its lip sets where the sun's shadow line falls on the paper (dims hall.eave_z by day)
     ceil.quad([(XW - 0.10, YS - 0.8, 3.36), (XW - 0.10, YN + 0.8, 3.36), (XW - 2.05, YN + 0.8, 2.70),
                (XW - 2.05, YS - 0.8, 2.70)], brd)
-    wood.box(XW - 2.09, XW - 2.03, YS - 0.8, YN + 0.8, 2.66, 2.80, plk, "y")
+    wood.box(XW - 2.09, XW - 2.03, YS - 0.8, YN + 0.8, 2.66, 2.80, plo, "y")
     dark = plain("Underside", "#0c0b0a", rough=0.9, spec=0.05)
     plas.quad([(EX + 0.03, YS - 0.8, -0.075), (HX + 0.3, YS - 0.8, -0.075), (HX + 0.3, YN + 1.2, -0.075),
                (EX + 0.03, YN + 1.2, -0.075)], dark)
@@ -686,8 +750,25 @@ def build_daylight():
         env.image = bpy.data.images.load(hp, check_existing=True)
         nt.links.new(tc.outputs["Generated"], mp.inputs["Vector"])
         nt.links.new(mp.outputs["Vector"], env.inputs["Vector"])
-        nt.links.new(env.outputs["Color"], bg.inputs["Color"])
-        bg.inputs["Strength"].default_value = HL.get("hdri_strength", 1.6)
+        tint = nt.nodes.new("ShaderNodeMix")
+        tint.data_type, tint.blend_type = "RGBA", "MULTIPLY"
+        tint.inputs[0].default_value = 1.0
+        tint.inputs[7].default_value = (1.0, 1.0, 1.0, 1.0)
+        nt.links.new(env.outputs["Color"], tint.inputs[6])
+        nt.links.new(tint.outputs[2], bg.inputs["Color"])
+        # as light the garden keeps its strength; to the lens it is held where a photograph would hold it
+        lp = nt.nodes.new("ShaderNodeLightPath")
+        mx = nt.nodes.new("ShaderNodeMix")
+        mx.data_type = "FLOAT"
+        mx.inputs[2].default_value = HL.get("hdri_strength", 1.6)
+        mx.inputs[3].default_value = HL.get("hdri_visible", 3.6)
+        nt.links.new(lp.outputs["Is Camera Ray"], mx.inputs[0])
+        gain = nt.nodes.new("ShaderNodeMath")
+        gain.operation = "MULTIPLY"
+        gain.inputs[1].default_value = 1.0
+        nt.links.new(mx.outputs[0], gain.inputs[0])
+        nt.links.new(gain.outputs[0], bg.inputs["Strength"])
+        S["world"] = (tint, gain)
     else:
         bg.inputs["Color"].default_value = (0.75, 0.85, 1.0, 1.0)
         bg.inputs["Strength"].default_value = 3.0
@@ -1489,6 +1570,7 @@ def build_dressform():
         st = dressform.build(coll, origin=(fx, fy, 0.0), materials=None)
         root = st["root"]
         root.rotation_euler = (0.0, 0.0, math.pi)       # built facing +Y; it must face south
+        root.location.z += floor_z(fy)                  # it stands on the jodan
         S["form_state"] = st
         S["dressform"] = dressform
         print("[scene] dressform.py built")
@@ -1849,16 +1931,17 @@ def apply_clay():
 TOKO_Y = YN + 0.91            # the tokonoma's back wall
 # Where the small things of the room stand unless a shot says otherwise: name -> ((x, y, z), rot_z).
 # One arrangement for every shot, so the slides agree with each other: two cushions, the brazier and
-# the smoking tray by the open shoji; the document boxes and the folded robe on its tray by the iko.
+# the smoking tray in the light of the open shoji; the document boxes and the folded robe on its tray
+# east of the iko.
 PROP_LAYOUT = {
-    "scroll": ((0.0, TOKO_Y - 0.02, 2.42), 0.0),
-    "zabuton_a": ((-2.30, -3.35, 0.0), math.radians(6.0)),
-    "zabuton_b": ((-2.38, -2.20, 0.0), math.radians(-4.0)),
-    "brazier": ((-1.62, -2.78, 0.0), math.radians(15.0)),
-    "tobacco_tray": ((-1.72, -3.52, 0.0), math.radians(24.0)),
-    "doc_box_large": ((-1.30, -0.30, 0.0), math.radians(4.0)),
-    "doc_box_small": ((-1.16, -0.82, 0.0), math.radians(31.0)),
-    "robe_tray": ((1.22, -0.55, 0.0), math.radians(-9.0)),
+    "scroll": ((0.0, TOKO_Y - 0.02, 2.40), 0.0),
+    "zabuton_a": ((-1.90, -1.50, 0.0), 0.06),
+    "zabuton_b": ((-0.55, -2.85, 0.0), -0.75),
+    "brazier": ((-1.12, -2.02, 0.0), 0.5),
+    "tobacco_tray": ((-1.62, -2.42, 0.0), 0.32),
+    "robe_tray": ((1.43, 0.02, 0.0), 0.07),
+    "doc_box_large": ((1.20, 0.80, 0.0), -0.2),
+    "doc_box_small": ((1.21, 0.79, 0.12), 0.42),          # on the lid of the large one
 }
 
 
@@ -1930,7 +2013,7 @@ def build(res=(1920, 1080), samples=64, preview=False, clay=False, form=True):
 def apply_frame(f, motion=True):
     f = int(f)
     set_open(None)
-    place_props(None)
+    place_props(False)
     set_light(None)
     update_cloth(f)
     update_dressform(f)
@@ -1986,7 +2069,8 @@ LIGHT_PRESETS = {
                     paper_gain=1.0, paper_sun=(1.0, 0.90, 0.74), eave_z=1.95, exposure=0.0),
     "dusk": dict(sun_elevation=8.0, sun_azimuth=-31.0, sun_gain=1.5, sun_color=(1.0, 0.50, 0.22),
                  shoji_gain=0.45, shoji_color=(1.0, 0.66, 0.40), shade_gain=0.40, shade_color=(0.70, 0.78, 1.0),
-                 paper_gain=0.55, paper_sun=(1.0, 0.62, 0.34), eave_z=1.74, exposure=0.7),
+                 paper_gain=0.55, paper_sun=(1.0, 0.62, 0.34), eave_z=1.74, exposure=0.7,
+                 world_gain=0.42, world_tint=(1.0, 0.74, 0.52)),
 }
 _DAY = {}
 
@@ -2011,6 +2095,9 @@ def set_light(preset=None):
         e, c, loc, rot = _DAY["lights"][ob.name]
         ob.data.energy, ob.data.color = e, c
         ob.location, ob.rotation_quaternion = loc, rot
+    if S.get("world"):
+        S["world"][0].inputs[7].default_value = (1.0, 1.0, 1.0, 1.0)
+        S["world"][1].inputs[1].default_value = 1.0
     strength.outputs[0].default_value, eave.outputs[0].default_value = _DAY["paper"][:2]
     mix.inputs[7].default_value = _DAY["paper"][2]
     sc.view_settings.exposure = _DAY["exposure"]
@@ -2028,6 +2115,9 @@ def set_light(preset=None):
             ob.data.energy, ob.data.color = e * L["shoji_gain"], L["shoji_color"]
         else:
             ob.data.energy, ob.data.color = e * L["shade_gain"], L["shade_color"]
+    if S.get("world"):
+        S["world"][0].inputs[7].default_value = tuple(L.get("world_tint", (1.0, 1.0, 1.0))) + (1.0,)
+        S["world"][1].inputs[1].default_value = L.get("world_gain", 1.0)
     strength.outputs[0].default_value = _DAY["paper"][0] * L["paper_gain"]
     eave.outputs[0].default_value = L["eave_z"]
     mix.inputs[7].default_value = tuple(L["paper_sun"]) + (1.0,)

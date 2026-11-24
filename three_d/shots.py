@@ -20,7 +20,7 @@ layers (dressing layers 0..1), light (a preset from scene.LIGHT_PRESETS), open (
 stand open: bay -> 'S' or 'N', see scene.set_open), props (see scene.place_props; default: the
 room's one arrangement, scene.PROP_LAYOUT).
 
-Camera: 35 mm for the wides, level (lens shift instead of tilt), real apertures. A clip is one slow
+Camera: 36 x 20.25 mm frame, 35 mm for the wides, level (lens shift instead of tilt), real apertures. A clip is one slow
 eased dolly that starts on its still, with a very slight handheld sway and a 180 degree shutter.
 Grain and lens falloff are added in 2D afterwards; these render clean.
 """
@@ -32,7 +32,8 @@ from common import smootherstep
 FPS_CLIP = 30
 N_CLIP = 270                                      # 9 seconds
 ROBE = (0.0, -0.03, 1.13)                         # middle of the robe on the iko
-FORM = (scene.FORM[0], scene.FORM[1], 1.15)       # the mannequin
+JD = scene.floor_z(scene.FORM[1])                 # the mannequin and the alcove are on the jodan
+FORM = (scene.FORM[0], scene.FORM[1], 1.15 + JD)  # the mannequin
 LAYERS = ("juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot")
 # the hall as every shot finds it: paired shoji slid apart beside the robe and further south, single
 # ones open towards the north end; a low sun through them
@@ -59,24 +60,26 @@ STILLS = {
     # 1. the hall: shoji open onto the garden, morning light raking the tatami, the robe on its iko
     "hall_wide_morning": dict(_WIDE),
     # 2. the Met robe on the lacquer iko before the gold screen, frontal: the object first
-    "kosode_iko": dict(HALL, pos=(0.0, -4.50, 1.12), target=(0.0, 0.0, 1.12), focal=40.0, fstop=2.8, groups=IKO),
+    "kosode_iko": dict(HALL, pos=(0.0, -4.80, 1.02), target=(0.0, 0.0, 1.02), focal=40.0, fstop=2.8, groups=IKO),
     # 3. the eight straight pieces of the drawn-textile kimono floating apart before the bare iko
     "exploded_panels": dict(HALL, pos=orbit((0.0, -0.95, 1.40), 5.7, -10.0, 1.45), target=(0.0, -0.95, 1.40),
                             focal=35.0, fstop=8.0, groups={"iko": True, "robe": False, "cloth": True}, explode=0.0,
-                            props={"doc_box_large": None, "doc_box_small": None, "robe_tray": None}),
+                            props=False),
     # 4. the robe's silk and a dye edge, close (the photograph is 1068 px wide: as close as it holds)
     "weave_macro": dict(HALL, pos=(0.30, -0.62, 1.40), target=(0.03, -0.04, 1.42), focal=70.0, fstop=2.8,
                         groups=IKO),
     # 5. the dressed figure from the front, and the knot from behind: one place, two angles
-    "mannequin_final": dict(HALL, pos=(FORM[0], FORM[1] - 3.5, 1.15), target=FORM, focal=35.0, shift_y=-0.03,
-                            fstop=4.0, groups=MANNEQUIN, layers=ALL_LAYERS),
-    "mannequin_obi_back": dict(HALL, pos=orbit(FORM, 1.55, 192.0, 1.10), target=(FORM[0], FORM[1] + 0.2, 1.05),
+    "mannequin_final": dict(HALL, pos=(FORM[0], FORM[1] - 3.6, 0.98 + JD), target=(FORM[0], FORM[1], 0.98 + JD),
+                            focal=35.0,
+                            shift_y=-0.02, fstop=4.0, groups=MANNEQUIN, layers=ALL_LAYERS),
+    "mannequin_obi_back": dict(HALL, pos=orbit(FORM, 1.55, 192.0, 1.10 + JD), target=(FORM[0], FORM[1] + 0.2, 1.05 + JD),
                                focal=50.0, fstop=2.8, groups=MANNEQUIN, layers=ALL_LAYERS),
     # 6. a sleeve and the hem beside the lacquer boxes and the folded robe on its tray
-    "sleeve_hem_props": dict(HALL, pos=(-2.25, -2.85, 0.78), target=(-0.66, -0.20, 0.74), focal=50.0, fstop=2.8,
+    "sleeve_hem_props": dict(HALL, pos=(2.30, -2.65, 0.95), target=(0.42, 0.0, 0.60), focal=35.0, fstop=2.8,
                              groups=IKO),
     # 7. the alcove with the hanging scroll
-    "tokonoma": dict(HALL, pos=(0.30, 6.40, 1.25), target=(0.0, 11.8, 1.25), focal=35.0, shift_y=-0.02, fstop=4.0,
+    "tokonoma": dict(HALL, pos=(-1.35, 7.55, 1.20 + JD), target=(0.22, 11.6, 1.20 + JD), focal=35.0, shift_y=-0.02,
+                     fstop=4.0,
                      groups={}),
     # 8. shot 1 at dusk: the sun low and warm
     "hall_dusk": dict(_WIDE, light="dusk"),
@@ -116,7 +119,7 @@ def _clip_hall_morning(i):               # a slow push down the hall towards the
 def _clip_kosode_iko(i):                 # a slow dolly in on the robe; starts on kosode_iko
     u = _u(i)
     s = STILLS["kosode_iko"]
-    return _sway(dict(s, pos=lerp(s["pos"], (0.0, -3.70, 1.16), u), target=lerp(s["target"], (0.0, 0.0, 1.16), u)), i)
+    return _sway(dict(s, pos=lerp(s["pos"], (0.0, -4.05, 1.06), u), target=lerp(s["target"], (0.0, 0.0, 1.06), u)), i)
 
 
 def _clip_hall_dusk(i):                  # a slow track across the hall, west to east; starts on hall_dusk

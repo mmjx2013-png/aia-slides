@@ -170,9 +170,14 @@ def mannequin_sdf(p):
     d = _smin(d, _ellipsoid(q, J, (0.043, 0.043, 0.043)), 0.04)
     d = _smin(d, _capsule(q, J, elbow, 0.039, 0.032), 0.03)
     d = _smin(d, _capsule(q, elbow, wrist, 0.032, 0.024), 0.02)
-    rel = q - (J + (L_WRIST + 0.072) * D_ARM)
+    rel = q - wrist
     loc = np.stack([(rel * D_ARM).sum(-1), (rel * N_ARM).sum(-1), rel[..., 1]], -1)
-    d = _smin(d, _ell(loc, (0.084, 0.016, 0.036)), 0.022)
+    # hand (local: along the arm, out of the palm's back, forwards): palm, fingers curling in, thumb
+    hand = _ell(loc - np.array([0.050, -0.002, 0.003]), (0.054, 0.0150, 0.040))
+    hand = _smin(hand, _ell(loc - np.array([0.112, -0.011, -0.002]), (0.050, 0.0115, 0.032)), 0.024)
+    hand = _smin(hand, _ell(loc - np.array([0.150, -0.022, -0.003]), (0.026, 0.0100, 0.027)), 0.018)
+    hand = _smin(hand, _capsule(loc, (0.020, -0.004, 0.024), (0.086, -0.019, 0.055), 0.0135, 0.0095), 0.014)
+    d = _smin(d, hand, 0.018)
     # legs and feet
     hip, knee, ank = (0.076, 0.0, 0.84), (0.072, 0.006, 0.47), (0.068, -0.012, 0.085)
     d = _smin(d, _capsule(q, hip, knee, 0.073, 0.050), 0.04)
@@ -182,6 +187,8 @@ def mannequin_sdf(p):
     d = _smin(d, foot, 0.022)
     # neck and an egg for a head
     d = _smin(d, _capsule(p, (0, -0.006, 1.30), (0, 0.006, 1.52), 0.050, 0.044), 0.03)
+    d = np.minimum(d, _capsule(p, (0, -0.0063, 1.30), (0, -0.0009, 1.395), 0.0502, 0.0502))
+    d = np.minimum(d, _capsule(p, (0, -0.0009, 1.395), (0, 0.0033, 1.47), 0.0502, 0.0450))
     d = _smin(d, _ellipsoid(p, (0, 0.012, 1.560), (0.070, 0.086, 0.105)), 0.022)
     return d
 
@@ -676,6 +683,25 @@ class _Panel:
         diag = 0.5 + 0.5 * np.sin((dps * 1.1 + (z - 1.0) * 190.0) * math.pi / 34.0)
         wb = _ss(1.0 - np.abs(dps - 50.0) / 40.0) * _ss((z - OBI_TOP) / 0.05) * (1.0 - _ss((z - 1.21) / 0.07))
         w = w + 0.0022 * diag ** 2 * wb
+        # soft drape of the upper body: chest, shoulder blades, under the arm (outward only)
+        zu = z - OBI_TOP
+        body = _ss((zu - 0.012) / 0.045) * (1.0 - _ss((z - 1.25) / 0.07))
+        arm = 1.0 - _ss(1.0 - np.abs(dps - 90.0) / 38.0) * _ss((z - 1.14) / 0.04)    # the armhole stays clean
+        inner = _ss((np.interp(z, self.zn, self.edge) - psi) / math.radians(30.0))  # fades to the collar edge
+        amp = (1.0 if self.kimono else 0.3) * (0.7 + 0.3 * s_obi)
+        chest = _ss((dps - 108.0) / 22.0) * inner
+        if self.lift == 0.0:
+            chest = 0.5 * chest * (1.0 - _ss((dps - 124.0) / 20.0))                        # hidden under the left front
+        phc = 2 * math.pi * (dps / 30.0 + z / 0.14) + 1.3 * np.sin(psi * 3.1 + 8.0 * z + self.sx)
+        w = w + 0.012 * amp * (0.5 + 0.5 * np.sin(phc)) ** 3 * chest * body * arm
+        # the cloth blouses a little over the top of the sash
+        pouch = np.exp(-((z - OBI_TOP - 0.036) / 0.026) ** 2) * (0.65 + 0.35 * np.sin(psi * 4.0 + 1.0 + self.sx))
+        w = w + 0.0055 * amp * pouch * (1.0 - 0.5 * front)
+        backw = _ss((dps - 7.0) / 16.0) * (1.0 - _ss((dps - 58.0) / 22.0))
+        phb = psi * 14.0 * (1.0 + 0.9 * (z - 1.10)) + 1.6 * np.sin(z * 11.0 + 0.8 * self.sx) + 0.5 * self.sx
+        w = w + 0.010 * amp * (0.5 + 0.5 * np.sin(phb)) ** 3 * backw * body * arm * (1.0 - 0.45 * _ss((z - 1.16) / 0.10))
+        sidew = _ss(1.0 - np.abs(dps - 88.0) / 30.0) * _ss((zu - 0.012) / 0.03) * (1.0 - _ss((z - 1.13) / 0.05))
+        w = w + 0.0055 * amp * (0.5 + 0.5 * np.sin(psi * 26.0 + 2.0 * np.sin(z * 14.0))) ** 2 * sidew
         if self.kimono and s_fold > 0:
             # the ohashori: a second layer from the fold line up to the waist tie, with a soft lip
             zf = self.fold_z(s_fold)

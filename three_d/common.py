@@ -1078,22 +1078,23 @@ def hall_material(kind, name=None, strength=None):
         L(col, bsdf.inputs["Base Color"])
         bsdf.inputs["Specular IOR Level"].default_value = 0.45
 
-    elif kind in ("hinoki", "hinoki_wall", "board", "planks"):
+    elif kind in ("hinoki", "hinoki_wall", "board", "planks", "planks_out"):
         # 'hinoki_wall' is the same wood made strictly periodic with the 1.82 m bay (no per-member
         # variation, texture period 0.91 m along the grain): for the display wall
         aid, target, scale, rr, flat = {
-            "hinoki": ("ash_veneer", (0.56, 0.405, 0.24), (0.9, 1.6), (0.36, 0.62), 0.0),
-            "hinoki_wall": ("ash_veneer", (0.56, 0.405, 0.24), (1.0 / 0.91, 3.0 / 1.82), (0.36, 0.62), 0.0),
-            "board": ("okoume_veneer", (0.50, 0.335, 0.175), (0.55, 0.9), (0.42, 0.68), 0.0),
-            "planks": ("japanese_cedar_planks", (0.30, 0.165, 0.07), (0.5, 0.5), (0.30, 0.60), 0.0)}[kind]
+            "hinoki": ("ash_veneer", (0.485, 0.335, 0.19), (0.9, 1.6), (0.36, 0.62), 0.0),
+            "hinoki_wall": ("ash_veneer", (0.485, 0.335, 0.19), (1.0 / 0.91, 3.0 / 1.82), (0.36, 0.62), 0.0),
+            "board": ("okoume_veneer", (0.43, 0.285, 0.15), (0.55, 0.9), (0.42, 0.68), 0.0),
+            "planks": ("japanese_cedar_planks", (0.30, 0.165, 0.07), (0.5, 0.5), (0.30, 0.60), 0.0),
+            "planks_out": ("japanese_cedar_planks", (0.105, 0.075, 0.05), (0.5, 0.5), (0.45, 0.80), 0.25)}[kind]
         vec, geo = _island_uv(nt, scale, jitter=(0.0, 0.0) if kind == "hinoki_wall" else (7.31, 3.17))
         sc = _scan(nt, aid, vec, target=target, flat=flat, rough=rr, normal=0.8)
         if sc:
             col, rgh, nrm = sc
             # every member a slightly different tone
             mr = N("ShaderNodeMapRange")
-            mr.inputs["To Min"].default_value = 0.99 if kind == "hinoki_wall" else 0.90
-            mr.inputs["To Max"].default_value = 0.99 if kind == "hinoki_wall" else 1.08
+            mr.inputs["To Min"].default_value = 0.99 if kind == "hinoki_wall" else 0.80
+            mr.inputs["To Max"].default_value = 0.99 if kind == "hinoki_wall" else 1.10
             L(geo.outputs["Random Per Island"], mr.inputs["Value"])
             col = _mixc(nt, 1.0, col, mr.outputs["Result"], "MULTIPLY")
             if kind in ("hinoki", "hinoki_wall"):
@@ -1108,7 +1109,7 @@ def hall_material(kind, name=None, strength=None):
                 dark = _math(nt, "ADD", dark, _noise(nt, P, 1.3, 4.0, 0.6, 0.0, 0.10))
                 col = _mixc(nt, dark, col, _mixc(nt, 1.0, col, (0.42, 0.30, 0.20), "MULTIPLY"))
                 rgh = _math(nt, "SUBTRACT", rgh, _math(nt, "MULTIPLY", hand, 0.10))
-            elif kind == "planks":
+            elif kind in ("planks", "planks_out"):
                 g2, wp = _world_pos(nt)
                 col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 0.8, 4.0, 0.6, 0.80, 1.10), "MULTIPLY")
             L(col, bsdf.inputs["Base Color"])
@@ -1257,10 +1258,10 @@ def hall_material(kind, name=None, strength=None):
         wear.inputs["To Max"].default_value = 0.20
         L(nw.outputs["Fac"], wear.inputs["Value"])
         tone = N("ShaderNodeMapRange")
-        tone.inputs["To Min"].default_value = 0.88
+        tone.inputs["To Min"].default_value = 0.93
         tone.inputs["To Max"].default_value = 1.0
         L(rnd.outputs["Blue"], tone.inputs["Value"])
-        col = _mixc(nt, 1.0, (0.80, 0.47, 0.115), tone.outputs["Result"], "MULTIPLY")   # deep, warm leaf: stays gold when lit
+        col = _mixc(nt, 1.0, (0.73, 0.405, 0.088), tone.outputs["Result"], "MULTIPLY")   # deep, warm leaf: stays gold when lit
         col = _mixc(nt, _math(nt, "MULTIPLY", edge, 0.34), col, (0.56, 0.30, 0.075))
         # age: slow tarnished clouds, a duller band where hands and sleeves have brushed past
         g2, wp = _world_pos(nt)
@@ -1354,8 +1355,8 @@ def hall_material(kind, name=None, strength=None):
         L(_math(nt, "ADD", mr.outputs["Result"], _math(nt, "MULTIPLY", dust, 0.9)), bsdf.inputs["Coat Roughness"])
 
     elif kind in ("gravel", "rock"):
-        aid, scale, target = {"gravel": ("gravel_floor_02", 1.0 / 1.6, (0.33, 0.315, 0.285)),
-                              "rock": ("mossy_rock", 1.0 / 1.3, (0.16, 0.155, 0.125))}[kind]
+        aid, scale, target = {"gravel": ("gravel_floor_02", 1.0 / 1.6, (0.085, 0.08, 0.07)),
+                              "rock": ("mossy_rock", 1.0 / 1.3, (0.075, 0.075, 0.06))}[kind]
         mp = N("ShaderNodeMapping")
         mp.inputs["Scale"].default_value = (scale, scale, scale)
         if kind == "gravel":

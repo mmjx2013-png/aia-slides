@@ -33,9 +33,9 @@ DEFAULT_LAYOUT = {
     "zabuton_b": ((-1.42, 2.42, 0.0), -0.09),
     "brazier": ((-1.86, 1.72, 0.0), 0.5),
     "tobacco_tray": ((-1.36, 1.84, 0.0), 0.32),
-    "robe_tray": ((1.46, -0.52, 0.0), 0.07),
-    "doc_box_large": ((0.96, -0.86, 0.0), -0.2),
-    "doc_box_small": ((0.99, -0.42, 0.0), 0.42),
+    "robe_tray": ((1.47, -0.62, 0.0), 0.07),
+    "doc_box_large": ((0.92, -0.97, 0.0), -0.2),
+    "doc_box_small": ((0.98, -0.59, 0.0), 0.42),
     "scroll": ((0.0, 11.6, 2.35), 0.0),
 }
 
@@ -181,7 +181,7 @@ def m_lacquer(name="P_lacquer", gold=None, wear=1.0):
     n2 = k.noise(k.obj, 38.0, 2.0)
     s1 = k.noise(k.mapping(k.obj, scale=(70.0, 1.0, 1.0), rot=(0.3, 0.2, 0.6)), 26.0, 1.0)
     s2 = k.noise(k.mapping(k.obj, scale=(1.0, 80.0, 1.0), rot=(-0.2, 0.4, -0.5)), 22.0, 1.0)
-    scr = k.math("MAXIMUM", k.mr(s1, 0.66, 0.74), k.mr(s2, 0.68, 0.76))
+    scr = k.math("MAXIMUM", k.mr(s1, 0.63, 0.73), k.mr(s2, 0.65, 0.75))
     geo = k.N("ShaderNodeNewGeometry")
     wm = k.math("MULTIPLY", k.mr(geo.outputs["Pointiness"], 0.56, 0.72, 0.0, wear),
                 k.mr(n2, 0.38, 0.62))
@@ -213,7 +213,7 @@ def m_lacquer(name="P_lacquer", gold=None, wear=1.0):
 
 
 def m_wood(name, aid="okoume_veneer", tint=(0.16, 0.085, 0.045), scale=2.2, rough=(0.32, 0.6),
-           coat=0.15, rot=(0.0, 0.0, 0.0)):
+           coat=0.15, rot=(0.0, 0.0, 0.0), grain=(3.0, 3.0, 70.0), figure=0.45):
     """Aged wood. Scanned veneer (box projected, tinted to `tint`) or a procedural grain."""
     m, k = _mat(name)
     if k is None:
@@ -228,7 +228,11 @@ def m_wood(name, aid="okoume_veneer", tint=(0.16, 0.085, 0.045), scale=2.2, roug
             mean = (0.45, 0.3, 0.18)
         gain = tuple(tint[i] / max(mean[i], 1e-3) for i in range(3))
         raw = k.image(pd, vec)
-        col = k.mix(1.0, raw, gain, "MULTIPLY")
+        gm = k.N("ShaderNodeGamma")
+        gm.inputs[1].default_value = 1.6
+        k.nt.links.new(raw, gm.inputs[0])
+        gain = tuple(gn * 1.35 for gn in gain)
+        col = k.mix(1.0, gm.outputs[0], gain, "MULTIPLY")
         bw = k.N("ShaderNodeRGBToBW")
         k.nt.links.new(raw, bw.inputs[0])
         height = bw.outputs[0]
@@ -239,6 +243,16 @@ def m_wood(name, aid="okoume_veneer", tint=(0.16, 0.085, 0.045), scale=2.2, roug
         col = k.mix(k.mr(g, 0.35, 0.65), tuple(c * 0.7 for c in tint), tuple(c * 1.25 for c in tint))
         height = g
         rgh = k.mr(g, 0.3, 0.7, rough[0], rough[1])
+    # long figure: streaks along the grain, a few darker pores
+    fg = k.noise(k.mapping(k.obj, scale=grain), 1.0, 5.0, 0.62)
+    fg2 = k.noise(k.mapping(k.obj, scale=tuple(g_ * 4.0 for g_ in grain)), 1.0, 2.0)
+    shade = k.math("MULTIPLY", k.mr(fg, 0.3, 0.7, 1.0 - figure, 1.0 + figure * 0.5),
+                   k.mr(fg2, 0.25, 0.6, 1.0 - figure * 0.5, 1.0))
+    sh = k.N("ShaderNodeCombineXYZ")
+    for i_ in range(3):
+        k.nt.links.new(shade, sh.inputs[i_])
+    col = k.mix(1.0, col, sh.outputs[0], "MULTIPLY")
+    height = k.math("ADD", height, k.math("MULTIPLY", fg2, 0.6))
     geo = k.N("ShaderNodeNewGeometry")
     wm = k.math("MULTIPLY", k.mr(geo.outputs["Pointiness"], 0.56, 0.72), k.mr(n1, 0.35, 0.65))
     col = k.mix(k.math("MULTIPLY", wm, 0.5), col, tuple(min(1.0, c * 2.4) for c in tint))
@@ -251,7 +265,8 @@ def m_wood(name, aid="okoume_veneer", tint=(0.16, 0.085, 0.045), scale=2.2, roug
     return m
 
 
-def m_silk(name, color, rough=0.52, sheen=0.45, pitch=0.0011, var=0.10, crease=0.35, damask=0.0):
+def m_silk(name, color, rough=0.52, sheen=0.45, pitch=0.0011, var=0.10, crease=0.35, damask=0.0,
+           spec=0.4, slub=0.0, layers=0.0, seam=None):
     """Woven silk (object space, metres): weave bump at `pitch`, soft colour drift, sheen."""
     m, k = _mat(name)
     if k is None:
@@ -269,17 +284,44 @@ def m_silk(name, color, rough=0.52, sheen=0.45, pitch=0.0011, var=0.10, crease=0
         vo = k.N("ShaderNodeTexVoronoi")
         vo.inputs["Scale"].default_value = 1.0 / 0.045
         vo.inputs["Randomness"].default_value = 0.0
-        k.nt.links.new(k.obj, vo.inputs["Vector"])
+        k.nt.links.new(k.mapping(k.obj, scale=(1.0, 1.0, 0.0)), vo.inputs["Vector"])
         ring = k.mr(k.math("ABSOLUTE", k.math("SUBTRACT", vo.outputs[0], 0.26)), 0.07, 0.10, 1.0, 0.0)
-        rgh = k.math("SUBTRACT", rgh, k.math("MULTIPLY", ring, damask * 0.22))
-        c = k.mix(k.math("MULTIPLY", ring, damask * 0.25), c, tuple(min(1.0, x * 1.12) for x in col))
+        ring = k.math("MAXIMUM", ring, k.mr(vo.outputs[0], 0.08, 0.12, 1.0, 0.0))
+        rgh = k.math("SUBTRACT", rgh, k.math("MULTIPLY", ring, damask * 0.2))
+        c = k.mix(k.math("MULTIPLY", ring, damask * 0.1), c, tuple(min(1.0, x * 1.1) for x in col))
+    extra = None
+    if slub:                                      # uneven hand-spun weft: fine streaks along X
+        sl = k.noise(k.mapping(k.obj, scale=(1.2, 320.0, 320.0)), 1.0, 3.0, 0.6)
+        sv = k.mr(sl, 0.3, 0.7, 1.0 - slub, 1.0 + slub * 0.6)
+        cx = k.N("ShaderNodeCombineXYZ")
+        for i_ in range(3):
+            k.nt.links.new(sv, cx.inputs[i_])
+        c = k.mix(1.0, c, cx.outputs[0], "MULTIPLY")
+        extra = sl
+    if layers:                                    # stacked cloth: thin layer lines on the rounded edges
+        side = k.mr(k.math("ABSOLUTE", k.sep(k.onormal)[2]), 0.25, 0.7, 1.0, 0.0)
+        lw = k.wave(k.obj, 2.0 * PI / (20.0 * layers), "Z", 1.5)
+        gr = k.math("MULTIPLY", k.mr(lw, 0.05, 0.4, 1.0, 0.0), side)
+        c = k.mix(k.math("MULTIPLY", gr, 0.5), c, tuple(x * 0.35 for x in col))
+        extra = k.math("MULTIPLY", gr, -1.0)
+    if seam is not None:                          # a sewn seam running along Y on the upper face
+        dx = k.math("ABSOLUTE", k.math("SUBTRACT", k.sep(k.obj)[0], seam))
+        sg = k.mr(dx, 0.0003, 0.0011, 1.0, 0.0)
+        pk = k.math("MULTIPLY", k.mr(dx, 0.001, 0.012, 1.0, 0.0),
+                    k.noise(k.mapping(k.obj, scale=(3.0, 160.0, 3.0)), 1.0, 1.0))
+        se = k.math("ADD", k.math("MULTIPLY", sg, -1.5), pk)
+        extra = se if extra is None else k.math("ADD", extra, se)
+        c = k.mix(k.math("MULTIPLY", sg, 0.25), c, tuple(x * 0.5 for x in col))
     k.set("Base Color", c)
     k.set("Roughness", rgh)
     k.set("Sheen Weight", sheen)
-    k.set("Sheen Roughness", 0.4)
+    k.set("Sheen Roughness", 0.45)
     k.set("Sheen Tint", tuple(min(1.0, x * 1.5 + 0.25) for x in col) + (1.0,))
-    k.set("Specular IOR Level", 0.4)
+    k.set("Specular IOR Level", spec)
     nrm = k.bump(n2, crease, 0.0005)
+    if extra is not None:
+        nrm = k.bump(extra, 0.6, 0.0007, nrm)
+    nrm = k.bump(k.noise(k.obj, 1100.0, 2.0, 0.6), 0.35, 0.00025, nrm)
     k.set("Normal", k.bump(w, 0.3, 0.00012, nrm))
     return m
 
@@ -301,7 +343,7 @@ def m_brocade(name, c1, c2, cell=0.028, gold=0.0):
     n1 = k.noise(uv, 5.0, 3.0)
     n2 = k.noise(uv, 300.0, 2.0)
     base = k.mix(k.mr(n1, 0.3, 0.7), tuple(x * 0.9 for x in c1), tuple(min(1, x * 1.08) for x in c1))
-    col = k.mix(k.math("MULTIPLY", pat, 0.75), base, c2)
+    col = k.mix(k.math("MULTIPLY", pat, 0.5), base, c2)
     sc = 2.0 * PI / (20.0 * 0.0009)
     w = k.math("MULTIPLY", k.wave(uv, sc, "X"), k.wave(uv, sc, "Y"))
     k.set("Base Color", col)
@@ -607,7 +649,7 @@ def _doc_box(B, tag, sx, sy, sz, gold=False, cord=False, seed=1):
     cm = _cord_mat("P_cord_vermilion", "#9c3f2c")
     brass = m_plain("P_brass", (0.55, 0.38, 0.16), rough=0.42, metallic=1.0, var=0.25, nscale=60.0)
     top = sz + crown + 0.0022
-    r = 0.0021
+    r = 0.0027
     zr = body_h * 0.62
     sides = []
     for sgn in (-1.0, 1.0):
@@ -640,6 +682,18 @@ def _doc_box(B, tag, sx, sy, sz, gold=False, cord=False, seed=1):
          (-0.064, 0.047, h - 0.001), (-0.086, 0.045, h - 0.0012)],
     ]
     B.tube(tag + "_bow", loops, r, cm, res=3)
+    fr = []                                       # frayed ends of the two tails
+    for tail in loops[2:]:
+        e, q = Vector(tail[-1]), Vector(tail[-2])
+        d = (e - q).normalized()
+        side = Vector((-d.y, d.x, 0.0))
+        for i in range(12):
+            a, ln = rnd.uniform(-1.0, 1.0), rnd.uniform(0.009, 0.016)
+            m_ = e + d * ln * 0.5 + side * a * 0.002 + Vector((0, 0, rnd.uniform(-0.0005, 0.0012)))
+            t_ = e + d * ln + side * a * 0.0055
+            t_.z = sz + crown * 0.3 + rnd.uniform(0.0004, 0.0012)
+            fr.append([tuple(e - d * 0.002 + side * a * 0.0012), tuple(m_), tuple(t_)])
+    B.tube(tag + "_fringe", fr, 0.00055, cm, res=1)
     B.tube(tag + "_knot", [[(0.0055 * math.cos(a), 0.003 * math.sin(a) + 0.001 * math.cos(a),
                              h + 0.003 + 0.0042 * math.sin(a)) for a in
                             [2 * PI * i / 10 for i in range(10)]]], r * 1.05, cm, res=3, cyclic=True)
@@ -657,14 +711,14 @@ def _b_doc_box_small(B):
 # tobacco tray (tabako-bon): wooden tray with a cane handle, fire pot (hi-ire), ash tube (hai-fuki)
 # ---------------------------------------------------------------------------------------------
 def _ash_mat():
-    return m_plain("P_ash", (0.52, 0.50, 0.47), rough=0.95, var=0.16, nscale=140.0, bump=0.6,
+    return m_plain("P_ash", (0.40, 0.385, 0.36), rough=0.95, var=0.22, nscale=140.0, bump=0.6,
                    dist=0.0012, spec=0.15, vscale=22.0)
 
 
 def _b_tobacco_tray(B):
     sx, sy, sz = 0.25, 0.18, 0.062
-    wood = m_wood("P_wood_kuwa", "okoume_veneer", tint=(0.20, 0.10, 0.045), scale=2.6, coat=0.25,
-                  rot=(0.0, 0.0, PI / 2))
+    wood = m_wood("P_wood_kuwa", "okoume_veneer", tint=(0.17, 0.085, 0.04), scale=2.6, coat=0.2,
+                  rot=(0.0, 0.0, PI / 2), grain=(2.5, 60.0, 60.0), figure=0.5)
     B.mesh("tobacco_tray_box", _tray(sx, sy, sz, wall=0.0065, floor=0.008, bevel=0.0016), [wood])
     # handle: a bent cane arch pinned to the short sides
     hx = sx / 2 + 0.0048
@@ -711,22 +765,26 @@ def _b_tobacco_tray(B):
 # ---------------------------------------------------------------------------------------------
 def _zabuton(B, tag, hexc, tufthex, seed):
     rnd = random.Random(seed)
-    a, zs, t_top, t_bot = 0.275, 0.026, 0.047, 0.055
-    n = 46
+    a, zs, t_top, t_bot = 0.275, 0.027, 0.047, 0.055
+    n = 92
     ph = [rnd.uniform(0, 2 * PI) for _ in range(4)]
     skew = [rnd.uniform(-0.012, 0.012) for _ in range(4)]
 
     def prof(s):
-        return max(0.0, 1.0 - abs(s) ** 3.4) ** 0.55
+        return max(0.0, 1.0 - abs(s) ** 4.6) ** 0.47
 
     def top_z(x, y, g):
         r = math.hypot(x, y)
         th = math.atan2(y, x)
         tuft = math.exp(-(r / 0.052) ** 2)
         z = zs + t_top * g * (1.0 - 0.6 * tuft)
-        fall = (r / 0.06) * math.exp(-(r / 0.085) ** 2)
-        z += g * fall * (0.0026 * math.cos(7 * th + ph[0]) + 0.0016 * math.cos(11 * th + ph[1]))
-        z += g * 0.0028 * _nz(x * 6.0, y * 6.0, seed * 3.1)
+        fall = (r / 0.05) * math.exp(-(r / 0.10) ** 2)
+        z += g * fall * (0.0036 * math.cos(7 * th + ph[0]) + 0.0022 * math.cos(12 * th + ph[1])
+                         + 0.0013 * math.cos(19 * th + ph[2]))
+        z += g * 0.0032 * _nz(x * 6.0, y * 6.0, seed * 3.1)
+        for (ed, tc) in ((1.0 - abs(x) / a, y), (1.0 - abs(y) / a, x)):   # tension folds off the seam
+            z += g ** 0.4 * math.exp(-(ed / 0.2) ** 2) * 0.0021 * math.sin(
+                tc * 88.0 + 4.0 * _nz(tc * 8.0, seed * 0.7, ed * 3.0) + ph[3])
         edge = max(abs(x), abs(y)) / a
         z += (g ** 0.5) * edge ** 5 * 0.0022 * _nz(x * 55.0, y * 55.0, seed * 1.7)
         return z
@@ -742,7 +800,7 @@ def _zabuton(B, tag, hexc, tufthex, seed):
         k = 0.004
         return (x, y, 0.0006 + 0.5 * (zb + math.sqrt(zb * zb + k * k)))
 
-    ts = [math.sin(PI / 2 * (-1.0 + 2.0 * i / n)) for i in range(n + 1)]
+    ts = [0.45 * (-1.0 + 2.0 * i / n) + 0.55 * math.sin(PI / 2 * (-1.0 + 2.0 * i / n)) for i in range(n + 1)]
     bm = bmesh.new()
     topv = [[bm.verts.new(pos(u, v, 1)) for u in ts] for v in ts]
     botv = [[None] * (n + 1) for _ in range(n + 1)]
@@ -764,8 +822,8 @@ def _zabuton(B, tag, hexc, tufthex, seed):
     for e in bm.edges:
         if e.verts[0] in rim and e.verts[1] in rim:
             e[cl] = 0.55
-    silk = m_silk("P_silk_" + tag, _lin(hexc), rough=0.5, sheen=0.55, pitch=0.0013, var=0.10,
-                  crease=0.45, damask=0.6)
+    silk = m_silk("P_silk_" + tag, _lin(hexc), rough=0.74, sheen=1.0, pitch=0.0013, var=0.10,
+                  crease=0.6, spec=0.18, slub=0.16)
     B.mesh(tag + "_cushion", bm, [silk], wn=False, subsurf=1)
     # threads: centre tuft and four corner tassels
     thr = m_silk("P_thread_" + tag, _lin(tufthex), rough=0.45, sheen=0.6, pitch=0.0008, var=0.15)
@@ -773,9 +831,9 @@ def _zabuton(B, tag, hexc, tufthex, seed):
 
     def surf(r):
         return zs + t_top * (1.0 - 0.6 * math.exp(-(r / 0.052) ** 2)) + 0.0012
-    for i in range(18):
-        th = 2 * PI * i / 18 + rnd.uniform(-0.25, 0.25)
-        ln = rnd.uniform(0.022, 0.036)
+    for i in range(30):
+        th = 2 * PI * i / 30 + rnd.uniform(-0.3, 0.3)
+        ln = rnd.uniform(0.012, 0.024)
         c, s = math.cos(th), math.sin(th)
         sp.append([(0, 0, surf(0) + 0.002), (c * ln * 0.3, s * ln * 0.3, surf(ln * 0.3) + 0.0035),
                    (c * ln * 0.7, s * ln * 0.7, surf(ln * 0.7) + 0.0015),
@@ -797,7 +855,7 @@ def _zabuton(B, tag, hexc, tufthex, seed):
             sp.append([(x0 - 0.004 * cx, y0 - 0.004 * cy, z0 + 0.001), (x0, y0, z0 + 0.002),
                        (x0 + 0.004 * cx, y0 + 0.004 * cy, z0 + 0.0005)])
             rad.append(4.0)
-    B.tube(tag + "_threads", sp, 0.00075, thr, res=1, radii=rad)
+    B.tube(tag + "_threads", sp, 0.00065, thr, res=1, radii=rad)
     B.mesh(tag + "_tuft", _lathe(_fillet([(0, -0.002), (0.004, -0.002), (0.0052, 0.001), (0.003, 0.0034),
                                           (0, 0.0038)], 0.001, 2), 14), [thr], loc=(0, 0, surf(0)))
 
@@ -814,8 +872,8 @@ def _b_zabuton_b(B):
 # brazier (round wooden hibachi, copper liner, ash, charcoal, iron chopsticks)
 # ---------------------------------------------------------------------------------------------
 def _b_brazier(B):
-    wood = m_wood("P_wood_keyaki", "okoume_veneer", tint=(0.105, 0.05, 0.024), scale=1.6, coat=0.35,
-                  rough=(0.28, 0.5), rot=(PI / 2, 0.0, 0.0))
+    wood = m_wood("P_wood_keyaki", "okoume_veneer", tint=(0.085, 0.042, 0.02), scale=1.6, coat=0.22,
+                  rough=(0.32, 0.58), rot=(PI / 2, 0.0, 0.0), grain=(26.0, 26.0, 1.6), figure=0.6)
     body = _fillet([(0, 0.004), (0.185, 0.004), (0.189, 0.0), (0.200, 0.0), (0.207, 0.012), (0.2235, 0.10),
                     (0.2255, 0.17), (0.2195, 0.255), (0.2135, 0.293), (0.208, 0.300), (0.190, 0.300),
                     (0.1885, 0.297), (0.1885, 0.24)], 0.004, 3)
@@ -863,8 +921,8 @@ def _fold_path(y0, y1, z0, z1, y2, step=0.014, arc=7):
     return pts
 
 
-def _sheet(B, name, path, x0, x1, thick, mats, up, seed=0.0, nx=14, top=0.066, base=0.009,
-           edge_drop=0.004):
+def _sheet(B, name, path, x0, x1, thick, mats, up, seed=0.0, nx=18, top=0.066, base=0.009,
+           edge_drop=0.007, yfold=0.4, flap=None):
     """Cloth strip: the (y, z) path swept across x0..x1, moved by one shared soft drape field so
     stacked sheets stay nested, then solidified inwards (slot 1 = the reverse face) and subdivided."""
     xs = _span(x0, x1, (x1 - x0) / nx)
@@ -873,18 +931,27 @@ def _sheet(B, name, path, x0, x1, thick, mats, up, seed=0.0, nx=14, top=0.066, b
 
     def fn(x, s):
         y, z = path[s]
-        lift = max(0.0, min(1.0, (z - base) / (top - base)))
         e = (x - xm) / hw
-        xx = x + 0.004 * e * _nz(y * 7.0, seed, 2.0) + 0.0015 * _nz(y * 30.0, seed + 3.0, e)
-        dz = lift * (0.0035 * _nz(x * 8.0, y * 5.0, 0.5) + 0.0012 * _nz(x * 30.0, y * 22.0, 1.5)
-                     - edge_drop * abs(e) ** 5)
-        dz += 0.0006 * _nz(x * 40.0, y * 40.0, seed + 9.0)
-        return (xx, y + 0.002 * _nz(x * 9.0, seed + 5.0, z * 40.0), z + dz)
+        if flap and s > flap[0]:                  # the turned-back part: an uneven, slanted free edge
+            y = flap[1] + (y - flap[1]) * (0.95 + 0.6 * e + 0.2 * _nz(x * 7.0, seed, 1.0))
+        z = base + (z - base) * (1.0 - 0.22 * C.smoothstep((-y - 0.20) / 0.22))   # open end lies flatter
+        lift = max(0.0, min(1.0, (z - base) / (top - base)))
+        free = C.smoothstep((yfold - y) / 0.3)
+        xx = x + 0.005 * e * _nz(y * 7.0, seed, 2.0) + 0.0015 * _nz(y * 30.0, seed + 3.0, e)
+        dz = lift * (0.0055 * _nz(x * 6.0, y * 3.5, 0.5) + 0.0022 * _nz(x * 21.0, y * 8.0, 1.5)
+                     + 0.0012 * math.sin(y * 31.0 + 5.0 * _nz(x * 4.0, y * 2.0, 3.0))
+                     + 0.0019 * e * e * math.sin(150.0 * (0.25 * x + 0.75 * y) + 4.0 * _nz(x * 6.0, y * 6.0, 8.0))
+                     - 0.0017 * math.exp(-((y + 0.035 + 0.02 * e) / 0.007) ** 2)
+                     - 0.0014 * math.exp(-((y - 0.245 - 0.012 * e) / 0.006) ** 2)
+                     - edge_drop * abs(e) ** 3)
+        dz += 0.0008 * _nz(x * 34.0, y * 34.0, seed + 9.0)
+        yy = y + free * (0.005 * _nz(x * 6.0, seed + 5.0, 0.0) + 0.006 * e * math.sin(seed * 2.3))
+        return (xx, yy, z + dz)
     bm = _grid(xs, ss, fn, up=(2, up))
     ob = B.mesh(name, bm, mats, wn=False)
     so = ob.modifiers.new("solid", "SOLIDIFY")
     so.thickness, so.offset = thick, -1.0
-    so.material_offset = 1
+    so.material_offset = 1 if len(mats) > 1 else 0
     so.use_even_offset = True
     sb = ob.modifiers.new("subsurf", "SUBSURF")
     sb.levels = sb.render_levels = 2
@@ -895,24 +962,25 @@ def _b_robe_tray(B):
     lac = m_lacquer("P_lacquer")
     B.mesh("robe_tray_tray", _tray(0.45, 0.95, 0.04, wall=0.007, floor=0.008, bevel=0.0022, seg=3,
                                    flare=0.004), [lac])
-    ivory = m_silk("P_silk_ivory", (0.80, 0.74, 0.62), rough=0.42, sheen=0.5, pitch=0.0009, var=0.05,
-                   crease=0.5, damask=0.8)
-    lining = m_silk("P_silk_lining", _lin("#d4583a"), rough=0.5, sheen=0.45, pitch=0.0009, var=0.07,
-                    crease=0.5)
+    ivory = m_silk("P_silk_ivory", (0.82, 0.75, 0.61), rough=0.46, sheen=0.6, pitch=0.0009, var=0.05,
+                   crease=0.5, damask=0.8, spec=0.35, layers=0.0024, seam=-0.034)
+    lining = m_silk("P_silk_lining", _lin("#d4583a"), rough=0.5, sheen=0.5, pitch=0.0009, var=0.07,
+                    crease=0.5, spec=0.3, layers=0.0024)
     mats = [ivory, lining]
+    plain = [ivory]
     yo = 0.4
     _sheet(B, "robe_fold_outer", _fold_path(-0.424, yo, 0.0092, 0.062, -0.42), -0.18, 0.18, 0.009,
            mats, -1.0, seed=1.0)
     _sheet(B, "robe_fold_inner", _fold_path(-0.414, yo - 0.002, 0.0188, 0.0524, -0.408), -0.177, 0.178,
-           0.009, mats, -1.0, seed=2.0)
+           0.009, plain, -1.0, seed=2.0)
     _sheet(B, "robe_fold_core", [(y, 0.0432) for y in _span(-0.402, yo - 0.014, 0.014)], -0.176, 0.175,
-           0.0145, mats, 1.0, seed=3.0)
+           0.0145, plain, 1.0, seed=3.0)
     # the upper sleeve, its edge turned back so the vermilion lining shows
-    _sheet(B, "robe_sleeve", _fold_path(0.128, -0.262, 0.0662, 0.0694, -0.168, arc=5), -0.178, 0.176,
-           0.0036, mats, 1.0, seed=4.0, top=0.066)
-    # collar band lying along the top near the fold
-    _sheet(B, "robe_collar", [(y, 0.0665) for y in _span(0.20, 0.395, 0.014)], -0.058, 0.02, 0.0042,
-           mats, 1.0, seed=6.0, nx=6, edge_drop=0.0)
+    path = _fold_path(0.128, -0.262, 0.0662, 0.0722, -0.19, arc=6)
+    nfold = len(_span(0.128, -0.262, 0.014)) + 5
+    ob = _sheet(B, "robe_sleeve", path, -0.178, 0.176, 0.0034, mats, 1.0, seed=4.0, top=0.066,
+                flap=(nfold, -0.262))
+    ob.rotation_euler = (0.0, 0.0, 0.022)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -959,9 +1027,9 @@ def _b_scroll(B):
         if r in (2, 4) and centre:
             return 2
         return 1
-    tenchi = m_brocade("P_brocade_tenchi", (0.36, 0.31, 0.21), (0.44, 0.39, 0.27), cell=0.022)
-    chu = m_brocade("P_brocade_chuberi", (0.13, 0.17, 0.19), (0.42, 0.36, 0.22), cell=0.03, gold=0.25)
-    ichi = m_brocade("P_brocade_ichimonji", (0.42, 0.26, 0.09), (0.80, 0.58, 0.24), cell=0.012, gold=0.8)
+    tenchi = m_brocade("P_brocade_tenchi", (0.33, 0.29, 0.20), (0.39, 0.35, 0.25), cell=0.017)
+    chu = m_brocade("P_brocade_chuberi", (0.085, 0.105, 0.11), (0.27, 0.24, 0.15), cell=0.021, gold=0.2)
+    ichi = m_brocade("P_brocade_ichimonji", (0.36, 0.23, 0.09), (0.70, 0.51, 0.22), cell=0.0105, gold=0.7)
     uvm = lambda x, s: (x, s)                     # noqa: E731  (metres)
     B.mesh("scroll_mount", _grid(xs, ss, fn, up=(1, -1.0), skip=in_img, matf=matf, uvf=uvm),
            [tenchi, chu, ichi], wn=False)
@@ -975,8 +1043,8 @@ def _b_scroll(B):
         fs = _span(-0.002, z_ten + 0.004, 0.03)
         B.mesh("scroll_futai", _grid(fx, fs, lambda x, s: (x, disp(x, s) - 0.0007 - 0.0012 * (s / z_ten) ** 3,
                                                            s), up=(1, -1.0), uvf=uvm), [ichi], wn=False)
-    wood = m_wood("P_wood_jiku", "okoume_veneer", tint=(0.085, 0.036, 0.02), scale=5.0, coat=0.5,
-                  rough=(0.22, 0.4))
+    wood = m_wood("P_wood_jiku", "okoume_veneer", tint=(0.075, 0.032, 0.018), scale=5.0, coat=0.5,
+                  rough=(0.22, 0.4), grain=(4.0, 80.0, 80.0), figure=0.4)
     # roller and its knobs
     zc = z_end
     core = _fillet([(0, -W / 2 + 0.001), (rr - 0.0006, -W / 2 + 0.001), (rr - 0.0006, W / 2 - 0.001),

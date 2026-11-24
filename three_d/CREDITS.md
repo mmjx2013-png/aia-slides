@@ -15,8 +15,8 @@ CC0 1.0 (public domain) by Poly Haven, https://polyhaven.com/license. Files are 
 | Okoume Veneer (`okoume_veneer`: diff, rough, nor_gl) | ceiling boards and shoji hip boards | Jenelle van Heerden | https://polyhaven.com/a/okoume_veneer | CC0 |
 | Japanese Cedar Planks (`japanese_cedar_planks`: diff, rough, nor_gl) | veranda boards, alcove floors | Charlotte Baglioni, Rico Cilliers | https://polyhaven.com/a/japanese_cedar_planks | CC0 |
 | White Plaster 02 (`white_plaster_02`: diff, rough, nor_gl) | plaster walls, including the display wall | Rob Tuytel | https://polyhaven.com/a/white_plaster_02 | CC0 |
-| Gravel Floor 02 (`gravel_floor_02`: diff, rough, nor_gl) | the gravel of the garden beyond the veranda | @GRAVEL@ | https://polyhaven.com/a/gravel_floor_02 | CC0 |
-| Mossy Rock (`mossy_rock`: diff, rough, nor_gl) | the stepping stone at the veranda's edge | @ROCK@ | https://polyhaven.com/a/mossy_rock | CC0 |
+| Gravel Floor 02 (`gravel_floor_02`: diff, rough, nor_gl) | the gravel of the garden beyond the veranda | Jenelle van Heerden, Dimitrios Savva | https://polyhaven.com/a/gravel_floor_02 | CC0 |
+| Mossy Rock (`mossy_rock`: diff, rough, nor_gl) | the stepping stone at the veranda's edge | Rob Tuytel | https://polyhaven.com/a/mossy_rock | CC0 |
 | Ninomaru Teien (`ninomaru_teien_2k.hdr`, HDRI) | the garden seen through the open shoji | Greg Zaal | https://polyhaven.com/a/ninomaru_teien | CC0 |
 
 Download host: `https://dl.polyhaven.org/file/ph-assets/...` (exact URLs in `fetch_assets.py`).
@@ -27,9 +27,16 @@ Robe (Kosode) with Fishing Net and Characters, Open Access (CC0), cut-out
 the site's photo credits). It is used as the albedo of a sheet of the robe's recorded size
 (153.4 x 127.6 cm) cut to the photograph's outline; the folds and the plain back are made in code.
 
-Made in code, no downloaded asset: gold leaf (leaf squares, overlaps, wear), black lacquer, gilt
-fittings, shoji paper and its daylight, the felt runner, the kimono textile design and the obi
-brocade (drawn with PIL in `common.py`), silk shading.
+Made in code, no downloaded asset: gold leaf (leaf squares, overlaps, tarnish and wear), black
+lacquer (edge wear, dust), gilt fittings, shoji paper and its daylight, the veranda, its stone step
+and stepping stones (shapes in code, surfaced with the Mossy Rock scan), the chodaigamae doors and
+their tassels, the felt runner, the kimono textile design and the obi brocade (drawn with PIL in
+`common.py`), silk shading, and every age mark (shader noise over the scans: frayed tatami borders,
+hand-darkened wood, clouded plaster). The small objects of the room (document boxes, cushions,
+brazier, smoking tray, folded robe on its tray, hanging scroll) are modelled in code in `props.py`.
+
+The hall is a reconstruction in the manner of the shoin halls of Nijo Castle's Ninomaru Palace; no
+painting of that building is copied: plain aged gold leaf stands wherever a painting would be.
 
 ambientCG was not used: its API answers, but its download host
 (`acg-download.struffelproductions.com`) is refused by this container's proxy.
