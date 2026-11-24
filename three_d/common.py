@@ -857,7 +857,8 @@ def fabric_material(kind, name=None, color=None):
 #         'board'    pale ceiling / panel boards. UV in metres, grain along U
 #         'planks'   darker cedar floor boards. UV in metres, boards along U
 #         'plaster'  warm white lime plaster. UV in metres
-#         'washi'    shoji paper lit from behind (emissive; value node 'strength')
+#         'washi'    shoji paper lit from behind: glows for the camera only (value node 'strength');
+#                    the room is lit by area lights that scene.py puts in front of the paper
 #         'gold'     gold leaf with visible leaf squares. Needs a UV map called 'leaf' in metres
 #         'gilt'     gilt metal fittings        'felt'  dark red wool felt
 #         'lacquer'  black lacquer with fine scratches
@@ -1103,6 +1104,10 @@ def hall_material(kind, name=None, strength=None):
         L(nf.outputs["Fac"], m3.inputs["Value"])
         e = _math(nt, "MULTIPLY", _math(nt, "MULTIPLY", m1.outputs["Result"], m2.outputs["Result"]),
                   _math(nt, "MULTIPLY", m3.outputs["Result"], val.outputs[0]))
+        # The camera sees the paper at an exposure where its tone still reads; the light it gives the
+        # room comes from area lights of the same shape just in front of it (clean at low samples).
+        lp = N("ShaderNodeLightPath")
+        e = _math(nt, "MULTIPLY", e, lp.outputs["Is Camera Ray"])
         bsdf.inputs["Base Color"].default_value = (0.80, 0.77, 0.70, 1.0)
         bsdf.inputs["Roughness"].default_value = 0.85
         bsdf.inputs["Specular IOR Level"].default_value = 0.15

@@ -58,12 +58,12 @@ Z_KOSHI = OBI_BOT + 0.070          # hidden waist tie: where the fold starts fro
 Z_C = 1.130                        # centre of the upper ray fan (shoulders, neck)
 
 ARM_DEG = 25.0
-J = np.array([0.170, 0.0, 1.280])  # right shoulder joint (mirrored for the left)
+J = np.array([0.152, 0.0, 1.285])  # right shoulder joint (mirrored for the left)
 SA, CA = math.sin(math.radians(ARM_DEG)), math.cos(math.radians(ARM_DEG))
 D_ARM = np.array([SA, 0.0, -CA])   # along the arm
 N_ARM = np.array([CA, 0.0, SA])    # outward/up normal of the arm in the frontal plane
 L_ELBOW, L_WRIST = 0.275, 0.520
-CAP_LEN, CAP_R = 0.110, 0.053      # the part of the upper arm the body panels cover
+CAP_LEN, CAP_R = 0.110, 0.049      # the part of the upper arm the body panels cover
 
 LV_J, DJ = 0.000, 0.006            # juban level, left-over-right lift
 LV_K, DK = 0.014, 0.009            # kimono level, left-over-right lift
@@ -126,8 +126,8 @@ def _mirror(p):
 
 
 _HZ = np.array([0.00, 0.45, 0.86, 1.00, 1.16, 1.27])
-_HA = np.array([0.150, 0.156, 0.163, 0.160, 0.160, 0.160])
-_HB = np.array([0.118, 0.123, 0.128, 0.126, 0.126, 0.122])
+_HA = np.array([0.140, 0.148, 0.155, 0.150, 0.148, 0.146])
+_HB = np.array([0.112, 0.118, 0.122, 0.118, 0.116, 0.112])
 
 
 def tube_sdf(p):
@@ -141,16 +141,16 @@ def hull_sdf(p):
     z = p[..., 2]
     q = _mirror(p)
     d = _smax(tube_sdf(p), z - 1.26, 0.08)
-    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.285), (0.203, 0.112, 0.090)), 0.06)
-    d = _smin(d, _ellipsoid(q, J, (0.053, 0.053, 0.053)), 0.05)
+    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.285), (0.184, 0.106, 0.088)), 0.06)
+    d = _smin(d, _ellipsoid(q, J, (CAP_R, CAP_R, CAP_R)), 0.05)
     d = _smin(d, _capsule(q, J, J + CAP_LEN * D_ARM, CAP_R, CAP_R), 0.035)
-    d = _smin(d, _capsule(p, (0, -0.012, 1.20), (0, 0.012, 1.62), 0.051, 0.051), 0.03)
+    d = _smin(d, _capsule(p, (0, -0.012, 1.20), (0, 0.012, 1.62), 0.051, 0.051), 0.045)
     return d
 
 
 _MZ = np.array([0.72, 0.84, 0.94, 1.04, 1.13, 1.22, 1.30])
-_MA = np.array([0.128, 0.150, 0.146, 0.122, 0.134, 0.150, 0.148])
-_MB = np.array([0.094, 0.106, 0.102, 0.088, 0.098, 0.106, 0.100])
+_MA = np.array([0.122, 0.142, 0.138, 0.116, 0.126, 0.138, 0.136])
+_MB = np.array([0.090, 0.102, 0.098, 0.086, 0.094, 0.100, 0.094])
 
 
 def mannequin_sdf(p):
@@ -159,18 +159,18 @@ def mannequin_sdf(p):
     q = _mirror(p)
     d = _smax(_ellcyl(p, np.interp(z, _MZ, _MA), np.interp(z, _MZ, _MB)), z - 1.27, 0.07)
     d = _smax(d, 0.745 - z, 0.06)
-    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.283), (0.196, 0.100, 0.082)), 0.05)
+    d = _smin(d, _ellipsoid(p, (0, -0.004, 1.283), (0.176, 0.094, 0.080)), 0.05)
     # shoulders, arms, mitten hands
     elbow, wrist = J + L_ELBOW * D_ARM, J + L_WRIST * D_ARM
-    d = _smin(d, _ellipsoid(q, J, (0.046, 0.046, 0.046)), 0.04)
-    d = _smin(d, _capsule(q, J, elbow, 0.041, 0.034), 0.03)
-    d = _smin(d, _capsule(q, elbow, wrist, 0.034, 0.025), 0.02)
+    d = _smin(d, _ellipsoid(q, J, (0.043, 0.043, 0.043)), 0.04)
+    d = _smin(d, _capsule(q, J, elbow, 0.039, 0.032), 0.03)
+    d = _smin(d, _capsule(q, elbow, wrist, 0.032, 0.024), 0.02)
     rel = q - (J + (L_WRIST + 0.082) * D_ARM)
     loc = np.stack([(rel * D_ARM).sum(-1), (rel * N_ARM).sum(-1), rel[..., 1]], -1)
     d = _smin(d, _ell(loc, (0.094, 0.017, 0.038)), 0.022)
     # legs and feet
-    hip, knee, ank = (0.080, 0.0, 0.84), (0.074, 0.006, 0.47), (0.068, -0.012, 0.085)
-    d = _smin(d, _capsule(q, hip, knee, 0.077, 0.050), 0.04)
+    hip, knee, ank = (0.076, 0.0, 0.84), (0.072, 0.006, 0.47), (0.068, -0.012, 0.085)
+    d = _smin(d, _capsule(q, hip, knee, 0.073, 0.050), 0.04)
     d = _smin(d, _capsule(q, knee, ank, 0.049, 0.033), 0.03)
     d = _smin(d, _ellipsoid(q, (0.071, -0.016, 0.335), (0.047, 0.052, 0.125)), 0.03)
     foot = _smax(_ellipsoid(q, (0.068, 0.040, 0.028), (0.040, 0.100, 0.036)), -z, 0.006)
@@ -264,45 +264,44 @@ class _Hull:
             arcs.append(s)
         o, d, r, pts = prof[0.0]
         phi_j = float(np.interp(Z_BACK_J, pts[:, 2], ph))
-        rk = _bisect(hull_sdf, o, d, r, r + 0.1, LV_K - NAPE)
-        phi_k = float(np.interp(Z_BACK_K, (o + rk[:, None] * d)[:, 2], ph))
         m = ph <= phi_j
         par = sum(s[m] / s[m][-1] for s in arcs) / 3.0
         nf = 50
         phis = np.interp(np.linspace(0.0, 1.0, nf), par, ph[m])
         phis[-1] = phi_j
-        kk = int(np.argmin(np.abs(phis - phi_k)))
-        phis[kk] = phi_k
+        kk = int(np.argmin(np.abs(np.interp(phis, ph, pts[:, 2]) - Z_BACK_K)))
         self.phi = phis
         self.row_top_k = self.n0 + kk
         self.nrows = self.n0 + nf
         self.zback = np.interp(phis, ph, pts[:, 2])
 
-        tab = np.zeros((len(self.LEVELS), self.nrows, 181))
-        # rings
+        tab = np.zeros((len(self.LEVELS), self.n0, 181))
         zz, pp = np.meshgrid(self.z, psd, indexing="ij")
         o = np.stack([np.zeros_like(zz), np.zeros_like(zz), zz], -1)
         d = np.stack([np.sin(pp), -np.cos(pp), np.zeros_like(pp)], -1)
         for li, lv in enumerate(self.LEVELS):
-            tab[li, :self.n0] = _bisect(tube_sdf, o, d, 0.03, 0.42, lv, 20)
-        # fan
+            tab[li] = _bisect(tube_sdf, o, d, 0.03, 0.42, lv, 20)
+        self.tab = np.concatenate([tab, tab[:, :, -2::-1]], axis=2)      # 0..360 degrees
+        # fan: the level-0 surface and its normals; other levels are offsets along the normal, which
+        # stays well behaved where the cloth climbs the neck
         ff, pp = np.meshgrid(self.phi, psd, indexing="ij")
         o, d = fan_od(ff, pp)
-        r0 = _first_hit(hull_sdf, o, d)
-        tab[0, self.n0:] = r0
-        for li in (1, 2):
-            tab[li, self.n0:] = _bisect(hull_sdf, o, d, r0, r0 + 0.16, self.LEVELS[li], 18)
-        self.tab = np.concatenate([tab, tab[:, :, -2::-1]], axis=2)      # 0..360 degrees
+        P0 = o + _first_hit(hull_sdf, o, d)[..., None] * d
+        N0 = _unit(_grad(hull_sdf, P0))
+        mir = np.array([-1.0, 1.0, 1.0])
+        self.fp = np.concatenate([P0, P0[:, -2::-1] * mir], axis=1)
+        self.fn = np.concatenate([N0, N0[:, -2::-1] * mir], axis=1)
         # nominal height of each row (for wrinkle placement) and how far up the neck it is
         self.zn = np.r_[self.z, Z_C + 0.19 * np.sin(self.phi)]
         self.top = np.r_[np.zeros(self.n0), _ss((self.zback - 1.335) / 0.045)]
 
     def radius(self, ri, psi, level):
+        """Radius of the tube at fractional ring index ri."""
         ri, psi, level = np.broadcast_arrays(np.asarray(ri, float), psi, level)
         pd = np.mod(np.degrees(psi), 360.0)
         j0 = np.minimum(np.floor(pd).astype(int), 359)
         fj = pd - j0
-        i0 = np.clip(np.floor(ri).astype(int), 0, self.nrows - 2)
+        i0 = np.clip(np.floor(ri).astype(int), 0, self.n0 - 2)
         fi = ri - i0
         out = []
         for li in range(3):
@@ -318,12 +317,23 @@ class _Hull:
     def pts(self, rows, psi, level, sx):
         """Points for integer row indices (arrays broadcast)."""
         rows, psi, level = np.broadcast_arrays(rows, psi, level)
-        r = self.radius(rows, psi, level)
         fan = rows >= self.n0
-        phi = np.where(fan, self.phi[np.clip(rows - self.n0, 0, len(self.phi) - 1)], 0.0)
-        oz = np.where(fan, Z_C, self.z[np.clip(rows, 0, self.n0 - 1)])
-        cp = np.cos(phi)
-        return np.stack([sx * r * np.sin(psi) * cp, -r * np.cos(psi) * cp, oz + r * np.sin(phi)], -1)
+        out = np.empty(rows.shape + (3,))
+        if (~fan).any():
+            rr, pp, ll = rows[~fan], psi[~fan], level[~fan]
+            r = self.radius(rr, pp, ll)
+            out[~fan] = np.stack([sx * r * np.sin(pp), -r * np.cos(pp), self.z[rr]], -1)
+        if fan.any():
+            rr, pp, ll = rows[fan] - self.n0, psi[fan], level[fan]
+            pd = np.mod(np.degrees(pp), 360.0)
+            j0 = np.minimum(np.floor(pd).astype(int), 359)
+            fj = (pd - j0)[:, None]
+            P = self.fp[rr, j0] * (1 - fj) + self.fp[rr, j0 + 1] * fj
+            Nn = self.fn[rr, j0] * (1 - fj) + self.fn[rr, j0 + 1] * fj
+            P = P + ll[:, None] * Nn
+            P[:, 0] *= sx
+            out[fan] = P
+        return out
 
     def ring(self, z, psi, level, sx=-1):
         """Points on the tube at height z (below the arms). psi in the LEFT half's convention."""
@@ -362,7 +372,11 @@ def _orient(v, f, ref):
 
 def _mat(state, kind):
     m = (state.get("materials") or {}).get(kind)
-    return m if m is not None else common.fabric_material(kind)
+    if m is not None:
+        return m
+    if kind == "obiage":                      # a pale shibori tint sits better against the brocade
+        return common.fabric_material("obiage", name="DF_obiage", color="#e2b39c")
+    return common.fabric_material(kind)
 
 
 def _new_obj(state, name, verts, faces, mats, uv=False):
@@ -468,10 +482,16 @@ def _tube_set(td, C, N, scale=None):
         s = ((V[f].mean(1) - cen[f].mean(1)) * _face_normals(V, f)).sum(-1)
         td["flip"] = bool((s < 0).sum() > (s > 0).sum())
         if td["flip"]:
-            me = td["ob"].data
-            me.flip_normals() if hasattr(me, "flip_normals") else None
+            _flip(td)
     _set_co(td["ob"], V)
     return V
+
+
+def _flip(td):
+    """Flip an object's faces and keep td["faces"] in the mesh's loop order (UVs are set per loop)."""
+    me = td["ob"].data
+    me.flip_normals()
+    td["faces"] = np.array([list(pl.vertices) for pl in me.polygons])
 
 
 def _resample(P, n):
@@ -604,13 +624,13 @@ class _Panel:
         # skirt: long soft vertical folds, deeper towards the hem and at the back / sides
         dn = 1.0 - _ss((z - 0.10) / 0.70)
         a = 0.0034 * (0.45 + 0.55 * dn) * (1.0 - 0.6 * front)
-        f1 = 0.5 + 0.5 * np.sin(psi * 7.0 + 1.3 * np.sin(psi * 3.0 + 0.7 * self.sx) + 2.2 * z)
+        f1 = 0.5 + 0.5 * np.sin(psi * 7.0 + 1.3 * np.sin(psi * 3.0) + 0.9 * self.sx * np.sin(psi) + 2.2 * z)
         f2 = 0.5 + 0.5 * np.sin(psi * 17.0 + 3.0 * z + 1.0)
         w = w + np.where(z < Z_FOLD + 0.01, a * (0.75 * f1 ** 2 + 0.25 * f2), 0.0)
         # bunching above the sash: soft horizontal rolls, mostly at the sides and the back
         side = 0.30 + 0.70 * _ss(1.0 - np.abs(dps - 75.0) / 75.0)
         band = _ss((z - OBI_TOP + 0.015) / 0.02) * (1.0 - _ss((z - OBI_TOP - 0.015) / 0.085))
-        roll = 0.5 + 0.5 * np.sin((z - OBI_TOP) * 2 * math.pi / 0.034 + 2.0 * np.sin(psi * 2.6 + self.sx) + psi)
+        roll = 0.5 + 0.5 * np.sin((z - OBI_TOP) * 2 * math.pi / 0.034 + 2.0 * np.sin(psi * 2.6) + self.sx * np.sin(psi) + psi)
         w = w + 0.0042 * side * band * roll * (1.0 - 0.55 * front)
         # drag folds from the shoulder blades / chest down towards the waist
         diag = 0.5 + 0.5 * np.sin((dps * 1.1 + (z - 1.0) * 190.0) * math.pi / 34.0)
@@ -707,7 +727,7 @@ class _Sleeve:
         self.rt = (np.array([0.0, 0.09, 0.13, 0.30, 0.50]),
                    np.array([0.035, 0.055, 0.063, 0.052, 0.037]) if k else
                    np.array([0.033, 0.046, 0.047, 0.042, 0.031]))
-        self.g0 = 0.014 if k else 0.008
+        self.g0 = 0.009 if k else 0.005
         self.zb = (0.470, 0.400) if k else (0.495, 0.425)       # bag bottom: inner, outer
         self.xin = 0.0 if k else 0.004
         self.nring = 2 * (self.NT + self.NH + self.NB) - 1
@@ -750,12 +770,12 @@ class _Sleeve:
         gap = (g0 + (R[:, None] - g0) * np.exp(-(dh / 0.07) ** 2)) * pinch
         # horizontal placement: follow the arm above, stand clear of the sash and skirt below
         xc = Q[:, 0:1]
-        xin = 0.214 + self.xin + 0.018 * _ss((Zh - 0.86) / 0.06)
+        xin = 0.206 + self.xin + 0.016 * _ss((Zh - 0.86) / 0.06)
         xt = xin + (_XOUT - xin) * (xc - _X0) / (_XOUT - _X0)
         s = _ss((1.15 - Zh) / 0.05) * _ss(dh / 0.10)
         Xh = xc + s * (xt - xc) + 0.030 * a[:, None] * (dh / H[:, None]) ** 2
         # soft hanging folds, shared by both layers (and by juban and kimono, so they stay nested)
-        u = (Xh - 0.21) / 0.19
+        u = (Xh - 0.20) / 0.19
         hang = _ss((dh - 0.03) / 0.22)
         fold = 0.0065 * hang * np.sin(2 * math.pi * (1.45 * u + 0.30 * np.sin(Zh * 7.0 + self.sx)) + 0.8 * self.sx)
         fold = fold + 0.0025 * hang * np.sin(2 * math.pi * 3.1 * u + Zh * 11.0)
@@ -849,7 +869,7 @@ def _update_collar(state, tag, ext):
         s = ((Vf[f].mean(1) - cc[f].mean(1)) * _face_normals(Vf, f)).sum(-1)
         cd["flip"] = bool((s < 0).sum() > (s > 0).sum())
         if cd["flip"]:
-            cd["ob"].data.flip_normals()
+            _flip(cd)
     _set_co(cd["ob"], V.reshape(-1, 3))
     if tag == "K":
         L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
@@ -873,7 +893,7 @@ def _obi_setup(state):
     state["obi"] = _tube_obj(state, "DF_obi", 220, np.array(prof), "obi", uv=True)
     state["cord"] = _tube_obj(state, "DF_obijime", 200, _circle(0.0048, 10), "obijime")
     state["cordknot"] = _tube_obj(state, "DF_obijime_knot", 96, _circle(0.0046, 10), "obijime")
-    state["obiage"] = _tube_obj(state, "DF_obiage", 140, _circle(1.0, 16), "obiage")
+    state["obiage"] = _tube_obj(state, "DF_obiage", 260, _circle(1.0, 16), "obiage")
     nx_, kp = 44, 48
     faces = _grid_faces(nx_, kp + 1)
     ob = _new_obj(state, "DF_knot", np.zeros((nx_ * (kp + 1), 3)), faces, [_mat(state, "obi")], uv=True)
@@ -908,7 +928,7 @@ def _update_obi(state, s):
         sg = ((V[f].mean(1) - cc[f].mean(1)) * _face_normals(V, f)).sum(-1)
         od["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
         if od["flip"]:
-            od["ob"].data.flip_normals()
+            _flip(od)
     _set_co(od["ob"], V)
     L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
     uvv = np.stack([np.broadcast_to(L[:, None], (n, len(pr))),
@@ -947,15 +967,17 @@ def _update_obiage(state, s):
     k = np.linspace(-1.0, 1.0, n)
     psi = math.pi + half * k
     w = np.clip(1.0 - np.abs(k) ** 6, 0.0, 1.0) ** 0.5                      # tucks into the sash at both ends
-    r = (0.0125 * w * (0.90 + 0.10 * np.sin(k * 23.0 + 1.0)) + 0.0015) * (0.25 + 0.75 * s)
-    zc = OBI_TOP + 0.0045 - 0.012 * (1.0 - w) + 0.002 * np.sin(k * 7.0)
+    r = (0.0105 * w * (0.88 + 0.12 * np.sin(k * 9.0 + 1.0)) + 0.0015) * (0.25 + 0.75 * s)
+    zc = OBI_TOP + 0.0030 - 0.012 * (1.0 - w) + 0.0015 * np.sin(k * 7.0)
     C = hull.ring(zc, psi, LV_OBI + 0.002 + 0.25 * r)
     N = _unit(C * np.array([1.0, 1.0, 0.0]))
     T = _unit(np.gradient(C, axis=0))
     U = np.cross(T, N)
     pr = _close_prof(ad["prof"])
     ang = np.arctan2(pr[:, 1], pr[:, 0])[None, :]
-    rr = r[:, None] * (1.0 + 0.10 * np.sin(k[:, None] * 55.0 + 3.0 * ang) + 0.06 * np.sin(k[:, None] * 19.0 - 2.0 * ang))
+    kk = k[:, None]
+    rr = r[:, None] * (1.0 + 0.07 * np.sin(kk * 83.0 + 0.6 * np.sin(2.0 * ang)) + 0.05 * np.sin(kk * 37.0 + 1.0 + ang)
+                       + 0.04 * np.sin(kk * 151.0 + 2.0 * ang))
     V = C[:, None, :] + (pr[None, :, 0] * rr)[..., None] * N[:, None, :] + \
         (pr[None, :, 1] * rr * 1.12)[..., None] * U[:, None, :]
     V = V.reshape(-1, 3)
@@ -965,7 +987,7 @@ def _update_obiage(state, s):
         sg = ((V[f].mean(1) - cc[f].mean(1)) * _face_normals(V, f)).sum(-1)
         ad["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
         if ad["flip"]:
-            ad["ob"].data.flip_normals()
+            _flip(ad)
     _set_co(ad["ob"], V)
 
 
@@ -1017,7 +1039,7 @@ def _update_knot(state, s):
         sg = ((V[f].mean(1) - ref) * _face_normals(V, f)).sum(-1)
         kd["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
         if kd["flip"]:
-            kd["ob"].data.flip_normals()
+            _flip(kd)
     _set_co(kd["ob"], V)
     L = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(pr, axis=0), axis=1))]
     uvv = np.stack([np.broadcast_to(xs[:, None] + 0.14, (nx_, kp + 1)), np.broadcast_to(L[None, :], (nx_, kp + 1))],
@@ -1041,7 +1063,7 @@ def _update_knot(state, s):
         sg = ((V[f].mean(1) - cc[f].mean(1)) * _face_normals(V, f)).sum(-1)
         td["flip"] = bool((sg < 0).sum() > (sg > 0).sum())
         if td["flip"]:
-            td["ob"].data.flip_normals()
+            _flip(td)
     _set_co(td["ob"], V)
     uvv = np.stack([np.broadcast_to(xs[:, None] + 0.14, (td["n"], len(pr))),
                     np.broadcast_to(pr[None, :, 1] + 0.3, (td["n"], len(pr)))], -1).reshape(-1, 2)
@@ -1098,7 +1120,7 @@ def build(collection, origin=(0.0, 0.0, 0.0), materials=None):
     state["rolls"] = {}
     rp = _circle(0.0028, 8)
     for side, p in kim.items():
-        p.i_roll = int(np.nonzero(p.zn >= (1.00 if side == "L" else 0.93))[0][0])
+        p.i_roll = int(np.nonzero(p.zn >= 0.26)[0][0])
         state["rolls"][side] = _tube_obj(state, "DF_K_edge_%s" % side, p.nc + p.i_roll - 1, rp, "lining")
     for sl in state["sleeves"]:
         if sl.tag == "K":
@@ -1143,7 +1165,8 @@ def update(state, t):
                 out[:p.nc, 2] = -1.0
                 tang = _unit(np.cross(np.array([0.0, 0.0, 1.0]), Nn[p.nc:])) * p.sx
                 out[p.nc:] = tang
-                _tube_set(state["rolls"][side], C - 0.0012 * Nn + 0.0012 * out, Nn)
+                sc = np.r_[np.ones(p.nc), np.linspace(1.0, 0.25, p.i_roll - 1)]
+                _tube_set(state["rolls"][side], C - 0.0012 * Nn + 0.0012 * out, Nn, sc)
         cd = state["collars"][tag]
         cvis = on and min(ext["L"], ext["R"]) > math.radians(4.0)
         if cvis:
@@ -1273,7 +1296,7 @@ def _test_hall(scene, xy):
     ld = bpy.data.lights.new("T_shoji", "AREA")
     ld.shape = "RECTANGLE"
     ld.size, ld.size_y = 7.0, 2.4
-    ld.energy = 900.0
+    ld.energy = 520.0
     ld.color = (1.0, 0.96, 0.90)
     lo = bpy.data.objects.new("T_shoji", ld)
     lo.location = (fx + 3.6, fy + 0.4, 1.5)
@@ -1284,7 +1307,7 @@ def _test_hall(scene, xy):
     w.use_nodes = True
     bg = w.node_tree.nodes.get("Background")
     bg.inputs[0].default_value = (0.95, 0.97, 1.0, 1)
-    bg.inputs[1].default_value = 0.30
+    bg.inputs[1].default_value = 0.25
 
 
 def _camera(scene, name, target, az_deg, dist=3.1, height=1.25, lens=52.0):

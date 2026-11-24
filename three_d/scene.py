@@ -275,6 +275,7 @@ NAG_Z, NAG_H = HL["nageshi_z"], HL["nageshi_h"]
 NAG2_Z, NAG2_H = HL["nageshi2_z"], HL["nageshi2_h"]
 KAMOI_Z = NAG_Z - 0.045
 PANEL_W = (KEN - 0.14 + 0.03) / 2.0     # two sliding panels per bay, overlapping by one stile
+AREA_W = 2.2                            # area-light watts per m2 that match emission strength 1 (measured)
 
 
 def build_floor(coll):
@@ -353,7 +354,7 @@ def build_hall():
     coll = _coll("Hall")
     hin, brd, plk = C.hall_material("hinoki"), C.hall_material("board"), C.hall_material("planks")
     pla, lq, gil = C.hall_material("plaster"), C.hall_material("lacquer"), C.hall_material("gilt")
-    washi = C.hall_material("washi", strength=HL["paper_strength"])
+    washi = C.hall_material("washi", strength=HL["paper_visible"])
     felt = C.hall_material("felt")
     wood, thin, lac, gilt, plas, paper, ceil = MB(), MB(), MB(), MB(), MB(), MB(), MB()
 
@@ -545,17 +546,31 @@ def build_daylight():
         wo.cycles.sampling_method = "NONE"       # it only shows through one opening: BSDF sampling is enough
     except Exception:
         pass
+    coll = _coll("Lights")
+    # the shoji as light: one long rectangle for the sliding panels, one for the transoms
+    zt0, zt1 = NAG_Z + NAG_H + 0.035, NAG2_Z - 0.035
+    for nm, z0, z1, rad in (("ShojiLight", 0.42, KAMOI_Z - 0.036, HL["shoji_radiance"]),
+                            ("TransomLight", zt0, zt1, HL["transom_radiance"])):
+        li = bpy.data.lights.new(nm, "AREA")
+        li.shape = "RECTANGLE"
+        li.size, li.size_y = (YN - YS), (z1 - z0)
+        li.energy = AREA_W * rad * li.size * li.size_y * 0.82      # 0.82: posts, frames and lattice
+        li.color = (1.0, 0.925, 0.80)
+        ob = _obj(nm, li, coll)
+        ob.location = (XW - 0.002, 0.5 * (YS + YN), 0.5 * (z0 + z1))
+        ob.rotation_mode = "QUATERNION"
+        ob.rotation_quaternion = Vector((1, 0, 0)).to_track_quat("-Z", "Y")
+        ob.visible_camera = False
     k = HL.get("open_bay", -1)
     if k < 0 or HL.get("sun_strength", 0) <= 0:
         return
-    coll = _coll("Lights")
     ya = YS + k * KEN + 0.07
     tgt = Vector((XW, ya + 0.5 * (PANEL_W - 0.03), 0.88))
     el, az = math.radians(HL.get("sun_elevation", 34.0)), math.radians(HL.get("sun_azimuth", 14.0))
     d = Vector((math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), -math.sin(el)))
     dist = 26.0
     li = bpy.data.lights.new("Sun", "SPOT")
-    li.energy = HL["sun_strength"] * 4.0 * math.pi ** 2 * dist ** 2
+    li.energy = HL["sun_strength"] * 4.0 * math.pi * dist ** 2      # irradiance, in sun-lamp units
     li.spot_size = 2.0 * math.atan(1.25 / dist)
     li.spot_blend = 0.06
     li.shadow_soft_size = dist * math.tan(math.radians(0.27))
