@@ -20,7 +20,7 @@
   function render(dir,changed){
     var s=slides[i];
     stage.setAttribute('data-s',s.id);stage.setAttribute('data-step',st);stage.setAttribute('data-dir',dir);
-    for(var g=1;g<=4;g++)stage.classList.toggle('ge'+g,st>=g);
+    for(var g=1;g<=6;g++)stage.classList.toggle('ge'+g,st>=g);
     stage.classList.toggle('dark',A(s,'dark','')==='1');
     stage.classList.toggle('robe-left',A(s,'robe','')==='left');
     var c=A(s,'card','');var cs=c.split('|'),cpos=cs[0],flipAt=+(cs[1]||99);
