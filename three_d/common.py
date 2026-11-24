@@ -1261,7 +1261,7 @@ def hall_material(kind, name=None, strength=None):
         tone.inputs["To Min"].default_value = 0.93
         tone.inputs["To Max"].default_value = 1.0
         L(rnd.outputs["Blue"], tone.inputs["Value"])
-        col = _mixc(nt, 1.0, (0.73, 0.405, 0.088), tone.outputs["Result"], "MULTIPLY")   # deep, warm leaf: stays gold when lit
+        col = _mixc(nt, 1.0, (0.64, 0.345, 0.070), tone.outputs["Result"], "MULTIPLY")   # deep, warm leaf: stays gold when lit
         col = _mixc(nt, _math(nt, "MULTIPLY", edge, 0.34), col, (0.56, 0.30, 0.075))
         # age: slow tarnished clouds, a duller band where hands and sleeves have brushed past
         g2, wp = _world_pos(nt)
@@ -1274,7 +1274,7 @@ def hall_material(kind, name=None, strength=None):
         col = _mixc(nt, wear.outputs["Result"], col, (0.30, 0.13, 0.05))
         L(col, bsdf.inputs["Base Color"])
         L(_math(nt, "SUBTRACT", 1.0, _math(nt, "MULTIPLY", wear.outputs["Result"], 0.6)), bsdf.inputs["Metallic"])
-        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.07, 0.47),
+        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.07, 0.51),
                    _math(nt, "ADD", _math(nt, "MULTIPLY", edge, 0.05), wear.outputs["Result"]))
         L(_math(nt, "ADD", rg, _math(nt, "MULTIPLY", age, 0.14)), bsdf.inputs["Roughness"])
 
@@ -1368,7 +1368,7 @@ def hall_material(kind, name=None, strength=None):
         if sc:
             col, rgh, nrm = sc
             g2, wp = _world_pos(nt)
-            col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 0.35, 4.0, 0.6, 0.82, 1.12), "MULTIPLY")
+            col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 0.35, 4.0, 0.6, 0.62, 1.25), "MULTIPLY")
             L(col, bsdf.inputs["Base Color"])
             L(rgh, bsdf.inputs["Roughness"])
             L(nrm, bsdf.inputs["Normal"])

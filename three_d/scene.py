@@ -1935,10 +1935,10 @@ TOKO_Y = YN + 0.91            # the tokonoma's back wall
 # east of the iko.
 PROP_LAYOUT = {
     "scroll": ((0.0, TOKO_Y - 0.02, 2.40), 0.0),
-    "zabuton_a": ((-1.90, -1.50, 0.0), 0.06),
-    "zabuton_b": ((-0.55, -2.85, 0.0), -0.75),
-    "brazier": ((-1.12, -2.02, 0.0), 0.5),
-    "tobacco_tray": ((-1.62, -2.42, 0.0), 0.32),
+    "zabuton_a": ((-2.50, -1.15, 0.0), 0.06),
+    "zabuton_b": ((-1.15, -2.75, 0.0), -0.75),
+    "brazier": ((-1.75, -1.80, 0.0), 0.5),
+    "tobacco_tray": ((-2.15, -2.05, 0.0), 0.32),
     "robe_tray": ((1.43, 0.02, 0.0), 0.07),
     "doc_box_large": ((1.20, 0.80, 0.0), -0.2),
     "doc_box_small": ((1.21, 0.79, 0.12), 0.42),          # on the lid of the large one
@@ -2064,7 +2064,7 @@ def update_exploded(t):
 # Per-shot lighting. set_light() always restores the day first, so a preset cannot leak.
 LIGHT_PRESETS = {
     # a low sun from the north-west side of the shoji: long light across the tatami, clear of the robe
-    "morning": dict(sun_elevation=18.0, sun_azimuth=-30.0, sun_gain=1.5, sun_color=(1.0, 0.89, 0.74),
+    "morning": dict(sun_elevation=18.0, sun_azimuth=-30.0, sun_gain=1.3, sun_color=(1.0, 0.89, 0.74),
                     shoji_gain=1.0, shoji_color=(1.0, 0.92, 0.80), shade_gain=1.0, shade_color=(0.86, 0.92, 1.0),
                     paper_gain=1.0, paper_sun=(1.0, 0.90, 0.74), eave_z=1.95, exposure=0.0),
     "dusk": dict(sun_elevation=8.0, sun_azimuth=-31.0, sun_gain=1.5, sun_color=(1.0, 0.50, 0.22),
