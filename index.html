@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kimono: a garment, or a set of rules?</title>
-<meta name="description" content="An online exhibition. One bolt of cloth, a handful of straight seams, and several centuries of rules about how to wear it. Real photographs and hand-built 3D; nothing generated.">
+<meta name="description" content="An online exhibition in ten rooms, with an audio guide. One bolt of cloth, eight straight pieces, and four centuries of rules about how to wear them. Real photographs and hand-built 3D; nothing generated.">
 <meta name="theme-color" content="#141210">
 <meta property="og:title" content="Kimono: a garment, or a set of rules?">
 <meta property="og:description" content="An online exhibition in ten rooms, with an audio guide.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.jpg">
 <link rel="preload" href="assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/fonts/kanji.css">
@@ -20,11 +21,17 @@
 
 <canvas id="stage" aria-hidden="true"></canvas>
 <div class="stage-shade" aria-hidden="true"></div>
+<div class="hang" id="hang">
+</div>
 
 <header class="bar glass glass--pill">
   <a class="bar__mark" href="#threshold">Kimono <span lang="ja">着物</span></a>
   <span class="bar__where" id="where" aria-live="polite"></span>
   <span class="bar__spacer"></span>
+  <a class="bar__btn" href="#film" aria-label="Watch the film" data-film-link hidden>
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3.5" width="12" height="9" rx="1.6"/><path d="M7 6.3v3.4L9.8 8z" fill="currentColor" stroke="none"/></svg>
+    <span>Film</span>
+  </a>
   <a class="bar__btn" href="#colophon" aria-label="Sources and credits">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 2.5h7.5L13 5v8.5H3z"/><path d="M5.5 6.5h5M5.5 9h5M5.5 11.5h3"/></svg>
     <span>Sources</span>
@@ -35,11 +42,9 @@
 
 <main id="main">
 
-  <!-- ============ 0. Threshold ============ -->
-  <section class="threshold" id="threshold" data-room data-title="Entrance">
-    <div class="threshold__plate" aria-hidden="true">
-      <img src="assets/photos/met-76731-1190.webp" alt="" data-drift="0.12" fetchpriority="high">
-    </div>
+  <section class="threshold" id="threshold" data-room data-title="Welcome" data-seg='[["f",0,0]]'>
+    <div class="threshold__plate"><img class="obj" src="assets/photos/met-76731-cut-1068.webp" srcset="assets/photos/met-76731-cut-720.webp 720w, assets/photos/met-76731-cut-1068.webp 1068w" sizes="(max-width:820px) 70vw, 45vw" alt="A silk robe of the 1660s, hung flat in the T shape: an ivory ground crossed by broad aubergine and grey bands that sweep across the seams, gold-embroidered characters, and a vermilion lining at the hem." data-drift="0.06" fetchpriority="high"><span class="glow" aria-hidden="true"></span>
+      <p class="threshold__tag"><b>Robe (Kosode) with Fishing Net and Characters</b><span>Japan · Edo period · probably ca. 1660s</span><span>The Metropolitan Museum of Art, 2011.155 · Public domain</span></p></div>
     <div class="threshold__inner">
       <p class="eyebrow">An online exhibition · ten rooms · audio guide</p>
       <h1 class="display">Kimono<span class="jp" lang="ja">着物</span></h1>
@@ -50,117 +55,331 @@
         <p class="threshold__note" id="answer-note">Pick one and hold your answer. It is settled in the last room, not before.</p>
       </div>
       <div class="threshold__row">
-        <button class="guide glass glass--pill" data-audio="threshold" aria-pressed="false">
-          <span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span>
-          <span class="guide__meta"><b>Audio guide · Welcome</b><span data-dur></span></span>
-        </button>
+        <button class="guide glass glass--pill" data-audio="threshold" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Audio guide · Welcome</b><span data-dur></span></span></button>
         <span class="scrollcue" aria-hidden="true">Scroll slowly</span>
       </div>
     </div>
   </section>
 
-  <!-- ============ 1. One bolt (3D: stages A, B, C) ============ -->
-  <section class="scrub" id="bolt" data-room data-title="1 · One bolt" data-from="0" data-to="329" data-audio="bolt" style="--len:640">
+  <section class="scrub scrub--scrub" id="bolt" data-room data-title="1 · One bolt" data-seg='[["f", 0, 329]]' data-audio="bolt" style="--len:576">
     <div class="scrub__pin">
-      <div class="scrub__head">
-        <p class="eyebrow">Room 1 · Structure</p>
-        <h2>One bolt of cloth</h2>
-        <p>Before it is a garment it is a roll, as wide as a loom and many times longer than a person.</p>
-      </div>
-
+      <div class="scrub__head"><p class="eyebrow">Room 1 · Structure</p><h2>From one bolt to a flat T</h2><p>Before it is a garment, it is a roll of cloth. Watch it unroll, divide into eight pieces and come together again as a flat T.</p></div>
       <ol class="labels">
-        <li class="label glass" data-anchor="roll" data-from="14" data-to="104" data-side="right">
+        <li class="label glass" data-anchor="roll" data-from="8" data-to="58" data-side="right">
           <p class="label__k"><b>1</b>The bolt</p>
-          <h3>One roll, one width</h3>
-          <p>The cloth <q>comes in a standardised width</q>. <a class="cite" href="#src-4">[4] p.10</a></p>
+          <h3>One bolt, one kimono <span lang="ja">反物</span></h3><p>A bolt is about 36–38 cm wide and about 12 m long, and one bolt makes one kimono <a class="cite" href="#src-7">[7]&nbsp;p.76</a>.</p><details><summary>More</summary><p>In the old units: 9 sun 5 bu to 9 sun 8 bu wide, 3 jō or more long. One shaku, about 38 cm, is 10 sun <a class="cite" href="#src-7">[7]&nbsp;p.80</a>.</p></details>
         </li>
-        <li class="label glass" data-anchor="cut_3" data-from="126" data-to="172" data-side="left">
-          <p class="label__k"><b>2</b>The cut</p>
-          <h3>Straight lines only</h3>
-          <p>Cutting gives <q>geometrical pieces with square outlines</q>. <a class="cite" href="#src-4">[4] pp.10–11</a></p>
-          <p>A costume historian’s phrase: <q>cut along straight lines and constructed of rectangles</q>. <a class="cite" href="#src-5">[5] p.1</a></p>
+        <li class="label glass" data-anchor="cloth_free_end" data-from="64" data-to="114" data-side="left">
+          <p class="label__k"><b>2</b>The width</p>
+          <h3>Everything follows the width</h3><p>The proportions of every part of a kimono derive from the width of the bolt <a class="cite" href="#src-8">[8]&nbsp;p.50</a>.</p><details><summary>More</summary><p>A sleeve, for example, is as wide as the shoulder, or up to one sun (about 3.8 cm) wider <a class="cite" href="#src-8">[8]&nbsp;p.49</a> <a class="cite" href="#src-7">[7]&nbsp;p.80</a>.</p></details>
         </li>
-        <li class="label glass" data-anchor="piece_body_r" data-from="176" data-to="206" data-side="right">
-          <p class="label__k"><b>3</b>The offcuts</p>
-          <h3>Almost none</h3>
-          <p><q>Hardly any wastage is produced as part of the fabric cutting process.</q> <a class="cite" href="#src-4">[4] p.11</a></p>
+        <li class="label glass" data-anchor="cut_1" data-from="122" data-to="164" data-side="right">
+          <p class="label__k"><b>3</b>The cut</p>
+          <h3>Eight rectangles</h3><p>Two body panels, two sleeves, two okumi, a collar and an over-collar: eight rectangles <a class="cite" href="#src-7">[7]&nbsp;p.76</a>.</p><details><summary>More</summary><p>No pattern is drafted; the cut only divides <a class="cite" href="#src-7">[7]&nbsp;p.80</a>. Sleeves and body panels first, the rest split for okumi and collar, as Ōtsuka Sueko put it in 1972 <a class="cite" href="#src-7">[7]&nbsp;pp.79-80</a>.</p></details>
         </li>
-        <li class="label glass" data-anchor="sleeve_l_centre" data-from="238" data-to="286" data-side="left">
-          <p class="label__k"><b>4</b>The sleeve</p>
-          <h3>A width of cloth, folded</h3>
-          <p>Sleeves are <q>a width of fabric attached to the selvages</q>, the woven edges of the cloth. <a class="cite" href="#src-4">[4] p.10, quoting Dalby</a></p>
+        <li class="label glass" data-anchor="piece_okumi" data-from="168" data-to="206" data-side="left">
+          <p class="label__k"><b>4</b>Nothing left</p>
+          <h3>The whole bolt is used</h3><p>The bolt is cut and used entire, with nothing left over <a class="cite" href="#src-7">[7]&nbsp;p.76</a>.</p><details><summary>More</summary><p>Becke, quoting Dalby, gives the first mark of a kimono as <q>[A] geometrical use of standard fabric widths sewn with minimal cutting</q> <a class="cite" href="#src-4">[4]&nbsp;p.10</a>.</p></details>
         </li>
-        <li class="label glass" data-anchor="seam_centre_back" data-from="290" data-to="324" data-side="right">
-          <p class="label__k"><b>5</b>The shape</p>
-          <h3>None of its own</h3>
-          <p><q>No tucks or darts are added</q>. Unworn, a kimono has <q>a completely flat surface</q>. <a class="cite" href="#src-4">[4] p.10</a></p>
+        <li class="label glass" data-anchor="seam_centre_back" data-from="214" data-to="260" data-side="right">
+          <p class="label__k"><b>5</b>The seams</p>
+          <h3>Straight seams, sewn by hand <span lang="ja">手縫い</span></h3><p>Traditionally a kimono is sewn by hand, without large stitches showing on the face <a class="cite" href="#src-7">[7]&nbsp;p.76</a>.</p><details><summary>More</summary><p>The seams have names: the back seam, senui, and the side seams, wakinui <a class="cite" href="#src-7">[7]&nbsp;p.77</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="sleeve_l_centre" data-from="266" data-to="310" data-side="left">
+          <p class="label__k"><b>6</b>The T</p>
+          <h3>No darts, no tucks</h3><p><q>In its unworn form, a kimono has a completely flat surface.</q> <a class="cite" href="#src-4">[4]&nbsp;p.10</a></p><details><summary>More</summary><p>Becke again: <q>no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape</q> <a class="cite" href="#src-4">[4]&nbsp;p.10</a>.</p></details>
         </li>
       </ol>
       <svg class="leaders" aria-hidden="true"></svg>
-
-      <p class="scrub__line" data-from="316" data-to="329">So where does the shape come from?</p>
-
-      <div class="scrub__guide">
-        <button class="guide glass glass--pill" data-audio="bolt" aria-pressed="false">
-          <span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span>
-          <span class="guide__meta"><b>Audio guide · Stop 1</b><span data-dur></span></span>
-        </button>
-      </div>
+      
+      
+      
+      <p class="scrub__line" data-from="314" data-to="329">Eight rectangles, and not one dart.</p>
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="bolt" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 1 · One bolt</b><span data-dur></span></span></button></div>
     </div>
   </section>
 
-  <!-- ============ 2. The robe (photograph) ============ -->
-  <section class="room room--photo" id="robe" data-room data-title="2 · A robe of the 1660s" style="--wall:linear-gradient(180deg,#9b9b9b 0%,#a3a3a3 10%,#ababab 20%,#b2b2b2 30%,#b8b8b8 40%,#bdbdbd 50%,#c5c5c5 60%,#d1d1d1 70%,#d6d6d6 80%,#d0d0d0 90%,#cacaca 100%);--wall-bottom:#cacaca">
-    <div class="room__pin">
-      <figure class="plate">
-        <img src="assets/photos/met-76731-1190.webp" srcset="assets/photos/met-76731-640.webp 640w, assets/photos/met-76731-1190.webp 1190w" sizes="(max-width:820px) 100vw, 75vh" width="1190" height="1590" loading="lazy" decoding="async" data-drift="0.05"
-             alt="A T-shaped silk robe photographed flat against grey: an ivory ground crossed by broad aubergine and grey bands that sweep across the seams, with gold-embroidered characters and a vermilion lining showing at the hem and sleeve ends.">
+  <section class="scrub scrub--scrub" id="parts" data-room data-title="2 · The parts" data-seg='[["f", 329, 419]]' data-audio="parts" style="--len:160">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 2 · Structure</p><h2>The front, the fit, the re-making</h2><p>Turn to the front of the T. Each piece has a name, the fit is a matter of measurement, and the whole robe could be taken apart again.</p></div>
+      <ol class="labels">
+        <li class="label glass" data-anchor="collar_front" data-from="332" data-to="358" data-side="left">
+          <p class="label__k"><b>1</b>The front edge</p>
+          <h3>Okumi and collar <span lang="ja">衽・衿</span></h3><p>Each front carries an extra panel, the okumi <a class="cite" href="#src-7">[7]&nbsp;p.76</a>. The collar is <q>an attached neckband sewn around the front opening</q> <a class="cite" href="#src-4">[4]&nbsp;p.10</a>.</p><details><summary>More</summary><p>The eri is <q>simply cut out in long band</q> <a class="cite" href="#src-22">[22]&nbsp;p.528</a>; the kakeeri, the over-collar, is the eighth piece <a class="cite" href="#src-7">[7]&nbsp;p.76</a>. Standard okumi: 15 cm <a class="cite" href="#src-8">[8]&nbsp;p.49</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="overlap_front" data-from="362" data-to="388" data-side="right">
+          <p class="label__k"><b>2</b>Fitted to her</p>
+          <h3>As long as she is tall <span lang="ja">身丈・裄</span></h3><p>Mitake, the body length, equals the wearer's height; yuki, back centre to sleeve opening, is fitted to her build <a class="cite" href="#src-7">[7]&nbsp;p.76</a>.</p><details><summary>More</summary><p>For a woman 160 cm tall: mitake 159.6, yuki 66.5, sleeve 49.4 cm <a class="cite" href="#src-7">[7]&nbsp;p.76</a>. Laid flat, a third of the body width overlaps <a class="cite" href="#src-8">[8]&nbsp;p.49</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="hem_front" data-from="392" data-to="418" data-side="left">
+          <p class="label__k"><b>3</b>Re-making</p>
+          <h3>Unpick it, and it is cloth again <span lang="ja">繰り回し</span></h3><p>Kimono were remade, kurimawashi, as seasons, uses and wearers changed, and as cloth wore out <a class="cite" href="#src-7">[7]&nbsp;p.75</a>.</p><details><summary>More</summary><p>For washing, silk was unpicked and joined back into a bolt <a class="cite" href="#src-7">[7]&nbsp;p.76</a>. Re-making, the authors conclude, was built into the form <a class="cite" href="#src-7">[7]&nbsp;p.80</a>.</p></details>
+        </li>
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="parts" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 2 · The parts</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--wall" id="cloth" data-room data-title="3 · Cloth and season" data-seg='[["f", 420, 491], ["w", "S1", 0, 1]]' data-audio="cloth" style="--len:276">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 3 · Fabric and season</p><h2>Warmth is woven, not cut</h2><p>One shape all year. What suits a robe to cold or warm months is the weave and the lining, not the cut <a class="cite" href="#src-6">[6]&nbsp;p.20</a>.</p></div>
+      <ol class="labels">
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      <div class="works"><aside class="panel" data-stop="S1" data-pool="0" data-w="1.15" data-card="0"><h3>The kimono year</h3><p>Druet's account of present-day practice. She reads its steady presence in monthly magazines as <q>a guiding principle, not mandatory but strongly encouraged</q> <a class="cite" href="#src-6">[6]&nbsp;p.22</a>.</p><table class="card__table"><thead><tr><th scope="col"></th><th scope="col">Kimono</th><th scope="col">Under-kimono</th></tr></thead><tbody><tr><th scope="row">October to May</th><td>Awase, lined <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td><td>Silk or polyester <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td></tr><tr><th scope="row">June to September</th><td>Hitoe, unlined <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td><td>Ro or sha <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td></tr><tr><th scope="row">August</th><td>Yukata, or sheer ro or sha <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td><td>Nothing under a cotton yukata <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td></tr></tbody></table></aside><aside class="panel" data-stop="S1" data-pool="1" data-w="1.15" data-card="1"><h3>Ahead of the season</h3><p>Druet calls it sakidori: dressing <q>to convey feelings towards a season that hasn't come yet</q> <a class="cite" href="#src-6">[6]&nbsp;p.27</a>. One guide advises a flower pattern <q>about one month ahead of the actual blossoming</q> <a class="cite" href="#src-4">[4]&nbsp;p.62</a>.</p><p>Motifs of a <q>past season</q> are a faux pas <a class="cite" href="#src-6">[6]&nbsp;p.27</a>.</p></aside></div>
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="cloth" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 3 · Cloth and season</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--wall" id="pattern" data-room data-title="4 · Pattern" data-seg='[["w", "S1", 1, 4]]' data-audio="pattern" style="--len:342">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 4 · Pattern and its coding</p><h2>The flat cloth as a canvas</h2><p>Unworn, a kimono is flat <a class="cite" href="#src-4">[4]&nbsp;p.10</a>: <q>an ideal canvas for dyers, painters and embroiderers</q> <a class="cite" href="#src-4">[4]&nbsp;p.11</a>.</p></div>
+      <ol class="labels">
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      <div class="works">
+      <figure class="work work--cut" data-stop="S1" data-pool="2" data-photo="0" data-aspect="0.8571">
+        <div class="work__frame"><img src="assets/photos/met-76731-cut-720.webp" srcset="assets/photos/met-76731-cut-720.webp 720w" sizes="(max-width:820px) 92vw, 36vw" width="1068" height="1246" alt="Robe (Kosode) with Fishing Net and Characters. Photograph: The Metropolitan Museum of Art." loading="lazy" decoding="async"></div>
       </figure>
-      <div class="wall-label glass glass--light">
-        <h2>Robe (Kosode) with Fishing Net and Characters</h2>
-        <dl>
-          <dt>Place and date</dt><dd>Japan · Edo period · probably ca. 1660s</dd>
-          <dt>Material</dt><dd>Silk and metallic thread embroidery, tied resist dyeing on satin damask</dd>
-          <dt>Size</dt><dd>153.4 × 127.6 cm</dd>
-        </dl>
-        <p class="insight">Because the garment is flat, it is <q>an ideal canvas for dyers, painters and embroiderers</q>. <a class="cite" href="#src-4">[4] p.11</a></p>
-        <p class="credit">The Metropolitan Museum of Art, New York, 2011.155. Purchase, Harris Brisbane Dick Fund, Mary and James G. Wallach Foundation and Parnassus Foundation/Jane and Raphael Bernstein Gifts, and funds from various donors, 2011. Public domain (CC0). Title, date and materials are the museum’s record.</p>
-      </div>
+      <div class="placard glass glass--light" data-stop="S1" data-pool="2" role="group" aria-label="Label: Robe (Kosode) with Fishing Net and Characters">
+        <h3>Robe (Kosode) with Fishing Net and Characters</h3>
+        <p class="placard__meta">Japan · Edo period · probably ca. 1660s</p>
+        <p class="placard__mat">Silk and metallic thread embroidery, tied resist dyeing on satin damask</p>
+        <p class="placard__insight">Koide dates the Kanbun era 1661–73 <a class="cite" href="#src-10">[10]&nbsp;p.603</a>; its kosode style leaves the back open around big, moving motifs <a class="cite" href="#src-10">[10]&nbsp;p.592</a>. The record names no style.</p>
+        <p class="placard__credit">The Metropolitan Museum of Art, 2011.155. Purchase, Harris Brisbane Dick Fund, Mary and James G. Wallach Foundation and Parnassus Foundation/Jane and Raphael Bernstein Gifts, and funds from various donors, 2011. Public domain (CC0).</p>
+        <p class="placard__short">The Metropolitan Museum of Art, 2011.155 · Public domain</p>
+        <a class="placard__zoom" href="assets/photos/met-76731-1190.webp" data-zoom>Look closer</a>
+      </div><aside class="panel" data-stop="S1" data-pool="3" data-w="1.15" data-card="1"><h3>Kosode styles, early Edo</h3><p>Koide's reading of 992 kosode in 39 genre paintings <a class="cite" href="#src-10">[10]&nbsp;p.592</a>.</p><table class="card__table"><thead><tr><th scope="col">Style</th><th scope="col">Dates</th><th scope="col">Design</th></tr></thead><tbody><tr><th scope="row">Momoyama</th><td>1573–1615 <a class="cite" href="#src-10">[10]&nbsp;p.603</a></td><td>Compartments, such as shoulder and hem <a class="cite" href="#src-10">[10]&nbsp;p.592</a></td></tr><tr><th scope="row">Keichō</th><td>1596–1615 <a class="cite" href="#src-10">[10]&nbsp;p.603</a></td><td>Abstract dyed compartments; no plain ground <a class="cite" href="#src-10">[10]&nbsp;p.592</a></td></tr><tr><th scope="row">Kan'ei</th><td>1624–44 <a class="cite" href="#src-10">[10]&nbsp;p.603</a></td><td>Large, bold motifs: about half the kosode in several paintings <a class="cite" href="#src-10">[10]&nbsp;p.600</a></td></tr><tr><th scope="row">Kanbun</th><td>1661–73 <a class="cite" href="#src-10">[10]&nbsp;p.603</a></td><td>Wide empty back, big moving motifs <a class="cite" href="#src-10">[10]&nbsp;p.592</a></td></tr></tbody></table></aside><aside class="panel" data-stop="S1" data-pool="4" data-w="1.15" data-card="2"><h3>Colour, age, marriage</h3><p>In late-Edo women's formal dress, the older the wearer, the more restrained the pattern <a class="cite" href="#src-29">[29]&nbsp;p.25</a>. Today the long-sleeved furisode is <q>mainly reserved for unmarried women</q> <a class="cite" href="#src-4">[4]&nbsp;p.53</a>.</p><p>Becke's young interviewees expressed themselves through colour more than pattern <a class="cite" href="#src-4">[4]&nbsp;p.134</a> <a class="cite" href="#src-4">[4]&nbsp;p.137</a>.</p></aside></div>
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="pattern" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 4 · Pattern</b><span data-dur></span></span></button></div>
     </div>
   </section>
 
+  <section class="scrub scrub--scrub" id="dressing" data-room data-title="5 · Dressing" data-seg='[["f", 492, 683]]' data-audio="dressing" style="--len:334">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 5 · Kitsuke</p><h2>Kitsuke: putting it on</h2><p>A flat robe gets its <q>final fit and shape</q> only in the dressing, called kitsuke <a class="cite" href="#src-4">[4]&nbsp;p.11</a>.</p></div>
+      <ol class="labels">
+        <li class="label glass" data-anchor="form_juban_collar" data-from="500" data-to="562" data-side="right">
+          <p class="label__k"><b>1</b>Before the layers</p>
+          <h3>Taught and certified <span lang="ja">着付け</span></h3><p>Kimono academies spread across Japan after the war <a class="cite" href="#src-4">[4]&nbsp;p.77</a>, issuing <q>certificates after the completion of certain courses</q> <a class="cite" href="#src-4">[4]&nbsp;p.78</a>.</p><details><summary>More</summary><p>In a 2006 survey of 128 women students at one university, 8.6 per cent could put on a kimono themselves <a class="cite" href="#src-27">[27]&nbsp;p.774</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_overlap" data-from="564" data-to="594" data-side="left">
+          <p class="label__k"><b>2</b>Juban, then kimono</p>
+          <h3>Left over right</h3><p>Furisode magazines begin with the under-kimono and end with the obi knot <a class="cite" href="#src-4">[4]&nbsp;p.72</a>. The robe is <q>always draped from the left side over to the right</q> <a class="cite" href="#src-4">[4]&nbsp;p.69</a>.</p><details><summary>More</summary><p>The other way round <q>is now associated with death and the afterlife</q> <a class="cite" href="#src-4">[4]&nbsp;p.70</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_ohashori" data-from="596" data-to="624" data-side="left">
+          <p class="label__k"><b>3</b>The tuck</p>
+          <h3>Ohashori <span lang="ja">おはしょり</span></h3><p>The extra length becomes <q>the fold of fabric beneath the obi</q> <a class="cite" href="#src-4">[4]&nbsp;p.71</a>.</p><details><summary>More</summary><p>In a yukata study of nine young women, the fold slipped less when the cord was tied at the top of the hip bone than at the waist <a class="cite" href="#src-19">[19]&nbsp;p.81</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_obi" data-from="626" data-to="654" data-side="right">
+          <p class="label__k"><b>4</b>The obi</p>
+          <h3>Where the pressure falls <span lang="ja">帯</span></h3><p>In a study of nine young women, clothing pressure was highest at the obi's upper edge, near the armpit <a class="cite" href="#src-21">[21]&nbsp;p.53</a>.</p><details><summary>More</summary><p>Of 333 graduating students in kimono, about eight in ten felt it two to three times as constricting as Western clothes <a class="cite" href="#src-21">[21]&nbsp;p.56</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_obijime" data-from="656" data-to="683" data-side="right">
+          <p class="label__k"><b>5</b>Last</p>
+          <h3>Cord, sash and knot</h3><p>Magazines set the obi-jime <q>in the middle of the obi</q>, add an obi-age <q>to complete the ensemble</q> <a class="cite" href="#src-4">[4]&nbsp;p.71</a>, and tie the knot <q>facing the wearer's back</q> <a class="cite" href="#src-4">[4]&nbsp;p.71</a>.</p>
+        </li>
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="dressing" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 5 · Dressing</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--scrub" id="body" data-room data-title="6 · Body" data-seg='[["f", 684, 845]]' data-audio="body" style="--len:282">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 6 · Body language</p><h2>The body in the robe</h2><p>From behind: the knot, the collar, the hem. Then, on the wall, prints of robes being worn and put on.</p></div>
+      <ol class="labels">
+        <li class="label glass" data-anchor="form_knot" data-from="690" data-to="718" data-side="left">
+          <p class="label__k"><b>1</b>The knot</p>
+          <h3>Younger than it looks</h3><p>The taiko or drum knot, a furisode magazine notes, <q>was not born until the late Edo period</q> <a class="cite" href="#src-4">[4]&nbsp;p.110</a>.</p>
+        </li>
+        <li class="label glass" data-anchor="form_nape" data-from="720" data-to="746" data-side="right">
+          <p class="label__k"><b>2</b>The nape</p>
+          <h3>Collar set back from the neck</h3><p>In a 1976 study of three women, the best collar set-back was 3 to 5 cm <a class="cite" href="#src-22">[22]&nbsp;p.530</a>.</p><details><summary>More</summary><p>Standard furisode dressing <q>aims to hide potentially arousing areas of the body, such as the nape</q> <a class="cite" href="#src-4">[4]&nbsp;p.165</a>. Paris around 1907 preferred to reveal it <a class="cite" href="#src-5">[5]&nbsp;p.8</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_hem" data-from="748" data-to="773" data-side="left">
+          <p class="label__k"><b>3</b>The hem</p>
+          <h3>Level, just above the feet</h3><p>In magazines the hem is set straight and <q>always ends just above the models' feet</q> <a class="cite" href="#src-4">[4]&nbsp;p.70</a>.</p><details><summary>More</summary><p>In a gait study of three women, a level hem gave longer strides than one raised at the front corners <a class="cite" href="#src-23">[23]&nbsp;p.695</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_sleeve" data-from="776" data-to="808" data-side="right">
+          <p class="label__k"><b>4</b>Movement</p>
+          <h3>Walking, sitting, stairs</h3><p>Furisode magazines teach <q>how to appropriately move one's body when walking and sitting down</q> <a class="cite" href="#src-4">[4]&nbsp;pp.79-80</a>.</p><details><summary>More</summary><p>The result, Becke argues, is <q>constant monitoring and correcting of one's body</q> <a class="cite" href="#src-4">[4]&nbsp;p.80</a>.</p></details>
+        </li>
+        <li class="label glass" data-anchor="form_obi" data-from="810" data-to="845" data-side="left">
+          <p class="label__k"><b>5</b>Posture</p>
+          <h3>Where the obi sits</h3><p>In a lab study of eight young women, the low obi position used by men helped in <q>stabilizing the body trunk, straightening posture</q> <a class="cite" href="#src-18">[18]&nbsp;p.126</a>.</p><details><summary>More</summary><p>Women's obi today sit higher, from under the bust to the waist <a class="cite" href="#src-20">[20]&nbsp;p.23</a>.</p></details>
+        </li>
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="body" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 6 · Body</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--wall" id="family" data-room data-title="7 · The family" data-seg='[["w", "S2", 5, 6]]' data-audio="family" style="--len:160">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 7 · The kimono family</p><h2>One shape, many relatives</h2><p>Over-robe, jacket, trousers, under-robe: one family. Each member signals the occasion and season, and the wearer's age and standing <a class="cite" href="#src-4">[4]&nbsp;p.11</a>.</p></div>
+      <ol class="labels">
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      <div class="works"><aside class="panel" data-stop="S2" data-pool="5" data-w="1.15" data-card="0"><h3>Ranked, top to bottom</h3><p>The usual order, as a 2022 study of the kimono trade states it <a class="cite" href="#src-25">[25]&nbsp;p.16</a>. Tsumugi, between komon and yukata there, is left out: no source here defines it.</p><table class="card__table"><thead><tr><th scope="col"></th><th scope="col">What sets it apart</th></tr></thead><tbody><tr><th scope="row">Furisode</th><td>Unmarried women, formal occasions <a class="cite" href="#src-4">[4]&nbsp;p.53</a></td></tr><tr><th scope="row">Black tomesode</th><td>Married women's first formal wear <a class="cite" href="#src-25">[25]&nbsp;p.16</a></td></tr><tr><th scope="row">Hōmongi</th><td>Weddings, parties, tea gatherings <a class="cite" href="#src-29">[29]&nbsp;p.13</a></td></tr><tr><th scope="row">Tsukesage</th><td>About the same rank as hōmongi <a class="cite" href="#src-33">[33]&nbsp;p.422</a></td></tr><tr><th scope="row">Iromuji</th><td>One colour, no pattern; suits tea <a class="cite" href="#src-25">[25]&nbsp;p.16</a></td></tr><tr><th scope="row">Komon</th><td>Small patterns repeated all over <a class="cite" href="#src-12">[12]&nbsp;p.67</a></td></tr><tr><th scope="row">Yukata</th><td>Unlined, light cotton <a class="cite" href="#src-6">[6]&nbsp;p.20</a></td></tr></tbody></table></aside><aside class="panel" data-stop="S2" data-pool="6" data-w="1.15" data-card="1"><h3>The same ladder, for men</h3><p>By the mid-Edo period a black crested haori was the most formal; plain, then komon, then stripes were each less formal <a class="cite" href="#src-37">[37]&nbsp;P-386</a>.</p><p>When the Meiji Restoration abolished the kamishimo, haori and hakama became men's formal dress, as they still are <a class="cite" href="#src-37">[37]&nbsp;P-386</a>.</p></aside></div>
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="family" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 7 · The family</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--wall" id="history" data-room data-title="8 · Four centuries" data-seg='[["w", "S2", 6, 8]]' data-audio="history" style="--len:247">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 8 · Four centuries</p><h2>From under-layer to national dress</h2><p>It began as an under-layer <a class="cite" href="#src-30">[30]&nbsp;p.516</a>. Then came laws, drapers, prints, a new name and, after the war, a rulebook <a class="cite" href="#src-4">[4]&nbsp;p.75</a>.</p></div>
+      <ol class="labels">
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      <div class="works"><aside class="panel" data-stop="S2" data-pool="7" data-w="1.15" data-card="0"><h3>Laws on cloth</h3><p>The Tokugawa government issued <q>sumptuary laws on the type of clothes members of each class were allowed to wear</q> <a class="cite" href="#src-4">[4]&nbsp;p.99</a>: 132 times between 1615 and 1866 <a class="cite" href="#src-39">[39]&nbsp;p.432</a>.</p><p>Their purpose, in Nishimura's summary: <q>to maintain the class hierarchy</q> <a class="cite" href="#src-39">[39]&nbsp;p.432</a>.</p></aside><aside class="panel" data-stop="S2" data-pool="8" data-w="1.15" data-card="1"><h3>Meisen, the everyday silk</h3><p>Meisen is a plain-weave silk of pre-dyed yarn <a class="cite" href="#src-14">[14]&nbsp;p.1</a>. From Taishō into post-war Shōwa it was the mass-market kimono <a class="cite" href="#src-15">[15]&nbsp;p.37</a>, its picture-like patterns drawn from Art Nouveau and Art Deco <a class="cite" href="#src-15">[15]&nbsp;p.37</a>. Output peaked in 1930 <a class="cite" href="#src-14">[14]&nbsp;p.3</a>.</p></aside></div>
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="history" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 8 · Four centuries</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--wall" id="abroad" data-room data-title="9 · Abroad" data-seg='[["w", "S2", 8, 10]]' data-audio="abroad" style="--len:247">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 9 · Relatives and influence</p><h2>Relatives and influence</h2><p>Robes that left Japan, and robes from its neighbours. Each comparison on this wall is one a scholar made.</p></div>
+      <ol class="labels">
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      <div class="works"><aside class="panel" data-stop="S2" data-pool="9" data-w="1.15" data-card="0"><h3>What the West took</h3><p>Fukai's verdict: <q>The most important point was the rectangular cut that followed the warp and weft of the fabric and the unconfined garment that resulted from it.</q> <a class="cite" href="#src-5">[5]&nbsp;p.8</a></p><p>In 1906 Poiret freed the silhouette from the corset <a class="cite" href="#src-5">[5]&nbsp;p.8</a>.</p></aside><aside class="panel" data-stop="S2" data-pool="10" data-w="1.15" data-card="1"><h3>Neighbours: the same cross</h3><p>A 2024 study of Chinese hanfu finds that <q>the cross-shaped structure of Hanfu did not change</q> <a class="cite" href="#src-40">[40]&nbsp;p.39</a>. Its front closes left over right, as Japanese dress does <a class="cite" href="#src-40">[40]&nbsp;p.44</a>.</p></aside></div>
+      
+      
+      
+      
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="abroad" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 9 · Abroad</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
+
+  <section class="scrub scrub--answer" id="answer" data-room data-title="10 · The answer" data-seg='[["f", 846, 983]]' data-audio="answer" style="--len:240">
+    <div class="scrub__pin">
+      <div class="scrub__head"><p class="eyebrow">Room 10 · Garment or rules: both</p><h2>A garment, and a set of rules</h2><p>Both. Becke defines kimono by <q>the garment's shape and practice of fitting it to the body</q> <a class="cite" href="#src-4">[4]&nbsp;p.10</a>.</p></div>
+      <ol class="labels">
+      </ol>
+      <svg class="leaders" aria-hidden="true"></svg>
+      
+      
+      <div class="rules" id="rules" aria-label="The rules, written on the back of the kimono"><ol><li>Left side over right <a class="cite" href="#src-4">[4]&nbsp;p.69</a></li><li>Under-kimono first, obi knot last <a class="cite" href="#src-4">[4]&nbsp;p.72</a></li><li>A fold of cloth beneath the obi <a class="cite" href="#src-4">[4]&nbsp;p.71</a></li><li>Lined from October until May <a class="cite" href="#src-6">[6]&nbsp;p.20</a></li><li>Unlined in the warm months <a class="cite" href="#src-6">[6]&nbsp;p.20</a></li><li>No motifs of a season that has passed <a class="cite" href="#src-6">[6]&nbsp;p.27</a></li><li>The flower a month before it blooms <a class="cite" href="#src-4">[4]&nbsp;p.62</a></li><li>Long sleeves for the unmarried <a class="cite" href="#src-4">[4]&nbsp;p.53</a></li><li>Small repeats are less formal <a class="cite" href="#src-4">[4]&nbsp;p.62</a></li><li>Black crested haori: the most formal <a class="cite" href="#src-37">[37]&nbsp;P-386</a></li><li>Edo: silk above, cotton and hemp below <a class="cite" href="#src-39">[39]&nbsp;p.438</a></li><li><q>Rules can be bended</q> <a class="cite" href="#src-4">[4]&nbsp;p.123</a></li></ol></div><div class="rules-src glass"><details><summary>Sources for the rules on the robe</summary><ol><li>Left side over right <a class="cite" href="#src-4">[4]&nbsp;p.69</a></li><li>Under-kimono first, obi knot last <a class="cite" href="#src-4">[4]&nbsp;p.72</a></li><li>A fold of cloth beneath the obi <a class="cite" href="#src-4">[4]&nbsp;p.71</a></li><li>Lined from October until May <a class="cite" href="#src-6">[6]&nbsp;p.20</a></li><li>Unlined in the warm months <a class="cite" href="#src-6">[6]&nbsp;p.20</a></li><li>No motifs of a season that has passed <a class="cite" href="#src-6">[6]&nbsp;p.27</a></li><li>The flower a month before it blooms <a class="cite" href="#src-4">[4]&nbsp;p.62</a></li><li>Long sleeves for the unmarried <a class="cite" href="#src-4">[4]&nbsp;p.53</a></li><li>Small repeats are less formal <a class="cite" href="#src-4">[4]&nbsp;p.62</a></li><li>Black crested haori: the most formal <a class="cite" href="#src-37">[37]&nbsp;P-386</a></li><li>Edo: silk above, cotton and hemp below <a class="cite" href="#src-39">[39]&nbsp;p.438</a></li><li><q>Rules can be bended</q> <a class="cite" href="#src-4">[4]&nbsp;p.123</a></li></ol></details></div>
+      <p class="scrub__line" data-from="960" data-to="983">Both: the cloth, and the way it is worn.</p>
+      <p class="your-answer glass glass--pill" data-your-answer hidden></p>
+      <p class="answer__closing">Real photographs and hand-built 3D; nothing generated. Narration: synthetic voice (Venice AI).</p>
+      <div class="scrub__guide"><button class="guide glass glass--pill" data-audio="answer" aria-pressed="false"><span class="guide__disc" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg></span><span class="guide__meta"><b>Stop 10 · The answer</b><span data-dur></span></span></button></div>
+    </div>
+  </section>
 </main>
 
-<!-- ============ Colophon ============ -->
+
+
 <footer class="colophon" id="colophon" data-room data-title="Sources and credits">
   <div class="colophon__inner">
-    <div>
+    <div class="colophon__sources">
       <h2>Sources</h2>
       <ol>
-        <li id="src-4"><span class="num">[4]</span>Becke, C. <i>Negotiating Gendered Identities Through Dress: Kimono at the Coming-of-age Day in Contemporary Japan</i>. PhD thesis, University of Sheffield, 2022. <a href="https://etheses.whiterose.ac.uk/id/eprint/30197/">White Rose eTheses</a></li>
-        <li id="src-5"><span class="num">[5]</span>Fukai, A. “Japonism in Fashion.” Kyoto Costume Institute. <a href="https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf">kci.or.jp</a></li>
+        <li id="src-4"><span class="num">[4]</span>Becke, C. <i>Negotiating Gendered Identities Through Dress: Kimono at the Coming-of-age Day in Contemporary Japan</i>. PhD thesis, School of East Asian Studies, University of Sheffield, 2022. <a href="https://etheses.whiterose.ac.uk/id/eprint/30197/">White Rose eTheses</a></li>
+        <li id="src-5"><span class="num">[5]</span>Fukai, A. “Japonism in Fashion.” Kyoto Costume Institute (essay from the exhibition catalogue <i>Japonism in Fashion</i>). <a href="https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf">kci.or.jp</a></li>
         <li id="src-6"><span class="num">[6]</span>Druet, L. “Dressed by Nature, Adorned by Design: Seeing and reading the Seasons with Kimono.” <i>Mutual Images Journal</i> 12 (2024): 16–36. <a href="https://doi.org/10.32926/2024.druet">doi</a></li>
+        <li id="src-7"><span class="num">[7]</span>Maruyama, M., Tauchi, T. and Kubo, M. “The relationship between the form and the process of making-over in kimono” (in Japanese). <i>Bulletin of JSSD</i> 63, no. 5 (2017): 75–80. <a href="https://doi.org/10.11247/jssdj.63.5_75">doi</a></li>
+        <li id="src-8"><span class="num">[8]</span>Maruyama, M., Tauchi, T. and Kubo, M. “Design elements of ‘kimono-ness’ seen in doll kimonos” (in Japanese). <i>Bulletin of JSSD</i> 66, no. 3 (2020): 41–50. <a href="https://doi.org/10.11247/jssdj.66.3_41">doi</a></li>
+        <li id="src-10"><span class="num">[10]</span>Koide (Suehisa), M. “The transition of the kosode design styles in the early Edo period” (in Japanese). <i>Journal of Home Economics of Japan</i> 63, no. 9 (2012): 591–603. <a href="https://doi.org/10.11428/jhej.63.591">doi</a></li>
+        <li id="src-11"><span class="num">[11]</span>Sakamoto, K. “How kimono influenced the West: rethinking the functionality of Japanese fashion” (in Japanese). <i>Kansei Engineering</i> 16, no. 1 (2018): 33–36. <a href="https://doi.org/10.5057/kansei.16.1_33">doi</a></li>
+        <li id="src-12"><span class="num">[12]</span>Druet, L. “Fashionable pilgrims: Rental and second-hand kimono shops styling paths of new embodied communities.” <i>Mutual Images Journal</i> 10 (2021): 51–92. <a href="https://doi.org/10.32926/2021.10.dru.pilgr">doi</a></li>
+        <li id="src-13"><span class="num">[13]</span>Suzuki, A. “Price determination methods of kimono fabric dealers in early modern Japan: A case study of the Naraya Sugimoto family.” <i>Japanese Research in Business History</i> 39 (2022): 68–88. <a href="https://doi.org/10.5029/jrbh.39.68">doi</a></li>
+        <li id="src-14"><span class="num">[14]</span>Goto, T. “Descriptions of meisen in pre-war magazine articles and their change” (in Japanese). <i>Bulletin of Tokyo Kasei Gakuin University</i> 63 (2023): 1–31. <a href="https://doi.org/10.32295/kaseigakuinkiyo.63.0_1">doi</a></li>
+        <li id="src-15"><span class="num">[15]</span>Shiba, S. “On meisen, the mass-market kimono from the Taishō to the post-war Shōwa period” (in Japanese). Conference abstract, Japan Association of Home Economics Education 61 (2018): 36–37. <a href="https://doi.org/10.11549/jhee.61.0_10">doi</a></li>
+        <li id="src-16"><span class="num">[16]</span>Sasai, K. “Japonism in Britain at the end of the 19th century: tea gowns and children’s fancy dresses” (in Japanese). <i>Journal of Home Economics of Japan</i> 61, no. 4 (2010): 221–230. <a href="https://doi.org/10.11428/jhej.61.221">doi</a></li>
+        <li id="src-18"><span class="num">[18]</span>Sato, M. and Tamura, T. “How the position of an obi affects body sway, surface EMG and salivary amylase activity when wearing a kimono” (in Japanese). <i>Sen’i Gakkaishi</i> 70, no. 6 (2014): 126–135. <a href="https://doi.org/10.2115/fiber.70.126">doi</a></li>
+        <li id="src-19"><span class="num">[19]</span>Mitsuno, T. and Nago, H. “A study of ohashori slippage in yukata” (in Japanese). <i>Journal of the Japan Society of Clothing</i> 58, no. 2 (2015): 71–82. <a href="https://doi.org/10.20616/clothingresearch.58.2_71">doi</a></li>
+        <li id="src-20"><span class="num">[20]</span>Okabe, K. and Ito, N. “Differences in wearing comfort by way of wearing kimono” (in Japanese; lecture). <i>Journal of the Japan Society of Clothing</i> 49, no. 1 (2005): 21–24. <a href="https://doi.org/10.20616/clothingresearch.49.1_21">doi</a></li>
+        <li id="src-21"><span class="num">[21]</span>Okabe, K., Ohtsuki, H. and Ito, N. “Wearing comfort of kimono in young women and differences in clothing pressure by way of wearing” (in Japanese). <i>Journal of the Japan Society of Clothing</i> 50, no. 1 (2006): 53–60. <a href="https://doi.org/10.20616/clothingresearch.50.1_53">doi</a></li>
+        <li id="src-22"><span class="num">[22]</span>Kamiya, I., Ōgane, Y., Kawai, Y. and Tanaka, M. “The appearance form of the kimono collar in dressing” (in Japanese). <i>Journal of Home Economics of Japan</i> 27, no. 8 (1976): 528–533. <a href="https://doi.org/10.11428/jhej1951.27.528">doi</a></li>
+        <li id="src-23"><span class="num">[23]</span>Sasamoto, N. “Study on the gait of Japanese women in kimono” (in Japanese). <i>Journal of Home Economics of Japan</i> 37, no. 8 (1986): 695–704. <a href="https://doi.org/10.11428/jhej1951.37.8_695">doi</a></li>
+        <li id="src-24"><span class="num">[24]</span>Kazukane, A. and Sasamoto, N. “Temperature and humidity between body and clothes when wearing summer kimono in a hot environment” (in Japanese). <i>Journal of the Japan Society of Clothing</i> 49, no. 1 (2005): 39–45. <a href="https://doi.org/10.20616/clothingresearch.49.1_39">doi</a></li>
+        <li id="src-25"><span class="num">[25]</span>Araki, Y. “Valuation and price acceptance in a traditional industry: the case of original iromuji” (in Japanese). <i>Regional Activation Studies</i> 17, no. 1 (2022): 11–20. <a href="https://doi.org/10.57340/ckg.17.1_11">doi</a></li>
+        <li id="src-27"><span class="num">[27]</span>Masumoto, H. et al. “Awareness and behaviour of female university students regarding traditional dress: Japan and Thailand” (in Japanese). <i>Journal of Home Economics of Japan</i> 58, no. 12 (2007): 771–780. <a href="https://doi.org/10.11428/jhej.58.771">doi</a></li>
+        <li id="src-29"><span class="num">[29]</span>Furukawa, S. “Gradual changes and characteristics of hōmonfuku from the Meiji era to the early Shōwa era” (in Japanese). <a href="https://doi.org/10.32179/fukubun.4.1_13">doi</a></li>
+        <li id="src-30"><span class="num">[30]</span>Saitō, T. “On the development of kosode in the Heian era: the change from underwear to outerwear” (in Japanese). <a href="https://doi.org/10.11428/jhej1951.30.515">doi</a></li>
+        <li id="src-31"><span class="num">[31]</span>Imamura, R. “Japanese kimono, then and now” (in Japanese; lecture). <a href="https://doi.org/10.20616/clothingresearch.49.1_28">doi</a></li>
+        <li id="src-32"><span class="num">[32]</span>Fukui, S. “The family crests on Japanese clothes, part 1” (in Japanese). <i>Journal of Home Economics of Japan</i> 21, no. 1 (1970): 59–63. <a href="https://doi.org/10.11428/jhej1951.21.59">doi</a></li>
+        <li id="src-33"><span class="num">[33]</span>Okamoto, Y., Numata, Y. and Kōyama, M. “Changes in kimono seen in the magazine Utsukushii Kimono, report 1” (in Japanese). <a href="https://doi.org/10.4188/transjtmsj.61.417">doi</a></li>
+        <li id="src-36"><span class="num">[36]</span>Mizukami, K. “Townspeople’s kimono 2: late Edo to early Meiji” (in Japanese; invited essay). <i>Sen’i Gakkaishi</i> 64, no. 8 (2008): P-268–P-271. <a href="https://doi.org/10.2115/fiber.64.P_268">doi</a></li>
+        <li id="src-37"><span class="num">[37]</span>Yokogawa, K. “A representation of haori costume” (in Japanese; invited essay). <i>Sen’i Gakkaishi</i> 64, no. 11 (2008): P-386–P-388. <a href="https://doi.org/10.2115/fiber.64.P_386">doi</a></li>
+        <li id="src-38"><span class="num">[38]</span>Dōmae, M. “Mitsugasane, a Japanese wedding costume” (in Japanese). <i>Bulletin of Nagoya Future Culture College</i> 40 (2015). <a href="https://doi.org/10.20582/nfcc.40.0_41">doi</a></li>
+        <li id="src-39"><span class="num">[39]</span>Nishimura, Y. “The restrictive laws of clothing in the Edo period: outline of its transition and characteristics” (in Japanese). <a href="https://doi.org/10.11428/jhej1951.31.432">doi</a></li>
+        <li id="src-40"><span class="num">[40]</span>Yang, S., Kimata, H. and Satō, M. “Investigation of the transition of clothing style of hanfu and study on its thermal comfort” (in Japanese). 2024. <a href="https://doi.org/10.11419/senshoshi.65.1_39">doi</a></li>
+        <li id="src-41"><span class="num">[41]</span>Tamura, T. “Functionality of Asian ethnic dress” (in Japanese; lecture). <i>Journal of the Japan Society of Clothing</i> 49, no. 1 (2005): 13–16. <a href="https://doi.org/10.20616/clothingresearch.49.1_13">doi</a></li>
+        <li id="src-42"><span class="num">[42]</span>Satō, M. “Ryukyu bingata” (in Japanese; commentary). <i>Journal of the Japan Research Association for Textile End-Uses</i> 44, no. 8 (2003): 456–462. <a href="https://doi.org/10.11419/senshoshi1960.44.456">doi</a></li>
+        <li id="src-43"><span class="num">[43]</span>Nakano, T. “Attus depicted in nishiki-e: Ainu customs brought to Osaka” (in Japanese). <i>Bulletin of the Osaka Museum of History</i> (2006). <a href="https://doi.org/10.34570/omhbull.5.0_0001">doi</a></li>
       </ol>
     </div>
     <div>
       <h2>How to read the numbers</h2>
-      <p>Every statement in this exhibition carries a source number and a page. Words in quotation marks are the source’s own. The full ledger, one row per claim with the quoted passage, is kept in the open: <a href="https://github.com/mmjx2013-png/aia-slides/blob/claude/fervent-ramanujan-qp1d26/kimono-sources.md">claims ledger</a>.</p>
+      <p>Every statement in this exhibition, on the walls and in the audio guide, carries a source number and a page. Words in quotation marks are the source’s own. Many sources are in Japanese; where they are, the English on screen is a paraphrase. The full ledger, one row per claim with the passage it rests on, is public: <a href="https://github.com/mmjx2013-png/aia-slides/blob/claude/fervent-ramanujan-qp1d26/kimono-sources.md">claims ledger</a>.</p>
+      <p>Object titles, dates and materials are the museums’ own records. They are cited as records, not as scholarship.</p>
     </div>
     <div>
       <h2>Pictures and sound</h2>
-      <p>Photographs: The Metropolitan Museum of Art, Open Access (CC0); each is credited beside the picture. The 3D scenes were built by hand in Blender from straight panels. Sound effects and ambience are synthesised in code.</p>
+      <p>Photographs: The Metropolitan Museum of Art, Open Access (CC0), each credited on its label. The galleries, the cloth, the cutting, the sewing and the dressed figure were built by hand in Blender from straight panels measured in the sources, and rendered for this exhibition. Room tone and the sounds of cloth are synthesised in code.</p>
+      <p>The audio guide uses a synthetic voice (ElevenLabs “Alice”, via Venice AI). Captions are on by default.</p>
     </div>
     <p class="closing">Real photographs and hand-built 3D; nothing generated. Narration: synthetic voice (Venice AI).</p>
+    <p class="colophon__fine">Built 2026-11-24 · <a href="v2/">Earlier version (ten slides)</a></p>
   </div>
 </footer>
 
-<!-- ============ Captions / player ============ -->
 <div class="captions glass" id="captions" role="region" aria-label="Audio guide">
   <button class="captions__btn" id="cap-toggle" aria-label="Pause the audio guide"><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg></button>
   <p class="captions__text" id="cap-text" aria-live="off"></p>
   <button class="captions__x" id="cap-close" aria-label="Stop the audio guide"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>
   <div class="captions__bar" aria-hidden="true"><i id="cap-bar"></i></div>
 </div>
+
+<dialog class="zoom" id="zoom" aria-label="Photograph, enlarged">
+  <p class="zoom__cap" id="zoom-cap"></p>
+  <img alt="" id="zoom-img">
+  <form method="dialog"><button class="zoom__x glass glass--pill" aria-label="Close">Close</button></form>
+</dialog>
 
 <script type="module" src="js/app.js"></script>
 </body>
