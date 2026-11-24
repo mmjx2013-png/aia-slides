@@ -69,6 +69,8 @@ def parse():
     ap.add_argument("--clip", action="store_true", help="with --shot: render clips instead of stills")
     ap.add_argument("--clip-frames", type=str, default="", help="with --clip: only these clip frames (comma list)")
     ap.add_argument("--clay", action="store_true", help="clay pass: every object a flat random colour")
+    ap.add_argument("--vfx", action="store_true", help="photographic pass (three_d/lookdev.py): light groups, "
+                    "haze, translucent washi; writes multilayer EXR (NAME.exr) for tools/comp.py")
     ap.add_argument("--no-motion", action="store_true", help="no camera motion blur")
     return ap.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:])
 
@@ -163,12 +165,12 @@ def shot_jobs(a):
         only = [int(v) for v in a.clip_frames.split(",") if v.strip()]
         for n in names:
             for i in (only or range(shots.N_CLIP)):
-                jobs.append((os.path.join(base, n, "f_%04d.png" % i), n, i))
+                jobs.append((os.path.join(base, n, "f_%04d.%s" % (i, a.ext)), n, i))
     else:
         base = a.out if a.out_given else os.path.join(root, "build", "stills")
         pre = a.prefix if a.prefix != "f_" else ""
         for n in names:
-            jobs.append((os.path.join(base, "%s%s.png" % (pre, n)), n, None))
+            jobs.append((os.path.join(base, "%s%s.%s" % (pre, n, a.ext)), n, None))
     if a.shard:
         k, n = (int(v) for v in a.shard.split("/"))
         jobs = jobs[k::n]
@@ -189,6 +191,9 @@ def main_shots(a, q):
     scene.build(res=(rx, ry), samples=q["samples"], preview=(a.quality != "final"), clay=a.clay)
     sc = bpy.context.scene
     apply_quality(sc, q, a)
+    if a.vfx:
+        import lookdev
+        lookdev.apply(sc, clip=a.clip)
     if a.clip and os.environ.get("CLIP_PERSISTENT", "1") != "1":
         sc.render.use_persistent_data = False       # the slow, plain way, should the kept scene misbehave
     dev = setup_device(a.device)
@@ -219,6 +224,7 @@ def main_shots(a, q):
 
 def main():
     a = parse()
+    a.ext = "exr" if a.vfx else "png"
     a.out_given = any(x == "--out" or x.startswith("--out=") for x in sys.argv)
     q = QUALITY[a.quality]
     if a.shot:
