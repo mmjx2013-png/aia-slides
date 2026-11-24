@@ -27,8 +27,8 @@ CARDS = [("NVIDIA GeForce RTX 4090", 0.34, 12500), ("NVIDIA GeForce RTX 4070 Ti"
          ("NVIDIA GeForce RTX 3090", 0.22, 6000), ("NVIDIA RTX 4000 Ada Generation", 0.20, 5000),
          ("NVIDIA GeForce RTX 3090 Ti", 0.27, 6500), ("NVIDIA GeForce RTX 5090", 0.69, 15500),
          ("NVIDIA RTX A6000", 0.33, 5600)]
-WORK_MID = float(os.environ.get("WORK_MID", 150))   # GPU-minutes on one RTX 4090 (estimate; set from the scene agent's report)
-WORK_MAX = float(os.environ.get("WORK_MAX", 190))
+WORK_MID = float(os.environ.get("WORK_MID", 75))   # GPU-minutes on one RTX 4090 (estimate; set from the scene agent's report)
+WORK_MAX = float(os.environ.get("WORK_MAX", 110))
 SETUP, SERVE = 12.0, 60.0                           # minutes: boot + install; serving after the render if nobody fetches
 CAP = float(os.environ.get("CAP", 2.30))            # dollars; the user's hard cap is 2.50
 

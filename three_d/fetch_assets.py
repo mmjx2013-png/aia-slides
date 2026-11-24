@@ -27,7 +27,8 @@ TEXTURES = [
 ]
 # (asset id, resolution) - HDRIs
 HDRIS = [
-    ("ninomaru_teien", "2k"),                                # the garden seen through the open shoji
+    ("ninomaru_teien", "8k"),                                # the garden seen through the open shoji (109 MB:
+                                                             # at 35 mm the lens resolves more than 2k holds)
 ]
 
 

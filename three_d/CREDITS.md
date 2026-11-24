@@ -3,7 +3,7 @@
 Nothing in these pictures is AI-generated. Geometry, motion and the textile design are written in
 code (`scene.py`, `common.py`, `dressform.py`, `weaving.py`) and rendered with Blender Cycles.
 The surfaces below use photo-scanned material maps and one photographed sky, all released under
-CC0 1.0 (public domain) by Poly Haven, https://polyhaven.com/license. Files are 2K, kept in
+CC0 1.0 (public domain) by Poly Haven, https://polyhaven.com/license. Files are 2K (the HDRI 8K), kept in
 `build/assets/` (git-ignored) and re-fetched by `python3 three_d/fetch_assets.py`.
 
 ## Set 1: the hall (`scene.py`, shots in `shots.py`)
@@ -17,7 +17,7 @@ CC0 1.0 (public domain) by Poly Haven, https://polyhaven.com/license. Files are 
 | White Plaster 02 (`white_plaster_02`: diff, rough, nor_gl) | plaster walls, including the display wall | Rob Tuytel | https://polyhaven.com/a/white_plaster_02 | CC0 |
 | Gravel Floor 02 (`gravel_floor_02`: diff, rough, nor_gl) | the gravel of the garden beyond the veranda | Jenelle van Heerden, Dimitrios Savva | https://polyhaven.com/a/gravel_floor_02 | CC0 |
 | Mossy Rock (`mossy_rock`: diff, rough, nor_gl) | the stepping stone at the veranda's edge | Rob Tuytel | https://polyhaven.com/a/mossy_rock | CC0 |
-| Ninomaru Teien (`ninomaru_teien_2k.hdr`, HDRI) | the garden seen through the open shoji | Greg Zaal | https://polyhaven.com/a/ninomaru_teien | CC0 |
+| Ninomaru Teien (`ninomaru_teien_8k.hdr`, HDRI) | the garden seen through the open shoji | Greg Zaal | https://polyhaven.com/a/ninomaru_teien | CC0 |
 
 Download host: `https://dl.polyhaven.org/file/ph-assets/...` (exact URLs in `fetch_assets.py`).
 
@@ -28,9 +28,10 @@ the site's photo credits). It is used as the albedo of a sheet of the robe's rec
 (153.4 x 127.6 cm) cut to the photograph's outline; the folds and the plain back are made in code.
 
 Made in code, no downloaded asset: gold leaf (leaf squares, overlaps, tarnish and wear), black
-lacquer (edge wear, dust), gilt fittings, shoji paper and its daylight, the veranda, its stone step
-and stepping stones (shapes in code, surfaced with the Mossy Rock scan), the chodaigamae doors and
-their tassels, the felt runner, the kimono textile design and the obi brocade (drawn with PIL in
+lacquer (edge wear, dust), gilt fittings, shoji paper (with its mended panes) and its daylight, the
+veranda, its stone step and stepping stones, the moss islands (shapes in code, surfaced with the
+Mossy Rock scan) and the clipped shrubs (a mound of leaf cards generated in code), the raised jodan,
+the chodaigamae doors and their tassels, the felt runner, the kimono textile design and the obi brocade (drawn with PIL in
 `common.py`), silk shading, and every age mark (shader noise over the scans: frayed tatami borders,
 hand-darkened wood, clouded plaster). The small objects of the room (document boxes, cushions,
 brazier, smoking tray, folded robe on its tray, hanging scroll) are modelled in code in `props.py`.

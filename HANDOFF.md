@@ -1,6 +1,6 @@
 # Kimono v3: handoff
 
-Updated Tue 24 Nov 2026, 17:00 Bangkok, by the build session. Deadline: Wed 25 Nov 11:00 Bangkok.
+Updated Tue 24 Nov 2026, 18:45 Bangkok, by the build session (3D work finished; ready for the GPU render). Deadline: Wed 25 Nov 11:00 Bangkok.
 The user changed the final deliverable to a cinematic SLIDE DECK (quality bar:
 `reference/from-brand-to-place-cinematic.html`; see `PRESENTATION-STYLES.md`). A lean session
 builds the deck from the assets below. The scroll website stays live as it is.
@@ -16,7 +16,7 @@ builds the deck from the assets below. The scroll website stays live as it is.
 | Stems for Logic (48 kHz, 24-bit WAV) + mix note | branch `kimono-stems` | Pushed |
 | Museum photograph: Met 2011.155, Robe (Kosode) with Fishing Net and Characters, CC0 | `site/assets/photos/met-76731-*.webp`, cut-out `met-76731-cut-*.webp` | Only this one object is in hand (1190 px). Wishlist for the Mac: `assets/photo-wishlist.json` (60 Met objects) |
 | Scroll website (light palette, plain mode without 3D) | `site/`, live at https://mmjx2013-png.github.io/aia-slides/ (deploy 1a268d4), v2 at `/v2/` | Live |
-| 3D scene, in code | `three_d/scene.py`, `shots.py`, `common.py`, `dressform.py`, `props.py` (if present), `render.py`; assets list `fetch_assets.py`, credits `CREDITS.md` | Two agents work on the detail pass until 19:00 |
+| 3D scene, in code | `three_d/scene.py`, `shots.py`, `common.py`, `dressform.py`, `props.py`, `render.py`; assets list `fetch_assets.py`, credits `CREDITS.md` | Finished at 18:37; no agent is running |
 | Low-resolution CPU previews | `previews/*.jpg` | For review only; never ship these |
 
 Tools: `tools/build_site.py --strict` (page + ledger from the room files), `tools/narrate.py` then
@@ -51,8 +51,9 @@ python3 tools/pod_launch.py terminate  # terminates only the pod it created
   CRF 20) + WebM, packs `build/slides.tar`, serves it, and stops itself 5 minutes after the tar
   has been fetched or after the serving limit. A render time limit (`MAX_SECONDS`) stops the
   renders and packs whatever is finished, so the cap cannot be passed.
-- Budget: cap $2.50 in total. `CAP=2.30` in the launcher; change `WORK_MID` / `WORK_MAX`
-  (GPU-minutes on one RTX 4090) to the scene agent's final estimate before launching.
+- Budget: cap $2.50 in total (`CAP=2.30` in the launcher). The scene agent's final estimate is
+  about 75 GPU-minutes on one RTX 4090, extrapolated from CPU tests, plus or minus 30 percent:
+  about $0.45 to $0.65 on a 4090. The launcher's defaults are `WORK_MID=75`, `WORK_MAX=110`.
 - Cuts if the estimate is over the cap, in this order: lower `CLIP_SAMPLES`, shorten the clips,
   drop one clip.
 - OptiX on the pod is untested (no GPU here); `render.py` falls back to CUDA, never to CPU.
@@ -98,7 +99,16 @@ A full-resolution original of Met 76731 (DP261473) would sharpen `weave_macro`: 
 
 ## 5. Known defects and gaps
 
-- No final 3D frames exist yet. The previews are low-sample CPU tests.
+- No final 3D frames exist yet. The previews are low-sample CPU tests (`previews/hall_wide_morning.jpg`
+  and `previews/kosode_iko.jpg` are the latest, rendered after the last fixes).
+- The bundle has never run on a GPU: only a thumbnail-size CPU dry run of `pod_run.sh` passed. One
+  bpy crash was fixed and retries were added. Watch the first minutes with `pod_launch.py status`.
+- Against the user's bar ("indistinguishable from a photograph") the hall is a good architectural
+  render, not yet a photograph. Known weak spots: the garden is an HDRI without parallax and the
+  gravel reads flat; the gold fusuma on the east wall are flat; the folded robe reads as soft slabs;
+  the scroll's brocade is a simple lattice; the mannequin's shoulders are tight and its hands plain.
+- No camera look is applied in the render (no vignette, grain or chromatic aberration): add it in
+  the deck or in 2D.
 - The drape of the robe on the ikō is a procedural displacement, not a cloth simulation.
 - `weave_macro` is limited by the 1068 px photograph.
 - Cut for lack of budget: the weaving room, the scroll-scrubbed 984-frame sequence, the film,

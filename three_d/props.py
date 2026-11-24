@@ -872,11 +872,12 @@ def _b_zabuton_b(B):
 # brazier (round wooden hibachi, copper liner, ash, charcoal, iron chopsticks)
 # ---------------------------------------------------------------------------------------------
 def _b_brazier(B):
-    wood = m_wood("P_wood_keyaki", "okoume_veneer", tint=(0.085, 0.042, 0.02), scale=1.6, coat=0.22,
+    wood = m_wood("P_wood_keyaki", "okoume_veneer", tint=(0.15, 0.072, 0.03), scale=1.6, coat=0.22,
                   rough=(0.32, 0.58), rot=(PI / 2, 0.0, 0.0), grain=(26.0, 26.0, 1.6), figure=0.6)
-    body = _fillet([(0, 0.004), (0.185, 0.004), (0.189, 0.0), (0.200, 0.0), (0.207, 0.012), (0.2235, 0.10),
-                    (0.2255, 0.17), (0.2195, 0.255), (0.2135, 0.293), (0.208, 0.300), (0.190, 0.300),
-                    (0.1885, 0.297), (0.1885, 0.24)], 0.004, 3)
+    # a round hibachi turned from one block: a foot ring, a full belly, a drawn-in neck and a rolled lip
+    body = _fillet([(0, 0.004), (0.158, 0.004), (0.162, 0.0), (0.176, 0.0), (0.184, 0.012), (0.216, 0.060),
+                    (0.238, 0.125), (0.240, 0.180), (0.229, 0.232), (0.213, 0.266), (0.226, 0.286),
+                    (0.2275, 0.295), (0.221, 0.300), (0.190, 0.300), (0.1885, 0.297), (0.1885, 0.24)], 0.004, 3)
     B.mesh("brazier_body", _lathe(body, 80, oval=0.006, wob=0.003, seed=1.0), [wood])
     copper = m_plain("P_copper", (0.36, 0.17, 0.085), rough=0.42, metallic=1.0, var=0.35, nscale=45.0,
                      bump=0.15, col2=(0.11, 0.075, 0.05), vscale=11.0)
@@ -889,7 +890,7 @@ def _b_brazier(B):
         r2 = x * x + y * y
         return (0.012 * math.exp(-r2 / 0.012) + 0.004 * _nz(x * 14, y * 14, 3.0)
                 + 0.0015 * _nz(x * 60, y * 60, 7.0) - 0.006 * (r2 / 0.033) ** 2)
-    B.mesh("brazier_ash", _disc(0.1832, az, 16, 64), [ash], wn=False, loc=(0, 0, 0.262))
+    B.mesh("brazier_ash", _disc(0.1832, az, 16, 64), [ash], wn=False, loc=(0, 0, 0.283))
     coal = m_plain("P_charcoal", (0.018, 0.017, 0.016), rough=0.8, var=0.4, nscale=260.0, bump=0.9,
                    dist=0.001, col2=(0.16, 0.15, 0.14), vscale=70.0)
     for i, (x, y, rz, tilt, ln, rr) in enumerate(((0.012, 0.02, 0.4, 1.42, 0.075, 0.017),
@@ -897,12 +898,12 @@ def _b_brazier(B):
                                                   (0.035, -0.03, 1.2, 1.3, 0.05, 0.013))):
         prof = _fillet([(0, 0), (rr, 0), (rr * 1.04, ln * 0.5), (rr * 0.96, ln), (0, ln)], 0.002, 2)
         B.mesh("brazier_coal", _lathe(prof, 14, wob=0.07, seed=i * 3.0), [coal],
-               loc=(x, y, 0.262 + az(x, y) + rr * 0.35), rot=(tilt, 0.0, rz))
+               loc=(x, y, 0.283 + az(x, y) + rr * 0.35), rot=(tilt, 0.0, rz))
     iron = m_plain("P_iron", (0.035, 0.032, 0.03), rough=0.5, metallic=1.0, var=0.3, nscale=90.0)
-    stick = _fillet([(0, 0), (0.0016, 0.0), (0.0024, 0.14), (0.0027, 0.262), (0.0048, 0.268),
-                     (0.0048, 0.274), (0.0026, 0.279), (0.0, 0.280)], 0.001, 2)
+    stick = _fillet([(0, 0), (0.0020, 0.0), (0.0030, 0.14), (0.0034, 0.262), (0.0060, 0.268),
+                     (0.0060, 0.275), (0.0032, 0.280), (0.0, 0.281)], 0.001, 2)
     for (x, y, rx, ry) in ((0.118, -0.062, 0.30, 0.20), (0.132, -0.036, 0.22, 0.33)):
-        B.mesh("brazier_hibashi", _lathe(stick, 10), [iron], loc=(x, y, 0.262 + az(x, y) - 0.05),
+        B.mesh("brazier_hibashi", _lathe(stick, 10), [iron], loc=(x, y, 0.283 + az(x, y) - 0.05),
                rot=(rx, ry, 0.0))
 
 

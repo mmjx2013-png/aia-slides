@@ -77,6 +77,14 @@ echo "[pod] 3/7 scans (Poly Haven, CC0) and the drawn textiles"
 echo "[pod] 4/7 render stills, clay pass and clips ($QUALITY, $DEVICE, $RES)"
 SARGS=(--samples "$SAMPLES" --threshold "$THRESHOLD")
 R=("$PY" three_d/render.py --quality "$QUALITY" --device "$DEVICE" --res "$RES" --only-missing)
+retry() {   # every render command resumes (--only-missing): if one dies, run it again, up to four times
+  local n=0
+  until "$@"; do
+    n=$((n + 1))
+    if [ "$n" -ge 4 ] || [ -f build/STOP ]; then return 1; fi
+    echo "[pod] a render command died (attempt $n); resuming it"
+  done
+}
 if [ -f build/STOP ]; then
   echo "[pod]   build/STOP exists: not rendering, packing what exists"
 else
@@ -87,12 +95,12 @@ else
   for ((k = 0; k < NGPU; k++)); do
     (
       export CUDA_VISIBLE_DEVICES=$k
-      "${R[@]}" --shot "$STILLS" --shard "$k/$NGPU" "${SARGS[@]}"
+      retry "${R[@]}" --shot "$STILLS" --shard "$k/$NGPU" "${SARGS[@]}"
       if [ "$k" -eq 0 ] && [ -n "$CLAY" ]; then
-        "${R[@]}" --shot "$CLAY" --clay --prefix clay_ "${SARGS[@]}"
+        retry "${R[@]}" --shot "$CLAY" --clay --prefix clay_ "${SARGS[@]}"
       fi
       if [ -n "$CLIPS" ] && [ "$CLIPS" != "NONE" ]; then
-        "${R[@]}" --shot "$CLIPS" --clip --samples "$CLIP_SAMPLES" --shard "$k/$NGPU"
+        retry "${R[@]}" --shot "$CLIPS" --clip --samples "$CLIP_SAMPLES" --shard "$k/$NGPU"
       fi
     ) >>"build/render_gpu$k.log" 2>&1 &
     PIDS+=($!)
@@ -106,9 +114,9 @@ else
     exit 1
   fi
   if [ ! -f build/STOP ]; then          # anything a share left undone
-    "${R[@]}" --shot "$STILLS" "${SARGS[@]}" >>build/render_gpu0.log 2>&1
+    retry "${R[@]}" --shot "$STILLS" "${SARGS[@]}" >>build/render_gpu0.log 2>&1
     if [ -n "$CLIPS" ] && [ "$CLIPS" != "NONE" ]; then
-      "${R[@]}" --shot "$CLIPS" --clip --samples "$CLIP_SAMPLES" >>build/render_gpu0.log 2>&1
+      retry "${R[@]}" --shot "$CLIPS" --clip --samples "$CLIP_SAMPLES" >>build/render_gpu0.log 2>&1
     fi
   fi
 fi

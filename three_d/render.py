@@ -67,6 +67,7 @@ def parse():
                     "list, or ALL. Stills go to build/stills/NAME.png; with --clip, clips go to "
                     "build/clips/NAME/f_NNNN.png")
     ap.add_argument("--clip", action="store_true", help="with --shot: render clips instead of stills")
+    ap.add_argument("--clip-frames", type=str, default="", help="with --clip: only these clip frames (comma list)")
     ap.add_argument("--clay", action="store_true", help="clay pass: every object a flat random colour")
     ap.add_argument("--no-motion", action="store_true", help="no camera motion blur")
     return ap.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:])
@@ -159,8 +160,9 @@ def shot_jobs(a):
     jobs = []
     if a.clip:
         base = a.out if a.out_given else os.path.join(root, "build", "clips")
+        only = [int(v) for v in a.clip_frames.split(",") if v.strip()]
         for n in names:
-            for i in range(shots.N_CLIP):
+            for i in (only or range(shots.N_CLIP)):
                 jobs.append((os.path.join(base, n, "f_%04d.png" % i), n, i))
     else:
         base = a.out if a.out_given else os.path.join(root, "build", "stills")
@@ -187,8 +189,8 @@ def main_shots(a, q):
     scene.build(res=(rx, ry), samples=q["samples"], preview=(a.quality != "final"), clay=a.clay)
     sc = bpy.context.scene
     apply_quality(sc, q, a)
-    if a.clip:                      # only the camera moves inside a clip: keep the scene on the device
-        sc.render.use_persistent_data = True
+    if a.clip and os.environ.get("CLIP_PERSISTENT", "1") != "1":
+        sc.render.use_persistent_data = False       # the slow, plain way, should the kept scene misbehave
     dev = setup_device(a.device)
     print("[render] shots, quality %s on %s, %dx%d, %d samples; %d images to do (%d requested); build %.0fs"
           % (a.quality, dev, rx, ry, sc.cycles.samples, len(todo), len(jobs), time.time() - t0), flush=True)

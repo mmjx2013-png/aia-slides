@@ -61,6 +61,27 @@ def _coll(name):
     return c
 
 
+_MEMBERS = {}
+_LAST = {}
+
+
+def _members(name):
+    """The objects of a collection, listed once after the build. (Walking collection.all_objects
+    between renders has crashed bpy; nothing is added or removed after the build.)"""
+    if name not in _MEMBERS:
+        _MEMBERS[name] = list(_coll(name).all_objects)
+    return _MEMBERS[name]
+
+
+def _changed(key, value):
+    """True when `value` is not what was last applied under `key`; remembers it. Lets a clip leave
+    everything but the camera untouched from frame to frame."""
+    if key in _LAST and _LAST[key] == value:
+        return False
+    _LAST[key] = value
+    return True
+
+
 def _obj(name, data, coll):
     ob = bpy.data.objects.new(name, data)
     coll.objects.link(ob)
@@ -272,6 +293,9 @@ def _stable_hash(s):
 
 XW = -HX                      # west wall line (shoji)
 SHOJI = {}                    # (bay, 'S' | 'N') -> the objects of that sliding panel
+# panes of shoji paper that have been mended: (bay, side) -> [(column, row, width, height as fractions)]
+MENDED = {(5, "N"): [(1, 2, 0.92, 0.78)], (5, "S"): [(3, 4, 0.70, 0.55)], (2, "N"): [(2, 3, 0.85, 0.9)],
+          (7, "S"): [(0, 1, 0.9, 0.6)], (9, "N"): [(2, 4, 0.8, 0.8)]}
 EX = XW - 1.70                # outer edge of the veranda
 GROUND_Z = -0.52              # the garden ground
 YJ = HL["y_south"] + 6 * HL["ken"]   # where the jodan (the raised upper level) begins: its north four ken
@@ -298,14 +322,20 @@ def build_floor(coll):
             x0, y0 = -HX + i * 0.91, YS + j * KEN
             b = len(verts)
             fz = floor_z(y0)
-            verts += [(x0, y0, fz), (x0 + 0.91, y0, fz), (x0 + 0.91, y0 + KEN, fz), (x0, y0 + KEN, fz)]
+            lift = {(4, 2): 0.0045, (2, 4): 0.0035, (5, 7): 0.004}.get((i, j), 0.0)      # (column, row) -> metres
+            verts += [(x0, y0, fz), (x0 + 0.91, y0, fz), (x0 + 0.91, y0 + KEN, fz + lift),
+                      (x0, y0 + KEN, fz + lift * 0.4)]
             faces.append((b, b + 1, b + 2, b + 3))
             v0 = 0.5 * rs.randint(0, 2)
             ua, ub = (0.0, 1.0) if rs.rand() < 0.5 else (1.0, 0.0)
             ku = float(rs.randint(0, 5))
             uvs += [ua + ku, v0, ua + ku, v0 + 0.5, ub + ku, v0 + 0.5, ub + ku, v0]
-            g = 0.93 + 0.12 * rs.rand()
-            tone = (g * (1.0 + 0.03 * rs.randn()), g, g * (1.0 + 0.04 * rs.randn()), 1.0)
+            g = 0.89 + 0.17 * rs.rand()
+            if rs.rand() < 0.12:                    # a mat re-covered more recently: fresher, greener
+                g *= 1.05
+                tone = (g * 0.955, g, g * 0.90, 1.0)
+            else:
+                tone = (g * (1.0 + 0.035 * rs.randn()), g, g * (1.0 + 0.05 * rs.randn()), 1.0)
             tones += list(tone) * 4
     me = bpy.data.meshes.new("Tatami")
     me.from_pydata(verts, [], faces)
@@ -316,7 +346,7 @@ def build_floor(coll):
     return _obj("Tatami", me, coll)
 
 
-def _shoji_panel(wood, thin, paper, ya, yb, xc, z0, z1, koshi=0.33, cols=4, rows=6):
+def _shoji_panel(wood, thin, paper, ya, yb, xc, z0, z1, koshi=0.33, cols=4, rows=6, mended=()):
     """One sliding shoji in the west wall: frame, hip board, lattice on the room side, paper behind."""
     hin, brd = C.hall_material("hinoki"), C.hall_material("board")
     xa, xb = xc - 0.015, xc + 0.015
@@ -343,6 +373,13 @@ def _shoji_panel(wood, thin, paper, ya, yb, xc, z0, z1, koshi=0.33, cols=4, rows
     xp = xc - 0.004
     paper.quad([(xp, ya + st, zp0), (xp, yb - st, zp0), (xp, yb - st, zp1), (xp, ya + st, zp1)],
                C.hall_material("washi"))
+    # mended panes: a second sheet pasted over a tear, a little off square; it holds back some light
+    cw, ch = (yb - ya - 2 * st) / cols, (zp1 - zp0) / rows
+    for (ci, ri, fy, fz) in mended:
+        y0, zb = ya + st + ci * cw, zp0 + ri * ch
+        y1, y2, zc, zd = y0 + 0.006, y0 + cw * fy, zb + ch * (1.0 - fz), zb + ch - 0.005
+        paper.quad([(xp + 0.0006, y1, zc + 0.004), (xp + 0.0006, y2, zc), (xp + 0.0006, y2 - 0.003, zd),
+                    (xp + 0.0006, y1 + 0.002, zd)], C.hall_material("washi_patch"))
 
 
 def _fusuma(lac, gilt, coll, idx, xa, xb, yc, z0, z1, pull_x):
@@ -473,9 +510,53 @@ def build_garden(coll):
             (EX - 45.0, YS - 30.0, GROUND_Z)], grv)
     g.build("Garden_gravel", coll)
     _stone("Stone_step", (EX - 0.94, 2.70, -0.40), 0.86, 1.30, 0.25, coll, rock, 3)
-    for n, (x, y, r) in enumerate(((EX - 2.25, 3.55, 0.31), (EX - 3.05, 4.30, 0.27), (EX - 3.9, 4.95, 0.32),
-                                   (EX - 4.8, 5.85, 0.27), (EX - 5.7, 6.5, 0.30))):
-        _stone("Stone_%d" % n, (x, y, GROUND_Z - 0.03), r, r * 1.12, 0.09, coll, rock, 11 + n)
+    for n, (x, y, r) in enumerate(((EX - 2.25, 3.35, 0.36), (EX - 3.05, 3.95, 0.33), (EX - 3.95, 4.35, 0.38),
+                                   (EX - 4.9, 4.2, 0.33), (EX - 5.8, 4.7, 0.36), (EX - 2.9, 0.4, 0.34),
+                                   (EX - 3.7, -0.5, 0.30))):
+        _stone("Stone_%d" % n, (x, y, GROUND_Z - 0.01), r, r * 1.14, 0.085, coll, rock, 11 + n)
+    # islands of moss in the gravel, edging the stones; clipped shrubs stand on the larger ones
+    moss = C.hall_material("moss")
+    for n, (x, y, sx, sy, sz) in enumerate(((EX - 3.6, 6.9, 1.9, 2.6, 0.11), (EX - 2.3, 9.6, 1.3, 1.7, 0.09),
+                                            (EX - 4.6, 1.9, 1.2, 1.5, 0.09), (EX - 1.75, 5.0, 0.55, 0.9, 0.07),
+                                            (EX - 6.9, 5.9, 1.6, 2.0, 0.10), (EX - 3.4, -2.6, 1.5, 2.2, 0.10),
+                                            (EX - 5.6, -5.5, 1.8, 2.4, 0.11))):
+        _stone("Moss_%d" % n, (x, y, GROUND_Z), sx, sy, sz, coll, moss, 31 + n)
+    for n, (x, y, r, h) in enumerate(((EX - 3.3, 6.5, 0.74, 0.66), (EX - 4.25, 7.45, 0.60, 0.52),
+                                      (EX - 2.85, 7.75, 0.50, 0.44), (EX - 2.5, 9.7, 0.80, 0.70),
+                                      (EX - 4.7, 1.9, 0.62, 0.54), (EX - 3.4, -2.7, 0.82, 0.72),
+                                      (EX - 4.3, -3.5, 0.58, 0.50), (EX - 5.7, -5.4, 0.90, 0.80))):
+        _shrub("Shrub_%d" % n, (x, y, GROUND_Z + 0.08), r, h, coll, 51 + n)
+
+
+def _shrub(name, c, r, h, coll, seed, n_leaf=0):
+    """A clipped azalea mound (karikomi): a dark lumpy core, and thousands of small leaves on it."""
+    _stone(name + "_core", (c[0], c[1], c[2]), r * 0.80, r * 0.90, h * 0.84, coll, C.hall_material("shrub_core"), seed)
+    rs = np.random.RandomState(seed)
+    n_leaf = n_leaf or int(95000 * r * h)
+    u = rs.rand(n_leaf) * 2 * np.pi
+    v = np.arccos(rs.rand(n_leaf) * 0.98)                          # polar angle from the top
+    ph = rs.rand(4) * 6.283
+    lump = 1.0 + 0.07 * np.sin(3 * u + ph[0]) * np.sin(2 * v + ph[1]) + 0.05 * np.sin(5 * u + ph[2]) \
+        + 0.03 * np.sin(9 * u + 7 * v + ph[3])
+    sv, cv = np.sin(v) ** 0.72, np.cos(v) ** 0.55                  # a full, flat-topped dome
+    p = np.stack([c[0] + r * lump * sv * np.cos(u), c[1] + 1.1 * r * lump * sv * np.sin(u),
+                  c[2] + h * lump * cv], -1)
+    nrm = np.stack([sv * np.cos(u) / r, sv * np.sin(u) / (1.1 * r), cv / h], -1)
+    nrm /= np.linalg.norm(nrm, axis=1, keepdims=True)
+    nrm = nrm + 0.75 * rs.randn(n_leaf, 3)                         # every leaf at its own angle
+    nrm /= np.linalg.norm(nrm, axis=1, keepdims=True)
+    t1 = np.cross(nrm, rs.randn(n_leaf, 3))
+    t1 /= np.linalg.norm(t1, axis=1, keepdims=True)
+    t2 = np.cross(nrm, t1)
+    sz = (0.016 + 0.013 * rs.rand(n_leaf))[:, None]
+    cen = np.array([c[0], c[1], c[2]])
+    p = cen + (p - cen) * (0.84 + 0.16 * np.sqrt(rs.rand(n_leaf, 1)))        # a shell of leaves, not a skin
+    vs = np.stack([p - t1 * sz - t2 * sz * 0.55, p + t1 * sz - t2 * sz * 0.55, p + t1 * sz + t2 * sz * 0.55,
+                   p - t1 * sz + t2 * sz * 0.55], 1).reshape(-1, 3)
+    me = bpy.data.meshes.new(name)
+    me.from_pydata(vs.tolist(), [], [(4 * i, 4 * i + 1, 4 * i + 2, 4 * i + 3) for i in range(n_leaf)])
+    me.materials.append(C.hall_material("leaf"))
+    return _obj(name, me, coll)
 
 
 def set_open(bays=None):
@@ -525,7 +606,8 @@ def build_hall():
         # both panels are their own objects, built shut, so a shot can slide either one open
         for side, (pa, xc) in (("S", (ya, XW - 0.020)), ("N", (yb - PANEL_W, XW - 0.055))):
             pw, pt = MB(), MB()
-            _shoji_panel(pw, pt, pt, pa, pa + PANEL_W, xc, floor_z(ys[k]) + 0.006, KAMOI_Z)
+            _shoji_panel(pw, pt, pt, pa, pa + PANEL_W, xc, floor_z(ys[k]) + 0.006, KAMOI_Z,
+                         mended=MENDED.get((k, side), ()))
             SHOJI[(k, side)] = [pw.build("Shoji_%d%s_frame" % (k, side), coll, bevel=0.004),
                                 pt.build("Shoji_%d%s_paper" % (k, side), coll)]
         # transom (ranma): fine upright slats in front of the paper
@@ -641,20 +723,13 @@ def build_hall():
                (HX + 0.12, YS - 0.12, HC)], brd)
     cs = KEN / 3.0
     nxr, nyr = int(round(2 * HX / cs)), int(round((YN - YS) / cs))
-    # over the jodan the coffers are the richest of the hall: black-lacquer ribs, and plain aged gold
-    # leaf where the painted panels would be
-    gold_panel("gold_ceiling", (XW, YN, HC - 0.004), (2 * HX, 0, 0), (0, -(YN - YJ), 0), coll)
-    wood.box(XW, HX, YJ - 0.07, YJ + 0.07, HC - 0.32, HC, hin, "x")                  # the beam that marks it
+    wood.box(XW, HX, YJ - 0.06, YJ + 0.06, HC - 0.20, HC, hin, "x")                  # the beam that marks the jodan
     for i in range(nxr + 1):
         x = XW + i * cs
-        wood.box(x - 0.0225, x + 0.0225, YS, YJ, HC - 0.115, HC, hin, "y")
-        lac.box(x - 0.0225, x + 0.0225, YJ + 0.07, YN, HC - 0.115, HC, lq, "y")
+        wood.box(x - 0.0225, x + 0.0225, YS, YN, HC - 0.115, HC, hin, "y")
     for j in range(nyr + 1):
         y = YS + j * cs
-        if y > YJ + 0.1:
-            lac.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, lq, "x")
-        elif y < YJ - 0.1:
-            wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, hin, "x")
+        wood.box(XW, HX, y - 0.0225, y + 0.0225, HC - 0.105, HC, hin, "x")
     for i in range(1, nxr):                                                          # gilt plates under the crossings
         for j in range(1, nyr):
             gilt.plate((XW + i * cs, YS + j * cs, HC - 0.115), 2, 0.046, -0.0025, 4, gil)
@@ -761,7 +836,7 @@ def build_daylight():
         mx = nt.nodes.new("ShaderNodeMix")
         mx.data_type = "FLOAT"
         mx.inputs[2].default_value = HL.get("hdri_strength", 1.6)
-        mx.inputs[3].default_value = HL.get("hdri_visible", 3.6)
+        mx.inputs[3].default_value = HL.get("hdri_visible", 2.5)
         nt.links.new(lp.outputs["Is Camera Ray"], mx.inputs[0])
         gain = nt.nodes.new("ShaderNodeMath")
         gain.operation = "MULTIPLY"
@@ -791,6 +866,7 @@ def build_daylight():
         li.size, li.size_y = (YN - YS), (z1 - z0)
         li.energy = AREA_W * rad * li.size * li.size_y * 0.82      # 0.82: posts, frames and lattice
         li.color = col
+        li.specular_factor = HL.get("shoji_specular", 0.8)     # keeps lit gold leaf gold rather than pale
         ob = _obj(nm, li, coll)
         ob.location = (XW - 0.002, 0.5 * (YS + YN), 0.5 * (z0 + z1))
         ob.rotation_mode = "QUATERNION"
@@ -954,15 +1030,22 @@ def build_robe(coll):
     t_out = np.clip((np.abs(X) - 0.30) / 0.34, 0, 1)
     Xc = X * (1.0 - np.where(body, 0.085 * sn ** 1.5, 0.03 * ss)) - np.sign(X) * 0.020 * t_out * ss   # hem pulls in
     dz = -0.030 * t_out ** 2 * ss + np.where(body, 0.016 * np.sin(2 * np.pi * X / 0.215 + 0.4) * sn ** 3, 0.0)
+    # the sleeves' weight: they slip a few centimetres down the bar's far side, more at their free ends
+    drop = np.clip((np.abs(X) - 0.22) / 0.42, 0, 1) ** 1.5
+    dz = dz - drop * (0.014 * np.clip(sp / 0.05, 0, 1) + 0.036 * ss)
     # the shoulder line sags between the ends of the crossbar: held at the sleeve ends, lowest in the middle
-    sag = 0.032 * np.clip(1.0 - (np.abs(X) / (0.5 * ROBE_W)) ** 2, 0, 1)
+    sag = 0.020 * np.clip(1.0 - (np.abs(X) / (0.5 * ROBE_W)) ** 2, 0, 1)
     dz = dz - sag
     zsh = BAR_Z + BAR_R + 0.002
     over = np.clip(-s, 0, None)                                  # the collar stands above the bar, leaning back
     k = np.clip(sp / 0.05, 0, 1)
     k = k * k * (3 - 2 * k)
     k2 = np.maximum(k, np.clip(sag / 0.010, 0, 1))     # where it sags, the cloth hangs in front of the bar
-    Yw = -(0.004 + (BAR_R + 0.004) * k2) - d * k + 0.20 * over
+    # fine wrinkles where the cloth turns over the bar: short, close, dying out a hand's width below it
+    wr = np.exp(-sp / 0.085) * np.clip(sp / 0.012, 0, 1) * (
+        0.0034 * np.sin(2 * np.pi * X / 0.043 + 2.3 * np.sin(7.0 * X) + 9.0 * sp)
+        + 0.0022 * np.sin(2 * np.pi * X / 0.071 + 1.1 - 14.0 * sp)) * (0.55 + 0.45 * np.sin(2 * np.pi * X / 0.33 + 0.7))
+    Yw = -(0.004 + (BAR_R + 0.004) * k2) - d * k - wr + 0.20 * over
     Zw = zsh - sp + 0.97 * over + dz
     co = np.stack([Xc, Yw, Zw], -1).reshape(-1, 3)
     uv = np.stack([np.broadcast_to(px / ww, X.shape), 1.0 - PY / hh], -1).reshape(-1, 2)
@@ -1024,15 +1107,15 @@ def set_groups(iko=True, cloth=False, form=False, robe=None):
     """Which of the movable things are rendered: the iko with the screen (and, unless robe=False, the
     museum robe); the procedural bolt and pieces (call after update_cloth / update_exploded, which
     set their own visibility); the mannequin."""
-    for ob in _coll("Iko").all_objects:
+    for ob in _members("Iko"):
         ob.hide_render = ob.hide_viewport = not iko
     if robe is not None and S.get("robe"):
         for ob in S["robe"]:
             ob.hide_render = ob.hide_viewport = not robe
     if not cloth:
-        for ob in _coll("Cloth").all_objects:
+        for ob in _members("Cloth"):
             ob.hide_render = ob.hide_viewport = True
-    for ob in _coll("DressForm").all_objects:
+    for ob in _members("DressForm"):
         if not form:
             ob.hide_render = ob.hide_viewport = True
         elif S.get("form_state") is None:
@@ -2012,6 +2095,7 @@ def build(res=(1920, 1080), samples=64, preview=False, clay=False, form=True):
 
 def apply_frame(f, motion=True):
     f = int(f)
+    _LAST.clear()
     set_open(None)
     place_props(False)
     set_light(None)
@@ -2037,7 +2121,7 @@ def update_exploded(t):
     """t = 0: the eight pieces float apart in front of the iko; t = 1: assembled as the T on its bar."""
     t = clamp01(t)
     fa = STAGE["C"][1]
-    for ob in _coll("Cloth").all_objects:
+    for ob in _members("Cloth"):
         ob.hide_render = ob.hide_viewport = True
     for nm in list(EXPLODE) + list(EXPLODE_STRAIGHT):
         p = S["pieces"][nm]
@@ -2083,7 +2167,7 @@ def _paper_nodes():
 
 def set_light(preset=None):
     sc = bpy.context.scene
-    lights = [ob for ob in _coll("Lights").all_objects if ob.type == "LIGHT"]
+    lights = [ob for ob in _members("Lights") if ob.type == "LIGHT"]
     strength, eave, mix = _paper_nodes()
     if not _DAY:
         _DAY["lights"] = {ob.name: (ob.data.energy, tuple(ob.data.color), ob.location.copy(),
@@ -2135,29 +2219,36 @@ def _shot_pose(st):
 def apply_shot(st, before=None, after=None):
     """Put the scene in the state of one slide-deck shot (a dict from shots.py). With `before` and
     `after` (the shots of the neighbouring clip frames) the camera's move is blurred over the shutter."""
-    if "explode" in st:
-        update_exploded(st["explode"])
-    else:
-        update_cloth(st.get("cloth_f", 0))
     g = st.get("groups", {})
-    set_groups(iko=g.get("iko", False), cloth=g.get("cloth", False), form=g.get("form", False),
-               robe=g.get("robe", g.get("iko", False)))
-    set_open(st.get("open"))
-    place_props(st.get("props"))
-    set_light(st.get("light"))
-    if g.get("form", False) and S.get("form_state") is not None:
-        for ob in _coll("DressForm").all_objects:
-            ob.hide_render = ob.hide_viewport = False
-        lay = {k: 0.0 for k in M["dress_frames"]}
-        lay.update(st.get("layers", {}))
-        S["dressform"].update(S["form_state"], lay)
+    grp = (g.get("iko", False), g.get("cloth", False), g.get("form", False), g.get("robe", g.get("iko", False)))
+    lay = {k: 0.0 for k in M["dress_frames"]}
+    lay.update(st.get("layers", {}))
+    stage = (("explode", st["explode"]) if "explode" in st else ("cloth", st.get("cloth_f", 0)), grp,
+             tuple(sorted(lay.items())))
+    if _changed("stage", stage):
+        if "explode" in st:
+            update_exploded(st["explode"])
+        else:
+            update_cloth(st.get("cloth_f", 0))
+        set_groups(iko=grp[0], cloth=grp[1], form=grp[2], robe=grp[3])
+        if grp[2] and S.get("form_state") is not None:
+            for ob in _members("DressForm"):
+                ob.hide_render = ob.hide_viewport = False
+            S["dressform"].update(S["form_state"], lay)
+    if _changed("open", repr(st.get("open"))):
+        set_open(st.get("open"))
+    if _changed("props", repr(st.get("props"))):
+        place_props(st.get("props"))
+    if _changed("light", st.get("light")):
+        set_light(st.get("light"))
     sc = bpy.context.scene
     ob = S["cam"]
-    ob.animation_data_clear()
     ob.rotation_mode = "QUATERNION"
     pos, q = _shot_pose(st)
     blur = before is not None and after is not None
-    if blur:
+    if not blur and ob.animation_data is not None:
+        ob.animation_data_clear()
+    if blur:                                   # the same three keys are overwritten for every clip frame
         prev = None
         for k, s2 in ((0, before), (1, st), (2, after)):
             p2, q2 = _shot_pose(s2)

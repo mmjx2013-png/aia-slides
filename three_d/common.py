@@ -881,9 +881,13 @@ def asset_map(aid, kind, res="2k"):
     return p if os.path.exists(p) else None
 
 
-def hdri_path(aid="ninomaru_teien", res="2k"):
-    p = os.path.join(ASSET_DIR, aid, "%s_%s.hdr" % (aid, res))
-    return p if os.path.exists(p) else None
+def hdri_path(aid="ninomaru_teien", res=None):
+    """The sharpest copy of the HDRI that has been fetched (8k, else 4k, else 2k), or None."""
+    for r in ([res] if res else ["8k", "4k", "2k"]):
+        p = os.path.join(ASSET_DIR, aid, "%s_%s.hdr" % (aid, r))
+        if os.path.exists(p):
+            return p
+    return None
 
 
 _MEAN = {}
@@ -1035,7 +1039,7 @@ def hall_material(kind, name=None, strength=None):
     if kind == "tatami":
         sep = N("ShaderNodeSeparateXYZ")
         L(tc.outputs["UV"], sep.inputs[0])
-        sc = _scan(nt, "tatami_mat", tc.outputs["UV"], rough=(0.38, 0.80), normal=1.0)
+        sc = _scan(nt, "tatami_mat", tc.outputs["UV"], rough=(0.38, 0.80), normal=1.5)
         if sc:
             col, rgh, nrm = sc
             hs = N("ShaderNodeHueSaturation")          # the scan is a little dark and olive for a bright hall
@@ -1059,7 +1063,11 @@ def hall_material(kind, name=None, strength=None):
         geo, wp = _world_pos(nt)
         P = geo.outputs["Position"]
         # the rush itself: slow drift of tone (sun, feet, years)
-        col = _mixc(nt, 1.0, col, _noise(nt, P, 0.55, 4.0, 0.6, 0.90, 1.07), "MULTIPLY")
+        col = _mixc(nt, 1.0, col, _noise(nt, P, 0.55, 4.0, 0.6, 0.88, 1.08), "MULTIPLY")
+        # years of sun through the west shoji: the first two metres are bleached paler and yellower
+        fade = _math(nt, "MULTIPLY", _band(nt, wp.outputs["X"], -9.0, -8.0, -3.3, -1.3),
+                     _noise(nt, P, 0.8, 3.0, 0.6, 0.55, 1.0))
+        col = _mixc(nt, _math(nt, "MULTIPLY", fade, 0.42), col, _mixc(nt, 1.0, col, (1.30, 1.20, 0.92), "MULTIPLY"))
         # the cloth edge is not ruler-straight: its line wanders and frays by a millimetre or two
         fray = _math(nt, "ADD", _noise(nt, P, 9.0, 2.0, 0.5, -0.0016, 0.0016),
                      _noise(nt, P, 260.0, 1.0, 0.5, -0.0011, 0.0011))
@@ -1067,9 +1075,9 @@ def hall_material(kind, name=None, strength=None):
                      _math(nt, "ADD", fray, 0.0355))
         hd = N("ShaderNodeHueSaturation")
         hd.inputs["Saturation"].default_value = 0.35
-        L(_noise(nt, P, 1.7, 4.0, 0.65, 0.13, 0.27), hd.inputs["Value"])       # darkened and faded in places
+        L(_noise(nt, P, 1.7, 4.0, 0.65, 0.10, 0.25), hd.inputs["Value"])       # darkened and faded in places
         L(col, hd.inputs["Color"])
-        worn = _noise(nt, P, 3.1, 5.0, 0.7, 0.0, 0.45, 0.62, 0.80)              # where the cloth has rubbed thin
+        worn = _noise(nt, P, 3.1, 5.0, 0.7, 0.0, 0.60, 0.56, 0.78)              # where the cloth has rubbed thin
         col = _mixc(nt, heri, col, _mixc(nt, worn, hd.outputs["Color"], (0.20, 0.155, 0.10)))
         # hairline shadow where two mats meet end to end
         tu = _math(nt, "FRACT", _math(nt, "ADD", sep.outputs["X"], 0.5))
@@ -1105,13 +1113,20 @@ def hall_material(kind, name=None, strength=None):
                 hand = _math(nt, "MULTIPLY", _band(nt, wp.outputs["Z"], 0.55, 0.95, 1.30, 1.70),
                              _noise(nt, P, 5.0, 3.0, 0.6, 0.35, 1.0))
                 foot = _band(nt, wp.outputs["Z"], -1.0, -0.5, 0.05, 0.40)
-                dark = _math(nt, "ADD", _math(nt, "MULTIPLY", hand, 0.20), _math(nt, "MULTIPLY", foot, 0.12))
+                dark = _math(nt, "ADD", _math(nt, "MULTIPLY", hand, 0.28), _math(nt, "MULTIPLY", foot, 0.14))
                 dark = _math(nt, "ADD", dark, _noise(nt, P, 1.3, 4.0, 0.6, 0.0, 0.10))
                 col = _mixc(nt, dark, col, _mixc(nt, 1.0, col, (0.42, 0.30, 0.20), "MULTIPLY"))
                 rgh = _math(nt, "SUBTRACT", rgh, _math(nt, "MULTIPLY", hand, 0.10))
             elif kind in ("planks", "planks_out"):
                 g2, wp = _world_pos(nt)
                 col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 0.8, 4.0, 0.6, 0.80, 1.10), "MULTIPLY")
+                if kind == "planks_out":      # where feet pass: pale scuffs drawn out along the boards
+                    mps = N("ShaderNodeMapping")
+                    mps.inputs["Scale"].default_value = (14.0, 0.9, 14.0)
+                    L(g2.outputs["Position"], mps.inputs["Vector"])
+                    scuff = _noise(nt, mps.outputs["Vector"], 2.2, 4.0, 0.7, 0.0, 0.30, 0.56, 0.80)
+                    col = _mixc(nt, scuff, col, (0.20, 0.17, 0.135))
+                    rgh = _math(nt, "ADD", rgh, _math(nt, "MULTIPLY", scuff, 0.5))
             L(col, bsdf.inputs["Base Color"])
             L(rgh, bsdf.inputs["Roughness"])
             L(nrm, bsdf.inputs["Normal"])
@@ -1269,8 +1284,14 @@ def hall_material(kind, name=None, strength=None):
         tarn = _noise(nt, P, 1.15, 5.0, 0.62, 0.0, 1.0, 0.40, 0.72)
         hand = _math(nt, "MULTIPLY", _band(nt, wp.outputs["Z"], 0.45, 0.72, 0.92, 1.25),
                      _noise(nt, P, 3.0, 3.0, 0.6, 0.2, 1.0))
-        age = _math(nt, "ADD", _math(nt, "MULTIPLY", tarn, 0.38), _math(nt, "MULTIPLY", hand, 0.22), clamp=True)
-        col = _mixc(nt, age, col, (0.47, 0.245, 0.060))
+        # and the long vertical breath of a hung or sliding panel: faint streaks down the leaf
+        mpv = N("ShaderNodeMapping")
+        mpv.inputs["Scale"].default_value = (9.0, 9.0, 0.35)
+        L(P, mpv.inputs["Vector"])
+        streak = _noise(nt, mpv.outputs["Vector"], 1.0, 3.0, 0.6, 0.0, 1.0, 0.45, 0.75)
+        age = _math(nt, "ADD", _math(nt, "MULTIPLY", tarn, 0.46),
+                    _math(nt, "ADD", _math(nt, "MULTIPLY", hand, 0.26), _math(nt, "MULTIPLY", streak, 0.16)), clamp=True)
+        col = _mixc(nt, age, col, (0.40, 0.20, 0.048))
         col = _mixc(nt, wear.outputs["Result"], col, (0.30, 0.13, 0.05))
         L(col, bsdf.inputs["Base Color"])
         L(_math(nt, "SUBTRACT", 1.0, _math(nt, "MULTIPLY", wear.outputs["Result"], 0.6)), bsdf.inputs["Metallic"])
@@ -1354,9 +1375,37 @@ def hall_material(kind, name=None, strength=None):
           bsdf.inputs["Coat Weight"])
         L(_math(nt, "ADD", mr.outputs["Result"], _math(nt, "MULTIPLY", dust, 0.9)), bsdf.inputs["Coat Roughness"])
 
-    elif kind in ("gravel", "rock"):
-        aid, scale, target = {"gravel": ("gravel_floor_02", 1.0 / 1.6, (0.085, 0.08, 0.07)),
-                              "rock": ("mossy_rock", 1.0 / 1.3, (0.075, 0.075, 0.06))}[kind]
+    elif kind in ("leaf", "shrub_core"):
+        geo = N("ShaderNodeNewGeometry")
+        rnd = geo.outputs["Random Per Island"]
+        if kind == "leaf":
+            col = _mixc(nt, rnd, (0.011, 0.028, 0.006), (0.045, 0.085, 0.016))
+            turn = _math(nt, "GREATER_THAN", rnd, 0.965)                  # a few leaves on the turn
+            col = _mixc(nt, turn, col, (0.07, 0.03, 0.008))
+            L(col, bsdf.inputs["Base Color"])
+            bsdf.inputs["Roughness"].default_value = 0.58
+            bsdf.inputs["Specular IOR Level"].default_value = 0.22
+        else:
+            bsdf.inputs["Base Color"].default_value = (0.004, 0.009, 0.003, 1.0)
+            bsdf.inputs["Roughness"].default_value = 1.0
+            bsdf.inputs["Specular IOR Level"].default_value = 0.0
+
+    elif kind == "washi_patch":
+        # a second sheet pasted over a pane: seen against the light it is a shade darker and warmer
+        tr = N("ShaderNodeBsdfTransparent")
+        tr.inputs["Color"].default_value = (0.80, 0.76, 0.68, 1.0)
+        df = N("ShaderNodeBsdfDiffuse")
+        df.inputs["Color"].default_value = (0.72, 0.68, 0.58, 1.0)
+        mx = N("ShaderNodeMixShader")
+        mx.inputs[0].default_value = 0.10
+        L(tr.outputs[0], mx.inputs[1])
+        L(df.outputs[0], mx.inputs[2])
+        L(mx.outputs[0], out.inputs["Surface"])
+
+    elif kind in ("gravel", "rock", "moss"):
+        aid, scale, target = {"gravel": ("gravel_floor_02", 1.0 / 1.6, (0.046, 0.044, 0.039)),
+                              "moss": ("mossy_rock", 1.0 / 0.9, (0.014, 0.027, 0.007)),
+                              "rock": ("mossy_rock", 1.0 / 1.3, (0.058, 0.058, 0.047))}[kind]
         mp = N("ShaderNodeMapping")
         mp.inputs["Scale"].default_value = (scale, scale, scale)
         if kind == "gravel":
@@ -1364,11 +1413,20 @@ def hall_material(kind, name=None, strength=None):
         else:
             mp.inputs["Rotation"].default_value = (0.0, 0.0, 0.6)
             L(tc.outputs["Object"], mp.inputs["Vector"])
-        sc = _scan(nt, aid, mp.outputs["Vector"], target=target, rough=(0.6, 0.95), normal=1.0)
+        sc = _scan(nt, aid, mp.outputs["Vector"], target=target, rough=(0.6, 0.95),
+                   normal={"gravel": 1.6, "moss": 2.2}.get(kind, 1.0))
         if sc:
             col, rgh, nrm = sc
             g2, wp = _world_pos(nt)
             col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 0.35, 4.0, 0.6, 0.62, 1.25), "MULTIPLY")
+            if kind == "gravel":      # the shade of trees that stand outside the frame, and the wear of feet and rain
+                col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 0.22, 5.0, 0.72, 0.42, 1.0, 0.40, 0.58),
+                            "MULTIPLY")
+                col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 2.4, 3.0, 0.6, 0.80, 1.12), "MULTIPLY")
+            elif kind == "moss":
+                col = _mixc(nt, 1.0, col, _noise(nt, g2.outputs["Position"], 5.0, 4.0, 0.7, 0.55, 1.35), "MULTIPLY")
+                bsdf.inputs["Sheen Weight"].default_value = 0.4
+                bsdf.inputs["Sheen Tint"].default_value = (0.5, 0.8, 0.3, 1.0)
             L(col, bsdf.inputs["Base Color"])
             L(rgh, bsdf.inputs["Roughness"])
             L(nrm, bsdf.inputs["Normal"])

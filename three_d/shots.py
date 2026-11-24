@@ -59,8 +59,10 @@ _WIDE = dict(HALL, pos=(1.55, -6.60, 1.32), target=(-0.42, 0.0, 1.32), focal=35.
 STILLS = {
     # 1. the hall: shoji open onto the garden, morning light raking the tatami, the robe on its iko
     "hall_wide_morning": dict(_WIDE),
-    # 2. the Met robe on the lacquer iko before the gold screen, frontal: the object first
-    "kosode_iko": dict(HALL, pos=(0.0, -4.80, 1.02), target=(0.0, 0.0, 1.02), focal=40.0, fstop=2.8, groups=IKO),
+    # 2. the Met robe on the lacquer iko before the gold screen, frontal, from standing height: the object
+    #    first, a little left of centre, the chodaigamae doors on the east wall as its counterweight
+    "kosode_iko": dict(HALL, pos=(0.62, -5.05, 1.40), target=(0.50, 0.0, 1.40), focal=35.0, shift_y=-0.075,
+                       fstop=2.8, focus=5.1, groups=IKO),
     # 3. the eight straight pieces of the drawn-textile kimono floating apart before the bare iko
     "exploded_panels": dict(HALL, pos=orbit((0.0, -0.95, 1.40), 5.7, -10.0, 1.45), target=(0.0, -0.95, 1.40),
                             focal=35.0, fstop=8.0, groups={"iko": True, "robe": False, "cloth": True}, explode=0.0,
@@ -75,7 +77,7 @@ STILLS = {
     "mannequin_obi_back": dict(HALL, pos=orbit(FORM, 1.55, 192.0, 1.10 + JD), target=(FORM[0], FORM[1] + 0.2, 1.05 + JD),
                                focal=50.0, fstop=2.8, groups=MANNEQUIN, layers=ALL_LAYERS),
     # 6. a sleeve and the hem beside the lacquer boxes and the folded robe on its tray
-    "sleeve_hem_props": dict(HALL, pos=(2.30, -2.65, 0.95), target=(0.42, 0.0, 0.60), focal=35.0, fstop=2.8,
+    "sleeve_hem_props": dict(HALL, pos=(2.45, -2.75, 0.95), target=(0.05, 0.0, 0.62), focal=35.0, fstop=2.8,
                              groups=IKO),
     # 7. the alcove with the hanging scroll
     "tokonoma": dict(HALL, pos=(-1.35, 7.55, 1.20 + JD), target=(0.22, 11.6, 1.20 + JD), focal=35.0, shift_y=-0.02,
@@ -109,17 +111,19 @@ def _sway(st, i):
                 focus=st.get("focus") or d)
 
 
-def _clip_hall_morning(i):               # a slow push down the hall towards the robe; starts on hall_wide_morning
+def _clip_hall_morning(i):               # a slow push down the hall towards the robe (it ends past the
+    # seating group, on the robe and its boxes alone); starts on hall_wide_morning
     u = _u(i)
     s = STILLS["hall_wide_morning"]
-    return _sway(dict(s, pos=lerp(s["pos"], (1.10, -4.55, 1.30), u), target=lerp(s["target"], (-0.42, 0.0, 1.30), u),
-                      focus=s["focus"] - 2.05 * u), i)
+    return _sway(dict(s, pos=lerp(s["pos"], (1.05, -4.75, 1.30), u), target=lerp(s["target"], (0.0, 0.0, 1.30), u),
+                      focus=s["focus"] - 2.0 * u), i)
 
 
 def _clip_kosode_iko(i):                 # a slow dolly in on the robe; starts on kosode_iko
     u = _u(i)
     s = STILLS["kosode_iko"]
-    return _sway(dict(s, pos=lerp(s["pos"], (0.0, -4.05, 1.06), u), target=lerp(s["target"], (0.0, 0.0, 1.06), u)), i)
+    return _sway(dict(s, pos=lerp(s["pos"], (0.52, -4.45, 1.40), u), target=lerp(s["target"], (0.42, 0.0, 1.40), u),
+                      focus=s["focus"] - 0.6 * u), i)
 
 
 def _clip_hall_dusk(i):                  # a slow track across the hall, west to east; starts on hall_dusk
