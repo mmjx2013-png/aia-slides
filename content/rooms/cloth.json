@@ -1,0 +1,316 @@
+{
+ "id": "cloth",
+ "n": 3,
+ "type": "wall",
+ "theme": "Fabric and season",
+ "title": "Cloth and season",
+ "heading": "Warmth is woven, not cut",
+ "intro": "One shape all year. What suits a robe to cold or warm months is the weave and the lining, not the cut {6:p.20}.",
+ "from": 420,
+ "to": 491,
+ "stop": "S1",
+ "stills": [
+  {
+   "file": "weave_1",
+   "caption": "A floor loom stands by a window in daylight."
+  },
+  {
+   "file": "weave_2",
+   "caption": "Warp threads held taut on the loom, and a shuttle resting on them."
+  },
+  {
+   "file": "weave_3",
+   "caption": "A finished bolt of cloth, rolled."
+  }
+ ],
+ "photos": [
+  {
+   "objectID": 813665,
+   "label": {
+    "title": "Summer Robe (Katabira) with Irises at Yatsuhashi",
+    "meta": "Japan · Edo period · mid-19th century",
+    "material": "Plain-weave ramie with paste-resist dyeing, stencil-dyed dots (suri-bitta), hand-painted details...",
+    "insight": "Made of ramie for summer. Druet writes that it is <q>the weaving (and whether there is lining or not)</q> that suits a kimono to cold or warm months {6:p.20}."
+   }
+  },
+  {
+   "objectID": 61850,
+   "label": {
+    "title": "Unlined Kosode (Hitoe) with Grasses and Dewdrops",
+    "meta": "Japan · Edo period · second half of the 18th–19th century",
+    "material": "Resist-dyed plain-weave silk gauze (ro) embroidered with silk and metallic thread",
+    "insight": "Unlined, and woven as gauze. In Druet's account of present-day practice, ro and sha arrive <q>while the hot and humid days of August linger</q> {6:p.20}."
+   }
+  },
+  {
+   "objectID": 50806,
+   "label": {
+    "title": "Sashiko Kimono",
+    "meta": "Japan · Meiji period · mid-19th century",
+    "material": "Indigo-dyed plain-weave cotton, quilted and embroidered with white cotton thread",
+    "insight": "A Japanese design study notes that silk often serves formal and outing wear, and cotton, wool or synthetics everyday wear {7:p.76}."
+   }
+  },
+  {
+   "objectID": 45185,
+   "label": {
+    "title": "Obi with “Whose Sleeves?” (Tagasode) Pattern",
+    "meta": "Japan · Edo period · first half of 19th century",
+    "material": "Twill-weave silk with supplementary weft patterning and metallic thread",
+    "insight": "Its record gives 414 × 63.5 cm. Today's formal fukuro or nagoya obi are <q>approximately thirty centimetres</q> wide, Becke notes {4:p.71}."
+   }
+  }
+ ],
+ "cards": [
+  {
+   "kind": "table",
+   "at": 2,
+   "title": "The kimono year",
+   "body": [
+    "Druet's account of present-day practice. Monthly magazines present it as <q>a guiding principle, not mandatory but strongly encouraged</q> {6:p.22}."
+   ],
+   "head": [
+    "",
+    "Kimono",
+    "Under-kimono"
+   ],
+   "rows": [
+    [
+     "October to May",
+     "Awase, lined {6:p.20}",
+     "Silk or polyester {6:p.20}"
+    ],
+    [
+     "June to September",
+     "Hitoe, unlined {6:p.20}",
+     "Ro or sha {6:p.20}"
+    ],
+    [
+     "August",
+     "Yukata, or sheer ro or sha {6:p.20}",
+     "Nothing under a cotton yukata {6:p.20}"
+    ]
+   ]
+  },
+  {
+   "kind": "text",
+   "at": 4,
+   "title": "Ahead of the season",
+   "body": [
+    "Druet calls it sakidori: dressing <q>to convey feelings towards a season that hasn't come yet</q> {6:p.27}. One guide advises a flower pattern <q>about one month ahead of the actual blossoming</q> {4:p.62}.",
+    "Motifs of a <q>past season</q> are a faux pas {6:p.27}."
+   ]
+  }
+ ],
+ "narration": {
+  "title": "Stop 3 · Cloth and season",
+  "cues": [
+   {
+    "show": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+    "photo": 0
+   },
+   {
+    "show": "What changes is the cloth. Three Japanese design researchers put it plainly: the shape is the same from formal wear to everyday wear. The fabric, and what is dyed or woven into it, decides the use.",
+    "photo": 1
+   },
+   {
+    "show": "Changing one wardrobe for the next has its own name, koromogae. Druet counts it among the care rituals, beside airing a whole collection at once.",
+    "photo": 2
+   },
+   {
+    "show": "Is summer kimono cool? A Japanese laboratory study dressed women in summer kimono in a hot room. The robe is full of openings: collar, cuffs, sleeve slits, hem. Even so, over the stomach the humidity passed ninety per cent. In one wearer's trials, silk stayed drier than polyester.",
+    "photo": 2
+   },
+   {
+    "show": "The season is also worn early. A summer robe may already carry the bellflower of autumn. Further along this wall, the pattern begins to say more than the month.",
+    "photo": 3
+   }
+  ]
+ },
+ "claims": [
+  {
+   "text": "Warmth or coolness comes from tailoring, weave and lining, not from the cut or length.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "it is just the tailoring, the weaving (and whether there is lining or not) that makes a kimono appropriate for cold or warm months",
+   "scope": "Druet; general, present-day",
+   "where": "intro; photo 813665"
+  },
+  {
+   "text": "Seasonal change never alters the kimono's shape or sleeve length.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "kimono fashion does not rely on changing the shape of the garment nor on having variation in the length of the sleeves",
+   "scope": "Druet; general",
+   "where": "narration 1"
+  },
+  {
+   "text": "The skirt part is never shortened.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "The skirt part is always tailored as a long cylindrical wrap, and it is never shortened either",
+   "scope": "Druet; general",
+   "where": "narration 1"
+  },
+  {
+   "text": "The move into sheer ro or sha (or yukata) usually happens in the hot, humid days of August.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "semi-transparent summer kimono made of ro (絽) or sha (紗) \"breathable\" weave, usually happens while the hot and humid days of August linger",
+   "scope": "Druet; present-day; August, not the whole summer (the sentence begins 'The transition into yukata ... or')",
+   "where": "photo 61850; table"
+  },
+  {
+   "text": "The nagajuban changes by season: silk or polyester October to May, ro or sha June to September.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "warm materials such as silk or polyester used from October to May, thinner fabrics such as ro or sha from June to September",
+   "scope": "Druet; general, present-day (note polyester)",
+   "where": "photo 73690; table"
+  },
+  {
+   "text": "Nothing is worn under the cotton yukata.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "and actually nothing underneath the cotton yukata",
+   "scope": "Druet; present-day",
+   "where": "table"
+  },
+  {
+   "text": "Awase, the lined kimono, suits October until May.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "with awase (袷 lined kimono), one can enjoy an outfit that would be appropriate from October until May",
+   "scope": "Druet; general statement on present-day practice",
+   "where": "table"
+  },
+  {
+   "text": "Hitoe, the unlined kimono, is for the warm months from June to September.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "it is the lightness of the fabric that is appreciated, especially during the warm months that spread from June to September",
+   "scope": "Druet; the sentence begins 'With hitoe (単衣 unlined kimono)'. Checked on the page text (extends v2 row 59).",
+   "where": "table"
+  },
+  {
+   "text": "Seasonal dress is a guiding principle, not a rule.",
+   "src": 6,
+   "page": "p.22",
+   "quote": "a guiding principle, not mandatory but strongly encouraged",
+   "scope": "about seasonal kimono as presented in monthly magazines",
+   "where": "table card"
+  },
+  {
+   "text": "The rotation of the wardrobe is called koromogae, one of the care rituals.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "the rotation of outfits inside one's wardrobe known as koromogae (衣替え)",
+   "scope": "Druet; described among 'care rituals', not a dated rule",
+   "where": "narration 3"
+  },
+  {
+   "text": "Mushi boshi: airing the whole collection at once, seasonally.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "the seasonal airing out of one’s collection of outfits all at once, known as mushi boshi (虫干し)",
+   "scope": "Druet; care ritual",
+   "where": "narration 3"
+  },
+  {
+   "text": "The kimono's form is the same from formal to everyday wear; fabric and dyed or woven design decide its use.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "キモノの形態は礼装から普段着まで共通であり，衣服としての用途は，布の材質および染織などの意匠によって決まる",
+   "scope": "Tr. \"the form is common from formal to everyday wear; its use is decided by fabric and dyed or woven design\". Maruyama, Tauchi and Kubo, summarising Ōtsuka 1972",
+   "where": "narration 2"
+  },
+  {
+   "text": "Silk is often used for formal to outing wear; cotton, wool and synthetics for everyday wear.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "礼装から外出着には絹が，普段着には木綿やウール，化学繊維などが用いられる場合が多い",
+   "scope": "Tr. \"silk is often used for formal to outing wear; cotton, wool and synthetics for everyday wear\". general; varies by period and region, the authors add. Not about this object.",
+   "where": "photo 50806"
+  },
+  {
+   "text": "Fukuro and nagoya obi are about thirty centimetres wide.",
+   "src": 4,
+   "page": "p.71",
+   "quote": "These fukuro or nagoya obi are characterised by a width of approximately thirty centimetres",
+   "scope": "Becke, citing Kimura 2010, Ōkubo 2012; present-day formal obi. Not about this object.",
+   "where": "photo 45185"
+  },
+  {
+   "text": "A kimono has many openings and looks cool in structure.",
+   "src": 24,
+   "page": "p.39",
+   "quote": "和服はえり・そで口・ふり・身八つ口・すそ等の多くの開口部を有し，構造上からみても涼しげである",
+   "scope": "Tr. \"wafuku has many openings such as collar, cuffs, furi, miyatsuguchi and hem, and is cool-looking in structure too\". authors' statement; the study is titled for a hot environment (暑熱環境下)",
+   "where": "narration 4"
+  },
+  {
+   "text": "In summer kimono humidity above 90% arose at the upper abdomen: stuffiness turning to wetness.",
+   "src": 24,
+   "page": "p.44",
+   "quote": "上腹部において90%を超える高い湿度が生じていることから判断して，蒸れから濡れの現象が起きている",
+   "scope": "Tr. \"judging from humidity above 90% at the upper abdomen, stuffiness is turning to wetness\". laboratory chamber, 3 women; summer kimono layers",
+   "where": "narration 4"
+  },
+  {
+   "text": "Humidity was highest in polyester and lowest in silk.",
+   "src": 24,
+   "page": "p.44",
+   "quote": "ポリエステルの着装が最も高く，逆に絹の着装が低いという結果が得られた",
+   "scope": "Tr. \"polyester outfit highest, silk lowest\". single subject for the material comparison",
+   "where": "narration 4"
+  },
+  {
+   "text": "Sakidori: conveying feelings toward a season that has not come yet.",
+   "src": 6,
+   "page": "p.27",
+   "quote": "sakidori (先取り) culture, which is to convey feelings towards a season that hasn't come yet",
+   "scope": "Druet; general statement",
+   "where": "card 2"
+  },
+  {
+   "text": "One guide says to wear a flower pattern about one month ahead of the blossoming.",
+   "src": 4,
+   "page": "p.62",
+   "quote": "start wearing a specific flower pattern about one month ahead of the actual blossoming of the drawn flower",
+   "scope": "reported: Becke quoting Shimada 2017, a guide; advice, not observed practice",
+   "where": "card 2"
+  },
+  {
+   "text": "Wearing hues or motifs of a past season is a faux pas.",
+   "src": 6,
+   "page": "p.27",
+   "quote": "dressing in hues or motifs that are of the passed / past season would be considered a major “fashion faux-pas”",
+   "scope": "Druet; general",
+   "where": "card 2"
+  },
+  {
+   "text": "Unlined summer kimono often carry autumn plants such as kikyō (bellflower).",
+   "src": 6,
+   "page": "p.27",
+   "quote": "unlined summer kimono and obi, as they are often adorned with flowers and plants recognized as autumn markers, such as kikyō",
+   "scope": "Druet; sakidori",
+   "where": "narration 5"
+  },
+  {
+   "text": "Pattern signals formality, season and the wearer's gender, age and standing (turn to the next room).",
+   "src": 4,
+   "page": "p.11",
+   "quote": "personal attributes such as the wearer’s gender, age, social standing and taste",
+   "scope": "Becke, citing Dalby 2001: 164; general",
+   "where": "narration 5"
+  }
+ ],
+ "dropped": [
+  "A lined (awase) kosode on the wall: no Met record in the wishlist says 'lined'.",
+  "What ramie is and how the katabira differs from hitoe: no source read defines katabira or ramie.",
+  "Season of irises: no source ties the iris motif to a month.",
+  "Any fact about weaving or the loom in the stills: no source read describes it; the captions describe only the pictures.",
+  "The exact June/September hitoe and July-August usumono calendar used in many guides: only Druet's broader months were read.",
+  "The nagajuban photograph moved to room 7 (the family) to avoid showing it twice."
+ ]
+}

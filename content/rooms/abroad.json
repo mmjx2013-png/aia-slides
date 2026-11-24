@@ -1,0 +1,108 @@
+{
+  "id": "abroad",
+  "n": 9,
+  "type": "wall",
+  "theme": "Relatives and influence",
+  "title": "Abroad",
+  "heading": "Relatives and influence",
+  "intro": "Robes that left Japan, and robes from its neighbours. Each comparison on this wall is one a scholar made.",
+  "stop": "S2",
+  "photos": [
+    {"objectID": 87231, "label": {
+      "title": "Banyan",
+      "meta": "British · ca. 1775",
+      "material": "silk",
+      "insight": "Robes from Japan were <q>prized in Holland as Japonse rocken</q>; copies were made in India, and in England they <q>were called banyan</q> {5:p.2}."}},
+    {"objectID": 155954, "label": {
+      "title": "Dressing gown",
+      "meta": "Japanese · ca. 1875",
+      "material": "silk",
+      "insight": "From the 1870s kimono spread in Europe and America as luxurious women's house wear {11:p.34}. Western women found in them <q>an ease and a liberation</q> {5:p.4}."}},
+    {"objectID": 158314, "label": {
+      "title": "Tea gown",
+      "meta": "Liberty & Co. · British · ca. 1885",
+      "material": "silk",
+      "insight": "Liberty sold Japanese-style gowns from 1884 {16:p.224}. Tea gowns, worn without a corset {16:p.221}, borrowed <q>the kimono, obi, Japanese-style sleeves, and Japanese patterns</q> {16:p.221}."}},
+    {"objectID": 69062, "label": {
+      "title": "Man's Audience Robe (Chaofu)",
+      "meta": "China · Qing dynasty · second half of the 19th century",
+      "material": "Silk satin embroidered with silk and metallic thread",
+      "insight": "Poiret made an <q>ample, square cut kimono</q> coat {5:p.7}, yet did <q>not necessarily grasp the distinction between Japanese and Chinese cultures and clothes</q> {5:p.8}."}},
+    {"objectID": 853921, "label": {
+      "title": "Dallyeong (Official’s robe)",
+      "meta": "Korea · Joseon dynasty · late 19th–early 20th century",
+      "material": "Silk",
+      "insight": "A lecture on Asian dress in museum collections: every traditional garment studied uses its full cloth width, cut with no waste at all, as the kimono does {41:p.16}."}},
+    {"objectID": 61851, "label": {
+      "title": "Robe",
+      "meta": "Japan (Ryūkyū Islands) · 19th century",
+      "material": "Resist-dyed and painted (bingata) silk crepe",
+      "insight": "Bingata served mainly for the robes of royal and gentry women; yellow was a colour allowed only to royalty {42:p.458}."}},
+    {"objectID": 51082, "label": {
+      "title": "Ainu costume",
+      "meta": "Japan · Meiji period · 19th century",
+      "material": "Elm-bark fiber with appliqué of indigo-dyed tabby (atsushi)",
+      "insight": "From the mid-18th century Ainu attus became a trade good, reached Osaka, and gave its name to a work coat there: atsushi {43:p.1}."}}
+  ],
+  "cards": [
+    {"kind": "text", "at": 3, "title": "What the West took",
+     "body": ["Fukai's verdict: <q>The most important point was the rectangular cut that followed the warp and weft of the fabric and the unconfined garment that resulted from it.</q> {5:p.8}",
+              "In 1906 Poiret freed the silhouette from the corset {5:p.8}."]},
+    {"kind": "text", "at": 4, "title": "Neighbours: the same cross",
+     "body": ["A 2024 study of Chinese hanfu finds that <q>the cross-shaped structure of Hanfu did not change</q> {40:p.39}. Its front closes left over right, as Japanese dress does {40:p.44}."]}
+  ],
+  "narration": {
+    "title": "Stop 9 · Abroad",
+    "cues": [
+      {"photo": 0, "show": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer."},
+      {"photo": 1, "show": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed."},
+      {"photo": 2, "show": "In London, a Japanese village opened in Knightsbridge in January 1885. Gilbert is said to have learned from its people when he staged The Mikado.",
+       "say": "In London, a Japanese village opened in Knightsbridge in January eighteen eighty-five. Gilbert is said to have learned from its people when he staged The Mikado."},
+      {"photo": 4, "show": "Nearer Japan, the comparisons turn to cloth and climate. In Korea, one lecture notes, the full skirt caught the warmth rising from heated floors."},
+      {"photo": 5, "show": "Ryukyuan bingata absorbed Javanese and Indian chintz and Chinese printed cloth. Since 1972 it has been sold as Japanese kimono and obi.",
+       "say": "Ryoo-kyoo-an bin-gah-tah absorbed Javanese and Indian chintz and Chinese printed cloth. Since nineteen seventy-two it has been sold as Japanese kimono and obi."},
+      {"photo": 6, "show": "The Ainu word attus means cloth from the inner bark of trees such as elm and linden. Now turn round. The robe on its rack waits at the far end of the hall.",
+       "say": "The Eye-noo word aht-toos means cloth from the inner bark of trees such as elm and linden. Now turn round. The robe on its rack waits at the far end of the hall."}
+    ]
+  },
+  "claims": [
+    {"text": "Padded robes given to Dutch traders were prized in Holland as Japonse rocken.", "src": 5, "page": "p.2", "quote": "These came to be prized in Holland as Japonse rocken (Japanese dressing gowns).", "scope": "Fukai; PDF page; 17th-18th century", "where": "photo 87231"},
+    {"text": "Demand outran supply, so the Dutch East India Company had Japonse rocken made in India.", "src": 5, "page": "p.2", "quote": "the Dutch East India Company had begun manufacturing Japonse rocken for the European market in the Coromandel region of India", "scope": "Fukai; after 1692. The banyan on the wall is not claimed to be one of these.", "where": "photo 87231"},
+    {"text": "In England they were called banyans.", "src": 5, "page": "p.2", "quote": "They were called banyan (for a caste of Indian merchants) in England and indienne (“in the Indian style”) in France", "scope": "Fukai", "where": "photo 87231"},
+    {"text": "Kimono became popular in Holland as men's domestic garments.", "src": 5, "page": "p.2", "quote": "kimono had made their way to Holland and become popular as men's domestic garments", "scope": "Fukai; well before the late 19th century", "where": "narration"},
+    {"text": "At the Dutch chief's visit to Edo, silk kimono were given in return for gifts.", "src": 11, "page": "p.34", "quote": "献上品への返礼として絹のきものが贈られた (Tr. \"silk kimono were given in return for the presents offered\")", "scope": "Sakamoto 2018, invited review essay drawing on Fukai 2017; Edo period", "where": "narration"},
+    {"text": "Light, warm padded kimono became hugely popular as indoor wear.", "src": 11, "page": "p.34", "quote": "軽くて暖かい綿入れのきものは，室内着として絶大な人気を得た (Tr. \"light, warm padded kimono gained enormous popularity as indoor wear\")", "scope": "Sakamoto 2018; 17th-18th century European upper classes", "where": "narration"},
+    {"text": "The astronomer and geographer painted by Vermeer wear such padded kimono.", "src": 11, "page": "p.34", "quote": "フェルメールが描いた絵画のなかの天文学者や地理学者は，この綿入れのきものを (Tr. \"the astronomer and geographer in the paintings by Vermeer [wear] these padded kimono\")", "scope": "Sakamoto 2018, author's reading via Fukai 2017; said as one writer's view", "where": "narration"},
+    {"text": "From the 1870s kimono spread in Europe and America as luxurious women's indoor wear.", "src": 11, "page": "p.34", "quote": "1870 年代以降，きものは欧米で女性用の豪華な室内着として広まった (Tr. \"from the 1870s kimono spread in Europe and America as luxurious indoor wear for women\")", "scope": "Sakamoto 2018, invited review essay; Japonisme period. The dressing gown is not claimed to be one of these.", "where": "photo 155954"},
+    {"text": "Western women saw in kimono an ease and a liberation, and adopted them as dressing gowns.", "src": 5, "page": "p.4", "quote": "an ease and a liberation as well as exoticism and consequently adopted them as dressing gowns", "scope": "Fukai; Western wearers, 19th century", "where": "photo 155954"},
+    {"text": "In the West the kimono was often worn without an obi, as loungewear.", "src": 12, "page": "p.54", "quote": "The kimono was, for instance, worn without an obi in a relaxed, carefree manner, because it was seen as a loose type of loungewear.", "scope": "Druet 2021; late 19th-early 20th century West", "where": "narration"},
+    {"text": "In the West it was often worn right panel over left.", "src": 12, "page": "p.54", "quote": "the kimono would often be worn in the West with the right panel crossed over the left one", "scope": "Druet 2021; Japonisme era", "where": "narration"},
+    {"text": "The dead are dressed with the right side of the collar over the left.", "src": 4, "page": "p.70", "quote": "the kyō-katabira, the white gown the deceased is dressed in, is placed so that the right side of the collar overlaps the left", "scope": "Becke, footnote 3, citing Suzuki 2004: 232; dress of the deceased", "where": "narration"},
+    {"text": "Liberty actively sold Japanese-style gowns from 1884.", "src": 16, "page": "p.224", "quote": "1884 年以降から，日本風のガウンをも積極的に販売していた (Tr. \"from 1884 on, it also actively sold Japanese-style gowns\")", "scope": "Sasai 2010, refereed; Liberty catalogue 1886", "where": "photo 158314"},
+    {"text": "The name tea gown first appears in April 1878, for a gown worn without a corset.", "src": 16, "page": "p.221", "quote": "はじめて「ティー・ガウン」の名称が 1878 年 4 月に登場し，コルセットを用いないガウン (Tr. \"the name 'tea gown' first appeared in April 1878, a gown worn without a corset\")", "scope": "Sasai 2010, refereed; British women's magazines", "where": "photo 158314"},
+    {"text": "Tea gowns adopted kimono, obi, Japanese-style sleeves and Japanese patterns.", "src": 16, "page": "p.221", "quote": "Japanese styles such as the kimono, obi, Japanese-style sleeves, and Japanese patterns were adopted as a part of their design.", "scope": "Sasai 2010, English abstract; Britain, 1878-1890s", "where": "photo 158314"},
+    {"text": "A Japanese village opened in Knightsbridge, London, in January 1885.", "src": 16, "page": "p.221", "quote": "1885 年 1 月にロンドンのナイツブリッジに開設された「日本村」 (Tr. \"the 'Japanese village' opened in Knightsbridge, London, in January 1885\")", "scope": "Sasai 2010, refereed", "where": "narration"},
+    {"text": "Gilbert is said to have learned directly from the village's people and taught his actors for The Mikado.", "src": 16, "page": "p.223", "quote": "日本村の人々に直接教えを受けて，役者たちに伝授したという (Tr. \"it is said he was taught directly by the people of the Japanese village and passed it on to the actors\")", "scope": "Sasai 2010; reported ('it is said'), London 1885", "where": "narration"},
+    {"text": "Poiret described his kimono coat as ample and square-cut.", "src": 5, "page": "p.7", "quote": "It was an ample, square cut kimono, in heavy black wool edged in black satin.", "scope": "reported: Fukai quoting Poiret's autobiography (1930)", "where": "photo 69062"},
+    {"text": "Poiret did not necessarily grasp the difference between Japanese and Chinese dress.", "src": 5, "page": "p.8", "quote": "not necessarily grasp the distinction between Japanese and Chinese cultures and clothes", "scope": "Fukai, about Poiret. The Qing robe beside it is a museum object, not one Poiret saw.", "where": "photo 69062"},
+    {"text": "What Western fashion took was the rectangular, unconfined cut.", "src": 5, "page": "p.8", "quote": "The most important point was the rectangular cut that followed the warp and weft of the fabric and the unconfined garment that resulted from it.", "scope": "Fukai", "where": "card 1"},
+    {"text": "In 1906 Poiret freed the silhouette from the corset.", "src": 5, "page": "p.8", "quote": "In 1906 Poiret introduced his new silhouette freed from the corset for the first time since the Renaissance", "scope": "Fukai", "where": "card 1"},
+    {"text": "The cross-shaped structure of hanfu did not change across periods.", "src": 40, "page": "p.39", "quote": "the cross-shaped structure of Hanfu did not change", "scope": "Yang, Kimata, Satō 2024, refereed; English abstract", "where": "card 2"},
+    {"text": "Hanfu closes with the wearer's left front over the right, as Japanese dress does.", "src": 40, "page": "p.44", "quote": "右衽は着用者から見て左の衽を右の衽に重ねる着方（和服と同様）である (Tr. \"youren is the way of wearing in which, seen by the wearer, the left front is lapped over the right (as in wafuku)\")", "scope": "Yang, Kimata, Satō 2024, refereed. About hanfu, not about the Qing robe nearby.", "where": "card 2"},
+    {"text": "Every Asian traditional garment studied uses its full cloth width, cut with no waste.", "src": 41, "page": "p.16", "quote": "いずれの伝統服もそれぞれの布幅いっぱいを使い切り，まったく無駄のない裁断がなされている (Tr. \"every traditional garment uses its full cloth width, cut with no waste at all\")", "scope": "Tamura 2005, a written-up lecture, not refereed; museum-collection study, Asia broadly. The dallyeong is not claimed to be among the garments studied.", "where": "photo 853921"},
+    {"text": "The Korean chima traps heat rising from the heated floor.", "src": 41, "page": "p.13", "quote": "床からの熱が膨らんだチマに捕えられ，絶大な保温効果を発揮した (Tr. \"heat from the floor was caught by the puffed-out chima, giving a great warming effect\")", "scope": "Tamura 2005, lecture, not refereed", "where": "narration"},
+    {"text": "Bingata was used mainly for the uchikake robes of royal and gentry women.", "src": 42, "page": "p.458", "quote": "主に王家や士族の婦女子の裲襠(うちかけ)として用いられてきた (Tr. \"it was used mainly as uchikake robes of women of the royal and gentry families\")", "scope": "Satō 2003, commentary by a bingata craftsman, not refereed. The robe on the wall is not claimed to be royal.", "where": "photo 61851"},
+    {"text": "Yellow was a colour allowed only to royalty.", "src": 42, "page": "p.458", "quote": "黄色は王族のみに許された色 (Tr. \"yellow, a colour allowed only to royalty\")", "scope": "Satō 2003, commentary, not refereed", "where": "photo 61851"},
+    {"text": "Bingata absorbed Javanese and Indian chintz techniques and Chinese printed cloth.", "src": 42, "page": "p.456", "quote": "大交易時代に紅型は,ジャワ更紗,インド更紗などの技法や中国の印花布の影響をうけた (Tr. \"in the age of great trade bingata was influenced by Javanese and Indian chintz techniques and Chinese yinhuabu\")", "scope": "Satō 2003, commentary, not refereed", "where": "narration"},
+    {"text": "Since Okinawa's 1972 reversion, bingata circulates as Japanese kimono and obi.", "src": 42, "page": "p.457", "quote": "日本の伝統の着物の中にも取り入れられて,日本の着物や帯として流通するようになり (Tr. \"it was taken into traditional Japanese kimono and came to circulate as Japanese kimono and obi\")", "scope": "Satō 2003, commentary, not refereed; after 1972", "where": "narration"},
+    {"text": "From the mid-18th century attus became a trade good, reached Osaka and gave its name to the work coat atsushi.", "src": 43, "page": "p.1", "quote": "十八世紀半ば以降には交易品として産物化し、のちに大阪へももたらされて、「厚司」という作業着の呼称のもととなった (Tr. \"from the mid-18th century it became a trade product, was later brought to Osaka, and became the source of the name atsushi for a work garment\")", "scope": "Nakano 2006, museum bulletin, not refereed; read on page image", "where": "photo 51082"},
+    {"text": "Attus means cloth of the bark fibre of trees such as ohyō elm, Japanese elm and linden.", "src": 43, "page": "p.9", "quote": "オヒョウ、ハルニレ、シナノキなどの落葉樹の靱皮繊維で製作された布を意味する語である (Tr. \"a word meaning cloth made from the bast fibre of deciduous trees such as ohyō, harunire and shinanoki\")", "scope": "Nakano 2006, museum bulletin, note 1, not refereed", "where": "narration"}
+  ],
+  "dropped": [
+    "Chinese robe as a relative of the kimono: no source read compares a Qing robe with the kimono; the chaofu hangs beside Fukai's remark on Poiret confusing Japanese and Chinese dress, and the hanfu comparison is marked as about hanfu.",
+    "The Korean dallyeong itself: no source read discusses it; it hangs beside a general comparison of Asian dress (41 p.16, a lecture).",
+    "That the Met dressing gown is an export gown by Shiino Shobei or padded habutae (5 p.5): the record says only 'silk', so no link is made.",
+    "Vionnet and the bias cut (5 p.9), and the 'kimono sleeve' (11 p.34): sourced, left out for space.",
+    "Qipao as a parallel 'traditional' dress (12 p.61): about tourism framing, not garment history; not used."
+  ]
+}

@@ -1,40 +1,488 @@
 {
-  "voice": "Alice",
-  "model": "tts-elevenlabs-turbo-v2-5",
-  "respell": {
-    "kiru mono": "kee-roo moh-noh",
-    "kitsuke": "kee-tsoo-keh",
-    "kosode": "koh-soh-deh",
-    "furisode": "foo-ree-soh-deh",
-    "obi": "oh-bee"
-  },
-  "chapters": [
+ "voice": "Alice",
+ "model": "tts-elevenlabs-turbo-v2-5",
+ "respell": {
+  "kiru mono": "kee-roo moh-noh",
+  "kitsuke": "kee-tsoo-keh",
+  "kosode": "koh-soh-deh",
+  "furisode": "foo-ree-soh-deh",
+  "obi-age": "oh-bee ah-geh",
+  "obi-jime": "oh-bee jee-meh",
+  "obiage": "oh-bee ah-geh",
+  "obijime": "oh-bee jee-meh",
+  "obi": "oh-bee",
+  "nagajuban": "nah-gah joo-bahn",
+  "juban": "joo-bahn",
+  "ohashori": "oh-hah-show-ree",
+  "okumi": "oh-koo-mee",
+  "haori": "hah-oh-ree",
+  "hakama": "hah-kah-mah",
+  "uchikake": "oo-chee-kah-keh",
+  "yukata": "yoo-kah-tah",
+  "komon": "koh-mohn",
+  "meisen": "may-sen",
+  "awase": "ah-wah-seh",
+  "hitoe": "hee-toh-eh",
+  "tanmono": "tahn-moh-noh",
+  "koromogae": "koh-roh-moh-gah-eh",
+  "katabira": "kah-tah-bee-rah",
+  "eba-moyō": "eh-bah moh-yoh",
+  "eba-moyo": "eh-bah moh-yoh",
+  "hinagata-bon": "hee-nah-gah-tah bohn",
+  "sakidori": "sah-kee-doh-ree",
+  "emon": "eh-mohn",
+  "nukiemon": "noo-kee-eh-mohn",
+  "migoro": "mee-goh-roh",
+  "sode": "soh-deh",
+  "eri": "eh-ree",
+  "kakeeri": "kah-keh-eh-ree",
+  "mitake": "mee-tah-keh",
+  "yuki": "yoo-kee",
+  "kurimawashi": "koo-ree-mah-wah-shee",
+  "tomesode": "toh-meh-soh-deh",
+  "hōmongi": "hoh-mohn-ghee",
+  "homongi": "hoh-mohn-ghee",
+  "iromuji": "ee-roh-moo-jee",
+  "mon": "mohn",
+  "Kanbun": "kahn-boon",
+  "Keichō": "kay-choh",
+  "Genroku": "ghen-roh-koo",
+  "Meiji": "may-jee",
+  "Taishō": "tie-show",
+  "Shōwa": "show-wah",
+  "Edo": "eh-doh",
+  "seijin-no-hi": "say-jeen noh hee",
+  "ro": "roh",
+  "sha": "shah",
+  "shaku": "shah-koo",
+  "Japonse rok": "yah-pon-seh rock"
+ },
+ "chapters": [
+  {
+   "id": "threshold",
+   "title": "Audio guide · Welcome",
+   "cues": [
     {
-      "id": "threshold",
-      "stop": 0,
-      "title": "Welcome",
-      "cues": [
-        {"show": "Welcome. Take your time in here."},
-        {"show": "The word on the wall comes from kiru mono, which means, quite simply, a thing to wear."},
-        {"show": "It is a plain name. Almost nothing else about the kimono is plain."},
-        {"show": "So before you scroll, pick a side, and hold on to your answer. We will come back for it at the end."},
-        {"show": "Every room has a voice like this one. Press play whenever you want company."}
-      ]
+     "show": "Welcome. In front of you, on the tatami, lies a single roll of cloth.",
+     "say": "Welcome. In front of you, on the tatami, lies a single roll of cloth.",
+     "frame": 0
     },
     {
-      "id": "bolt",
-      "stop": 1,
-      "title": "One bolt",
-      "cues": [
-        {"show": "Watch the cloth, not the labels.", "frame": 0},
-        {"show": "It leaves the roll at one width, and nobody will ever cut a curve into it.", "frame": 20},
-        {"show": "A few straight cuts across. That is all the cutting there is.", "frame": 120},
-        {"show": "Then the rectangles are sewn back together, edge to edge.", "frame": 180},
-        {"show": "Lift it by the shoulders and the whole garment is there.", "frame": 215},
-        {"show": "Lay it down again, and it is as flat as the bolt it came from.", "frame": 270},
-        {"show": "Nothing in it has been shaped to a body. No dart, no tuck, no curve.", "frame": 295},
-        {"show": "So here is the puzzle of this exhibition. If the body is not in the cloth, where is it?", "frame": 315, "end_frame": 329}
-      ]
+     "show": "The hall around you is a reconstructed room in the Edo-period shoin style, not any one building.",
+     "say": "The hall around you is a reconstructed room in the Edo-period show-in style, not any one building."
+    },
+    {
+     "show": "The word kimono is plain Japanese. Kiru, to wear. Mono, a thing. A thing to wear.",
+     "say": "The word kimono is plain Japanese. Kee-roo, to wear. Moh-noh, a thing. A thing to wear."
+    },
+    {
+     "show": "So the question here may sound strange. Is a kimono a garment, or a set of rules?",
+     "say": "So the question here may sound strange. Is a kimono a garment, or a set of rules?"
+    },
+    {
+     "show": "Choose one now, and hold on to it. The rooms ahead will test your answer. Only the last one settles it.",
+     "say": "Choose one now, and hold on to it. The rooms ahead will test your answer. Only the last one settles it."
+    },
+    {
+     "show": "Begin with the roll. Everything in the next room is made from it, and from nothing else.",
+     "say": "Begin with the roll. Everything in the next room is made from it, and from nothing else."
     }
-  ]
+   ]
+  },
+  {
+   "id": "bolt",
+   "title": "Stop 1 · One bolt",
+   "cues": [
+    {
+     "show": "Watch the cloth before you read anything.",
+     "say": "Watch the cloth before you read anything.",
+     "frame": 0
+    },
+    {
+     "show": "This roll is a tanmono, a bolt. In the old reckoning, one bolt is one kimono.",
+     "say": "This roll is a tanmono, a bolt. In the old reckoning, one bolt is one kimono.",
+     "frame": 18
+    },
+    {
+     "show": "Its width is settled before any tailor begins. In sixteen thirty-six the shogunate went further, and fixed by law how long and how wide a bolt of silk had to be.",
+     "say": "Its width is settled before any tailor begins. In sixteen thirty-six the shogunate went further, and fixed by law how long and how wide a bolt of silk had to be.",
+     "frame": 50
+    },
+    {
+     "show": "Keep that width in mind. Every measurement that follows is counted from it.",
+     "say": "Keep that width in mind. Every measurement that follows is counted from it.",
+     "frame": 96
+    },
+    {
+     "show": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
+     "say": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
+     "frame": 120
+    },
+    {
+     "show": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
+     "say": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
+     "frame": 150
+    },
+    {
+     "show": "Then the pieces are joined again, by hand.",
+     "say": "Then the pieces are joined again, by hand.",
+     "frame": 210
+    },
+    {
+     "show": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
+     "say": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
+     "frame": 236
+    },
+    {
+     "show": "There is no dart, and no curve. Hung on its rack, the robe is as flat as the bolt it came from.",
+     "say": "There is no dart, and no curve. Hung on its rack, the robe is as flat as the bolt it came from.",
+     "frame": 274
+    },
+    {
+     "show": "And yet it has to close around a person. Come round to the front, and see how.",
+     "say": "And yet it has to close around a person. Come round to the front, and see how.",
+     "frame": 308
+    }
+   ]
+  },
+  {
+   "id": "parts",
+   "title": "Stop 2 · The parts",
+   "cues": [
+    {
+     "show": "Now the front of the robe turns towards you.",
+     "say": "Now the front of the robe turns towards you.",
+     "frame": 330
+    },
+    {
+     "show": "Find the narrow strip on either side of the opening. That is the okumi. It gives each front enough width to cross the other.",
+     "say": "Find the narrow strip on either side of the opening. That is the okumi. It gives each front enough width to cross the other.",
+     "frame": 340
+    },
+    {
+     "show": "When the robe is worn, the wearer's left front lies over her right.",
+     "say": "When the robe is worn, the wearer's left front lies over her right.",
+     "frame": 360
+    },
+    {
+     "show": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+     "say": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+     "frame": 368
+    },
+    {
+     "show": "So a kimono could be taken apart. Where kimono were everyday wear, robes were unpicked and remade as seasons, uses and owners changed: a panel swapped, a piece extended, the silk washed flat and sewn up again.",
+     "say": "So a kimono could be taken apart. Where kimono were everyday wear, robes were unpicked and remade as seasons, uses and owners changed: a panel swapped, a piece extended, the silk washed flat and sewn up again.",
+     "frame": 390
+    },
+    {
+     "show": "There is a saying for it: unpick a kimono, and it turns back into cloth.",
+     "say": "There is a saying for it: unpick a kimono, and it turns back into cloth.",
+     "frame": 400
+    },
+    {
+     "show": "There is no crest on it. In one Tottori town in the late nineteen-sixties, crests had all but left clothes, except on ceremonial dress.",
+     "say": "There is no crest on it. In one Tottori town in the late nineteen-sixties, crests had all but left clothes, except on ceremonial dress.",
+     "frame": 408
+    },
+    {
+     "show": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
+     "say": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
+     "frame": 414
+    }
+   ]
+  },
+  {
+   "id": "cloth",
+   "title": "Stop 3 · Cloth and season",
+   "cues": [
+    {
+     "show": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+     "say": "Look at the loom first, then at the robes. Across the year, nothing about their cut changes. The sleeves keep their length. The skirt is never shortened.",
+     "photo": 0
+    },
+    {
+     "show": "What changes is the cloth. Three Japanese design researchers put it plainly: the shape is the same from formal wear to everyday wear. The fabric, and what is dyed or woven into it, decides the use.",
+     "say": "What changes is the cloth. Three Japanese design researchers put it plainly: the shape is the same from formal wear to everyday wear. The fabric, and what is dyed or woven into it, decides the use.",
+     "photo": 1
+    },
+    {
+     "show": "Changing one wardrobe for the next has its own name, koromogae. Druet counts it among the care rituals, beside airing a whole collection at once.",
+     "say": "Changing one wardrobe for the next has its own name, koromogae. Druet counts it among the care rituals, beside airing a whole collection at once.",
+     "photo": 2
+    },
+    {
+     "show": "Is summer kimono cool? A Japanese laboratory study dressed women in summer kimono in a hot room. The robe is full of openings: collar, cuffs, sleeve slits, hem. Even so, over the stomach the humidity passed ninety per cent. In one wearer's trials, silk stayed drier than polyester.",
+     "say": "Is summer kimono cool? A Japanese laboratory study dressed women in summer kimono in a hot room. The robe is full of openings: collar, cuffs, sleeve slits, hem. Even so, over the stomach the humidity passed ninety per cent. In one wearer's trials, silk stayed drier than polyester.",
+     "photo": 2
+    },
+    {
+     "show": "The season is also worn early. A summer robe may already carry the bellflower of autumn. Further along this wall, the pattern begins to say more than the month.",
+     "say": "The season is also worn early. A summer robe may already carry the bellflower of autumn. Further along this wall, the pattern begins to say more than the month.",
+     "photo": 3
+    }
+   ]
+  },
+  {
+   "id": "pattern",
+   "title": "Stop 4 · Pattern",
+   "cues": [
+    {
+     "show": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
+     "say": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
+     "photo": 0
+    },
+    {
+     "show": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
+     "say": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
+     "photo": 1
+    },
+    {
+     "show": "Her finding is that no style stood alone. Each borrowed elements from the others, and in exchange made the next.",
+     "say": "Her finding is that no style stood alone. Each borrowed elements from the others, and in exchange made the next.",
+     "photo": 3
+    },
+    {
+     "show": "Koide ties the Kanbun style to a wider public. As the shogun's order settled, townspeople came to enjoy the kosode, in quality and in number.",
+     "say": "Koide ties the Kanbun style to a wider public. As the shogun's order settled, townspeople came to enjoy the kosode, in quality and in number.",
+     "photo": 5
+    },
+    {
+     "show": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
+     "say": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
+     "photo": 6
+    }
+   ]
+  },
+  {
+   "id": "dressing",
+   "title": "Stop 5 · Dressing",
+   "cues": [
+    {
+     "show": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+     "say": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+     "frame": 492
+    },
+    {
+     "show": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+     "say": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+     "frame": 564
+    },
+    {
+     "show": "Left over right is old. Becke traces it to a clothing code of the year 718, which followed Chinese fashion.",
+     "say": "Left over right is old. Becke traces it to a clothing code of the year 718, which followed Chinese fashion.",
+     "frame": 580
+    },
+    {
+     "show": "The fold at the waist is easily disturbed. In the yukata study, a bow made kneeling on the floor shifted it most; a standing bow, least.",
+     "say": "The fold at the waist is easily disturbed. In the yukata study, a bow made kneeling on the floor shifted it most; a standing bow, least.",
+     "frame": 596
+    },
+    {
+     "show": "Women today tie the obi high, from under the bust to the waist. About a century ago, cords and obi sat low, at the hip bones.",
+     "say": "Women today tie the obi high, from under the bust to the waist. About a century ago, cords and obi sat low, at the hip bones.",
+     "frame": 626
+    },
+    {
+     "show": "The knot is tied last, at the back. Walk round and look.",
+     "say": "The knot is tied last, at the back. Walk round and look.",
+     "frame": 660
+    }
+   ]
+  },
+  {
+   "id": "body",
+   "title": "Stop 6 · Body",
+   "cues": [
+    {
+     "show": "Walk round behind the figure. This is the view the wearer never has.",
+     "say": "Walk round behind the figure. This is the view the wearer never has.",
+     "frame": 684
+    },
+    {
+     "show": "Now the collar. Becke quotes Dalby: in Japan the nape is a primary erotic focus of the female body, the equivalent of the breasts in the West. Today's magazines keep it covered. Paris, around 1907, let the neckband fall to show it. The two sources point in different directions, and neither settles the matter.",
+     "say": "Now the collar. Becke quotes Dalby: in Japan the nape is a primary erotic focus of the female body, the equivalent of the breasts in the West. Today's magazines keep it covered. Paris, around 1907, let the neckband fall to show it. The two sources point in different directions, and neither settles the matter.",
+     "frame": 720
+    },
+    {
+     "show": "Furisode magazines go well beyond walking. They cover getting in and out of a car, behaving at a meal, even using the bathroom.",
+     "say": "Furisode magazines go well beyond walking. They cover getting in and out of a car, behaving at a meal, even using the bathroom.",
+     "frame": 776
+    },
+    {
+     "show": "Posture is measured too. In one laboratory study, wearing an obi eased the load on the shoulder muscles when leaning forward to lift a tea bowl.",
+     "say": "Posture is measured too. In one laboratory study, wearing an obi eased the load on the shoulder muscles when leaning forward to lift a tea bowl.",
+     "frame": 810
+    },
+    {
+     "show": "On the wall, the older pictures. For a geisha, one writer says, choosing and wearing a kimono is as much a part of training as dance or the shamisen.",
+     "say": "On the wall, the older pictures. For a geisha, one writer says, choosing and wearing a kimono is as much a part of training as dance or the shamisen.",
+     "photo": 2
+    },
+    {
+     "show": "The robe after the bath is a yukata, cut on the same plan as the silk robes before it. It belongs to a larger family of garments, and that family is next.",
+     "say": "The robe after the bath is a yukata, cut on the same plan as the silk robes before it. It belongs to a larger family of garments, and that family is next.",
+     "photo": 5
+    }
+   ]
+  },
+  {
+   "id": "family",
+   "title": "Stop 7 · The family",
+   "cues": [
+    {
+     "show": "Begin with the long sleeves. In the late Edo period, the writer Kitagawa Morisada sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern.",
+     "say": "Begin with the long sleeves. In the late Edo period, the writer Kee-tah-gah-wah Moh-ree-sah-dah sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern.",
+     "photo": 0
+    },
+    {
+     "show": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy.",
+     "say": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy.",
+     "photo": 0
+    },
+    {
+     "show": "Sleeves could also be cut down. In wartime, brides wore a black furisode with a train, because its sleeves could later be shortened to make a tomesode, a married woman's formal robe.",
+     "say": "Sleeves could also be cut down. In wartime, brides wore a black furisode with a train, because its sleeves could later be shortened to make a tomesode, a married woman's formal robe.",
+     "photo": 1
+    },
+    {
+     "show": "A survey in one Tottori town, in the late nineteen-sixties, counted two hundred and six different crests.",
+     "say": "A survey in one Toh-toh-ree town, in the late nineteen-sixties, counted two hundred and six different crests.",
+     "photo": 2
+    },
+    {
+     "show": "The jacket is the easiest member to borrow. In Kyoto's flea markets, visitors take to the haori because it needs no obi and no wrapping.",
+     "say": "The jacket is the easiest member to borrow. In Kyoto's flea markets, visitors take to the haori because it needs no obi and no wrapping.",
+     "photo": 3
+    },
+    {
+     "show": "Rules reached even the plainest cloth. Edo law told peasants to wear plain dark blue, and the order went out across the whole country.",
+     "say": "Rules reached even the plainest cloth. Edo law told peasants to wear plain dark blue, and the order went out across the whole country.",
+     "photo": 6
+    },
+    {
+     "show": "Each rule had its date. The next stretch of wall walks through them.",
+     "say": "Each rule had its date. The next stretch of wall walks through them.",
+     "photo": 6
+    }
+   ]
+  },
+  {
+   "id": "history",
+   "title": "Stop 8 · Four centuries",
+   "cues": [
+    {
+     "show": "Begin before any print on this wall. At the Heian court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+     "say": "Begin before any print on this wall. At the Hay-ahn court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+     "photo": 0
+    },
+    {
+     "show": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in 1666 records the new Kanbun style, a wide empty back with large, moving motifs.",
+     "say": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in sixteen sixty-six records the new Kanbun style, a wide empty back with large, moving motifs.",
+     "photo": 0
+    },
+    {
+     "show": "Meiji changed the words. Many garment names collapsed into one: kimono. Becke argues that one shape was frozen in time in these years.",
+     "say": "Meiji changed the words. Many garment names collapsed into one: kimono. Becke argues that one shape was frozen in time in these years.",
+     "photo": 3
+    },
+    {
+     "show": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
+     "say": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono.",
+     "photo": 6
+    },
+    {
+     "show": "In 1981 the kimono retail market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono became something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
+     "say": "In nineteen eighty-one the kimono retail market was worth nearly one point eight trillion yen. By twenty twenty it was about a seventh of that. Kimono became something rented rather than owned; by twenty twenty-one Kyoto alone had about forty rental shops.",
+     "photo": 6
+    },
+    {
+     "show": "By then the shape had long since travelled. The wall goes on, abroad.",
+     "say": "By then the shape had long since travelled. The wall goes on, abroad.",
+     "photo": 6
+    }
+   ]
+  },
+  {
+   "id": "abroad",
+   "title": "Stop 9 · Abroad",
+   "cues": [
+    {
+     "show": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
+     "say": "The traffic began with gifts. When the Dutch came to Edo, the shogun returned their presents with silk robes. In Holland they became men's house gowns, light and warm. One writer sees them on Vermeer's astronomer and geographer.",
+     "photo": 0
+    },
+    {
+     "show": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
+     "say": "Two centuries later, Western women took the kimono up, but loosely. They often wore it without an obi, and often right over left: in Japan, the way the dead are dressed.",
+     "photo": 1
+    },
+    {
+     "show": "In London, a Japanese village opened in Knightsbridge in January 1885. Gilbert is said to have learned from its people when he staged The Mikado.",
+     "say": "In London, a Japanese village opened in Knightsbridge in January eighteen eighty-five. Gilbert is said to have learned from its people when he staged The Mikado.",
+     "photo": 2
+    },
+    {
+     "show": "Nearer Japan, the comparisons turn to cloth and climate. In Korea, one lecture notes, the full skirt caught the warmth rising from heated floors.",
+     "say": "Nearer Japan, the comparisons turn to cloth and climate. In Korea, one lecture notes, the full skirt caught the warmth rising from heated floors.",
+     "photo": 4
+    },
+    {
+     "show": "Ryukyuan bingata absorbed Javanese and Indian chintz and Chinese printed cloth. Since 1972 it has been sold as Japanese kimono and obi.",
+     "say": "Ryoo-kyoo-an bin-gah-tah absorbed Javanese and Indian chintz and Chinese printed cloth. Since nineteen seventy-two it has been sold as Japanese kimono and obi.",
+     "photo": 5
+    },
+    {
+     "show": "The Ainu word attus means cloth from the inner bark of trees such as elm and linden. Now turn round. The robe on its rack waits at the far end of the hall.",
+     "say": "The Eye-noo word aht-toos means cloth from the inner bark of trees such as elm and linden. Now turn round. The robe on its rack waits at the far end of the hall.",
+     "photo": 6
+    }
+   ]
+  },
+  {
+   "id": "answer",
+   "title": "Stop 10 · The answer",
+   "cues": [
+    {
+     "show": "Walk back down the hall now. Past the prints, past the robes, to the flat robe on its rack.",
+     "say": "Walk back down the hall now. Past the prints, past the robes, to the flat robe on its rack.",
+     "frame": 846
+    },
+    {
+     "show": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one. It covers the whole family you have just passed.",
+     "say": "Becke's thesis follows the furisode at the coming-of-age day. But her definition is a general one. It covers the whole family you have just passed.",
+     "frame": 872
+    },
+    {
+     "show": "The shape is the plain part. Unworn, a kimono is completely flat. No darts, no tucks, nothing to hold a body's form.",
+     "say": "The shape is the plain part. Unworn, a kimono is completely flat. No darts, no tucks, nothing to hold a body's form.",
+     "frame": 898
+    },
+    {
+     "show": "The practice is the rest. A kimono maker, Yamaguchi Genbei, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement.",
+     "say": "The practice is the rest. A kimono maker, Yah-mah-goo-chee Ghen-bay, put a figure on it: seventy percent of what makes a kimono a kimono is how it is worn. That is a maker's view, not a measurement.",
+     "frame": 914
+    },
+    {
+     "show": "And the practice has a history. Laws on cloth under the shoguns. After the war, one book with three hundred and ninety rules.",
+     "say": "And the practice has a history. Laws on cloth under the shoguns. After the war, one book with three hundred and ninety rules.",
+     "frame": 936
+    },
+    {
+     "show": "So the answer is both. A garment, and a set of rules. Whichever you chose at the entrance, you were holding half of it.",
+     "say": "So the answer is both. A garment, and a set of rules. Whichever you chose at the entrance, you were holding half of it.",
+     "frame": 954
+    },
+    {
+     "show": "Becke adds one more thing. Rules can be bent, she writes, and clothes altered.",
+     "say": "Becke adds one more thing. Rules can be bent, she writes, and clothes altered.",
+     "frame": 966
+    },
+    {
+     "show": "The robe stays on its rack, flat, until someone puts it on. Thank you for walking with us.",
+     "say": "The robe stays on its rack, flat, until someone puts it on. Thank you for walking with us.",
+     "frame": 976
+    }
+   ]
+  }
+ ]
 }

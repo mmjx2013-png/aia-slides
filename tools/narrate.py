@@ -98,8 +98,7 @@ def main():
                 raise SystemExit(f"[{cid}] cue {i} could not be aligned: {cue['show']!r}")
             t0 = heard[min(hit)]["start"]; t1 = heard[max(hit)]["end"]
             cues.append({"t0": round(max(0, t0 - 0.12), 3), "t1": round(t1 + 0.25, 3), "text": cue["show"],
-                         **({"frame": cue["frame"]} if "frame" in cue else {}),
-                         **({"end_frame": cue["end_frame"]} if "end_frame" in cue else {})})
+                         **{k: cue[k] for k in ("frame", "end_frame", "photo") if k in cue}})
         for a, b in zip(cues, cues[1:]):
             if a["t1"] > b["t0"]:
                 a["t1"] = b["t0"]

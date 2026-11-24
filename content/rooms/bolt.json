@@ -1,0 +1,255 @@
+{
+ "id": "bolt",
+ "n": 1,
+ "type": "scrub",
+ "theme": "Structure",
+ "title": "One bolt",
+ "heading": "From one bolt to a flat T",
+ "intro": "Before it is a garment, it is a roll of cloth. Watch it unroll, divide into eight pieces and come together again as a flat T.",
+ "from": 0,
+ "to": 329,
+ "labels": [
+  {
+   "anchor": "roll",
+   "from": 8,
+   "to": 58,
+   "side": "right",
+   "kicker": "The bolt",
+   "title": "One bolt, one kimono",
+   "jp": "反物",
+   "body": [
+    "A bolt is about 36–38 cm wide and about 12 m long, and one bolt makes one kimono {7:p.76}.",
+    "In the old units: 9 sun 5 bu to 9 sun 8 bu wide, 3 jō or more long. One shaku, about 38 cm, is 10 sun {7:p.80}."
+   ]
+  },
+  {
+   "anchor": "cloth_free_end",
+   "from": 64,
+   "to": 114,
+   "side": "left",
+   "kicker": "The width",
+   "title": "Everything follows the width",
+   "body": [
+    "The proportions of every part of a kimono derive from the width of the bolt {8:p.50}.",
+    "A sleeve, for example, is as wide as the shoulder, or up to one sun (about 3.8 cm) wider {8:p.49} {7:p.80}."
+   ]
+  },
+  {
+   "anchor": "cut_1",
+   "from": 122,
+   "to": 164,
+   "side": "right",
+   "kicker": "The cut",
+   "title": "Eight rectangles",
+   "body": [
+    "Two body panels, two sleeves, two okumi, a collar and an over-collar: eight rectangles {7:p.76}.",
+    "No pattern is drafted; the cut only divides {7:p.80}. Sleeves and body panels first, the rest split for okumi and collar, as Ōtsuka Sueko put it in 1972 {7:pp.79-80}."
+   ]
+  },
+  {
+   "anchor": "piece_okumi",
+   "from": 168,
+   "to": 206,
+   "side": "left",
+   "kicker": "Nothing left",
+   "title": "The whole bolt is used",
+   "body": [
+    "The bolt is cut and used entire, with nothing left over {7:p.76}.",
+    "Becke, quoting Dalby, gives the first mark of a kimono as <q>[A] geometrical use of standard fabric widths sewn with minimal cutting</q> {4:p.10}."
+   ]
+  },
+  {
+   "anchor": "seam_centre_back",
+   "from": 214,
+   "to": 260,
+   "side": "right",
+   "kicker": "The seams",
+   "title": "Straight seams, sewn by hand",
+   "jp": "手縫い",
+   "body": [
+    "Traditionally a kimono is sewn by hand, without large stitches showing on the face {7:p.76}.",
+    "The seams have names: the back seam, senui, and the side seams, wakinui {7:p.77}."
+   ]
+  },
+  {
+   "anchor": "sleeve_l_centre",
+   "from": 266,
+   "to": 310,
+   "side": "left",
+   "kicker": "The T",
+   "title": "No darts, no tucks",
+   "body": [
+    "<q>In its unworn form, a kimono has a completely flat surface.</q> {4:p.10}",
+    "Becke again: <q>no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape</q> {4:p.10}."
+   ]
+  }
+ ],
+ "line": {
+  "from": 314,
+  "to": 329,
+  "text": "Eight rectangles, and not one dart."
+ },
+ "narration": {
+  "title": "Stop 1 · One bolt",
+  "cues": [
+   {
+    "show": "Watch the cloth before you read anything.",
+    "frame": 0
+   },
+   {
+    "show": "This roll is a tanmono, a bolt. In the old reckoning, one bolt is one kimono.",
+    "frame": 18
+   },
+   {
+    "show": "Its width is settled before any tailor begins. In sixteen thirty-six the shogunate went further, and fixed by law how long and how wide a bolt of silk had to be.",
+    "frame": 50
+   },
+   {
+    "show": "Keep that width in mind. Every measurement that follows is counted from it.",
+    "frame": 96
+   },
+   {
+    "show": "Now the cut. There is no paper pattern, and no outline of a body drawn on the cloth. The tailor only divides.",
+    "frame": 120
+   },
+   {
+    "show": "Straight cuts, across and along, give eight pieces. Every strip has a place, and nothing is thrown away.",
+    "frame": 150
+   },
+   {
+    "show": "Then the pieces are joined again, by hand.",
+    "frame": 210
+   },
+   {
+    "show": "The stitches are kept small, and out of sight on the face. Follow the seams: they run straight, because every piece is straight.",
+    "frame": 236
+   },
+   {
+    "show": "There is no dart, and no curve. Hung on its rack, the robe is as flat as the bolt it came from.",
+    "frame": 274
+   },
+   {
+    "show": "And yet it has to close around a person. Come round to the front, and see how.",
+    "frame": 308
+   }
+  ]
+ },
+ "claims": [
+  {
+   "text": "One bolt is about 36-38 cm wide and about 12 m long, and makes one kimono.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "１反（幅約 36～38cm・長さ約 12m）という単位で扱い，１反がキモノ１枚分に相当する",
+   "scope": "Tr.: \"handled in units of one tan (width about 36-38 cm, length about 12 m); one tan equals one kimono\". Woman's nagagi; the authors citing a tailoring textbook.",
+   "where": "label 1; narration 2"
+  },
+  {
+   "text": "Old units: 1 shaku = 10 sun = about 38 cm; standard width 9 sun 5 bu to 9 sun 8 bu; a kimono bolt is 3 jō or more.",
+   "src": 7,
+   "page": "p.80",
+   "quote": "１尺＝10 寸＝約 38cm，10 尺＝１丈。並幅は９寸５分～９寸８分，着尺１反は３丈以上。",
+   "scope": "Tr.: \"1 shaku = 10 sun = about 38 cm, 10 shaku = 1 jō. Standard width is 9 sun 5 bu to 9 sun 8 bu; one kijaku bolt is 3 jō or more.\". Note 7; kujirajaku units. Also gives 1 sun = about 3.8 cm (label 2).",
+   "where": "label 1; label 2; narration 3"
+  },
+  {
+   "text": "In 1636 a shogunal law fixed the length and width of a bolt of silk.",
+   "src": 39,
+   "page": "p.435",
+   "quote": "絹紬1反の長さかねにて3丈4尺,幅 1尺4寸",
+   "scope": "Tr.: \"one bolt of silk or pongee: length 3 jō 4 shaku in kanejaku, width 1 shaku 4 sun\". Kan'ei 13 (1636) shogunal law as given by Nishimura; kanejaku units; silk and pongee (cotton had its own width).",
+   "where": "narration 3"
+  },
+  {
+   "text": "The width ratios of the parts derive from the bolt width.",
+   "src": 8,
+   "page": "p.50",
+   "quote": "キモノの各部の幅の比率は反物の幅に由来する。",
+   "scope": "Tr.: \"the width ratios of the kimono parts derive from the bolt width\". Authors' conclusion (doll-kimono study, concluding section).",
+   "where": "label 2; narration 4"
+  },
+  {
+   "text": "Sleeve width equals the shoulder width or is up to 1 sun wider.",
+   "src": 8,
+   "page": "p.49",
+   "quote": "袖幅は肩幅と同寸から1寸以内の範囲で広くするため，肩幅1に対し袖幅は1～1.1程度",
+   "scope": "Tr.: \"sleeve width is from the same as shoulder width to within 1 sun wider, so about 1-1.1 to shoulder 1\". Standard dimensions, woman's kimono.",
+   "where": "label 2"
+  },
+  {
+   "text": "A woman's nagagi is eight rectangles: two body panels, two sleeves, two okumi, a collar and an over-collar.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "左右の前後身頃２枚，袖２枚，衽２枚，衿１枚，掛衿１枚の８枚の長方形によって構成される",
+   "scope": "Tr.: \"composed of eight rectangles: left and right front-back body panels 2, sleeves 2, okumi 2, collar 1, over-collar 1\". Basic form of the modern woman's nagagi, as the authors describe it.",
+   "where": "label 3; narration 6"
+  },
+  {
+   "text": "No pattern is made; cutting only divides the cloth into eight rectangles.",
+   "src": 7,
+   "page": "p.80",
+   "quote": "衣服の形を決め型紙を作る段階が省略され，８枚の長方形に分けるだけの裁断はとても簡素であり",
+   "scope": "Tr.: \"the step of making a pattern is omitted; cutting that only divides into 8 rectangles is very simple\". Authors' interpretation, compared with Western dressmaking.",
+   "where": "label 3; narration 5"
+  },
+  {
+   "text": "Ōtsuka's rule: cut both sleeves and both body panels, then split the remainder for okumi and collar.",
+   "src": 7,
+   "page": "pp.79-80",
+   "quote": "両袖，両身頃を裁ち，残ったものを二つに割っておくみと衿に分ければいいわけで",
+   "scope": "Tr.: \"cut both sleeves and both bodies, then split what remains in two for okumi and collar\". Quotation of Ōtsuka Sueko 1972 inside Maruyama et al.",
+   "where": "label 3"
+  },
+  {
+   "text": "The bolt is cut and used entirely, with nothing left over.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "図１のように裁断し，すべて残らず用いて作る。",
+   "scope": "Tr.: \"cut as in Fig. 1 and made using all of it, with nothing left\". Standard layout (the paper's Fig. 1).",
+   "where": "label 4; narration 6"
+  },
+  {
+   "text": "Dalby's first defining trait: standard fabric widths sewn with minimal cutting.",
+   "src": 4,
+   "page": "p.10",
+   "quote": "[A] geometrical use of standard fabric widths sewn with minimal cutting",
+   "scope": "Reported: Becke quoting Dalby 2001: 18.",
+   "where": "label 4"
+  },
+  {
+   "text": "Kimono are traditionally sewn by hand, without large stitches on the face.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "縫製は伝統的に手縫いで行われ，表に大きく縫い目を出さず，目立たないような縫い方で仕立てられる",
+   "scope": "Tr.: \"sewing is traditionally by hand, without showing large stitches on the face, sewn so as not to stand out\". General.",
+   "where": "label 5; narration 7-8"
+  },
+  {
+   "text": "The seams include the side seams (wakinui) and the back seam (senui).",
+   "src": 7,
+   "page": "p.77",
+   "quote": "６）脇縫いをほどく。７）背縫いをほどく。８）袖をほどく。",
+   "scope": "Tr.: \"6) unpick the side seams. 7) unpick the back seam. 8) unpick the sleeves.\". Disassembly order for one sample; names the seams.",
+   "where": "label 5"
+  },
+  {
+   "text": "Unworn, a kimono has a completely flat surface.",
+   "src": 4,
+   "page": "p.10",
+   "quote": "In its unworn form, a kimono has a completely flat surface.",
+   "scope": "Becke; general.",
+   "where": "label 6; narration 9"
+  },
+  {
+   "text": "No tucks or darts give it a three-dimensional shape.",
+   "src": 4,
+   "page": "p.10",
+   "quote": "no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape",
+   "scope": "Becke; general.",
+   "where": "label 6; line; narration 9"
+  }
+ ],
+ "dropped": [
+  "Exact cutting lengths for each piece of a standard bolt: only diagrams (Maruyama 2017 Fig. 1; 2020 Fig. 3), no figures in text.",
+  "The number of cuts: no source counts them, so the narration does not."
+ ]
+}

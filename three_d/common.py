@@ -846,6 +846,391 @@ def fabric_material(kind, name=None, color=None):
     return mat
 
 
+# --------------------------------------------------------------------------- hall materials (v3)
+#
+# hall_material(kind, name=None) -> bpy material for the shoin hall and the weaving room.
+#   Photo-scanned CC0 maps from build/assets (see three_d/CREDITS.md); every kind falls back to a
+#   procedural version when its files are missing, so nothing breaks on a fresh checkout.
+#   kind: 'tatami'   UV: u along the mat (0..1 = 1.82 m), v across (0..0.5 = one 0.91 m mat); optional
+#                    colour attribute 'tone' multiplies the colour per mat
+#         'hinoki'   pale structural wood. UV in METRES, grain along U
+#         'board'    pale ceiling / panel boards. UV in metres, grain along U
+#         'planks'   darker cedar floor boards. UV in metres, boards along U
+#         'plaster'  warm white lime plaster. UV in metres
+#         'washi'    shoji paper lit from behind (emissive; value node 'strength')
+#         'gold'     gold leaf with visible leaf squares. Needs a UV map called 'leaf' in metres
+#         'gilt'     gilt metal fittings        'felt'  dark red wool felt
+#         'lacquer'  black lacquer with fine scratches
+
+ASSET_DIR = os.path.join(ROOT, "build", "assets")
+
+
+def asset_map(aid, kind, res="2k"):
+    """Path of a downloaded Poly Haven map (kind: diff, rough, nor_gl, ao, disp), or None."""
+    p = os.path.join(ASSET_DIR, aid, "%s_%s_%s.jpg" % (aid, kind, res))
+    return p if os.path.exists(p) else None
+
+
+def hdri_path(aid="ninomaru_teien", res="2k"):
+    p = os.path.join(ASSET_DIR, aid, "%s_%s.hdr" % (aid, res))
+    return p if os.path.exists(p) else None
+
+
+_MEAN = {}
+
+
+def _mean_linear(path):
+    """Mean linear RGB of an sRGB image (for tinting scans towards a target colour)."""
+    if path not in _MEAN:
+        from PIL import Image
+        im = Image.open(path).convert("RGB").resize((32, 32))
+        px = list(im.getdata())
+        _MEAN[path] = tuple(sum(_srgb_to_lin(p[i] / 255.0) for p in px) / len(px) for i in range(3))
+    return _MEAN[path]
+
+
+def _math(nt, op, a, b=None, c=None, clamp=False):
+    n = nt.nodes.new("ShaderNodeMath")
+    n.operation = op
+    n.use_clamp = clamp
+    for i, v in enumerate((a, b, c)):
+        if v is None:
+            continue
+        if isinstance(v, (int, float)):
+            n.inputs[i].default_value = float(v)
+        else:
+            nt.links.new(v, n.inputs[i])
+    return n.outputs[0]
+
+
+def _mixc(nt, fac, a, b, blend="MIX"):
+    n = nt.nodes.new("ShaderNodeMix")
+    n.data_type = "RGBA"
+    n.blend_type = blend
+    n.clamp_result = False
+    for sock, v in ((n.inputs[0], fac), (n.inputs[6], a), (n.inputs[7], b)):
+        if isinstance(v, (int, float)):
+            sock.default_value = float(v)
+        elif isinstance(v, (tuple, list)):
+            sock.default_value = tuple(v)[:3] + (1.0,)
+        else:
+            nt.links.new(v, sock)
+    return n.outputs[2]
+
+
+def _scan(nt, aid, vec, target=None, flat=0.0, rough=(None, None), normal=1.0):
+    """Image nodes for a scanned material. Returns (colour, roughness, normal) sockets or None.
+    target: linear RGB the scan's mean colour is tinted to; flat: 0..1 mix towards that flat colour;
+    rough: (lo, hi) remap of the roughness map."""
+    pd, pr, pn = asset_map(aid, "diff"), asset_map(aid, "rough"), asset_map(aid, "nor_gl")
+    if not (pd and pr and pn):
+        return None
+    N, L = nt.nodes.new, nt.links.new
+
+    def img(path, cs):
+        t = N("ShaderNodeTexImage")
+        t.image = _load_image(path, cs)
+        t.interpolation = "Cubic" if cs == "sRGB" else "Linear"
+        L(vec, t.inputs["Vector"])
+        return t
+    col = img(pd, "sRGB").outputs["Color"]
+    if target is not None:
+        mean = _mean_linear(pd)
+        gain = tuple(target[i] / max(mean[i], 1e-3) for i in range(3))
+        col = _mixc(nt, 1.0, col, gain, "MULTIPLY")
+        if flat > 0:
+            col = _mixc(nt, flat, col, target)
+    rgh = img(pr, "Non-Color").outputs["Color"]
+    if rough[0] is not None:
+        mr = N("ShaderNodeMapRange")
+        mr.inputs["To Min"].default_value = rough[0]
+        mr.inputs["To Max"].default_value = rough[1]
+        L(rgh, mr.inputs["Value"])
+        rgh = mr.outputs["Result"]
+    nm = N("ShaderNodeNormalMap")
+    nm.inputs["Strength"].default_value = normal
+    L(img(pn, "Non-Color").outputs["Color"], nm.inputs["Color"])
+    return col, rgh, nm.outputs["Normal"]
+
+
+def _island_uv(nt, scale, jitter=(7.31, 3.17)):
+    """UV (metres) * scale, shifted by a random amount per mesh island so no two members match."""
+    N, L = nt.nodes.new, nt.links.new
+    tc = N("ShaderNodeTexCoord")
+    geo = N("ShaderNodeNewGeometry")
+    cmb = N("ShaderNodeCombineXYZ")
+    L(_math(nt, "MULTIPLY", geo.outputs["Random Per Island"], jitter[0]), cmb.inputs[0])
+    L(_math(nt, "MULTIPLY", geo.outputs["Random Per Island"], jitter[1]), cmb.inputs[1])
+    add = N("ShaderNodeVectorMath")
+    add.operation = "ADD"
+    L(tc.outputs["UV"], add.inputs[0])
+    L(cmb.outputs[0], add.inputs[1])
+    mp = N("ShaderNodeMapping")
+    mp.inputs["Scale"].default_value = (scale[0], scale[1], 1.0)
+    L(add.outputs[0], mp.inputs["Vector"])
+    return mp.outputs["Vector"], geo
+
+
+def hall_material(kind, name=None, strength=None):
+    import bpy
+    name = name or ("H_" + kind)
+    mat = bpy.data.materials.get(name)
+    if mat is not None:
+        return mat
+    mat = _new_mat(name)
+    nt = _nodes(mat)
+    N, L = nt.nodes.new, nt.links.new
+    out = N("ShaderNodeOutputMaterial")
+    bsdf = N("ShaderNodeBsdfPrincipled")
+    L(bsdf.outputs["BSDF"], out.inputs["Surface"])
+    tc = N("ShaderNodeTexCoord")
+
+    if kind == "tatami":
+        sep = N("ShaderNodeSeparateXYZ")
+        L(tc.outputs["UV"], sep.inputs[0])
+        sc = _scan(nt, "tatami_mat", tc.outputs["UV"], rough=(0.38, 0.80), normal=1.0)
+        if sc:
+            col, rgh, nrm = sc
+            hs = N("ShaderNodeHueSaturation")          # the scan is a little dark and olive for a bright hall
+            hs.inputs["Saturation"].default_value = 0.92
+            hs.inputs["Value"].default_value = 1.45
+            L(col, hs.inputs["Color"])
+            col = hs.outputs["Color"]
+            L(rgh, bsdf.inputs["Roughness"])
+            L(nrm, bsdf.inputs["Normal"])
+        else:
+            wv = N("ShaderNodeTexWave")
+            wv.inputs["Scale"].default_value = 900.0
+            L(tc.outputs["UV"], wv.inputs["Vector"])
+            col = _mixc(nt, wv.outputs["Fac"], hex_rgb("#b9ad7c"), hex_rgb("#cdc291"))
+            bsdf.inputs["Roughness"].default_value = 0.6
+        attr = N("ShaderNodeAttribute")
+        attr.attribute_name = "tone"
+        col = _mixc(nt, 1.0, col, attr.outputs["Color"], "MULTIPLY")
+        # cloth borders (heri) along the long edges: keep the scanned brocade, make it dark
+        t = _math(nt, "FRACT", _math(nt, "MULTIPLY_ADD", sep.outputs["Y"], 2.0, 0.5))
+        heri = _math(nt, "LESS_THAN", _math(nt, "ABSOLUTE", _math(nt, "SUBTRACT", t, 0.5)), 0.0355)
+        hd = N("ShaderNodeHueSaturation")
+        hd.inputs["Saturation"].default_value = 0.35
+        hd.inputs["Value"].default_value = 0.20
+        L(col, hd.inputs["Color"])
+        col = _mixc(nt, heri, col, hd.outputs["Color"])
+        # hairline shadow where two mats meet end to end
+        tu = _math(nt, "FRACT", _math(nt, "ADD", sep.outputs["X"], 0.5))
+        seam = _math(nt, "LESS_THAN", _math(nt, "ABSOLUTE", _math(nt, "SUBTRACT", tu, 0.5)), 0.0010)
+        col = _mixc(nt, _math(nt, "MULTIPLY", seam, 0.6), col, (0.02, 0.018, 0.012))
+        L(col, bsdf.inputs["Base Color"])
+        bsdf.inputs["Specular IOR Level"].default_value = 0.45
+
+    elif kind in ("hinoki", "board", "planks"):
+        aid, target, scale, rr, flat = {
+            "hinoki": ("ash_veneer", (0.56, 0.385, 0.20), (0.9, 1.6), (0.36, 0.62), 0.0),
+            "board": ("okoume_veneer", (0.50, 0.335, 0.175), (0.55, 0.9), (0.42, 0.68), 0.0),
+            "planks": ("japanese_cedar_planks", (0.30, 0.165, 0.07), (0.5, 0.5), (0.30, 0.60), 0.0)}[kind]
+        vec, geo = _island_uv(nt, scale)
+        sc = _scan(nt, aid, vec, target=target, flat=flat, rough=rr, normal=0.8)
+        if sc:
+            col, rgh, nrm = sc
+            # every member a slightly different tone
+            mr = N("ShaderNodeMapRange")
+            mr.inputs["To Min"].default_value = 0.90
+            mr.inputs["To Max"].default_value = 1.08
+            L(geo.outputs["Random Per Island"], mr.inputs["Value"])
+            col = _mixc(nt, 1.0, col, mr.outputs["Result"], "MULTIPLY")
+            L(col, bsdf.inputs["Base Color"])
+            L(rgh, bsdf.inputs["Roughness"])
+            L(nrm, bsdf.inputs["Normal"])
+        else:
+            bsdf.inputs["Base Color"].default_value = tuple(target) + (1.0,)
+            bump, nz = _grain(nt, vec, 60.0, 0.3, 0.0006, squash=(1.0, 40.0, 1.0))
+            L(bump.outputs["Normal"], bsdf.inputs["Normal"])
+            bsdf.inputs["Roughness"].default_value = 0.5
+        bsdf.inputs["Specular IOR Level"].default_value = 0.4
+
+    elif kind == "plaster":
+        mp = N("ShaderNodeMapping")
+        mp.inputs["Scale"].default_value = (0.5, 0.5, 1.0)
+        L(tc.outputs["UV"], mp.inputs["Vector"])
+        sc = _scan(nt, "white_plaster_02", mp.outputs["Vector"], target=(0.74, 0.715, 0.66), flat=0.55,
+                   rough=(0.72, 0.95), normal=0.35)
+        if sc:
+            col, rgh, nrm = sc
+            L(col, bsdf.inputs["Base Color"])
+            L(rgh, bsdf.inputs["Roughness"])
+            L(nrm, bsdf.inputs["Normal"])
+        else:
+            bsdf.inputs["Base Color"].default_value = (0.74, 0.715, 0.66, 1.0)
+            bump, _ = _grain(nt, tc.outputs["UV"], 40.0, 0.2, 0.0008)
+            L(bump.outputs["Normal"], bsdf.inputs["Normal"])
+            bsdf.inputs["Roughness"].default_value = 0.9
+        bsdf.inputs["Specular IOR Level"].default_value = 0.25
+
+    elif kind == "washi":
+        val = N("ShaderNodeValue")
+        val.name = val.label = "strength"
+        val.outputs[0].default_value = 4.0 if strength is None else strength
+        # slow variation of the daylight behind the paper + a gentle falloff towards the eaves
+        nz = N("ShaderNodeTexNoise")
+        nz.inputs["Scale"].default_value = 0.55
+        nz.inputs["Detail"].default_value = 2.0
+        nz.inputs["Roughness"].default_value = 0.45
+        L(tc.outputs["Object"], nz.inputs["Vector"])
+        m1 = N("ShaderNodeMapRange")
+        m1.inputs["From Min"].default_value = 0.25
+        m1.inputs["From Max"].default_value = 0.75
+        m1.inputs["To Min"].default_value = 0.80
+        m1.inputs["To Max"].default_value = 1.10
+        L(nz.outputs["Fac"], m1.inputs["Value"])
+        sp = N("ShaderNodeSeparateXYZ")
+        L(tc.outputs["Object"], sp.inputs[0])
+        m2 = N("ShaderNodeMapRange")
+        m2.inputs["From Min"].default_value = 0.3
+        m2.inputs["From Max"].default_value = 3.0
+        m2.inputs["To Min"].default_value = 1.0
+        m2.inputs["To Max"].default_value = 0.78
+        L(sp.outputs["Z"], m2.inputs["Value"])
+        # paper fibres: faint long streaks
+        mpf = N("ShaderNodeMapping")
+        mpf.inputs["Scale"].default_value = (1.0, 6.0, 40.0)
+        L(tc.outputs["Object"], mpf.inputs["Vector"])
+        nf = N("ShaderNodeTexNoise")
+        nf.inputs["Scale"].default_value = 22.0
+        nf.inputs["Detail"].default_value = 3.0
+        L(mpf.outputs["Vector"], nf.inputs["Vector"])
+        m3 = N("ShaderNodeMapRange")
+        m3.inputs["To Min"].default_value = 0.93
+        m3.inputs["To Max"].default_value = 1.05
+        L(nf.outputs["Fac"], m3.inputs["Value"])
+        e = _math(nt, "MULTIPLY", _math(nt, "MULTIPLY", m1.outputs["Result"], m2.outputs["Result"]),
+                  _math(nt, "MULTIPLY", m3.outputs["Result"], val.outputs[0]))
+        bsdf.inputs["Base Color"].default_value = (0.80, 0.77, 0.70, 1.0)
+        bsdf.inputs["Roughness"].default_value = 0.85
+        bsdf.inputs["Specular IOR Level"].default_value = 0.15
+        bsdf.inputs["Emission Color"].default_value = (1.0, 0.925, 0.80, 1.0)
+        L(e, bsdf.inputs["Emission Strength"])
+
+    elif kind == "gold":
+        uvn = N("ShaderNodeUVMap")
+        uvn.uv_map = "leaf"
+        leaf = 0.109                                           # one leaf is about 10.9 cm square
+        mp = N("ShaderNodeMapping")
+        mp.inputs["Scale"].default_value = (1.0 / leaf, 1.0 / leaf, 1.0)
+        L(uvn.outputs["UV"], mp.inputs["Vector"])
+        fl = N("ShaderNodeVectorMath")
+        fl.operation = "FLOOR"
+        L(mp.outputs["Vector"], fl.inputs[0])
+        fr = N("ShaderNodeVectorMath")
+        fr.operation = "FRACTION"
+        L(mp.outputs["Vector"], fr.inputs[0])
+        wn = N("ShaderNodeTexWhiteNoise")
+        wn.noise_dimensions = "2D"
+        L(fl.outputs["Vector"], wn.inputs["Vector"])
+        rnd = N("ShaderNodeSeparateColor")
+        L(wn.outputs["Color"], rnd.inputs["Color"])
+        fxy = N("ShaderNodeSeparateXYZ")
+        L(fr.outputs["Vector"], fxy.inputs[0])
+        # each leaf lies at its own tiny tilt, so reflections break at the leaf edges
+        hx = _math(nt, "MULTIPLY", _math(nt, "SUBTRACT", fxy.outputs["X"], 0.5),
+                   _math(nt, "SUBTRACT", rnd.outputs["Red"], 0.5))
+        hy = _math(nt, "MULTIPLY", _math(nt, "SUBTRACT", fxy.outputs["Y"], 0.5),
+                   _math(nt, "SUBTRACT", rnd.outputs["Green"], 0.5))
+        hgt = _math(nt, "MULTIPLY", _math(nt, "ADD", hx, hy), 0.0030)
+        nzw = N("ShaderNodeTexNoise")
+        nzw.inputs["Scale"].default_value = 160.0
+        nzw.inputs["Detail"].default_value = 2.0
+        L(uvn.outputs["UV"], nzw.inputs["Vector"])
+        hgt = _math(nt, "ADD", hgt, _math(nt, "MULTIPLY", nzw.outputs["Fac"], 0.00006))
+        bp = N("ShaderNodeBump")
+        bp.inputs["Strength"].default_value = 1.0
+        bp.inputs["Distance"].default_value = 1.0
+        L(hgt, bp.inputs["Height"])
+        L(bp.outputs["Normal"], bsdf.inputs["Normal"])
+        # leaf overlaps: thin lines where two leaves double up
+        ex = _math(nt, "MINIMUM", fxy.outputs["X"], _math(nt, "SUBTRACT", 1.0, fxy.outputs["X"]))
+        ey = _math(nt, "MINIMUM", fxy.outputs["Y"], _math(nt, "SUBTRACT", 1.0, fxy.outputs["Y"]))
+        edge = _math(nt, "LESS_THAN", _math(nt, "MINIMUM", ex, ey), 0.016)
+        # slow wear: the warm bole shows through a little
+        nw = N("ShaderNodeTexNoise")
+        nw.inputs["Scale"].default_value = 3.0
+        nw.inputs["Detail"].default_value = 5.0
+        nw.inputs["Roughness"].default_value = 0.6
+        L(uvn.outputs["UV"], nw.inputs["Vector"])
+        wear = N("ShaderNodeMapRange")
+        wear.inputs["From Min"].default_value = 0.56
+        wear.inputs["From Max"].default_value = 0.80
+        wear.inputs["To Min"].default_value = 0.0
+        wear.inputs["To Max"].default_value = 0.22
+        L(nw.outputs["Fac"], wear.inputs["Value"])
+        tone = N("ShaderNodeMapRange")
+        tone.inputs["To Min"].default_value = 0.90
+        tone.inputs["To Max"].default_value = 1.0
+        L(rnd.outputs["Blue"], tone.inputs["Value"])
+        col = _mixc(nt, 1.0, (1.0, 0.70, 0.29), tone.outputs["Result"], "MULTIPLY")
+        col = _mixc(nt, _math(nt, "MULTIPLY", edge, 0.35), col, (0.86, 0.56, 0.20))
+        col = _mixc(nt, wear.outputs["Result"], col, (0.42, 0.20, 0.08))
+        L(col, bsdf.inputs["Base Color"])
+        L(_math(nt, "SUBTRACT", 1.0, _math(nt, "MULTIPLY", wear.outputs["Result"], 0.6)), bsdf.inputs["Metallic"])
+        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.10, 0.30),
+                   _math(nt, "ADD", _math(nt, "MULTIPLY", edge, 0.08), wear.outputs["Result"]))
+        L(rg, bsdf.inputs["Roughness"])
+
+    elif kind == "gilt":
+        bsdf.inputs["Base Color"].default_value = (1.0, 0.72, 0.30, 1.0)
+        bsdf.inputs["Metallic"].default_value = 1.0
+        nz = N("ShaderNodeTexNoise")
+        nz.inputs["Scale"].default_value = 90.0
+        L(tc.outputs["Object"], nz.inputs["Vector"])
+        mr = N("ShaderNodeMapRange")
+        mr.inputs["To Min"].default_value = 0.26
+        mr.inputs["To Max"].default_value = 0.42
+        L(nz.outputs["Fac"], mr.inputs["Value"])
+        L(mr.outputs["Result"], bsdf.inputs["Roughness"])
+
+    elif kind == "felt":
+        base = hex_rgb(PAL.get("felt", "#84201d"))
+        nz = N("ShaderNodeTexNoise")
+        nz.inputs["Scale"].default_value = 9.0
+        nz.inputs["Detail"].default_value = 6.0
+        nz.inputs["Roughness"].default_value = 0.7
+        L(tc.outputs["Object"], nz.inputs["Vector"])
+        mr = N("ShaderNodeMapRange")
+        mr.inputs["To Min"].default_value = 0.86
+        mr.inputs["To Max"].default_value = 1.12
+        L(nz.outputs["Fac"], mr.inputs["Value"])
+        L(_mixc(nt, 1.0, base, mr.outputs["Result"], "MULTIPLY"), bsdf.inputs["Base Color"])
+        bump, _ = _grain(nt, tc.outputs["Object"], 2200.0, 0.55, 0.0009)
+        bump2, _ = _grain(nt, tc.outputs["Object"], 260.0, 0.25, 0.0012)
+        L(bump.outputs["Normal"], bump2.inputs["Normal"])
+        L(bump2.outputs["Normal"], bsdf.inputs["Normal"])
+        bsdf.inputs["Roughness"].default_value = 0.95
+        bsdf.inputs["Specular IOR Level"].default_value = 0.12
+        bsdf.inputs["Sheen Weight"].default_value = 0.85
+        bsdf.inputs["Sheen Roughness"].default_value = 0.55
+        bsdf.inputs["Sheen Tint"].default_value = (1.0, 0.55, 0.45, 1.0)
+
+    elif kind == "lacquer":
+        bsdf.inputs["Base Color"].default_value = hex_rgb("#0b0808", 1.0)
+        # fine wiping scratches in the top coat
+        mp = N("ShaderNodeMapping")
+        mp.inputs["Scale"].default_value = (6.0, 900.0, 900.0)
+        L(tc.outputs["Object"], mp.inputs["Vector"])
+        nz = N("ShaderNodeTexNoise")
+        nz.inputs["Scale"].default_value = 3.0
+        nz.inputs["Detail"].default_value = 3.0
+        L(mp.outputs["Vector"], nz.inputs["Vector"])
+        mr = N("ShaderNodeMapRange")
+        mr.inputs["To Min"].default_value = 0.06
+        mr.inputs["To Max"].default_value = 0.20
+        L(nz.outputs["Fac"], mr.inputs["Value"])
+        bsdf.inputs["Roughness"].default_value = 0.30
+        bsdf.inputs["Specular IOR Level"].default_value = 0.5
+        bsdf.inputs["Coat Weight"].default_value = 0.8
+        L(mr.outputs["Result"], bsdf.inputs["Coat Roughness"])
+    else:
+        raise ValueError("unknown hall material kind %r" % kind)
+    return mat
+
+
 # --------------------------------------------------------------------------- render setup
 
 def setup_cycles(scene=None, res=(1920, 1080), samples=48, preview=False):

@@ -38,7 +38,7 @@ function project(cam, P) {          // world point -> normalised frame coords (0
   const c = rotInv(cam.q, V.sub(P, cam.p));
   if (c[2] > -0.05) return null;
   const k = L.focal_mm / L.sensor_w_mm;
-  const u = k * c[0] / -c[2] + (L.shift_x || 0), v = k * c[1] / -c[2] + (L.shift_y || 0);
+  const u = k * c[0] / -c[2] - (L.shift_x || 0), v = k * c[1] / -c[2] - (L.shift_y || 0);   // Blender lens shift moves the frame, so the image moves the other way
   return [0.5 + u, 0.5 - v * W / H];
 }
 // CSS matrix3d that maps an element of size w x h onto the quad tl, tr, br, bl (screen px)
@@ -101,7 +101,7 @@ const Seq = {
     if (set !== this.set) { this.set = set; this.imgs.clear(); this.loading.clear(); }
     let s, dx, dy;
     if (set === 'd') { s = Math.max(vw / W, vh / H); dx = (vw - W * s) / 2; dy = (vh - H * s) / 2; }
-    else { s = Math.max(vw / crop[2], vh / H); dx = (vw - W * s) / 2; dy = (vh - H * s) / 2; }
+    else { s = vw / crop[2]; dx = (vw - W * s) / 2; dy = Math.min(0, (vh - H * s) / 2); }   // phone: the whole centre column, top-aligned
     this.rect = { dx, dy, dw: W * s, dh: H * s, s };
     const k = clamp(1 / s, 1, Math.min(devicePixelRatio || 1, 2));
     this.canvas.width = Math.round(vw * k); this.canvas.height = Math.round(vh * k); this.k = k;
@@ -163,6 +163,7 @@ const Seq = {
       const P = wall.period, s = wall.shift;
       ctx.drawImage(im, (r.dx - s + P) * k, r.dy * k, r.dw * k, r.dh * k);
       ctx.drawImage(im, (r.dx - s) * k, r.dy * k, r.dw * k, r.dh * k);
+      this.band(im);
       return;
     }
     this.drawSeq(i0, frac);
@@ -181,6 +182,19 @@ const Seq = {
     ctx.globalAlpha = 1; ctx.fillStyle = '#141210'; ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     put(this.imgs.get(a));
     if (blend) { ctx.globalAlpha = Math.round(frac * 24) / 24; put(this.imgs.get(i0 + 1)); ctx.globalAlpha = 1; }
+    this.band(this.imgs.get(a));
+  },
+
+  // on tall phones the frame ends above the bottom of the screen: continue its last rows, fading to paper
+  band(im) {
+    const { ctx, k } = this, r = this.rect, bottom = r.dy + r.dh, vh = this.canvas.height / k, vw = this.canvas.width / k;
+    if (bottom >= vh - 1 || !im) return;
+    const c = this.meta.mobileCrop, W = this.meta.size[0], full = im.naturalWidth > c[2] + 4;
+    const sx = full ? c[0] * im.naturalWidth / W : 0, sw = full ? c[2] * im.naturalWidth / W : im.naturalWidth;
+    ctx.drawImage(im, sx, im.naturalHeight - 3, sw, 2, 0, (bottom - 1) * k, vw * k, (vh - bottom + 2) * k);
+    const g = ctx.createLinearGradient(0, bottom * k, 0, vh * k);
+    g.addColorStop(0, 'rgba(231,224,210,0)'); g.addColorStop(1, 'rgba(231,224,210,.85)');
+    ctx.fillStyle = g; ctx.fillRect(0, bottom * k, vw * k, (vh - bottom) * k);
   },
 
   toScreen(n) { return n && { x: this.rect.dx + n[0] * this.rect.dw, y: this.rect.dy + n[1] * this.rect.dh }; },
@@ -209,7 +223,7 @@ const sections = $$('[data-seg]').map(el => {
     frames: segs.filter(s => s[0] === 'f').map(s => [s[1], s[2]]),
   };
 });
-const stopOffset = {};      // last known walk offset per picture stop
+let stopOffset = {};        // where the walk along the wall stands at each stop (pool units)
 
 function evalSection(S, u) {   // u: 0..1 through the section -> {frame, wall}
   let acc = 0;
@@ -218,28 +232,36 @@ function evalSection(S, u) {   // u: 0..1 through the section -> {frame, wall}
     const last = i === S.segs.length - 1;
     if (u <= acc + w || last) {
       const t = clamp((u - acc) / w, 0, 1);
-      if (s[0] === 'f') return { frame: s[1] + t * (s[2] - s[1]), seg: s };
+      if (s[0] === 'f') return { frame: s[1] + t * (s[2] - s[1]), seg: s, i };
       const n = s[3] - s[2], x = clamp(t * (n + 0.6) - 0.3, 0, n), k = Math.floor(x), fr = x - k;
       const off = s[2] + Math.min(n, k + smooth(clamp((fr - 0.22) / 0.56, 0, 1)));
-      return { frame: Seq.meta?.walls?.[s[1]]?.frame ?? 0, wall: { stop: s[1], off }, seg: s };
+      return { frame: Seq.meta?.walls?.[s[1]]?.frame ?? 0, wall: { stop: s[1], off }, seg: s, i };
     }
     acc += w;
   }
 }
 function timeline() {
   const vh = innerHeight; let st = { frame: 0, wall: null, section: null, u: 0 };
+  const off = {};
+  let passed = true;
   for (const S of sections) {
     const r = S.el.getBoundingClientRect();
-    if (r.top > 0.5) {
-      // before this section: its walls show their first pool
-      for (const s of S.segs) if (s[0] === 'w' && !(s[1] in stopOffset) ) stopOffset[s[1]] = s[2];
-      break;
+    if (passed && r.top <= 0.5) {
+      const u = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
+      const e = evalSection(S, u);
+      st = { frame: e.frame, wall: e.wall || null, section: S, u, inside: r.bottom >= vh - 1 };
+      S.segs.forEach((s, i) => {
+        if (s[0] !== 'w') return;
+        if (i < e.i || (r.bottom < vh - 1 && u >= 1)) off[s[1]] = s[3];
+        else if (i === e.i) off[s[1]] = e.wall.off;
+        else if (!(s[1] in off)) off[s[1]] = s[2];
+      });
+    } else {
+      passed = false;
+      for (const s of S.segs) if (s[0] === 'w' && !(s[1] in off)) off[s[1]] = s[2];
     }
-    const u = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
-    const e = evalSection(S, u);
-    st = { frame: e.frame, wall: e.wall || null, section: S, u, inside: r.bottom >= vh - 1 };
-    for (const s of S.segs) if (s[0] === 'w') stopOffset[s[1]] = e.wall && e.wall.stop === s[1] ? e.wall.off : (u >= 1 || e.seg !== s && S.segs.indexOf(e.seg) > S.segs.indexOf(s) ? s[3] : stopOffset[s[1]] ?? s[2]);
   }
+  stopOffset = off;
   return st;
 }
 function scrollForState(S, f, pool) {
@@ -248,7 +270,7 @@ function scrollForState(S, f, pool) {
   let acc = 0;
   for (const s of S.segs) {
     const w = segWeight(s) / S.total;
-    if (pool == null && s[0] === 'f' && f >= Math.min(s[1], s[2]) && f <= Math.max(s[1], s[2])) return top + (acc + w * (f - s[1]) / ((s[2] - s[1]) || 1)) * span;
+    if (pool == null && f != null && s[0] === 'f' && f >= Math.min(s[1], s[2]) && f <= Math.max(s[1], s[2])) return top + (acc + w * (f - s[1]) / ((s[2] - s[1]) || 1)) * span;
     if (pool != null && s[0] === 'w' && pool >= s[2] && pool <= s[3]) { const n = s[3] - s[2]; return top + (acc + w * ((pool - s[2]) + 0.3) / (n + 0.6)) * span; }
     acc += w;
   }
@@ -259,70 +281,94 @@ function scrollForState(S, f, pool) {
 /* Picture walls: works and panels hung in the light pools             */
 /* ------------------------------------------------------------------ */
 const hang = $('#hang');
+const STRIDE = 2;             // a work in every other bay: air between them, and room for the label
 let items = [];
 function setupHang() {
-  // re-parent every work, panel and placard into the fixed layer above the stage
-  $$('.works [data-stop]').forEach(el => hang.append(el));
+  $$('.works [data-stop]').forEach(el => { el.dataset.room = el.closest('[data-seg]')?.id || ''; hang.append(el); });
   items = $$('.work, .panel', hang).map(el => ({
-    el, stop: el.dataset.stop, pool: +el.dataset.pool, wm: +el.dataset.w || (el.classList.contains('panel') ? 1.15 : 1),
+    el, stop: el.dataset.stop, pool: +el.dataset.pool, room: el.dataset.room, photo: el.dataset.photo,
     placard: $(`.placard[data-stop="${el.dataset.stop}"][data-pool="${el.dataset.pool}"]`, hang),
   }));
   const fit = () => items.forEach(it => {
-    if (it.el.classList.contains('work')) {
-      const a = +it.el.dataset.aspect || 1, print = it.el.classList.contains('work--print');
-      const bw = print ? 0.78 : 1.12, bh = print ? 0.98 : 1.5;          // the box a work may fill, metres
-      const pad = print ? 0.07 : 0.03;                                  // mat or slim frame, metres
-      let w = Math.min(bw, bh * a), h = w / a;
+    const cl = it.el.classList;
+    if (cl.contains('work')) {
+      const a = +it.el.dataset.aspect || 1;
+      const [bw, bh, pad] = cl.contains('work--cut') ? [1.28, 1.56, 0] : cl.contains('work--print') ? [1.0, 1.05, 0.06] : [1.1, 1.3, 0];
+      const w = Math.min(bw, bh * a), h = w / a;                 // the object, metres
       it.wm = w + 2 * pad; it.hm = h + 2 * pad;
       it.el.style.setProperty('--pad', `${(pad / it.wm * 100).toFixed(3)}%`);
       it.el.style.width = '400px'; it.el.style.height = `${(400 * it.hm / it.wm).toFixed(1)}px`;
     } else {
-      it.el.style.width = '420px'; it.el.style.height = 'auto';
-      it.hm = it.wm * it.el.offsetHeight / 420;
+      it.wm = 1.3; it.el.style.width = '440px'; it.el.style.height = 'auto';
+      it.hm = it.wm * it.el.offsetHeight / 440;
     }
-    it.w = 400 + (it.el.classList.contains('panel') ? 20 : 0); it.h = it.el.offsetHeight;
   });
   fit(); addEventListener('resize', fit, { passive: true });
   document.fonts?.ready.then(fit);
 }
+function activeStop(frame) {
+  let best = null, bd = 1e9;
+  for (const [k, W] of Object.entries(Seq.meta.walls || {})) { const d = Math.abs(frame - W.frame); if (d < bd) { bd = d; best = k; } }
+  return best;
+}
 function updateHang(st, cam) {
   const W = Seq.meta.walls || {}, vw = innerWidth, vh = innerHeight;
+  const group = st.wall ? st.wall.stop : activeStop(st.frame);
+  // works are shown only on the walk to and from a stop, when nothing stands between camera and wall
+  const dist = st.wall || !group ? 0 : Math.abs(st.frame - W[group].frame);
+  hang.style.opacity = clamp((72 - dist) / 20, 0, 1).toFixed(3);
   let centred = null;
   for (const it of items) {
     const wall = W[it.stop];
     const off = st.wall && st.wall.stop === it.stop ? st.wall.off : (stopOffset[it.stop] ?? 0);
     const rel = it.pool - off;
-    const near = st.wall && st.wall.stop === it.stop ? Math.abs(rel) < 2.6 : Math.abs(rel) < 1.3;
-    let ok = !!(wall && cam && near);
+    let ok = !!(wall && cam && it.stop === group && dist < 72 && Math.abs(rel) < 1.6);
     if (ok) {
-      const c = V.add(wall.pool0, V.mul(wall.along, rel * wall.spacing));
-      const up = [0, 0, 1], hx = V.mul(wall.along, it.wm / 2), hy = V.mul(up, it.hm / 2);
+      const top = wall.top ?? 1.72;
+      const c = V.add([wall.pool0[0], wall.pool0[1], top - it.hm / 2], V.mul(wall.along, rel * wall.spacing * STRIDE));
+      const hx = V.mul(wall.along, it.wm / 2), hy = [0, 0, it.hm / 2];
       const camRef = st.wall ? Seq.meta._stopCam[it.stop] : cam;
       const pts = [V.add(V.sub(c, hx), hy), V.add(V.add(c, hx), hy), V.sub(V.add(c, hx), hy), V.sub(V.sub(c, hx), hy)].map(P => project(camRef, P));
-      if (pts.some(p => !p)) ok = false;
+      if (pts.some(q => !q)) ok = false;
       else {
-        const sp = pts.map(p => Seq.toScreen(p)).map(p => [p.x, p.y]);
-        const minx = Math.min(...sp.map(p => p[0])), maxx = Math.max(...sp.map(p => p[0]));
+        const sp = pts.map(q => Seq.toScreen(q)).map(q => [q.x, q.y]);
+        const minx = Math.min(...sp.map(q => q[0])), maxx = Math.max(...sp.map(q => q[0]));
         if (maxx < -40 || minx > vw + 40) ok = false;
         else {
           it.el.style.transform = quad(it.el.offsetWidth, it.el.offsetHeight, sp);
-          it.box = { minx, maxx, miny: Math.min(...sp.map(p => p[1])), maxy: Math.max(...sp.map(p => p[1])) };
-          if (st.wall && st.wall.stop === it.stop && Math.abs(rel) < 0.18) centred = it;
+          it.box = { minx, maxx, miny: Math.min(...sp.map(q => q[1])), maxy: Math.max(...sp.map(q => q[1])) };
+          if (st.wall && Math.abs(rel) < 0.16) centred = it;
         }
       }
     }
     if (ok !== it.on) { it.el.classList.toggle('is-on', ok); it.on = ok; }
   }
   for (const it of items) {
-    const p = it.placard; if (!p) continue;
+    const pl = it.placard; if (!pl) continue;
     const on = it === centred;
     if (on && !phone.matches && it.box) {
-      const w = p.offsetWidth, h = p.offsetHeight, gap = Math.max(22, (it.box.maxx - it.box.minx) * 0.07);
-      let x = it.box.maxx + gap, y = clamp(it.box.maxy - h, vh * 0.16, vh - h - vh * 0.12);
-      if (x + w > vw - 16) x = vw - w - 16;
-      p.style.left = `${x}px`; p.style.top = `${y}px`;
+      const w = pl.offsetWidth, h = pl.offsetHeight, gap = Math.max(26, (it.box.maxx - it.box.minx) * 0.09);
+      let x = it.box.maxx + gap; const y = clamp(it.box.maxy - h, vh * 0.16, vh - h - vh * 0.1);
+      if (x + w > vw - 20) x = Math.max(20, it.box.minx - gap - w);
+      pl.style.left = `${x}px`; pl.style.top = `${y}px`;
     }
-    if (on !== p._on) { p.classList.toggle('is-on', on); p._on = on; }
+    if (on !== pl._on) { pl.classList.toggle('is-on', on); pl._on = on; }
+  }
+}
+
+/* still rooms: slow push-in, one picture dissolving into the next */
+const stillRooms = $$('[data-stills]').map(el => ({ el, figs: $$('figure', el), head: $('.scrub__head', el) }));
+function updateStills() {
+  const vh = innerHeight;
+  for (const R of stillRooms) {
+    const r = R.el.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > vh) continue;
+    const n = R.figs.length, pos = clamp(-r.top / Math.max(1, r.height - vh), 0, 1) * n;
+    R.head?.classList.toggle('is-away', pos > 0.22);
+    R.figs.forEach((f, i) => {
+      f.style.opacity = i === 0 ? 1 : smooth(clamp((pos - i + 0.18) / 0.36, 0, 1));
+      if (!reduced.matches) $('img', f).style.transform = `scale(${(1 + 0.07 * clamp((pos - i + 0.3) / 1.3, 0, 1)).toFixed(4)})`;
+    });
   }
 }
 
@@ -376,19 +422,20 @@ const rules = $('#rules');
 function updateRules(st) {
   if (!rules) return;
   const S = sections.find(s => s.el.contains(rules));
-  const names = ['vit_back_tl', 'vit_back_tr', 'vit_back_br', 'vit_back_bl'];
+  const names = ['back_tl', 'back_tr', 'back_br', 'back_bl'];
   const pts = names.map(n => Seq.anchor(n));
   const seg = S?.segs[S.segs.length - 1];
   const on = st.section === S && !st.wall && pts.every(Boolean) && seg && st.frame >= seg[2] - 40;
   rules.classList.toggle('is-on', !!on && !phone.matches);
   rules.classList.toggle('is-sheet', !!on && phone.matches);
   if (on && !phone.matches) {
-    // inset the text block inside the back panels
-    const inset = (p, q, t) => [p.x + (q.x - p.x) * t, p.y + (q.y - p.y) * t];
-    const [tl, tr, br, bl] = pts;
-    const mixp = (a, b, t) => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
-    const T = [mixp(mixp(tl, tr, 0.1), mixp(bl, br, 0.1), 0.12), mixp(mixp(tl, tr, 0.9), mixp(bl, br, 0.9), 0.12), mixp(mixp(tl, tr, 0.9), mixp(bl, br, 0.9), 0.94), mixp(mixp(tl, tr, 0.1), mixp(bl, br, 0.1), 0.94)];
-    rules.style.transform = quad(rules.offsetWidth, rules.offsetHeight, T.map(p => [p.x, p.y]));
+    // lay the block inside the back panels, keeping its own proportions
+    const [tl, tr, br, bl] = pts, w = rules.offsetWidth, h = rules.offsetHeight;
+    const Qw = Math.hypot(tr.x - tl.x, tr.y - tl.y), Qh = Math.hypot(bl.x - tl.x, bl.y - tl.y);
+    const sc = Math.min(0.84 * Qw / w, 0.8 * Qh / h), du = sc * w / Qw, dv = sc * h / Qh;
+    const u0 = 0.5 - du / 2, v0 = 0.13 + (0.8 - dv) / 2;
+    const at = (u, v) => { const a = { x: tl.x + (tr.x - tl.x) * u, y: tl.y + (tr.y - tl.y) * u }, c = { x: bl.x + (br.x - bl.x) * u, y: bl.y + (br.y - bl.y) * u }; return [a.x + (c.x - a.x) * v, a.y + (c.y - a.y) * v]; };
+    rules.style.transform = quad(w, h, [at(u0, v0), at(u0 + du, v0), at(u0 + du, v0 + dv), at(u0, v0 + dv)]);
   }
 }
 
@@ -491,7 +538,8 @@ const Guide = {
     this.bar.style.scale = `${clamp(t / d.duration, 0, 1)} 1`;
     if (!(this.guided && this.S && !this.audio.paused)) { this.chaseY = null; return; }
     // picture timing from the same script: each cue start is keyed to a frame or a picture
-    const pts = d.cues.filter(c => 'frame' in c || 'photo' in c).map(c => [c.t0, scrollForState(this.S, c.frame, c.photo)]).filter(p => p[1] != null);
+    const poolOf = k => items.find(it => it.room === this.id && it.photo === String(k))?.pool;
+    const pts = d.cues.filter(c => 'frame' in c || 'photo' in c).map(c => [c.t0, 'photo' in c ? scrollForState(this.S, null, poolOf(c.photo)) : scrollForState(this.S, c.frame)]).filter(p => p[1] != null);
     if (!pts.length) return;
     const last = d.cues[d.cues.length - 1];
     if (last.end_frame != null) { const y = scrollForState(this.S, last.end_frame); if (y != null) pts.push([last.t1, y]); }
@@ -506,11 +554,17 @@ const Guide = {
   },
 };
 
+/* before/after: the render and the flat-colour model view */
+$$('[data-ba]').forEach(el => { const i = $('input', el); const set = () => el.style.setProperty('--x', i.value + '%'); i.addEventListener('input', set); set(); });
+if ($('#film')) $$('[data-film-link]').forEach(a => { a.hidden = false; });
+
 /* zoom viewer for photographs */
 const zoom = $('#zoom');
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-zoom]'); if (!a || !zoom?.showModal) return;
   e.preventDefault(); $('#zoom-img').src = a.href; $('#zoom-img').alt = a.closest('.placard')?.querySelector('h3')?.textContent || '';
+  const pl = a.closest('.placard'), cap = $('#zoom-cap');
+  if (cap && pl) cap.innerHTML = `<b>${pl.querySelector('h3')?.textContent || ''}</b>${pl.querySelector('.placard__credit')?.textContent || ''}`;
   zoom.showModal();
 });
 zoom?.addEventListener('click', e => { if (e.target === zoom) zoom.close(); });
@@ -528,7 +582,7 @@ function loop() {
       Seq.cur = Seq.target = idx;
       const cam = m._stopCam[st.wall.stop];
       const a = project(cam, W.pool0), b = project(cam, V.add(W.pool0, V.mul(W.along, W.spacing)));
-      const P = (b[0] - a[0]) * Seq.rect.dw, fr = st.wall.off - Math.floor(st.wall.off);
+      const P = (b[0] - a[0]) * Seq.rect.dw, fr = (st.wall.off * STRIDE) % 1;
       Seq.wall = { index: Math.round(idx), period: P, shift: fr * P };
     } else {
       if (Seq.wall) { Seq.wall = null; Seq.dirty = true; }
@@ -545,7 +599,7 @@ function loop() {
       updateScrub(shown); if (items.length && m.camera) updateHang(st, cam); updateRules(shown);
     }
   }
-  updateRooms(); updateDrift(); Guide.tick();
+  updateRooms(); updateDrift(); updateStills(); Guide.tick();
   requestAnimationFrame(loop);
 }
 

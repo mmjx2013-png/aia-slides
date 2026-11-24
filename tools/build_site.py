@@ -198,7 +198,8 @@ def main():
         sys.exit("no rooms")
     claims_all = []
     sections, works, script_chapters = [], [], []
-    stop_pool = {}          # running pool index per wall stop
+    stop_pool = {}          # last pool index used at each stop
+    pool_next = [0]         # one counter for the whole display wall (the stops share one wall)
     prev_end_frame = 0
     rail_n = 0
     for r in rooms:
@@ -249,9 +250,9 @@ def main():
             prev_end_frame = r["to"]
         room_works = []
         cards_list = r.get("cards", [])
-        if typ == "wall":
+        if r.get("stop"):
             stop = r["stop"]
-            if "from" in r and "to" in r and r["to"] > r["from"]:
+            if typ == "wall" and "from" in r and "to" in r and r["to"] > r["from"]:
                 segs.append(["f", r["from"], r["to"]])
             photos = [P for P in r.get("photos", []) if photo_entry(P["objectID"])[1]]
             missing = [P["objectID"] for P in r.get("photos", []) if not photo_entry(P["objectID"])[1]]
@@ -262,16 +263,19 @@ def main():
                 seq_items.insert(min(int(C.get("at", 0)), len(seq_items)), ("panel", C))
             cards_list = []
             start = stop_pool.get(stop)
-            first = 0 if start is None else start + 1
+            first = pool_next[0]
             if seq_items:
                 p0 = first if start is None else start
                 segs.append(["w", stop, p0, first + len(seq_items) - 1])
                 stop_pool[stop] = first + len(seq_items) - 1
+                pool_next[0] = first + len(seq_items)
+            pi = -1
             for i, (kind_, P) in enumerate(seq_items):
                 pool = first + i
                 if kind_ == "panel":
                     room_works.append(card_html(P, rid, i).replace('<aside class="card glass"', f'<aside class="panel" data-stop="{stop}" data-pool="{pool}" data-w="1.15"', 1))
                     continue
+                pi += 1
                 key, ph = photo_entry(P["objectID"])
                 L = P["label"]
                 rec = WISH.get(P["objectID"], {})
@@ -281,16 +285,20 @@ def main():
                     err(f"{rid}: photo {P['objectID']} licence not clear in credits.json: {lic!r}")
                 museum = cr.get("museum") or "The Metropolitan Museum of Art"
                 pd = 'cc0' in lic.lower() or 'public domain' in lic.lower() or rec.get('isPublicDomain')
-                credit = f"{esc(museum)}, {esc(rec.get('accessionNumber', ''))}. {esc(rec.get('creditLine', ''))} {'Public domain (CC0).' if pd else esc(lic)}".strip()
-                kind = "print" if re.search(r"print|painting|book|screen|album|scroll", (rec.get("classification", "") + " " + rec.get("objectName", "")), re.I) else "textile"
-                files = ph["files"]
+                cl = rec.get('creditLine', '').strip()
+                credit = f"{esc(museum)}, {esc(rec.get('accessionNumber', ''))}. {esc(cl)}{'' if not cl or cl.endswith('.') else '.'} {'Public domain (CC0).' if pd else esc(lic)}".strip()
+                is_print = bool(re.search(r"print|painting|book|screen|album|scroll|drawing", (rec.get("classification", "") + " " + rec.get("objectName", "")), re.I))
+                cut = PHOTOS.get(key + "-cut")
+                kind = "print" if is_print else ("cut" if cut else "photo")
+                shown = cut if kind == "cut" else ph
+                files = shown["files"]
                 widths = sorted(int(w) for w in files)
                 srcset = ", ".join(f"assets/photos/{files[str(w)]} {w}w" for w in widths)
-                big = files[str(widths[-1])]
+                bigf = ph["files"]; big = bigf[str(max(int(w) for w in bigf))]
                 alt = P.get("alt") or f"{rec.get('title', L['title'])}. Photograph: The Metropolitan Museum of Art."
                 room_works.append(f'''
-      <figure class="work work--{kind}" data-stop="{stop}" data-pool="{pool}" data-aspect="{ph['w'] / ph['h']:.4f}">
-        <div class="work__frame"><img src="assets/photos/{files[str(widths[0])]}" srcset="{srcset}" sizes="(max-width:820px) 92vw, 36vw" width="{ph['w']}" height="{ph['h']}" alt="{esc(alt)}" loading="lazy" decoding="async"></div>
+      <figure class="work work--{kind}" data-stop="{stop}" data-pool="{pool}" data-photo="{pi}" data-aspect="{shown['w'] / shown['h']:.4f}">
+        <div class="work__frame"><img src="assets/photos/{files[str(widths[0])]}" srcset="{srcset}" sizes="(max-width:820px) 92vw, 36vw" width="{shown['w']}" height="{shown['h']}" alt="{esc(alt)}" loading="lazy" decoding="async"></div>
       </figure>
       <div class="placard glass glass--light" data-stop="{stop}" data-pool="{pool}" role="group" aria-label="Label: {esc(L['title'])}">
         <h3>{esc(L["title"])}</h3>
@@ -298,6 +306,7 @@ def main():
         <p class="placard__mat">{esc(L.get("material", ""))}</p>
         <p class="placard__insight">{rich(L.get("insight", ""), rid)}</p>
         <p class="placard__credit">{credit}</p>
+        <p class="placard__short">{esc(museum)}, {esc(rec.get('accessionNumber', ''))} · {'Public domain' if pd else esc(lic)}</p>
         <a class="placard__zoom" href="assets/photos/{big}" data-zoom>Look closer</a>
       </div>''')
         labels = []
@@ -318,13 +327,26 @@ def main():
             line = f'<p class="scrub__line" data-from="{Lr.get("from", 0)}" data-to="{Lr.get("to", 0)}">{rich(Lr["text"], rid)}</p>'
         rules = ""
         if r.get("rules"):
-            rules = '<div class="rules" id="rules" aria-label="The rules, written on the back of the kimono"><ol>' + "".join(f"<li>{rich(x, rid)}</li>" for x in r["rules"]) + "</ol></div>"
+            rules = ('<div class="rules" id="rules" aria-label="The rules, written on the back of the kimono"><ol>' + "".join(f"<li>{rich(x, rid)}</li>" for x in r["rules"]) + "</ol></div>"
+                     + '<div class="rules-src glass"><details><summary>Sources for the rules on the robe</summary><ol>' + "".join(f"<li>{rich(x, rid)}</li>" for x in r["rules"]) + "</ol></details></div>")
         your = ""
         if typ == "answer":
             your = '<p class="your-answer glass glass--pill" data-your-answer hidden></p>'
         closing = ""
         if r.get("closing"):
             closing = f'<p class="answer__closing">{esc(r["closing"])}</p>'
+        stills_html = ""
+        st_list = [x for x in r.get("stills", []) if (ROOT / f"site/assets/stills/{x['file']}.webp").exists()]
+        if r.get("stills") and not st_list:
+            warn(f"{rid}: stills not rendered yet")
+        if st_list:
+            figs = "".join(f'''<figure><img src="assets/stills/{x['file']}.webp" alt="{esc(x.get('alt', x.get('caption', '')))}" loading="lazy" decoding="async" data-push><figcaption class="glass glass--pill">{rich(x.get('caption', ''), rid)}</figcaption></figure>''' for x in st_list)
+            stills_html = f'''
+  <section class="stills" id="{rid}-stills" data-stills style="--n:{len(st_list)}" aria-label="{esc(title)}: pictures">
+    <div class="stills__pin">{figs}
+      {head_html(r, eyebrow)}
+    </div>
+  </section>'''
         weight = r.get("length")
         if not weight:
             weight = 0
@@ -332,6 +354,8 @@ def main():
                 weight += (s[2] - s[1]) * 1.75 if s[0] == "f" else (s[3] - s[2] + 0.6) * 95
             weight = max(160, round(weight))
         guide = guide_button(rid, (narr or {}).get("title", f"Audio guide · Stop {n}")) if narr else ""
+        if stills_html:
+            sections.append(stills_html)
         sections.append(f'''
   <section class="scrub scrub--{typ}" id="{rid}" data-room data-title="{esc(rail_title)}" data-seg='{json.dumps(segs)}' data-audio="{rid}" style="--len:{weight}">
     <div class="scrub__pin">
@@ -368,7 +392,36 @@ def main():
         s = SOURCES["list"].get(str(k))
         if s:
             bib.append(f'<li id="src-{k}"><span class="num">[{k}]</span>{s["html"]}</li>')
-    page = (tpl.replace("{{ROOMS}}", "\n".join(sections))
+    proof = ""
+    pairs = [(a, b) for a, b in (("f_0329", "clay_0329"), ("f_0683", "clay_0683"), ("f_0000", "clay_0000")) if (ROOT / f"site/assets/stills/{a}.webp").exists() and (ROOT / f"site/assets/stills/{b}.webp").exists()]
+    if pairs:
+        a, b = pairs[0]
+        proof = f'''<section class="proof" id="proof" data-room data-title="No AI. Just Blender.">
+  <div class="proof__inner">
+    <h2>No AI. Just Blender.</h2>
+    <p>The hall, the cloth, the cutting, the sewing and the dressed figure were modelled and lit by hand in Blender. Drag the handle: on one side the finished render, on the other the same frame with every object painted a flat colour.</p>
+    <div class="ba" data-ba>
+      <img src="assets/stills/{b}.webp" alt="The same frame as a flat-colour model view: each object of the scene in a different plain colour." loading="lazy" decoding="async">
+      <img class="ba__top" src="assets/stills/{a}.webp" alt="The finished render of the same frame." loading="lazy" decoding="async">
+      <span class="ba__tag ba__tag--l">Model</span><span class="ba__tag ba__tag--r">Render</span>
+      <span class="ba__bar" aria-hidden="true"></span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare the model view with the finished render">
+    </div>
+  </div>
+</section>'''
+    film = ""
+    if (ROOT / "site/assets/film/kimono-film.mp4").exists():
+        film = '''<section class="film" id="film" data-room data-title="The film">
+  <div class="film__inner">
+    <h2>The film</h2>
+    <p>The same rooms and the same voice, as a short film.</p>
+    <video controls preload="none" playsinline poster="assets/film/poster.jpg">
+      <source src="assets/film/kimono-film.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="assets/film/kimono-film.vtt" default>
+    </video>
+  </div>
+</section>'''
+    page = (tpl.replace("{{ROOMS}}", "\n".join(sections)).replace("{{PROOF}}", proof).replace("{{FILM}}", film)
                .replace("{{WORKS}}", "")
                .replace("{{BIBLIOGRAPHY}}", "\n        ".join(bib))
                .replace("{{BUILT}}", datetime.date.today().isoformat()))

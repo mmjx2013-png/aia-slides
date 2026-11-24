@@ -1,0 +1,117 @@
+{
+  "id": "family",
+  "n": 7,
+  "type": "wall",
+  "theme": "The kimono family",
+  "title": "The family",
+  "heading": "One shape, many relatives",
+  "intro": "Over-robe, jacket, trousers, under-robe: one family. Each member signals the occasion and season, and the wearer's age and standing {4:p.11}.",
+  "stop": "S2",
+  "photos": [
+    {"objectID": 785521, "label": {
+      "title": "Long-Sleeved Robe (Furisode) with Phoenixes, Cherry Blossoms, Peonies, and Maple Branches",
+      "meta": "Japan · Edo period · mid-19th century",
+      "material": "Crepe silk with silk and gold-thread embroidery",
+      "insight": "In the Edo period worn mainly by children of affluent families {4:p.53}. Today <q>mainly reserved for unmarried women to wear at formal occasions</q> {4:p.53}."}},
+    {"objectID": 44529, "label": {
+      "title": "Over Robe (Uchikake) with Fans and Flowers",
+      "meta": "Japan · Edo period · second half 18th–first half 19th century",
+      "material": "Figured satin-weave silk with tie-dyeing, silk embroidery, and couched gold thread",
+      "insight": "Uchikake became bridal wear: white, over kosode, in the Muromachi warrior class {38:p.42}; since the war, in colour for the wedding reception {38:p.43}."}},
+    {"objectID": 61847, "label": {
+      "title": "Kosode",
+      "meta": "Japan · Edo period (1615–1868)",
+      "material": "Crests, perhaps bamboo, reserved in white.",
+      "insight": "A Kyoto dealer's manual of the 1760s tags dyed cloth by whether family crests were put on it {13:p.71}. By 1968 one town kept crests mainly for ceremonial dress {32:p.63}."}},
+    {"objectID": 45403, "label": {
+      "title": "Man's Formal Jacket (Haori)",
+      "meta": "Japan · Meiji period · early 20th century",
+      "material": "Dye-patterned and painted plain-weave silk",
+      "insight": "First men's dress, layered over the kosode {37:P-386}. Under the clothing laws, merchants hid colour and embroidery on the inner layer of the haori {4:pp.99-100}."}},
+    {"objectID": 68272, "label": {
+      "title": "Man's Trousers (Hakama)",
+      "meta": "Japan · 19th century",
+      "material": "Silk & paper silver",
+      "insight": "Edo period, with a haori: everyday wear for samurai, formal wear for townsmen {37:P-386}. Kyoto, 2018: about 30% of men at the coming-of-age day, Becke estimates {4:p.104}."}},
+    {"objectID": 73690, "label": {
+      "title": "Inner garment (nagajuban)",
+      "meta": "Japan · 19th century",
+      "material": "Silk",
+      "insight": "The first layer on, in magazine dressing columns {4:p.72}. It changes with the season too: silk or polyester October to May, ro or sha June to September {6:p.20}."}},
+    {"objectID": 82175, "label": {
+      "title": "Fireman’s Jacket (Hikeshi-Banten) with Susanoo-no-mikoto Deity Scene",
+      "meta": "Japanese · Edo or Meiji period · mid-19th century",
+      "material": "Quilted cotton with tube-drawn paste-resist dyeing (tsutsugaki) with hand-painted details",
+      "insight": "Cotton, not silk. Early Edo clothing laws marked rank by the cloth itself: silk for those above, then pongee, cotton and hemp {39:p.438}."}}
+  ],
+  "cards": [
+    {"kind": "table", "at": 2, "title": "Ranked, top to bottom",
+     "body": ["The usual order, as a 2022 study of the kimono trade states it {25:p.16}. Tsumugi, between komon and yukata there, is left out: no source here defines it."],
+     "head": ["", "What sets it apart"],
+     "rows": [
+       ["Furisode", "Unmarried women, formal occasions {4:p.53}"],
+       ["Black tomesode", "Married women's first formal wear {25:p.16}"],
+       ["Hōmongi", "Weddings, parties, tea gatherings {29:p.13}"],
+       ["Tsukesage", "About the same rank as hōmongi {33:p.422}"],
+       ["Iromuji", "One colour, no pattern; suits tea {25:p.16}"],
+       ["Komon", "Small patterns repeated all over {12:p.67}"],
+       ["Yukata", "Unlined, light cotton {6:p.20}"]
+     ]},
+    {"kind": "text", "at": 5, "title": "The same ladder, for men",
+     "body": ["By the mid-Edo period a black crested haori was the most formal; plain, then komon, then stripes were each less formal {37:P-386}.",
+              "When the Meiji Restoration abolished the kamishimo, haori and hakama became men's formal dress, as they still are {37:P-386}."]}
+  ],
+  "narration": {
+    "title": "Stop 7 · The family",
+    "cues": [
+      {"photo": 0, "show": "Begin with the long sleeves. In the late Edo period, the writer Kitagawa Morisada sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern.",
+       "say": "Begin with the long sleeves. In the late Edo period, the writer Kee-tah-gah-wah Moh-ree-sah-dah sorted the robes of his day into four grades, from formal down to everyday. For a woman's formal dress, the older the wearer, the quieter the pattern."},
+      {"photo": 0, "show": "Today the long-sleeved robe is the kimono a Japanese woman is most likely ever to buy."},
+      {"photo": 1, "show": "Sleeves could also be cut down. In wartime, brides wore a black furisode with a train, because its sleeves could later be shortened to make a tomesode, a married woman's formal robe."},
+      {"photo": 2, "show": "A survey in one Tottori town, in the late nineteen-sixties, counted two hundred and six different crests.",
+       "say": "A survey in one Toh-toh-ree town, in the late nineteen-sixties, counted two hundred and six different crests."},
+      {"photo": 3, "show": "The jacket is the easiest member to borrow. In Kyoto's flea markets, visitors take to the haori because it needs no obi and no wrapping."},
+      {"photo": 6, "show": "Rules reached even the plainest cloth. Edo law told peasants to wear plain dark blue, and the order went out across the whole country."},
+      {"photo": 6, "show": "Each rule had its date. The next stretch of wall walks through them."}
+    ]
+  },
+  "claims": [
+    {"text": "Kimono design signals the formality of the event and the season.", "src": 4, "page": "p.11", "quote": "the level of the perceived formality of the event the garment is worn to, as well as the seasonal context", "scope": "Becke, citing Dalby 2001: 164; general", "where": "intro"},
+    {"text": "Design also signals the wearer's gender, age, standing and taste.", "src": 4, "page": "p.11", "quote": "personal attributes such as the wearer’s gender, age, social standing and taste", "scope": "Becke, citing Dalby 2001: 164; general", "where": "intro"},
+    {"text": "In the Edo period the furisode was mainly worn by children of affluent families.", "src": 4, "page": "p.53", "quote": "the garment mainly being worn by children of affluent families during the Edo period", "scope": "Becke, citing Sawada 2006; Edo period", "where": "photo 785521"},
+    {"text": "The furisode is mainly reserved for unmarried women at formal occasions.", "src": 4, "page": "p.53", "quote": "mainly reserved for unmarried women to wear at formal occasions", "scope": "Becke, citing Dalby 2001: 172, Goldstein-Gidoni 1999, Milhaupt 2014: 38; present day", "where": "photo 785521; table"},
+    {"text": "In the Muromachi period bridal dress became fixed as a white uchikake over kosode.", "src": 38, "page": "p.42", "quote": "婚礼衣裳も白打掛に小袖と定まった (Tr. \"bridal dress too became fixed as a white uchikake over kosode\")", "scope": "Dōmae 2015, college bulletin, not refereed; summary of secondary literature; warrior class", "where": "photo 44529"},
+    {"text": "After the war, shiromuku for the Shinto rite and a coloured uchikake for the reception became usual.", "src": 38, "page": "p.43", "quote": "神前結婚式では白無垢、披露宴で色打掛が主流となった (Tr. \"white shiromuku became mainstream for Shinto weddings and coloured uchikake for receptions\")", "scope": "Dōmae 2015, college bulletin, not refereed; post-war", "where": "photo 44529"},
+    {"text": "In wartime the black trailing furisode became the main bridal dress because its sleeves could be shortened to make a tomesode.", "src": 38, "page": "p.43", "quote": "袖を詰めて留袖として生かせる黒引き振袖が主流となった (Tr. \"the black trailing furisode, which could be reused as a tomesode by shortening the sleeves, became mainstream\")", "scope": "Dōmae 2015, college bulletin, not refereed; Shōwa wartime", "where": "narration"},
+    {"text": "In 18th-century Kyoto, dyed fabrics were tagged by whether family crests were put on them.", "src": 13, "page": "p.71", "quote": "distinguished by tags attached, on the basis of whether or not family crests are put on them", "scope": "Suzuki 2022, on the Daikokuya manual, Kyoto, 1768-69; crests dyed in before sale", "where": "photo 61847"},
+    {"text": "By the late 1960s crests on clothing were seldom seen except on ceremonial dress.", "src": 32, "page": "p.63", "quote": "被服に紋章をとり入れる傾向は、式服を除いてはあまりみられなくなった (Tr. \"the tendency to put crests on clothing is seldom seen now, except on ceremonial dress\")", "scope": "Fukui 1970, refereed short report; one town (Kurayoshi, Tottori), 1967-68", "where": "photo 61847"},
+    {"text": "One town's survey found 206 kinds of crest.", "src": 32, "page": "p.61", "quote": "紋章の種類は206種類である (Tr. \"there are 206 kinds of crest\")", "scope": "Fukui 1970, refereed short report; Kurayoshi, Tottori, questionnaire 1967-68", "where": "narration"},
+    {"text": "The haori was originally men's dress, layered over the kosode.", "src": 37, "page": "P-386", "quote": "元来、羽織は男装であり、小袖の上に表衣として着重ねられる着衣である (Tr. \"originally the haori was men's dress, a garment layered over the kosode as the outer robe\")", "scope": "Yokogawa 2008, invited essay, not refereed", "where": "photo 45403"},
+    {"text": "Under sumptuary law, merchants hid colour and embroidery inside their haori.", "src": 4, "page": "pp.99-100", "quote": "colourful patterns and intricate embroidery were added to the inner layer of haori jackets to hide them from view", "scope": "Edo; Becke, citing Motoji and Motoji 2017: 36-37", "where": "photo 45403"},
+    {"text": "In the Edo period haori with hakama became samurai everyday dress and townsmen's formal dress.", "src": 37, "page": "P-386", "quote": "羽織袴姿として様式化を遂げ、武士の日常着、町人の礼服となる (Tr. \"became standardised as haori-hakama dress: everyday wear for samurai, formal wear for townsmen\")", "scope": "Yokogawa 2008, invited essay, not refereed; Edo period", "where": "photo 68272"},
+    {"text": "Becke estimates about 30% of men wore hakama and haori at Kyoto's coming-of-age ceremony in 2018.", "src": 4, "page": "p.104", "quote": "I would estimate that roughly thirty percent of male attendees dressed in hakama and haori for the coming-of-age ceremony in Kyoto in 2018", "scope": "Becke's own very limited observation; Kyoto only", "where": "photo 68272"},
+    {"text": "Magazine dressing columns run from putting on the nagajuban to tying the obi knot.", "src": 4, "page": "p.72", "quote": "from putting on the nagajuban (under-kimono) to the final tying of the obi knot", "scope": "furisode; magazine kitsuke columns", "where": "photo 73690"},
+    {"text": "The nagajuban also changes by season.", "src": 6, "page": "p.20", "quote": "warm materials such as silk or polyester used from October to May, thinner fabrics such as ro or sha from June to September", "scope": "Druet 2024; general, present day", "where": "photo 73690"},
+    {"text": "In the early shogunate rank was shown by material: silk above, then pongee, cotton and hemp.", "src": 39, "page": "p.438", "quote": "幕政初期には上位の者に絹,続いて紬,木綿,布と衣服材料でもって身分差を示そうとした (Tr. \"in the early shogunate they tried to show rank by material: silk for those above, then tsumugi, cotton and hemp cloth\")", "scope": "Nishimura 1980, refereed; summary of 250 years of edicts. The jacket is not claimed to follow any law.", "where": "photo 82175"},
+    {"text": "Peasants' clothing was to be plain dark blue, a rule proclaimed across the country.", "src": 39, "page": "p.436", "quote": "百姓の衣類は紺無地とする規制が全国に触れ渡っている (Tr. \"the rule that peasants' clothes be plain dark blue was proclaimed throughout the country\")", "scope": "Nishimura 1980, refereed; Edo period", "where": "narration"},
+    {"text": "Usual ranking: furisode first formal wear, black tomesode for married women, then hōmongi, tsukesage, iromuji, komon, tsumugi, yukata.", "src": 25, "page": "p.16", "quote": "第一礼装は振袖，既婚女性は黒留袖，訪問着，付下げ，色無地，小紋，紬，浴衣とランクづけされている (Tr. \"ranked: first formal wear furisode, for married women black tomesode, homongi, tsukesage, iromuji, komon, tsumugi, yukata\")", "scope": "Araki 2022, business-studies paper stating a general convention; not a costume-history source", "where": "table"},
+    {"text": "Iromuji is white silk dyed one colour, without pattern, suiting the restraint of tea.", "src": 25, "page": "p.16", "quote": "色無地は，白生地を一色に染めたもので，柄がなく派手すぎないため，華美を避ける茶道の精神に通じる (Tr. \"iromuji is white cloth dyed in one colour; with no pattern and not too showy, it suits the spirit of tea, which avoids display\")", "scope": "Araki 2022, business-studies paper", "where": "table"},
+    {"text": "Hōmongi are worn at weddings, parties and tea gatherings.", "src": 29, "page": "p.13", "quote": "結婚式やパーティー，お茶会等，幅広い場面で着用されている (Tr. \"worn on a wide range of occasions such as weddings, parties and tea gatherings\")", "scope": "Furukawa 2021, refereed; present day", "where": "table"},
+    {"text": "Hōmongi and tsukesage are almost the same in formality.", "src": 33, "page": "p.422", "quote": "訪問着と付け下げは格式としてはほぼ同じでパーティーやお茶会などで着られる (Tr. \"hōmongi and tsukesage are almost the same in formality and are worn at parties, tea gatherings and so on\")", "scope": "Okamoto, Numata, Kōyama 2008, magazine review, not refereed; norm c.2005", "where": "table"},
+    {"text": "The furisode is the Japanese garment a woman today is most likely to buy in her lifetime.", "src": 33, "page": "p.422", "quote": "振袖は近年の女性が生涯で購入する可能性の一番高い和服であり，成人式との関係が深い (Tr. \"the furisode is the Japanese garment a woman today is most likely to buy in her lifetime, and is closely tied to the coming-of-age ceremony\")", "scope": "Okamoto, Numata, Kōyama 2008, not refereed; authors' statement", "where": "narration"},
+    {"text": "Komon: small patterns repeated all over the garment.", "src": 12, "page": "p.67", "quote": "Komon designates a kimono with small patterns duplicated all over the surface of the garment.", "scope": "Druet 2021, note 38", "where": "table"},
+    {"text": "The yukata is an unlined kimono of light cotton.", "src": 6, "page": "p.20", "quote": "yukata (浴衣 unlined kimono made of light cotton)", "scope": "Druet 2024; general", "where": "table"},
+    {"text": "In mid-Edo the black crested haori became most formal; plain, komon and stripes were progressively less formal.", "src": 37, "page": "P-386", "quote": "江戸中期には黒紋付（羽二重・縮緬など）が最も正式なものとなる。と同時に無地・小紋・縞の順に略式とされ (Tr. \"in mid-Edo the black crested [haori] became the most formal; plain, komon and stripes were, in that order, less formal\")", "scope": "Yokogawa 2008, invited essay, not refereed; men's haori", "where": "card 2"},
+    {"text": "Since the kamishimo was abolished after the Meiji Restoration, haori and hakama have been men's formal dress.", "src": 37, "page": "P-386", "quote": "明治維新以後に裃が廃止されてから今日に至るまで、男子の礼装として広く用いられている (Tr. \"since the kamishimo was abolished after the Meiji Restoration, it has been widely used as men's formal dress to this day\")", "scope": "Yokogawa 2008, invited essay, not refereed", "where": "card 2"},
+    {"text": "Kitagawa Morisada sorted the kosode of his day into four grades: formal, best, informal, everyday.", "src": 29, "page": "p.14", "quote": "当時の小袖の種類を「礼」「晴」「略」「褻」の４つに区分している (Tr. \"divides the kosode of the time into four kinds: rei, hare, ryaku and ke\")", "scope": "Furukawa 2021, refereed, reading Morisada mankō (mid-19th century)", "where": "narration"},
+    {"text": "In late-Edo women's formal dress, the older the wearer, the more restrained the pattern.", "src": 29, "page": "p.25", "quote": "模様は年齢に応じて，その有無や表し方が決まっており，年齢が高くなれば模様は控えめに (Tr. \"whether there was a pattern, and how it was shown, was set by age; the older the wearer, the more restrained the pattern\")", "scope": "Furukawa 2021, refereed; late Edo, from Morisada mankō", "where": "narration"},
+    {"text": "In Kyoto flea markets the haori is popular because it needs no obi or wrapping.", "src": 12, "page": "p.80", "quote": "A haori doesn’t require an obi or any kind of wrapping, folding components to be worn properly.", "scope": "Druet 2021; Kyoto flea markets, 2018-21", "where": "narration"}
+  ],
+  "dropped": [
+    "Noh costume 45190: the only source line is that Nishijin weavers traditionally made Nō costumes (12 p.65); nothing compares Nō dress with the kimono, and the wall is kept to seven photographs.",
+    "Crest counts by formality (one, three, five crests): only Meiji visiting wear (three embroidered crests, 29 p.19) and late-Edo bridal furisode (five crests, 38 p.43) are sourced; no general rule.",
+    "Sleeve lengths in centimetres for furisode and tomesode, and the tomesode's hem-only pattern as a present-day rule: not in the sources read.",
+    "What the fireman's jacket was for (soaking, firefighting): no source read.",
+    "Tsumugi as a fabric: ranked (25 p.16) but not defined anywhere, so left out of the table."
+  ]
+}

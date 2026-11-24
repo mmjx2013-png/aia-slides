@@ -1,0 +1,280 @@
+{
+  "id": "dressing",
+  "n": 5,
+  "type": "scrub",
+  "theme": "Kitsuke",
+  "title": "Dressing",
+  "heading": "Kitsuke: putting it on",
+  "intro": "A flat robe gets its <q>final fit and shape</q> only in the dressing, called kitsuke {4:p.11}.",
+  "from": 492,
+  "to": 683,
+  "labels": [
+    {
+      "anchor": "form_juban_collar",
+      "from": 500,
+      "to": 562,
+      "side": "right",
+      "kicker": "Before the layers",
+      "title": "Taught and certified",
+      "jp": "着付け",
+      "body": [
+        "Kimono academies spread across Japan after the war {4:p.77}, issuing <q>certificates after the completion of certain courses</q> {4:p.78}.",
+        "In a 2006 survey of 128 women students at one university, 8.6 per cent could put on a kimono themselves {27:p.774}."
+      ]
+    },
+    {
+      "anchor": "form_overlap",
+      "from": 564,
+      "to": 594,
+      "side": "left",
+      "kicker": "Juban, then kimono",
+      "title": "Left over right",
+      "body": [
+        "Furisode magazines begin with the under-kimono and end with the obi knot {4:p.72}. The robe is <q>always draped from the left side over to the right</q> {4:p.69}.",
+        "The other way round <q>is now associated with death and the afterlife</q> {4:p.70}."
+      ]
+    },
+    {
+      "anchor": "form_ohashori",
+      "from": 596,
+      "to": 624,
+      "side": "left",
+      "kicker": "The tuck",
+      "title": "Ohashori",
+      "jp": "おはしょり",
+      "body": [
+        "The extra length becomes <q>the fold of fabric beneath the obi</q> {4:p.71}.",
+        "In a yukata study of nine young women, the fold slipped less when the cord was tied at the top of the hip bone than at the waist {19:p.81}."
+      ]
+    },
+    {
+      "anchor": "form_obi",
+      "from": 626,
+      "to": 654,
+      "side": "right",
+      "kicker": "The obi",
+      "title": "Where the pressure falls",
+      "jp": "帯",
+      "body": [
+        "In a study of nine women aged 20 to 26, clothing pressure was highest at the obi's upper edge, near the armpit {21:p.53}.",
+        "Of 333 graduating students in kimono, about eight in ten felt it two to three times as constricting as Western clothes {21:p.56}."
+      ]
+    },
+    {
+      "anchor": "form_obijime",
+      "from": 656,
+      "to": 683,
+      "side": "right",
+      "kicker": "Last",
+      "title": "Cord, sash and knot",
+      "body": [
+        "Magazines set the obi-jime <q>in the middle of the obi</q>, add an obi-age <q>to complete the ensemble</q> {4:p.71}, and tie the knot <q>facing the wearer's back</q> {4:p.71}."
+      ]
+    }
+  ],
+  "narration": {
+    "title": "Stop 5 · Dressing",
+    "cues": [
+      {
+        "show": "As you walk towards the figure, ask who teaches this. Becke traces a wave of books in the nineteen-seventies on the correct way to wear kimono. One large school opened in 1964 and, Becke notes, runs five academies in Japan's biggest cities.",
+        "frame": 492
+      },
+      {
+        "show": "The first layer goes on. In one Japanese case study, a professional dressing of a furisode used sixteen separate items: padding, under-layers, cords, boards, an obi pillow. Together they weighed about three kilograms, nearly four times a sweater and jeans.",
+        "frame": 564
+      },
+      {
+        "show": "Left over right is old. Becke traces it to a clothing code of the year 718, which followed Chinese fashion.",
+        "frame": 580
+      },
+      {
+        "show": "The fold at the waist is easily disturbed. In the yukata study, a bow made kneeling on the floor shifted it most; a standing bow, least.",
+        "frame": 596
+      },
+      {
+        "show": "Women today tie the obi high, from under the bust to the waist. About a century ago, cords and obi sat low, at the hip bones.",
+        "frame": 626
+      },
+      {
+        "show": "The knot is tied last, at the back. Walk round and look.",
+        "frame": 660
+      }
+    ]
+  },
+  "claims": [
+    {
+      "text": "Kitsuke gives the final fit and shape.",
+      "src": 4,
+      "page": "p.11",
+      "quote": "The kitsuke is of great importance as it provides the final fit and shape of the garment.",
+      "scope": "Becke; general",
+      "where": "intro"
+    },
+    {
+      "text": "Kimono academies spread across Japan after the war.",
+      "src": 4,
+      "page": "p.77",
+      "quote": "These institutions started to operate all over Japan in the post-war period",
+      "scope": "Becke, citing Dalby 2001: 119-121 and Goldstein-Gidoni 1999: 352",
+      "where": "label 1"
+    },
+    {
+      "text": "Academies issue certificates for finished courses.",
+      "src": 4,
+      "page": "p.78",
+      "quote": "issuing certificates after the completion of certain courses",
+      "scope": "kimono academies",
+      "where": "label 1"
+    },
+    {
+      "text": "Only 8.6% of 128 women students could put on a kimono themselves; 35.9% a yukata.",
+      "src": 27,
+      "page": "p.774",
+      "quote": "日本では着物8.6％（11/128 人），ゆかた35.9％（46/128 人）が自分自身で着ることができる",
+      "scope": "Tr. \"in Japan 8.6% (11/128) could put on a kimono and 35.9% (46/128) a yukata by themselves\". 128 Otsuma Women's University students, July 2006.",
+      "where": "label 1"
+    },
+    {
+      "text": "Magazine dressing runs from the nagajuban to the final obi knot.",
+      "src": 4,
+      "page": "p.72",
+      "quote": "from putting on the nagajuban (under-kimono) to the final tying of the obi knot",
+      "scope": "furisode; magazine kitsuke columns. Only the first and last steps are ordered in this source",
+      "where": "label 2"
+    },
+    {
+      "text": "The kimono is draped from the left side over to the right.",
+      "src": 4,
+      "page": "p.69",
+      "quote": "without exception always draped from the left side over to the right",
+      "scope": "furisode; what the publications show",
+      "where": "label 2"
+    },
+    {
+      "text": "Wrapping the other way is linked to death.",
+      "src": 4,
+      "page": "p.70",
+      "quote": "draping the garment the opposite way is now associated with death and the afterlife",
+      "scope": "Becke, citing Dalby 2001: 170 and Suzuki 2004",
+      "where": "label 2"
+    },
+    {
+      "text": "Left over right goes back to the Yōrō Clothing Code of 718, in Chinese fashion.",
+      "src": 4,
+      "page": "p.69",
+      "quote": "stated that all robes, in Chinese fashion, should be fitted with the left side over the right",
+      "scope": "the sentence's subject is 'The Yōrō Clothing Code which was implemented in 718'; Becke, citing Dalby 2001: 27-28",
+      "where": "narration 3"
+    },
+    {
+      "text": "The ohashori is a fold of fabric beneath the obi.",
+      "src": 4,
+      "page": "p.71",
+      "quote": "the creation of an ohashori, the fold of fabric beneath the obi",
+      "scope": "furisode; magazine convention",
+      "where": "label 3"
+    },
+    {
+      "text": "Ohashori slippage was smaller with the cord at the top of the iliac crest (7.1 cm) than at the waist (8.0 cm).",
+      "src": 19,
+      "page": "p.81",
+      "quote": "腰紐をウエストで締めた時（8.0±2.9cm）に比べて，腸骨稜上縁高で締めた時（7.1±2.5cm）の方が，着崩れ量は有意に少なかった",
+      "scope": "Tr. \"compared with tying the koshihimo at the waist (8.0±2.9 cm), slippage was significantly smaller when tied at the top of the iliac crest (7.1±2.5 cm)\". Yukata; 9 women aged 21-23; after 10 repetitions of movements.",
+      "where": "label 3"
+    },
+    {
+      "text": "Seated bowing produced the most ohashori slippage, the standing bow the least.",
+      "src": 19,
+      "page": "p.81",
+      "quote": "おはしょりの着崩れ量は立礼＜立ち座り＜一連の動作＜座礼となり",
+      "scope": "Tr. \"ohashori slippage: standing bow < standing and sitting < series of movements < seated bow\". Same 9 subjects, yukata.",
+      "where": "narration 4"
+    },
+    {
+      "text": "Clothing pressure was highest at the upper edge of the obi, especially at the armpit.",
+      "src": 21,
+      "page": "p.53",
+      "quote": "the clothing pressure was high at the upper edge of obi, especially in the axially region",
+      "scope": "authors' English abstract ('axially' as printed); 9 subjects aged 20-26",
+      "where": "label 4"
+    },
+    {
+      "text": "About 80% of 333 graduating students felt kimono pressure 2-3 times that of Western clothes.",
+      "src": 21,
+      "page": "p.56",
+      "quote": "和服の圧迫感は洋服の2倍から3倍と回答した者が全体の約8割であった",
+      "scope": "Tr. \"about 80% answered that the feeling of pressure in kimono was two to three times that of Western clothes\". Kyoto Women's University graduation, March 2005; 71% wore hakama.",
+      "where": "label 4"
+    },
+    {
+      "text": "Magazines place the obi-jime in the middle of the obi and add an obi-age to complete the ensemble.",
+      "src": 4,
+      "page": "p.71",
+      "quote": "placement in the middle of the obi, and the addition of an obi-age (obi cloth) to complete the ensemble",
+      "scope": "furisode; magazine convention. Not an ordered step",
+      "where": "label 5"
+    },
+    {
+      "text": "The obi knot faces the wearer's back.",
+      "src": 4,
+      "page": "p.71",
+      "quote": "The obi is dominantly tied in an elaborate manner, with the knot facing the wearer’s back.",
+      "scope": "furisode; magazine convention",
+      "where": "label 5; narration 6"
+    },
+    {
+      "text": "The 1970s brought a wave of books on the correct way to wear kimono.",
+      "src": 4,
+      "page": "p.75",
+      "quote": "The 1970s saw an increase in literature on kimono which aimed to educate the general public on the correct way of wearing kimono",
+      "scope": "Becke, citing Dalby 2001: 114-121",
+      "where": "narration 1"
+    },
+    {
+      "text": "One school opened in 1964 and runs five academies in Japan's biggest cities.",
+      "src": 4,
+      "page": "p.77",
+      "quote": "The institution started operating in 1964 and currently manages five academies which operate in the biggest cities throughout Japan",
+      "scope": "Sōdō Reihō Kimono Gakuin; Becke, from the school's website, via Assmann 2008",
+      "where": "narration 1"
+    },
+    {
+      "text": "One professional furisode dressing listed sixteen components.",
+      "src": 20,
+      "page": "p.22",
+      "quote": "胸増し綿＋ガーゼ＋肌襦袢＋長襦袢＋帯下締め＋長着＋第１腰紐＋きものベルト＋第２腰紐＋伊達締め＋前板＋帯＋紐＋帯枕＋帯揚げ＋帯〆",
+      "scope": "Tr. \"chest padding cotton + gauze + hadajuban + nagajuban + under-obi tie + kimono + 1st koshihimo + kimono belt + 2nd koshihimo + datejime + front board + obi + cord + obi pillow + obiage + obijime\". One professional dressing of a fukuro-obi furisode; a lecture, case study.",
+      "where": "narration 2"
+    },
+    {
+      "text": "That outfit weighed about 3 kg, 3.75 times a sweater and jeans.",
+      "src": 20,
+      "page": "p.22",
+      "quote": "総重量は約3kgと洋服（セータ＋ジーンズ）の3.75倍の負担となりました",
+      "scope": "Tr. \"total weight about 3 kg, a load 3.75 times Western clothes (sweater + jeans)\". Case study; lecture.",
+      "where": "narration 2"
+    },
+    {
+      "text": "Women's obi are tied from under the bust to the waist.",
+      "src": 20,
+      "page": "p.23",
+      "quote": "女子の帯はアンダーバストからウエストにかけて結びます",
+      "scope": "Tr. \"women's obi are tied from under the bust to the waist\". Present-day; lecture.",
+      "where": "narration 5"
+    },
+    {
+      "text": "Until about 100 years ago, cords and obi were tied low, at the hip bones.",
+      "src": 18,
+      "page": "p.127",
+      "quote": "100 年程前まで，腰紐を腰骨のあたりに締める，骨盤の張り出したところに帯を締める",
+      "scope": "Tr. \"until about 100 years ago, koshihimo were tied around the hip bones and the obi where the pelvis protrudes\". Sato and Tamura, from secondary sources.",
+      "where": "narration 5"
+    }
+  ],
+  "dropped": [
+    "Every dressing step between the under-kimono and the obi knot as a rule: Becke orders only the first and last; the sixteen-item list is one professional's dressing in a case study (source 20).",
+    "How long dressing takes when women dress themselves: only an expert's 5-7 minutes for summer layers (source 24) was found; not used.",
+    "Tabi first: no source read.",
+    "That a high obi raises stress markers: the English quote read (source 18 p.126) covers only the men's low position; left out."
+  ]
+}

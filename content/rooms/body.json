@@ -1,0 +1,350 @@
+{
+  "id": "body",
+  "n": 6,
+  "type": "scrub",
+  "theme": "Body language",
+  "title": "Body",
+  "heading": "The body in the robe",
+  "intro": "From behind: the knot, the collar, the hem. Then, on the wall, prints of robes being worn and put on.",
+  "from": 684,
+  "to": 845,
+  "stop": "S2",
+  "labels": [
+    {
+      "anchor": "form_knot",
+      "from": 690,
+      "to": 718,
+      "side": "left",
+      "kicker": "The knot",
+      "title": "Younger than it looks",
+      "body": [
+        "The taiko or drum knot, a furisode magazine notes, <q>was not born until the late Edo period</q> {4:p.110}."
+      ]
+    },
+    {
+      "anchor": "form_nape",
+      "from": 720,
+      "to": 746,
+      "side": "right",
+      "kicker": "The nape",
+      "title": "Collar set back from the neck",
+      "body": [
+        "In a 1976 study of three women, the best collar set-back was 3 to 5 cm {22:p.530}.",
+        "Standard furisode dressing <q>aims to hide potentially arousing areas of the body, such as the nape</q> {4:p.165}. Paris around 1907 preferred to reveal it {5:p.8}."
+      ]
+    },
+    {
+      "anchor": "form_hem",
+      "from": 748,
+      "to": 773,
+      "side": "left",
+      "kicker": "The hem",
+      "title": "Level, just above the feet",
+      "body": [
+        "In magazines the hem is set straight and <q>always ends just above the models' feet</q> {4:p.70}.",
+        "In a gait study of three women, a level hem gave longer strides than one raised at the front corners {23:p.695}."
+      ]
+    },
+    {
+      "anchor": "form_sleeve",
+      "from": 776,
+      "to": 808,
+      "side": "right",
+      "kicker": "Movement",
+      "title": "Walking, sitting, stairs",
+      "body": [
+        "Furisode magazines teach <q>how to appropriately move one's body when walking and sitting down</q> {4:pp.79-80}.",
+        "The result, Becke argues, is <q>constant monitoring and correcting of one's body</q> {4:p.80}."
+      ]
+    },
+    {
+      "anchor": "form_obi",
+      "from": 810,
+      "to": 845,
+      "side": "left",
+      "kicker": "Posture",
+      "title": "Where the obi sits",
+      "body": [
+        "In a lab study of eight young women, the low obi position used by men helped in <q>stabilizing the body trunk, straightening posture</q> {18:p.126}.",
+        "Women's obi today sit higher, from under the bust to the waist {20:p.23}."
+      ]
+    }
+  ],
+  "photos": [
+    {
+      "objectID": 37159,
+      "label": {
+        "title": "The Actor Nakamura Riko as an Oiran Tying Her Obi",
+        "meta": "Katsukawa Shunshō · Japan · Edo period · ca. 1779",
+        "material": "Woodblock print (nishiki-e); ink and color on paper",
+        "insight": "Oiran-style furisode dressing today ties the knot <q>at the front of the body</q> {4:p.165}, a placement courtesans made popular in the seventeenth century {4:p.167}."
+      }
+    },
+    {
+      "objectID": 36624,
+      "label": {
+        "title": "Takashima Ohisa Using Two Mirrors to Observe Her Coiffure",
+        "meta": "Kitagawa Utamaro · Japan · Edo period · ca. 1795",
+        "material": "Woodblock print; ink and color on paper",
+        "insight": "Dalby, quoted by Becke, on the young woman today: <q>she is to wear her [kimono] collar demurely close to her nape</q> {4:p.165}."
+      }
+    },
+    {
+      "objectID": 55862,
+      "label": {
+        "title": "Geisha Walking through the Snow at Night",
+        "meta": "Kitagawa Utamaro · Japan · Edo period · ca. 1797",
+        "material": "Woodblock print; ink and color on paper",
+        "insight": "In a gait study of three women in kimono, how the robe was worn mattered most for the length of the stride; footwear for the double-support phase {23:p.703}."
+      }
+    },
+    {
+      "objectID": 78060,
+      "label": {
+        "title": "Courtesan on Parade",
+        "meta": "Miyagawa Isshō · Japan · Edo period · late 1730s–early 1740s",
+        "material": "Hanging scroll; ink, color and gold on silk",
+        "insight": "Courtesans' preferences circulated, Becke writes, <q>with women of the merchant class imitating their fashions</q> {4:p.167}."
+      }
+    },
+    {
+      "objectID": 54870,
+      "label": {
+        "title": "A Woman Dressing a Girl for a the Kabuki Dance “Musume Dojōji,” with “Brother Picture” (E-kyōdai) of a Monkey Trainer",
+        "meta": "Kitagawa Utamaro · Japan · Edo period · ca. 1795–96",
+        "material": "Woodblock print in the e-kyodai format; ink and color on paper",
+        "insight": "In today's furisode magazines, Becke finds, the dresser is <q>the expert who is represented as being in command</q> {4:p.74}."
+      }
+    },
+    {
+      "objectID": 36621,
+      "label": {
+        "title": "Two Young Women Wrapped in Yukata After a Bath",
+        "meta": "Kitagawa Utamaro · Japan · Edo period · ca. 1796",
+        "material": "Woodblock print; ink and color on paper",
+        "insight": "The cotton summer yukata was once called yukatabira {27:p.772}. Druet defines it as an <q>unlined kimono made of light cotton</q> {6:p.20}."
+      }
+    }
+  ],
+  "narration": {
+    "title": "Stop 6 · Body",
+    "cues": [
+      {
+        "show": "Walk round behind the figure. This is the view the wearer never has.",
+        "frame": 684
+      },
+      {
+        "show": "Now the collar. Becke quotes Dalby: in Japan the nape is a primary erotic focus of the female body, the equivalent of the breasts in the West. Today's magazines keep it covered. Paris, around 1907, let the neckband fall to show it. The two sources point in different directions, and neither settles the matter.",
+        "frame": 720
+      },
+      {
+        "show": "Furisode magazines go well beyond walking. They cover getting in and out of a car, behaving at a meal, even using the bathroom.",
+        "frame": 776
+      },
+      {
+        "show": "Posture is measured too. In one laboratory study, wearing an obi eased the load on the shoulder muscles when leaning forward to lift a tea bowl.",
+        "frame": 810
+      },
+      {
+        "show": "On the wall, the older pictures. For a geisha, one writer says, choosing and wearing a kimono is as much a part of training as dance or the shamisen.",
+        "photo": 2
+      },
+      {
+        "show": "The robe after the bath is a yukata, cut on the same plan as the silk robes before it. It belongs to a larger family of garments, and that family is next.",
+        "photo": 5
+      }
+    ]
+  },
+  "claims": [
+    {
+      "text": "The taiko knot was not born until the late Edo period.",
+      "src": 4,
+      "page": "p.110",
+      "quote": "although possessing a traditional feel, the taiko-musubi, or ‘drum knot’, was not born until the late Edo period",
+      "scope": "reported: Furisode Hime magazine, quoted by Becke",
+      "where": "label 1"
+    },
+    {
+      "text": "Collar set-back (kurikoshi) was optimal at 3-5 cm depending on the subject.",
+      "src": 22,
+      "page": "p.530",
+      "quote": "被験者Aに対しては3cm,Bに対しては3.5cm,Cに対しては5cmのくりこし量が最適",
+      "scope": "Tr. \"a kurikoshi of 3 cm for subject A, 3.5 cm for B and 5 cm for C was optimal\". 3 subjects; paper of 1976.",
+      "where": "label 2"
+    },
+    {
+      "text": "Standard furisode dressing aims to hide the nape.",
+      "src": 4,
+      "page": "p.165",
+      "quote": "the standardised kitsuke which aims to hide potentially arousing areas of the body, such as the nape, from view",
+      "scope": "furisode",
+      "where": "label 2; narration 2"
+    },
+    {
+      "text": "In Paris around 1907, a neckband low at the back, showing the nape, was the fashionable way to wear kimono.",
+      "src": 5,
+      "page": "p.8",
+      "quote": "Letting the neck-band fall low in back, revealing the nape of the neck (nukiemon), became the fashionable way to wear kimono around 1907.",
+      "scope": "Paris fashion, about 1907 (PDF page). Points in a different direction from Becke p.165.",
+      "where": "label 2; narration 2"
+    },
+    {
+      "text": "The nape is a primary erotic focus of the female body.",
+      "src": 4,
+      "page": "p.165",
+      "quote": "Napes are a primary erotic focus of the female body in Japan, fully the equivalent of the breasts in the West.",
+      "scope": "reported: Becke quoting Dalby 2001: 197-198",
+      "where": "narration 2"
+    },
+    {
+      "text": "A young woman is expected to keep her collar close to the nape.",
+      "src": 4,
+      "page": "p.165",
+      "quote": "she is to wear her [kimono] collar demurely close to her nape",
+      "scope": "reported: Becke quoting Dalby 2001: 197-198; present-day young women. Not about this print.",
+      "where": "photo 36624"
+    },
+    {
+      "text": "In magazines the hem is horizontal and ends just above the feet.",
+      "src": 4,
+      "page": "p.70",
+      "quote": "set in a horizontally straight position and always ends just above the models' feet",
+      "scope": "furisode; models in magazines",
+      "where": "label 3"
+    },
+    {
+      "text": "A level hem gives longer strides than one with raised front corners.",
+      "src": 23,
+      "page": "p.695",
+      "quote": "Dressing of horizontal 'Suso' line makes the stride length and the step length longer.",
+      "scope": "author's English abstract; 3 women; compared with the tsumasaki-agari style (front corners raised 7 cm)",
+      "where": "label 3"
+    },
+    {
+      "text": "How the kimono is worn mainly affects stride; footwear mainly affects the double-support phase.",
+      "src": 23,
+      "page": "p.703",
+      "quote": "着物の着かたは歩幅に，履物は二重支持期に，それぞれ高いことが示された",
+      "scope": "Tr. \"the way of wearing the kimono [contributed] most to stride, and footwear to the double-support phase\". 3 subjects; contribution-ratio analysis. Not about this print.",
+      "where": "photo 55862"
+    },
+    {
+      "text": "Furisode magazines teach how to move when walking, sitting down and on stairs.",
+      "src": 4,
+      "page": "pp.79-80",
+      "quote": "how to appropriately move one's body when walking and sitting down, as well as when climbing up and down stairs",
+      "scope": "furisode; magazine etiquette sections",
+      "where": "label 4"
+    },
+    {
+      "text": "The result is constant monitoring and correcting of one's body.",
+      "src": 4,
+      "page": "p.80",
+      "quote": "Wearing a furisode therefore encourages constant monitoring and correcting of one's body",
+      "scope": "furisode; Becke's analysis",
+      "where": "label 4"
+    },
+    {
+      "text": "Magazines also cover cars, meals and the bathroom.",
+      "src": 4,
+      "page": "p.80",
+      "quote": "Graceful manners of getting in and out of a car, as well as how to behave during a meal and how to use the bathroom",
+      "scope": "furisode; magazines",
+      "where": "narration 3"
+    },
+    {
+      "text": "The men's low obi position stabilised the trunk and straightened posture.",
+      "src": 18,
+      "page": "p.126",
+      "quote": "OBI position 3, the style in use among men, provides benefits in terms of stabilizing the body trunk, straightening posture",
+      "scope": "authors' English abstract; 8 young women, laboratory, nagajuban only (no kimono)",
+      "where": "label 5"
+    },
+    {
+      "text": "Women's obi are tied from under the bust to the waist.",
+      "src": 20,
+      "page": "p.23",
+      "quote": "女子の帯はアンダーバストからウエストにかけて結びます",
+      "scope": "Tr. \"women's obi are tied from under the bust to the waist\". Present-day; lecture.",
+      "where": "label 5"
+    },
+    {
+      "text": "Wearing an obi reduced trapezius load when leaning forward (lifting a tea bowl).",
+      "src": 18,
+      "page": "p.134",
+      "quote": "前傾姿勢で何らかの動作を行う場合，帯を着用することで，僧帽筋への負担の軽減されることが明らかとなった",
+      "scope": "Tr. \"when performing some movement in a forward-leaning posture, wearing an obi was shown to reduce the load on the trapezius\". 8 women; EMG; the task modelled a tea-ceremony movement.",
+      "where": "narration 4"
+    },
+    {
+      "text": "Oiran style ties the obi knot in front.",
+      "src": 4,
+      "page": "p.165",
+      "quote": "the knot is positioned at the front of the body for this style",
+      "scope": "furisode; present-day oiran kitsuke. Not a claim about this print.",
+      "where": "photo 37159"
+    },
+    {
+      "text": "A front obi knot became popular with courtesans in the 17th century.",
+      "src": 4,
+      "page": "p.167",
+      "quote": "the placement of the knot of the obi in the front of the body, a practice which became popular with courtesans during the seventeenth century",
+      "scope": "Becke, citing de Becker 1971 and Watanabe 2013",
+      "where": "photo 37159"
+    },
+    {
+      "text": "Courtesans set fashions that merchant-class women copied.",
+      "src": 4,
+      "page": "p.167",
+      "quote": "Particular dress preferences by the most popular courtesans frequently became circulated in this way, with women of the merchant class imitating their fashions.",
+      "scope": "Edo; Becke citing Stanley 2012. Not about this painting.",
+      "where": "photo 78060"
+    },
+    {
+      "text": "For a geisha, choosing and wearing kimono is training on a par with dance and shamisen.",
+      "src": 6,
+      "page": "p.21",
+      "quote": "the art of choosing and wearing a kimono is as important a part of her training as learning traditional dancing or studying the shamisen",
+      "scope": "reported: Druet quoting Downer 2001",
+      "where": "narration 5"
+    },
+    {
+      "text": "In the magazines the expert dresses; the model is passive.",
+      "src": 4,
+      "page": "p.74",
+      "quote": "The model gives off the impression of possessing no agency, while Yasuda is the expert who is represented as being in command.",
+      "scope": "furisode; Furisode Daisuki kitsuke column. Not about this print.",
+      "where": "photo 54870"
+    },
+    {
+      "text": "The cotton summer yukata was once called yukatabira.",
+      "src": 27,
+      "page": "p.772",
+      "quote": "夏に着用されている綿素材の浴衣（以下，ゆかた）は「湯帷子」と呼ばれ",
+      "scope": "Tr. \"the cotton yukata worn in summer was called yukatabira\". Background section of a survey paper; p.773 continues: worn after bathing, later also outdoors.",
+      "where": "photo 36621"
+    },
+    {
+      "text": "The yukata is an unlined kimono of light cotton.",
+      "src": 6,
+      "page": "p.20",
+      "quote": "yukata (浴衣 unlined kimono made of light cotton)",
+      "scope": "Druet; general",
+      "where": "photo 36621"
+    },
+    {
+      "text": "The kimono's form is the same from formal to everyday wear.",
+      "src": 7,
+      "page": "p.76",
+      "quote": "キモノの形態は礼装から普段着まで共通であり",
+      "scope": "Tr. \"the form of the kimono is common from formal to everyday wear\". Supports 'cut on the same plan'.",
+      "where": "narration 6"
+    }
+  ],
+  "dropped": [
+    "Collar depth as a code for age or profession: no source read.",
+    "Sleeve handling, holding the hem, seiza and narrow steps as taught rules: no source read (only bowing in a slippage study, used in room 5).",
+    "Anything about the poses or clothing visible in the prints beyond their Met titles: not described in any source read.",
+    "That a high, under-bust obi raises stress markers: only the abstract line on the men's low position was quoted."
+  ]
+}

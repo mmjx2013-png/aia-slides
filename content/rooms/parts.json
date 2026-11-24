@@ -1,0 +1,223 @@
+{
+ "id": "parts",
+ "n": 2,
+ "type": "scrub",
+ "theme": "Structure",
+ "title": "The parts",
+ "heading": "The front, the fit, the re-making",
+ "intro": "Turn to the front of the T. Each piece has a name, the fit is a matter of length, and the whole robe could be taken apart again.",
+ "from": 329,
+ "to": 419,
+ "labels": [
+  {
+   "anchor": "collar_front",
+   "from": 332,
+   "to": 358,
+   "side": "left",
+   "kicker": "The front edge",
+   "title": "Okumi and collar",
+   "jp": "衽・衿",
+   "body": [
+    "Each front carries an extra panel, the okumi {7:p.76}. The collar is <q>an attached neckband sewn around the front opening</q> {4:p.10}.",
+    "The eri is <q>simply cut out in long band</q> {22:p.528}; the kakeeri, the over-collar, is the eighth piece {7:p.76}. Standard okumi: 15 cm {8:p.49}."
+   ]
+  },
+  {
+   "anchor": "overlap_front",
+   "from": 362,
+   "to": 388,
+   "side": "right",
+   "kicker": "Fitted by length",
+   "title": "As long as she is tall",
+   "jp": "身丈・裄",
+   "body": [
+    "Mitake, the body length, equals the wearer's height; yuki, back centre to sleeve opening, is fitted to her build {7:p.76}.",
+    "For a woman 160 cm tall: mitake 159.6, yuki 66.5, sleeve 49.4 cm {7:p.76}. Laid flat, a third of the body width overlaps {8:p.49}."
+   ]
+  },
+  {
+   "anchor": "hem_front",
+   "from": 392,
+   "to": 418,
+   "side": "left",
+   "kicker": "Re-making",
+   "title": "Unpick it, and it is cloth again",
+   "jp": "繰り回し",
+   "body": [
+    "Kimono were remade, kurimawashi, as seasons, uses and wearers changed, and as cloth wore out {7:p.75}.",
+    "For washing, silk was unpicked and joined back into a bolt {7:p.76}. Re-making, the authors conclude, was built into the form {7:p.80}."
+   ]
+  }
+ ],
+ "narration": {
+  "title": "Stop 2 · The parts",
+  "cues": [
+   {
+    "show": "Now the front of the robe turns towards you.",
+    "frame": 330
+   },
+   {
+    "show": "Find the narrow strip on either side of the opening. That is the okumi. It gives each front enough width to cross the other.",
+    "frame": 340
+   },
+   {
+    "show": "When the robe is worn, the wearer's left front lies over her right.",
+    "frame": 360
+   },
+   {
+    "show": "Nothing here is cut to a figure. What belongs to the wearer are lengths. The robe is as long as she is tall, and the reach from her spine to the sleeve opening is her own.",
+    "frame": 368
+   },
+   {
+    "show": "So a kimono could be taken apart. Where kimono were everyday wear, robes were unpicked and remade as seasons, uses and owners changed: a panel swapped, a piece extended, the silk washed flat and sewn up again.",
+    "frame": 390
+   },
+   {
+    "show": "There is a saying for it: unpick a kimono, and it turns back into cloth.",
+    "frame": 400
+   },
+   {
+    "show": "There is no crest on it. In one Tottori town in the late nineteen-sixties, crests had all but left clothes, except on ceremonial dress.",
+    "frame": 408
+   },
+   {
+    "show": "The shape is shared by the most formal robe and the plainest. What sets them apart is the cloth, and the season it was made for. The next room begins at the loom.",
+    "frame": 414
+   }
+  ]
+ },
+ "claims": [
+  {
+   "text": "The pieces include two okumi, a collar (eri) and an over-collar (kakeeri).",
+   "src": 7,
+   "page": "p.76",
+   "quote": "左右の前後身頃２枚，袖２枚，衽２枚，衿１枚，掛衿１枚の８枚の長方形によって構成される",
+   "scope": "Tr.: \"composed of eight rectangles: left and right front-back body panels 2, sleeves 2, okumi 2, collar 1, over-collar 1\". Basic form of the modern woman's nagagi.",
+   "where": "label 1"
+  },
+  {
+   "text": "An open, overlapping front, with a neckband sewn around the front opening.",
+   "src": 4,
+   "page": "p.10",
+   "quote": "an open, overlapping front; an attached neckband sewn around the front opening",
+   "scope": "Reported: Becke quoting Dalby 2001: 18.",
+   "where": "label 1; narration 2"
+  },
+  {
+   "text": "The kimono collar is cut as a simple long band.",
+   "src": 22,
+   "page": "p.528",
+   "quote": "kimono eri is simply cut out in long band and is dressed in various appearance form according to the personality",
+   "scope": "Authors' English abstract, 1976.",
+   "where": "label 1"
+  },
+  {
+   "text": "The standard okumi width is 15 cm, about 0.65 of the front width.",
+   "src": 8,
+   "page": "p.49",
+   "quote": "女性用キモノの衽の標準寸法は15cm(約4寸)で，これは前幅の0.65程度である",
+   "scope": "Tr.: \"standard okumi width is 15 cm (about 4 sun), about 0.65 of the front width\". Standard dimensions, woman's kimono.",
+   "where": "label 1"
+  },
+  {
+   "text": "Mitake equals the wearer's height; yuki runs from back centre to the sleeve opening and is fitted to the body.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "身丈は身長と同寸，裄丈は背中心から袖口までの長さで体格に合わせる",
+   "scope": "Tr.: \"mitake is the same as height; yuki is the length from back centre to the sleeve opening, fitted to physique\". Modern standard, woman's nagagi.",
+   "where": "label 2; narration 4"
+  },
+  {
+   "text": "Standard for a 160 cm woman: mitake 159.6, yuki 66.5, sleeve length 49.4 cm.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "身長160cm 159.6（4.2 尺） 66.5（1.75 尺） 49.4（1.3 尺）",
+   "scope": "Table 1, converted at 1 shaku = 38 cm.",
+   "where": "label 2"
+  },
+  {
+   "text": "Laid flat, a third of the body width overlaps at centre front.",
+   "src": 8,
+   "page": "p.49",
+   "quote": "人のキモノでは1.33となり，平置き時に前中心で身頃全体の幅の1/3が重なる",
+   "scope": "Tr.: \"for human kimono the ratio is 1.33; laid flat, 1/3 of the total body width overlaps at centre front\". Ratio (front + okumi)/back; standard dimensions.",
+   "where": "label 2; narration 2"
+  },
+  {
+   "text": "Worn, the wearer's left front laps over the right, as in wafuku.",
+   "src": 40,
+   "page": "p.44",
+   "quote": "右衽は着用者から見て左の衽を右の衽に重ねる着方（和服と同様）である",
+   "scope": "Tr.: \"youren is the way of wearing in which, seen by the wearer, the left front is lapped over the right (as in wafuku)\". Refereed study of hanfu, stating the same closure for Japanese wafuku.",
+   "where": "narration 3"
+  },
+  {
+   "text": "Kimono were remade (kurimawashi) as seasons, uses and wearers changed and as cloth wore out.",
+   "src": 7,
+   "page": "p.75",
+   "quote": "季節や用途，使用者の変化，着用による消耗などに応じて「繰り回し」と呼ばれる作り替えが行われてきた",
+   "scope": "Tr.: \"according to season and use, changes of user, wear from use and so on, a remaking called kurimawashi has been carried out\". Kimono made at home as everyday wear, before mass-produced clothing.",
+   "where": "label 3; narration 5"
+  },
+  {
+   "text": "For arai-hari washing, unpicked silk was joined back into a bolt, washed and stretched.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "ほどいた絹製のキモノの生地をもとの反物の形につなぎ合わせ，水で洗い，伸子または板に張り糊づけして整え",
+   "scope": "Tr.: \"the unpicked silk is joined back into the bolt shape, washed in water, stretched on shinshi or boards and starched\". The traditional method; dry-cleaning the made-up garment is now more common, the authors note.",
+   "where": "label 3; narration 5"
+  },
+  {
+   "text": "Because kimono are rectangles of one width, parts can be swapped or extended.",
+   "src": 7,
+   "page": "p.79",
+   "quote": "キモノは同じ幅を基準とした四角形の構成により，資料Ｂのように各部の入れ替えや継ぎ足しが可能である",
+   "scope": "Tr.: \"because kimono are rectangles based on the same width, parts can be swapped or extended, as in sample B\". Authors' conclusion from two garments.",
+   "where": "narration 5"
+  },
+  {
+   "text": "Hence the saying: unpick a kimono and it turns back into cloth.",
+   "src": 7,
+   "page": "p.79",
+   "quote": "「キモノはほどけばまた布に戻る」と言い慣わすのであろう",
+   "scope": "Tr.: \"that is presumably why people say 'unpick a kimono and it becomes cloth again'\". Authors' explanation of a common saying.",
+   "where": "narration 6"
+  },
+  {
+   "text": "Re-making was not a special second use but built into the kimono's form.",
+   "src": 7,
+   "page": "p.80",
+   "quote": "「繰り回し」は決して特殊な二次利用ではなく，キモノという一つの形に組み込まれた",
+   "scope": "Tr.: \"kurimawashi is by no means a special secondary use, but was built into the one form called kimono\". Authors' conclusion, based on two garments.",
+   "where": "label 3"
+  },
+  {
+   "text": "By the late 1960s crests on clothing were seldom seen except on ceremonial dress.",
+   "src": 32,
+   "page": "p.63",
+   "quote": "被服に紋章をとり入れる傾向は、式服を除いてはあまりみられなくなった",
+   "scope": "Tr.: \"the tendency to put crests on clothing is seldom seen now, except on ceremonial dress\". Kurayoshi, Tottori; questionnaire 1967-68; one town.",
+   "where": "narration 7"
+  },
+  {
+   "text": "The form is the same from formal to everyday wear; use is set by fabric and its dyed or woven design.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "キモノの形態は礼装から普段着まで共通であり，衣服としての用途は，布の材質および染織などの意匠によって決まる",
+   "scope": "Tr.: \"the form is common from formal to everyday wear; its use is decided by fabric and dyed or woven design\". Authors' summary, citing Ōtsuka 1972.",
+   "where": "narration 8"
+  },
+  {
+   "text": "Weave and lining, not shape, make a kimono right for cold or warm months.",
+   "src": 6,
+   "page": "p.20",
+   "quote": "it is just the tailoring, the weaving (and whether there is lining or not) that makes a kimono appropriate for cold or warm months",
+   "scope": "Druet; general.",
+   "where": "narration 8"
+  }
+ ],
+ "dropped": [
+  "Left-over-right on a label: only the hanfu study (source 40) and furisode publications (source 4) state it; kept to one line of narration.",
+  "Number and placing of crests by formality: the crest survey (source 32) gives neither."
+ ]
+}

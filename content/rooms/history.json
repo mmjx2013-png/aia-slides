@@ -1,0 +1,106 @@
+{
+  "id": "history",
+  "n": 8,
+  "type": "wall",
+  "theme": "Four centuries",
+  "title": "Four centuries",
+  "heading": "From under-layer to national dress",
+  "intro": "It began as an under-layer {30:p.516}. Then came laws, drapers, prints, a new name and, after the war, a rulebook {4:p.75}.",
+  "stop": "S2",
+  "photos": [
+    {"objectID": 54670, "label": {
+      "title": "Group before the Echigo-ya Dry-goods Shop on New Year's Day",
+      "meta": "Torii Kiyonaga · Japan · Edo period · ca. 1789",
+      "material": "One of a triptych of woodblock prints (nishiki-e); ink and color on paper",
+      "insight": "A trade manual of 1789: such silks <q>should be valued on the basis of the quality of the fabric and the popularity of their designs</q> {13:p.73}."}},
+    {"objectID": 55287, "label": {
+      "title": "Mitsui Shop at Surugachō in Edo (Edo Surugachō Mitsui mise ryaku zu), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "meta": "Katsushika Hokusai · Japan · Edo period · ca. 1830–32",
+      "material": "Woodblock print; ink and color on paper",
+      "insight": "The Mitsukoshi store began as Echigoya, a draper founded at Surugachō {14:p.3}. In 1842 the shogunate ordered true prices on shop tags {13:p.74}."}},
+    {"objectID": 55499, "label": {
+      "title": "Court Ladies Sewing Western Clothing  (Jokan yōfuku saihō no zu)",
+      "meta": "Yōshū (Hashimoto) Chikanobu · Japan · Meiji period · 1887",
+      "material": "Triptych of woodblock prints (nishiki-e); ink and color on paper",
+      "insight": "Women's Western dress began with the diplomacy of the Rokumeikan years, from 1886, and only among the elite {11:p.33}."}},
+    {"objectID": 55345, "label": {
+      "title": "Ladies Sewing  (Kijo saihō no zu)",
+      "meta": "Adachi Ginkō · Japan · Meiji period · 1887",
+      "material": "Triptych of woodblock prints (nishiki-e); ink and color on paper",
+      "insight": "New words in early Meiji: Western dress became yōfuku, and the kosode became wafuku, Japanese dress {36:P-270}."}},
+    {"objectID": 55185, "label": {
+      "title": "Western Clothing from the series An Array of Auspicious Customs of Eastern Japan (Azuma fūzoku, fukuzukushi-Yōfuku)",
+      "meta": "Yōshū (Hashimoto) Chikanobu · Japan · Meiji period · 1889",
+      "material": "Triptych of woodblock prints; ink and color on paper",
+      "insight": "Kimono was <q>reframed as Japan's national costume through an encounter with 'Western' forms of dress</q> {4:p.10}."}},
+    {"objectID": 646998, "label": {
+      "title": "Boy’s Kimono with Streamline Train",
+      "meta": "Japan · Shōwa period · ca. mid-1930s",
+      "material": "Plain-weave wool muslin with printing",
+      "insight": "Around 1920-30 kimono <q>was still the most popular form of dress for both genders</q> {4:p.109}. Only after the war did it part from fashion and fun {4:p.15}."}},
+    {"objectID": 76984, "label": {
+      "title": "Kimono with Pines and Mist",
+      "meta": "Japan · Shōwa period · second quarter 20th century",
+      "material": "Plain-weave crepe silk with paste-resist dying (yūzen) and application of gold",
+      "insight": "After the war, wearing and fitting kimono <q>has become vigorously standardised</q> {4:p.11}. One 1972 book lists 390 rules for buying, choosing and wearing {4:p.75}."}}
+  ],
+  "cards": [
+    {"kind": "text", "at": 2, "title": "Laws on cloth",
+     "body": ["The Tokugawa government issued <q>sumptuary laws on the type of clothes members of each class were allowed to wear</q> {4:p.99}: 132 times between 1615 and 1866 {39:p.432}.",
+              "Their purpose, in Nishimura's summary: <q>to maintain the class hierarchy</q> {39:p.432}."]},
+    {"kind": "text", "at": 5, "title": "Meisen, the everyday silk",
+     "body": ["Meisen is a plain-weave silk of pre-dyed yarn {14:p.1}. From Taishō into post-war Shōwa it was the mass-market kimono {15:p.37}, its picture-like patterns drawn from Art Nouveau and Art Deco {15:p.37}. Output peaked in 1930 {14:p.3}."]}
+  ],
+  "narration": {
+    "title": "Stop 8 · Four centuries",
+    "cues": [
+      {"photo": 0, "show": "Begin before any print on this wall. At the Heian court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface.",
+       "say": "Begin before any print on this wall. At the Hay-ahn court, by the twelfth century, the kosode was underwear, worn next to the skin. As court dress grew simpler, the robes above it came off, and the kosode came to the surface."},
+      {"photo": 0, "show": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in 1666 records the new Kanbun style, a wide empty back with large, moving motifs.",
+       "say": "By the early Edo period its shape was not far from today's kimono. Fashion moved fast: a pattern book printed in sixteen sixty-six records the new Kanbun style, a wide empty back with large, moving motifs."},
+      {"photo": 3, "show": "Meiji changed the words. Many garment names collapsed into one: kimono. Becke argues that one shape was frozen in time in these years."},
+      {"photo": 6, "show": "Magazines took up the teaching. In one, the tsukesage had nearly vanished by the two-thousands, folded into the visiting kimono."},
+      {"photo": 6, "show": "In 1981 the kimono retail market was worth nearly one point eight trillion yen. By 2020 it was about a seventh of that. Kimono became something rented rather than owned; by 2021 Kyoto alone had about forty rental shops.",
+       "say": "In nineteen eighty-one the kimono retail market was worth nearly one point eight trillion yen. By twenty twenty it was about a seventh of that. Kimono became something rented rather than owned; by twenty twenty-one Kyoto alone had about forty rental shops."},
+      {"photo": 6, "show": "By then the shape had long since travelled. The wall goes on, abroad."}
+    ]
+  },
+  "claims": [
+    {"text": "By the mid-12th century the kosode was used as underwear among court nobles.", "src": 30, "page": "p.516", "quote": "おそくとも12世紀中ごろには,公家の世界で小袖は,肌着・下着として用いられていた (Tr. \"by the mid-12th century at the latest, in the court world the kosode was used as skin-wear and underwear\")", "scope": "Saitō 1979, refereed; court nobility", "where": "intro; narration"},
+    {"text": "As court dress was simplified, the outer robes came off and the kosode came to the surface.", "src": 30, "page": "p.516", "quote": "それまで中心服飾であった衣(きぬ)が脱がれ,衣の下に着られていた小袖が表層化してきた (Tr. \"the kinu robes that had been central were taken off, and the kosode worn beneath them came to the surface\")", "scope": "Saitō 1979, refereed; Heian court", "where": "narration"},
+    {"text": "Kosode were the precursor of the modern kimono.", "src": 5, "page": "p.4", "quote": "kosode (precursor of the modern kimono)", "scope": "Fukai; PDF page", "where": "narration (kosode as the kimono's ancestor)"},
+    {"text": "By the early Edo period the kosode's shape was not very different from today's kimono.", "src": 31, "page": "p.29", "quote": "小袖の形も現在の着物とそれほど変らないものになった (Tr. \"the shape of the kosode also became not very different from today's kimono\")", "scope": "Imamura 2005, commentary for a costume show, not refereed; 17th century", "where": "narration"},
+    {"text": "A pattern book printed in 1666 records Kanbun-style designs.", "src": 10, "page": "p.599", "quote": "寛文 6 年（1666）刊 行の『新撰御ひいなかた』 (Tr. \"Shinsen on-hiinakata, published in Kanbun 6 (1666)\")", "scope": "Koide 2012, refereed; Kanbun era", "where": "narration"},
+    {"text": "Kanbun style: a large empty area on the back with big, dynamic motifs.", "src": 10, "page": "p.592", "quote": "背面に余白を大きく取り動的で大柄な文様を配し (Tr. \"leaving a large empty area on the back and placing large, dynamic motifs\")", "scope": "Koide 2012, refereed; Kanbun era 1661-73", "where": "narration"},
+    {"text": "A 1789 trade manual: brocade and satin are valued by fabric quality and design popularity.", "src": 13, "page": "p.73", "quote": "These fabrics should be valued on the basis of the quality of the fabric and the popularity of their designs", "scope": "Kenpu chōhō ki (1789), quoted by Suzuki 2022; silk fabrics such as brocade and satin. The print is not claimed to show them.", "where": "photo 54670"},
+    {"text": "Mitsukoshi began as the draper Echigoya, founded at Surugachō.", "src": 14, "page": "p.3", "quote": "三越は、延宝７年（1673）に駿河町で創業した呉服店「越後屋」が始まりである (Tr. \"Mitsukoshi began as Echigoya, a draper founded at Surugachō in Enpō 7 (1673)\")", "scope": "Goto 2023, university bulletin. The source's era name and year disagree (Enpō 7 is 1679), so no year is shown.", "where": "photo 55287"},
+    {"text": "In October 1842 the shogunate issued the proper price tag ordinance.", "src": 13, "page": "p.74", "quote": "Shōfuda Rei [The proper price tag ordinance] issued by the Tokugawa government in October 1842", "scope": "Suzuki 2022; Tenpō reforms", "where": "photo 55287"},
+    {"text": "Women's Westernisation of dress began in the Rokumeikan era of 1886, for diplomacy, and only for the elite.", "src": 11, "page": "p.33", "quote": "衣服の洋装化は，外交上の必要性に迫られた明治 19 年の鹿鳴館時代からである (Tr. \"the Westernisation of dress dates from the Rokumeikan era of Meiji 19, driven by diplomatic need\")", "scope": "Sakamoto 2018, invited review essay; upper-class women only (same paragraph)", "where": "photo 55499"},
+    {"text": "In early Meiji, Western dress came to be called yōfuku and the kosode wafuku.", "src": 36, "page": "P-270", "quote": "洋装を「洋服」と小袖を「和服」とそれぞれ呼ぶようになりました (Tr. \"people came to call Western dress yōfuku and the kosode wafuku\")", "scope": "Mizukami 2008, invited essay by a museum curator, not refereed", "where": "photo 55345"},
+    {"text": "Kimono was reframed as Japan's national costume through an encounter with Western dress in the Meiji era.", "src": 4, "page": "p.10", "quote": "It was reframed as Japan's national costume through an encounter with 'Western' forms of dress during the Meiji Restoration", "scope": "Becke; Meiji", "where": "photo 55185"},
+    {"text": "In the Meiji period, many garment names collapsed into the one word kimono.", "src": 4, "page": "p.67", "quote": "During the Meiji period, this differentiation slowly disappeared, however, and all garments became categorised under the label ‘kimono’.", "scope": "Becke, citing Milhaupt 2014 and Dalby 2001: 59-65", "where": "narration"},
+    {"text": "A certain kimono shape became frozen in time in the Meiji period.", "src": 4, "page": "p.72", "quote": "a certain kimono shape became 'frozen in time' during the Meiji period (1868-1912)", "scope": "Becke's own statement", "where": "narration"},
+    {"text": "In the 1920s-30s kimono was still the most popular dress for both sexes.", "src": 4, "page": "p.109", "quote": "Kimono, which at that point was still the most popular form of dress for both genders, was part of the realm of fashionable dress", "scope": "1920-1930; Becke, citing Thoelen 2020", "where": "photo 646998"},
+    {"text": "Only after the war did kimono lose its link with fashion and fun.", "src": 4, "page": "p.15", "quote": "It was only in the post-war period that kimono became increasingly disassociated from notions of fashion and fun.", "scope": "Becke", "where": "photo 646998"},
+    {"text": "The way of wearing kimono became vigorously standardised after the war.", "src": 4, "page": "p.11", "quote": "the way of wearing and fitting kimono has become vigorously standardised in a post-war context", "scope": "Becke; post-war", "where": "photo 76984"},
+    {"text": "A 1972 book contains 390 rules on buying, choosing and wearing kimono.", "src": 4, "page": "p.75", "quote": "The book contains a total of 390 rules in regards to buying, choosing, and wearing kimono.", "scope": "Shiotsuki, Kimono no Hon, 1972, as described by Becke", "where": "intro; photo 76984"},
+    {"text": "The Tokugawa government issued sumptuary laws on what each class could wear.", "src": 4, "page": "p.99", "quote": "issuing sumptuary laws on the type of clothes members of each class were allowed to wear", "scope": "Becke; Tokugawa government", "where": "card 1"},
+    {"text": "The shogunate issued clothing rules 132 times, from 1615 to 1866.", "src": 39, "page": "p.432", "quote": "幕府は132回 … 最も早く公布されたものは,幕府法による衣服規制で元和元年 ( 1615 ) , 遅いものも幕府法による慶応 2 年 ( 1866 ) (Tr. \"the shogunate 132 times … the earliest was a shogunal clothing rule of Genna 1 (1615), the latest also shogunal, Keiō 2 (1866)\")", "scope": "Nishimura 1980, refereed; counts from the edict collections used; domains issued their own", "where": "card 1"},
+    {"text": "The laws were meant to keep the class hierarchy visible.", "src": 39, "page": "p.432", "quote": "The substance of these laws were employed to maintain the class hierarchy", "scope": "Nishimura 1980, refereed; English abstract, verbatim including its grammar", "where": "card 1"},
+    {"text": "Meisen is a plain-weave silk woven from pre-dyed yarn.", "src": 14, "page": "p.1", "quote": "銘仙とは、先染めした糸で織った平織りの絹織物のことを指す (Tr. \"meisen refers to a plain-weave silk woven from pre-dyed yarn\")", "scope": "Goto 2023, university bulletin; general definition", "where": "card 2"},
+    {"text": "From Taishō to post-war Shōwa, meisen dominated everyday dress as the mass-market kimono.", "src": 15, "page": "p.37", "quote": "長期にわたり大衆向け着物として衣生活を支配した (Tr. \"for a long period it dominated clothing life as the mass-market kimono\")", "scope": "Shiba 2018, conference abstract, not a full paper", "where": "card 2"},
+    {"text": "Meisen's great feature is picture-like design influenced by Art Nouveau and Art Deco.", "src": 15, "page": "p.37", "quote": "アール・ヌーボーやアール・デコの影響を受けた、まるで絵画といってもよいデザインにある (Tr. \"lies in design influenced by Art Nouveau and Art Deco, which one could almost call painting\")", "scope": "Shiba 2018, conference abstract; author's characterisation", "where": "card 2"},
+    {"text": "Meisen production peaked in 1930 and then declined.", "src": 14, "page": "p.3", "quote": "昭和 5 年（1930）のピークをさかいに減少していく (Tr. \"declines after its peak in Shōwa 5 (1930)\")", "scope": "Goto 2023, from Nihon bōseki nenkan", "where": "card 2"},
+    {"text": "In a kimono magazine, tsukesage hardly appeared in recent years and was merged into hōmongi.", "src": 33, "page": "p.422", "quote": "近年では付け下げの掲載がほとんどなくなり訪問着に一元化されている (Tr. \"recently tsukesage has hardly been featured and has been unified into hōmongi\")", "scope": "Okamoto, Numata, Kōyama 2008, magazine review, not refereed; Utsukushii Kimono 1975-2005", "where": "narration"},
+    {"text": "The kimono retail market shrank from 1,766.7 billion yen in 1981 to 238 billion yen in 2020, about one seventh.", "src": 25, "page": "p.11", "quote": "1981年の17,667 億円の市場規模から2020 年には2380 億円と7 分の1 程度に縮小している (Tr. \"from a market of 1,766.7 billion yen in 1981 it shrank to 238 billion yen in 2020, about one seventh\")", "scope": "Araki 2022; industry figures cited by the author", "where": "narration"},
+    {"text": "After the 1990s crash, kimono became something rented rather than owned.", "src": 4, "page": "p.118", "quote": "resulting in a shift of the general image of kimono from a garment which is owned towards one which is rented", "scope": "Becke, citing Valk 2018: 113", "where": "narration"},
+    {"text": "Kyoto had about forty rental shops in January 2021.", "src": 12, "page": "p.72", "quote": "As of January 2021, the city counts about forty different rental shops and twenty second-hand kimono shops.", "scope": "Druet 2021; Kyoto, author's count", "where": "narration"}
+  ],
+  "dropped": [
+    "Edo clothing laws in detail on screen (the 1683 Tenna price caps, the 1636 bolt size): sourced (39 p.435) but left out for space, not for lack of a source.",
+    "Market figures in other years and the 12.9% second-hand share (12 p.79): sourced but not used, to keep one figure per stop.",
+    "Vintage kimono as a trend (4 p.14): sourced, not used for space.",
+    "What the Kiyonaga and Hokusai prints show inside the shops (customers, cloth, crests): the Met records give titles only, so no claim is made about their content.",
+    "Wartime kimono (propaganda designs, monpe): sourced (12 p.56; 11 p.33) but no wall object fits it; the boy's kimono record says nothing about war."
+  ]
+}

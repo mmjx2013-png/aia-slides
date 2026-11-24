@@ -1,0 +1,379 @@
+{
+  "id": "pattern",
+  "n": 4,
+  "type": "wall",
+  "theme": "Pattern and its coding",
+  "title": "Pattern",
+  "heading": "The flat cloth as a canvas",
+  "intro": "Unworn, a kimono is flat {4:p.10}: <q>an ideal canvas for dyers, painters and embroiderers</q> {4:p.11}.",
+  "stop": "S1",
+  "photos": [
+    {
+      "objectID": 61834,
+      "label": {
+        "title": "Kosode",
+        "meta": "Japan · Edo period",
+        "material": "Probably resist-dyed with repeating small pattern (komon) in white on gray",
+        "insight": "Its record names the pattern komon. Present-day guides, Becke reports, treat such repeats as <q>generally considered less formal</q> {4:p.62}."
+      }
+    },
+    {
+      "objectID": 76731,
+      "label": {
+        "title": "Robe (Kosode) with Fishing Net and Characters",
+        "meta": "Japan · Edo period · probably ca. 1660s",
+        "material": "Silk and metallic thread embroidery, tied resist dyeing on satin damask",
+        "insight": "Koide dates the Kanbun era 1661–73 {10:p.603}; its kosode style leaves the back open around big, moving motifs {10:p.592}. The record names no style."
+      }
+    },
+    {
+      "objectID": 53610,
+      "label": {
+        "title": "Robe (Kosode) with Cherry Blossoms and Cypress Fence",
+        "meta": "Japan · Edo period · second half of the 17th century",
+        "material": "Silk and metallic thread embroidery with resist dyeing on satin damask",
+        "insight": "Writing of kimono today, Druet calls cherry blossom <q>allegedly the most recurrent motif on spring kimono</q> {6:p.23}."
+      }
+    },
+    {
+      "objectID": 45399,
+      "label": {
+        "title": "Robe (Kosode) with Pines and Interlocking Squares",
+        "meta": "Japan · Edo period · second half of the 18th century",
+        "material": "Figured silk satin with tie-dying (shibori)",
+        "insight": "Becke, following Dalby: a kimono <q>can easily be socially placed and dated through an analysis of the pattern design</q> {4:p.11}."
+      }
+    },
+    {
+      "objectID": 916384,
+      "label": {
+        "title": "Robe (Kosode) with Bamboo and Plum",
+        "meta": "Japan · Edo period · second half 18th century",
+        "material": "Figured satin-weave silk (rinzu) with paste-resist dyeing (yūzen) and couched gold thread",
+        "insight": "A geisha's calendar of motifs, quoted by Druet, begins <q>sprigs of pine in January, plum blossom in February</q> {6:p.22}."
+      }
+    },
+    {
+      "objectID": 42669,
+      "label": {
+        "title": "Kosode Pattern Book (On-Hiinagata) vol. 1",
+        "meta": "Japan · Edo period · 1667",
+        "material": "One of a set of two woodblock-printed books; ink and red color on paper",
+        "insight": "Pattern books, hinagata-bon, <q>informed consumers of available kimono designs and styles</q>, Becke writes, citing Kuhn {4:p.28}."
+      }
+    },
+    {
+      "objectID": 74149,
+      "label": {
+        "title": "Order Book of Kosode Patterns (Chūmon no hiinagata/Hiinagata chūmon chō)",
+        "meta": "Imura Katsukichi · Japan · Edo period · 1716",
+        "material": "Woodblock-printed book; ink on paper",
+        "insight": "Koide finds many Kanbun-style designs in a Kyoto draper's order books {10:p.599} and in a pattern book printed in 1666 {10:p.599}."
+      }
+    }
+  ],
+  "cards": [
+    {
+      "kind": "table",
+      "at": 3,
+      "title": "Kosode styles, early Edo",
+      "body": [
+        "Koide's reading of 992 kosode in 39 genre paintings {10:p.592}."
+      ],
+      "head": [
+        "Style",
+        "Dates",
+        "Design"
+      ],
+      "rows": [
+        [
+          "Momoyama",
+          "1573–1615 {10:p.603}",
+          "Compartments, such as shoulder and hem {10:p.592}"
+        ],
+        [
+          "Keichō",
+          "1596–1615 {10:p.603}",
+          "Abstract dyed compartments; no plain ground {10:p.592}"
+        ],
+        [
+          "Kan'ei",
+          "1624–44 {10:p.603}",
+          "Large, bold motifs: about half the kosode in several paintings {10:p.600}"
+        ],
+        [
+          "Kanbun",
+          "1661–73 {10:p.603}",
+          "Wide empty back, big moving motifs {10:p.592}"
+        ]
+      ]
+    },
+    {
+      "kind": "text",
+      "at": 7,
+      "title": "Colour, age, marriage",
+      "body": [
+        "In late-Edo formal dress, the older the wearer, the more restrained the pattern {29:p.25}. Today the long-sleeved furisode is <q>mainly reserved for unmarried women</q> {4:p.53}.",
+        "Becke's young interviewees expressed themselves through colour more than pattern {4:p.134}."
+      ]
+    }
+  ],
+  "narration": {
+    "title": "Stop 4 · Pattern",
+    "cues": [
+      {
+        "show": "Start with the small repeat, then walk on to the large designs. In the ceremonial kind, guides say, the design runs across the seams as one picture, and the motifs gather below the obi and at the left shoulder.",
+        "photo": 0
+      },
+      {
+        "show": "Robes of this age are rare. Koide explains why: the kosode was a thing to be worn out. So she counted robes in paintings instead, nearly a thousand of them.",
+        "photo": 1
+      },
+      {
+        "show": "Her finding is that no style stood alone. Each borrowed elements from the others, and in exchange made the next.",
+        "photo": 3
+      },
+      {
+        "show": "Koide ties the Kanbun style to a wider public. As the shogun's order settled, townspeople came to enjoy the kosode, in quality and in number.",
+        "photo": 5
+      },
+      {
+        "show": "Today the code is read less closely. Asked about the flowers on her own furisode, one young woman told Becke: flowers are flowers, right? She had chosen by colour. In the next room, the flat picture meets a body.",
+        "photo": 6
+      }
+    ]
+  },
+  "claims": [
+    {
+      "text": "Unworn, a kimono has a completely flat surface.",
+      "src": 4,
+      "page": "p.10",
+      "quote": "In its unworn form, a kimono has a completely flat surface.",
+      "scope": "Becke; general",
+      "where": "intro"
+    },
+    {
+      "text": "Flat cloth is an ideal canvas.",
+      "src": 4,
+      "page": "p.11",
+      "quote": "an ideal canvas for dyers, painters and embroiderers",
+      "scope": "Becke; general",
+      "where": "intro"
+    },
+    {
+      "text": "Komon: repeated all-over patterns are considered less formal.",
+      "src": 4,
+      "page": "p.62",
+      "quote": "pervasive and repetitive patterns called komon are generally considered less formal",
+      "scope": "reported: Becke citing Dalby, Ōkubo and a kimono association; present-day guides. Not about this object.",
+      "where": "photo 61834"
+    },
+    {
+      "text": "Eba-moyō: asymmetrical, continuous arrangements are regarded as ceremonial.",
+      "src": 4,
+      "page": "p.62",
+      "quote": "asymmetrical, continuous eba-moyō arrangements are regarded as ceremonial",
+      "scope": "reported, as above; present-day guides",
+      "where": "narration 1"
+    },
+    {
+      "text": "In eba-moyō, motifs gather on sections such as below the obi and the left shoulder.",
+      "src": 4,
+      "page": "p.62",
+      "quote": "on certain sections, such as the part below the obi and the left shoulder",
+      "scope": "eba-moyō; Becke following Dalby and Ōkubo; the sections are given as examples",
+      "where": "narration 1"
+    },
+    {
+      "text": "Worth borrowed eba-moyō: the whole garment treated as one design field.",
+      "src": 5,
+      "page": "p.6",
+      "quote": "a painterly approach to pattern design (eba-moyo in Japanese), in which the entire surface of the garment is treated as a single design field",
+      "scope": "Fukai, defining eba-moyō while writing about Worth; supports 'runs across the seams as one picture'",
+      "where": "narration 1"
+    },
+    {
+      "text": "Koide's period dates: Momoyama 1573-1615; Keichō 1596-1615; Kan'ei 1624-44; Kanbun 1661-73.",
+      "src": 10,
+      "page": "p.603",
+      "quote": "慶長期（1596 ～1615），元和期（1615 ～1624），寛永期（1624 ～1644），寛文期（1661 ～1673）",
+      "scope": "Tr. \"Keichō (1596-1615), Genna (1615-1624), Kan'ei (1624-1644), Kanbun (1661-1673)\". Author's note *1, following a 1986 art-history chronology; checked on the page text.",
+      "where": "photo 76731; table"
+    },
+    {
+      "text": "Koide dates the Momoyama period 1573-1615.",
+      "src": 10,
+      "page": "p.603",
+      "quote": "桃山時代を天正元年（1573）から慶長20 年（1615）",
+      "scope": "Tr. \"the Momoyama period from Tenshō 1 (1573) to Keichō 20 (1615)\". Note *1; checked on the page text.",
+      "where": "table"
+    },
+    {
+      "text": "Momoyama style: kosode marked by compartments such as the shoulder-and-hem layout.",
+      "src": 10,
+      "page": "p.592",
+      "quote": "肩裾小袖などの区画 1） に特徴のある桃山小袖",
+      "scope": "Tr. \"Momoyama kosode, characterised by compartments such as the shoulder-and-hem kosode\". Late Muromachi to Momoyama; a style named by earlier research.",
+      "where": "table"
+    },
+    {
+      "text": "Keichō style: abstract, complex dyed compartments with no plain ground (ji-nashi).",
+      "src": 10,
+      "page": "p.592",
+      "quote": "抽象的で複雑な染め分けの区画を持ち地無しの意匠構成の慶長小袖",
+      "scope": "Tr. \"Keichō kosode, with abstract, complex dyed compartments and a design with no ground\". Style named by earlier research.",
+      "where": "table"
+    },
+    {
+      "text": "Kanbun style: a large empty area on the back with big, dynamic motifs.",
+      "src": 10,
+      "page": "p.592",
+      "quote": "背面に余白を大きく取り動的で大柄な文様を配し",
+      "scope": "Tr. \"leaving a large empty space on the back and placing dynamic, large motifs\". Kanbun era; style named by earlier research. Not a claim about object 76731.",
+      "where": "photo 76731; table"
+    },
+    {
+      "text": "In the Kan'ei era the large-motif form made up about half of the kosode in several paintings.",
+      "src": 10,
+      "page": "p.600",
+      "quote": "約半数の着用数を占めていて，この時期における形式の主流をなしている",
+      "scope": "Tr. \"accounts for about half of the robes worn and forms the mainstream of this period\". Kan'ei; genre paintings, not surviving garments.",
+      "where": "table"
+    },
+    {
+      "text": "In that form, motifs are large, bold and more realistic.",
+      "src": 10,
+      "page": "p.600",
+      "quote": "文様が大きく大胆に，そしてより写実的に表現されており",
+      "scope": "Tr. \"the motifs are rendered large and bold, and more realistically\". Koide's large-motif form (大柄文様形式).",
+      "where": "table"
+    },
+    {
+      "text": "Method: 992 kosode from 39 early-modern genre paintings.",
+      "src": 10,
+      "page": "p.592",
+      "quote": "39 作例の近世初期風俗画（表 1）",
+      "scope": "Tr. \"39 early-modern genre paintings (Table 1)\". The same sentence continues: 描かれた小袖 992 領を抽出 (992 kosode extracted).",
+      "where": "table; narration 2"
+    },
+    {
+      "text": "Surviving kosode are few because kosode were consumables.",
+      "src": 10,
+      "page": "p.592",
+      "quote": "小袖が消耗品であるという保存上の問題が強く作用している",
+      "scope": "Tr. \"the conservation problem that the kosode was a consumable has a strong effect\". Author's methodological point.",
+      "where": "narration 2"
+    },
+    {
+      "text": "Design styles borrowed and exchanged elements, producing the next period's style.",
+      "src": 10,
+      "page": "p.603",
+      "quote": "複数の形式がその中に存在する特徴的なある要素を互いに転用したり，交換し合いながら",
+      "scope": "Tr. \"several forms mutually borrowing or exchanging certain characteristic elements within them\". Momoyama to Kanbun; author's conclusion.",
+      "where": "narration 3"
+    },
+    {
+      "text": "As the shogunal order settled, townspeople came to enjoy the kosode in quality and quantity.",
+      "src": 10,
+      "page": "p.603",
+      "quote": "市井の町人たちは質的にも量的にも身近な存在として小袖を享受するようになり",
+      "scope": "Tr. \"ordinary townspeople came to enjoy the kosode as something close to them, in quality and in quantity\". Early Edo; author's conclusion, leading to the Kanbun style.",
+      "where": "narration 4"
+    },
+    {
+      "text": "Kanbun kosode are recorded in large numbers in order books.",
+      "src": 10,
+      "page": "p.599",
+      "quote": "寛文小袖が多く収録されている",
+      "scope": "Tr. \"in which many Kanbun kosode are recorded\". Qualifies the Karigane-ya order books (1661-64) and the 1666 pattern book named in the same sentence. Not about objects 42669 or 74149.",
+      "where": "photo 74149"
+    },
+    {
+      "text": "The order books were those of the Kyoto draper Karigane-ya, for Tōfukumon-in.",
+      "src": 10,
+      "page": "p.599",
+      "quote": "呉服商雁金屋の東福門院関係の注文帳",
+      "scope": "Tr. \"the draper Karigane-ya's order books relating to Tōfukumon-in\". Checked on the page text.",
+      "where": "photo 74149"
+    },
+    {
+      "text": "A printed pattern book of 1666, Shinsen on-hiinakata.",
+      "src": 10,
+      "page": "p.599",
+      "quote": "寛文 6 年（1666）刊 行の『新撰御ひいなかた』",
+      "scope": "Tr. \"Shinsen on-hiinakata, published Kanbun 6 (1666)\". The Met dates object 42669 to 1667; no identity is claimed.",
+      "where": "photo 74149"
+    },
+    {
+      "text": "Pattern books, hinagata-bon, informed consumers of available kimono designs.",
+      "src": 4,
+      "page": "p.28",
+      "quote": "These pattern books called hinagata-bon informed consumers of available kimono designs and styles.",
+      "scope": "early seventeenth century onward; reported: Becke citing Kuhn 2018",
+      "where": "photo 42669"
+    },
+    {
+      "text": "Cherry blossom is said to be the most recurrent motif on spring kimono.",
+      "src": 6,
+      "page": "p.23",
+      "quote": "the sakura (桜) cherry blossoms pattern which is allegedly the most recurrent motif on spring kimono",
+      "scope": "Druet ('allegedly'); present-day kimono. Not about this object.",
+      "where": "photo 53610"
+    },
+    {
+      "text": "A kimono can be placed and dated by its pattern.",
+      "src": 4,
+      "page": "p.11",
+      "quote": "kimono can easily be socially placed and dated through an analysis of the pattern design",
+      "scope": "Becke, citing Dalby 2001 and Nitanai 2013; general",
+      "where": "photo 45399"
+    },
+    {
+      "text": "A motif calendar: pine in January, plum in February.",
+      "src": 6,
+      "page": "p.22",
+      "quote": "sprigs of pine in January, plum blossom in February, cherry blossom in the spring, small trout in summer, maple leaves in autumn",
+      "scope": "reported: Druet quoting Downer 2001; about geisha. Not about this object.",
+      "where": "photo 916384"
+    },
+    {
+      "text": "In late-Edo women's formal dress, the older the wearer, the more restrained the pattern.",
+      "src": 29,
+      "page": "p.25",
+      "quote": "模様は年齢に応じて，その有無や表し方が決まっており，年齢が高くなれば模様は控えめに",
+      "scope": "Tr. \"whether there was a pattern, and how it was shown, was set by age; the older the wearer, the more restrained the pattern\". Late Edo, from Morisada mankō, via Furukawa.",
+      "where": "card 2"
+    },
+    {
+      "text": "The furisode is mainly for unmarried women at formal occasions.",
+      "src": 4,
+      "page": "p.53",
+      "quote": "mainly reserved for unmarried women to wear at formal occasions",
+      "scope": "Becke, citing Dalby 2001: 172, Goldstein-Gidoni 1999, Milhaupt 2014: 38; present-day",
+      "where": "card 2"
+    },
+    {
+      "text": "Young women express themselves through colour more than pattern.",
+      "src": 4,
+      "page": "p.134",
+      "quote": "It was particularly the colour of their furisode through which young women aimed to express their individuality.",
+      "scope": "Becke's eight interviewees; furisode",
+      "where": "card 2; narration 5"
+    },
+    {
+      "text": "Many young wearers cannot name the flowers on their furisode.",
+      "src": 4,
+      "page": "p.137",
+      "quote": "I mean, flowers are flowers, right?",
+      "scope": "interviewee (Mako), quoted by Becke; furisode",
+      "where": "narration 5"
+    }
+  ],
+  "dropped": [
+    "That any robe on this wall is in the Kanbun, Keichō or another named style: no Met record in the wishlist says so.",
+    "That object 42669 (On-Hiinagata, 1667) is the Shinsen on-hiinakata Koide names (1666): not established in any source read.",
+    "How pattern books were used in a shop, and who drew them: no source read beyond Becke p.28 and Koide p.599.",
+    "Pattern only at the hem (tomesode) as a rule for married women today: only the Meiji hem-pattern requirement (Furukawa p.26) was read; not used here.",
+    "Meanings of pine, bamboo and plum as a group: no source read."
+  ]
+}

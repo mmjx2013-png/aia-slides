@@ -1,148 +1,386 @@
-# Kimono deck: claims ledger
+# Kimono exhibition (v3): claims ledger
 
-Companion to `kimono.html`. One row per claim shown or spoken in the deck.
-Every quote was read in the source text during the build session and is 25 words or fewer.
+One row per claim shown on screen or spoken in the audio guide. Every quote was read in the source
+during the build session and is 25 words or fewer (Japanese: the original words, with a translation
+marked Tr.). Generated from `content/rooms/*.json` by `tools/build_site.py`; edit the room files, not this.
 
 ## Sources
 
-| No. | Source | Status |
-|---|---|---|
-| 1 | Dalby, L. *Kimono: Fashioning Culture*. Yale University Press, 1993. | **Not read, not cited.** No readable text (Google Books API quota exhausted, HTTP 429). |
-| 2 | Bincsik, M. and Van Godtsenhoven, K. *Kimono Style: The John C. Weber Collection*. The Met / Yale University Press, 2022. | **Not read, not cited.** The Met page returned a bot checkpoint (HTTP 429). |
-| 3 | "Kimono: elucidating meanings of Japanese textile artifacts for a museum audience." SciELO. | **Not read, not cited.** SciELO returned a bot challenge (HTTP 403). |
-| 4 | Becke, C. *Negotiating Gendered Identities Through Dress: Kimono at the Coming-of-age Day in Contemporary Japan*. PhD thesis, School of East Asian Studies, The University of Sheffield, January 2022. https://etheses.whiterose.ac.uk/id/eprint/30197/ | **Read in full** (211 pages). Page numbers are the printed pages, which equal the PDF pages. |
-| 5 | Fukai, A. "Japonism in Fashion." Kyoto Costume Institute; carried in the exhibition catalogue *Japonism in Fashion* (Tokyo). https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf | **Read in full** (13 pages). The file has no printed page numbers, so pages are PDF pages. |
-| 6 | Druet, L. "Dressed by Nature, Adorned by Design: Seeing and reading the Seasons with Kimono." *Mutual Images Journal* 12 (2024): 16–36. https://doi.org/10.32926/2024.druet | **Read in full** (21 pages). Added for the fabric and season gap. Page numbers are the printed pages (PDF page + 15). |
-| 7–8 | Further extra sources | **None added.** See "Extra sources" below. |
+| No. | Source |
+|---|---|
+| 4 | Becke, C. *Negotiating Gendered Identities Through Dress: Kimono at the Coming-of-age Day in Contemporary Japan*. PhD thesis, School of East Asian Studies, University of Sheffield, 2022. https://etheses.whiterose.ac.uk/id/eprint/30197/ |
+| 5 | Fukai, A. “Japonism in Fashion.” Kyoto Costume Institute (essay from the exhibition catalogue *Japonism in Fashion*). https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf |
+| 6 | Druet, L. “Dressed by Nature, Adorned by Design: Seeing and reading the Seasons with Kimono.” *Mutual Images Journal* 12 (2024): 16–36. https://doi.org/10.32926/2024.druet |
+| 7 | Maruyama, M., Tauchi, T. and Kubo, M. “The relationship between the form and the process of making-over in kimono” (in Japanese). *Bulletin of JSSD* 63, no. 5 (2017): 75–80. https://doi.org/10.11247/jssdj.63.5_75 |
+| 8 | Maruyama, M., Tauchi, T. and Kubo, M. “Design elements of ‘kimono-ness’ seen in doll kimonos” (in Japanese). *Bulletin of JSSD* 66, no. 3 (2020): 41–50. https://doi.org/10.11247/jssdj.66.3_41 |
+| 9 | Notsu, T. and Mizunashi, S. “Studies on the measurements of Japanese traditional clothing, part 1” (in Japanese). *Journal of the Japan Society of Clothing* 13, no. 1 (1969): 15–23. https://doi.org/10.20616/clothingresearch.13.1_15 |
+| 10 | Koide (Suehisa), M. “The transition of the kosode design styles in the early Edo period” (in Japanese). *Journal of Home Economics of Japan* 63, no. 9 (2012): 591–603. https://doi.org/10.11428/jhej.63.591 |
+| 11 | Sakamoto, K. “How kimono influenced the West: rethinking the functionality of Japanese fashion” (in Japanese). *Kansei Engineering* 16, no. 1 (2018): 33–36. https://doi.org/10.5057/kansei.16.1_33 |
+| 12 | Druet, L. “Fashionable pilgrims: Rental and second-hand kimono shops styling paths of new embodied communities.” *Mutual Images Journal* 10 (2021): 51–92. https://doi.org/10.32926/2021.10.dru.pilgr |
+| 13 | Suzuki, A. “Price determination methods of kimono fabric dealers in early modern Japan: A case study of the Naraya Sugimoto family.” *Japanese Research in Business History* 39 (2022): 68–88. https://doi.org/10.5029/jrbh.39.68 |
+| 14 | Goto, T. “Descriptions of meisen in pre-war magazine articles and their change” (in Japanese). *Bulletin of Tokyo Kasei Gakuin University* 63 (2023): 1–31. https://doi.org/10.32295/kaseigakuinkiyo.63.0_1 |
+| 15 | Shiba, S. “On meisen, the mass-market kimono from the Taishō to the post-war Shōwa period” (in Japanese). Conference abstract, Japan Association of Home Economics Education 61 (2018): 36–37. https://doi.org/10.11549/jhee.61.0_10 |
+| 16 | Sasai, K. “Japonism in Britain at the end of the 19th century: tea gowns and children’s fancy dresses” (in Japanese). *Journal of Home Economics of Japan* 61, no. 4 (2010): 221–230. https://doi.org/10.11428/jhej.61.221 |
+| 17 | Iwasaki, M. “Origins and history of the kimono” (in Japanese; lecture). *Journal of the Japan Society of Clothing* 49, no. 1 (2005): 17–20. https://doi.org/10.20616/clothingresearch.49.1_17 |
+| 18 | Sato, M. and Tamura, T. “How the position of an obi affects body sway, surface EMG and salivary amylase activity when wearing a kimono” (in Japanese). *Sen’i Gakkaishi* 70, no. 6 (2014): 126–135. https://doi.org/10.2115/fiber.70.126 |
+| 19 | Mitsuno, T. and Nago, H. “A study of ohashori slippage in yukata” (in Japanese). *Journal of the Japan Society of Clothing* 58, no. 2 (2015): 71–82. https://doi.org/10.20616/clothingresearch.58.2_71 |
+| 20 | Okabe, K. and Ito, N. “Differences in wearing comfort by way of wearing kimono” (in Japanese; lecture). *Journal of the Japan Society of Clothing* 49, no. 1 (2005): 21–24. https://doi.org/10.20616/clothingresearch.49.1_21 |
+| 21 | Okabe, K., Ohtsuki, H. and Ito, N. “Wearing comfort of kimono in young women and differences in clothing pressure by way of wearing” (in Japanese). *Journal of the Japan Society of Clothing* 50, no. 1 (2006): 53–60. https://doi.org/10.20616/clothingresearch.50.1_53 |
+| 22 | Kamiya, I., Ōgane, Y., Kawai, Y. and Tanaka, M. “The appearance form of the kimono collar in dressing” (in Japanese). *Journal of Home Economics of Japan* 27, no. 8 (1976): 528–533. https://doi.org/10.11428/jhej1951.27.528 |
+| 23 | Sasamoto, N. “Study on the gait of Japanese women in kimono” (in Japanese). *Journal of Home Economics of Japan* 37, no. 8 (1986): 695–704. https://doi.org/10.11428/jhej1951.37.8_695 |
+| 24 | Kazukane, A. and Sasamoto, N. “Temperature and humidity between body and clothes when wearing summer kimono in a hot environment” (in Japanese). *Journal of the Japan Society of Clothing* 49, no. 1 (2005): 39–45. https://doi.org/10.20616/clothingresearch.49.1_39 |
+| 25 | Araki, Y. “Valuation and price acceptance in a traditional industry: the case of original iromuji” (in Japanese). *Regional Activation Studies* 17, no. 1 (2022): 11–20. https://doi.org/10.57340/ckg.17.1_11 |
+| 26 | Tamura, K. “University students’ attitudes toward coming-of-age costumes” (in Japanese). *Journal of Textile Engineering* 57, no. 6 (2011): 163–169. https://doi.org/10.4188/jte.57.163 |
+| 27 | Masumoto, H. et al. “Awareness and behaviour of female university students regarding traditional dress: Japan and Thailand” (in Japanese). *Journal of Home Economics of Japan* 58, no. 12 (2007): 771–780. https://doi.org/10.11428/jhej.58.771 |
+| 28 | Nesterova, M. and Spitsyna, K. “Japan-Inspired Style in European Haute Couture: History and Modernity.” *Special Issue of Japanese Society for the Science of Design* 19, no. 4 (2012): 10–13. https://doi.org/10.11247/jssds.19.4_10 |
+| 29 | Furukawa, S. “Gradual changes and characteristics of hōmonfuku from the Meiji era to the early Shōwa era” (in Japanese). https://doi.org/10.32179/fukubun.4.1_13 |
+| 30 | Saitō, T. “On the development of kosode in the Heian era: the change from underwear to outerwear” (in Japanese). https://doi.org/10.11428/jhej1951.30.515 |
+| 31 | Imamura, R. “Japanese kimono, then and now” (in Japanese; lecture). https://doi.org/10.20616/clothingresearch.49.1_28 |
+| 32 | Fukui, S. “The family crests on Japanese clothes, part 1” (in Japanese). *Journal of Home Economics of Japan* 21, no. 1 (1970): 59–63. https://doi.org/10.11428/jhej1951.21.59 |
+| 33 | Okamoto, Y., Numata, Y. and Kōyama, M. “Changes in kimono seen in the magazine Utsukushii Kimono, report 1” (in Japanese). https://doi.org/10.4188/transjtmsj.61.417 |
+| 34 | Kōyama, M. and Okamoto, Y. “Changes in kimono seen in the magazine Utsukushii Kimono, report 2, 1953–1972” (in Japanese). https://doi.org/10.4188/transjtmsj.62.114 |
+| 35 | Mori, R. “Clothes of samurai warriors” (in Japanese; invited essay). *Sen’i Gakkaishi* 64, no. 6 (2008): P-190–P-191. https://doi.org/10.2115/fiber.64.P_190 |
+| 36 | Mizukami, K. “Townspeople’s kimono 2: late Edo to early Meiji” (in Japanese; invited essay). *Sen’i Gakkaishi* 64, no. 8 (2008): P-268–P-271. https://doi.org/10.2115/fiber.64.P_268 |
+| 37 | Yokogawa, K. “A representation of haori costume” (in Japanese; invited essay). *Sen’i Gakkaishi* 64, no. 11 (2008): P-386–P-388. https://doi.org/10.2115/fiber.64.P_386 |
+| 38 | Dōmae, M. “Mitsugasane, a Japanese wedding costume” (in Japanese). *Bulletin of Nagoya Future Culture College* 40 (2015). https://doi.org/10.20582/nfcc.40.0_41 |
+| 39 | Nishimura, Y. “The restrictive laws of clothing in the Edo period: outline of its transition and characteristics” (in Japanese). https://doi.org/10.11428/jhej1951.31.432 |
+| 40 | Yang, S., Kimata, H. and Satō, M. “Investigation of the transition of clothing style of hanfu and study on its thermal comfort” (in Japanese). 2024. https://doi.org/10.11419/senshoshi.65.1_39 |
+| 41 | Tamura, T. “Functionality of Asian ethnic dress” (in Japanese; lecture). *Journal of the Japan Society of Clothing* 49, no. 1 (2005): 13–16. https://doi.org/10.20616/clothingresearch.49.1_13 |
+| 42 | Satō, M. “Ryukyu bingata” (in Japanese; commentary). *Journal of the Japan Research Association for Textile End-Uses* 44, no. 8 (2003): 456–462. https://doi.org/10.11419/senshoshi1960.44.456 |
+| 43 | Nakano, T. “Attus depicted in nishiki-e: Ainu customs brought to Osaka” (in Japanese). *Bulletin of the Osaka Museum of History* (2006). https://doi.org/10.34570/omhbull.5.0_0001 |
 
-Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the coming-of-age day. Rows marked *furisode* must not be read as claims about all kimono. Rows marked *reported* are views that Becke reports from another author, a guide or a magazine; where that author is Dalby (source 1), the words were read in Becke, not in Dalby.
+Museum object facts (titles, dates, materials) come from The Metropolitan Museum of Art collection
+records (collectionapi.metmuseum.org), cited as museum records, not as scholarship.
 
-## Ledger
+## Room 0 · Welcome
 
-| # | Slide | Claim as shown in the deck | Source | Page | Quote (25 words or fewer) | Scope |
+| # | Claim | Src | Page | Quote | Scope | Where |
 |---|---|---|---|---|---|---|
-| 1 | 1 | The word comes from *kiru mono*, "a thing to wear". | 4 | p.10 | "The word kimono derives from the Japanese 'kiru mono', with kiru meaning 'to wear' and mono being 'a thing'." | general |
-| 2 | 3 | People know a kimono by its T-shape, its sleeves and a wide obi. | 4 | p.10 | "recognised by its t-shape form, characteristic sleeves and the use of a wide obi tied at one's waist" | common usage |
-| 3 | 3 | The bolt has a standard width; cutting gives geometric pieces with square outlines. | 4 | pp.10–11 | "comes in a standardised width, with the cutting of the fabric resulting in geometrical pieces with square outlines" | general |
-| 4 | 3 | Hardly any waste in cutting. | 4 | p.11 | "hardly any wastage is produced as part of the fabric cutting process" | general |
-| 5 | 3 | Labels: open, overlapping front; attached neckband; sleeve of one fabric width attached at the selvages. | 4 | p.10 | "an open, overlapping front; an attached neckband sewn around the front opening; and sleeves consisting of a width of fabric attached to the selvages" | reported: Becke quoting Dalby 2001: 18 |
-| 6 | 3 | It has no tucks or darts. | 4 | p.10 | "no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape" | general |
-| 7 | 3, 10 | Unworn, it has a completely flat surface. | 4 | p.10 | "In its unworn form, a kimono has a completely flat surface." | general |
-| 8 | 4 | Kimono emphasized the material, the fabric. | 5 | PDF p.7 | "Japanese kimono emphasized the material, the fabric of clothing, and held the beauty of textiles in the highest regard." | written from the angle of Western reception |
-| 9 | cut | (No longer on a slide; replaced by rows 58–63.) One guide author's books advise on suitable materials, colours, patterns and obi. | 4 | p.76 | "advising the readers on topics such as suitability and appropriateness of kimono materials, colours, patterns and obi" | reported: Ōkubo's publications |
-| 10 | 10 | (Now only behind the line "which season" on the back of the robe.) Guide authors remind readers to be aware of the season when choosing a pattern. | 4 | p.62 | "established authors reminding their readers to be aware of the season when it comes to choosing a kimono pattern design" | reported: Kimura, Ōkubo |
-| 11 | 4 | One guide says to wear a flower pattern about one month ahead of the actual blossoming. | 4 | p.62 | "start wearing a specific flower pattern about one month ahead of the actual blossoming of the drawn flower" | reported: Becke quoting Shimada 2017, a guide; advice, not observed practice |
-| 12 | 4 | Many young women may not recognise the importance of the pattern. | 4 | p.138 | "Many young women might not be able to recognise this importance, however." | furisode; Becke's interviewees |
-| 13 | 5 | Flat cloth is an ideal canvas. | 4 | p.11 | "an ideal canvas for dyers, painters and embroiderers" | general |
-| 14 | 5 | Komon: repeated all-over patterns are considered less formal. | 4 | p.62 | "pervasive and repetitive patterns called komon are generally considered less formal" | reported: Dalby, Ōkubo, kimono association |
-| 15 | 5 | Eba-moyō: asymmetrical, continuous arrangements are regarded as ceremonial. | 4 | p.62 | "asymmetrical, continuous eba-moyō arrangements are regarded as ceremonial" | reported, as row 14 |
-| 16 | 5 | In eba-moyō, motifs gather below the obi and at the left shoulder. | 4 | p.62 | "on certain sections, such as the part below the obi and the left shoulder" | general |
-| 17 | 6 | Flat kimono are fitted to the body by the dressing process (kitsuke). | 4 | p.11 | "they are fitted to the body as part of the dressing process. This dressing process is called kitsuke." | general |
-| 18 | 6 | Kitsuke gives the final fit and shape. | 4 | p.11 | "The kitsuke is of great importance as it provides the final fit and shape of the garment." | general |
-| 19 | 6 | Academies have turned dressing into a discipline. | 4 | p.77 | "they have turned the knowledge and dressing process surrounding the garment into a discipline" | kimono academies |
-| 20 | 6 | Academies issue certificates for finished courses. | 4 | p.78 | "issuing certificates after the completion of certain courses" | kimono academies |
-| 21 | 6 | First step: the nagajuban (under-kimono). Last step: tying the obi knot. | 4 | p.72 | "from putting on the nagajuban (under-kimono) to the final tying of the obi knot" | furisode; magazine columns. Only these two steps are ordered in the source |
-| 22 | 6 | The kimono is draped from the left side over to the right. | 4 | p.69 | "without exception always draped from the left side over to the right" | furisode; what the publications show |
-| 23 | 6 | The ohashori is a fold of fabric beneath the obi. | 4 | p.71 | "the creation of an ohashori, the fold of fabric beneath the obi" | furisode; magazine convention |
-| 24 | 6 | The obi-jime sits in the middle of the obi; an obi-age completes the ensemble. | 4 | p.71 | "placement in the middle of the obi, and the addition of an obi-age (obi cloth) to complete the ensemble" | furisode; magazine convention. Not an ordered step |
-| 25 | 6 | Furisode means a long-sleeved kimono. | 4 | p.53 | "The long-sleeved furisode is considered as hare-gi, ceremonial wear" | furisode |
-| 26 | 7 | Furisode magazines teach how to move when walking, sitting down and climbing stairs. | 4 | pp.79–80 | "how to appropriately move one's body when walking and sitting down, as well as when climbing up and down stairs" | furisode; magazine etiquette sections |
-| 27 | 7 | Also covered: getting in and out of a car, a meal, the bathroom. | 4 | p.80 | "Graceful manners of getting in and out of a car, as well as how to behave during a meal and how to use the bathroom" | furisode; magazines |
-| 28 | 7 | The result is constant monitoring and correcting of one's body. | 4 | p.80 | "Wearing a furisode therefore encourages constant monitoring and correcting of one's body" | furisode; Becke's analysis |
-| 29 | 7 | Standard furisode dressing aims to hide the nape. | 4 | p.165 | "the standardised kitsuke which aims to hide potentially arousing areas of the body, such as the nape, from view" | furisode |
-| 30 | 7 | In Paris around 1907, a neckband low in back, showing the nape, was the fashionable way to wear kimono. | 5 | PDF p.8 | "Letting the neck-band fall low in back, revealing the nape of the neck (nukiemon), became the fashionable way to wear kimono around 1907." | Paris fashion, about 1907 |
-| 31 | 8 | Kosode were the precursor of the modern kimono. | 5 | PDF p.4 | "kosode (precursor of the modern kimono)" | general |
-| 32 | 8 | Laws set the type of clothes each class could wear. | 4 | p.99 | "issuing sumptuary laws on the type of clothes members of each class were allowed to wear" | Tokugawa government |
-| 33 | 8 | Pattern books, hinagata-bon, informed consumers of available kimono designs. | 4 | p.28 | "These pattern books called hinagata-bon informed consumers of available kimono designs and styles." | early seventeenth century onward; reported: Kuhn 2018 |
-| 34 | 8 | Reframed as Japan's national costume through an encounter with Western dress, in the Meiji era. | 4 | p.10 | "It was reframed as Japan's national costume through an encounter with 'Western' forms of dress during the Meiji Restoration" | Meiji |
-| 35 | 8 | One shape became frozen in time in the Meiji period (1868–1912). | 4 | p.72 | "a certain kimono shape became 'frozen in time' during the Meiji period (1868-1912)" | Meiji; Becke's own statement, following her citation of Dalby 2001: 112 for the 'samurai-turned-bourgeois' style |
-| 36 | 8 | In the post-war decades Japanese dress was largely abandoned by the majority. | 4 | p.68 | "Wafuku lost their appeal towards the younger generation and, hence, largely abandoned by the majority of the population" | post-war; reported: Hendry 2013 |
-| 37 | 8 | The way of wearing became vigorously standardised after the war. | 4 | p.11 | "the way of wearing and fitting kimono has become vigorously standardised in a post-war context" | post-war |
-| 38 | 8 | A 1972 book lists 390 rules. | 4 | p.75 | "The book contains a total of 390 rules in regards to buying, choosing, and wearing kimono." | Shiotsuki, *Kimono no Hon*, 1972 |
-| 39 | 8 | Rental became popular (early 1990s). | 4 | p.118 | "Rental options gained popularity during this time" | after the early-1990s recession |
-| 40 | 8 | Then came more demand for vintage kimono (early twenty-first century). | 4 | p.14 | "an increased demand and appreciation of vintage kimono made headlines in Japan" | reported: Assmann 2008 |
-| 41 | 9 | Well before the late 1800s, kimono were popular in Holland as men's domestic garments. | 5 | PDF p.2 | "kimono had made their way to Holland and become popular as men's domestic garments" | Europe |
-| 42 | 9 | Western women saw in kimono an ease and a liberation, and adopted them as dressing gowns. | 5 | PDF p.4 | "an ease and a liberation as well as exoticism and consequently adopted them as dressing gowns" | Western wearers, nineteenth century |
-| 43 | 9 | Fashion found in the kimono a structure for liberation from the corset. | 5 | PDF p.11 | "a non-Western structure that would realize the nineteenth-century dream of liberation from the corset" | Western fashion |
-| 44 | 9 | A magazine calls the furisode the most formal garment for unmarried women. | 4 | p.53 | "'A furisode is a kimono with long sleeves, which is considered the most formal garment for unmarried women.'" | furisode; reported: a furisode magazine |
-| 45 | 9 | Its dressing instructions are communicated as fixed and non-negotiable. | 4 | p.72 | "communicated as fixed and non-negotiable" | furisode publications |
-| 46 | 9 | The rules make it arguably very similar to a school uniform. | 4 | p.123 | "the rules surrounding furisode make it arguably very similar to a school uniform" | furisode |
-| 47 | 9 | Rules can be bent. | 4 | p.123 | "Rules can be bended and pieces of clothing can be modified, however" | furisode |
-| 48 | 10 | Becke defines kimono by the garment's shape and the practice of fitting it. | 4 | p.10 | "a general category of dress which is based on the garment's shape and practice of fitting it to the body" | general |
-| 49 | 10 | "Seventy percent of what makes a kimono a kimono is how it is worn." | 4 | p.11 | "'Seventy percent of what makes a kimono a kimono is how it is worn'" | reported: Yamaguchi Genbei, head of a kimono house; not an academic |
-| 50 | 10 | Answer to the binary: both. The garment is simple; the meaning comes from the rules of dressing and formality. | 4 | p.11 | "the social and cultural aspects and contexts strongly determine how the garment should be worn" | the deck's conclusion; rests on rows 2–7, 14–18 and 48 |
-| 51 | 7 | Label "Torso": models are posed straight and upright. | 4 | p.78 | "settled in a straight and upright position, with legs and feet placed neatly next to each other" | furisode; models in magazines |
-| 52 | 7 | Label "Below the obi": the kimono is wrapped like a long tube. | 4 | p.70 | "wrapped around the body to resemble a long tube in the form of a pencil skirt" | furisode; models in magazines |
-| 53 | 7 | Label "Lower edge": it ends just above the feet. | 4 | p.70 | "set in a horizontally straight position and always ends just above the models' feet" | furisode; models in magazines |
-| 54 | 3 | The kimono is cut along straight lines and made of rectangles. | 5 | PDF p.1 | "cut along straight lines and constructed of rectangles, as are Japanese kimono" | said in passing, in a comparison with Vionnet's dresses |
-| 55 | 9 | "One garment. Two meanings." (the deck's own reading of rows 41–47, marked as such on the slide). | 5; 4 | PDF p.4; p.123 | "adopted them as dressing gowns" / "very similar to a school uniform" | the deck's reading of two sourced cases |
-| 56 | 7 | The coming-of-age day is a public holiday on the second Monday of January. | 4 | p.37 | "Celebrated annually as a public holiday on the second Monday of January, the coming-of-age day (seijin-no-hi)" | general |
-| 57 | 8 | Period label: Edo period, 1600–1868. | 4 | p.164 | "the high-profile courtesans of the Edo period (1600-1868)" | date range as Becke gives it |
-| 58 | 4 | Awase, the lined kimono, is appropriate from October until May. | 6 | p.20 | "with awase (袷 lined kimono), one can enjoy an outfit that would be appropriate from October until May" | author's general statement on present-day practice |
-| 59 | 4 | Hitoe, the unlined kimono, is for the warm months from June to September. | 6 | p.20 | "With hitoe (単衣 unlined kimono) it is the lightness of the fabric that is appreciated, especially during the warm months" | the sentence ends "that spread from June to September" |
-| 60 | 4 | Ro and sha are semi-transparent "breathable" weaves worn in the hot, humid days of August. | 6 | p.20 | "semi-transparent summer kimono made of ro (絽) or sha (紗) \"breathable\" weave, usually happens while the hot and humid days of August linger" | August, not the whole summer |
-| 61 | 4 | The rotation of the wardrobe is called koromogae. | 6 | p.20 | "the rotation of outfits inside one's wardrobe known as koromogae (衣替え)" | described as a care practice, not a dated rule |
-| 62 | 4 | Seasonal dress is a convention, not a law. | 6 | p.22 | "a guiding principle, not mandatory but strongly encouraged" | about seasonal kimono as presented in monthly magazines |
-| 63 | — | (Supports the "patterns run ahead" line; not quoted on a slide.) Sakidori: dressing for a season that has not come yet. | 6 | p.27 | "sakidori (先取り) culture, which is to convey feelings towards a season that hasn't come yet" | author's general statement |
+| 1 | The word kimono comes from kiru mono: kiru, to wear; mono, a thing. | 4 | p.10 | "The word kimono derives from the Japanese 'kiru mono', with kiru meaning 'to wear' and mono being 'a thing'." | Becke; general. | narration 3 |
+| 2 | One bolt of cloth makes one kimono. | 7 | p.76 | "１反（幅約 36～38cm・長さ約 12m）という単位で扱い，１反がキモノ１枚分に相当する" | Tr.: "handled in units of one tan (width about 36-38 cm, length about 12 m); one tan equals one kimono". General statement for a woman's nagagi, the authors citing a tailoring textbook. | narration 6 |
 
-The words on the back of the kimono on slide 10 repeat rows 10, 14–16, 21, 22 and 26. Slide 10 says on screen that most of these are rules recorded for the furisode at the coming-of-age day, and that the season and pattern lines come from kimono guides.
+## Room 1 · One bolt
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 3 | One bolt is about 36-38 cm wide and about 12 m long, and makes one kimono. | 7 | p.76 | "１反（幅約 36～38cm・長さ約 12m）という単位で扱い，１反がキモノ１枚分に相当する" | Tr.: "handled in units of one tan (width about 36-38 cm, length about 12 m); one tan equals one kimono". Woman's nagagi; the authors citing a tailoring textbook. | label 1; narration 2 |
+| 4 | Old units: 1 shaku = 10 sun = about 38 cm; standard width 9 sun 5 bu to 9 sun 8 bu; a kimono bolt is 3 jō or more. | 7 | p.80 | "１尺＝10 寸＝約 38cm，10 尺＝１丈。並幅は９寸５分～９寸８分，着尺１反は３丈以上。" | Tr.: "1 shaku = 10 sun = about 38 cm, 10 shaku = 1 jō. Standard width is 9 sun 5 bu to 9 sun 8 bu; one kijaku bolt is 3 jō or more.". Note 7; kujirajaku units. Also gives 1 sun = about 3.8 cm (label 2). | label 1; label 2; narration 3 |
+| 5 | In 1636 a shogunal law fixed the length and width of a bolt of silk. | 39 | p.435 | "絹紬1反の長さかねにて3丈4尺,幅 1尺4寸" | Tr.: "one bolt of silk or pongee: length 3 jō 4 shaku in kanejaku, width 1 shaku 4 sun". Kan'ei 13 (1636) shogunal law as given by Nishimura; kanejaku units; silk and pongee (cotton had its own width). | narration 3 |
+| 6 | The width ratios of the parts derive from the bolt width. | 8 | p.50 | "キモノの各部の幅の比率は反物の幅に由来する。" | Tr.: "the width ratios of the kimono parts derive from the bolt width". Authors' conclusion (doll-kimono study, concluding section). | label 2; narration 4 |
+| 7 | Sleeve width equals the shoulder width or is up to 1 sun wider. | 8 | p.49 | "袖幅は肩幅と同寸から1寸以内の範囲で広くするため，肩幅1に対し袖幅は1～1.1程度" | Tr.: "sleeve width is from the same as shoulder width to within 1 sun wider, so about 1-1.1 to shoulder 1". Standard dimensions, woman's kimono. | label 2 |
+| 8 | A woman's nagagi is eight rectangles: two body panels, two sleeves, two okumi, a collar and an over-collar. | 7 | p.76 | "左右の前後身頃２枚，袖２枚，衽２枚，衿１枚，掛衿１枚の８枚の長方形によって構成される" | Tr.: "composed of eight rectangles: left and right front-back body panels 2, sleeves 2, okumi 2, collar 1, over-collar 1". Basic form of the modern woman's nagagi, as the authors describe it. | label 3; narration 6 |
+| 9 | No pattern is made; cutting only divides the cloth into eight rectangles. | 7 | p.80 | "衣服の形を決め型紙を作る段階が省略され，８枚の長方形に分けるだけの裁断はとても簡素であり" | Tr.: "the step of making a pattern is omitted; cutting that only divides into 8 rectangles is very simple". Authors' interpretation, compared with Western dressmaking. | label 3; narration 5 |
+| 10 | Ōtsuka's rule: cut both sleeves and both body panels, then split the remainder for okumi and collar. | 7 | pp.79-80 | "両袖，両身頃を裁ち，残ったものを二つに割っておくみと衿に分ければいいわけで" | Tr.: "cut both sleeves and both bodies, then split what remains in two for okumi and collar". Quotation of Ōtsuka Sueko 1972 inside Maruyama et al. | label 3 |
+| 11 | The bolt is cut and used entirely, with nothing left over. | 7 | p.76 | "図１のように裁断し，すべて残らず用いて作る。" | Tr.: "cut as in Fig. 1 and made using all of it, with nothing left". Standard layout (the paper's Fig. 1). | label 4; narration 6 |
+| 12 | Dalby's first defining trait: standard fabric widths sewn with minimal cutting. | 4 | p.10 | "[A] geometrical use of standard fabric widths sewn with minimal cutting" | Reported: Becke quoting Dalby 2001: 18. | label 4 |
+| 13 | Kimono are traditionally sewn by hand, without large stitches on the face. | 7 | p.76 | "縫製は伝統的に手縫いで行われ，表に大きく縫い目を出さず，目立たないような縫い方で仕立てられる" | Tr.: "sewing is traditionally by hand, without showing large stitches on the face, sewn so as not to stand out". General. | label 5; narration 7-8 |
+| 14 | The seams include the side seams (wakinui) and the back seam (senui). | 7 | p.77 | "６）脇縫いをほどく。７）背縫いをほどく。８）袖をほどく。" | Tr.: "6) unpick the side seams. 7) unpick the back seam. 8) unpick the sleeves.". Disassembly order for one sample; names the seams. | label 5 |
+| 15 | Unworn, a kimono has a completely flat surface. | 4 | p.10 | "In its unworn form, a kimono has a completely flat surface." | Becke; general. | label 6; narration 9 |
+| 16 | No tucks or darts give it a three-dimensional shape. | 4 | p.10 | "no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape" | Becke; general. | label 6; line; narration 9 |
+
+## Room 2 · The parts
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 17 | The pieces include two okumi, a collar (eri) and an over-collar (kakeeri). | 7 | p.76 | "左右の前後身頃２枚，袖２枚，衽２枚，衿１枚，掛衿１枚の８枚の長方形によって構成される" | Tr.: "composed of eight rectangles: left and right front-back body panels 2, sleeves 2, okumi 2, collar 1, over-collar 1". Basic form of the modern woman's nagagi. | label 1 |
+| 18 | An open, overlapping front, with a neckband sewn around the front opening. | 4 | p.10 | "an open, overlapping front; an attached neckband sewn around the front opening" | Reported: Becke quoting Dalby 2001: 18. | label 1; narration 2 |
+| 19 | The kimono collar is cut as a simple long band. | 22 | p.528 | "kimono eri is simply cut out in long band and is dressed in various appearance form according to the personality" | Authors' English abstract, 1976. | label 1 |
+| 20 | The standard okumi width is 15 cm, about 0.65 of the front width. | 8 | p.49 | "女性用キモノの衽の標準寸法は15cm(約4寸)で，これは前幅の0.65程度である" | Tr.: "standard okumi width is 15 cm (about 4 sun), about 0.65 of the front width". Standard dimensions, woman's kimono. | label 1 |
+| 21 | Mitake equals the wearer's height; yuki runs from back centre to the sleeve opening and is fitted to the body. | 7 | p.76 | "身丈は身長と同寸，裄丈は背中心から袖口までの長さで体格に合わせる" | Tr.: "mitake is the same as height; yuki is the length from back centre to the sleeve opening, fitted to physique". Modern standard, woman's nagagi. | label 2; narration 4 |
+| 22 | Standard for a 160 cm woman: mitake 159.6, yuki 66.5, sleeve length 49.4 cm. | 7 | p.76 | "身長160cm 159.6（4.2 尺） 66.5（1.75 尺） 49.4（1.3 尺）" | Table 1, converted at 1 shaku = 38 cm. | label 2 |
+| 23 | Laid flat, a third of the body width overlaps at centre front. | 8 | p.49 | "人のキモノでは1.33となり，平置き時に前中心で身頃全体の幅の1/3が重なる" | Tr.: "for human kimono the ratio is 1.33; laid flat, 1/3 of the total body width overlaps at centre front". Ratio (front + okumi)/back; standard dimensions. | label 2; narration 2 |
+| 24 | Worn, the wearer's left front laps over the right, as in wafuku. | 40 | p.44 | "右衽は着用者から見て左の衽を右の衽に重ねる着方（和服と同様）である" | Tr.: "youren is the way of wearing in which, seen by the wearer, the left front is lapped over the right (as in wafuku)". Refereed study of hanfu, stating the same closure for Japanese wafuku. | narration 3 |
+| 25 | Kimono were remade (kurimawashi) as seasons, uses and wearers changed and as cloth wore out. | 7 | p.75 | "季節や用途，使用者の変化，着用による消耗などに応じて「繰り回し」と呼ばれる作り替えが行われてきた" | Tr.: "according to season and use, changes of user, wear from use and so on, a remaking called kurimawashi has been carried out". Kimono made at home as everyday wear, before mass-produced clothing. | label 3; narration 5 |
+| 26 | For arai-hari washing, unpicked silk was joined back into a bolt, washed and stretched. | 7 | p.76 | "ほどいた絹製のキモノの生地をもとの反物の形につなぎ合わせ，水で洗い，伸子または板に張り糊づけして整え" | Tr.: "the unpicked silk is joined back into the bolt shape, washed in water, stretched on shinshi or boards and starched". The traditional method; dry-cleaning the made-up garment is now more common, the authors note. | label 3; narration 5 |
+| 27 | Because kimono are rectangles of one width, parts can be swapped or extended. | 7 | p.79 | "キモノは同じ幅を基準とした四角形の構成により，資料Ｂのように各部の入れ替えや継ぎ足しが可能である" | Tr.: "because kimono are rectangles based on the same width, parts can be swapped or extended, as in sample B". Authors' conclusion from two garments. | narration 5 |
+| 28 | Hence the saying: unpick a kimono and it turns back into cloth. | 7 | p.79 | "「キモノはほどけばまた布に戻る」と言い慣わすのであろう" | Tr.: "that is presumably why people say 'unpick a kimono and it becomes cloth again'". Authors' explanation of a common saying. | narration 6 |
+| 29 | Re-making was not a special second use but built into the kimono's form. | 7 | p.80 | "「繰り回し」は決して特殊な二次利用ではなく，キモノという一つの形に組み込まれた" | Tr.: "kurimawashi is by no means a special secondary use, but was built into the one form called kimono". Authors' conclusion, based on two garments. | label 3 |
+| 30 | By the late 1960s crests on clothing were seldom seen except on ceremonial dress. | 32 | p.63 | "被服に紋章をとり入れる傾向は、式服を除いてはあまりみられなくなった" | Tr.: "the tendency to put crests on clothing is seldom seen now, except on ceremonial dress". Kurayoshi, Tottori; questionnaire 1967-68; one town. | narration 7 |
+| 31 | The form is the same from formal to everyday wear; use is set by fabric and its dyed or woven design. | 7 | p.76 | "キモノの形態は礼装から普段着まで共通であり，衣服としての用途は，布の材質および染織などの意匠によって決まる" | Tr.: "the form is common from formal to everyday wear; its use is decided by fabric and dyed or woven design". Authors' summary, citing Ōtsuka 1972. | narration 8 |
+| 32 | Weave and lining, not shape, make a kimono right for cold or warm months. | 6 | p.20 | "it is just the tailoring, the weaving (and whether there is lining or not) that makes a kimono appropriate for cold or warm months" | Druet; general. | narration 8 |
+
+## Room 3 · Cloth and season
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 33 | Warmth or coolness comes from tailoring, weave and lining, not from the cut or length. | 6 | p.20 | "it is just the tailoring, the weaving (and whether there is lining or not) that makes a kimono appropriate for cold or warm months" | Druet; general, present-day | intro; photo 813665 |
+| 34 | Seasonal change never alters the kimono's shape or sleeve length. | 6 | p.20 | "kimono fashion does not rely on changing the shape of the garment nor on having variation in the length of the sleeves" | Druet; general | narration 1 |
+| 35 | The skirt part is never shortened. | 6 | p.20 | "The skirt part is always tailored as a long cylindrical wrap, and it is never shortened either" | Druet; general | narration 1 |
+| 36 | The move into sheer ro or sha (or yukata) usually happens in the hot, humid days of August. | 6 | p.20 | "semi-transparent summer kimono made of ro (絽) or sha (紗) "breathable" weave, usually happens while the hot and humid days of August linger" | Druet; present-day; August, not the whole summer (the sentence begins 'The transition into yukata ... or') | photo 61850; table |
+| 37 | The nagajuban changes by season: silk or polyester October to May, ro or sha June to September. | 6 | p.20 | "warm materials such as silk or polyester used from October to May, thinner fabrics such as ro or sha from June to September" | Druet; general, present-day (note polyester) | photo 73690; table |
+| 38 | Nothing is worn under the cotton yukata. | 6 | p.20 | "and actually nothing underneath the cotton yukata" | Druet; present-day | table |
+| 39 | Awase, the lined kimono, suits October until May. | 6 | p.20 | "with awase (袷 lined kimono), one can enjoy an outfit that would be appropriate from October until May" | Druet; general statement on present-day practice | table |
+| 40 | Hitoe, the unlined kimono, is for the warm months from June to September. | 6 | p.20 | "it is the lightness of the fabric that is appreciated, especially during the warm months that spread from June to September" | Druet; the sentence begins 'With hitoe (単衣 unlined kimono)'. Checked on the page text (extends v2 row 59). | table |
+| 41 | Seasonal dress is a guiding principle, not a rule. | 6 | p.22 | "a guiding principle, not mandatory but strongly encouraged" | about seasonal kimono as presented in monthly magazines | table card |
+| 42 | The rotation of the wardrobe is called koromogae, one of the care rituals. | 6 | p.20 | "the rotation of outfits inside one's wardrobe known as koromogae (衣替え)" | Druet; described among 'care rituals', not a dated rule | narration 3 |
+| 43 | Mushi boshi: airing the whole collection at once, seasonally. | 6 | p.20 | "the seasonal airing out of one’s collection of outfits all at once, known as mushi boshi (虫干し)" | Druet; care ritual | narration 3 |
+| 44 | The kimono's form is the same from formal to everyday wear; fabric and dyed or woven design decide its use. | 7 | p.76 | "キモノの形態は礼装から普段着まで共通であり，衣服としての用途は，布の材質および染織などの意匠によって決まる" | Tr. "the form is common from formal to everyday wear; its use is decided by fabric and dyed or woven design". Maruyama, Tauchi and Kubo, summarising Ōtsuka 1972 | narration 2 |
+| 45 | Silk is often used for formal to outing wear; cotton, wool and synthetics for everyday wear. | 7 | p.76 | "礼装から外出着には絹が，普段着には木綿やウール，化学繊維などが用いられる場合が多い" | Tr. "silk is often used for formal to outing wear; cotton, wool and synthetics for everyday wear". general; varies by period and region, the authors add. Not about this object. | photo 50806 |
+| 46 | Fukuro and nagoya obi are about thirty centimetres wide. | 4 | p.71 | "These fukuro or nagoya obi are characterised by a width of approximately thirty centimetres" | Becke, citing Kimura 2010, Ōkubo 2012; present-day formal obi. Not about this object. | photo 45185 |
+| 47 | A kimono has many openings and looks cool in structure. | 24 | p.39 | "和服はえり・そで口・ふり・身八つ口・すそ等の多くの開口部を有し，構造上からみても涼しげである" | Tr. "wafuku has many openings such as collar, cuffs, furi, miyatsuguchi and hem, and is cool-looking in structure too". authors' statement; the study is titled for a hot environment (暑熱環境下) | narration 4 |
+| 48 | In summer kimono humidity above 90% arose at the upper abdomen: stuffiness turning to wetness. | 24 | p.44 | "上腹部において90%を超える高い湿度が生じていることから判断して，蒸れから濡れの現象が起きている" | Tr. "judging from humidity above 90% at the upper abdomen, stuffiness is turning to wetness". laboratory chamber, 3 women; summer kimono layers | narration 4 |
+| 49 | Humidity was highest in polyester and lowest in silk. | 24 | p.44 | "ポリエステルの着装が最も高く，逆に絹の着装が低いという結果が得られた" | Tr. "polyester outfit highest, silk lowest". single subject for the material comparison | narration 4 |
+| 50 | Sakidori: conveying feelings toward a season that has not come yet. | 6 | p.27 | "sakidori (先取り) culture, which is to convey feelings towards a season that hasn't come yet" | Druet; general statement | card 2 |
+| 51 | One guide says to wear a flower pattern about one month ahead of the blossoming. | 4 | p.62 | "start wearing a specific flower pattern about one month ahead of the actual blossoming of the drawn flower" | reported: Becke quoting Shimada 2017, a guide; advice, not observed practice | card 2 |
+| 52 | Wearing hues or motifs of a past season is a faux pas. | 6 | p.27 | "dressing in hues or motifs that are of the passed / past season would be considered a major “fashion faux-pas”" | Druet; general | card 2 |
+| 53 | Unlined summer kimono often carry autumn plants such as kikyō (bellflower). | 6 | p.27 | "unlined summer kimono and obi, as they are often adorned with flowers and plants recognized as autumn markers, such as kikyō" | Druet; sakidori | narration 5 |
+| 54 | Pattern signals formality, season and the wearer's gender, age and standing (turn to the next room). | 4 | p.11 | "personal attributes such as the wearer’s gender, age, social standing and taste" | Becke, citing Dalby 2001: 164; general | narration 5 |
+
+## Room 4 · Pattern
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 55 | Unworn, a kimono has a completely flat surface. | 4 | p.10 | "In its unworn form, a kimono has a completely flat surface." | Becke; general | intro |
+| 56 | Flat cloth is an ideal canvas. | 4 | p.11 | "an ideal canvas for dyers, painters and embroiderers" | Becke; general | intro |
+| 57 | Komon: repeated all-over patterns are considered less formal. | 4 | p.62 | "pervasive and repetitive patterns called komon are generally considered less formal" | reported: Becke citing Dalby, Ōkubo and a kimono association; present-day guides. Not about this object. | photo 61834 |
+| 58 | Eba-moyō: asymmetrical, continuous arrangements are regarded as ceremonial. | 4 | p.62 | "asymmetrical, continuous eba-moyō arrangements are regarded as ceremonial" | reported, as above; present-day guides | narration 1 |
+| 59 | In eba-moyō, motifs gather on sections such as below the obi and the left shoulder. | 4 | p.62 | "on certain sections, such as the part below the obi and the left shoulder" | eba-moyō; Becke following Dalby and Ōkubo; the sections are given as examples | narration 1 |
+| 60 | Worth borrowed eba-moyō: the whole garment treated as one design field. | 5 | p.6 | "a painterly approach to pattern design (eba-moyo in Japanese), in which the entire surface of the garment is treated as a single design field" | Fukai, defining eba-moyō while writing about Worth; supports 'runs across the seams as one picture' | narration 1 |
+| 61 | Koide's period dates: Momoyama 1573-1615; Keichō 1596-1615; Kan'ei 1624-44; Kanbun 1661-73. | 10 | p.603 | "慶長期（1596 ～1615），元和期（1615 ～1624），寛永期（1624 ～1644），寛文期（1661 ～1673）" | Tr. "Keichō (1596-1615), Genna (1615-1624), Kan'ei (1624-1644), Kanbun (1661-1673)". Author's note *1, following a 1986 art-history chronology; checked on the page text. | photo 76731; table |
+| 62 | Koide dates the Momoyama period 1573-1615. | 10 | p.603 | "桃山時代を天正元年（1573）から慶長20 年（1615）" | Tr. "the Momoyama period from Tenshō 1 (1573) to Keichō 20 (1615)". Note *1; checked on the page text. | table |
+| 63 | Momoyama style: kosode marked by compartments such as the shoulder-and-hem layout. | 10 | p.592 | "肩裾小袖などの区画 1） に特徴のある桃山小袖" | Tr. "Momoyama kosode, characterised by compartments such as the shoulder-and-hem kosode". Late Muromachi to Momoyama; a style named by earlier research. | table |
+| 64 | Keichō style: abstract, complex dyed compartments with no plain ground (ji-nashi). | 10 | p.592 | "抽象的で複雑な染め分けの区画を持ち地無しの意匠構成の慶長小袖" | Tr. "Keichō kosode, with abstract, complex dyed compartments and a design with no ground". Style named by earlier research. | table |
+| 65 | Kanbun style: a large empty area on the back with big, dynamic motifs. | 10 | p.592 | "背面に余白を大きく取り動的で大柄な文様を配し" | Tr. "leaving a large empty space on the back and placing dynamic, large motifs". Kanbun era; style named by earlier research. Not a claim about object 76731. | photo 76731; table |
+| 66 | In the Kan'ei era the large-motif form made up about half of the kosode in several paintings. | 10 | p.600 | "約半数の着用数を占めていて，この時期における形式の主流をなしている" | Tr. "accounts for about half of the robes worn and forms the mainstream of this period". Kan'ei; genre paintings, not surviving garments. | table |
+| 67 | In that form, motifs are large, bold and more realistic. | 10 | p.600 | "文様が大きく大胆に，そしてより写実的に表現されており" | Tr. "the motifs are rendered large and bold, and more realistically". Koide's large-motif form (大柄文様形式). | table |
+| 68 | Method: 992 kosode from 39 early-modern genre paintings. | 10 | p.592 | "39 作例の近世初期風俗画（表 1）" | Tr. "39 early-modern genre paintings (Table 1)". The same sentence continues: 描かれた小袖 992 領を抽出 (992 kosode extracted). | table; narration 2 |
+| 69 | Surviving kosode are few because kosode were consumables. | 10 | p.592 | "小袖が消耗品であるという保存上の問題が強く作用している" | Tr. "the conservation problem that the kosode was a consumable has a strong effect". Author's methodological point. | narration 2 |
+| 70 | Design styles borrowed and exchanged elements, producing the next period's style. | 10 | p.603 | "複数の形式がその中に存在する特徴的なある要素を互いに転用したり，交換し合いながら" | Tr. "several forms mutually borrowing or exchanging certain characteristic elements within them". Momoyama to Kanbun; author's conclusion. | narration 3 |
+| 71 | As the shogunal order settled, townspeople came to enjoy the kosode in quality and quantity. | 10 | p.603 | "市井の町人たちは質的にも量的にも身近な存在として小袖を享受するようになり" | Tr. "ordinary townspeople came to enjoy the kosode as something close to them, in quality and in quantity". Early Edo; author's conclusion, leading to the Kanbun style. | narration 4 |
+| 72 | Kanbun kosode are recorded in large numbers in order books. | 10 | p.599 | "寛文小袖が多く収録されている" | Tr. "in which many Kanbun kosode are recorded". Qualifies the Karigane-ya order books (1661-64) and the 1666 pattern book named in the same sentence. Not about objects 42669 or 74149. | photo 74149 |
+| 73 | The order books were those of the Kyoto draper Karigane-ya, for Tōfukumon-in. | 10 | p.599 | "呉服商雁金屋の東福門院関係の注文帳" | Tr. "the draper Karigane-ya's order books relating to Tōfukumon-in". Checked on the page text. | photo 74149 |
+| 74 | A printed pattern book of 1666, Shinsen on-hiinakata. | 10 | p.599 | "寛文 6 年（1666）刊 行の『新撰御ひいなかた』" | Tr. "Shinsen on-hiinakata, published Kanbun 6 (1666)". The Met dates object 42669 to 1667; no identity is claimed. | photo 74149 |
+| 75 | Pattern books, hinagata-bon, informed consumers of available kimono designs. | 4 | p.28 | "These pattern books called hinagata-bon informed consumers of available kimono designs and styles." | early seventeenth century onward; reported: Becke citing Kuhn 2018 | photo 42669 |
+| 76 | Cherry blossom is said to be the most recurrent motif on spring kimono. | 6 | p.23 | "the sakura (桜) cherry blossoms pattern which is allegedly the most recurrent motif on spring kimono" | Druet ('allegedly'); present-day kimono. Not about this object. | photo 53610 |
+| 77 | A kimono can be placed and dated by its pattern. | 4 | p.11 | "kimono can easily be socially placed and dated through an analysis of the pattern design" | Becke, citing Dalby 2001 and Nitanai 2013; general | photo 45399 |
+| 78 | A motif calendar: pine in January, plum in February. | 6 | p.22 | "sprigs of pine in January, plum blossom in February, cherry blossom in the spring, small trout in summer, maple leaves in autumn" | reported: Druet quoting Downer 2001; about geisha. Not about this object. | photo 916384 |
+| 79 | In late-Edo women's formal dress, the older the wearer, the more restrained the pattern. | 29 | p.25 | "模様は年齢に応じて，その有無や表し方が決まっており，年齢が高くなれば模様は控えめに" | Tr. "whether there was a pattern, and how it was shown, was set by age; the older the wearer, the more restrained the pattern". Late Edo, from Morisada mankō, via Furukawa. | card 2 |
+| 80 | The furisode is mainly for unmarried women at formal occasions. | 4 | p.53 | "mainly reserved for unmarried women to wear at formal occasions" | Becke, citing Dalby 2001: 172, Goldstein-Gidoni 1999, Milhaupt 2014: 38; present-day | card 2 |
+| 81 | Young women express themselves through colour more than pattern. | 4 | p.134 | "It was particularly the colour of their furisode through which young women aimed to express their individuality." | Becke's eight interviewees; furisode | card 2; narration 5 |
+| 82 | Many young wearers cannot name the flowers on their furisode. | 4 | p.137 | "I mean, flowers are flowers, right?" | interviewee (Mako), quoted by Becke; furisode | narration 5 |
+
+## Room 5 · Dressing
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 83 | Kitsuke gives the final fit and shape. | 4 | p.11 | "The kitsuke is of great importance as it provides the final fit and shape of the garment." | Becke; general | intro |
+| 84 | Kimono academies spread across Japan after the war. | 4 | p.77 | "These institutions started to operate all over Japan in the post-war period" | Becke, citing Dalby 2001: 119-121 and Goldstein-Gidoni 1999: 352 | label 1 |
+| 85 | Academies issue certificates for finished courses. | 4 | p.78 | "issuing certificates after the completion of certain courses" | kimono academies | label 1 |
+| 86 | Only 8.6% of 128 women students could put on a kimono themselves; 35.9% a yukata. | 27 | p.774 | "日本では着物8.6％（11/128 人），ゆかた35.9％（46/128 人）が自分自身で着ることができる" | Tr. "in Japan 8.6% (11/128) could put on a kimono and 35.9% (46/128) a yukata by themselves". 128 Otsuma Women's University students, July 2006. | label 1 |
+| 87 | Magazine dressing runs from the nagajuban to the final obi knot. | 4 | p.72 | "from putting on the nagajuban (under-kimono) to the final tying of the obi knot" | furisode; magazine kitsuke columns. Only the first and last steps are ordered in this source | label 2 |
+| 88 | The kimono is draped from the left side over to the right. | 4 | p.69 | "without exception always draped from the left side over to the right" | furisode; what the publications show | label 2 |
+| 89 | Wrapping the other way is linked to death. | 4 | p.70 | "draping the garment the opposite way is now associated with death and the afterlife" | Becke, citing Dalby 2001: 170 and Suzuki 2004 | label 2 |
+| 90 | Left over right goes back to the Yōrō Clothing Code of 718, in Chinese fashion. | 4 | p.69 | "stated that all robes, in Chinese fashion, should be fitted with the left side over the right" | the sentence's subject is 'The Yōrō Clothing Code which was implemented in 718'; Becke, citing Dalby 2001: 27-28 | narration 3 |
+| 91 | The ohashori is a fold of fabric beneath the obi. | 4 | p.71 | "the creation of an ohashori, the fold of fabric beneath the obi" | furisode; magazine convention | label 3 |
+| 92 | Ohashori slippage was smaller with the cord at the top of the iliac crest (7.1 cm) than at the waist (8.0 cm). | 19 | p.81 | "腰紐をウエストで締めた時（8.0±2.9cm）に比べて，腸骨稜上縁高で締めた時（7.1±2.5cm）の方が，着崩れ量は有意に少なかった" | Tr. "compared with tying the koshihimo at the waist (8.0±2.9 cm), slippage was significantly smaller when tied at the top of the iliac crest (7.1±2.5 cm)". Yukata; 9 women aged 21-23; after 10 repetitions of movements. | label 3 |
+| 93 | Seated bowing produced the most ohashori slippage, the standing bow the least. | 19 | p.81 | "おはしょりの着崩れ量は立礼＜立ち座り＜一連の動作＜座礼となり" | Tr. "ohashori slippage: standing bow < standing and sitting < series of movements < seated bow". Same 9 subjects, yukata. | narration 4 |
+| 94 | Clothing pressure was highest at the upper edge of the obi, especially at the armpit. | 21 | p.53 | "the clothing pressure was high at the upper edge of obi, especially in the axially region" | authors' English abstract ('axially' as printed); 9 subjects aged 20-26 | label 4 |
+| 95 | About 80% of 333 graduating students felt kimono pressure 2-3 times that of Western clothes. | 21 | p.56 | "和服の圧迫感は洋服の2倍から3倍と回答した者が全体の約8割であった" | Tr. "about 80% answered that the feeling of pressure in kimono was two to three times that of Western clothes". Kyoto Women's University graduation, March 2005; 71% wore hakama. | label 4 |
+| 96 | Magazines place the obi-jime in the middle of the obi and add an obi-age to complete the ensemble. | 4 | p.71 | "placement in the middle of the obi, and the addition of an obi-age (obi cloth) to complete the ensemble" | furisode; magazine convention. Not an ordered step | label 5 |
+| 97 | The obi knot faces the wearer's back. | 4 | p.71 | "The obi is dominantly tied in an elaborate manner, with the knot facing the wearer’s back." | furisode; magazine convention | label 5; narration 6 |
+| 98 | The 1970s brought a wave of books on the correct way to wear kimono. | 4 | p.75 | "The 1970s saw an increase in literature on kimono which aimed to educate the general public on the correct way of wearing kimono" | Becke, citing Dalby 2001: 114-121 | narration 1 |
+| 99 | One school opened in 1964 and runs five academies in Japan's biggest cities. | 4 | p.77 | "The institution started operating in 1964 and currently manages five academies which operate in the biggest cities throughout Japan" | Sōdō Reihō Kimono Gakuin; Becke, from the school's website, via Assmann 2008 | narration 1 |
+| 100 | One professional furisode dressing listed sixteen components. | 20 | p.22 | "胸増し綿＋ガーゼ＋肌襦袢＋長襦袢＋帯下締め＋長着＋第１腰紐＋きものベルト＋第２腰紐＋伊達締め＋前板＋帯＋紐＋帯枕＋帯揚げ＋帯〆" | Tr. "chest padding cotton + gauze + hadajuban + nagajuban + under-obi tie + kimono + 1st koshihimo + kimono belt + 2nd koshihimo + datejime + front board + obi + cord + obi pillow + obiage + obijime". One professional dressing of a fukuro-obi furisode; a lecture, case study. | narration 2 |
+| 101 | That outfit weighed about 3 kg, 3.75 times a sweater and jeans. | 20 | p.22 | "総重量は約3kgと洋服（セータ＋ジーンズ）の3.75倍の負担となりました" | Tr. "total weight about 3 kg, a load 3.75 times Western clothes (sweater + jeans)". Case study; lecture. | narration 2 |
+| 102 | Women's obi are tied from under the bust to the waist. | 20 | p.23 | "女子の帯はアンダーバストからウエストにかけて結びます" | Tr. "women's obi are tied from under the bust to the waist". Present-day; lecture. | narration 5 |
+| 103 | Until about 100 years ago, cords and obi were tied low, at the hip bones. | 18 | p.127 | "100 年程前まで，腰紐を腰骨のあたりに締める，骨盤の張り出したところに帯を締める" | Tr. "until about 100 years ago, koshihimo were tied around the hip bones and the obi where the pelvis protrudes". Sato and Tamura, from secondary sources. | narration 5 |
+
+## Room 6 · Body
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 104 | The taiko knot was not born until the late Edo period. | 4 | p.110 | "although possessing a traditional feel, the taiko-musubi, or ‘drum knot’, was not born until the late Edo period" | reported: Furisode Hime magazine, quoted by Becke | label 1 |
+| 105 | Collar set-back (kurikoshi) was optimal at 3-5 cm depending on the subject. | 22 | p.530 | "被験者Aに対しては3cm,Bに対しては3.5cm,Cに対しては5cmのくりこし量が最適" | Tr. "a kurikoshi of 3 cm for subject A, 3.5 cm for B and 5 cm for C was optimal". 3 subjects; paper of 1976. | label 2 |
+| 106 | Standard furisode dressing aims to hide the nape. | 4 | p.165 | "the standardised kitsuke which aims to hide potentially arousing areas of the body, such as the nape, from view" | furisode | label 2; narration 2 |
+| 107 | In Paris around 1907, a neckband low at the back, showing the nape, was the fashionable way to wear kimono. | 5 | p.8 | "Letting the neck-band fall low in back, revealing the nape of the neck (nukiemon), became the fashionable way to wear kimono around 1907." | Paris fashion, about 1907 (PDF page). Points in a different direction from Becke p.165. | label 2; narration 2 |
+| 108 | The nape is a primary erotic focus of the female body. | 4 | p.165 | "Napes are a primary erotic focus of the female body in Japan, fully the equivalent of the breasts in the West." | reported: Becke quoting Dalby 2001: 197-198 | narration 2 |
+| 109 | A young woman is expected to keep her collar close to the nape. | 4 | p.165 | "she is to wear her [kimono] collar demurely close to her nape" | reported: Becke quoting Dalby 2001: 197-198; present-day young women. Not about this print. | photo 36624 |
+| 110 | In magazines the hem is horizontal and ends just above the feet. | 4 | p.70 | "set in a horizontally straight position and always ends just above the models' feet" | furisode; models in magazines | label 3 |
+| 111 | A level hem gives longer strides than one with raised front corners. | 23 | p.695 | "Dressing of horizontal 'Suso' line makes the stride length and the step length longer." | author's English abstract; 3 women; compared with the tsumasaki-agari style (front corners raised 7 cm) | label 3 |
+| 112 | How the kimono is worn mainly affects stride; footwear mainly affects the double-support phase. | 23 | p.703 | "着物の着かたは歩幅に，履物は二重支持期に，それぞれ高いことが示された" | Tr. "the way of wearing the kimono [contributed] most to stride, and footwear to the double-support phase". 3 subjects; contribution-ratio analysis. Not about this print. | photo 55862 |
+| 113 | Furisode magazines teach how to move when walking, sitting down and on stairs. | 4 | pp.79-80 | "how to appropriately move one's body when walking and sitting down, as well as when climbing up and down stairs" | furisode; magazine etiquette sections | label 4 |
+| 114 | The result is constant monitoring and correcting of one's body. | 4 | p.80 | "Wearing a furisode therefore encourages constant monitoring and correcting of one's body" | furisode; Becke's analysis | label 4 |
+| 115 | Magazines also cover cars, meals and the bathroom. | 4 | p.80 | "Graceful manners of getting in and out of a car, as well as how to behave during a meal and how to use the bathroom" | furisode; magazines | narration 3 |
+| 116 | The men's low obi position stabilised the trunk and straightened posture. | 18 | p.126 | "OBI position 3, the style in use among men, provides benefits in terms of stabilizing the body trunk, straightening posture" | authors' English abstract; 8 young women, laboratory, nagajuban only (no kimono) | label 5 |
+| 117 | Women's obi are tied from under the bust to the waist. | 20 | p.23 | "女子の帯はアンダーバストからウエストにかけて結びます" | Tr. "women's obi are tied from under the bust to the waist". Present-day; lecture. | label 5 |
+| 118 | Wearing an obi reduced trapezius load when leaning forward (lifting a tea bowl). | 18 | p.134 | "前傾姿勢で何らかの動作を行う場合，帯を着用することで，僧帽筋への負担の軽減されることが明らかとなった" | Tr. "when performing some movement in a forward-leaning posture, wearing an obi was shown to reduce the load on the trapezius". 8 women; EMG; the task modelled a tea-ceremony movement. | narration 4 |
+| 119 | Oiran style ties the obi knot in front. | 4 | p.165 | "the knot is positioned at the front of the body for this style" | furisode; present-day oiran kitsuke. Not a claim about this print. | photo 37159 |
+| 120 | A front obi knot became popular with courtesans in the 17th century. | 4 | p.167 | "the placement of the knot of the obi in the front of the body, a practice which became popular with courtesans during the seventeenth century" | Becke, citing de Becker 1971 and Watanabe 2013 | photo 37159 |
+| 121 | Courtesans set fashions that merchant-class women copied. | 4 | p.167 | "Particular dress preferences by the most popular courtesans frequently became circulated in this way, with women of the merchant class imitating their fashions." | Edo; Becke citing Stanley 2012. Not about this painting. | photo 78060 |
+| 122 | For a geisha, choosing and wearing kimono is training on a par with dance and shamisen. | 6 | p.21 | "the art of choosing and wearing a kimono is as important a part of her training as learning traditional dancing or studying the shamisen" | reported: Druet quoting Downer 2001 | narration 5 |
+| 123 | In the magazines the expert dresses; the model is passive. | 4 | p.74 | "The model gives off the impression of possessing no agency, while Yasuda is the expert who is represented as being in command." | furisode; Furisode Daisuki kitsuke column. Not about this print. | photo 54870 |
+| 124 | The cotton summer yukata was once called yukatabira. | 27 | p.772 | "夏に着用されている綿素材の浴衣（以下，ゆかた）は「湯帷子」と呼ばれ" | Tr. "the cotton yukata worn in summer was called yukatabira". Background section of a survey paper; p.773 continues: worn after bathing, later also outdoors. | photo 36621 |
+| 125 | The yukata is an unlined kimono of light cotton. | 6 | p.20 | "yukata (浴衣 unlined kimono made of light cotton)" | Druet; general | photo 36621 |
+| 126 | The kimono's form is the same from formal to everyday wear. | 7 | p.76 | "キモノの形態は礼装から普段着まで共通であり" | Tr. "the form of the kimono is common from formal to everyday wear". Supports 'cut on the same plan'. | narration 6 |
+
+## Room 7 · The family
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 127 | Kimono design signals the formality of the event and the season. | 4 | p.11 | "the level of the perceived formality of the event the garment is worn to, as well as the seasonal context" | Becke, citing Dalby 2001: 164; general | intro |
+| 128 | Design also signals the wearer's gender, age, standing and taste. | 4 | p.11 | "personal attributes such as the wearer’s gender, age, social standing and taste" | Becke, citing Dalby 2001: 164; general | intro |
+| 129 | In the Edo period the furisode was mainly worn by children of affluent families. | 4 | p.53 | "the garment mainly being worn by children of affluent families during the Edo period" | Becke, citing Sawada 2006; Edo period | photo 785521 |
+| 130 | The furisode is mainly reserved for unmarried women at formal occasions. | 4 | p.53 | "mainly reserved for unmarried women to wear at formal occasions" | Becke, citing Dalby 2001: 172, Goldstein-Gidoni 1999, Milhaupt 2014: 38; present day | photo 785521; table |
+| 131 | In the Muromachi period bridal dress became fixed as a white uchikake over kosode. | 38 | p.42 | "婚礼衣裳も白打掛に小袖と定まった (Tr. "bridal dress too became fixed as a white uchikake over kosode")" | Dōmae 2015, college bulletin, not refereed; summary of secondary literature; warrior class | photo 44529 |
+| 132 | After the war, shiromuku for the Shinto rite and a coloured uchikake for the reception became usual. | 38 | p.43 | "神前結婚式では白無垢、披露宴で色打掛が主流となった (Tr. "white shiromuku became mainstream for Shinto weddings and coloured uchikake for receptions")" | Dōmae 2015, college bulletin, not refereed; post-war | photo 44529 |
+| 133 | In wartime the black trailing furisode became the main bridal dress because its sleeves could be shortened to make a tomesode. | 38 | p.43 | "袖を詰めて留袖として生かせる黒引き振袖が主流となった (Tr. "the black trailing furisode, which could be reused as a tomesode by shortening the sleeves, became mainstream")" | Dōmae 2015, college bulletin, not refereed; Shōwa wartime | narration |
+| 134 | In 18th-century Kyoto, dyed fabrics were tagged by whether family crests were put on them. | 13 | p.71 | "distinguished by tags attached, on the basis of whether or not family crests are put on them" | Suzuki 2022, on the Daikokuya manual, Kyoto, 1768-69; crests dyed in before sale | photo 61847 |
+| 135 | By the late 1960s crests on clothing were seldom seen except on ceremonial dress. | 32 | p.63 | "被服に紋章をとり入れる傾向は、式服を除いてはあまりみられなくなった (Tr. "the tendency to put crests on clothing is seldom seen now, except on ceremonial dress")" | Fukui 1970, refereed short report; one town (Kurayoshi, Tottori), 1967-68 | photo 61847 |
+| 136 | One town's survey found 206 kinds of crest. | 32 | p.61 | "紋章の種類は206種類である (Tr. "there are 206 kinds of crest")" | Fukui 1970, refereed short report; Kurayoshi, Tottori, questionnaire 1967-68 | narration |
+| 137 | The haori was originally men's dress, layered over the kosode. | 37 | P-386 | "元来、羽織は男装であり、小袖の上に表衣として着重ねられる着衣である (Tr. "originally the haori was men's dress, a garment layered over the kosode as the outer robe")" | Yokogawa 2008, invited essay, not refereed | photo 45403 |
+| 138 | Under sumptuary law, merchants hid colour and embroidery inside their haori. | 4 | pp.99-100 | "colourful patterns and intricate embroidery were added to the inner layer of haori jackets to hide them from view" | Edo; Becke, citing Motoji and Motoji 2017: 36-37 | photo 45403 |
+| 139 | In the Edo period haori with hakama became samurai everyday dress and townsmen's formal dress. | 37 | P-386 | "羽織袴姿として様式化を遂げ、武士の日常着、町人の礼服となる (Tr. "became standardised as haori-hakama dress: everyday wear for samurai, formal wear for townsmen")" | Yokogawa 2008, invited essay, not refereed; Edo period | photo 68272 |
+| 140 | Becke estimates about 30% of men wore hakama and haori at Kyoto's coming-of-age ceremony in 2018. | 4 | p.104 | "I would estimate that roughly thirty percent of male attendees dressed in hakama and haori for the coming-of-age ceremony in Kyoto in 2018" | Becke's own very limited observation; Kyoto only | photo 68272 |
+| 141 | Magazine dressing columns run from putting on the nagajuban to tying the obi knot. | 4 | p.72 | "from putting on the nagajuban (under-kimono) to the final tying of the obi knot" | furisode; magazine kitsuke columns | photo 73690 |
+| 142 | The nagajuban also changes by season. | 6 | p.20 | "warm materials such as silk or polyester used from October to May, thinner fabrics such as ro or sha from June to September" | Druet 2024; general, present day | photo 73690 |
+| 143 | In the early shogunate rank was shown by material: silk above, then pongee, cotton and hemp. | 39 | p.438 | "幕政初期には上位の者に絹,続いて紬,木綿,布と衣服材料でもって身分差を示そうとした (Tr. "in the early shogunate they tried to show rank by material: silk for those above, then tsumugi, cotton and hemp cloth")" | Nishimura 1980, refereed; summary of 250 years of edicts. The jacket is not claimed to follow any law. | photo 82175 |
+| 144 | Peasants' clothing was to be plain dark blue, a rule proclaimed across the country. | 39 | p.436 | "百姓の衣類は紺無地とする規制が全国に触れ渡っている (Tr. "the rule that peasants' clothes be plain dark blue was proclaimed throughout the country")" | Nishimura 1980, refereed; Edo period | narration |
+| 145 | Usual ranking: furisode first formal wear, black tomesode for married women, then hōmongi, tsukesage, iromuji, komon, tsumugi, yukata. | 25 | p.16 | "第一礼装は振袖，既婚女性は黒留袖，訪問着，付下げ，色無地，小紋，紬，浴衣とランクづけされている (Tr. "ranked: first formal wear furisode, for married women black tomesode, homongi, tsukesage, iromuji, komon, tsumugi, yukata")" | Araki 2022, business-studies paper stating a general convention; not a costume-history source | table |
+| 146 | Iromuji is white silk dyed one colour, without pattern, suiting the restraint of tea. | 25 | p.16 | "色無地は，白生地を一色に染めたもので，柄がなく派手すぎないため，華美を避ける茶道の精神に通じる (Tr. "iromuji is white cloth dyed in one colour; with no pattern and not too showy, it suits the spirit of tea, which avoids display")" | Araki 2022, business-studies paper | table |
+| 147 | Hōmongi are worn at weddings, parties and tea gatherings. | 29 | p.13 | "結婚式やパーティー，お茶会等，幅広い場面で着用されている (Tr. "worn on a wide range of occasions such as weddings, parties and tea gatherings")" | Furukawa 2021, refereed; present day | table |
+| 148 | Hōmongi and tsukesage are almost the same in formality. | 33 | p.422 | "訪問着と付け下げは格式としてはほぼ同じでパーティーやお茶会などで着られる (Tr. "hōmongi and tsukesage are almost the same in formality and are worn at parties, tea gatherings and so on")" | Okamoto, Numata, Kōyama 2008, magazine review, not refereed; norm c.2005 | table |
+| 149 | The furisode is the Japanese garment a woman today is most likely to buy in her lifetime. | 33 | p.422 | "振袖は近年の女性が生涯で購入する可能性の一番高い和服であり，成人式との関係が深い (Tr. "the furisode is the Japanese garment a woman today is most likely to buy in her lifetime, and is closely tied to the coming-of-age ceremony")" | Okamoto, Numata, Kōyama 2008, not refereed; authors' statement | narration |
+| 150 | Komon: small patterns repeated all over the garment. | 12 | p.67 | "Komon designates a kimono with small patterns duplicated all over the surface of the garment." | Druet 2021, note 38 | table |
+| 151 | The yukata is an unlined kimono of light cotton. | 6 | p.20 | "yukata (浴衣 unlined kimono made of light cotton)" | Druet 2024; general | table |
+| 152 | In mid-Edo the black crested haori became most formal; plain, komon and stripes were progressively less formal. | 37 | P-386 | "江戸中期には黒紋付（羽二重・縮緬など）が最も正式なものとなる。と同時に無地・小紋・縞の順に略式とされ (Tr. "in mid-Edo the black crested [haori] became the most formal; plain, komon and stripes were, in that order, less formal")" | Yokogawa 2008, invited essay, not refereed; men's haori | card 2 |
+| 153 | Since the kamishimo was abolished after the Meiji Restoration, haori and hakama have been men's formal dress. | 37 | P-386 | "明治維新以後に裃が廃止されてから今日に至るまで、男子の礼装として広く用いられている (Tr. "since the kamishimo was abolished after the Meiji Restoration, it has been widely used as men's formal dress to this day")" | Yokogawa 2008, invited essay, not refereed | card 2 |
+| 154 | Kitagawa Morisada sorted the kosode of his day into four grades: formal, best, informal, everyday. | 29 | p.14 | "当時の小袖の種類を「礼」「晴」「略」「褻」の４つに区分している (Tr. "divides the kosode of the time into four kinds: rei, hare, ryaku and ke")" | Furukawa 2021, refereed, reading Morisada mankō (mid-19th century) | narration |
+| 155 | In late-Edo women's formal dress, the older the wearer, the more restrained the pattern. | 29 | p.25 | "模様は年齢に応じて，その有無や表し方が決まっており，年齢が高くなれば模様は控えめに (Tr. "whether there was a pattern, and how it was shown, was set by age; the older the wearer, the more restrained the pattern")" | Furukawa 2021, refereed; late Edo, from Morisada mankō | narration |
+| 156 | In Kyoto flea markets the haori is popular because it needs no obi or wrapping. | 12 | p.80 | "A haori doesn’t require an obi or any kind of wrapping, folding components to be worn properly." | Druet 2021; Kyoto flea markets, 2018-21 | narration |
+
+## Room 8 · Four centuries
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 157 | By the mid-12th century the kosode was used as underwear among court nobles. | 30 | p.516 | "おそくとも12世紀中ごろには,公家の世界で小袖は,肌着・下着として用いられていた (Tr. "by the mid-12th century at the latest, in the court world the kosode was used as skin-wear and underwear")" | Saitō 1979, refereed; court nobility | intro; narration |
+| 158 | As court dress was simplified, the outer robes came off and the kosode came to the surface. | 30 | p.516 | "それまで中心服飾であった衣(きぬ)が脱がれ,衣の下に着られていた小袖が表層化してきた (Tr. "the kinu robes that had been central were taken off, and the kosode worn beneath them came to the surface")" | Saitō 1979, refereed; Heian court | narration |
+| 159 | Kosode were the precursor of the modern kimono. | 5 | p.4 | "kosode (precursor of the modern kimono)" | Fukai; PDF page | narration (kosode as the kimono's ancestor) |
+| 160 | By the early Edo period the kosode's shape was not very different from today's kimono. | 31 | p.29 | "小袖の形も現在の着物とそれほど変らないものになった (Tr. "the shape of the kosode also became not very different from today's kimono")" | Imamura 2005, commentary for a costume show, not refereed; 17th century | narration |
+| 161 | A pattern book printed in 1666 records Kanbun-style designs. | 10 | p.599 | "寛文 6 年（1666）刊 行の『新撰御ひいなかた』 (Tr. "Shinsen on-hiinakata, published in Kanbun 6 (1666)")" | Koide 2012, refereed; Kanbun era | narration |
+| 162 | Kanbun style: a large empty area on the back with big, dynamic motifs. | 10 | p.592 | "背面に余白を大きく取り動的で大柄な文様を配し (Tr. "leaving a large empty area on the back and placing large, dynamic motifs")" | Koide 2012, refereed; Kanbun era 1661-73 | narration |
+| 163 | A 1789 trade manual: brocade and satin are valued by fabric quality and design popularity. | 13 | p.73 | "These fabrics should be valued on the basis of the quality of the fabric and the popularity of their designs" | Kenpu chōhō ki (1789), quoted by Suzuki 2022; silk fabrics such as brocade and satin. The print is not claimed to show them. | photo 54670 |
+| 164 | Mitsukoshi began as the draper Echigoya, founded at Surugachō. | 14 | p.3 | "三越は、延宝７年（1673）に駿河町で創業した呉服店「越後屋」が始まりである (Tr. "Mitsukoshi began as Echigoya, a draper founded at Surugachō in Enpō 7 (1673)")" | Goto 2023, university bulletin. The source's era name and year disagree (Enpō 7 is 1679), so no year is shown. | photo 55287 |
+| 165 | In October 1842 the shogunate issued the proper price tag ordinance. | 13 | p.74 | "Shōfuda Rei [The proper price tag ordinance] issued by the Tokugawa government in October 1842" | Suzuki 2022; Tenpō reforms | photo 55287 |
+| 166 | Women's Westernisation of dress began in the Rokumeikan era of 1886, for diplomacy, and only for the elite. | 11 | p.33 | "衣服の洋装化は，外交上の必要性に迫られた明治 19 年の鹿鳴館時代からである (Tr. "the Westernisation of dress dates from the Rokumeikan era of Meiji 19, driven by diplomatic need")" | Sakamoto 2018, invited review essay; upper-class women only (same paragraph) | photo 55499 |
+| 167 | In early Meiji, Western dress came to be called yōfuku and the kosode wafuku. | 36 | P-270 | "洋装を「洋服」と小袖を「和服」とそれぞれ呼ぶようになりました (Tr. "people came to call Western dress yōfuku and the kosode wafuku")" | Mizukami 2008, invited essay by a museum curator, not refereed | photo 55345 |
+| 168 | Kimono was reframed as Japan's national costume through an encounter with Western dress in the Meiji era. | 4 | p.10 | "It was reframed as Japan's national costume through an encounter with 'Western' forms of dress during the Meiji Restoration" | Becke; Meiji | photo 55185 |
+| 169 | In the Meiji period, many garment names collapsed into the one word kimono. | 4 | p.67 | "During the Meiji period, this differentiation slowly disappeared, however, and all garments became categorised under the label ‘kimono’." | Becke, citing Milhaupt 2014 and Dalby 2001: 59-65 | narration |
+| 170 | A certain kimono shape became frozen in time in the Meiji period. | 4 | p.72 | "a certain kimono shape became 'frozen in time' during the Meiji period (1868-1912)" | Becke's own statement | narration |
+| 171 | In the 1920s-30s kimono was still the most popular dress for both sexes. | 4 | p.109 | "Kimono, which at that point was still the most popular form of dress for both genders, was part of the realm of fashionable dress" | 1920-1930; Becke, citing Thoelen 2020 | photo 646998 |
+| 172 | Only after the war did kimono lose its link with fashion and fun. | 4 | p.15 | "It was only in the post-war period that kimono became increasingly disassociated from notions of fashion and fun." | Becke | photo 646998 |
+| 173 | The way of wearing kimono became vigorously standardised after the war. | 4 | p.11 | "the way of wearing and fitting kimono has become vigorously standardised in a post-war context" | Becke; post-war | photo 76984 |
+| 174 | A 1972 book contains 390 rules on buying, choosing and wearing kimono. | 4 | p.75 | "The book contains a total of 390 rules in regards to buying, choosing, and wearing kimono." | Shiotsuki, Kimono no Hon, 1972, as described by Becke | intro; photo 76984 |
+| 175 | The Tokugawa government issued sumptuary laws on what each class could wear. | 4 | p.99 | "issuing sumptuary laws on the type of clothes members of each class were allowed to wear" | Becke; Tokugawa government | card 1 |
+| 176 | The shogunate issued clothing rules 132 times, from 1615 to 1866. | 39 | p.432 | "幕府は132回 … 最も早く公布されたものは,幕府法による衣服規制で元和元年 ( 1615 ) , 遅いものも幕府法による慶応 2 年 ( 1866 ) (Tr. "the shogunate 132 times … the earliest was a shogunal clothing rule of Genna 1 (1615), the latest also shogunal, Keiō 2 (1866)")" | Nishimura 1980, refereed; counts from the edict collections used; domains issued their own | card 1 |
+| 177 | The laws were meant to keep the class hierarchy visible. | 39 | p.432 | "The substance of these laws were employed to maintain the class hierarchy" | Nishimura 1980, refereed; English abstract, verbatim including its grammar | card 1 |
+| 178 | Meisen is a plain-weave silk woven from pre-dyed yarn. | 14 | p.1 | "銘仙とは、先染めした糸で織った平織りの絹織物のことを指す (Tr. "meisen refers to a plain-weave silk woven from pre-dyed yarn")" | Goto 2023, university bulletin; general definition | card 2 |
+| 179 | From Taishō to post-war Shōwa, meisen dominated everyday dress as the mass-market kimono. | 15 | p.37 | "長期にわたり大衆向け着物として衣生活を支配した (Tr. "for a long period it dominated clothing life as the mass-market kimono")" | Shiba 2018, conference abstract, not a full paper | card 2 |
+| 180 | Meisen's great feature is picture-like design influenced by Art Nouveau and Art Deco. | 15 | p.37 | "アール・ヌーボーやアール・デコの影響を受けた、まるで絵画といってもよいデザインにある (Tr. "lies in design influenced by Art Nouveau and Art Deco, which one could almost call painting")" | Shiba 2018, conference abstract; author's characterisation | card 2 |
+| 181 | Meisen production peaked in 1930 and then declined. | 14 | p.3 | "昭和 5 年（1930）のピークをさかいに減少していく (Tr. "declines after its peak in Shōwa 5 (1930)")" | Goto 2023, from Nihon bōseki nenkan | card 2 |
+| 182 | In a kimono magazine, tsukesage hardly appeared in recent years and was merged into hōmongi. | 33 | p.422 | "近年では付け下げの掲載がほとんどなくなり訪問着に一元化されている (Tr. "recently tsukesage has hardly been featured and has been unified into hōmongi")" | Okamoto, Numata, Kōyama 2008, magazine review, not refereed; Utsukushii Kimono 1975-2005 | narration |
+| 183 | The kimono retail market shrank from 1,766.7 billion yen in 1981 to 238 billion yen in 2020, about one seventh. | 25 | p.11 | "1981年の17,667 億円の市場規模から2020 年には2380 億円と7 分の1 程度に縮小している (Tr. "from a market of 1,766.7 billion yen in 1981 it shrank to 238 billion yen in 2020, about one seventh")" | Araki 2022; industry figures cited by the author | narration |
+| 184 | After the 1990s crash, kimono became something rented rather than owned. | 4 | p.118 | "resulting in a shift of the general image of kimono from a garment which is owned towards one which is rented" | Becke, citing Valk 2018: 113 | narration |
+| 185 | Kyoto had about forty rental shops in January 2021. | 12 | p.72 | "As of January 2021, the city counts about forty different rental shops and twenty second-hand kimono shops." | Druet 2021; Kyoto, author's count | narration |
+
+## Room 9 · Abroad
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 186 | Padded robes given to Dutch traders were prized in Holland as Japonse rocken. | 5 | p.2 | "These came to be prized in Holland as Japonse rocken (Japanese dressing gowns)." | Fukai; PDF page; 17th-18th century | photo 87231 |
+| 187 | Demand outran supply, so the Dutch East India Company had Japonse rocken made in India. | 5 | p.2 | "the Dutch East India Company had begun manufacturing Japonse rocken for the European market in the Coromandel region of India" | Fukai; after 1692. The banyan on the wall is not claimed to be one of these. | photo 87231 |
+| 188 | In England they were called banyans. | 5 | p.2 | "They were called banyan (for a caste of Indian merchants) in England and indienne (“in the Indian style”) in France" | Fukai | photo 87231 |
+| 189 | Kimono became popular in Holland as men's domestic garments. | 5 | p.2 | "kimono had made their way to Holland and become popular as men's domestic garments" | Fukai; well before the late 19th century | narration |
+| 190 | At the Dutch chief's visit to Edo, silk kimono were given in return for gifts. | 11 | p.34 | "献上品への返礼として絹のきものが贈られた (Tr. "silk kimono were given in return for the presents offered")" | Sakamoto 2018, invited review essay drawing on Fukai 2017; Edo period | narration |
+| 191 | Light, warm padded kimono became hugely popular as indoor wear. | 11 | p.34 | "軽くて暖かい綿入れのきものは，室内着として絶大な人気を得た (Tr. "light, warm padded kimono gained enormous popularity as indoor wear")" | Sakamoto 2018; 17th-18th century European upper classes | narration |
+| 192 | The astronomer and geographer painted by Vermeer wear such padded kimono. | 11 | p.34 | "フェルメールが描いた絵画のなかの天文学者や地理学者は，この綿入れのきものを (Tr. "the astronomer and geographer in the paintings by Vermeer [wear] these padded kimono")" | Sakamoto 2018, author's reading via Fukai 2017; said as one writer's view | narration |
+| 193 | From the 1870s kimono spread in Europe and America as luxurious women's indoor wear. | 11 | p.34 | "1870 年代以降，きものは欧米で女性用の豪華な室内着として広まった (Tr. "from the 1870s kimono spread in Europe and America as luxurious indoor wear for women")" | Sakamoto 2018, invited review essay; Japonisme period. The dressing gown is not claimed to be one of these. | photo 155954 |
+| 194 | Western women saw in kimono an ease and a liberation, and adopted them as dressing gowns. | 5 | p.4 | "an ease and a liberation as well as exoticism and consequently adopted them as dressing gowns" | Fukai; Western wearers, 19th century | photo 155954 |
+| 195 | In the West the kimono was often worn without an obi, as loungewear. | 12 | p.54 | "The kimono was, for instance, worn without an obi in a relaxed, carefree manner, because it was seen as a loose type of loungewear." | Druet 2021; late 19th-early 20th century West | narration |
+| 196 | In the West it was often worn right panel over left. | 12 | p.54 | "the kimono would often be worn in the West with the right panel crossed over the left one" | Druet 2021; Japonisme era | narration |
+| 197 | The dead are dressed with the right side of the collar over the left. | 4 | p.70 | "the kyō-katabira, the white gown the deceased is dressed in, is placed so that the right side of the collar overlaps the left" | Becke, footnote 3, citing Suzuki 2004: 232; dress of the deceased | narration |
+| 198 | Liberty actively sold Japanese-style gowns from 1884. | 16 | p.224 | "1884 年以降から，日本風のガウンをも積極的に販売していた (Tr. "from 1884 on, it also actively sold Japanese-style gowns")" | Sasai 2010, refereed; Liberty catalogue 1886 | photo 158314 |
+| 199 | The name tea gown first appears in April 1878, for a gown worn without a corset. | 16 | p.221 | "はじめて「ティー・ガウン」の名称が 1878 年 4 月に登場し，コルセットを用いないガウン (Tr. "the name 'tea gown' first appeared in April 1878, a gown worn without a corset")" | Sasai 2010, refereed; British women's magazines | photo 158314 |
+| 200 | Tea gowns adopted kimono, obi, Japanese-style sleeves and Japanese patterns. | 16 | p.221 | "Japanese styles such as the kimono, obi, Japanese-style sleeves, and Japanese patterns were adopted as a part of their design." | Sasai 2010, English abstract; Britain, 1878-1890s | photo 158314 |
+| 201 | A Japanese village opened in Knightsbridge, London, in January 1885. | 16 | p.221 | "1885 年 1 月にロンドンのナイツブリッジに開設された「日本村」 (Tr. "the 'Japanese village' opened in Knightsbridge, London, in January 1885")" | Sasai 2010, refereed | narration |
+| 202 | Gilbert is said to have learned directly from the village's people and taught his actors for The Mikado. | 16 | p.223 | "日本村の人々に直接教えを受けて，役者たちに伝授したという (Tr. "it is said he was taught directly by the people of the Japanese village and passed it on to the actors")" | Sasai 2010; reported ('it is said'), London 1885 | narration |
+| 203 | Poiret described his kimono coat as ample and square-cut. | 5 | p.7 | "It was an ample, square cut kimono, in heavy black wool edged in black satin." | reported: Fukai quoting Poiret's autobiography (1930) | photo 69062 |
+| 204 | Poiret did not necessarily grasp the difference between Japanese and Chinese dress. | 5 | p.8 | "not necessarily grasp the distinction between Japanese and Chinese cultures and clothes" | Fukai, about Poiret. The Qing robe beside it is a museum object, not one Poiret saw. | photo 69062 |
+| 205 | What Western fashion took was the rectangular, unconfined cut. | 5 | p.8 | "The most important point was the rectangular cut that followed the warp and weft of the fabric and the unconfined garment that resulted from it." | Fukai | card 1 |
+| 206 | In 1906 Poiret freed the silhouette from the corset. | 5 | p.8 | "In 1906 Poiret introduced his new silhouette freed from the corset for the first time since the Renaissance" | Fukai | card 1 |
+| 207 | The cross-shaped structure of hanfu did not change across periods. | 40 | p.39 | "the cross-shaped structure of Hanfu did not change" | Yang, Kimata, Satō 2024, refereed; English abstract | card 2 |
+| 208 | Hanfu closes with the wearer's left front over the right, as Japanese dress does. | 40 | p.44 | "右衽は着用者から見て左の衽を右の衽に重ねる着方（和服と同様）である (Tr. "youren is the way of wearing in which, seen by the wearer, the left front is lapped over the right (as in wafuku)")" | Yang, Kimata, Satō 2024, refereed. About hanfu, not about the Qing robe nearby. | card 2 |
+| 209 | Every Asian traditional garment studied uses its full cloth width, cut with no waste. | 41 | p.16 | "いずれの伝統服もそれぞれの布幅いっぱいを使い切り，まったく無駄のない裁断がなされている (Tr. "every traditional garment uses its full cloth width, cut with no waste at all")" | Tamura 2005, a written-up lecture, not refereed; museum-collection study, Asia broadly. The dallyeong is not claimed to be among the garments studied. | photo 853921 |
+| 210 | The Korean chima traps heat rising from the heated floor. | 41 | p.13 | "床からの熱が膨らんだチマに捕えられ，絶大な保温効果を発揮した (Tr. "heat from the floor was caught by the puffed-out chima, giving a great warming effect")" | Tamura 2005, lecture, not refereed | narration |
+| 211 | Bingata was used mainly for the uchikake robes of royal and gentry women. | 42 | p.458 | "主に王家や士族の婦女子の裲襠(うちかけ)として用いられてきた (Tr. "it was used mainly as uchikake robes of women of the royal and gentry families")" | Satō 2003, commentary by a bingata craftsman, not refereed. The robe on the wall is not claimed to be royal. | photo 61851 |
+| 212 | Yellow was a colour allowed only to royalty. | 42 | p.458 | "黄色は王族のみに許された色 (Tr. "yellow, a colour allowed only to royalty")" | Satō 2003, commentary, not refereed | photo 61851 |
+| 213 | Bingata absorbed Javanese and Indian chintz techniques and Chinese printed cloth. | 42 | p.456 | "大交易時代に紅型は,ジャワ更紗,インド更紗などの技法や中国の印花布の影響をうけた (Tr. "in the age of great trade bingata was influenced by Javanese and Indian chintz techniques and Chinese yinhuabu")" | Satō 2003, commentary, not refereed | narration |
+| 214 | Since Okinawa's 1972 reversion, bingata circulates as Japanese kimono and obi. | 42 | p.457 | "日本の伝統の着物の中にも取り入れられて,日本の着物や帯として流通するようになり (Tr. "it was taken into traditional Japanese kimono and came to circulate as Japanese kimono and obi")" | Satō 2003, commentary, not refereed; after 1972 | narration |
+| 215 | From the mid-18th century attus became a trade good, reached Osaka and gave its name to the work coat atsushi. | 43 | p.1 | "十八世紀半ば以降には交易品として産物化し、のちに大阪へももたらされて、「厚司」という作業着の呼称のもととなった (Tr. "from the mid-18th century it became a trade product, was later brought to Osaka, and became the source of the name atsushi for a work garment")" | Nakano 2006, museum bulletin, not refereed; read on page image | photo 51082 |
+| 216 | Attus means cloth of the bark fibre of trees such as ohyō elm, Japanese elm and linden. | 43 | p.9 | "オヒョウ、ハルニレ、シナノキなどの落葉樹の靱皮繊維で製作された布を意味する語である (Tr. "a word meaning cloth made from the bast fibre of deciduous trees such as ohyō, harunire and shinanoki")" | Nakano 2006, museum bulletin, note 1, not refereed | narration |
+
+## Room 10 · The answer
+
+| # | Claim | Src | Page | Quote | Scope | Where |
+|---|---|---|---|---|---|---|
+| 217 | Becke defines kimono as a category of dress based on the garment's shape and the practice of fitting it. | 4 | p.10 | "a general category of dress which is based on the garment's shape and practice of fitting it to the body" | Becke; general definition, although her thesis is about the furisode at the coming-of-age day | intro; narration |
+| 218 | Unworn, a kimono has a completely flat surface. | 4 | p.10 | "In its unworn form, a kimono has a completely flat surface." | Becke; general | narration |
+| 219 | No tucks or darts give the kimono a three-dimensional shape. | 4 | p.10 | "no tucks or darts are added to the fabric which would provide the garment with a three-dimensional shape" | Becke; general | narration |
+| 220 | Seventy percent of what makes a kimono a kimono is how it is worn. | 4 | p.11 | "'Seventy percent of what makes a kimono a kimono is how it is worn'" | reported: Yamaguchi Genbei, head of the kimono house Kondaya Genbei, quoted by Becke; a maker's view, not an academic finding | narration |
+| 221 | The Tokugawa government issued sumptuary laws on what each class could wear. | 4 | p.99 | "issuing sumptuary laws on the type of clothes members of each class were allowed to wear" | Becke; Tokugawa government | narration |
+| 222 | A 1972 book contains 390 rules on buying, choosing and wearing kimono. | 4 | p.75 | "The book contains a total of 390 rules in regards to buying, choosing, and wearing kimono." | Shiotsuki, Kimono no Hon, 1972, as described by Becke | narration |
+| 223 | Rules can be bent and clothes modified. | 4 | p.123 | "Rules can be bended and pieces of clothing can be modified, however" | Becke; furisode | rule 12; narration |
+| 224 | The kimono is draped from the left side over to the right. | 4 | p.69 | "without exception always draped from the left side over to the right" | furisode; what the publications show | rule 1 |
+| 225 | Dressing runs from the nagajuban to the obi knot. | 4 | p.72 | "from putting on the nagajuban (under-kimono) to the final tying of the obi knot" | furisode; magazine columns; only these two steps are ordered | rule 2 |
+| 226 | The ohashori is a fold of fabric beneath the obi. | 4 | p.71 | "the creation of an ohashori, the fold of fabric beneath the obi" | furisode; magazine convention | rule 3 |
+| 227 | The lined kimono is appropriate from October until May. | 6 | p.20 | "with awase (袷 lined kimono), one can enjoy an outfit that would be appropriate from October until May" | Druet 2024; present-day practice | rule 4 |
+| 228 | The unlined kimono is for the warm months. | 6 | p.20 | "With hitoe (単衣 unlined kimono) it is the lightness of the fabric that is appreciated, especially during the warm months" | Druet 2024; the sentence ends 'that spread from June to September' | rule 5 |
+| 229 | Wearing the motifs of a past season is a faux pas. | 6 | p.27 | "dressing in hues or motifs that are of the passed / past season would be considered a major “fashion faux-pas”" | Druet 2024; general. Elsewhere (p.22) she calls seasonal dress 'not mandatory but strongly encouraged' | rule 6 |
+| 230 | One guide says to wear a flower pattern about a month before the flower blooms. | 4 | p.62 | "start wearing a specific flower pattern about one month ahead of the actual blossoming of the drawn flower" | reported: Becke quoting Shimada 2017, a guide; advice, not observed practice | rule 7 |
+| 231 | Repeated all-over komon patterns are considered less formal. | 4 | p.62 | "pervasive and repetitive patterns called komon are generally considered less formal" | reported: Dalby, Ōkubo, kimono association, via Becke | rule 9 |
+| 232 | The furisode is mainly for unmarried women. | 4 | p.53 | "mainly reserved for unmarried women to wear at formal occasions" | Becke, citing Dalby 2001: 172 and others | rule 8 |
+| 233 | In mid-Edo the black crested haori became the most formal. | 37 | P-386 | "江戸中期には黒紋付（羽二重・縮緬など）が最も正式なものとなる。 (Tr. "in mid-Edo the black crested [haori] (habutae, crepe) became the most formal")" | Yokogawa 2008, invited essay, not refereed; men's haori | rule 10 |
+| 234 | In the early shogunate rank was shown by material: silk above, then pongee, cotton and hemp. | 39 | p.438 | "幕政初期には上位の者に絹,続いて紬,木綿,布と衣服材料でもって身分差を示そうとした (Tr. "in the early shogunate they tried to show rank by material: silk for those above, then tsumugi, cotton and hemp cloth")" | Nishimura 1980, refereed; Edo period, hence 'Edo:' on the rule | rule 11 |
 
 ## Claims dropped for lack of a source read this session
 
-These came from the brief's hypothesis list. Nothing in sources 4 or 5 supports them, and no extra source could be read, so they are not in the deck.
-
-**Structure**
-- "Four body panels."
-- The part names tai, okumi and fuki. Sode and eri appear only inside other terms, so the labels use English.
-- Hakkake as the lower lining of a lined kimono.
-- Crests (mon) coding formality by number.
-
-**Fabric and season**
-- Meisen and tsumugi as fabrics. Only komon is in the sources (row 14).
-- Hakkake as the lower lining of a lined kimono.
-- "Season coding is a rule, not a preference": corrected, not dropped. Source 6 calls it "a guiding principle, not mandatory but strongly encouraged" (row 62), and the slide says so.
-- Ro and sha, awase and hitoe by month, and the seasonal change of dress were dropped in the first build and restored from source 6 (rows 58–61).
-
-**Kitsuke**
-- Tabi first, and every numbered step between the under-kimono and the obi knot. The source orders only the first and last step (row 21).
-- "Women today cannot dress themselves."
-- Dressing time and the number of cords.
-
-**Pattern**
-- The Japanese motif names sakura, kiku, fuji and botan, and any meaning for cherry, wisteria or peony.
-- Pattern placed only at the hem.
-- Subdued colours and shorter sleeves for older or married women.
-
-**History**
-- Kosode origins in Heian dress, and the kosode as an undergarment.
-- The kosode as outer dress for all classes.
-- The T-shape adapted to modern life (washable, polyester, two-piece).
-
-**Body language**
-- Sleeve handling, holding the hem, seiza, bowing in kimono, narrow steps.
-- Collar depth coding age or profession.
-
-## Corrections the sources forced
-
-- The rules were not first fixed after the war. Becke places the "frozen" shape in the Meiji period (p.72) and the schools, manuals and strict standardisation after the war (pp.11, 75, 77).
-- On the nape the two sources point in different directions (rows 29 and 30), so the deck states no single nape rule.
-- Fukai describes the kimono in the West as ease and liberation (rows 42 and 43). The "discipline" claims are therefore limited to Becke's furisode context.
-
-## Extra sources
-
-One added: source 6 (Druet 2024), a journal article with a DOI, read in full, to fill the fabric and season gap that sources 4 and 5 leave.
-
-Not added:
-- Textile Society of America papers on digitalcommons.unl.edu: the record pages opened, but each PDF request returned a bot challenge (HTTP 403). It was not bypassed, so nothing was read and nothing is cited.
-- J-STAGE papers on dressing order: not attempted for lack of time, so the dressing order still rests on row 21 alone.
-- etheses.whiterose.ac.uk: its search returned no kimono thesis other than source 4.
-
-The three hosts mutualimages-journal.org, digitalcommons.unl.edu and www.jstage.jst.go.jp were blocked by the network policy during the first fan-out and opened later in the session.
-
-## Photographs
-
-Two photographs, both from Wikimedia Commons, both The Metropolitan Museum of Art, CC0 1.0, no individual photographer named. (1) "Kosode moyo hinagata bon: Book of Painted Kosode Designs, Volume 2", Japan, second half of the 17th century, shown on slides 5 and 8. (2) "Robe (Kosode) with Fishing Net and Characters", Japan, probably ca. 1660s, The Metropolitan Museum of Art, CC0 1.0, no individual photographer named. It is shown whole on slide 1; from slide 2 on, its studio background is masked out and the robe stays on every slide, with hand-written SVG lines and labels on top. Captions repeat only what the Commons file page states; they are not counted as academic claims. The lines and outlines on slides 3, 6 and 7 are approximate, and each of those slides says that the robe is a 1660s kosode, not a dressed modern kimono.
-
-## Fonts
-
-Cormorant Garamond (© 2015 the Cormorant Project Authors), Source Sans 3 (© 2010–2020 Adobe, Reserved Font Name 'Source'; embedded as a renamed subset) and Shippori Mincho (© 2021 The Shippori Mincho Project Authors), all under the SIL Open Font License 1.1.
+- (bolt) Exact cutting lengths for each piece of a standard bolt: only diagrams (Maruyama 2017 Fig. 1; 2020 Fig. 3), no figures in text.
+- (bolt) The number of cuts: no source counts them, so the narration does not.
+- (parts) Left-over-right on a label: only the hanfu study (source 40) and furisode publications (source 4) state it; kept to one line of narration.
+- (parts) Number and placing of crests by formality: the crest survey (source 32) gives neither.
+- (cloth) A lined (awase) kosode on the wall: no Met record in the wishlist says 'lined'.
+- (cloth) What ramie is and how the katabira differs from hitoe: no source read defines katabira or ramie.
+- (cloth) Season of irises: no source ties the iris motif to a month.
+- (cloth) Any fact about weaving or the loom in the stills: no source read describes it; the captions describe only the pictures.
+- (cloth) The exact June/September hitoe and July-August usumono calendar used in many guides: only Druet's broader months were read.
+- (cloth) The nagajuban photograph moved to room 7 (the family) to avoid showing it twice.
+- (pattern) That any robe on this wall is in the Kanbun, Keichō or another named style: no Met record in the wishlist says so.
+- (pattern) That object 42669 (On-Hiinagata, 1667) is the Shinsen on-hiinakata Koide names (1666): not established in any source read.
+- (pattern) How pattern books were used in a shop, and who drew them: no source read beyond Becke p.28 and Koide p.599.
+- (pattern) Pattern only at the hem (tomesode) as a rule for married women today: only the Meiji hem-pattern requirement (Furukawa p.26) was read; not used here.
+- (pattern) Meanings of pine, bamboo and plum as a group: no source read.
+- (dressing) Every dressing step between the under-kimono and the obi knot as a rule: Becke orders only the first and last; the sixteen-item list is one professional's dressing in a case study (source 20).
+- (dressing) How long dressing takes when women dress themselves: only an expert's 5-7 minutes for summer layers (source 24) was found; not used.
+- (dressing) Tabi first: no source read.
+- (dressing) That a high obi raises stress markers: the English quote read (source 18 p.126) covers only the men's low position; left out.
+- (body) Collar depth as a code for age or profession: no source read.
+- (body) Sleeve handling, holding the hem, seiza and narrow steps as taught rules: no source read (only bowing in a slippage study, used in room 5).
+- (body) Anything about the poses or clothing visible in the prints beyond their Met titles: not described in any source read.
+- (body) That a high, under-bust obi raises stress markers: only the abstract line on the men's low position was quoted.
+- (family) Noh costume 45190: the only source line is that Nishijin weavers traditionally made Nō costumes (12 p.65); nothing compares Nō dress with the kimono, and the wall is kept to seven photographs.
+- (family) Crest counts by formality (one, three, five crests): only Meiji visiting wear (three embroidered crests, 29 p.19) and late-Edo bridal furisode (five crests, 38 p.43) are sourced; no general rule.
+- (family) Sleeve lengths in centimetres for furisode and tomesode, and the tomesode's hem-only pattern as a present-day rule: not in the sources read.
+- (family) What the fireman's jacket was for (soaking, firefighting): no source read.
+- (family) Tsumugi as a fabric: ranked (25 p.16) but not defined anywhere, so left out of the table.
+- (history) Edo clothing laws in detail on screen (the 1683 Tenna price caps, the 1636 bolt size): sourced (39 p.435) but left out for space, not for lack of a source.
+- (history) Market figures in other years and the 12.9% second-hand share (12 p.79): sourced but not used, to keep one figure per stop.
+- (history) Vintage kimono as a trend (4 p.14): sourced, not used for space.
+- (history) What the Kiyonaga and Hokusai prints show inside the shops (customers, cloth, crests): the Met records give titles only, so no claim is made about their content.
+- (history) Wartime kimono (propaganda designs, monpe): sourced (12 p.56; 11 p.33) but no wall object fits it; the boy's kimono record says nothing about war.
+- (abroad) Chinese robe as a relative of the kimono: no source read compares a Qing robe with the kimono; the chaofu hangs beside Fukai's remark on Poiret confusing Japanese and Chinese dress, and the hanfu comparison is marked as about hanfu.
+- (abroad) The Korean dallyeong itself: no source read discusses it; it hangs beside a general comparison of Asian dress (41 p.16, a lecture).
+- (abroad) That the Met dressing gown is an export gown by Shiino Shobei or padded habutae (5 p.5): the record says only 'silk', so no link is made.
+- (abroad) Vionnet and the bias cut (5 p.9), and the 'kimono sleeve' (11 p.34): sourced, left out for space.
+- (abroad) Qipao as a parallel 'traditional' dress (12 p.61): about tourism framing, not garment history; not used.
+- (answer) A single date when 'the rules' were fixed: the sources point to Meiji for the shape (4 p.72) and to the post-war decades for standardised dressing (4 p.11), so no one date is given.
+- (answer) Rules on crests by number and on collar depth by age or profession: no source read gives a general rule.
+- (answer) Labels on the back of the robe: left out on purpose; the rules carry the room.

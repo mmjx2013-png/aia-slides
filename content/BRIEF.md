@@ -12,33 +12,47 @@ warm, never cute, never gimmicky, no exclamation marks, no rhetorical "Imagine..
 no "tapestry", no "testament". British spelling (colour, standardised). Short sentences.
 Specific nouns. Every room earns one small surprise.
 
-The visitor walks through a 3D museum (rendered in Blender, scrubbed by scroll): five gallery
-rooms. The spine question, asked at the entrance and answered ONLY in the last room: "Is a
-kimono a garment, or a set of rules?" Answer (room 10): both. Rooms 1-9 must not give the
-answer away; they may sharpen the question.
+The setting (decided by the user): a bright, reconstructed Edo-period shoin-style reception
+hall, rendered in Blender and scrubbed by scroll: tatami, shoji glowing with daylight, wooden
+posts, a gold-leaf alcove wall. Light backgrounds throughout. The hall is "a reconstructed
+Edo-period shoin-style room, not a specific building": never claim more about the room than
+that, and make no claim about its architecture. One long plaster wall of the hall is the
+"display wall", where photographs of real museum objects (The Met, public domain) hang, one per
+bay; the visitor walks along it.
+
+The spine question, asked at the entrance and answered ONLY in the last room: "Is a kimono a
+garment, or a set of rules?" Answer (room 10): both. Rooms 1-9 must not give the answer away;
+they may sharpen the question.
 
 Rooms and who writes them:
 
-| n | id | type | theme | 3D / stop | writer |
+| n | id | type | theme | what the visitor sees | writer |
 |---|---|---|---|---|---|
-| 0 | threshold | threshold | Welcome | frame 0 (the roll under a spot, the long gallery beyond, a lit vitrine far away) | A |
-| 1 | bolt | scrub 0-329 | Structure: from bolt to T | A unrolls (0-119), B cut lines + pieces glide to a flat layout (120-209), C a rod lifts the strips, seams sewn, a flat T on a rack, back toward us (210-329) | A |
-| 2 | parts | scrub 329-419 | Structure: the parts, the front, re-making | D the camera orbits 180 degrees round the T on its rack to its front: collar, okumi, left-over-right overlap (330-419) | A |
-| 3 | cloth | wall S2 (+ walk 420-491) | Fabric and season | walk from room 1 into a picture gallery, stop facing a wall of lit picture pools | B |
-| 4 | pattern | wall S2 (continues) | Pattern and its coding | the same wall, further along | B |
-| 5 | dressing | scrub 492-683 | Kitsuke | walk into the dressing room (492-563): a bare mannequin; E the layers build (564-683): juban, kimono left over right, ohashori, obi, obi-age, obi-jime, knot at the back | B |
-| 6 | body | scrub 684-821 + wall S3 | Body language | F orbit to the back of the dressed form (684-773): knot, nape, hem; then walk to a picture wall (774-821) of prints showing kimono worn | B |
-| 7 | family | wall S4a (+ walk 822-893) | The kimono family | a long gallery, wall of garments | C |
-| 8 | history | wall S4b (+ walk 894-941) | Four centuries | the north wall of the long gallery | C |
-| 9 | abroad | wall S4b (continues) | Relatives and influence | same wall | C |
-| 10 | answer | scrub 942-1079 | Garment or rules: both | W6 walk into the last room, round a glass vitrine with the finished kimono on a rack (942-1049); G the back of that kimono, frontal (1050-1079), where the site lays "the rules" as text on the back | C |
+| 0 | threshold | threshold | Welcome | frame 0: a rolled bolt of cloth on the tatami, the long bright hall beyond | A |
+| 1 | bolt | scrub 0-329 | Structure: from bolt to T | A the bolt unrolls across the tatami (0-119); B cut lines draw themselves and the eight pieces glide into a flat layout (120-209); C a rod lifts the strips, seams are sewn, a flat T hangs on a rack, back toward us (210-329) | A |
+| 2 | parts | scrub 329-419 | Structure: the parts, the front, re-making | D the camera turns 180 degrees round the T to its front: collar, okumi, left-over-right overlap (330-419) | A |
+| 3 | cloth | wall S1, from 420 to 491 | Fabric and season | three stills of a weaving room (a floor loom by a window; warp threads and shuttle; a finished bolt) given as `stills`, then the camera turns to the display wall: photographs of real robes | B |
+| 4 | pattern | wall S1 (continues) | Pattern and its coding | the same wall, further along | B |
+| 5 | dressing | scrub 492-683 | Kitsuke | walk to a bare full-body mannequin in front of the gold alcove (492-563); E the layers build (564-683): juban from 564, kimono left over right ~580, ohashori ~596, obi ~612, obi-age ~628, obi-jime ~644, knot at the back ~660 | B |
+| 6 | body | scrub 684-845 then wall S2 | Body language | F the camera turns to the mannequin's back (684-773): knot, nape, hem; then returns to the display wall (774-845): prints showing kimono worn and put on | B |
+| 7 | family | wall S2 (continues) | The kimono family | the wall: garments of the family | C |
+| 8 | history | wall S2 (continues) | Four centuries | the wall: prints, a modern kimono | C |
+| 9 | abroad | wall S2 (continues) | Relatives and influence | the wall: dressing gown, tea gown, banyan; other robes only with a sourced comparison | C |
+| 10 | answer | scrub 846-983 | Garment or rules: both | the camera walks back down the hall and settles on the back of the T on its rack (846-953); G (954-983) the site writes "the rules" on the back | C |
+
+For a wall room that starts with a camera move, give "from" and "to" (cloth: 420, 491; body is
+type "scrub" with from 684, to 845 AND "stop": "S2" with photos; the build handles both).
+Room 3 may add `"stills": [{"file": "weave_1", "caption": "..."}]` (captions <= 90 characters,
+describing only what is visible; no sourced claim needed for a description of the picture, but
+any fact about weaving needs a source).
 
 ## Sources (final numbers; cite ONLY these, ONLY from text actually read this session)
 
 Research notes with verified quotes are in the scratchpad
 `/tmp/claude-0/-home-user-aia-slides/d08b3256-05de-5c3d-9318-a3845ce8df89/scratchpad/research/`:
 `core.md` (sources 4, 5, 6: rows 1-63 = the v2 ledger also in /home/user/aia-slides/kimono-sources.md; rows 101-253 new),
-`new-jstage.md` (labels J1-J14), `new-tsa.md` (labels S1-S9), and later `gaps.md` (labels G1...).
+`new-jstage.md` (labels J1-J14), `new-tsa.md` (labels S1-S9), and `gaps.md` (labels G1-G15: the kimono family,
+formality, crests, Heian origins, Edo clothing laws, East Asian relatives; its bibliography says which are refereed).
 Map the temporary labels to these numbers:
 
 | No. | Source | temp label |
@@ -68,7 +82,21 @@ Map the temporary labels to these numbers:
 | 26 | Tamura 2011, J. Textile Engineering 57(6) (students and coming-of-age dress) | J4 |
 | 27 | Masumoto et al. 2007, J. Home Economics of Japan 58(12) (students, Japan and Thailand) | J10 |
 | 28 | Nesterova, Spitsyna 2012, JSSD special issue (weak; avoid) | S5 |
-| 29+ | gap sources, numbered by the lead when gaps.md arrives | G1... |
+| 29 | Furukawa 2021 (hōmonfuku, Meiji to early Shōwa) | G1 |
+| 30 | Saitō 1979 (kosode in the Heian era: underwear to outerwear) | G2 |
+| 31 | Imamura 2005 (kimono then and now; a lecture) | G3 |
+| 32 | Fukui 1970 (family crests on clothes) | G4 |
+| 33 | Okamoto, Numata, Kōyama 2008 (the magazine Utsukushii Kimono, report 1) | G5 |
+| 34 | Kōyama, Okamoto 2009 (Utsukushii Kimono, report 2, 1953-1972) | G6 |
+| 35 | Mori 2008 (clothes of the samurai; invited essay) | G7 |
+| 36 | Mizukami 2008 (townspeople's kimono, late Edo to early Meiji; invited essay) | G8 |
+| 37 | Yokogawa 2008 (haori; invited essay) | G9 |
+| 38 | Dōmae 2015 (wedding dress "mitsugasane"; college bulletin) | G10 |
+| 39 | Nishimura 1980 (clothing laws of the Edo period) | G11 |
+| 40 | Yang, Kimata, Satō 2024 (hanfu) | G12 |
+| 41 | Tamura 2005 (Asian ethnic dress; a lecture) | G13 |
+| 42 | Satō 2003 (Ryukyu bingata; commentary) | G14 |
+| 43 | Nakano 2006 (attus in nishiki-e; museum bulletin) | G15 |
 | Met | The Metropolitan Museum of Art collection records (object facts only: title, date, culture, medium, size, accession number) | |
 
 Not readable, never cite: Dalby (only as "Becke, citing Dalby"), the Met exhibition book, SciELO.
@@ -117,8 +145,9 @@ female voice). It is heard while the visitor looks, so:
 - `title` (rail/bar) <= 22 characters; `heading` <= 34; `intro` <= 150.
 - Scrub labels: `kicker` <= 18, `title` <= 34, `body` 1-2 paragraphs, together <= 240 characters
   of visible text (citations excluded). 3-6 labels per scrub room; label time windows must not
-  overlap; each visible for at least 25 frames; give the anchor name (see three_d/README.md for
-  the anchor list; for rooms 5-6 use form_juban_collar, form_overlap, form_ohashori, form_obi,
+  overlap; each visible for at least 25 frames; give the anchor name (anchor names: roll, cloth_free_end, cut_1..cut_5, piece_sleeve_l, piece_sleeve_r, piece_body_l,
+  piece_body_r, piece_okumi, piece_collar, rod, seam_centre_back, seam_sleeve_l, seam_side_l, sleeve_l_centre,
+  sleeve_r_centre, collar_front, overlap_front, hem_front; for rooms 5-6 use form_juban_collar, form_overlap, form_ohashori, form_obi,
   form_obiage, form_obijime, form_knot, form_nape, form_hem, form_sleeve) and side "left" or
   "right" (the side of the screen the card sits on; pick the side away from the garment's
   centre of interest).
@@ -141,7 +170,7 @@ female voice). It is heard while the visitor looks, so:
      "title": "One roll, one width", "jp": "反物", "body": ["The cloth <q>comes in a standardised width</q> {4:p.10}."]}
   ],
   "line": {"from": 316, "to": 329, "text": "So where does the shape come from?"},
-  "stop": "S2",
+  "stop": "S1",
   "photos": [
     {"objectID": 76731, "label": {"title": "Robe (Kosode) with Fishing Net and Characters", "meta": "Japan · Edo period · probably ca. 1660s",
       "material": "Silk and metallic thread embroidery, tied resist dyeing on satin damask", "insight": "... {4:p.11}"}}

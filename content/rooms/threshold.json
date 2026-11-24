@@ -1,0 +1,53 @@
+{
+ "id": "threshold",
+ "n": 0,
+ "type": "threshold",
+ "theme": "Welcome",
+ "title": "Welcome",
+ "note": "Pick one and hold your answer. It is settled in the last room, not before.",
+ "narration": {
+  "title": "Audio guide · Welcome",
+  "cues": [
+   {
+    "show": "Welcome. In front of you, on the tatami, lies a single roll of cloth.",
+    "frame": 0
+   },
+   {
+    "show": "The hall around you is a reconstructed room in the Edo-period shoin style, not any one building.",
+    "say": "The hall around you is a reconstructed room in the Edo-period show-in style, not any one building."
+   },
+   {
+    "show": "The word kimono is plain Japanese. Kiru, to wear. Mono, a thing. A thing to wear.",
+    "say": "The word kimono is plain Japanese. Kee-roo, to wear. Moh-noh, a thing. A thing to wear."
+   },
+   {
+    "show": "So the question here may sound strange. Is a kimono a garment, or a set of rules?"
+   },
+   {
+    "show": "Choose one now, and hold on to it. The rooms ahead will test your answer. Only the last one settles it."
+   },
+   {
+    "show": "Begin with the roll. Everything in the next room is made from it, and from nothing else."
+   }
+  ]
+ },
+ "claims": [
+  {
+   "text": "The word kimono comes from kiru mono: kiru, to wear; mono, a thing.",
+   "src": 4,
+   "page": "p.10",
+   "quote": "The word kimono derives from the Japanese 'kiru mono', with kiru meaning 'to wear' and mono being 'a thing'.",
+   "scope": "Becke; general.",
+   "where": "narration 3"
+  },
+  {
+   "text": "One bolt of cloth makes one kimono.",
+   "src": 7,
+   "page": "p.76",
+   "quote": "１反（幅約 36～38cm・長さ約 12m）という単位で扱い，１反がキモノ１枚分に相当する",
+   "scope": "Tr.: \"handled in units of one tan (width about 36-38 cm, length about 12 m); one tan equals one kimono\". General statement for a woman's nagagi, the authors citing a tailoring textbook.",
+   "where": "narration 6"
+  }
+ ],
+ "dropped": []
+}
