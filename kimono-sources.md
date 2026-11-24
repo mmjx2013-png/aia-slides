@@ -130,7 +130,7 @@ None added. The search ran inside the first ten minutes and aimed at fabric, sea
 
 ## Photographs
 
-All from Wikimedia Commons; licence and author for each are in the credits beat of slide 10 and in the HTML comment at the top of `kimono.html`. Captions repeat only what each Commons file page states; they are not counted as academic claims.
+One photograph, from Wikimedia Commons: "Robe (Kosode) with Fishing Net and Characters", Japan, probably ca. 1660s, The Metropolitan Museum of Art, CC0 1.0, no individual photographer named. It is shown whole on slide 1; from slide 2 on, its studio background is masked out and the robe stays on every slide, with hand-written SVG lines and labels on top. Captions repeat only what the Commons file page states; they are not counted as academic claims. The lines and outlines on slides 3, 6 and 7 are approximate, and each of those slides says that the robe is a 1660s kosode, not a dressed modern kimono.
 
 ## Fonts
 
