@@ -6,7 +6,7 @@ The surfaces below use photo-scanned material maps and one photographed sky, all
 CC0 1.0 (public domain) by Poly Haven, https://polyhaven.com/license. Files are 2K, kept in
 `build/assets/` (git-ignored) and re-fetched by `python3 three_d/fetch_assets.py`.
 
-## Set 1: the hall (`scene.py`)
+## Set 1: the hall (`scene.py`, shots in `shots.py`)
 
 | Asset | Used for | Author(s) | Page | Licence |
 |---|---|---|---|---|
@@ -18,6 +18,12 @@ CC0 1.0 (public domain) by Poly Haven, https://polyhaven.com/license. Files are 
 | Ninomaru Teien (`ninomaru_teien_2k.hdr`, HDRI) | the garden seen through the open shoji | Greg Zaal | https://polyhaven.com/a/ninomaru_teien | CC0 |
 
 Download host: `https://dl.polyhaven.org/file/ph-assets/...` (exact URLs in `fetch_assets.py`).
+
+The robe on the iko is a museum photograph, not a model of ours: The Metropolitan Museum of Art,
+Robe (Kosode) with Fishing Net and Characters, Open Access (CC0), cut-out
+`site/assets/photos/met-76731-cut-1068.webp` (in the repository; the object's full record is with
+the site's photo credits). It is used as the albedo of a sheet of the robe's recorded size
+(153.4 x 127.6 cm) cut to the photograph's outline; the folds and the plain back are made in code.
 
 Made in code, no downloaded asset: gold leaf (leaf squares, overlaps, wear), black lacquer, gilt
 fittings, shoji paper and its daylight, the felt runner, the kimono textile design and the obi

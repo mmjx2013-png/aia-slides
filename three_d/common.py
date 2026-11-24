@@ -1163,7 +1163,7 @@ def hall_material(kind, name=None, strength=None):
                    _math(nt, "SUBTRACT", rnd.outputs["Red"], 0.5))
         hy = _math(nt, "MULTIPLY", _math(nt, "SUBTRACT", fxy.outputs["Y"], 0.5),
                    _math(nt, "SUBTRACT", rnd.outputs["Green"], 0.5))
-        hgt = _math(nt, "MULTIPLY", _math(nt, "ADD", hx, hy), 0.0030)
+        hgt = _math(nt, "MULTIPLY", _math(nt, "ADD", hx, hy), 0.0011)
         nzw = N("ShaderNodeTexNoise")
         nzw.inputs["Scale"].default_value = 160.0
         nzw.inputs["Detail"].default_value = 2.0
@@ -1191,16 +1191,16 @@ def hall_material(kind, name=None, strength=None):
         wear.inputs["To Max"].default_value = 0.07
         L(nw.outputs["Fac"], wear.inputs["Value"])
         tone = N("ShaderNodeMapRange")
-        tone.inputs["To Min"].default_value = 0.90
+        tone.inputs["To Min"].default_value = 0.955
         tone.inputs["To Max"].default_value = 1.0
         L(rnd.outputs["Blue"], tone.inputs["Value"])
-        col = _mixc(nt, 1.0, (1.0, 0.74, 0.34), tone.outputs["Result"], "MULTIPLY")
-        col = _mixc(nt, _math(nt, "MULTIPLY", edge, 0.35), col, (0.86, 0.56, 0.20))
+        col = _mixc(nt, 1.0, (0.90, 0.58, 0.20), tone.outputs["Result"], "MULTIPLY")    # deep, warm leaf: stays gold when lit
+        col = _mixc(nt, _math(nt, "MULTIPLY", edge, 0.16), col, (0.80, 0.50, 0.16))
         col = _mixc(nt, wear.outputs["Result"], col, (0.42, 0.20, 0.08))
         L(col, bsdf.inputs["Base Color"])
-        L(_math(nt, "SUBTRACT", 1.0, _math(nt, "MULTIPLY", wear.outputs["Result"], 0.6)), bsdf.inputs["Metallic"])
-        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.10, 0.44),
-                   _math(nt, "ADD", _math(nt, "MULTIPLY", edge, 0.08), wear.outputs["Result"]))
+        L(_math(nt, "SUBTRACT", 1.0, _math(nt, "MULTIPLY", wear.outputs["Result"], 0.3)), bsdf.inputs["Metallic"])
+        rg = _math(nt, "ADD", _math(nt, "MULTIPLY_ADD", rnd.outputs["Red"], 0.035, 0.40),
+                   _math(nt, "ADD", _math(nt, "MULTIPLY", edge, 0.03), wear.outputs["Result"]))
         L(rg, bsdf.inputs["Roughness"])
 
     elif kind == "gilt":

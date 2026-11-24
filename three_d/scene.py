@@ -797,19 +797,23 @@ def build_robe(coll):
     sn = np.clip(sp / hem, 0, 1)
     body = np.abs(X) < 0.30
     ss = np.clip(sp / 0.49, 0, 1)                                # fraction of the sleeve drop
-    amp = np.where(body, 0.003 + 0.034 * sn ** 1.4, 0.003 + 0.020 * ss ** 1.3)
+    amp = np.where(body, 0.004 + 0.051 * sn ** 1.4, 0.004 + 0.030 * ss ** 1.2)       # fold depth, metres
     wander = 0.9 * np.sin(1.7 * sp)
     folds = (0.55 * np.sin(2 * np.pi * X / 0.215 + wander + 0.4) + 0.30 * np.sin(2 * np.pi * X / 0.128 + 1.3 + 0.6 * sp)
              + 0.15 * np.sin(2 * np.pi * X / 0.37 - 0.8))
     d = amp * folds + np.where(body, 0.014 * np.sin(np.pi * sn) * np.cos(np.pi * X / 0.62), 0.0)
     t_out = np.clip((np.abs(X) - 0.30) / 0.34, 0, 1)
-    Xc = X * (1.0 - np.where(body, 0.045 * sn ** 1.5, 0.02 * ss)) - np.sign(X) * 0.014 * t_out * ss
-    dz = -0.024 * t_out ** 2 * ss + np.where(body, 0.012 * np.sin(2 * np.pi * X / 0.215 + 0.4) * sn ** 3, 0.0)
+    Xc = X * (1.0 - np.where(body, 0.085 * sn ** 1.5, 0.03 * ss)) - np.sign(X) * 0.020 * t_out * ss   # hem pulls in
+    dz = -0.030 * t_out ** 2 * ss + np.where(body, 0.016 * np.sin(2 * np.pi * X / 0.215 + 0.4) * sn ** 3, 0.0)
+    # the shoulder line sags between the ends of the crossbar: held at the sleeve ends, lowest in the middle
+    sag = 0.032 * np.clip(1.0 - (np.abs(X) / (0.5 * ROBE_W)) ** 2, 0, 1)
+    dz = dz - sag
     zsh = BAR_Z + BAR_R + 0.002
     over = np.clip(-s, 0, None)                                  # the collar stands above the bar, leaning back
     k = np.clip(sp / 0.05, 0, 1)
     k = k * k * (3 - 2 * k)
-    Yw = -(0.004 + (BAR_R + 0.004) * k) - d * k + 0.20 * over
+    k2 = np.maximum(k, np.clip(sag / 0.010, 0, 1))     # where it sags, the cloth hangs in front of the bar
+    Yw = -(0.004 + (BAR_R + 0.004) * k2) - d * k + 0.20 * over
     Zw = zsh - sp + 0.97 * over + dz
     co = np.stack([Xc, Yw, Zw], -1).reshape(-1, 3)
     uv = np.stack([np.broadcast_to(px / ww, X.shape), 1.0 - PY / hh], -1).reshape(-1, 2)

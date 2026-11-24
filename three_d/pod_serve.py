@@ -2,7 +2,7 @@
 """Serve build/ over HTTP under a secret path, so the frames can be fetched from the pod.
   POD_TOKEN=<random> python3 three_d/pod_serve.py [port]
   GET /<token>/status         -> last lines of the render logs and what exists
-  GET /<token>/seq.tar        -> the packed result (any file under build/ works)
+  GET /<token>/slides.tar     -> the packed result (any file under build/ works)
 Anything without the token gets 404."""
 import http.server, os, sys, pathlib, subprocess, urllib.parse
 
@@ -20,8 +20,10 @@ class H(http.server.SimpleHTTPRequestHandler):
         rel = path[len(TOKEN) + 2:]
         if rel == "status":
             out = []
-            n = len(list((ROOT / "frames").glob("f_*.png"))) if (ROOT / "frames").exists() else 0
-            out.append(f"frames: {n}  seq.tar: {(ROOT / 'seq.tar').exists()}")
+            n_st = len(list((ROOT / "stills").glob("*.png"))) if (ROOT / "stills").exists() else 0
+            n_cl = len(list((ROOT / "clips").glob("*/f_*.png"))) if (ROOT / "clips").exists() else 0
+            n_mp = len(list((ROOT / "clips").glob("*.mp4"))) if (ROOT / "clips").exists() else 0
+            out.append(f"stills: {n_st}  clip frames: {n_cl} of 900  mp4: {n_mp}  slides.tar: {(ROOT / 'slides.tar').exists()}")
             for name in ("pod.log", "render_gpu0.log", "render_gpu1.log", "render_gpu2.log", "render_gpu3.log", "render_clay.log"):
                 p = ROOT / name
                 if p.exists():
