@@ -27,7 +27,7 @@ from mathutils import Vector, Euler, Matrix  # noqa: E402
 HL = DIMS["hall"]
 M = HL                           # the cloth code reads its frame tables from here
 WD = DIMS["world"]
-T = WD["table_z"]                # top of the felt runner: the surface the cloth lies on
+T = WD["table_z"]                # the surface the cloth lies on: the tatami (0), or a runner's top
 ROD_R = WD["rod_radius"]
 ROD_TOP = WD["rod_z_end"]
 L_BOLT = DIMS["bolt"]["length"]
@@ -35,7 +35,7 @@ W = DIMS["bolt"]["width"]
 H_CLOTH = DIMS["bolt"]["thickness"]
 RC = DIMS["bolt"]["core_radius"]
 Y0 = DIMS["bolt"]["free_end_y"]
-D0 = 0.0016                      # base layer height of cloth above the runner
+D0 = 0.0016                      # base layer height of cloth above that surface
 FPS = 24
 N_FRAMES = DIMS["frames"]
 KEN = HL["ken"]
@@ -254,7 +254,8 @@ def gold_panel(name, p0, pu, pv, coll, mat=None):
     me.from_pydata([tuple(p0), tuple(p0 + pu), tuple(p0 + pu + pv), tuple(p0 + pv)], [], [(0, 1, 2, 3)])
     me.uv_layers.new(name="UVMap").data.foreach_set("uv", [0, 0, 1, 0, 1, 1, 0, 1])
     lu, lv = pu.length, pv.length
-    ox, oy = (abs(hash(name)) % 97) * 0.0113, (abs(hash(name)) % 89) * 0.0127
+    h = _stable_hash(name)                 # not hash(): that differs from process to process
+    ox, oy = (h % 97) * 0.0113, (h % 89) * 0.0127
     me.uv_layers.new(name="leaf").data.foreach_set("uv", [ox, oy, ox + lu, oy, ox + lu, oy + lv, ox, oy + lv])
     me.materials.append(mat or C.hall_material("gold"))
     return _obj(name, me, coll)
@@ -357,7 +358,6 @@ def build_hall():
     washi = C.hall_material("washi", strength=HL["paper_visible"])
     washi.node_tree.nodes["eave_z"].outputs[0].default_value = HL["eave_z"]
     washi.node_tree.nodes["shade"].outputs[0].default_value = HL["paper_shade_visible"]
-    felt = C.hall_material("felt")
     wood, thin, lac, gilt, plas, paper, ceil = MB(), MB(), MB(), MB(), MB(), MB(), MB()
 
     build_floor(coll)
@@ -365,9 +365,10 @@ def build_hall():
     open_bays = HL.get("open_bays", [])
 
     # ---- posts along the long walls
+    hinw = C.hall_material("hinoki_wall")        # display wall: every bay must look exactly alike
     for y in ys:
         wood.box(XW - 0.10, XW + PIN, y - 0.07, y + 0.07, 0.0, HC, hin, "z")
-        wood.box(HX - PIN, HX + 0.10, y - 0.07, y + 0.07, 0.0, HC, hin, "z")
+        wood.box(HX - PIN, HX + 0.10, y - 0.07, y + 0.07, 0.0, HC, hinw, "z")
     # ---- west wall: shoji below, paper transoms above, plaster under the ceiling
     wood.box(XW - 0.10, XW + 0.005, YS, YN, -0.03, 0.004, hin, "y")               # floor track
     wood.box(XW - 0.10, XW + 0.005, YS, YN, KAMOI_Z, NAG_Z, hin, "y")             # head track
@@ -395,9 +396,9 @@ def build_hall():
                    washi)
     # ---- east wall: the display wall. One plaster plane; sill, nageshi and posts lie on it
     plas.quad([(HX, YN, 0.0), (HX, YS, 0.0), (HX, YS, HC), (HX, YN, HC)], pla)
-    wood.box(HX - 0.035, HX + 0.02, YS, YN, 0.0, 0.10, hin, "y")
-    wood.box(HX - 0.065, HX + 0.02, YS, YN, NAG_Z, NAG_Z + NAG_H, hin, "y")
-    wood.box(HX - 0.05, HX + 0.02, YS, YN, NAG2_Z, NAG2_Z + NAG2_H, hin, "y")
+    wood.box(HX - 0.035, HX + 0.02, YS, YN, 0.0, 0.10, hinw, "y")
+    wood.box(HX - 0.065, HX + 0.02, YS, YN, NAG_Z, NAG_Z + NAG_H, hinw, "y")
+    wood.box(HX - 0.05, HX + 0.02, YS, YN, NAG2_Z, NAG2_Z + NAG2_H, hinw, "y")
     # ---- south wall: gold fusuma
     plas.quad([(HX + 0.1, YS - 0.09, -0.05), (XW - 0.1, YS - 0.09, -0.05), (XW - 0.1, YS - 0.09, HC),
                (HX + 0.1, YS - 0.09, HC)], pla)
@@ -506,11 +507,15 @@ def build_hall():
         "paper": paper.build("Shoji_paper", coll),
         "ceiling": ceil.build("Hall_ceiling", coll),
     }
-    # ---- the felt runner under the cloth, in two halves with the rod's groove between them.
-    # Its long edges wander by a few millimetres, as cut felt does.
+    if not HL.get("runner", False):
+        return
+    # ---- optional (dims.json hall.runner, with world.table_z = its thickness): a felt runner under
+    # the cloth, in two halves with the rod's groove between them. Its long edges wander by a few
+    # millimetres, as cut felt does. Off by default: the cloth lies directly on the tatami.
     rx0, rx1 = WD["runner_x"]
     pad = WD["runner_pad"]
     g = 0.022
+    felt = C.hall_material("felt")
     rs = np.random.RandomState(4)
     vs, fs = [], []
     for (ya, yb) in ((Y0 - pad, -g), (g, Y0 + L_BOLT + pad)):
@@ -1245,9 +1250,10 @@ def _hermite_path(keys, u):
             + (t3 - t2) * h * tang[i + 1])
 
 
+SHUTTER = 0.3             # motion-blur shutter, in frames (a 108 degree shutter: moving frames stay legible)
 RACK_DIST = 4.05          # frontal distance from the rack at the rests of C, D and W4
 RACK_ORBIT_RX = 3.0       # the D orbit passes on the east side, looking west at the shoji
-FORM_Z = 1.20             # camera height in front of the mannequin (so its hem stays in frame)
+FORM_Z = 1.15             # camera height in front of the mannequin (so its feet stay in frame)
 FORM_ORBIT_RX = 2.6       # the F orbit passes on the west side, looking east at the plaster wall
 G_Z = 1.30
 
@@ -1268,8 +1274,8 @@ def _camera_segments():
     e1 = _key((fx, fy - fd + 0.10, FORM_Z), yaw=450.0)
     f1 = _key((fx, fy + fd - 0.10, FORM_Z), yaw=270.0)
     s2 = _key((s2x, s2y, z), yaw=360.0)
-    g0 = _key((0.0, -RACK_DIST, G_Z), yaw=90.0)
-    g1 = _key((0.0, -RACK_DIST + 0.08, G_Z), yaw=90.0)
+    g0 = _key((0.0, -RACK_DIST, G_Z), yaw=450.0)
+    g1 = _key((0.0, -RACK_DIST + 0.08, G_Z), yaw=450.0)
     segs = [
         ("A", [a0, _key((0.42, -5.4, 0.85), (0.0, -2.2, 0.0)), a1]),
         ("B", [a1, _key((0.32, -3.7, 2.2), (0.0, 0.8, 0.0)), b1]),
@@ -1281,8 +1287,10 @@ def _camera_segments():
         ("F", "orbitF"),
         ("W3", [f1, _key((1.30, 9.45, 1.30), yaw=259.0), _key((1.90, 7.40, 1.42), yaw=264.0),
                 _key((1.60, 5.00, z), yaw=285.0), _key((0.70, 3.40, z), yaw=326.0), s2]),
-        ("W4", [s2, _key((1.50, 2.20, z), yaw=300.0), _key((2.45, 0.60, z), yaw=215.0),
-                _key((2.30, -1.90, 1.42), yaw=150.0), _key((1.10, -3.60, 1.34), yaw=110.0), g0]),
+        # W4 backs away from the display wall across the hall, then south past the west side of the
+        # rack, turning a quarter turn to the north: the hall opens up, then the back of the T slides in
+        ("W4", [s2, _key((-1.30, 2.00, z), yaw=372.0), _key((-2.30, 0.20, z), yaw=392.0),
+                _key((-2.00, -2.20, 1.40), yaw=420.0), _key((-0.80, -3.70, 1.33), yaw=442.0), g0]),
         ("G", [g0, g1]),
     ]
     return [(sid, STAGE[sid][0], STAGE[sid][1], keys) for sid, keys in segs]
@@ -1301,14 +1309,66 @@ def _segment(f):
     return _SEGS[-1]
 
 
-def camera_state(f):
-    """(x, y, z, yaw, pitch) at full-rate frame f (float allowed). Every stage runs on smootherstep
-    time from its first frame - 1 (the previous rest) to its last frame, so velocity is zero at every
-    stage boundary."""
-    f = min(max(float(f), 0.0), N_FRAMES - 1.0)
+def ease_walk(t, a=0.3):
+    """Ease for long moves: speed rises smoothly over the first `a` of the time, holds, and falls
+    over the last `a`. Zero velocity and acceleration at both ends; peak speed 1/(1-a) of the mean
+    (smootherstep peaks at 1.875), so a walk keeps an even pace."""
+    t = clamp01(t)
+    if t < a:
+        x = t / a
+        U = a * (x ** 3 - 0.5 * x ** 4)
+    elif t <= 1.0 - a:
+        U = 0.5 * a + (t - a)
+    else:
+        x = (1.0 - t) / a
+        U = (1.0 - a) - a * (x ** 3 - 0.5 * x ** 4)
+    return U / (1.0 - a)
+
+
+_LONG = ("D", "F", "W3", "W4")
+
+
+def _stage_u(f):
+    """(stage id, keys, eased 0..1 progress). Every stage runs from its first frame - 1 (the previous
+    stage's rest) to its last frame with zero velocity at both ends."""
     sid, f0, f1, keys = _segment(f)
-    fa = f0 - 1 if f0 > 0 else 0          # the previous stage's rest frame is this stage's start pose
-    u = smootherstep((f - fa) / float(f1 - fa)) if f1 > fa else 1.0
+    fa = f0 - 1 if f0 > 0 else 0
+    t = (f - fa) / float(f1 - fa) if f1 > fa else 1.0
+    return sid, keys, (ease_walk(t) if sid in _LONG else smootherstep(t))
+
+
+_SWAY = ("D", "W1", "W2", "F", "W3", "W4")
+
+
+def _sway(f, sid, yaw):
+    """A very slight hand-held gimbal sway on the moving stages: a few millimetres and about a tenth
+    of a degree, faded to nothing (value and velocity) at both ends of the stage."""
+    out = np.zeros(5)
+    if sid not in _SWAY:
+        return out
+    f0, f1 = STAGE[sid]
+    t = clamp01((f - (f0 - 1)) / float(f1 - (f0 - 1)))
+    env = math.sin(math.pi * t) ** 2
+    s = f / float(FPS)
+    lat = 0.004 * math.sin(2 * math.pi * 0.83 * s + 0.7)
+    out[0] = -math.sin(yaw) * lat * env
+    out[1] = math.cos(yaw) * lat * env
+    out[2] = 0.005 * math.sin(2 * math.pi * 1.66 * s) * env
+    out[3] = math.radians(0.12) * math.sin(2 * math.pi * 0.71 * s + 1.3) * env
+    out[4] = math.radians(0.07) * math.sin(2 * math.pi * 1.07 * s + 2.1) * env
+    return out
+
+
+def camera_state(f):
+    """(x, y, z, yaw, pitch) at full-rate frame f (float allowed)."""
+    st = _camera_base(f)
+    return st + _sway(min(max(float(f), 0.0), N_FRAMES - 1.0), _segment(min(max(float(f), 0.0), N_FRAMES - 1.0))[0],
+                      st[3])
+
+
+def _camera_base(f):
+    f = min(max(float(f), 0.0), N_FRAMES - 1.0)
+    sid, keys, u = _stage_u(f)
     if keys == "orbitD":
         ph = -math.pi / 2 + math.pi * u
         x, y = RACK_ORBIT_RX * math.cos(ph), RACK_DIST * math.sin(ph)
@@ -1346,14 +1406,12 @@ _FOCUS = {"A": ("roll", "roll"), "B": ("roll", "layout"), "C": ("layout", "rack"
 
 def focus_state(f):
     """(focus distance, f-stop) at frame f."""
-    sid, f0, f1, _ = _segment(f)
-    fa = f0 - 1 if f0 > 0 else 0
-    u = smootherstep((f - fa) / float(f1 - fa)) if f1 > fa else 1.0
+    sid, _, u = _stage_u(f)
     st = camera_state(f)
     cam = Vector((st[0], st[1], st[2]))
     a, b = _FOCUS[sid]
     d = (1 - u) * _focus_subject(a, cam, f) + u * _focus_subject(b, cam, f)
-    fstop = 5.6 if sid == "A" else (5.6 + (4.0 - 5.6) * u if sid == "B" else 4.0)
+    fstop = 11.0 if sid == "A" else (11.0 + (4.0 - 11.0) * u if sid == "B" else 4.0)   # A keeps the hall readable
     return d, fstop
 
 
@@ -1383,7 +1441,7 @@ def camera_matrix(f):
 
 def update_camera(f, motion=True):
     """Pose the camera. With motion=True the poses of f-1, f, f+1 are keyed so Cycles can blur the
-    camera move over a half-frame shutter; frames where the camera is still render without blur."""
+    camera move over the shutter (SHUTTER frames); frames where the camera is still render without blur."""
     sc = bpy.context.scene
     ob = S["cam"]
     ob.animation_data_clear()
@@ -1410,7 +1468,7 @@ def update_camera(f, motion=True):
         except Exception:
             pass
     sc.render.use_motion_blur = bool(motion and moving)
-    sc.render.motion_blur_shutter = 0.5
+    sc.render.motion_blur_shutter = SHUTTER
     ob.location = mats[0].translation
     q0 = mats[0].to_quaternion()
     ob.rotation_quaternion = q0

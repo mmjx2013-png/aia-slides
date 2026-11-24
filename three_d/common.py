@@ -49,6 +49,14 @@ fabric_material(kind, name=None, color=None) -> bpy.types.Material
            (ignored for 'kimono' and 'obi', which are image driven).
     Only 'kimono' and 'obi' read UVs; every other kind works on any mesh without UVs.
 
+hall_material(kind, name=None, strength=None) -> bpy.types.Material        (v3, the shoin hall)
+    kind: 'tatami', 'hinoki', 'hinoki_wall', 'board', 'planks', 'plaster', 'washi', 'gold', 'gilt',
+          'felt', 'lacquer'. Photo-scanned CC0 maps from build/assets (three_d/fetch_assets.py,
+          three_d/CREDITS.md) with a procedural fallback each; UV conventions are listed above the
+          function.
+asset_map(asset_id, kind, res="2k") -> path or None      a downloaded Poly Haven map (diff, rough, nor_gl)
+hdri_path(asset_id="ninomaru_teien", res="2k") -> path or None
+
 setup_cycles(scene=None, res=(1920, 1080), samples=48, preview=False) -> scene
     One place for engine, CPU threads, adaptive sampling, OpenImageDenoise, light paths, colour
     management (view transform VIEW_TRANSFORM / LOOK) and PNG output. Everyone renders through this.
@@ -853,7 +861,8 @@ def fabric_material(kind, name=None, color=None):
 #   procedural version when its files are missing, so nothing breaks on a fresh checkout.
 #   kind: 'tatami'   UV: u along the mat (0..1 = 1.82 m), v across (0..0.5 = one 0.91 m mat); optional
 #                    colour attribute 'tone' multiplies the colour per mat
-#         'hinoki'   pale structural wood. UV in METRES, grain along U
+#         'hinoki'   pale structural wood. UV in METRES, grain along U ('hinoki_wall': the same, strictly
+#                    periodic with the 1.82 m bay, for the display wall)
 #         'board'    pale ceiling / panel boards. UV in metres, grain along U
 #         'planks'   darker cedar floor boards. UV in metres, boards along U
 #         'plaster'  warm white lime plaster. UV in metres
@@ -1023,19 +1032,22 @@ def hall_material(kind, name=None, strength=None):
         L(col, bsdf.inputs["Base Color"])
         bsdf.inputs["Specular IOR Level"].default_value = 0.45
 
-    elif kind in ("hinoki", "board", "planks"):
+    elif kind in ("hinoki", "hinoki_wall", "board", "planks"):
+        # 'hinoki_wall' is the same wood made strictly periodic with the 1.82 m bay (no per-member
+        # variation, texture period 0.91 m along the grain): for the display wall
         aid, target, scale, rr, flat = {
-            "hinoki": ("ash_veneer", (0.60, 0.44, 0.255), (0.9, 1.6), (0.36, 0.62), 0.0),
+            "hinoki": ("ash_veneer", (0.62, 0.475, 0.305), (0.9, 1.6), (0.36, 0.62), 0.0),
+            "hinoki_wall": ("ash_veneer", (0.62, 0.475, 0.305), (1.0 / 0.91, 3.0 / 1.82), (0.36, 0.62), 0.0),
             "board": ("okoume_veneer", (0.50, 0.335, 0.175), (0.55, 0.9), (0.42, 0.68), 0.0),
             "planks": ("japanese_cedar_planks", (0.30, 0.165, 0.07), (0.5, 0.5), (0.30, 0.60), 0.0)}[kind]
-        vec, geo = _island_uv(nt, scale)
+        vec, geo = _island_uv(nt, scale, jitter=(0.0, 0.0) if kind == "hinoki_wall" else (7.31, 3.17))
         sc = _scan(nt, aid, vec, target=target, flat=flat, rough=rr, normal=0.8)
         if sc:
             col, rgh, nrm = sc
             # every member a slightly different tone
             mr = N("ShaderNodeMapRange")
-            mr.inputs["To Min"].default_value = 0.90
-            mr.inputs["To Max"].default_value = 1.08
+            mr.inputs["To Min"].default_value = 0.99 if kind == "hinoki_wall" else 0.90
+            mr.inputs["To Max"].default_value = 0.99 if kind == "hinoki_wall" else 1.08
             L(geo.outputs["Random Per Island"], mr.inputs["Value"])
             col = _mixc(nt, 1.0, col, mr.outputs["Result"], "MULTIPLY")
             L(col, bsdf.inputs["Base Color"])
@@ -1050,7 +1062,7 @@ def hall_material(kind, name=None, strength=None):
 
     elif kind == "plaster":
         mp = N("ShaderNodeMapping")
-        mp.inputs["Scale"].default_value = (0.5, 0.5, 1.0)
+        mp.inputs["Scale"].default_value = (1.0 / 1.82, 1.0 / 1.82, 1.0)     # one tile per ken: every bay alike
         L(tc.outputs["UV"], mp.inputs["Vector"])
         sc = _scan(nt, "white_plaster_02", mp.outputs["Vector"], target=(0.80, 0.775, 0.72), flat=0.82,
                    rough=(0.72, 0.95), normal=0.30)

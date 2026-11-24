@@ -1,11 +1,26 @@
-"""render.py - render frames of the kimono museum sequence.
+"""render.py - render frames of the hall sequence (Cycles, CPU or GPU).
 
-  python3 three_d/render.py --start 0 --end 1079 --step 2 --res 1920x1080 --samples 96 \
-      --out build/frames --only-missing [--device CPU|OPTIX|CUDA] [--frames 0,329,419] [--priority]
+  # GPU, every frame at final quality (what pod_run.sh runs, one process per GPU):
+  python3 three_d/render.py --quality final --device OPTIX --only-missing [--shard K/N]
+  # CPU first pass at draft quality: even frames plus every stage-end rest frame, README order:
+  python3 three_d/render.py --quality draft --step 2 --rests --priority --only-missing
+  # stills and the clay pass:
+  python3 three_d/render.py --quality final --frames 0,329,419,491,683,773,983 --out build/stills
+  python3 three_d/render.py --quality final --frames 0,329,683 --clay --prefix clay_ --out build/stills
+  # motion preview:
+  python3 three_d/render.py --quality preview --res 960x540 --step 8 --rests --out build/preview
 
 Stateless and resumable: each frame is put in its state by scene.apply_frame(f) and written to
-OUT/f_NNNN.png (full-rate frame number) via a temp file + rename, so a killed run never leaves a
-half-written PNG. --priority orders the frames A-C, E, G, D, F, then the walks (README render plan).
+OUT/<prefix>NNNN.png (full-rate frame number) through a temp file and a rename, so a killed run never
+leaves a half-written PNG. Safe under nohup; several processes may share one OUT with --only-missing.
+
+--quality  final    160 samples, adaptive 0.012, OpenImageDenoise high: for a GPU (about 10-20 s a frame
+                    expected on one RTX 4090; several minutes a frame on 4 CPU cores)
+           draft    12 samples, adaptive 0.05, fast denoise: the 4-core CPU pass (about 40-60 s a frame)
+           preview  8 samples, coarse: review renders only
+--priority orders the frames as the README render plan: even frames and rests first, then odd; within
+           each: A, B, C, E, G, D, F, then the walks.
+--shard K/N  keep every N-th frame of the ordered list, starting at K (one share per GPU).
 """
 import argparse
 import os
@@ -15,56 +30,112 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-PRIORITY = ["A", "B", "C", "E", "G", "D", "F", "W1", "W2", "W3", "W4", "W5", "W6"]
+PRIORITY = ["A", "B", "C", "E", "G", "D", "F", "W1", "W2", "W3", "W4"]
+QUALITY = {
+    "final": dict(samples=160, threshold=0.012, min_samples=24, denoise=("HIGH", "ACCURATE"),
+                  bounces=(8, 4, 4), clamp=6.0),
+    "draft": dict(samples=12, threshold=0.05, min_samples=6, denoise=("BALANCED", "FAST"),
+                  bounces=(5, 3, 3), clamp=3.0),
+    "preview": dict(samples=8, threshold=0.10, min_samples=4, denoise=("FAST", "FAST"),
+                    bounces=(4, 2, 2), clamp=3.0),
+}
 
 
 def parse():
     ap = argparse.ArgumentParser()
     ap.add_argument("--start", type=int, default=0)
-    ap.add_argument("--end", type=int, default=1079)
+    ap.add_argument("--end", type=int, default=-1, help="last frame (default: the last frame of the sequence)")
     ap.add_argument("--step", type=int, default=1)
     ap.add_argument("--offset", type=int, default=0, help="render frames with (f - offset) %% step == 0")
     ap.add_argument("--frames", type=str, default="", help="comma list, overrides start/end/step")
+    ap.add_argument("--rests", action="store_true", help="also render every stage-end rest frame")
     ap.add_argument("--res", type=str, default="1920x1080")
-    ap.add_argument("--samples", type=int, default=96)
-    ap.add_argument("--threshold", type=float, default=None, help="adaptive sampling noise threshold")
-    ap.add_argument("--preview", action="store_true", help="faster settings for review renders")
-    ap.add_argument("--device", type=str, default="CPU")
+    ap.add_argument("--quality", choices=sorted(QUALITY), default="draft")
+    ap.add_argument("--samples", type=int, default=None, help="override the quality preset")
+    ap.add_argument("--threshold", type=float, default=None, help="override the adaptive noise threshold")
+    ap.add_argument("--device", type=str, default="CPU", help="CPU, OPTIX or CUDA")
     ap.add_argument("--out", type=str, default=os.path.join(os.path.dirname(HERE), "build", "frames"))
+    ap.add_argument("--prefix", type=str, default="f_")
     ap.add_argument("--only-missing", action="store_true")
     ap.add_argument("--priority", action="store_true")
+    ap.add_argument("--shard", type=str, default="", help="K/N: frames K, K+N, K+2N ... of the ordered list")
+    ap.add_argument("--clay", action="store_true", help="clay pass: every object a flat random colour")
+    ap.add_argument("--no-motion", action="store_true", help="no camera motion blur")
     return ap.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:])
 
 
 def setup_device(device):
+    """CPU, or every GPU this process can see (set CUDA_VISIBLE_DEVICES to give it just one)."""
     import bpy
     sc = bpy.context.scene
-    if device.upper() == "CPU":
+    device = device.upper()
+    if device == "CPU":
         sc.cycles.device = "CPU"
-        return
+        return "CPU"
     prefs = bpy.context.preferences.addons["cycles"].preferences
-    prefs.compute_device_type = device.upper()
-    prefs.get_devices()
-    for d in prefs.devices:
-        d.use = d.type == device.upper()
-    sc.cycles.device = "GPU"
-    sc.cycles.denoising_use_gpu = True
-    print("[render] devices:", [(d.name, d.type, d.use) for d in prefs.devices])
+    for kind in ([device, "CUDA"] if device == "OPTIX" else [device]):
+        try:
+            prefs.compute_device_type = kind
+        except Exception as e:  # noqa: BLE001
+            print("[render] %s not available: %s" % (kind, e))
+            continue
+        try:
+            prefs.refresh_devices()
+        except Exception:
+            prefs.get_devices()
+        gpus = [d for d in prefs.devices if d.type == kind]
+        if gpus:
+            for d in prefs.devices:
+                d.use = d.type == kind
+            sc.cycles.device = "GPU"
+            try:
+                sc.cycles.denoising_use_gpu = True
+            except Exception:
+                pass
+            print("[render] %s devices: %s" % (kind, [d.name for d in gpus]), flush=True)
+            return kind
+    print("[render] no %s device found; refusing to fall back to the CPU" % device, flush=True)
+    sys.exit(2)
+
+
+def apply_quality(sc, q, a):
+    c = sc.cycles
+    c.samples = a.samples if a.samples is not None else q["samples"]
+    c.use_adaptive_sampling = True
+    c.adaptive_threshold = a.threshold if a.threshold is not None else q["threshold"]
+    c.adaptive_min_samples = min(q["min_samples"], c.samples)
+    c.use_denoising = True
+    c.denoiser = "OPENIMAGEDENOISE"
+    try:
+        c.denoising_quality = q["denoise"][0]
+    except Exception:
+        pass
+    c.denoising_prefilter = q["denoise"][1]
+    c.max_bounces, c.diffuse_bounces, c.glossy_bounces = q["bounces"]
+    c.sample_clamp_indirect = q["clamp"]
 
 
 def frame_list(a):
     import scene
+    stages = scene.DIMS["stages"]
+    last = scene.N_FRAMES - 1
+    rests = sorted({s["end"] for s in stages})
     if a.frames:
         fr = [int(x) for x in a.frames.split(",") if x.strip()]
     else:
-        fr = [f for f in range(a.start, a.end + 1) if (f - a.offset) % a.step == 0]
+        end = last if a.end < 0 else min(a.end, last)
+        fr = [f for f in range(a.start, end + 1) if (f - a.offset) % a.step == 0]
+        if a.rests:
+            fr = sorted(set(fr) | {f for f in rests if a.start <= f <= end})
     if a.priority:
-        st = {s["id"]: (s["start"], s["end"]) for s in scene.DIMS["stages"]}
         rank = {}
-        for i, sid in enumerate(PRIORITY):
-            for f in range(st[sid][0], st[sid][1] + 1):
-                rank[f] = i
-        fr.sort(key=lambda f: (rank.get(f, 99), f))
+        for s in stages:
+            for f in range(s["start"], s["end"] + 1):
+                rank[f] = PRIORITY.index(s["id"]) if s["id"] in PRIORITY else 99
+        fr.sort(key=lambda f: (0 if (f % 2 == 0 or f in rests) else 1, rank.get(f, 99), f))
+    if a.shard:
+        k, n = (int(v) for v in a.shard.split("/"))
+        fr = fr[k::n]
     return fr
 
 
@@ -72,31 +143,39 @@ def main():
     a = parse()
     import bpy
     import scene
+    q = QUALITY[a.quality]
     rx, ry = (int(v) for v in a.res.lower().split("x"))
-    scene.build(res=(rx, ry), samples=a.samples, preview=a.preview)
+    t0 = time.time()
+    scene.build(res=(rx, ry), samples=q["samples"], preview=(a.quality != "final"), clay=a.clay)
     sc = bpy.context.scene
-    if a.threshold is not None:
-        sc.cycles.adaptive_threshold = a.threshold
-    setup_device(a.device)
+    apply_quality(sc, q, a)
+    dev = setup_device(a.device)
     os.makedirs(a.out, exist_ok=True)
+
+    def path(f):
+        return os.path.join(a.out, "%s%04d.png" % (a.prefix, f))
     frames = frame_list(a)
-    todo = [f for f in frames if not (a.only_missing and os.path.exists(os.path.join(a.out, "f_%04d.png" % f)))]
-    print("[render] %d frames to do (%d requested) -> %s" % (len(todo), len(frames), a.out), flush=True)
+    todo = [f for f in frames if not (a.only_missing and os.path.exists(path(f)))]
+    print("[render] quality %s on %s, %dx%d, %d samples; %d frames to do (%d requested) -> %s; build %.0fs"
+          % (a.quality, dev, rx, ry, sc.cycles.samples, len(todo), len(frames), a.out, time.time() - t0), flush=True)
     t_all = time.time()
+    done = 0
     for i, f in enumerate(todo):
-        out = os.path.join(a.out, "f_%04d.png" % f)
-        if a.only_missing and os.path.exists(out):
+        out = path(f)
+        if a.only_missing and os.path.exists(out):       # another process got there first
             continue
         t0 = time.time()
-        scene.apply_frame(f)
-        tmp = os.path.join(a.out, ".tmp_%04d_%d.png" % (f, os.getpid()))
+        scene.apply_frame(f, motion=not a.no_motion)
+        tmp = os.path.join(a.out, ".tmp_%s%04d_%d.png" % (a.prefix, f, os.getpid()))
         sc.render.filepath = tmp
         bpy.ops.render.render(write_still=True)
         os.replace(tmp, out)
-        dt = time.time() - t0
+        done += 1
         el = time.time() - t_all
         eta = el / (i + 1) * (len(todo) - i - 1)
-        print("[render] f %04d  %.1fs  (%d/%d, eta %.0f min)" % (f, dt, i + 1, len(todo), eta / 60), flush=True)
+        print("[render] %s%04d  %.1fs  (%d/%d, eta %.0f min)" % (a.prefix, f, time.time() - t0, i + 1, len(todo),
+                                                               eta / 60), flush=True)
+    print("[render] done: %d frames in %.1f min" % (done, (time.time() - t_all) / 60), flush=True)
 
 
 if __name__ == "__main__":

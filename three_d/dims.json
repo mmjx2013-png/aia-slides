@@ -22,7 +22,7 @@
   "okumi_collar_section": 2.8
  },
  "world": {
-  "table_z": 0.006,
+  "table_z": 0.0,
   "post_x": 0.86,
   "post_h": 1.98,
   "rod_radius": 0.018,
@@ -223,6 +223,7 @@
    3,
    8
   ],
-  "paper_shade_visible": 0.3
+  "paper_shade_visible": 0.3,
+  "runner": false
  }
 }

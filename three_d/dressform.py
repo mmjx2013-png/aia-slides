@@ -63,20 +63,19 @@ SA, CA = math.sin(math.radians(ARM_DEG)), math.cos(math.radians(ARM_DEG))
 D_ARM = np.array([SA, 0.0, -CA])   # along the arm
 N_ARM = np.array([CA, 0.0, SA])    # outward/up normal of the arm in the frontal plane
 L_ELBOW, L_WRIST = 0.275, 0.520
-CAP_LEN, CAP_R = 0.070, 0.049      # the part of the upper arm the body panels cover
+CAP_LEN, CAP_R = 0.070, 0.045      # the part of the upper arm the body panels cover
 
 LV_J, DJ = 0.000, 0.006            # juban level, left-over-right lift
 LV_K, DK = 0.014, 0.009            # kimono level, left-over-right lift
-NAPE = 0.006                       # the kimono collar closes in on the nape by this much
+NECK_IN = 0.007                    # round the neck the kimono lies this much closer to the juban
 FOLD = 0.008                       # ohashori: extra layer
 THK_K, THK_J = 0.0025, 0.002
-LV_OBI = LV_K + DK + FOLD + 0.003  # inner face of the obi
 OBI_THK = 0.010
-Z_BACK_K, Z_BACK_J = 1.384, 1.391  # collar tops at the nape
+Z_BACK_K, Z_BACK_J = 1.389, 1.396  # collar tops at the nape
 
 # front view: x of the wearer's LEFT half's edge as a function of z (the half covers x < edge)
-KIMONO_EDGE = ((0.0, 0.095), (1.02, 0.095), (1.245, 0.0), (1.33, -0.036), (1.40, -0.050), (1.70, -0.052))
-JUBAN_EDGE = ((0.0, 0.080), (1.09, 0.080), (1.28, 0.0), (1.36, -0.034), (1.41, -0.042), (1.70, -0.043))
+KIMONO_EDGE = ((0.0, 0.095), (1.02, 0.095), (1.245, 0.0), (1.33, -0.040), (1.385, -0.060), (1.70, -0.062))
+JUBAN_EDGE = ((0.0, 0.080), (1.10, 0.080), (1.29, 0.0), (1.36, -0.034), (1.39, -0.051), (1.70, -0.052))
 
 
 # --------------------------------------------------------------------------- SDF primitives (numpy)
@@ -144,7 +143,7 @@ def hull_sdf(p):
     d = _smin(d, _ellipsoid(p, (0, -0.004, 1.285), (0.184, 0.106, 0.088)), 0.06)
     d = _smin(d, _ellipsoid(q, J, (CAP_R, CAP_R, CAP_R)), 0.05)
     d = _smin(d, _capsule(q, J, J + CAP_LEN * D_ARM, CAP_R, CAP_R), 0.035)
-    d = _smin(d, _capsule(p, (0, -0.012, 1.20), (0, 0.012, 1.62), 0.051, 0.051), 0.045)
+    d = _smin(d, _capsule(p, (0, -0.012, 1.20), (0, 0.012, 1.62), 0.051, 0.051), 0.035)
     return d
 
 
@@ -165,9 +164,9 @@ def mannequin_sdf(p):
     d = _smin(d, _ellipsoid(q, J, (0.043, 0.043, 0.043)), 0.04)
     d = _smin(d, _capsule(q, J, elbow, 0.039, 0.032), 0.03)
     d = _smin(d, _capsule(q, elbow, wrist, 0.032, 0.024), 0.02)
-    rel = q - (J + (L_WRIST + 0.082) * D_ARM)
+    rel = q - (J + (L_WRIST + 0.072) * D_ARM)
     loc = np.stack([(rel * D_ARM).sum(-1), (rel * N_ARM).sum(-1), rel[..., 1]], -1)
-    d = _smin(d, _ell(loc, (0.094, 0.017, 0.038)), 0.022)
+    d = _smin(d, _ell(loc, (0.084, 0.016, 0.036)), 0.022)
     # legs and feet
     hip, knee, ank = (0.076, 0.0, 0.84), (0.072, 0.006, 0.47), (0.068, -0.012, 0.085)
     d = _smin(d, _capsule(q, hip, knee, 0.073, 0.050), 0.04)
@@ -176,7 +175,7 @@ def mannequin_sdf(p):
     foot = _smax(_ellipsoid(q, (0.068, 0.040, 0.028), (0.040, 0.100, 0.036)), -z, 0.006)
     d = _smin(d, foot, 0.022)
     # neck and an egg for a head
-    d = _smin(d, _capsule(p, (0, -0.006, 1.30), (0, 0.006, 1.52), 0.047, 0.044), 0.03)
+    d = _smin(d, _capsule(p, (0, -0.006, 1.30), (0, 0.006, 1.52), 0.050, 0.044), 0.03)
     d = _smin(d, _ellipsoid(p, (0, 0.012, 1.560), (0.070, 0.086, 0.105)), 0.022)
     return d
 
@@ -293,7 +292,7 @@ class _Hull:
         self.fn = np.concatenate([N0, N0[:, -2::-1] * mir], axis=1)
         # nominal height of each row (for wrinkle placement) and how far up the neck it is
         self.zn = np.r_[self.z, Z_C + 0.19 * np.sin(self.phi)]
-        self.top = np.r_[np.zeros(self.n0), _ss((self.zback - 1.335) / 0.045)]
+        self.up = np.r_[np.zeros(self.n0), _ss((self.zback - 1.285) / 0.06)]
 
     def radius(self, ri, psi, level):
         """Radius of the tube at fractional ring index ri."""
@@ -315,22 +314,28 @@ class _Hull:
         return np.where(level <= L[1], lo, hi)
 
     def pts(self, rows, psi, level, sx):
-        """Points for integer row indices (arrays broadcast)."""
-        rows, psi, level = np.broadcast_arrays(rows, psi, level)
+        """Points for row indices (fractional rows interpolate; arrays broadcast)."""
+        rows, psi, level = np.broadcast_arrays(np.asarray(rows, float), psi, level)
         fan = rows >= self.n0
         out = np.empty(rows.shape + (3,))
         if (~fan).any():
-            rr, pp, ll = rows[~fan], psi[~fan], level[~fan]
+            rr, pp, ll = np.minimum(rows[~fan], self.n0 - 1.0), psi[~fan], level[~fan]
             r = self.radius(rr, pp, ll)
-            out[~fan] = np.stack([sx * r * np.sin(pp), -r * np.cos(pp), self.z[rr]], -1)
+            z = np.interp(rr, np.arange(self.n0, dtype=float), self.z)
+            out[~fan] = np.stack([sx * r * np.sin(pp), -r * np.cos(pp), z], -1)
         if fan.any():
-            rr, pp, ll = rows[fan] - self.n0, psi[fan], level[fan]
+            rf, pp, ll = rows[fan] - self.n0, psi[fan], level[fan]
+            i0 = np.clip(np.floor(rf).astype(int), 0, len(self.phi) - 2)
+            fi = (rf - i0)[:, None]
             pd = np.mod(np.degrees(pp), 360.0)
             j0 = np.minimum(np.floor(pd).astype(int), 359)
             fj = (pd - j0)[:, None]
-            P = self.fp[rr, j0] * (1 - fj) + self.fp[rr, j0 + 1] * fj
-            Nn = self.fn[rr, j0] * (1 - fj) + self.fn[rr, j0 + 1] * fj
-            P = P + ll[:, None] * Nn
+
+            def lerp(T):
+                a = T[i0, j0] * (1 - fj) + T[i0, j0 + 1] * fj
+                b = T[i0 + 1, j0] * (1 - fj) + T[i0 + 1, j0 + 1] * fj
+                return a * (1 - fi) + b * fi
+            P = lerp(self.fp) + ll[:, None] * _unit(lerp(self.fn))
             P[:, 0] *= sx
             out[fan] = P
         return out
@@ -376,6 +381,8 @@ def _mat(state, kind):
         return m
     if kind == "obiage":                      # a pale shibori tint sits better against the brocade
         return common.fabric_material("obiage", name="DF_obiage", color="#e2b39c")
+    if kind == "juban":                       # the under-collar is a cleaner white than the ivory ground
+        return common.fabric_material("juban", name="DF_juban", color="#faf8f3")
     return common.fabric_material(kind)
 
 
@@ -411,6 +418,19 @@ def _set_uv(ob, uv):
         lay.data.foreach_set("uv", arr)
 
 
+def _sharp_columns(me, nr, nc, cols):
+    """Mark the grid edges running up the given columns as sharp (a visible sewn line)."""
+    ne = len(me.edges)
+    ev = np.empty(ne * 2, np.int32)
+    me.edges.foreach_get("vertices", ev)
+    ev = ev.reshape(-1, 2)
+    sharp = np.zeros(ne, bool)
+    for j in cols:
+        sharp |= (ev[:, 0] % nc == j) & (ev[:, 1] % nc == j)
+    att = me.attributes.get("sharp_edge") or me.attributes.new("sharp_edge", "BOOLEAN", "EDGE")
+    att.data.foreach_set("value", sharp)
+
+
 def _show(ob, on):
     ob.hide_render = not on
     ob.hide_viewport = not on
@@ -420,7 +440,7 @@ def _solidify(ob, thk, mat_off=1):
     m = ob.modifiers.new("cloth_thickness", "SOLIDIFY")
     m.thickness = thk
     m.offset = -1.0
-    m.use_even_offset = True
+    m.use_even_offset = False          # even offset shoots spikes where the mesh creases under the arm
     m.use_rim = True
     m.material_offset = mat_off
     m.material_offset_rim = 0
@@ -586,11 +606,12 @@ class _Panel:
         self.rows = np.arange(row0, row_top + 1)
         self.nr, self.nc = len(self.rows), ncols
         self.zn = hull.zn[self.rows]
-        self.top = hull.top[self.rows]
+        self.up = hull.up[self.rows]
         # final edge per row: first azimuth past the side where the surface crosses the edge line
         ps = np.radians(np.arange(88.0, 250.0, 0.5))
         R, P = np.meshgrid(self.rows, ps, indexing="ij")
-        pts = hull.pts(R, P, self.level(np.arange(self.nr)[:, None], P), sx)
+        ii = np.arange(self.nr)[:, None]
+        pts = self.at(ii, P, self.level(ii, P))
         g = sx * pts[..., 0] + _edge_x(pts[..., 2], edge_tab)
         edge = np.empty(self.nr)
         for i in range(self.nr):
@@ -602,28 +623,37 @@ class _Panel:
                 edge[i] = ps[k - 1] + (ps[k] - ps[k - 1]) * g[i, k - 1] / (g[i, k - 1] - g[i, k])
         self.edge = edge
         self.faces = _grid_faces(self.nr, ncols)
+        self.seams = []                      # columns that carry a sewn seam (okumi, side)
 
-    def level(self, i, psi, wr=False, s_fold=0.0):
+    def at(self, i, psi, lv):
+        """Surface point for local row index i. Near the top the rows slide down towards the front,
+        so the neckline falls from the nape to the sides of the neck instead of standing as a ring."""
+        slide = 2.3 * _ss(np.degrees(psi) / 115.0) * _ss((i - (self.nr - 11.0)) / 10.0)
+        return self.hull.pts(self.rows[i] - slide, psi, lv, self.sx)
+
+    def level(self, i, psi, wr=False, s_fold=0.0, s_obi=0.0):
         """Hull level of the cloth at local row index i (int array) and azimuth psi."""
         dps = np.degrees(psi)
-        lv = self.base + self.lift * _ss((dps - 125.0) / 23.0) + 0.0 * i
+        up = self.up[i]                     # 0 on the body, 1 on the upper chest and round the neck
+        lv = self.base + self.lift * _ss((dps - 110.0) / 23.0) * (1.0 - up)
         if self.kimono:
-            lv = lv - NAPE * self.top[i] * (1.0 - _ss((dps - 80.0) / 40.0))
+            lv = lv - NECK_IN * up
         if wr:
-            lv = lv + self.wrinkles(psi, self.zn[i], s_fold)
+            lv = lv + self.wrinkles(psi, self.zn[i], s_fold, s_obi)
         return lv
 
     def fold_z(self, s):
         return Z_KOSHI + (Z_FOLD - Z_KOSHI) * s
 
-    def wrinkles(self, psi, z, s_fold):
+    def wrinkles(self, psi, z, s_fold, s_obi=0.0):
         """Outward-only soft undulation (metres of level); zero near the collar."""
         dps = np.degrees(psi)
         front = _ss((dps - 118.0) / 30.0)                      # 1 on the overlapped front
         w = np.zeros(np.broadcast(psi, z).shape)
+        w = w + 0.0017 * (0.5 + 0.5 * np.sin(psi * 5.3 + 17.0 * z + 1.7 * np.sin(psi * 2.1 + 9.0 * z))) * (1.0 - 0.5 * front)
         # skirt: long soft vertical folds, deeper towards the hem and at the back / sides
         dn = 1.0 - _ss((z - 0.10) / 0.70)
-        a = 0.0034 * (0.45 + 0.55 * dn) * (1.0 - 0.6 * front)
+        a = 0.0058 * (0.35 + 0.65 * dn) * (1.0 - 0.68 * front)
         f1 = 0.5 + 0.5 * np.sin(psi * 7.0 + 1.3 * np.sin(psi * 3.0) + 0.9 * self.sx * np.sin(psi) + 2.2 * z)
         f2 = 0.5 + 0.5 * np.sin(psi * 17.0 + 3.0 * z + 1.0)
         w = w + np.where(z < Z_FOLD + 0.01, a * (0.75 * f1 ** 2 + 0.25 * f2), 0.0)
@@ -631,7 +661,11 @@ class _Panel:
         side = 0.30 + 0.70 * _ss(1.0 - np.abs(dps - 75.0) / 75.0)
         band = _ss((z - OBI_TOP + 0.015) / 0.02) * (1.0 - _ss((z - OBI_TOP - 0.015) / 0.085))
         roll = 0.5 + 0.5 * np.sin((z - OBI_TOP) * 2 * math.pi / 0.034 + 2.0 * np.sin(psi * 2.6) + self.sx * np.sin(psi) + psi)
-        w = w + 0.0042 * side * band * roll * (1.0 - 0.55 * front)
+        w = w + 0.0020 * side * band * roll * (1.0 - 0.55 * front) * s_obi
+        # ... and short vertical gathers where the sash cinches the cloth
+        gb = _ss((z - OBI_TOP + 0.01) / 0.02) * (1.0 - _ss((z - OBI_TOP - 0.02) / 0.15))
+        pleat = 0.5 + 0.5 * np.sin(psi * 31.0 + 2.2 * np.sin(psi * 5.0))
+        w = w + 0.0058 * side * gb * pleat ** 1.5 * (1.0 - 0.6 * front) * s_obi
         # drag folds from the shoulder blades / chest down towards the waist
         diag = 0.5 + 0.5 * np.sin((dps * 1.1 + (z - 1.0) * 190.0) * math.pi / 34.0)
         wb = _ss(1.0 - np.abs(dps - 50.0) / 40.0) * _ss((z - OBI_TOP) / 0.05) * (1.0 - _ss((z - 1.21) / 0.07))
@@ -644,21 +678,23 @@ class _Panel:
             up = _ss((z - zf) / 0.006)
             lip = 0.0030 * np.exp(-((z - zf - 0.006) / 0.005) ** 2)
             puff = 0.0020 * (0.5 + 0.5 * np.sin(psi * 9.0 + 1.0)) * np.exp(-((z - zf - 0.035) / 0.03) ** 2)
-            top = 1.0 - _ss((z - Z_KOSHI - 0.005) / 0.05)
+            top = 1.0 - _ss((z - OBI_TOP + 0.01) / 0.07)
             w = w + (FOLD * up + (lip + puff) * up) * amp * top
         return w
 
-    def positions(self, extent, s_fold=0.0, lead_lift=0.024):
+    def positions(self, extent, s_fold=0.0, s_obi=0.0, lead_lift=0.024):
         """extent: radians reached by the wrap. Returns verts (nr, nc, 3) and the psi grid."""
         e_row = np.minimum(self.edge, extent)
         psi = e_row[:, None] * np.linspace(0.0, 1.0, self.nc)[None, :]
         i = np.arange(self.nr)[:, None]
-        lv = self.level(i, psi, True, s_fold)
+        lv = self.level(i, psi, True, s_fold, s_obi)
         # the leading edge curls away from the body while it is still travelling
         pend = _ss((self.edge - extent) / math.radians(14.0))[:, None]
         near = _ss((psi - (e_row[:, None] - math.radians(11.0))) / math.radians(11.0))
         lv = lv + lead_lift * pend * near ** 2
-        return self.hull.pts(self.rows[:, None], psi, lv, self.sx), psi
+        for j in self.seams:                 # a seam is a fine sharp groove, skirt and ohashori only
+            lv[:, j] -= 0.0009 * (1.0 - pend[:, 0]) * (1.0 - _ss((self.zn - 0.93) / 0.05))
+        return self.at(i, psi, lv), psi
 
 
 def _worn_uv_np(c, h, cr):
@@ -711,22 +747,24 @@ def _panel_uv(state, p, P, psi, s_fold):
 
 # --------------------------------------------------------------------------- sleeves
 
-_X0 = J[0] + 0.07 * SA             # x of the innermost sleeve station
+_X0 = J[0] + 0.03 * SA             # x of the innermost sleeve station
 _XOUT = J[0] + 0.50 * SA           # x of the wrist end
 
 
 class _Sleeve:
     """A half tube over the arm; from its two flanks a two-layer bag hangs straight down."""
     NA, NT, NH, NB = 44, 9, 40, 5
-    L0 = 0.07
+    L0 = 0.03
 
     def __init__(self, sx, tag):
         k = tag == "K"
         self.sx, self.tag = sx, tag
         self.l1 = 0.50 if k else 0.48
-        self.rt = (np.array([0.0, 0.09, 0.13, 0.30, 0.50]),
-                   np.array([0.035, 0.055, 0.063, 0.052, 0.037]) if k else
-                   np.array([0.033, 0.046, 0.047, 0.042, 0.031]))
+        # tube radius along the arm: inside the body panel's shoulder cap up to about 6 cm, then just
+        # outside it, so the sleeve emerges at a shallow angle (the sleeve seam)
+        self.rt = (np.array([0.03, 0.06, 0.08, 0.11, 0.14, 0.30, 0.50]),
+                   np.array([0.056, 0.0595, 0.062, 0.061, 0.058, 0.046, 0.034]) if k else
+                   np.array([0.042, 0.046, 0.048, 0.048, 0.046, 0.039, 0.029]))
         self.g0 = 0.009 if k else 0.005
         self.zb = (0.470, 0.400) if k else (0.495, 0.425)       # bag bottom: inner, outer
         self.xin = 0.0 if k else 0.004
@@ -818,7 +856,7 @@ class _Sleeve:
 def _collar_setup(state):
     state["collars"] = {}
     for tag, low, width, thk, over, kind in (("K", (0.99, 1.15), 0.055, 0.0042, 0.005, "kimono"),
-                                             ("J", (1.05, 1.19), 0.050, 0.0030, 0.004, "juban")):
+                                             ("J", (0.80, 1.00), 0.050, 0.0030, 0.004, "juban")):
         prof = _stadium(-(width - over), over, 0.0, thk, k=20, r=0.0019)
         n_each = 120
         n = 2 * n_each - 1
@@ -833,7 +871,8 @@ def _update_collar(state, tag, ext):
     cd = state["collars"][tag]
     hull = state["hull"]
     halves = []
-    for side, lowz in (("L", cd["low"][0]), ("R", cd["low"][1])):
+    drop = 0.27 * (1.0 - state.get("s_fold", 1.0)) if tag == "K" else 0.0   # no tuck yet: the collar end hangs lower
+    for side, lowz in (("L", cd["low"][0] - drop), ("R", cd["low"][1] - 0.4 * drop)):
         p = cd["pan"][side]
         i0 = int(np.nonzero(p.zn >= lowz)[0][0])
         ii = np.r_[np.arange(i0, p.nr), np.full(49, p.nr - 1)]
@@ -843,7 +882,7 @@ def _update_collar(state, tag, ext):
         vis = ps <= ext[side] + 1e-6
         k0 = int(np.argmax(vis))
         ii, ps = ii[k0:], np.minimum(ps[k0:], ext[side])
-        C = hull.pts(p.rows[ii], ps, p.level(ii, ps) + 0.0008, p.sx)
+        C = p.at(ii, ps, p.level(ii, ps) + 0.0008)
         if len(C) < 4:
             return False
         halves.append(_resample(C, cd["n_each"]))
@@ -898,13 +937,20 @@ def _obi_setup(state):
     faces = _grid_faces(nx_, kp + 1)
     ob = _new_obj(state, "DF_knot", np.zeros((nx_ * (kp + 1), 3)), faces, [_mat(state, "obi")], uv=True)
     state["knot"] = dict(ob=ob, n=nx_, kp=kp, faces=faces, flip=None)
-    tp = _stadium(-0.5, 0.5, 0.0, 0.007, k=16, r=0.003)
-    state["tare"] = _tube_obj(state, "DF_knot_tail", 30, tp, "obi", uv=True)
+    tp = _stadium(-0.5, 0.5, 0.0, 0.006, k=16, r=0.0028)
+    state["tare"] = _tube_obj(state, "DF_knot_tail", 40, tp, "obi", uv=True)
+
+
+def _obi_level(state, psi):
+    """Inner face of the sash: snug on whatever the kimono is doing underneath (left-panel azimuth)."""
+    dps = np.degrees(np.mod(psi, 2 * math.pi))
+    over = _ss((dps - 110.0) / 23.0) * (1.0 - _ss((dps - 222.0) / 15.0))
+    return LV_K + DK * over + FOLD * min(1.0, 3.0 * state.get("s_fold", 1.0)) + 0.004
 
 
 def _obi_face(state, psi, z, extra=0.0):
     """Point on the outer face of the obi."""
-    return state["hull"].ring(z, psi, LV_OBI + OBI_THK + 0.0025 + extra)
+    return state["hull"].ring(z, psi, _obi_level(state, psi) + OBI_THK + 0.0025 + extra)
 
 
 def _update_obi(state, s):
@@ -912,7 +958,7 @@ def _update_obi(state, s):
     n = od["n"]
     psi = np.linspace(0.0, math.radians(363.0) * s, n)
     zc = 0.5 * (OBI_BOT + OBI_TOP)
-    lv = LV_OBI + 0.0035 * _ss((np.degrees(psi) - 335.0) / 25.0)          # the end laps over the start
+    lv = _obi_level(state, psi) + 0.0035 * _ss((np.degrees(psi) - 335.0) / 25.0)   # the end laps over the start
     C = hull.ring(zc, psi, lv)
     N = _unit(C * np.array([1.0, 1.0, 0.0]))
     U = np.broadcast_to(np.array([0.0, 0.0, 1.0]), C.shape)
@@ -969,7 +1015,7 @@ def _update_obiage(state, s):
     w = np.clip(1.0 - np.abs(k) ** 6, 0.0, 1.0) ** 0.5                      # tucks into the sash at both ends
     r = (0.0105 * w * (0.88 + 0.12 * np.sin(k * 9.0 + 1.0)) + 0.0015) * (0.25 + 0.75 * s)
     zc = OBI_TOP + 0.0030 - 0.012 * (1.0 - w) + 0.0015 * np.sin(k * 7.0)
-    C = hull.ring(zc, psi, LV_OBI + 0.002 + 0.25 * r)
+    C = hull.ring(zc, psi, _obi_level(state, psi) + 0.002 + 0.25 * r)
     N = _unit(C * np.array([1.0, 1.0, 0.0]))
     T = _unit(np.gradient(C, axis=0))
     U = np.cross(T, N)
@@ -1020,18 +1066,21 @@ def _update_knot(state, s):
             pts.append((dbot / 2 + dbot / 2 * math.cos(a), zb + 0.014 - 0.014 * math.sin(a)))
     pr = np.array(pts)
     pr = np.vstack([pr, pr[:1]])
-    xs = np.linspace(-KNOT_W / 2, KNOT_W / 2, nx_)
-    e = np.clip((np.abs(xs) - (KNOT_W / 2 - 0.014)) / 0.014, 0, 1)
-    tap = np.sqrt(np.clip(1 - e ** 2, 0, 1)) * 0.90 + 0.10
+    # rings across the width; the first and last collapse to a point (closed, softly rounded ends)
+    xs = np.r_[-KNOT_W / 2, -KNOT_W / 2, np.linspace(-KNOT_W / 2 + 0.005, KNOT_W / 2 - 0.005, nx_ - 4),
+               KNOT_W / 2, KNOT_W / 2]
+    tap = np.ones(nx_)
+    tap[[1, -2]] = 0.90
+    tap[[0, -1]] = 0.0
     cen = np.array([0.5 * dtop * 0.8, 0.5 * (zt + zb)])
     V = np.zeros((nx_, kp + 1, 3))
     for i, x in enumerate(xs):
-        p = cen + (pr - cen) * np.array([tap[i], 0.55 + 0.45 * tap[i]])
+        p = cen + (pr - cen) * np.array([tap[i], tap[i] if tap[i] == 0.0 else 0.97 + 0.03 * tap[i]])
         bow = 0.006 * math.cos(math.pi * x / KNOT_W) ** 2                 # the face bellies a little
         sag = 0.005 * math.cos(math.pi * x / KNOT_W)
         V[i, :, 0] = x
         V[i, :, 1] = yb - 0.001 - p[:, 0] - bow * (p[:, 0] > 0.6 * dbot)
-        V[i, :, 2] = p[:, 1] - sag * (p[:, 1] < 0.5 * (zb + zt))
+        V[i, :, 2] = p[:, 1] - sag * (p[:, 1] < 0.5 * (zb + zt)) * (tap[i] > 0)
     V = V.reshape(-1, 3)
     if kd["flip"] is None:
         f = kd["faces"]
@@ -1046,17 +1095,16 @@ def _update_knot(state, s):
                    -1).reshape(-1, 2)
     _set_uv(kd["ob"], uvv[kd["faces"]].reshape(-1, 2))
     state["knot_pt"] = np.array([0.0, yb - dtop - 0.008, 0.5 * (zt + zb)])
-    # the tail (tare): a flat tongue of the sash hanging below the drum
-    td = state["tare"]
-    wt = 0.262
-    xs = np.linspace(-wt / 2, wt / 2, td["n"])
-    drop = 0.075 * s
-    zmid = zb + 0.03 - 0.5 * (drop + 0.03)
-    C = np.stack([xs, np.full_like(xs, yb - 0.0035 - 0.004 * np.cos(math.pi * xs / wt) ** 2), np.full_like(xs, zmid)], -1)
-    N = np.broadcast_to(np.array([0.0, -1.0, 0.0]), C.shape).copy()
-    T, N, U = _frames(C, N)
-    pr = _close_prof(td["prof"]) * np.array([1.0, drop + 0.03])
-    V = (C[:, None, :] + pr[None, :, 0:1] * N[:, None, :] + pr[None, :, 1:2] * U[:, None, :]).reshape(-1, 3)
+    # the tail (tare): a tongue of the sash lying on the back below the drum
+    td, hull = state["tare"], state["hull"]
+    drop = 0.03 + 0.072 * s
+    zmid = zb + 0.03 - 0.5 * drop
+    psi = np.linspace(-0.74, 0.74, td["n"])
+    lv = LV_K + FOLD * min(1.0, 3.0 * state.get("s_fold", 1.0)) + 0.0045
+    C = hull.ring(zmid, psi, lv)
+    N = _unit(C * np.array([1.0, 1.0, 0.0]))
+    pr = _close_prof(td["prof"]) * np.array([1.0, drop])
+    V = (C[:, None, :] + pr[None, :, 0:1] * N[:, None, :] + pr[None, :, 1:2] * np.array([0.0, 0.0, 1.0])).reshape(-1, 3)
     if td["flip"] is None:
         f = td["faces"]
         cc = np.repeat(C + 0.0035 * N, len(pr), axis=0)
@@ -1065,7 +1113,8 @@ def _update_knot(state, s):
         if td["flip"]:
             _flip(td)
     _set_co(td["ob"], V)
-    uvv = np.stack([np.broadcast_to(xs[:, None] + 0.14, (td["n"], len(pr))),
+    Lc = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(C, axis=0), axis=1))]
+    uvv = np.stack([np.broadcast_to(Lc[:, None] + 0.02, (td["n"], len(pr))),
                     np.broadcast_to(pr[None, :, 1] + 0.3, (td["n"], len(pr)))], -1).reshape(-1, 2)
     _set_uv(td["ob"], uvv[td["faces"]].reshape(-1, 2))
 
@@ -1090,6 +1139,9 @@ def build(collection, origin=(0.0, 0.0, 0.0), materials=None):
            "R": _Panel(hull, +1, LV_J, 0.0, JUBAN_EDGE, row_j0, hull.nrows - 1, 96, False)}
     state["kim"], state["jub"] = kim, jub
     state["c_tab"] = _c_table(hull, kim["L"].edge[0])
+    for p in kim.values():                   # okumi seam (c = 0.72) and side seam (c = 0.36)
+        ps_, cv_ = state["c_tab"]
+        p.seams = [int(round(np.interp(cs, cv_, ps_) / p.edge[0] * (p.nc - 1))) for cs in (0.36, 0.72)]
 
     for tag, pan, matk, thk in (("K", kim, ("kimono", "lining"), THK_K), ("J", jub, ("juban", "juban"), THK_J)):
         for side, p in pan.items():
@@ -1100,6 +1152,8 @@ def build(collection, origin=(0.0, 0.0, 0.0), materials=None):
             p.faces = _orient(v, p.faces, ref)
             ob = _new_obj(state, "DF_%s_panel_%s" % (tag, side), v, p.faces,
                           [_mat(state, matk[0]), _mat(state, matk[1])], uv=(tag == "K"))
+            if p.seams:
+                _sharp_columns(ob.data, p.nr, p.nc, p.seams)
             _solidify(ob, thk)
 
     state["sleeves"] = []
@@ -1139,6 +1193,7 @@ def build(collection, origin=(0.0, 0.0, 0.0), materials=None):
 def update(state, t):
     t = {k: float(min(1.0, max(0.0, (t or {}).get(k, 0.0)))) for k in LAYERS}
     ob = state["objects"]
+    state["s_fold"] = t["ohashori"] if t["kimono"] > 1e-3 else 0.0
     eps = 1e-3
     for tag, key, pan in (("J", "juban", state["jub"]), ("K", "kimono", state["kim"])):
         tv = t[key]
@@ -1154,7 +1209,7 @@ def update(state, t):
                 _show(state["rolls"][side]["ob"], vis)
             if not vis:
                 continue
-            P, psi = p.positions(ext[side], s_fold)
+            P, psi = p.positions(ext[side], s_fold, t["obi"])
             _set_co(o, P.reshape(-1, 3))
             if tag == "K":
                 _set_uv(o, _panel_uv(state, p, P, psi, s_fold))
@@ -1219,8 +1274,8 @@ def _anchor_points(state):
     fr = np.array([math.pi])
     # the white juban collar where it shows on the wearer's right of the V
     p = jub["R"]
-    i = int(np.argmin(np.abs(p.zn - 1.0))) if False else int(np.argmin(np.abs(hull.zback[np.clip(p.rows - hull.n0, 0, None)] - 1.33)))
-    A["form_juban_collar"] = hull.pts(p.rows[i], p.edge[i] - 0.10, LV_J + 0.006, p.sx)
+    i = int(np.argmin(np.abs(hull.zback[np.clip(p.rows - hull.n0, 0, None)] - 1.33)))
+    A["form_juban_collar"] = p.at(np.array(i), np.array(p.edge[i] - 0.07), LV_J + 0.005)
     # where the left collar crosses over the right one
     p = kim["L"]
     P, _ = p.positions(p.edge.max() + 0.1)
@@ -1232,7 +1287,7 @@ def _anchor_points(state):
     A["form_obiage"] = _obi_face(state, fr, np.array([OBI_TOP + 0.008]))[0]
     A["form_obijime"] = np.asarray(state["cordknot_pt"])
     A["form_knot"] = np.asarray(state["knot_pt"])
-    A["form_nape"] = hull.pts(p.rows[-3], np.array(0.0), LV_K, p.sx)
+    A["form_nape"] = p.at(np.array(p.nr - 3), np.array(0.0), LV_K)
     A["form_hem"] = hull.ring(np.array([Z_HEM + 0.015]), fr, LV_K + DK + 0.002)[0]
     sl = [s for s in state["sleeves"] if s.tag == "K" and s.sx < 0][0]
     S = sl.positions(1.0)
@@ -1286,7 +1341,7 @@ def _test_hall(scene, xy):
     nt.links.new(wv.outputs["Fac"], bp.inputs["Height"])
     nt.links.new(bp.outputs["Normal"], nt.nodes["Principled BSDF"].inputs["Normal"])
     wall = plain("T_wall", (0.62, 0.58, 0.50), 0.9)
-    gold = plain("T_gold", (0.62, 0.47, 0.20), 0.45)
+    gold = plain("T_gold", (0.60, 0.50, 0.30), 0.55)
     quad("T_floor", [(fx - S, fy - S, 0), (fx + S, fy - S, 0), (fx + S, fy + S, 0), (fx - S, fy + S, 0)], tat)
     quad("T_ceil", [(fx - S, fy - S, Hh), (fx - S, fy + S, Hh), (fx + S, fy + S, Hh), (fx + S, fy - S, Hh)], wall)
     quad("T_back", [(fx - S, fy - 3.4, 0), (fx - S, fy - 3.4, Hh), (fx + S, fy - 3.4, Hh), (fx + S, fy - 3.4, 0)], gold)
@@ -1296,7 +1351,7 @@ def _test_hall(scene, xy):
     ld = bpy.data.lights.new("T_shoji", "AREA")
     ld.shape = "RECTANGLE"
     ld.size, ld.size_y = 7.0, 2.4
-    ld.energy = 520.0
+    ld.energy = 640.0
     ld.color = (1.0, 0.96, 0.90)
     lo = bpy.data.objects.new("T_shoji", ld)
     lo.location = (fx + 3.6, fy + 0.4, 1.5)
