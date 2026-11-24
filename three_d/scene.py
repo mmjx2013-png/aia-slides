@@ -356,13 +356,13 @@ def build_hall():
     pla, lq, gil = C.hall_material("plaster"), C.hall_material("lacquer"), C.hall_material("gilt")
     washi = C.hall_material("washi", strength=HL["paper_visible"])
     washi.node_tree.nodes["eave_z"].outputs[0].default_value = HL["eave_z"]
-    washi.node_tree.nodes["shade"].outputs[0].default_value = HL["shoji_shade"]
+    washi.node_tree.nodes["shade"].outputs[0].default_value = HL["paper_shade_visible"]
     felt = C.hall_material("felt")
     wood, thin, lac, gilt, plas, paper, ceil = MB(), MB(), MB(), MB(), MB(), MB(), MB()
 
     build_floor(coll)
     ys = [YS + k * KEN for k in range(int(round((YN - YS) / KEN)) + 1)]
-    open_bay = HL.get("open_bay", -1)
+    open_bays = HL.get("open_bays", [])
 
     # ---- posts along the long walls
     for y in ys:
@@ -378,7 +378,7 @@ def build_hall():
     plas.quad([(XW, YS, NAG2_Z), (XW, YN, NAG2_Z), (XW, YN, HC), (XW, YS, HC)], pla)
     for k in range(len(ys) - 1):
         ya, yb = ys[k] + 0.07, ys[k + 1] - 0.07
-        if k == open_bay:       # the south panel is slid open behind the north one
+        if k in open_bays:      # the south panel is slid open in front of the north one
             _shoji_panel(wood, thin, paper, yb - PANEL_W, yb, XW - 0.020, 0.006, KAMOI_Z)
         else:
             _shoji_panel(wood, thin, paper, ya, ya + PANEL_W, XW - 0.020, 0.006, KAMOI_Z)
@@ -506,14 +506,30 @@ def build_hall():
         "paper": paper.build("Shoji_paper", coll),
         "ceiling": ceil.build("Hall_ceiling", coll),
     }
-    # ---- the felt runner under the cloth, in two halves with the rod's groove between them
+    # ---- the felt runner under the cloth, in two halves with the rod's groove between them.
+    # Its long edges wander by a few millimetres, as cut felt does.
     rx0, rx1 = WD["runner_x"]
     pad = WD["runner_pad"]
     g = 0.022
-    run = MB()
-    run.box(rx0, rx1, Y0 - pad, -g, 0.0, T, felt, "y")
-    run.box(rx0, rx1, g, Y0 + L_BOLT + pad, 0.0, T, felt, "y")
-    S["runner"] = run.build("Runner", coll, bevel=0.002)
+    rs = np.random.RandomState(4)
+    vs, fs = [], []
+    for (ya, yb) in ((Y0 - pad, -g), (g, Y0 + L_BOLT + pad)):
+        n = int((yb - ya) / 0.11) + 2
+        yy = np.linspace(ya, yb, n)
+        wl = np.convolve(rs.randn(n + 8), np.ones(9) / 9.0, "valid") * 0.006
+        wr = np.convolve(rs.randn(n + 8), np.ones(9) / 9.0, "valid") * 0.006
+        b = len(vs)
+        for i in range(n):
+            vs += [(rx0 + wl[i], yy[i], 0.0), (rx0 + wl[i], yy[i], T), (rx1 + wr[i], yy[i], T), (rx1 + wr[i], yy[i], 0.0)]
+        for i in range(n - 1):
+            a, c2 = b + 4 * i, b + 4 * (i + 1)
+            fs += [(a + 1, a + 2, c2 + 2, c2 + 1), (a, a + 1, c2 + 1, c2), (a + 2, a + 3, c2 + 3, c2 + 2)]
+        e = b + 4 * (n - 1)
+        fs += [(b + 3, b + 2, b + 1, b), (e, e + 1, e + 2, e + 3)]
+    me = bpy.data.meshes.new("Runner")
+    me.from_pydata(vs, [], fs)
+    me.materials.append(felt)
+    S["runner"] = _obj("Runner", me, coll)
 
 
 def build_daylight():
@@ -567,26 +583,25 @@ def build_daylight():
         ob.rotation_mode = "QUATERNION"
         ob.rotation_quaternion = Vector((1, 0, 0)).to_track_quat("-Z", "Y")
         ob.visible_camera = False
-    k = HL.get("open_bay", -1)
-    if k < 0 or HL.get("sun_strength", 0) <= 0:
+    if HL.get("sun_strength", 0) <= 0:
         return
-    ya = YS + k * KEN + 0.07
-    tgt = Vector((XW, ya + 0.5 * (PANEL_W - 0.03), 0.88))
     el, az = math.radians(HL.get("sun_elevation", 34.0)), math.radians(HL.get("sun_azimuth", 14.0))
     d = Vector((math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), -math.sin(el)))
     dist = 26.0
-    li = bpy.data.lights.new("Sun", "SPOT")
-    li.energy = HL["sun_strength"] * 4.0 * math.pi * dist ** 2      # irradiance, in sun-lamp units
-    li.spot_size = 2.0 * math.atan(1.25 / dist)
-    li.spot_blend = 0.06
-    li.shadow_soft_size = dist * math.tan(math.radians(0.27))
-    li.color = (1.0, 0.86, 0.68)
-    ob = _obj("Sun", li, coll)
-    ob.location = tgt - d * dist
-    ob.rotation_mode = "QUATERNION"
-    ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
-    ob.visible_camera = False
-    S["sun"] = ob
+    for k in HL.get("open_bays", []):          # a far, narrow spot through each open bay stands in for the sun
+        ya = YS + k * KEN + 0.07
+        tgt = Vector((XW, ya + 0.5 * (PANEL_W - 0.03), 0.88))
+        li = bpy.data.lights.new("Sun_%d" % k, "SPOT")
+        li.energy = HL["sun_strength"] * 4.0 * math.pi * dist ** 2      # irradiance, in sun-lamp units
+        li.spot_size = 2.0 * math.atan(1.25 / dist)
+        li.spot_blend = 0.06
+        li.shadow_soft_size = dist * math.tan(math.radians(0.27))
+        li.color = (1.0, 0.86, 0.68)
+        ob = _obj("Sun_%d" % k, li, coll)
+        ob.location = tgt - d * dist
+        ob.rotation_mode = "QUATERNION"
+        ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
+        ob.visible_camera = False
 
 
 # =========================================================================== rack

@@ -1075,7 +1075,7 @@ def hall_material(kind, name=None, strength=None):
         eave.outputs[0].default_value = 1000.0
         shade = N("ShaderNodeValue")                # brightness of paper in shadow, relative to sunlit
         shade.name = shade.label = "shade"
-        shade.outputs[0].default_value = 0.40
+        shade.outputs[0].default_value = 0.30
         sp = N("ShaderNodeSeparateXYZ")
         L(tc.outputs["Object"], sp.inputs[0])
 
@@ -1216,7 +1216,7 @@ def hall_material(kind, name=None, strength=None):
         L(nz.outputs["Fac"], mr.inputs["Value"])
         L(_mixc(nt, 1.0, base, mr.outputs["Result"], "MULTIPLY"), bsdf.inputs["Base Color"])
         bump, _ = _grain(nt, tc.outputs["Object"], 2200.0, 0.55, 0.0009)
-        bump2, _ = _grain(nt, tc.outputs["Object"], 260.0, 0.25, 0.0012)
+        bump2, _ = _grain(nt, tc.outputs["Object"], 5.0, 0.6, 0.012)
         L(bump.outputs["Normal"], bump2.inputs["Normal"])
         L(bump2.outputs["Normal"], bsdf.inputs["Normal"])
         bsdf.inputs["Roughness"].default_value = 0.95

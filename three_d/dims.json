@@ -129,7 +129,6 @@
   "nageshi_h": 0.12,
   "nageshi2_z": 2.84,
   "nageshi2_h": 0.09,
-  "open_bay": 8,
   "sun_strength": 14.0,
   "exposure": 0.0,
   "camera_z": 1.45,
@@ -216,9 +215,14 @@
    ]
   },
   "hdri_strength": 10.0,
-  "paper_visible": 4.2,
+  "paper_visible": 3.4,
   "shoji_radiance": 9.0,
   "shoji_shade": 0.4,
-  "eave_z": 1.3
+  "eave_z": 1.3,
+  "open_bays": [
+   3,
+   8
+  ],
+  "paper_shade_visible": 0.3
  }
 }

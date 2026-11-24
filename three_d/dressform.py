@@ -63,7 +63,7 @@ SA, CA = math.sin(math.radians(ARM_DEG)), math.cos(math.radians(ARM_DEG))
 D_ARM = np.array([SA, 0.0, -CA])   # along the arm
 N_ARM = np.array([CA, 0.0, SA])    # outward/up normal of the arm in the frontal plane
 L_ELBOW, L_WRIST = 0.275, 0.520
-CAP_LEN, CAP_R = 0.110, 0.049      # the part of the upper arm the body panels cover
+CAP_LEN, CAP_R = 0.070, 0.049      # the part of the upper arm the body panels cover
 
 LV_J, DJ = 0.000, 0.006            # juban level, left-over-right lift
 LV_K, DK = 0.014, 0.009            # kimono level, left-over-right lift
@@ -72,7 +72,7 @@ FOLD = 0.008                       # ohashori: extra layer
 THK_K, THK_J = 0.0025, 0.002
 LV_OBI = LV_K + DK + FOLD + 0.003  # inner face of the obi
 OBI_THK = 0.010
-Z_BACK_K, Z_BACK_J = 1.400, 1.408  # collar tops at the nape
+Z_BACK_K, Z_BACK_J = 1.384, 1.391  # collar tops at the nape
 
 # front view: x of the wearer's LEFT half's edge as a function of z (the half covers x < edge)
 KIMONO_EDGE = ((0.0, 0.095), (1.02, 0.095), (1.245, 0.0), (1.33, -0.036), (1.40, -0.050), (1.70, -0.052))
