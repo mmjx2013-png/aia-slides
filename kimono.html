@@ -437,6 +437,24 @@ html.idle #vp{cursor:none}
 .ge1 .s5 .tog.a{opacity:1!important}
 .tl .yr sup.s{letter-spacing:.04em;text-transform:none;margin-left:10px;vertical-align:1px}
 
+/* round 8: QA fixes */
+.cap{bottom:86px}
+#stage.credits .slide .say{visibility:hidden}
+sup.s{font-size:18px;padding:2px 9px 1px}
+.bloom{font-size:18px}
+.steps li>b{font-size:18px}
+.tl .yr{font-size:18px}
+.cv::before{font-size:18px}
+.card .eyebrow,.eyebrow{font-size:21px}
+#bMotion[aria-pressed="false"]{text-decoration:line-through;color:var(--dim)}
+@media (pointer:coarse) and (orientation:portrait){#ctl{opacity:1;pointer-events:auto}}
+@media (orientation:landscape) and (max-height:480px){
+  #ctl{top:8px;bottom:auto;flex-wrap:nowrap;width:max-content}
+  #ctl #dots{order:0;width:auto}
+  #ctl #dots button{width:30px;min-width:30px}
+  #pos{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -508,7 +526,7 @@ html.idle #vp{cursor:none}
     <svg class="kl kl-obi" viewBox="0 0 800 900"><rect x="244" y="322" width="312" height="112" rx="3" fill="url(#gObi)"/><rect x="244" y="322" width="312" height="112" rx="3" fill="url(#pObi)"/><path d="M244,336H556M244,420H556" stroke="#CDA85E" stroke-opacity=".8"/></svg>
     <svg class="kl kl-jime" viewBox="0 0 800 900"><path d="M244,324Q400,300 556,324L556,334Q400,314 244,334Z" fill="#F39A7F"/><path d="M244,378H556" stroke="#F2E9D9" stroke-width="6"/><path d="M386,370h28v16h-28z" fill="#F2E9D9"/><path d="M386,378l-14,-9M414,378l14,-9" stroke="#F2E9D9" stroke-width="4" stroke-linecap="round"/></svg>
     <div class="kl kl-lab kl-lab1">
-      <div class="lb" style="left:430px;top:-58px;width:300px"><b>Neckband</b><small>‘attached … sewn around the front opening’</small></div>
+      <div class="lb" style="left:470px;top:-60px;width:250px"><b>Neckband</b><small>‘attached … sewn around the front opening’</small></div>
       <div class="lb" style="left:604px;top:392px;width:216px"><b>Sleeve</b><small>‘a width of fabric attached to the selvages’ (the woven edges)</small></div>
       <div class="lb" style="left:-22px;top:392px;width:232px;text-align:right"><b>Front</b><small>‘open, overlapping’</small></div>
     </div>
@@ -650,7 +668,7 @@ html.idle #vp{cursor:none}
       <p class="c sm">The rules make it ‘arguably very similar to a school uniform’.<sup class="s">[4] p.123</sup></p>
       <span class="cv">One garment type at one ceremony, not all kimono. The author adds: ‘Rules can be bended’ (sic).<sup class="s">[4] p.123</sup></span>
     </div>
-    <p class="lede f1" style="left:610px;top:800px;width:700px;text-align:center;font:italic 400 44px/1.15 var(--disp)">One garment. Two meanings.<sup class="s" style="font-style:normal;vertical-align:14px">this deck’s reading of [5] PDF p.4 and [4] p.123</sup></p>
+    <p class="lede f1" style="left:610px;top:884px;width:700px;text-align:center;font:italic 400 44px/1.15 var(--disp)">One garment. Two meanings.<sup class="s" style="font-style:normal;vertical-align:14px">this deck’s reading of [5] PDF p.4 and [4] p.123</sup></p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
 
@@ -658,12 +676,13 @@ html.idle #vp{cursor:none}
   <section class="slide s10" data-title="Answer: both" data-steps="2" data-say="It is both a garment and a set of rules. The cloth is simple, and the rules of dressing and formality give it meaning.">
     <p class="eyebrow r" style="left:120px;top:150px;--i:0"><b>The answer</b>Slide 2, settled</p>
     <h2 class="big h0" style="left:116px;top:214px;width:900px">A <em>garment</em>,<br>or a <em class="g">set of rules</em>?</h2>
-    <p class="lede h0" style="left:120px;top:520px;width:760px">Front: the garment. ‘A completely flat surface’, cut in straight pieces.<sup class="s">[4] p.10</sup><br><br>Now turn it over.</p>
+    <p class="lede h0" style="left:120px;top:520px;width:760px">Front: the garment, with ‘a completely flat surface’, cut in straight pieces.<sup class="s">[4] p.10 · [5] PDF p.1</sup><br><br>Now turn it over.</p>
     <h2 class="f1" style="left:112px;top:196px;font:italic 400 250px/.9 var(--disp);color:var(--shuL);letter-spacing:-.02em">Both.</h2>
+    <p class="sr f1">The back of the kimono lists the rules: which occasion; which season; where the pattern sits; left side over right; first the under-robe; last the obi knot; how to walk and sit; how to climb stairs.</p>
     <div class="rows f1" style="left:120px;top:470px;width:820px;--i:1">
       <p class="c">Becke, the author of [4], defines kimono by ‘the garment’s shape <b>and</b> practice of fitting it to the body’.<sup class="s">[4] p.10</sup> <span style="color:var(--dim)">(Bold added.)</span></p>
       <p class="c">‘Seventy percent of what makes a kimono a kimono is how it is worn.’<sup class="s">[4] p.11, quoting the head of a kimono house</sup></p>
-      <p class="c">It takes both. The garment is simple; the rules of dressing and formality give it meaning: ‘social and cultural aspects and contexts strongly determine how the garment should be worn’.<sup class="s">[4] p.11</sup><span class="cv">The lines on the back are rules [4] records for the furisode at the coming-of-age day (pp.62–80). Her definition of kimono in general rests on shape and fitting (pp.10–11).</span></p>
+      <p class="c">It takes both. The garment is simple; the rules of dressing and formality give it meaning: ‘social and cultural aspects and contexts strongly determine how the garment should be worn’.<sup class="s">[4] p.11</sup><span class="cv">Most lines on the back are rules [4] records for the furisode at the coming-of-age day (pp.69–80); the season and pattern lines come from kimono guides (p.62). Her definition of kimono in general rests on shape and fitting (pp.10–11).</span></p>
     </div>
     <p class="h0" style="left:1214px;top:948px;width:400px;text-align:center;font:italic 400 50px/1 var(--disp);color:var(--shuL)">the garment</p>
     <p class="vk r" lang="ja" style="--i:4">着物</p>
@@ -690,8 +709,8 @@ html.idle #vp{cursor:none}
         <h3>Photograph · Wikimedia Commons</h3>
         <ol class="ph"><li><img alt="" data-from="p1"><span><b>Slides 1, 5 and 8.</b> “Robe (Kosode) with Fishing Net and Characters”, Japan, probably ca. 1660s (title and date as given on the Commons file page). Photograph: The Metropolitan Museum of Art, Open Access; no individual photographer is named. Licence: CC0 1.0. <a href="https://commons.wikimedia.org/wiki/File:%E7%99%BD%E7%B6%B8%E5%AD%90%E5%9C%B0%E7%B6%B2%E6%96%87%E5%AD%97%E6%95%A3%E6%A8%A1%E6%A7%98%E5%B0%8F%E8%A2%96-Robe_(Kosode)_with_Fishing_Net_and_Characters_MET_DP261468.jpg">commons.wikimedia.org · File: … Robe (Kosode) with Fishing Net and Characters MET DP261468.jpg</a></span></li></ol>
         <p class="note">The photograph is cropped, resized and darkened on screen. Its captions repeat only what the Commons file page states. Wikimedia Commons limited requests during the build, so one licence-checked photograph is used, shown whole and in detail.</p>
-        <p class="note"><b>Not covered,</b> because no source we could read supports a claim: weave types, linings by month, crests, Japanese part names, origins before the kosode, a full dressing order, sleeve and walking etiquette.</p>
-        <p class="note"><b>Narration</b> is spoken by your browser’s own voice, only when you press the round button on a slide. Keys: arrows to move, N to listen, S to mute, M for motion, F for full screen.</p>
+        <p class="note"><b>Not covered:</b> weave types, linings by month, crests, Japanese part names, origins before the kosode, a full dressing order, sleeve and walking etiquette. No source we could read supports a claim on these.</p>
+        <p class="note"><b>Narration</b> is spoken by your browser’s own voice, only when you press the round button on a slide. Keys: arrows to move, N to listen, S to mute, M to switch motion off or on, F for full screen.</p>
         <p class="fin">Real photographs, none generated. Every drawing is hand-written SVG and CSS.</p>
       </div>
     </div>
@@ -707,8 +726,8 @@ html.idle #vp{cursor:none}
   <div id="dots"></div>
   <button id="bNext" type="button" aria-label="Next"><span aria-hidden="true">&#8594;</span></button>
   <span id="pos" aria-hidden="true"></span>
-  <button id="bMute" type="button" aria-label="Mute narration" aria-pressed="false"><span class="off" aria-hidden="true">Sound on</span><span class="on" aria-hidden="true">Muted</span></button>
-  <button id="bMotion" type="button" aria-label="Motion" aria-pressed="true"><span class="on" aria-hidden="true">Motion on</span><span class="off" aria-hidden="true">Motion off</span></button>
+  <button id="bMute" type="button" aria-label="Mute narration" aria-pressed="false"><span aria-hidden="true">Mute</span></button>
+  <button id="bMotion" type="button" aria-label="Motion" aria-pressed="true"><span aria-hidden="true">Motion</span></button>
   <button id="bFull" type="button" aria-label="Full screen"><span aria-hidden="true">Full screen</span></button>
 </nav>
 <div id="bar" aria-hidden="true"><i></i></div>
@@ -1078,6 +1097,7 @@ html.idle #vp{cursor:none}
       if (e.defaultPrevented || e.button) return;
       var t = e.target;
       if (t && t.closest && t.closest('a,button,input,select,textarea,label,summary,[role="button"],#ctl,#dots,[data-nonav]')) return;
+      if (t && t.closest && !t.closest('#stage')) return; // a tap in the letterbox outside the stage only wakes the controls
       if (Date.now() < swallowUntil) return; // the click some browsers send after a swipe
       try { if (String(window.getSelection())) return; } catch (err) {} // the reader is selecting text
       var r = vp.getBoundingClientRect();

@@ -78,7 +78,7 @@ Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the
 | 56 | 7 | The coming-of-age day is a public holiday on the second Monday of January. | 4 | p.37 | "Celebrated annually as a public holiday on the second Monday of January, the coming-of-age day (seijin-no-hi)" | general |
 | 57 | 8 | Period label: Edo period, 1600–1868. | 4 | p.164 | "the high-profile courtesans of the Edo period (1600-1868)" | date range as Becke gives it |
 
-The words on the back of the kimono on slide 10 repeat rows 10, 14–16, 21, 22 and 26. Slide 10 says on screen that these are rules recorded for the furisode at the coming-of-age day.
+The words on the back of the kimono on slide 10 repeat rows 10, 14–16, 21, 22 and 26. Slide 10 says on screen that most of these are rules recorded for the furisode at the coming-of-age day, and that the season and pattern lines come from kimono guides.
 
 ## Claims dropped for lack of a source read this session
 
