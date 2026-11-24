@@ -146,7 +146,7 @@ body.ready{opacity:1}
 [data-slide="3"].ge1 #kBodyL{transform:translate(26px,0)}
 [data-slide="3"].ge1 #kOkumi{transform:translate(2px,26px)}
 [data-slide="3"].ge1 #kEriG{transform:translate(2px,-34px)}
-[data-slide="3"].ge1 .kl-lab{opacity:1;transition-delay:.35s}
+[data-slide="3"].ge1 .kl-lab1{opacity:1;transition-delay:.35s}
 [data-slide="3"].ge1 .kl-juban{opacity:.25}
 [data-slide="3"].ge2 .kl-mon{opacity:1}
 /* 4 fabric: lined, unlined, gauze */
@@ -423,6 +423,20 @@ html.idle #vp{cursor:none}
 #credits .fin{font-size:42px;margin-top:26px}
 #credits .cols{grid-template-columns:800px 1fr}
 
+/* round 5: slide 7 labels on the dressed kimono */
+[data-slide="7"].ge1 .kl-lab2{opacity:1;transition-delay:.3s}
+.kn{-webkit-backface-visibility:hidden}
+
+/* round 6: on the kitsuke reveal the pattern and neckband stay on the kimono layer */
+[data-slide="6"].ge1 .kl-motif{--z:2.03}
+[data-slide="6"].ge1 .kl-eri{--z:2.06}
+[data-slide="6"].ge1 .kl-obi{--z:3.4}
+[data-slide="6"].ge1 .kl-jime{--z:4.6}
+
+/* round 7: reader fixes */
+.ge1 .s5 .tog.a{opacity:1!important}
+.tl .yr sup.s{letter-spacing:.04em;text-transform:none;margin-left:10px;vertical-align:1px}
+
 </style>
 </head>
 <body>
@@ -462,7 +476,7 @@ html.idle #vp{cursor:none}
         <text x="400" y="230">WHICH SEASON</text>
         <text x="400" y="310">WHERE THE PATTERN SITS</text>
         <text x="400" y="390">LEFT SIDE OVER RIGHT</text>
-        <text x="400" y="470">FIRST THE UNDER-KIMONO</text>
+        <text x="400" y="470">FIRST THE UNDER-ROBE</text>
         <text x="400" y="550">LAST THE OBI KNOT</text>
         <text x="400" y="630">HOW TO WALK AND SIT</text>
         <text x="400" y="710">HOW TO CLIMB STAIRS</text>
@@ -493,13 +507,18 @@ html.idle #vp{cursor:none}
     <svg class="kl kl-eri" viewBox="0 0 800 900"><g id="kEriG" class="kp" fill="#FBF6EA" stroke="rgba(60,44,22,.55)" stroke-width="1.4"><path d="M344,70H372L400,151L386,191Z"/><path d="M344,70Q400,38 456,70L428,70Q400,56 372,70Z"/><path d="M428,70H456L366,330H338Z"/></g></svg>
     <svg class="kl kl-obi" viewBox="0 0 800 900"><rect x="244" y="322" width="312" height="112" rx="3" fill="url(#gObi)"/><rect x="244" y="322" width="312" height="112" rx="3" fill="url(#pObi)"/><path d="M244,336H556M244,420H556" stroke="#CDA85E" stroke-opacity=".8"/></svg>
     <svg class="kl kl-jime" viewBox="0 0 800 900"><path d="M244,324Q400,300 556,324L556,334Q400,314 244,334Z" fill="#F39A7F"/><path d="M244,378H556" stroke="#F2E9D9" stroke-width="6"/><path d="M386,370h28v16h-28z" fill="#F2E9D9"/><path d="M386,378l-14,-9M414,378l14,-9" stroke="#F2E9D9" stroke-width="4" stroke-linecap="round"/></svg>
-    <div class="kl kl-lab">
-      <div class="lb" style="left:452px;top:-56px;width:330px"><b>Neckband</b><small>‘attached … sewn around the front opening’</small></div>
-      <div class="lb" style="left:604px;top:392px;width:216px"><b>Sleeve</b><small>‘a width of fabric attached to the selvages’</small></div>
+    <div class="kl kl-lab kl-lab1">
+      <div class="lb" style="left:430px;top:-58px;width:300px"><b>Neckband</b><small>‘attached … sewn around the front opening’</small></div>
+      <div class="lb" style="left:604px;top:392px;width:216px"><b>Sleeve</b><small>‘a width of fabric attached to the selvages’ (the woven edges)</small></div>
       <div class="lb" style="left:-22px;top:392px;width:232px;text-align:right"><b>Front</b><small>‘open, overlapping’</small></div>
     </div>
+    <div class="kl kl-lab kl-lab2">
+      <div class="lb" style="left:-14px;top:392px;width:250px;text-align:right"><b>Torso</b><small>‘a straight and upright position’</small></div>
+      <div class="lb" style="left:572px;top:452px;width:250px"><b>Below the obi</b><small>‘a long tube in the form of a pencil skirt’</small></div>
+      <div class="lb" style="left:572px;top:742px;width:250px"><b>Lower edge</b><small>‘always ends just above the models’ feet’</small></div>
+    </div>
     <div class="kn" style="left:652px;top:150px;--z:1;--n:0">first</div>
-    <div class="kn" style="left:140px;top:356px;--z:4.4;--n:4">last</div>
+    <div class="kn" style="left:128px;top:392px;--z:3.4;--n:4">last</div>
   </div></div></div>
 
   <!-- 1 -->
@@ -508,7 +527,7 @@ html.idle #vp{cursor:none}
     <h1 class="h1 r" style="left:110px;top:226px;--i:1">Kimono</h1>
     <p class="r" style="left:122px;top:452px;--i:2;font:400 64px/1 var(--jp);color:var(--kin);letter-spacing:.14em" lang="ja">着物</p>
     <p class="lede r" style="left:122px;top:566px;width:640px;--i:3">The word comes from <i class="t">kiru mono</i>: ‘a thing to wear’.<sup class="s">[4] p.10</sup></p>
-    <p class="cap r" style="--i:5"><b>Robe (kosode) with fishing net and characters.</b> Japan, probably ca. 1660s. The museum titles it a kosode, the ‘precursor of the modern kimono’.<sup class="s">[5] PDF p.4</sup> Photo: The Metropolitan Museum of Art, no photographer named · CC0 · cropped, darkened</p>
+    <p class="cap r" style="--i:5"><b>Robe (kosode) with fishing net and characters.</b> Japan, probably ca. 1660s (title and date: the Commons file page). The museum titles it a kosode; Fukai calls kosode the ‘precursor of the modern kimono’.<sup class="s">[5] PDF p.4</sup> Photo: The Metropolitan Museum of Art, no photographer named · CC0 · cropped, darkened</p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
 
@@ -527,8 +546,8 @@ html.idle #vp{cursor:none}
     <h2 class="h2 r" style="left:118px;top:164px;width:860px;--i:1">Straight pieces from one bolt. <em>Hardly any waste.</em></h2>
     <div class="rows" style="left:120px;top:384px;width:830px">
       <p class="c r" style="--i:2">People know a kimono by ‘its t-shape form, characteristic sleeves and the use of a wide obi’ (a sash).<sup class="s">[4] p.10</sup></p>
-      <p class="c r" style="--i:3">The bolt ‘comes in a standardised width’. Cutting gives ‘geometrical pieces with square outlines’, and ‘hardly any wastage’.<sup class="s">[4] pp.10–11</sup></p>
-      <p class="c f1">The parts, in the words Becke quotes from Dalby: see the labels.<sup class="s">[4] p.10, quoting Dalby</sup><span class="cv">The drawing is a schematic. No source read for this deck gives a panel count or Japanese part names, so none are shown.</span></p>
+      <p class="c r" style="--i:3">The bolt (the roll of cloth) ‘comes in a standardised width’. Cutting gives ‘geometrical pieces with square outlines’, and ‘hardly any wastage’.<sup class="s">[4] pp.10–11</sup> Fukai: ‘cut along straight lines and constructed of rectangles’.<sup class="s">[5] PDF p.1</sup></p>
+      <p class="c f1">The parts, in words that source [4] quotes from the writer Liza Dalby: see the labels.<sup class="s">[4] p.10, quoting Dalby</sup><span class="cv">The drawing is a schematic. No source read for this deck gives a panel count or Japanese part names, so none are shown.</span></p>
       <p class="c f2">It has ‘no tucks or darts’. Unworn, it has ‘a completely flat surface’.<sup class="s">[4] p.10</sup> So where does the shape come from?</p>
     </div>
     <p class="vk r" lang="ja" style="--i:4">着物</p>
@@ -540,36 +559,35 @@ html.idle #vp{cursor:none}
     <p class="eyebrow r" style="left:930px;top:120px;--i:0"><b>2</b>Cloth and season</p>
     <h2 class="h2 r" style="left:928px;top:164px;width:880px;--i:1">First the cloth. <em>Then the calendar.</em></h2>
     <div class="rows" style="left:930px;top:384px;width:860px">
-      <p class="c r" style="--i:2">Kimono ‘emphasized the material, the fabric of clothing’.<sup class="s">[5] PDF p.7</sup> One guide author’s books advise on the ‘suitability and appropriateness of kimono materials, colours, patterns and obi’.<sup class="s">[4] p.76</sup></p>
+      <p class="c r" style="--i:2">In contrast to Western ornament, kimono ‘emphasized the material, the fabric of clothing’.<sup class="s">[5] PDF p.7</sup> One guide author’s books advise on the ‘suitability and appropriateness of kimono materials, colours, patterns and obi’.<sup class="s">[4] p.76</sup></p>
       <p class="c r" style="--i:3">Guide authors remind readers ‘to be aware of the season’ when choosing a pattern.<sup class="s">[4] p.62</sup></p>
       <div class="c r" style="--i:4">
         <div class="bloom"><span class="w">flower pattern worn</span><span class="b">real flower in bloom</span></div>
         Start ‘about one month ahead of the actual blossoming’ and stop ‘just before the flower blooms’.<sup class="s">[4] p.62, quoting a 2017 guide</sup>
       </div>
-      <p class="c f1"><span class="cv" style="margin-top:0">This is advice in guides, not a record of practice. Of her young interviewees Becke writes: ‘Many young women might not be able to recognise this importance’.<sup class="s">[4] p.138</sup></span></p>
+      <p class="c f1"><span class="cv" style="margin-top:0">This is advice in guides, not a record of practice. Of her young interviewees, the author of [4] writes: ‘Many young women might not be able to recognise this importance’.<sup class="s">[4] p.138</sup></span></p>
     </div>
-    <p class="vk r" lang="ja" style="--i:4">季節</p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
 
   <!-- 5 pattern -->
-  <section class="slide s5" data-title="Pattern: placement is a code" data-steps="1" data-say="Because the cloth is flat, it works as a canvas. A small repeated pattern, called komon, reads as less formal than a continuous design, called eba-moyo.">
+  <section class="slide s5" data-title="Pattern: placement is a code" data-steps="1" data-say="Because the cloth is flat, it works as a canvas. A repeated all-over pattern, called komon, is considered less formal than a continuous design, called eba-moyo.">
     <p class="eyebrow r" style="left:120px;top:120px;--i:0"><b>3</b>Pattern</p>
     <h2 class="h2 r" style="left:118px;top:164px;width:820px;--i:1">A flat cloth is a canvas. <em>Placement is a code.</em></h2>
     <div class="rows" style="left:120px;top:384px;width:800px">
       <p class="c r" style="--i:2">Flat cloth is ‘an ideal canvas for dyers, painters and embroiderers’.<sup class="s">[4] p.11</sup></p>
       <p class="c r tog a" style="--i:3"><i class="t">Komon</i> <span class="jp" lang="ja">小紋</span>: ‘pervasive and repetitive patterns’ are ‘generally considered less formal’.<sup class="s">[4] p.62</sup></p>
-      <p class="c f1 tog b"><i class="t">Eba-moyō</i>: ‘asymmetrical, continuous’ arrangements ‘are regarded as ceremonial’. Motifs gather ‘below the obi and the left shoulder’.<sup class="s">[4] p.62</sup><span class="cv">Becke reports this from kimono guides and Dalby. The flowers drawn here are decoration; they are not a dictionary of meanings.</span></p>
+      <p class="c f1 tog b"><i class="t">Eba-moyō</i>: ‘asymmetrical, continuous’ arrangements ‘are regarded as ceremonial’. Motifs gather ‘below the obi and the left shoulder’.<sup class="s">[4] p.62</sup><span class="cv">Source [4] reports this from kimono guides and from Dalby. The flowers drawn here are decoration; they are not a dictionary of meanings.</span></p>
     </div>
-    <p class="cap r pcap" id="c5" style="--i:5"><b>Detail of the robe on slide 1.</b> Shown as a real surface, not as an example of either arrangement: the museum record does not name its pattern type. Photo: The Metropolitan Museum of Art · CC0 · cropped</p>
+    <p class="cap r pcap" id="c5" style="--i:5"><b>Detail of the robe on slide 1.</b> Shown as a real surface, not as an example of either arrangement: its Commons file page does not name a pattern type. Photo: The Metropolitan Museum of Art · CC0 · cropped</p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
 
   <!-- 6 kitsuke -->
-  <section class="slide s6" data-title="Kitsuke: the fit is made by dressing" data-steps="1" data-say="A kimono is fitted by dressing, called kitsuke, not by cutting. Our source names the first step, the under-kimono, and the last, tying the obi knot.">
+  <section class="slide s6" data-title="Kitsuke: the fit is made by dressing" data-steps="1" data-say="A kimono is fitted by dressing, called kitsuke, not by cutting. Our source, on furisode magazines, names the first step, the under-kimono, and the last, tying the obi knot.">
     <p class="eyebrow r" style="left:1010px;top:120px;--i:0"><b>4</b>Dressing</p>
     <h2 class="h2 r" style="left:1008px;top:164px;width:820px;--i:1">The fit is made by <em>dressing</em>, not by cutting.</h2>
-    <p class="r" style="left:1010px;top:352px;--i:2;font:400 44px/1 var(--jp);color:var(--kin);letter-spacing:.1em"><span lang="ja">着付け</span> <i class="t" style="font-size:44px;color:var(--kinu);letter-spacing:0;margin-left:14px">kitsuke</i></p>
+    <p class="r" style="left:1010px;top:352px;--i:2;font:400 44px/1 var(--jp);color:var(--kin);letter-spacing:.1em"><span lang="ja">着付け</span> <i class="t" style="font-size:44px;color:var(--kinu);letter-spacing:0;margin-left:14px">kitsuke</i><span style="font:400 26px/1 var(--text);color:var(--dim);letter-spacing:0;margin-left:16px">the dressing process</span><sup class="s" style="letter-spacing:.04em">[4] p.11</sup></p>
     <div class="rows h0" style="left:1010px;top:436px;width:800px">
       <p class="c r" style="--i:3">Flat kimono ‘are fitted to the body as part of the dressing process’. Kitsuke ‘provides the final fit and shape’.<sup class="s">[4] p.11</sup></p>
       <p class="c r" style="--i:4">Academies ‘have turned the knowledge and dressing process … into a discipline’, with certificates for finished courses.<sup class="s">[4] pp.77–78</sup></p>
@@ -586,27 +604,27 @@ html.idle #vp{cursor:none}
   </section>
 
   <!-- 7 body language -->
-  <section class="slide s7" data-title="Movement: the rules reach the body" data-steps="1" data-say="Magazines for the coming-of-age day teach how to walk, sit and climb stairs in a furisode. The wearer learns to watch and correct her own body.">
+  <section class="slide s7" data-title="Movement: the rules reach the body" data-steps="1" data-say="Magazines for the coming-of-age day teach how to walk, sit and climb stairs in a furisode. Becke argues that the furisode encourages the wearer to watch and correct her own body.">
     <p class="eyebrow r" style="left:120px;top:120px;--i:0"><b>5</b>Movement</p>
     <h2 class="h2 r" style="left:118px;top:164px;width:900px;--i:1">Then the rules reach <em>the body.</em></h2>
     <div class="rows" style="left:120px;top:300px;width:900px">
-      <p class="c r" style="--i:2">Furisode magazines teach readers how to move ‘when walking and sitting down, as well as when climbing up and down stairs’.<sup class="s">[4] pp.79–80</sup></p>
+      <p class="c r" style="--i:2">Magazines about the <i class="t">furisode</i>, the long-sleeved kimono,<sup class="s">[4] p.53</sup> teach how to move ‘when walking and sitting down, as well as when climbing up and down stairs’.<sup class="s">[4] pp.79–80</sup></p>
       <p class="c r" style="--i:3">Also covered: ‘getting in and out of a car’, a meal, the bathroom. The result is ‘constant monitoring and correcting of one’s body’.<sup class="s">[4] p.80</sup></p>
       <p class="c f1">Even the collar depends on who sets the rule. Standard furisode dressing ‘aims to hide … the nape’.<sup class="s">[4] p.165</sup> In Paris around 1907, a neckband ‘low in back, revealing the nape’ was ‘the fashionable way to wear kimono’.<sup class="s">[5] PDF p.8</sup></p>
-      <p class="c f1" style="border-top:0;padding-top:0;--i:1"><span class="cv" style="margin-top:0">These are lessons printed for one ceremony, the coming-of-age day. They are not a record of how every kimono wearer moves.</span></p>
+      <p class="c f1" style="--i:1">The labels on the drawing: how models are posed and dressed in furisode magazines.<sup class="s">[4] pp.70, 78</sup><span class="cv">These are lessons and images printed for one ceremony: the coming-of-age day, a public holiday ‘on the second Monday of January’ for new adults.<sup class="s">[4] p.37</sup> They are not a record of how every kimono wearer moves.</span></p>
     </div>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
 
   <!-- 8 history -->
-  <section class="slide s8" data-title="History: when the rules were fixed" data-steps="0" data-say="In the Meiji period the kimono was reframed as Japan's national costume, against Western dress. After the war, the way of wearing it was strictly standardised.">
+  <section class="slide s8" data-title="History: when the rules were fixed" data-steps="0" data-say="In the Meiji period the kimono was reframed as Japan's national costume through an encounter with Western dress. After the war, the way of wearing it was strictly standardised.">
     <p class="eyebrow r" style="left:120px;top:120px;--i:0"><b>6</b>History</p>
-    <h2 class="h2 r" style="left:118px;top:164px;width:900px;--i:1">The rules were <em>fixed late.</em></h2>
+    <h2 class="h2 r" style="left:118px;top:164px;width:900px;--i:1">The rules were <em>fixed late.</em><sup class="s" style="vertical-align:34px">[4] pp.11, 72</sup></h2>
     <div class="tl" style="left:120px;top:500px;width:1690px">
-      <div class="r" style="--i:2"><p class="yr">Before 1868</p><h3>Fashion, by order</h3><p>Robes called <i class="t">kosode</i> were the ‘precursor of the modern kimono’.<sup class="s">[5] PDF p.4</sup> Laws set ‘the type of clothes members of each class were allowed to wear’.<sup class="s">[4] p.99</sup> Pattern books, <i class="t">hinagata-bon</i>, ‘informed consumers’ of new designs.<sup class="s">[4] p.28</sup></p></div>
-      <div class="r" style="--i:3"><p class="yr">Meiji · 1868–1912</p><h3>A national costume</h3><p>‘Reframed as Japan’s national costume through an encounter with “Western” forms of dress’.<sup class="s">[4] p.10</sup> One shape became ‘frozen in time’.<sup class="s">[4] p.72</sup></p></div>
-      <div class="r" style="--i:4"><p class="yr">Post-war decades</p><h3>A rulebook</h3><p>Japanese dress was ‘largely abandoned by the majority’.<sup class="s">[4] p.68</sup> Wearing it became ‘vigorously standardised’.<sup class="s">[4] p.11</sup> A 1972 book lists ‘390 rules’.<sup class="s">[4] p.75</sup></p></div>
-      <div class="r" style="--i:5"><p class="yr">1990s to now</p><h3>Rented, revived</h3><p>‘Rental options gained popularity’.<sup class="s">[4] p.118</sup> Then came ‘an increased demand and appreciation of vintage kimono’.<sup class="s">[4] p.14</sup></p></div>
+      <div class="r" style="--i:2"><p class="yr">Edo period · 1600–1868<sup class="s">[4] p.164</sup></p><h3>Fashion, by order</h3><p>Robes called <i class="t">kosode</i> were the ‘precursor of the modern kimono’.<sup class="s">[5] PDF p.4</sup> Laws set ‘the type of clothes members of each class were allowed to wear’.<sup class="s">[4] p.99</sup> Pattern books, <i class="t">hinagata-bon</i>, ‘informed consumers of available kimono designs’.<sup class="s">[4] p.28</sup></p></div>
+      <div class="r" style="--i:3"><p class="yr">Meiji period · 1868–1912<sup class="s">[4] p.72</sup></p><h3>A national costume</h3><p>‘Reframed as Japan’s national costume through an encounter with “Western” forms of dress’.<sup class="s">[4] p.10</sup> One shape became ‘frozen in time’.<sup class="s">[4] p.72</sup></p></div>
+      <div class="r" style="--i:4"><p class="yr">Post-war decades<sup class="s">[4] p.68</sup></p><h3>A rulebook</h3><p>Japanese dress was ‘largely abandoned by the majority’.<sup class="s">[4] p.68</sup> Wearing it became ‘vigorously standardised’.<sup class="s">[4] p.11</sup> A 1972 book lists ‘390 rules’.<sup class="s">[4] p.75</sup></p></div>
+      <div class="r" style="--i:5"><p class="yr">1990s to 2000s<sup class="s">[4] pp.14, 118</sup></p><h3>Rented, revived</h3><p>‘Rental options gained popularity’.<sup class="s">[4] p.118</sup> Then came ‘an increased demand and appreciation of vintage kimono’.<sup class="s">[4] p.14</sup></p></div>
     </div>
     <p class="cap r pcap" id="c8" style="--i:6"><b>Photograph:</b> the kosode from slide 1, probably ca. 1660s (The Metropolitan Museum of Art · CC0 · cropped). <b>Drawing:</b> this deck’s schematic.</p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
@@ -619,9 +637,10 @@ html.idle #vp{cursor:none}
     <div class="card fromL" style="left:110px;top:290px;width:650px">
       <p class="eyebrow"><b>Europe</b>Without the rules</p>
       <h3>A robe of <em>ease</em></h3>
-      <p class="c sm">Long before, kimono ‘had made their way to Holland and become popular as men’s domestic garments’.<sup class="s">[5] PDF p.2</sup></p>
-      <p class="c sm">Western women saw in kimono ‘an ease and a liberation’.<sup class="s">[5] PDF p.4</sup></p>
+      <p class="c sm">Well before the late 1800s, kimono ‘had made their way to Holland and become popular as men’s domestic garments’.<sup class="s">[5] PDF p.2</sup></p>
+      <p class="c sm">Western women saw in kimono ‘an ease and a liberation’ and ‘adopted them as dressing gowns’.<sup class="s">[5] PDF p.4</sup></p>
       <p class="c sm">Fashion found in the kimono a structure for ‘liberation from the corset’.<sup class="s">[5] PDF p.11</sup></p>
+      <span class="cv">One essay on fashion history. It describes some Western wearers and designers, not all.</span>
     </div>
     <div class="card fromR" style="left:1160px;top:290px;width:650px">
       <p class="eyebrow"><b>Japan</b>With every rule</p>
@@ -629,23 +648,24 @@ html.idle #vp{cursor:none}
       <p class="c sm">A magazine calls the furisode ‘the most formal garment for unmarried women’.<sup class="s">[4] p.53</sup></p>
       <p class="c sm">Its dressing instructions are ‘communicated as fixed and non-negotiable’.<sup class="s">[4] p.72</sup></p>
       <p class="c sm">The rules make it ‘arguably very similar to a school uniform’.<sup class="s">[4] p.123</sup></p>
-      <span class="cv">One garment type at one ceremony, not all kimono. Becke adds: ‘Rules can be bended’.<sup class="s">[4] p.123</sup></span>
+      <span class="cv">One garment type at one ceremony, not all kimono. The author adds: ‘Rules can be bended’ (sic).<sup class="s">[4] p.123</sup></span>
     </div>
-    <p class="lede f1" style="left:660px;top:820px;width:600px;text-align:center;font:italic 400 44px/1.15 var(--disp)">The cut stayed the same.<br>The meaning did not.</p>
+    <p class="lede f1" style="left:610px;top:800px;width:700px;text-align:center;font:italic 400 44px/1.15 var(--disp)">One garment. Two meanings.<sup class="s" style="font-style:normal;vertical-align:14px">this deck’s reading of [5] PDF p.4 and [4] p.123</sup></p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
 
   <!-- 10 both -->
-  <section class="slide s10" data-title="Answer: both" data-steps="2" data-say="It is a garment and a set of rules at once. The cloth is simple, and the rules for wearing it carry the meaning.">
+  <section class="slide s10" data-title="Answer: both" data-steps="2" data-say="It is both a garment and a set of rules. The cloth is simple, and the rules of dressing and formality give it meaning.">
     <p class="eyebrow r" style="left:120px;top:150px;--i:0"><b>The answer</b>Slide 2, settled</p>
     <h2 class="big h0" style="left:116px;top:214px;width:900px">A <em>garment</em>,<br>or a <em class="g">set of rules</em>?</h2>
     <p class="lede h0" style="left:120px;top:520px;width:760px">Front: the garment. ‘A completely flat surface’, cut in straight pieces.<sup class="s">[4] p.10</sup><br><br>Now turn it over.</p>
     <h2 class="f1" style="left:112px;top:196px;font:italic 400 250px/.9 var(--disp);color:var(--shuL);letter-spacing:-.02em">Both.</h2>
     <div class="rows f1" style="left:120px;top:470px;width:820px;--i:1">
-      <p class="c">Becke defines kimono by ‘the garment’s shape <b>and</b> practice of fitting it to the body’.<sup class="s">[4] p.10</sup> <span style="color:var(--dim)">(Bold added.)</span></p>
+      <p class="c">Becke, the author of [4], defines kimono by ‘the garment’s shape <b>and</b> practice of fitting it to the body’.<sup class="s">[4] p.10</sup> <span style="color:var(--dim)">(Bold added.)</span></p>
       <p class="c">‘Seventy percent of what makes a kimono a kimono is how it is worn.’<sup class="s">[4] p.11, quoting the head of a kimono house</sup></p>
-      <p class="c">The garment is simple. The meaning comes from the rules of dressing and formality.</p>
+      <p class="c">It takes both. The garment is simple; the rules of dressing and formality give it meaning: ‘social and cultural aspects and contexts strongly determine how the garment should be worn’.<sup class="s">[4] p.11</sup><span class="cv">The lines on the back are rules [4] records for the furisode at the coming-of-age day (pp.62–80). Her definition of kimono in general rests on shape and fitting (pp.10–11).</span></p>
     </div>
+    <p class="h0" style="left:1214px;top:948px;width:400px;text-align:center;font:italic 400 50px/1 var(--disp);color:var(--shuL)">the garment</p>
     <p class="vk r" lang="ja" style="--i:4">着物</p>
     <button class="say" type="button" aria-label="Read this slide aloud"><svg class="i1" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i2" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg></button>
   </section>
@@ -659,11 +679,11 @@ html.idle #vp{cursor:none}
         <h3>Sources read in full for this deck</h3>
         <ol>
           <li><b>[4]</b> Becke, C. <i>Negotiating Gendered Identities Through Dress: Kimono at the Coming-of-age Day in Contemporary Japan.</i> PhD thesis, School of East Asian Studies, The University of Sheffield, January 2022. White Rose eTheses. Page numbers are the printed pages.<br><a href="https://etheses.whiterose.ac.uk/id/eprint/30197/">etheses.whiterose.ac.uk/id/eprint/30197</a></li>
-          <li><b>[5]</b> Fukai, A. “Japonism in Fashion.” Kyoto Costume Institute; first carried in the exhibition catalogue <i>Japonism in Fashion</i> (Tokyo). The file has no printed page numbers, so pages are PDF pages.<br><a href="https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf">kci.or.jp … e_Fukai_Japonism_in_Fashion.pdf</a></li>
+          <li><b>[5]</b> Fukai, A. “Japonism in Fashion.” Kyoto Costume Institute; carried in an exhibition catalogue, <i>Japonism in Fashion</i> (Tokyo); the file gives no year. The file has no printed page numbers, so pages are PDF pages.<br><a href="https://www.kci.or.jp/en/research/dresstudy/pdf/e_Fukai_Japonism_in_Fashion.pdf">kci.or.jp … e_Fukai_Japonism_in_Fashion.pdf</a></li>
         </ol>
         <h3 style="margin-top:20px">Planned, but not cited</h3>
         <p class="note" style="margin-top:0"><b>[1]</b> Dalby, <i>Kimono: Fashioning Culture</i>; <b>[2]</b> Bincsik and Van Godtsenhoven, <i>Kimono Style</i> (The Met); <b>[3]</b> “Kimono: elucidating meanings of Japanese textile artifacts for a museum audience” (SciELO). None could be read from the build environment, so nothing is cited from them. Where a line says “quoting Dalby”, the words were read in [4].</p>
-        <p class="note">[4] studies one garment, the furisode, at one ceremony. Slides say so wherever that limits a claim. Claims with no readable source were removed; the full ledger is in kimono-sources.md.</p>
+        <p class="note">Headlines sum up the sourced lines beneath them. [4] studies one garment, the furisode, at one ceremony; slides say so wherever that limits a claim. Claims with no readable source were removed; the full ledger is in kimono-sources.md.</p>
         <p class="note"><b>Type.</b> Cormorant Garamond, © 2015 the Cormorant Project Authors. Source Sans 3, © 2010–2020 Adobe, with Reserved Font Name ‘Source’ (embedded as a renamed subset). Shippori Mincho, © 2021 The Shippori Mincho Project Authors. All under the SIL Open Font License 1.1.</p>
       </div>
       <div>

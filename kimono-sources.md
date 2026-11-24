@@ -52,16 +52,16 @@ Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the
 | 30 | 7 | In Paris around 1907, a neckband low in back, showing the nape, was the fashionable way to wear kimono. | 5 | PDF p.8 | "Letting the neck-band fall low in back, revealing the nape of the neck (nukiemon), became the fashionable way to wear kimono around 1907." | Paris fashion, about 1907 |
 | 31 | 8 | Kosode were the precursor of the modern kimono. | 5 | PDF p.4 | "kosode (precursor of the modern kimono)" | general |
 | 32 | 8 | Laws set the type of clothes each class could wear. | 4 | p.99 | "issuing sumptuary laws on the type of clothes members of each class were allowed to wear" | Tokugawa government |
-| 33 | 8 | Pattern books, hinagata-bon, informed consumers of designs. | 4 | p.28 | "These pattern books called hinagata-bon informed consumers of available kimono designs and styles." | early seventeenth century onward; reported: Kuhn 2018 |
+| 33 | 8 | Pattern books, hinagata-bon, informed consumers of available kimono designs. | 4 | p.28 | "These pattern books called hinagata-bon informed consumers of available kimono designs and styles." | early seventeenth century onward; reported: Kuhn 2018 |
 | 34 | 8 | Reframed as Japan's national costume through an encounter with Western dress, in the Meiji era. | 4 | p.10 | "It was reframed as Japan's national costume through an encounter with 'Western' forms of dress during the Meiji Restoration" | Meiji |
-| 35 | 8 | One shape became frozen in time in the Meiji period (1868–1912). | 4 | p.72 | "a certain kimono shape became 'frozen in time' during the Meiji period (1868-1912)" | reported: Dalby 2001 |
+| 35 | 8 | One shape became frozen in time in the Meiji period (1868–1912). | 4 | p.72 | "a certain kimono shape became 'frozen in time' during the Meiji period (1868-1912)" | Meiji; Becke's own statement, following her citation of Dalby 2001: 112 for the 'samurai-turned-bourgeois' style |
 | 36 | 8 | In the post-war decades Japanese dress was largely abandoned by the majority. | 4 | p.68 | "Wafuku lost their appeal towards the younger generation and, hence, largely abandoned by the majority of the population" | post-war; reported: Hendry 2013 |
 | 37 | 8 | The way of wearing became vigorously standardised after the war. | 4 | p.11 | "the way of wearing and fitting kimono has become vigorously standardised in a post-war context" | post-war |
 | 38 | 8 | A 1972 book lists 390 rules. | 4 | p.75 | "The book contains a total of 390 rules in regards to buying, choosing, and wearing kimono." | Shiotsuki, *Kimono no Hon*, 1972 |
 | 39 | 8 | Rental became popular (early 1990s). | 4 | p.118 | "Rental options gained popularity during this time" | after the early-1990s recession |
 | 40 | 8 | Then came more demand for vintage kimono (early twenty-first century). | 4 | p.14 | "an increased demand and appreciation of vintage kimono made headlines in Japan" | reported: Assmann 2008 |
-| 41 | 9 | Long before Japonism, kimono were popular in Holland as men's domestic garments. | 5 | PDF p.2 | "kimono had made their way to Holland and become popular as men's domestic garments" | Europe |
-| 42 | 9 | Western women saw in kimono an ease and a liberation. | 5 | PDF p.4 | "an ease and a liberation as well as exoticism and consequently adopted them as dressing gowns" | Western wearers, nineteenth century |
+| 41 | 9 | Well before the late 1800s, kimono were popular in Holland as men's domestic garments. | 5 | PDF p.2 | "kimono had made their way to Holland and become popular as men's domestic garments" | Europe |
+| 42 | 9 | Western women saw in kimono an ease and a liberation, and adopted them as dressing gowns. | 5 | PDF p.4 | "an ease and a liberation as well as exoticism and consequently adopted them as dressing gowns" | Western wearers, nineteenth century |
 | 43 | 9 | Fashion found in the kimono a structure for liberation from the corset. | 5 | PDF p.11 | "a non-Western structure that would realize the nineteenth-century dream of liberation from the corset" | Western fashion |
 | 44 | 9 | A magazine calls the furisode the most formal garment for unmarried women. | 4 | p.53 | "'A furisode is a kimono with long sleeves, which is considered the most formal garment for unmarried women.'" | furisode; reported: a furisode magazine |
 | 45 | 9 | Its dressing instructions are communicated as fixed and non-negotiable. | 4 | p.72 | "communicated as fixed and non-negotiable" | furisode publications |
@@ -73,8 +73,12 @@ Scope warning for source 4: it studies the furisode (long-sleeved kimono) at the
 | 51 | 7 | Label "Torso": models are posed straight and upright. | 4 | p.78 | "settled in a straight and upright position, with legs and feet placed neatly next to each other" | furisode; models in magazines |
 | 52 | 7 | Label "Below the obi": the kimono is wrapped like a long tube. | 4 | p.70 | "wrapped around the body to resemble a long tube in the form of a pencil skirt" | furisode; models in magazines |
 | 53 | 7 | Label "Lower edge": it ends just above the feet. | 4 | p.70 | "set in a horizontally straight position and always ends just above the models' feet" | furisode; models in magazines |
+| 54 | 3 | The kimono is cut along straight lines and made of rectangles. | 5 | PDF p.1 | "cut along straight lines and constructed of rectangles, as are Japanese kimono" | said in passing, in a comparison with Vionnet's dresses |
+| 55 | 9 | "One garment. Two meanings." (the deck's own reading of rows 41–47, marked as such on the slide). | 5; 4 | PDF p.4; p.123 | "adopted them as dressing gowns" / "very similar to a school uniform" | the deck's reading of two sourced cases |
+| 56 | 7 | The coming-of-age day is a public holiday on the second Monday of January. | 4 | p.37 | "Celebrated annually as a public holiday on the second Monday of January, the coming-of-age day (seijin-no-hi)" | general |
+| 57 | 8 | Period label: Edo period, 1600–1868. | 4 | p.164 | "the high-profile courtesans of the Edo period (1600-1868)" | date range as Becke gives it |
 
-The words on the back of the kimono on slide 10 repeat rows 10, 14–16, 21, 22 and 26.
+The words on the back of the kimono on slide 10 repeat rows 10, 14–16, 21, 22 and 26. Slide 10 says on screen that these are rules recorded for the furisode at the coming-of-age day.
 
 ## Claims dropped for lack of a source read this session
 
