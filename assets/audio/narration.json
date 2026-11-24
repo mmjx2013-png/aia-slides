@@ -1,0 +1,96 @@
+{
+ "threshold": {
+  "stop": 0,
+  "title": "Welcome",
+  "duration": 25.63,
+  "src": "assets/audio/threshold.mp3",
+  "lufs": -16.6,
+  "truePeak": -1.8,
+  "cues": [
+   {
+    "t0": 0.47,
+    "t1": 2.73,
+    "text": "Welcome. Take your time in here."
+   },
+   {
+    "t0": 2.99,
+    "t1": 8.35,
+    "text": "The word on the wall comes from kiru mono, which means, quite simply, a thing to wear."
+   },
+   {
+    "t0": 8.57,
+    "t1": 12.89,
+    "text": "It is a plain name. Almost nothing else about the kimono is plain."
+   },
+   {
+    "t0": 13.11,
+    "t1": 19.55,
+    "text": "So before you scroll, pick a side, and hold on to your answer. We will come back for it at the end."
+   },
+   {
+    "t0": 19.87,
+    "t1": 24.65,
+    "text": "Every room has a voice like this one. Press play whenever you want company."
+   }
+  ]
+ },
+ "bolt": {
+  "stop": 1,
+  "title": "One bolt",
+  "duration": 35.08,
+  "src": "assets/audio/bolt.mp3",
+  "lufs": -16.6,
+  "truePeak": -1.8,
+  "cues": [
+   {
+    "t0": 0.47,
+    "t1": 2.63,
+    "text": "Watch the cloth, not the labels.",
+    "frame": 0
+   },
+   {
+    "t0": 2.85,
+    "t1": 7.11,
+    "text": "It leaves the roll at one width, and nobody will ever cut a curve into it.",
+    "frame": 20
+   },
+   {
+    "t0": 7.33,
+    "t1": 11.37,
+    "text": "A few straight cuts across. That is all the cutting there is.",
+    "frame": 120
+   },
+   {
+    "t0": 11.63,
+    "t1": 15.31,
+    "text": "Then the rectangles are sewn back together, edge to edge.",
+    "frame": 180
+   },
+   {
+    "t0": 15.53,
+    "t1": 18.57,
+    "text": "Lift it by the shoulders and the whole garment is there.",
+    "frame": 215
+   },
+   {
+    "t0": 18.79,
+    "t1": 22.71,
+    "text": "Lay it down again, and it is as flat as the bolt it came from.",
+    "frame": 270
+   },
+   {
+    "t0": 22.93,
+    "t1": 28.15,
+    "text": "Nothing in it has been shaped to a body. No dart, no tuck, no curve.",
+    "frame": 295
+   },
+   {
+    "t0": 28.37,
+    "t1": 34.13,
+    "text": "So here is the puzzle of this exhibition. If the body is not in the cloth, where is it?",
+    "frame": 315,
+    "end_frame": 329
+   }
+  ]
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "met-76731": {
+  "w": 1190,
+  "h": 1590,
+  "files": {
+   "640": "met-76731-640.webp",
+   "1190": "met-76731-1190.webp"
+  },
+  "wall": {
+   "gradient": "linear-gradient(180deg,#9b9b9b 0%,#a3a3a3 10%,#ababab 20%,#b2b2b2 30%,#b8b8b8 40%,#bdbdbd 50%,#c5c5c5 60%,#d1d1d1 70%,#d6d6d6 80%,#d0d0d0 90%,#cacaca 100%)",
+   "top": "#9b9b9b",
+   "bottom": "#cacaca",
+   "luminance": 189.1,
+   "edgeMismatch": 3.29
+  }
+ },
+ "met-hinagata": {
+  "w": 1590,
+  "h": 1149,
+  "files": {
+   "640": "met-hinagata-640.webp",
+   "1200": "met-hinagata-1200.webp"
+  },
+  "wall": {
+   "gradient": "linear-gradient(180deg,#2d3232 0%,#2a2f2f 10%,#252a29 20%,#212726 30%,#1f2423 40%,#1b211f 50%,#1d2221 60%,#1e2321 70%,#202422 80%,#252627 90%,#28282a 100%)",
+   "top": "#2d3232",
+   "bottom": "#28282a",
+   "luminance": 36.7,
+   "edgeMismatch": 3.94
+  }
+ }
+}
