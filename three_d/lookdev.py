@@ -29,7 +29,9 @@ LOOK = dict(
     sun_gain=0.92,              # a little less sun against the sky
     paper_emit=1.0,             # the paper's own (camera) glow, now that real light comes through it
     paper_translucent=0.55,     # share of diffuse transmission in the washi
-    haze_density=0.022,         # 1/m: shafts visible, subtle (lit by sun and sky only)
+    haze_density=0.008,         # 1/m: the hall's air, low (lit by sun and sky only)
+    beam_density=0.065,         # 1/m: a slab of denser air just inside the west bays, where the beams are
+    beam_depth=1.7,             # m: how far into the room the slab reaches
     haze_anisotropy=0.35,       # forward scattering: beams brighter looking towards the sun
     haze_color=(1.0, 0.98, 0.95),
     bounce_w=0.9,               # W/m2 of the bounce plane (it is a fill, not a key)
@@ -89,21 +91,22 @@ def _washi(mat):
         s.default_value *= LOOK["paper_emit"]
 
 
-def _haze(coll):
+def _haze(coll, name="Haze", density=None, x1=None):
     """A homogeneous volume filling the hall's air (cheap in Cycles: no ray marching)."""
-    me = bpy.data.meshes.new("Haze")
-    x0, x1, y0, y1, z0, z1 = scene.XW + 0.01, scene.HX - 0.01, scene.YS + 0.01, scene.YN - 0.01, 0.005, 3.38
+    me = bpy.data.meshes.new(name)
+    x0, y0, y1, z0, z1 = scene.XW + 0.01, scene.YS + 0.01, scene.YN - 0.01, 0.005, 3.38
+    x1 = scene.HX - 0.01 if x1 is None else x1
     vs = [(x, y, z) for x in (x0, x1) for y in (y0, y1) for z in (z0, z1)]
     fs = [(0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)]
     me.from_pydata(vs, [], fs)
-    mat = bpy.data.materials.new("Haze")
+    mat = bpy.data.materials.new(name)
     mat.use_nodes = True
     nt = mat.node_tree
     for n in list(nt.nodes):
         nt.nodes.remove(n)
     out = nt.nodes.new("ShaderNodeOutputMaterial")
     pv = nt.nodes.new("ShaderNodeVolumePrincipled")
-    pv.inputs["Density"].default_value = LOOK["haze_density"]
+    pv.inputs["Density"].default_value = LOOK["haze_density"] if density is None else density
     pv.inputs["Anisotropy"].default_value = LOOK["haze_anisotropy"]
     pv.inputs["Color"].default_value = LOOK["haze_color"] + (1.0,)
     nt.links.new(pv.outputs[0], out.inputs["Volume"])
@@ -112,7 +115,7 @@ def _haze(coll):
     except Exception:
         pass
     me.materials.append(mat)
-    ob = bpy.data.objects.new("Haze", me)
+    ob = bpy.data.objects.new(name, me)
     coll.objects.link(ob)
     return ob
 
@@ -169,6 +172,18 @@ def apply(sc, clip=False):
         _bounce(coll)
     if "Haze" not in bpy.data.objects:
         _haze(sc.collection)
+        # overlapping volumes add: the slab is the beams' extra density on top of the hall's haze
+        _haze(sc.collection, "HazeBeams", LOOK["beam_density"], scene.XW + LOOK["beam_depth"])
+    # object index for comp.py: 1 = gold leaf and lacquer (keep their gleam out of the relight),
+    # 2 = the robe (the subject: kept at its exposure, a gentle lift)
+    for ob in bpy.data.objects:
+        if ob.type != "MESH":
+            continue
+        mats = " ".join(s.material.name.lower() for s in ob.material_slots if s.material)
+        if ob.name.startswith("Robe") or ob.name.startswith("robe_fold") or ob.name == "robe_sleeve":
+            ob.pass_index = 2
+        elif any(k in mats for k in ("gold", "gilt", "lacquer")):
+            ob.pass_index = 1
     c = sc.cycles
     c.volume_bounces = 0
     c.volume_step_rate = 4.0 if clip else 2.0       # only matters for non-homogeneous volumes
@@ -178,6 +193,7 @@ def apply(sc, clip=False):
     vl.use_pass_combined = True
     vl.use_pass_mist = True
     vl.use_pass_position = True
+    vl.use_pass_object_index = True
     vl.cycles.use_pass_volume_direct = True
     vl.use_pass_ambient_occlusion = not clip
     vl.use_pass_cryptomatte_object = not clip

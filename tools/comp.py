@@ -30,16 +30,16 @@ XW = -3.64                     # the west wall (the shoji) in world x
 
 # weights per light preset. falloff: (metres from the openings before it starts, 1/m, floor)
 PRESETS = {
-    "morning": dict(ev=0.75, sun=1.15, sky=0.85, shoji=0.9, bounce=1.5, volume=3.5, paper=1.5, rest=1.0,
-                    falloff=(0.6, 0.20, 0.42), haze=0.012, haze_col=(0.95, 0.97, 1.0), white=(1.0, 1.0, 1.0)),
-    "dusk": dict(ev=1.45, sun=1.1, sky=0.8, shoji=0.9, bounce=0.35, volume=3.5, paper=1.3, rest=1.0,
-                 falloff=(0.6, 0.24, 0.35), haze=0.012, haze_col=(1.0, 0.86, 0.72), white=(1.0, 0.98, 0.95)),
+    "morning": dict(ev=0.75, sun=1.15, sky=0.85, shoji=0.9, bounce=1.5, volume=1.4, paper=1.5, robe_lift=1.15, gold_lift=1.25, rest=1.0,
+                    falloff=(0.6, 0.20, 0.42), haze=0.007, haze_col=(0.95, 0.97, 1.0), white=(1.0, 1.0, 1.0)),
+    "dusk": dict(ev=1.45, sun=1.1, sky=0.8, shoji=0.9, bounce=0.35, volume=1.4, paper=1.3, robe_lift=1.12, gold_lift=1.2, rest=1.0,
+                 falloff=(0.6, 0.24, 0.35), haze=0.007, haze_col=(1.0, 0.86, 0.72), white=(1.0, 0.98, 0.95)),
 }
 SHOT_PRESET = {"hall_dusk": "dusk", "clip_hall_dusk": "dusk"}
 SHOT_EV = {"kosode_iko": 0.15, "clip_kosode_iko": 0.15, "mannequin_obi_back": 0.1}
-CAM = dict(glare_a=0.012, glare_b=0.006, bloom=0.05, bloom_thr=1.6, halation=0.045, wrap=0.22,
+CAM = dict(glare_a=0.007, glare_b=0.0035, bloom=0.05, bloom_thr=1.6, halation=0.045, wrap=0.22,
            vignette_ev=0.55, distort=0.012, ca=0.0007, grain=0.010, chroma=0.35, sat=0.96,
-           contrast=0.32)
+           contrast=0.42, black=0.0035)
 
 
 # ------------------------------------------------------------------ EXR
@@ -51,7 +51,7 @@ def read_exr(path):
         for name, c in ((n, c) for part in f.parts for n, c in part.channels.items()):
             parts = name.split(".")
             pas, comp = (".".join(parts[-2:-1]) or "Combined"), parts[-1].upper()
-            pas = {"Volume Direct": "VolumeDir", "Ambient Occlusion": "AO"}.get(pas, pas)
+            pas = {"Volume Direct": "VolumeDir", "Ambient Occlusion": "AO", "Object Index": "IndexOB"}.get(pas, pas)
             out.setdefault(pas, {})[comp] = np.asarray(c.pixels, dtype=np.float32)
     passes = {}
     for pas, comps in out.items():
@@ -136,6 +136,23 @@ def relight(P, pre):
             W += (wt * fall[..., None] - 1.0) * r
         else:
             W += (wt - 1.0) * r
+    # gold leaf, lacquer (index 1) keep their light as rendered, gleam included; the robe (index 2) too,
+    # with a gentle lift: it is the subject
+    if "IndexOB" in P:
+        # the index pass takes the first hit of each sample, and a scatter in the haze is a hit with index
+        # 0: on a gold or robe surface a share of the samples read 0. So: which object among the samples
+        # that hit one (blurred shares), present where enough samples did, edges snapped by a guided filter
+        idx = np.rint(P["IndexOB"])
+        sg = 1.6 * s
+        nz = blur((idx > 0).astype(np.float32), sg)
+        pres = smoothstep(0.12, 0.35, nz)
+        r2 = blur((idx == 2).astype(np.float32), sg) / np.maximum(nz, 1e-3)
+        gl2 = np.log(lum(C) + 1e-3).astype(np.float32)
+        m = guided(gl2, np.stack([pres, pres * r2], -1), max(2, int(round(4 * s))), 0.01)
+        keep = np.clip(m[..., :1], 0, 1)
+        robe = np.clip(m[..., 1:], 0, 1)
+        W = W * (1 - keep) + keep * np.maximum(W, 1.0)
+        W = W * (1 + (pre["robe_lift"] - 1) * robe + (pre["gold_lift"] - 1) * np.clip(keep - robe, 0, 1))
     X = C * np.maximum(W, 0.0)
     # the washi: what the camera sees of the paper itself (on the west wall line) glows a little more
     if "Position" in P:
@@ -199,6 +216,7 @@ def lens(X, P):
 
 def tone(X, pre, ev):
     X = X * np.float32(2.0 ** ev) * np.array(pre["white"], np.float32)
+    X = np.maximum(X - CAM["black"], 0.0) * np.float32(1.0 / (1.0 - CAM["black"]))   # a deeper black point
 
     def hable(t):
         A, Bb, Cc, D, E, F = 0.22, 0.30, 0.10, 0.20, 0.01, 0.30
