@@ -175,12 +175,13 @@ def apply(sc, clip=False):
         # overlapping volumes add: the slab is the beams' extra density on top of the hall's haze
         _haze(sc.collection, "HazeBeams", LOOK["beam_density"], scene.XW + LOOK["beam_depth"])
     # object index for comp.py: 1 = gold leaf and lacquer (keep their gleam out of the relight),
-    # 2 = the robe (the subject: kept at its exposure, a gentle lift)
+    # 2 = the subjects, the museum robe and the dressed figure (kept at their exposure, a gentle lift)
     for ob in bpy.data.objects:
         if ob.type != "MESH":
             continue
         mats = " ".join(s.material.name.lower() for s in ob.material_slots if s.material)
-        if ob.name.startswith("Robe") or ob.name.startswith("robe_fold") or ob.name == "robe_sleeve":
+        subject = ob.name.startswith("Robe") or any(c.name == "DressForm" for c in ob.users_collection)
+        if subject:
             ob.pass_index = 2
         elif any(k in mats for k in ("gold", "gilt", "lacquer")):
             ob.pass_index = 1

@@ -102,6 +102,12 @@ def smoothstep(e0, e1, x):
 # ------------------------------------------------------------------ the chain
 
 def relight(P, pre):
+    C, W, V = relight_parts(P, pre)
+    return C * W + V
+
+
+def relight_parts(P, pre):
+    """(Combined, the per-pixel relight weight, the extra volume light): relit = C * W + V."""
     C = P["Combined"][..., :3].astype(np.float32)
     h, w = C.shape[:2]
     s = w / 1920.0
@@ -118,7 +124,7 @@ def relight(P, pre):
               ("bounce", "Combined_bounce")]
     have = [(k, n) for k, n in groups if n in P]
     if not have:
-        return C
+        return C, np.ones_like(C), np.zeros_like(C)
     # ratios of blurred passes (the group passes are noisy, fireflies clipped against Combined), then
     # snapped back to the edges of the clean Combined by a guided filter
     sig = 5.0 * s
@@ -153,13 +159,14 @@ def relight(P, pre):
         robe = np.clip(m[..., 1:], 0, 1)
         W = W * (1 - keep) + keep * np.maximum(W, 1.0)
         W = W * (1 + (pre["robe_lift"] - 1) * robe + (pre["gold_lift"] - 1) * np.clip(keep - robe, 0, 1))
-    X = C * np.maximum(W, 0.0)
+    W = np.maximum(W, 0.0)
     # the washi: what the camera sees of the paper itself (on the west wall line) glows a little more
     if "Position" in P:
         px = blur(P["Position"][..., 0], 1.5 * s)
         paper = (1.0 - smoothstep(0.03, 0.08, np.abs(px - XW))) * smoothstep(0.35, 0.9, lum(blur(C, 1.5 * s)))
         paper = blur(paper * (~bg), 1.5 * s)
-        X = X * (1.0 + (pre["paper"] - 1.0) * paper)[..., None]
+        W = W * (1.0 + (pre["paper"] - 1.0) * paper)[..., None]
+    Vadd = np.zeros_like(C)
     # the air: the volume pass (sun and sky only) is smooth by nature but noisy at these samples:
     # clip fireflies, blur, keep it behind silhouettes (guided by depth), then add the extra share
     if "VolumeDir" in P and pre["volume"] != 1.0:
@@ -168,8 +175,8 @@ def relight(P, pre):
         V = blur(V, 0.008 * w)
         if "Mist" in P:
             V = guided(P["Mist"].astype(np.float32), V, max(2, int(round(10 * s))), 1e-4)
-        X = X + (pre["volume"] - 1.0) * np.maximum(V, 0.0)
-    return X
+        Vadd = (pre["volume"] - 1.0) * np.maximum(V, 0.0)
+    return C, W, Vadd
 
 
 def air(X, P, pre):
@@ -256,15 +263,61 @@ def sensor(D, seed):
     return np.clip(D, 0, 1)
 
 
-def comp(path, shot="", seed=0):
+def comp(path, shot="", seed=0, relit=None):
     P = read_exr(path)
     pre = PRESETS[SHOT_PRESET.get(shot, "morning")]
-    X = relight(P, pre)
+    X = relight(P, pre) if relit is None else relit(P, pre)
     X = air(X, P, pre)
     X = lens(X, P)
     D = tone(X, pre, pre["ev"] + SHOT_EV.get(shot, 0.0))
     D = sensor(D, seed)
     return (D * 255.0 + 0.5).astype(np.uint8)
+
+
+# ------------------------------------------------------------------ clips: two stages, a flicker guard
+# The group ratios and the volume pass are estimated from noisy passes in every frame, so they shimmer
+# from frame to frame. Stage 1 stores each frame's weight (full) and a 1/8-size copy of the weight and of
+# the extra volume light. Stage 2 replaces their low frequencies by the mean over frames i-2..i+2 (the
+# dolly moves a few pixels in that time, so at 1/8 size nothing ghosts) and grades the frame. Frames are
+# streamed: stage 2 of frame i runs as soon as its neighbours have been through stage 1, then its EXR
+# can go (disk).
+TWIN = 2
+LOW = 8
+
+
+def _low(a):
+    h, w = a.shape[:2]
+    return a[:h - h % LOW, :w - w % LOW].reshape(h // LOW, LOW, w // LOW, LOW, -1).mean((1, 3))
+
+
+def _up(a, h, w):
+    return ndi.zoom(a, (h / a.shape[0], w / a.shape[1], 1), order=1, prefilter=False)[:h, :w]
+
+
+def _stage1(job):
+    src, wpath, shot = job
+    P = read_exr(src)
+    pre = PRESETS[SHOT_PRESET.get(shot, "morning")]
+    _, W, V = relight_parts(P, pre)
+    tmp = wpath + ".tmp.npz"
+    np.savez(tmp, W=W.astype(np.float16), wl=_low(W), vl=_low(V))
+    os.replace(tmp, wpath)
+    return wpath
+
+
+def _stage2(job):
+    src, dst, shot, seed, wpath, nbrs = job
+    own = np.load(wpath)
+    wl = np.mean([np.load(n)["wl"] for n in nbrs], 0)
+    vl = np.mean([np.load(n)["vl"] for n in nbrs], 0)
+
+    def relit(P, pre):
+        C = P["Combined"][..., :3].astype(np.float32)
+        h, w = C.shape[:2]
+        W = own["W"].astype(np.float32) * _up(wl / np.maximum(own["wl"], 1e-3), h, w)
+        return C * W + _up(vl, h, w)
+    save(comp(src, shot, seed, relit), dst)
+    return dst
 
 
 def save(rgb, out):
@@ -297,24 +350,47 @@ def main():
     ap.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     ap.add_argument("--fps", type=int, default=30)
     ap.add_argument("--frames-only", action="store_true", help="clip: write graded PNG frames, do not encode")
+    ap.add_argument("--delete-exr", action="store_true", help="clip: delete each EXR once its graded frame exists")
+    ap.add_argument("--need", type=int, default=0, help="clip: encode only if this many graded frames exist")
     a = ap.parse_args()
     shot = a.shot or os.path.basename(a.src.rstrip("/")).split(".")[0]
     if a.mode == "still":
         save(comp(a.src, shot, 7), a.dst)
         print("[comp] %s -> %s" % (a.src, a.dst), flush=True)
         return
-    srcs = sorted(glob.glob(os.path.join(a.src, "f_*.exr")))
-    if not srcs:
-        sys.exit("[comp] no EXR frames in %s" % a.src)
     fdir = a.src.rstrip("/") + "_graded"
     os.makedirs(fdir, exist_ok=True)
-    jobs = [(p, os.path.join(fdir, os.path.basename(p)[:-4] + ".png"), shot, 1000 + i) for i, p in enumerate(srcs)]
+
+    def num(p):
+        return int(os.path.basename(p)[2:6])
+    exr = {num(p): p for p in glob.glob(os.path.join(a.src, "f_*.exr"))}
+    wp = lambda i: os.path.join(fdir, "w_%04d.npz" % i)          # noqa: E731
+    png = lambda i: os.path.join(fdir, "f_%04d.png" % i)         # noqa: E731
+    n_all = a.need or (max(exr) + 1 if exr else 0)
     with Pool(a.jobs) as pool:
-        for n, _ in enumerate(pool.imap(_frame, jobs, chunksize=2)):
-            if n % 30 == 0:
-                print("[comp] %s %d/%d" % (shot, n + 1, len(jobs)), flush=True)
+        s1 = [(exr[i], wp(i), shot) for i in sorted(exr) if not os.path.exists(png(i)) and not os.path.exists(wp(i))]
+        list(pool.imap(_stage1, s1, chunksize=2))
+        s2 = []
+        for i in sorted(exr):
+            if os.path.exists(png(i)):
+                continue
+            nb = [j for j in range(i - TWIN, i + TWIN + 1) if 0 <= j < max(n_all, i + 1)]
+            if all(os.path.exists(wp(j)) for j in nb):
+                s2.append((exr[i], png(i), shot, 1000 + i, wp(i), [wp(j) for j in nb]))
+        for i, dst in zip([j[0] for j in s2], pool.imap(_stage2, s2, chunksize=2)):
+            if a.delete_exr:
+                os.remove(i)                   # graded: the EXR is not needed again
+    # the weights of a frame are needed by its neighbours' stage 2 only: drop those no longer needed
+    for i in range(n_all):
+        if os.path.exists(wp(i)) and all(os.path.exists(png(j)) for j in range(i - TWIN, i + TWIN + 1)
+                                          if 0 <= j < n_all):
+            os.remove(wp(i))
+    done = len(glob.glob(os.path.join(fdir, "f_*.png")))
+    print("[comp] %s: %d graded (stage 1 %d, stage 2 %d this pass)" % (shot, done, len(s1), len(s2)), flush=True)
     if a.frames_only:
         return
+    if a.need and done < a.need:
+        sys.exit("[comp] %s: %d of %d graded frames, not encoded" % (shot, done, a.need))
     os.makedirs(os.path.dirname(a.dst) or ".", exist_ok=True)
     pat = os.path.join(fdir, "f_%04d.png")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(a.fps), "-i", pat, "-c:v", "libx264",
@@ -325,7 +401,7 @@ def main():
                     "-crf", "32", "-b:v", "0", "-row-mt", "1", "-pix_fmt", "yuv420p", "-an", a.dst + ".tmp.webm"],
                    check=True)
     os.replace(a.dst + ".tmp.webm", a.dst + ".webm")
-    print("[comp] %s: %d frames -> %s.mp4 + .webm" % (shot, len(srcs), a.dst), flush=True)
+    print("[comp] %s: %d frames -> %s.mp4 + .webm" % (shot, done, a.dst), flush=True)
 
 
 if __name__ == "__main__":

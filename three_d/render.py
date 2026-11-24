@@ -183,7 +183,10 @@ def main_shots(a, q):
     import shots
     rx, ry = (int(v) for v in a.res.lower().split("x"))
     jobs = shot_jobs(a)
-    todo = [j for j in jobs if not (a.only_missing and os.path.exists(j[0]))]
+    def have(out):    # a clip frame graded by tools/comp.py (its EXR deleted) counts as done
+        return os.path.exists(out) or (a.vfx and a.clip and os.path.exists(
+            os.path.join(os.path.dirname(out) + "_graded", os.path.basename(out)[:-4] + ".png")))
+    todo = [j for j in jobs if not (a.only_missing and have(j[0]))]
     if not todo:
         print("[render] nothing to do (%d shots frames requested, all exist)" % len(jobs), flush=True)
         return
@@ -201,13 +204,17 @@ def main_shots(a, q):
           % (a.quality, dev, rx, ry, sc.cycles.samples, len(todo), len(jobs), time.time() - t0), flush=True)
     t_all = time.time()
     for n, (out, name, i) in enumerate(todo):
-        if a.only_missing and os.path.exists(out):
+        if a.only_missing and have(out):
             continue
         if os.path.exists(os.path.join(os.path.dirname(HERE), "build", "STOP")):
             print("[render] build/STOP exists: stopping here", flush=True)
             break
         t0 = time.time()
         os.makedirs(os.path.dirname(out), exist_ok=True)
+        cap = int(os.environ.get("VFX_MAX_PENDING", "0"))
+        while a.vfx and i is not None and cap and len([f for f in os.listdir(os.path.dirname(out))
+                                                        if f.endswith(".exr")]) >= cap:
+            time.sleep(2)          # the grader (tools/comp.py) is behind: hold, so the EXRs cannot fill the disk
         if i is None or a.no_motion:
             scene.apply_shot(shots.state(name, i))
         else:
