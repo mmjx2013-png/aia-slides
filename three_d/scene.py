@@ -271,6 +271,9 @@ def _stable_hash(s):
 # =========================================================================== the hall
 
 XW = -HX                      # west wall line (shoji)
+SHOJI = {}                    # (bay, 'S' | 'N') -> the objects of that sliding panel
+EX = XW - 1.70                # outer edge of the veranda
+GROUND_Z = -0.52              # the garden ground
 PIN = 0.04                    # how far the posts stand into the room
 NAG_Z, NAG_H = HL["nageshi_z"], HL["nageshi_h"]
 NAG2_Z, NAG2_H = HL["nageshi2_z"], HL["nageshi2_h"]
@@ -385,6 +388,65 @@ def _ranma(mb, axis, a0, a1, d0, d1, z0, z1, mat, pitch=0.03, bar=0.011):
             mb.box(a0, a1, d0 - 0.002, d1 + 0.002, z - 0.007, z + 0.007, mat, "x")
 
 
+def _stone(name, c, sx, sy, sz, coll, mat, seed):
+    """A water-worn stone: a flattened superellipsoid, lumpy, centred at c (half sizes sx, sy, sz)."""
+    rs = np.random.RandomState(seed)
+    ph = rs.rand(6) * 6.283
+    nu, nv = 56, 22
+    vs, fs = [], []
+
+    def pw(t, e):
+        return math.copysign(abs(t) ** e, t)
+    for j in range(nv + 1):
+        v = -math.pi / 2 + math.pi * j / nv
+        for i in range(nu):
+            u = 2 * math.pi * i / nu
+            lump = 1.0 + 0.045 * math.sin(3 * u + ph[0]) + 0.03 * math.sin(5 * u + ph[1]) * math.cos(v) \
+                + 0.025 * math.sin(2 * u + 3 * v + ph[2])
+            x = sx * lump * pw(math.cos(v), 0.55) * pw(math.cos(u), 0.72)
+            y = sy * lump * pw(math.cos(v), 0.55) * pw(math.sin(u), 0.72)
+            z = sz * pw(math.sin(v), 0.42) * (1.0 + 0.05 * math.sin(2 * u + ph[3]) * math.cos(v)
+                                             + 0.03 * math.sin(4 * u + ph[4]))
+            vs.append((c[0] + x, c[1] + y, c[2] + z))
+    for j in range(nv):
+        for i in range(nu):
+            a, b = j * nu + i, j * nu + (i + 1) % nu
+            fs.append((a, b, b + nu, a + nu))
+    me = bpy.data.meshes.new(name)
+    me.from_pydata(vs, [], fs)
+    me.polygons.foreach_set("use_smooth", [True] * len(me.polygons))
+    me.materials.append(mat)
+    return _obj(name, me, coll)
+
+
+def build_garden(coll):
+    """What the open shoji show before the photographed garden begins: gravel, the stone step at the
+    veranda's edge (kutsunugi-ishi) and a few stepping stones leading away."""
+    grv, rock = C.hall_material("gravel"), C.hall_material("rock")
+    g = MB()
+    g.quad([(EX + 0.06, YS - 30.0, GROUND_Z), (EX + 0.06, YN + 30.0, GROUND_Z), (EX - 45.0, YN + 30.0, GROUND_Z),
+            (EX - 45.0, YS - 30.0, GROUND_Z)], grv)
+    g.build("Garden_gravel", coll)
+    _stone("Stone_step", (EX - 0.72, 0.95, -0.42), 0.62, 1.05, 0.26, coll, rock, 3)
+    for n, (x, y, r) in enumerate(((EX - 1.95, 1.25, 0.30), (EX - 2.75, 1.62, 0.27), (EX - 3.6, 1.40, 0.31),
+                                   (EX - 4.45, 1.85, 0.26))):
+        _stone("Stone_%d" % n, (x, y, GROUND_Z - 0.03), r, r * 1.12, 0.09, coll, rock, 11 + n)
+
+
+def set_open(bays=None):
+    """Slide the west shoji: `bays` maps a bay number (0 = southernmost) to 'S' (its south half stands
+    open) or 'N' (its north half); a list means 'S' for each. None: the layout of dims.json."""
+    if bays is None:
+        bays = HL.get("open_bays", [])
+    if not isinstance(bays, dict):
+        bays = {k: "S" for k in bays}
+    dy = (KEN - 0.14) - PANEL_W
+    for (k, side), obs in SHOJI.items():
+        on = bays.get(k) == side
+        for ob in obs:
+            ob.location.y = (dy if side == "S" else -dy) if on else 0.0
+
+
 def build_hall():
     coll = _coll("Hall")
     hin, brd, plk = C.hall_material("hinoki"), C.hall_material("board"), C.hall_material("planks")
@@ -413,11 +475,12 @@ def build_hall():
     plas.quad([(XW, YS, NAG2_Z), (XW, YN, NAG2_Z), (XW, YN, HC), (XW, YS, HC)], pla)
     for k in range(len(ys) - 1):
         ya, yb = ys[k] + 0.07, ys[k + 1] - 0.07
-        if k in open_bays:      # the south panel is slid open in front of the north one
-            _shoji_panel(wood, thin, paper, yb - PANEL_W, yb, XW - 0.020, 0.006, KAMOI_Z)
-        else:
-            _shoji_panel(wood, thin, paper, ya, ya + PANEL_W, XW - 0.020, 0.006, KAMOI_Z)
-        _shoji_panel(wood, thin, paper, yb - PANEL_W, yb, XW - 0.055, 0.006, KAMOI_Z)
+        # both panels are their own objects, built shut, so a shot can slide either one open
+        for side, (pa, xc) in (("S", (ya, XW - 0.020)), ("N", (yb - PANEL_W, XW - 0.055))):
+            pw, pt = MB(), MB()
+            _shoji_panel(pw, pt, pt, pa, pa + PANEL_W, xc, 0.006, KAMOI_Z)
+            SHOJI[(k, side)] = [pw.build("Shoji_%d%s_frame" % (k, side), coll, bevel=0.004),
+                                pt.build("Shoji_%d%s_paper" % (k, side), coll)]
         # transom (ranma): fine upright slats in front of the paper
         zt0, zt1 = NAG_Z + NAG_H + 0.035, NAG2_Z - 0.035
         _ranma(thin, "y", ya, yb, XW - 0.034, XW - 0.020, zt0, zt1, hin)
@@ -545,11 +608,23 @@ def build_hall():
         gilt.plate((x, YS + 0.065, zc), 1, 0.043, 0.005, 6, gil, rot=math.pi / 6)
         gilt.plate((x, YS + 0.070, zc), 1, 0.017, 0.006, 12, gil)
     # ---- outside: the veranda boards beyond the shoji, and a dark base under everything
-    wood.box(XW - 1.70, XW - 0.10, YS - 0.6, YN + 0.6, -0.07, -0.03, plk, "y")
+    wood.box(EX, XW - 0.10, YS - 0.6, YN + 0.6, -0.07, -0.03, plk, "y")
+    wood.box(EX - 0.075, EX + 0.02, YS - 0.6, YN + 0.6, -0.19, -0.022, plk, "y")       # the edge beam
+    for y in ys[::2]:                                                                # veranda posts
+        wood.box(EX + 0.03, EX + 0.15, y - 0.06, y + 0.06, -0.03, 2.57, plk, "z")
+    wood.box(EX + 0.02, EX + 0.16, YS - 0.6, YN + 0.6, 2.57, 2.71, plk, "y")           # the beam they carry
+    # the eave: its lip sets where the sun's shadow line falls on the paper (dims hall.eave_z by day)
+    ceil.quad([(XW - 0.10, YS - 0.8, 3.36), (XW - 0.10, YN + 0.8, 3.36), (XW - 2.05, YN + 0.8, 2.70),
+               (XW - 2.05, YS - 0.8, 2.70)], brd)
+    wood.box(XW - 2.09, XW - 2.03, YS - 0.8, YN + 0.8, 2.66, 2.80, plk, "y")
     dark = plain("Underside", "#0c0b0a", rough=0.9, spec=0.05)
-    plas.quad([(XW - 2.6, YS - 0.8, -0.075), (HX + 0.3, YS - 0.8, -0.075), (HX + 0.3, YN + 1.2, -0.075),
-               (XW - 2.6, YN + 1.2, -0.075)], dark)
+    plas.quad([(EX + 0.03, YS - 0.8, -0.075), (HX + 0.3, YS - 0.8, -0.075), (HX + 0.3, YN + 1.2, -0.075),
+               (EX + 0.03, YN + 1.2, -0.075)], dark)
+    plas.quad([(EX + 0.03, YN + 0.6, GROUND_Z), (EX + 0.03, YS - 0.6, GROUND_Z), (EX + 0.03, YS - 0.6, -0.07),
+               (EX + 0.03, YN + 0.6, -0.07)], dark)                                  # the dark under the veranda
+    build_garden(coll)
 
+    set_open(None)
     S["hall"] = {
         "wood": wood.build("Hall_wood", coll, bevel=0.004),
         "lattice": thin.build("Hall_lattice", coll),
@@ -644,21 +719,14 @@ def build_daylight():
         return
     el, az = math.radians(HL.get("sun_elevation", 34.0)), math.radians(HL.get("sun_azimuth", 14.0))
     d = Vector((math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), -math.sin(el)))
-    dist = 26.0
-    for k in HL.get("open_bays", []):          # a far, narrow spot through each open bay stands in for the sun
-        ya = YS + k * KEN + 0.07
-        tgt = Vector((XW, ya + 0.5 * (PANEL_W - 0.03), 0.88))
-        li = bpy.data.lights.new("Sun_%d" % k, "SPOT")
-        li.energy = HL["sun_strength"] * 4.0 * math.pi * dist ** 2      # irradiance, in sun-lamp units
-        li.spot_size = 2.0 * math.atan(1.25 / dist)
-        li.spot_blend = 0.06
-        li.shadow_soft_size = dist * math.tan(math.radians(0.27))
-        li.color = (1.0, 0.86, 0.68)
-        ob = _obj("Sun_%d" % k, li, coll)
-        ob.location = tgt - d * dist
-        ob.rotation_mode = "QUATERNION"
-        ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
-        ob.visible_camera = False
+    # one real sun: it reaches the room only through whatever shoji stand open, past the eave
+    li = bpy.data.lights.new("Sun", "SUN")
+    li.energy = HL["sun_strength"] / math.pi        # the level of the spot lamps this replaces
+    li.angle = math.radians(0.54)
+    li.color = (1.0, 0.86, 0.68)
+    ob = _obj("Sun", li, coll)
+    ob.rotation_mode = "QUATERNION"
+    ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
 
 
 # =========================================================================== rack
@@ -1776,6 +1844,62 @@ def apply_clay():
     S["clay"] = True
 
 
+# =========================================================================== props (three_d/props.py)
+
+TOKO_Y = YN + 0.91            # the tokonoma's back wall
+# Where the small things of the room stand unless a shot says otherwise: name -> ((x, y, z), rot_z).
+# One arrangement for every shot, so the slides agree with each other: two cushions, the brazier and
+# the smoking tray by the open shoji; the document boxes and the folded robe on its tray by the iko.
+PROP_LAYOUT = {
+    "scroll": ((0.0, TOKO_Y - 0.02, 2.42), 0.0),
+    "zabuton_a": ((-2.30, -3.35, 0.0), math.radians(6.0)),
+    "zabuton_b": ((-2.38, -2.20, 0.0), math.radians(-4.0)),
+    "brazier": ((-1.62, -2.78, 0.0), math.radians(15.0)),
+    "tobacco_tray": ((-1.72, -3.52, 0.0), math.radians(24.0)),
+    "doc_box_large": ((-1.30, -0.30, 0.0), math.radians(4.0)),
+    "doc_box_small": ((-1.16, -0.82, 0.0), math.radians(31.0)),
+    "robe_tray": ((1.22, -0.55, 0.0), math.radians(-9.0)),
+}
+
+
+def build_props():
+    """The objects of props.py, if that module is there and builds; the hall renders without it."""
+    S["props"] = None
+    coll = _coll("Props")
+    try:
+        import importlib
+        props = importlib.import_module("props")
+        S["props"] = (props, props.build(coll))
+        print("[scene] props.py built")
+    except Exception as e:  # noqa: BLE001
+        print("[scene] props unavailable (%r); the hall stays bare" % (e,))
+        for ob in list(coll.all_objects):
+            bpy.data.objects.remove(ob, do_unlink=True)
+
+
+def place_props(layout=None):
+    """layout: None = PROP_LAYOUT; False = nothing but the scroll; or a dict name -> ((x, y, z), rot_z)
+    laid over PROP_LAYOUT (a value of None takes that object away)."""
+    if not S.get("props"):
+        return
+    props, st = S["props"]
+    lay = dict(PROP_LAYOUT)
+    if layout is False:
+        lay = {"scroll": PROP_LAYOUT["scroll"]}
+    elif layout:
+        lay.update(layout)
+    names = set(PROP_LAYOUT) | set(getattr(props, "DEFAULT_LAYOUT", {}) or {})
+    for nm in names:
+        v = lay.get(nm)
+        loc, rz = v if v else ((0.0, -60.0, -30.0), 0.0)      # off stage: far under the ground
+        try:
+            props.place(st, nm, tuple(loc), rot_z=rz)
+        except Exception as e:  # noqa: BLE001
+            if nm not in S.setdefault("props_warned", set()):
+                S["props_warned"].add(nm)
+                print("[scene] props.place(%s) failed: %r" % (nm, e))
+
+
 # =========================================================================== public API
 
 _BUILT = False
@@ -1795,6 +1919,8 @@ def build(res=(1920, 1080), samples=64, preview=False, clay=False, form=True):
     build_pieces()
     if form:
         build_dressform()
+    build_props()
+    place_props(None)
     build_camera()
     if clay:
         apply_clay()
@@ -1803,6 +1929,8 @@ def build(res=(1920, 1080), samples=64, preview=False, clay=False, form=True):
 
 def apply_frame(f, motion=True):
     f = int(f)
+    set_open(None)
+    place_props(None)
     set_light(None)
     update_cloth(f)
     update_dressform(f)
@@ -1852,7 +1980,11 @@ def update_exploded(t):
 
 # Per-shot lighting. set_light() always restores the day first, so a preset cannot leak.
 LIGHT_PRESETS = {
-    "dusk": dict(sun_elevation=9.0, sun_azimuth=-10.0, sun_gain=1.5, sun_color=(1.0, 0.50, 0.22),
+    # a low sun from the north-west side of the shoji: long light across the tatami, clear of the robe
+    "morning": dict(sun_elevation=18.0, sun_azimuth=-30.0, sun_gain=1.5, sun_color=(1.0, 0.89, 0.74),
+                    shoji_gain=1.0, shoji_color=(1.0, 0.92, 0.80), shade_gain=1.0, shade_color=(0.86, 0.92, 1.0),
+                    paper_gain=1.0, paper_sun=(1.0, 0.90, 0.74), eave_z=1.95, exposure=0.0),
+    "dusk": dict(sun_elevation=8.0, sun_azimuth=-31.0, sun_gain=1.5, sun_color=(1.0, 0.50, 0.22),
                  shoji_gain=0.45, shoji_color=(1.0, 0.66, 0.40), shade_gain=0.40, shade_color=(0.70, 0.78, 1.0),
                  paper_gain=0.55, paper_sun=(1.0, 0.62, 0.34), eave_z=1.74, exposure=0.7),
 }
@@ -1889,11 +2021,7 @@ def set_light(preset=None):
     d = Vector((math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), -math.sin(el)))
     for ob in lights:
         e, c, loc, rot = _DAY["lights"][ob.name]
-        if ob.name.startswith("Sun_"):
-            dist = 26.0
-            d0 = rot @ Vector((0.0, 0.0, -1.0))
-            tgt = loc + d0 * dist
-            ob.location = tgt - d * dist
+        if ob.name == "Sun":
             ob.rotation_quaternion = d.to_track_quat("-Z", "Y")
             ob.data.energy, ob.data.color = e * L["sun_gain"], L["sun_color"]
         elif ob.name == "ShojiSun":
@@ -1906,8 +2034,17 @@ def set_light(preset=None):
     sc.view_settings.exposure = _DAY["exposure"] + L["exposure"]
 
 
-def apply_shot(st):
-    """Put the scene in the state of one slide-deck shot (a dict from shots.py)."""
+SHUTTER_CLIP = 0.5        # the clips' shutter, in frames (180 degrees, as a film camera)
+
+
+def _shot_pose(st):
+    pos, tgt = Vector(st["pos"]), Vector(st["target"])
+    return pos, (tgt - pos).normalized().to_track_quat("-Z", "Y")
+
+
+def apply_shot(st, before=None, after=None):
+    """Put the scene in the state of one slide-deck shot (a dict from shots.py). With `before` and
+    `after` (the shots of the neighbouring clip frames) the camera's move is blurred over the shutter."""
     if "explode" in st:
         update_exploded(st["explode"])
     else:
@@ -1915,6 +2052,8 @@ def apply_shot(st):
     g = st.get("groups", {})
     set_groups(iko=g.get("iko", False), cloth=g.get("cloth", False), form=g.get("form", False),
                robe=g.get("robe", g.get("iko", False)))
+    set_open(st.get("open"))
+    place_props(st.get("props"))
     set_light(st.get("light"))
     if g.get("form", False) and S.get("form_state") is not None:
         for ob in _coll("DressForm").all_objects:
@@ -1925,16 +2064,35 @@ def apply_shot(st):
     sc = bpy.context.scene
     ob = S["cam"]
     ob.animation_data_clear()
-    pos, tgt = Vector(st["pos"]), Vector(st["target"])
     ob.rotation_mode = "QUATERNION"
-    ob.location = pos
-    ob.rotation_quaternion = (tgt - pos).normalized().to_track_quat("-Z", "Y")
+    pos, q = _shot_pose(st)
+    blur = before is not None and after is not None
+    if blur:
+        prev = None
+        for k, s2 in ((0, before), (1, st), (2, after)):
+            p2, q2 = _shot_pose(s2)
+            if prev is not None and q2.dot(prev) < 0:
+                q2.negate()
+            prev = q2
+            ob.location, ob.rotation_quaternion = p2, q2
+            ob.keyframe_insert("location", frame=k)
+            ob.keyframe_insert("rotation_quaternion", frame=k)
+        try:
+            for fc in ob.animation_data.action.fcurves:
+                for kp in fc.keyframe_points:
+                    kp.interpolation = "LINEAR"
+        except Exception:
+            pass
+        sc.frame_set(1)
+    else:
+        ob.location, ob.rotation_quaternion = pos, q
     cd = ob.data
     cd.lens = st.get("focal", FOCAL)
     cd.shift_y = st.get("shift_y", 0.0)
-    cd.dof.focus_distance = st.get("focus") or (tgt - pos).length
+    cd.dof.focus_distance = st.get("focus") or (Vector(st["target"]) - pos).length
     cd.dof.aperture_fstop = st.get("fstop", 4.0)
-    sc.render.use_motion_blur = False          # the deck's moves are slow: no blur worth its noise
+    sc.render.use_motion_blur = bool(blur)
+    sc.render.motion_blur_shutter = SHUTTER_CLIP
 
 
 def anchors_world(f):

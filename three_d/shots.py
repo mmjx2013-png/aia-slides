@@ -1,24 +1,28 @@
-"""shots.py - the named shots of the slide deck: stills, and 5-second clips (150 frames at 30 fps).
+"""shots.py - the final shot list of the slide deck: nine stills, three 9-second clips, two clay stills.
 
     import shots
     shots.STILLS          name -> shot (a dict, see below)
-    shots.CLIPS           name -> function(i) -> shot for clip frame i (0..149)
+    shots.CLIPS           name -> function(i) -> shot for clip frame i (0..N_CLIP-1)
     shots.CLAY            the stills that also get a clay pass
     shots.state(name, i=None)   the shot dict of a still (i None) or of clip frame i
 
-    python3 three_d/render.py --shot hall_wide                 -> build/stills/hall_wide.png
-    python3 three_d/render.py --shot clip_iko --clip           -> build/clips/clip_iko/f_0000.png ...
-    python3 three_d/render.py --shot ALL                       every still
+    python3 three_d/render.py --shot hall_wide_morning         -> build/stills/hall_wide_morning.png
+    python3 three_d/render.py --shot clip_kosode_iko --clip    -> build/clips/clip_kosode_iko/f_0000.png ...
+    python3 three_d/render.py --shot ALL                       every still (exactly the list below)
     python3 three_d/render.py --shot ALL --clip                every clip
 
 A shot dict: pos, target (camera position and the point it looks at; the camera never rolls),
 focal (mm on a 36 mm sensor), shift_y (Blender lens shift), fstop, optional focus (m; default: the
 distance to target), groups {iko, cloth, form} (what is on stage: the iko with the museum robe and
-the folding screen / the procedural bolt and pieces / the mannequin; robe False hides the museum
-robe but keeps the iko), cloth_f (state of the bolt: 0 rolled ... 119 unrolled ... 209 the eight pieces
-laid flat), explode (instead of cloth_f: 0 the eight pieces floating apart ... 1 assembled as the T on
-the iko), layers (dressing layers 0..1), light (a preset from scene.LIGHT_PRESETS, e.g. 'dusk').
-Every clip is one slow eased move that starts or ends on the still of the same subject.
+the folding screen / the procedural pieces / the mannequin; robe False hides the museum robe but
+keeps the iko), explode (0: the eight pieces floating apart ... 1: assembled as the T on the iko),
+layers (dressing layers 0..1), light (a preset from scene.LIGHT_PRESETS), open (which west shoji
+stand open: bay -> 'S' or 'N', see scene.set_open), props (see scene.place_props; default: the
+room's one arrangement, scene.PROP_LAYOUT).
+
+Camera: 35 mm for the wides, level (lens shift instead of tilt), real apertures. A clip is one slow
+eased dolly that starts on its still, with a very slight handheld sway and a 180 degree shutter.
+Grain and lens falloff are added in 2D afterwards; these render clean.
 """
 import math
 
@@ -26,16 +30,16 @@ import scene
 from common import smootherstep
 
 FPS_CLIP = 30
-N_CLIP = 150
+N_CLIP = 270                                      # 9 seconds
 ROBE = (0.0, -0.03, 1.13)                         # middle of the robe on the iko
 FORM = (scene.FORM[0], scene.FORM[1], 1.15)       # the mannequin
-Y0 = scene.Y0
 LAYERS = ("juban", "kimono", "ohashori", "obi", "obiage", "obijime", "knot")
-IKO, CLOTH, MANNEQUIN = {"iko": True}, {"cloth": True}, {"form": True}
-
-
-def layers(*on):
-    return {k: (1.0 if k in on else 0.0) for k in LAYERS}
+# the hall as every shot finds it: paired shoji slid apart beside the robe and further south, single
+# ones open towards the north end; a low sun through them
+OPEN = {1: "N", 2: "S", 3: "N", 4: "S", 6: "S", 8: "S"}
+HALL = dict(open=OPEN, light="morning")
+IKO, MANNEQUIN = {"iko": True}, {"form": True}
+ALL_LAYERS = {k: 1.0 for k in LAYERS}
 
 
 def orbit(centre, radius, az_deg, z):
@@ -48,107 +52,82 @@ def lerp(a, b, u):
     return tuple(x + (y - x) * u for x, y in zip(a, b))
 
 
-_FORM_CAM = dict(pos=(FORM[0], FORM[1] - 3.1, 1.15), target=FORM, focal=30.0, shift_y=-0.05, fstop=4.0,
-                 groups=MANNEQUIN)
+_WIDE = dict(HALL, pos=(1.55, -6.60, 1.32), target=(-0.42, 0.0, 1.32), focal=35.0, shift_y=-0.035, fstop=5.6,
+             focus=6.9, groups=IKO)
 
 STILLS = {
-    # the hall, the robe on its iko, the gold screen behind
-    "hall_wide": dict(pos=(0.0, -6.5, 1.40), target=(0.0, 0.0, 1.40), focal=26.0, shift_y=-0.04, fstop=8.0,
-                      groups=IKO),
-    "iko_front": dict(pos=orbit(ROBE, 4.4, 0.0, 1.12), target=(0.0, 0.0, 1.12), focal=40.0, fstop=4.0, groups=IKO),
-    "iko_three_quarter": dict(pos=orbit(ROBE, 4.3, -27.0, 1.20), target=(0.0, 0.0, 1.12), focal=40.0, fstop=4.0,
-                              groups=IKO),
-    "sleeve_detail": dict(pos=(-0.74, -1.28, 1.63), target=(-0.44, -0.04, 1.66), focal=60.0, fstop=2.8, groups=IKO),
-    "hem_detail": dict(pos=(0.42, -1.02, 0.62), target=(0.06, -0.04, 0.58), focal=60.0, fstop=2.8, groups=IKO),
-    "alcove": dict(pos=(0.35, 6.9, 1.30), target=(0.0, 11.7, 1.22), focal=30.0, fstop=5.6, groups={}),
-    # the mannequin, one still per dressing stage, same camera
-    "form_juban": dict(_FORM_CAM, layers=layers("juban")),
-    "form_kimono": dict(_FORM_CAM, layers=layers("juban", "kimono")),
-    "form_ohashori": dict(_FORM_CAM, layers=layers("juban", "kimono", "ohashori")),
-    "form_obi": dict(_FORM_CAM, layers=layers("juban", "kimono", "ohashori", "obi")),
-    "form_obijime": dict(_FORM_CAM, layers=layers("juban", "kimono", "ohashori", "obi", "obiage", "obijime")),
-    "form_final": dict(_FORM_CAM, layers=layers(*LAYERS)),
-    "form_back": dict(pos=orbit(FORM, 3.0, 180.0, 1.15), target=FORM, focal=32.0, shift_y=-0.04, fstop=4.0,
-                      groups=MANNEQUIN, layers=layers(*LAYERS)),
-    # the procedural bolt
-    "bolt_roll": dict(pos=(0.06, Y0 - 1.38, 0.33), target=(0.06, Y0 + 8.0, 0.33), focal=30.0, shift_y=-0.05,
-                      fstop=8.0, focus=1.43, groups=CLOTH, cloth_f=0),
-    "bolt_pieces": dict(pos=(0.0, -3.5, 2.55), target=(0.0, 0.15, 0.0), focal=30.0, fstop=5.6, groups=CLOTH,
-                        cloth_f=209),
+    # 1. the hall: shoji open onto the garden, morning light raking the tatami, the robe on its iko
+    "hall_wide_morning": dict(_WIDE),
+    # 2. the Met robe on the lacquer iko before the gold screen, frontal: the object first
+    "kosode_iko": dict(HALL, pos=(0.0, -4.50, 1.12), target=(0.0, 0.0, 1.12), focal=40.0, fstop=2.8, groups=IKO),
+    # 3. the eight straight pieces of the drawn-textile kimono floating apart before the bare iko
+    "exploded_panels": dict(HALL, pos=orbit((0.0, -0.95, 1.40), 5.7, -10.0, 1.45), target=(0.0, -0.95, 1.40),
+                            focal=35.0, fstop=8.0, groups={"iko": True, "robe": False, "cloth": True}, explode=0.0,
+                            props={"doc_box_large": None, "doc_box_small": None, "robe_tray": None}),
+    # 4. the robe's silk and a dye edge, close (the photograph is 1068 px wide: as close as it holds)
+    "weave_macro": dict(HALL, pos=(0.30, -0.62, 1.40), target=(0.03, -0.04, 1.42), focal=70.0, fstop=2.8,
+                        groups=IKO),
+    # 5. the dressed figure from the front, and the knot from behind: one place, two angles
+    "mannequin_final": dict(HALL, pos=(FORM[0], FORM[1] - 3.5, 1.15), target=FORM, focal=35.0, shift_y=-0.03,
+                            fstop=4.0, groups=MANNEQUIN, layers=ALL_LAYERS),
+    "mannequin_obi_back": dict(HALL, pos=orbit(FORM, 1.55, 192.0, 1.10), target=(FORM[0], FORM[1] + 0.2, 1.05),
+                               focal=50.0, fstop=2.8, groups=MANNEQUIN, layers=ALL_LAYERS),
+    # 6. a sleeve and the hem beside the lacquer boxes and the folded robe on its tray
+    "sleeve_hem_props": dict(HALL, pos=(-2.25, -2.85, 0.78), target=(-0.66, -0.20, 0.74), focal=50.0, fstop=2.8,
+                             groups=IKO),
+    # 7. the alcove with the hanging scroll
+    "tokonoma": dict(HALL, pos=(0.30, 6.40, 1.25), target=(0.0, 11.8, 1.25), focal=35.0, shift_y=-0.02, fstop=4.0,
+                     groups={}),
+    # 8. shot 1 at dusk: the sun low and warm
+    "hall_dusk": dict(_WIDE, light="dusk"),
 }
 
-STILLS.update({
-    # the eight straight pieces of the drawn-textile kimono, floating apart in front of the bare iko
-    "kimono_exploded": dict(pos=orbit((0.0, -0.95, 1.40), 5.7, -10.0, 1.45), target=(0.0, -0.95, 1.40), focal=35.0,
-                            fstop=8.0, groups={"iko": True, "robe": False, "cloth": True}, explode=0.0),
-    "bolt_unroll_mid": dict(pos=(0.80, -3.6, 0.95), target=(0.0, 0.3, 0.03), focal=30.0, fstop=5.6,
-                            groups=CLOTH, cloth_f=58),
-    # close views of the museum robe (the photograph is 1068 px wide: these are as close as it holds)
-    "weave_macro": dict(pos=(0.30, -0.62, 1.40), target=(0.03, -0.04, 1.42), focal=70.0, fstop=2.8, groups=IKO),
-    "crest_macro": dict(pos=(0.26, -1.15, 1.74), target=(0.0, -0.03, 1.80), focal=60.0, fstop=2.8, groups=IKO),
-    "sleeve_fall": dict(pos=(0.55, -1.70, 1.52), target=(-0.47, -0.04, 1.60), focal=50.0, fstop=2.8, groups=IKO),
-    "hem_fuki": dict(pos=(-0.55, -1.25, 0.30), target=(0.0, -0.05, 0.50), focal=50.0, fstop=2.8, groups=IKO),
-    "obi_knot_back": dict(pos=orbit(FORM, 1.55, 192.0, 1.10), target=(FORM[0], FORM[1] + 0.2, 1.05), focal=50.0,
-                          fstop=2.8, groups=MANNEQUIN, layers=layers(*LAYERS)),
-    # the hall_wide camera late in the day: a low warm sun, long light across the tatami ('light' is
-    # a per-shot preset from scene.LIGHT_PRESETS; every other shot is put back to the day)
-    "hall_dusk": dict(pos=(0.0, -6.5, 1.40), target=(0.0, 0.0, 1.40), focal=26.0, shift_y=-0.04, fstop=8.0,
-                      groups=IKO, light="dusk"),
-})
-
-CLAY = ("hall_wide", "form_final")
+CLAY = ("hall_wide_morning", "kosode_iko")
 
 
 def _u(i):
     return smootherstep(i / float(N_CLIP - 1))
 
 
-def _clip_hall(i):                       # a slow push down the hall towards the iko; starts on hall_wide
+def _sway(st, i):
+    """A hand on the dolly: a few millimetres and a few hundredths of a degree, slow, nothing at the
+    first and last frame."""
+    t = i / float(FPS_CLIP)
+    env = smootherstep(min(t, (N_CLIP - 1) / float(FPS_CLIP) - t) / 1.4)
+    w = 2.0 * math.pi
+    dx = 0.0040 * math.sin(w * 0.31 * t + 0.4) + 0.0018 * math.sin(w * 0.83 * t + 1.9)
+    dz = 0.0030 * math.sin(w * 0.43 * t + 2.1) + 0.0012 * math.sin(w * 1.07 * t)
+    px, py, pz = st["pos"]
+    tx, ty, tz = st["target"]
+    d = math.sqrt((tx - px) ** 2 + (ty - py) ** 2 + (tz - pz) ** 2)
+    ax = 0.0009 * math.sin(w * 0.27 * t + 1.1) + 0.0004 * math.sin(w * 0.71 * t + 0.2)      # radians
+    az = 0.0007 * math.sin(w * 0.37 * t + 0.3) + 0.0003 * math.sin(w * 0.93 * t + 2.6)
+    return dict(st, pos=(px + env * dx, py, pz + env * dz), target=(tx + env * ax * d, ty, tz + env * az * d),
+                focus=st.get("focus") or d)
+
+
+def _clip_hall_morning(i):               # a slow push down the hall towards the robe; starts on hall_wide_morning
     u = _u(i)
-    s = STILLS["hall_wide"]
-    return dict(s, pos=lerp(s["pos"], (0.0, -4.9, 1.36), u), target=lerp(s["target"], (0.0, 0.0, 1.30), u))
+    s = STILLS["hall_wide_morning"]
+    return _sway(dict(s, pos=lerp(s["pos"], (1.10, -4.55, 1.30), u), target=lerp(s["target"], (-0.42, 0.0, 1.30), u),
+                      focus=s["focus"] - 2.05 * u), i)
 
 
-def _clip_iko(i):                        # a 25 degree arc round the robe; starts on iko_front
+def _clip_kosode_iko(i):                 # a slow dolly in on the robe; starts on kosode_iko
     u = _u(i)
-    return dict(STILLS["iko_front"], pos=orbit(ROBE, 4.4, -25.0 * u, 1.12 + 0.05 * u))
+    s = STILLS["kosode_iko"]
+    return _sway(dict(s, pos=lerp(s["pos"], (0.0, -3.70, 1.16), u), target=lerp(s["target"], (0.0, 0.0, 1.16), u)), i)
 
 
-def _clip_sleeve(i):                     # a slow drift along the sleeve; ends on sleeve_detail
+def _clip_hall_dusk(i):                  # a slow track across the hall, west to east; starts on hall_dusk
     u = _u(i)
-    s = STILLS["sleeve_detail"]
-    return dict(s, pos=lerp((-0.50, -1.34, 1.57), s["pos"], u), target=lerp((-0.30, -0.04, 1.60), s["target"], u))
+    s = STILLS["hall_dusk"]
+    return _sway(dict(s, pos=lerp(s["pos"], (0.55, -6.35, 1.32), u), target=lerp(s["target"], (-0.30, 0.0, 1.32), u)),
+                 i)
 
 
-def _clip_form(i):                       # the layers build, the camera all but still; ends on form_final
-    t = i / float(N_CLIP - 1)
-    lay = {k: smootherstep((t - 0.04 - 0.125 * n) / 0.16) for n, k in enumerate(LAYERS)}
-    return dict(_FORM_CAM, pos=(FORM[0], FORM[1] - 3.16 + 0.06 * _u(i), 1.15), layers=lay)
-
-
-def _clip_form_back(i):                  # a slow arc to the knot; ends on form_back
-    u = _u(i)
-    return dict(STILLS["form_back"], pos=orbit(FORM, 3.0, 150.0 + 30.0 * u, 1.15))
-
-
-def _clip_bolt(i):                       # the bolt unrolls (stage A of the old sequence, shortened); starts on bolt_roll
-    f = 119.0 * i / float(N_CLIP - 1)
-    st = scene.camera_state(f)
-    pos = (float(st[0]), float(st[1]), float(st[2]))
-    cy, sy, cp, sp = math.cos(st[3]), math.sin(st[3]), math.cos(st[4]), math.sin(st[4])
-    return dict(pos=pos, target=(pos[0] + 5 * cy * cp, pos[1] + 5 * sy * cp, pos[2] + 5 * sp), focal=30.0,
-                shift_y=-0.05, fstop=8.0, focus=min(1.43 + 0.05 * f, 4.2), groups=CLOTH, cloth_f=f)
-
-
-def _clip_exploded(i):                   # the eight pieces drift together into the T on the iko; starts on kimono_exploded
-    u = _u(i)
-    s = STILLS["kimono_exploded"]
-    return dict(s, explode=u, pos=lerp(s["pos"], orbit((0.0, -0.3, 1.25), 5.3, -6.0, 1.38), u),
-                target=lerp(s["target"], (0.0, -0.3, 1.25), u))
-
-
-CLIPS = {"clip_exploded": _clip_exploded, "clip_hall": _clip_hall, "clip_iko": _clip_iko, "clip_sleeve": _clip_sleeve, "clip_form": _clip_form,
-         "clip_form_back": _clip_form_back, "clip_bolt": _clip_bolt}
+CLIPS = {"clip_hall_morning": _clip_hall_morning, "clip_kosode_iko": _clip_kosode_iko,
+         "clip_hall_dusk": _clip_hall_dusk}
 
 
 def state(name, i=None):

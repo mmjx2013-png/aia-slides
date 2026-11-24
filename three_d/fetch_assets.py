@@ -22,6 +22,8 @@ TEXTURES = [
     ("okoume_veneer", ("diff", "rough", "nor_gl")),          # ceiling and panel boards ('board')
     ("japanese_cedar_planks", ("diff", "rough", "nor_gl")),  # veranda and alcove floors ('planks')
     ("white_plaster_02", ("diff", "rough", "nor_gl")),       # plaster walls
+    ("gravel_floor_02", ("diff", "rough", "nor_gl")),        # the garden ground beyond the veranda
+    ("mossy_rock", ("diff", "rough", "nor_gl")),             # the stepping stone at the veranda's edge
 ]
 # (asset id, resolution) - HDRIs
 HDRIS = [

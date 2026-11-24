@@ -192,7 +192,10 @@ def main_shots(a, q):
             continue
         t0 = time.time()
         os.makedirs(os.path.dirname(out), exist_ok=True)
-        scene.apply_shot(shots.state(name, i))
+        if i is None or a.no_motion:
+            scene.apply_shot(shots.state(name, i))
+        else:
+            scene.apply_shot(shots.state(name, i), before=shots.state(name, i - 1), after=shots.state(name, i + 1))
         tmp = os.path.join(os.path.dirname(out), ".tmp_%d_%s" % (os.getpid(), os.path.basename(out)))
         sc.render.filepath = tmp
         bpy.ops.render.render(write_still=True)
