@@ -4,8 +4,8 @@
   "title": "Welcome",
   "duration": 25.63,
   "src": "assets/audio/threshold.mp3",
-  "lufs": -16.6,
-  "truePeak": -1.8,
+  "lufs": -16.4,
+  "truePeak": -1.9,
   "cues": [
    {
     "t0": 0.47,
@@ -39,7 +39,7 @@
   "title": "One bolt",
   "duration": 35.08,
   "src": "assets/audio/bolt.mp3",
-  "lufs": -16.6,
+  "lufs": -16.4,
   "truePeak": -1.8,
   "cues": [
    {

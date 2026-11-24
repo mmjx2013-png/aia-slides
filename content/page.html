@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kimono: a garment, or a set of rules?</title>
+<meta name="description" content="An online exhibition in ten rooms, with an audio guide. One bolt of cloth, eight straight pieces, and four centuries of rules about how to wear them. Real photographs and hand-built 3D; nothing generated.">
+<meta name="theme-color" content="#141210">
+<meta property="og:title" content="Kimono: a garment, or a set of rules?">
+<meta property="og:description" content="An online exhibition in ten rooms, with an audio guide.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="preload" href="assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/kanji.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141210'/%3E%3Cpath d='M4 9h24v9h-6v9H10v-9H4z' fill='%23eee7d9'/%3E%3Cpath d='M16 9v18' stroke='%23d4583a' stroke-width='1.5'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the exhibition</a>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="stage-shade" aria-hidden="true"></div>
+<div class="hang" id="hang">{{WORKS}}
+</div>
+
+<header class="bar glass glass--pill">
+  <a class="bar__mark" href="#threshold">Kimono <span lang="ja">着物</span></a>
+  <span class="bar__where" id="where" aria-live="polite"></span>
+  <span class="bar__spacer"></span>
+  <a class="bar__btn" href="#film" aria-label="Watch the film" data-film-link hidden>
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3.5" width="12" height="9" rx="1.6"/><path d="M7 6.3v3.4L9.8 8z" fill="currentColor" stroke="none"/></svg>
+    <span>Film</span>
+  </a>
+  <a class="bar__btn" href="#colophon" aria-label="Sources and credits">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 2.5h7.5L13 5v8.5H3z"/><path d="M5.5 6.5h5M5.5 9h5M5.5 11.5h3"/></svg>
+    <span>Sources</span>
+  </a>
+</header>
+
+<nav class="rail" id="rail" aria-label="Rooms"></nav>
+
+<main id="main">
+{{ROOMS}}
+</main>
+
+<footer class="colophon" id="colophon" data-room data-title="Sources and credits">
+  <div class="colophon__inner">
+    <div class="colophon__sources">
+      <h2>Sources</h2>
+      <ol>
+        {{BIBLIOGRAPHY}}
+      </ol>
+    </div>
+    <div>
+      <h2>How to read the numbers</h2>
+      <p>Every statement in this exhibition, on the walls and in the audio guide, carries a source number and a page. Words in quotation marks are the source’s own. Many sources are in Japanese; where they are, the English on screen is a paraphrase. The full ledger, one row per claim with the passage it rests on, is public: <a href="https://github.com/mmjx2013-png/aia-slides/blob/claude/fervent-ramanujan-qp1d26/kimono-sources.md">claims ledger</a>.</p>
+      <p>Object titles, dates and materials are the museums’ own records. They are cited as records, not as scholarship.</p>
+    </div>
+    <div>
+      <h2>Pictures and sound</h2>
+      <p>Photographs: The Metropolitan Museum of Art, Open Access (CC0), each credited on its label. The galleries, the cloth, the cutting, the sewing and the dressed figure were built by hand in Blender from straight panels measured in the sources, and rendered for this exhibition. Room tone and the sounds of cloth are synthesised in code.</p>
+      <p>The audio guide uses a synthetic voice (ElevenLabs “Alice”, via Venice AI). Captions are on by default.</p>
+    </div>
+    <p class="closing">Real photographs and hand-built 3D; nothing generated. Narration: synthetic voice (Venice AI).</p>
+    <p class="colophon__fine">Built {{BUILT}} · <a href="v2/">Earlier version (ten slides)</a></p>
+  </div>
+</footer>
+
+<div class="captions glass" id="captions" role="region" aria-label="Audio guide">
+  <button class="captions__btn" id="cap-toggle" aria-label="Pause the audio guide"><svg class="i-pause" viewBox="0 0 12 12"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor"/></svg><svg class="i-play" viewBox="0 0 12 12"><path d="M2.5 1.2v9.6L11 6z" fill="currentColor"/></svg></button>
+  <p class="captions__text" id="cap-text" aria-live="off"></p>
+  <button class="captions__x" id="cap-close" aria-label="Stop the audio guide"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>
+  <div class="captions__bar" aria-hidden="true"><i id="cap-bar"></i></div>
+</div>
+
+<dialog class="zoom" id="zoom" aria-label="Photograph, enlarged">
+  <img alt="" id="zoom-img">
+  <form method="dialog"><button class="zoom__x glass glass--pill" aria-label="Close">Close</button></form>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

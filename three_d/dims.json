@@ -1,74 +1,645 @@
 {
-  "_note": "All lengths in metres, Z up. Edit numbers here only; code derives everything else.",
-
-  "bolt": {
-    "width": 0.36,
-    "length": 11.4,
-    "thickness": 0.0005,
-    "core_radius": 0.012,
-    "free_end_y": -2.0
-  },
-
-  "garment": {
-    "body_length": 1.60,
-    "sleeve_drop": 0.49,
-    "okumi_width": 0.15,
-    "okumi_length": 1.36,
-    "okumi_seam_allowance": 0.03,
-    "collar_width": 0.055,
-    "collar_length": 1.90,
-    "over_collar_length": 0.90,
-    "neck_half_width": 0.09,
-    "sleeve_attach": 0.23,
-    "side_seam_top": 0.36,
-    "okumi_collar_section": 2.80
-  },
-
-  "world": {
-    "table_z": 0.12,
-    "dais_x": [-0.80, 0.80],
-    "dais_y": [-2.2, 11.6],
-    "room_x": [-6.5, 8.5],
-    "room_y": [-9.0, 14.0],
-    "room_h": 4.6,
-    "post_x": 0.86,
-    "post_h": 1.98,
-    "rod_radius": 0.018,
-    "rod_z_end": 1.86,
-    "form_origin": [2.7, 0.0, 0.0]
-  },
-
-  "palette": {
-    "ground_light": "#e6dece",
-    "ground_dark": "#d9cfbd",
-    "aubergine": "#5a4353",
-    "ochre": "#b8864a",
-    "grey_blue": "#8a9198",
-    "vermilion": "#d4583a",
-    "juban": "#f1ede4",
-    "mannequin": "#cfc7b8",
-    "room": "#151311",
-    "dais": "#a69c8c",
-    "lacquer": "#1a1210"
-  },
-
-  "stages": [
-    {"id": "A", "name": "bolt",    "start": 0,   "end": 119},
-    {"id": "B", "name": "cut",     "start": 120, "end": 209},
-    {"id": "C", "name": "sewn",    "start": 210, "end": 329},
-    {"id": "D", "name": "turn",    "start": 330, "end": 419},
-    {"id": "E", "name": "dressed", "start": 420, "end": 569},
-    {"id": "F", "name": "back",    "start": 570, "end": 659},
-    {"id": "G", "name": "rules",   "start": 660, "end": 719}
+ "_note": "All lengths in metres, Z up. Edit numbers here only; code derives everything else.",
+ "bolt": {
+  "width": 0.36,
+  "length": 11.4,
+  "thickness": 0.0005,
+  "core_radius": 0.012,
+  "free_end_y": -2.0
+ },
+ "garment": {
+  "body_length": 1.6,
+  "sleeve_drop": 0.49,
+  "okumi_width": 0.15,
+  "okumi_length": 1.36,
+  "okumi_seam_allowance": 0.03,
+  "collar_width": 0.055,
+  "collar_length": 1.9,
+  "over_collar_length": 0.9,
+  "neck_half_width": 0.09,
+  "sleeve_attach": 0.23,
+  "side_seam_top": 0.36,
+  "okumi_collar_section": 2.8
+ },
+ "world": {
+  "table_z": 0.12,
+  "dais_x": [
+   -0.8,
+   0.8
   ],
-
-  "fps": 24,
-  "frames": 720,
-
-  "form_camera": {
-    "_note": "Framing of the dress form in stages E-F; adjusted to dressform.py's real proportions.",
-    "look_z": 0.98,
-    "distance": 4.3,
-    "height": 1.12
+  "dais_y": [
+   -2.2,
+   11.6
+  ],
+  "room_x": [
+   -6.5,
+   8.5
+  ],
+  "room_y": [
+   -9.0,
+   14.0
+  ],
+  "room_h": 4.6,
+  "post_x": 0.86,
+  "post_h": 1.98,
+  "rod_radius": 0.018,
+  "rod_z_end": 1.86,
+  "form_origin": [
+   2.7,
+   0.0,
+   0.0
+  ]
+ },
+ "palette": {
+  "ground_light": "#e6dece",
+  "ground_dark": "#d9cfbd",
+  "aubergine": "#5a4353",
+  "ochre": "#b8864a",
+  "grey_blue": "#8a9198",
+  "vermilion": "#d4583a",
+  "juban": "#f1ede4",
+  "mannequin": "#cfc7b8",
+  "room": "#151311",
+  "dais": "#a69c8c",
+  "lacquer": "#1a1210"
+ },
+ "stages": [
+  {
+   "id": "A",
+   "name": "bolt",
+   "start": 0,
+   "end": 119
+  },
+  {
+   "id": "B",
+   "name": "cut",
+   "start": 120,
+   "end": 209
+  },
+  {
+   "id": "C",
+   "name": "sewn",
+   "start": 210,
+   "end": 329
+  },
+  {
+   "id": "D",
+   "name": "turn",
+   "start": 330,
+   "end": 419
+  },
+  {
+   "id": "W1",
+   "name": "walk",
+   "start": 420,
+   "end": 491
+  },
+  {
+   "id": "W2",
+   "name": "walk",
+   "start": 492,
+   "end": 563
+  },
+  {
+   "id": "E",
+   "name": "dressed",
+   "start": 564,
+   "end": 683
+  },
+  {
+   "id": "F",
+   "name": "back",
+   "start": 684,
+   "end": 773
+  },
+  {
+   "id": "W3",
+   "name": "walk",
+   "start": 774,
+   "end": 821
+  },
+  {
+   "id": "W4",
+   "name": "walk",
+   "start": 822,
+   "end": 893
+  },
+  {
+   "id": "W5",
+   "name": "walk",
+   "start": 894,
+   "end": 941
+  },
+  {
+   "id": "W6",
+   "name": "walk",
+   "start": 942,
+   "end": 1049
+  },
+  {
+   "id": "G",
+   "name": "rules",
+   "start": 1050,
+   "end": 1079
   }
+ ],
+ "fps": 24,
+ "frames": 1080,
+ "museum": {
+  "_note": "Building, lights and camera numbers for scene.py (README v2). S3 moved from y 13.2 to 12.6 so the R3 north corner stays out of frame.",
+  "ceiling": 4.2,
+  "door_h": 2.9,
+  "camera_z": 1.48,
+  "shift_y": -0.08,
+  "wall_hex": "#3b3331",
+  "floor_hex": "#1f1b19",
+  "dais_hex": "#8f8676",
+  "exposure": 0.0,
+  "light_scale": 1.0,
+  "numeral_font": "/usr/share/fonts/opentype/inter/Inter-Light.otf",
+  "numerals": [
+   [
+    "1",
+    [
+     1.9,
+     -7.497,
+     1.7
+    ],
+    180
+   ],
+   [
+    "2",
+    [
+     3.397,
+     6.1,
+     1.7
+    ],
+    -90
+   ],
+   [
+    "3",
+    [
+     9.3,
+     7.797,
+     1.7
+    ],
+    0
+   ],
+   [
+    "4",
+    [
+     9.3,
+     15.197,
+     1.7
+    ],
+    0
+   ],
+   [
+    "5",
+    [
+     3.603,
+     18.5,
+     1.7
+    ],
+    90
+   ],
+   [
+    "5",
+    [
+     2.0,
+     13.197,
+     1.7
+    ],
+    0
+   ]
+  ],
+  "picture_walls": [
+   {
+    "id": "R2E",
+    "axis": "x",
+    "plane": 11.6,
+    "normal": [
+     -1,
+     0
+    ],
+    "along": [
+     0,
+     -1
+    ],
+    "pools": [
+     2.1,
+     4.2,
+     6.3
+    ],
+    "placard_off": -0.78,
+    "placard_off_screen": 0.78
+   },
+   {
+    "id": "R3E",
+    "axis": "x",
+    "plane": 11.6,
+    "normal": [
+     -1,
+     0
+    ],
+    "along": [
+     0,
+     -1
+    ],
+    "pools": [
+     10.5,
+     12.6,
+     14.7
+    ],
+    "placard_off": -0.78,
+    "placard_off_screen": 0.78
+   },
+   {
+    "id": "R4E",
+    "axis": "x",
+    "plane": 11.6,
+    "normal": [
+     -1,
+     0
+    ],
+    "along": [
+     0,
+     -1
+    ],
+    "pools": [
+     16.5,
+     18.6,
+     20.7,
+     22.8
+    ],
+    "placard_off": -0.78,
+    "placard_off_screen": 0.78
+   },
+   {
+    "id": "R4N",
+    "axis": "y",
+    "plane": 24.0,
+    "normal": [
+     0,
+     -1
+    ],
+    "along": [
+     1,
+     0
+    ],
+    "pools": [
+     5.5,
+     7.6,
+     9.7
+    ],
+    "placard_off": 0.78,
+    "placard_off_screen": 0.78
+   }
+  ],
+  "stops": [
+   {
+    "id": "S2",
+    "x": 8.1,
+    "y": 4.2,
+    "yaw": 0,
+    "wall": "R2E",
+    "frame": 491
+   },
+   {
+    "id": "S3",
+    "x": 8.1,
+    "y": 12.6,
+    "yaw": 0,
+    "wall": "R3E",
+    "frame": 821
+   },
+   {
+    "id": "S4a",
+    "x": 8.1,
+    "y": 18.6,
+    "yaw": 0,
+    "wall": "R4E",
+    "frame": 893
+   },
+   {
+    "id": "S4b",
+    "x": 7.6,
+    "y": 20.5,
+    "yaw": 90,
+    "wall": "R4N",
+    "frame": 941
+   }
+  ],
+  "tracks": [
+   [
+    -1.25,
+    -1.25,
+    -6.5,
+    12.5
+   ],
+   [
+    1.25,
+    1.25,
+    -6.5,
+    12.5
+   ],
+   [
+    -1.6,
+    1.7,
+    2.5,
+    2.5
+   ],
+   [
+    -1.6,
+    1.7,
+    -2.5,
+    -2.5
+   ],
+   [
+    10.35,
+    10.35,
+    0.8,
+    7.6
+   ],
+   [
+    10.35,
+    10.35,
+    8.2,
+    15.0
+   ],
+   [
+    10.35,
+    10.35,
+    15.6,
+    23.8
+   ],
+   [
+    3.8,
+    11.4,
+    22.75,
+    22.75
+   ],
+   [
+    5.8,
+    9.2,
+    9.2,
+    9.2
+   ],
+   [
+    5.8,
+    9.2,
+    13.5,
+    13.5
+   ],
+   [
+    -1.6,
+    1.7,
+    16.0,
+    16.0
+   ],
+   [
+    -1.0,
+    1.0,
+    21.2,
+    21.2
+   ]
+  ],
+  "dais_spot_y": [
+   -2.6,
+   -0.6,
+   1.4,
+   3.4,
+   5.4,
+   7.4,
+   9.4,
+   11.2
+  ],
+  "r1_washes": [
+   [
+    [
+     2.2,
+     -4.5,
+     4.1
+    ],
+    [
+     3.4,
+     -4.5,
+     1.3
+    ]
+   ],
+   [
+    [
+     2.2,
+     9.0,
+     4.1
+    ],
+    [
+     3.4,
+     9.0,
+     1.3
+    ]
+   ],
+   [
+    [
+     -2.2,
+     9.5,
+     4.1
+    ],
+    [
+     -3.4,
+     9.5,
+     1.3
+    ]
+   ],
+   [
+    [
+     -1.6,
+     -6.3,
+     4.1
+    ],
+    [
+     -1.6,
+     -7.5,
+     1.4
+    ]
+   ]
+  ],
+  "fills": [
+   [
+    [
+     0,
+     -5.5,
+     4.1
+    ],
+    [
+     0,
+     -5.5,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     22.0,
+     4.1
+    ],
+    [
+     0,
+     22.0,
+     0
+    ]
+   ]
+  ],
+  "bench_xy": [
+   5.0,
+   18.0
+  ],
+  "vitrine_xy": [
+   0.0,
+   18.6
+  ],
+  "form_xy": [
+   7.4,
+   11.3
+  ],
+  "form_dist": 3.3,
+  "form_orbit_rx": 2.6,
+  "vit_dist": 4.05,
+  "roll_frames": [
+   4,
+   112
+  ],
+  "rod_frames": [
+   214,
+   284
+  ],
+  "swing_off": [
+   300,
+   326
+  ],
+  "attach_frames": {
+   "okumi_l": [
+    290,
+    312
+   ],
+   "okumi_r": [
+    286,
+    308
+   ],
+   "collar": [
+    296,
+    318
+   ],
+   "over_collar": [
+    300,
+    320
+   ]
+  },
+  "dress_frames": {
+   "juban": [
+    566,
+    584
+   ],
+   "kimono": [
+    580,
+    600
+   ],
+   "ohashori": [
+    596,
+    612
+   ],
+   "obi": [
+    608,
+    626
+   ],
+   "obiage": [
+    622,
+    640
+   ],
+   "obijime": [
+    636,
+    654
+   ],
+   "knot": [
+    650,
+    670
+   ]
+  },
+  "cam": {
+   "A0": [
+    [
+     0.42,
+     -3.45,
+     0.5
+    ],
+    [
+     0.0,
+     -1.75,
+     0.16
+    ]
+   ],
+   "Amid": [
+    [
+     0.75,
+     -2.4,
+     1.05
+    ],
+    [
+     0.0,
+     1.5,
+     0.12
+    ]
+   ],
+   "A1": [
+    [
+     0.6,
+     -1.3,
+     1.75
+    ],
+    [
+     0.0,
+     4.6,
+     0.12
+    ]
+   ],
+   "Bmid": [
+    [
+     0.35,
+     -2.6,
+     2.35
+    ],
+    [
+     0.0,
+     1.2,
+     0.12
+    ]
+   ],
+   "B1": [
+    [
+     0.0,
+     -3.35,
+     2.5
+    ],
+    [
+     0.0,
+     0.15,
+     0.12
+    ]
+   ],
+   "Cmid": [
+    [
+     0.0,
+     -4.0,
+     2.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.9
+    ]
+   ],
+   "C_dist": 4.1,
+   "D_rx": 2.6
+  }
+ }
 }
