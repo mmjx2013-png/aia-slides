@@ -27,9 +27,20 @@ def perf(exits):
             f"**{sum(p)/len(p):+.2f}** | {pf:.2f} |")
 
 
+def win(day):
+    """Report period: 21:00 Bangkok the previous day to 21:00 on `day` (journal times are Bangkok)."""
+    prev = (pd.Timestamp(day) - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    return f"{prev} 21:00", f"{day} 21:00"
+
+
+def inwin(tstr, day):
+    a, b = win(day)
+    return a <= tstr[:16] < b
+
+
 def uf_stats(d, day):
-    j = [x for x in jlines(Path(d) / "unfiltered" / "journal.jsonl") if x["t"][:10] == day and x["kind"] == "EXIT"]
-    return f"; unfiltered today: {len(j)} trades, {sum(x['pnl'] > 0 for x in j)} wins, {sum(x['pnl'] for x in j):+.2f} USD"
+    j = [x for x in jlines(Path(d) / "unfiltered" / "journal.jsonl") if inwin(x["t"], day) and x["kind"] == "EXIT"]
+    return f"; unfiltered last 24 h: {len(j)} trades, {sum(x['pnl'] > 0 for x in j)} wins, {sum(x['pnl'] for x in j):+.2f} USD"
 
 
 def main(day, d, out):
@@ -38,14 +49,14 @@ def main(day, d, out):
     st = json.loads((d / "state.json").read_text())
     eq = pd.read_csv(d / "equity.csv")
     eq.index = pd.to_datetime(eq["t"], unit="ms", utc=True).dt.tz_convert(BKK)
-    eq = eq[eq.index.strftime("%Y-%m-%d") <= day]
+    eq = eq[eq.index.strftime("%Y-%m-%d %H:%M") < win(day)[1]]
     bh = risk.CAPITAL * eq["px"] / st["start_px"]
     uf = d / "unfiltered" / "equity.csv"
     un = None
     if uf.exists():
         un = pd.read_csv(uf)
         un.index = pd.to_datetime(un["t"], unit="ms", utc=True).dt.tz_convert(BKK)
-        un = un[un.index.strftime("%Y-%m-%d") <= day]["equity"]
+        un = un[un.index.strftime("%Y-%m-%d %H:%M") < win(day)[1]]["equity"]
     fig, ax = plt.subplots(figsize=(7, 3), dpi=110)
     ax.plot(eq.index, eq["equity"], label="paper desk (live book, <=3x)", lw=1.4)
     if un is not None:
@@ -55,7 +66,7 @@ def main(day, d, out):
     if cf.exists():
         cn = pd.read_csv(cf)
         cn.index = pd.to_datetime(cn["t"], unit="ms", utc=True).dt.tz_convert(BKK)
-        cn = cn[cn.index.strftime("%Y-%m-%d") <= day]["equity"]
+        cn = cn[cn.index.strftime("%Y-%m-%d %H:%M") < win(day)[1]]["equity"]
         ax.plot(cn.index, cn, label="15m candidate (code only, OOS from 2026-11-25)", lw=1.0, ls=":")
     ax.plot(eq.index, bh, label="PAXG buy & hold, 1x", lw=1.0, alpha=.8)
     ax.set_ylabel("USD"); ax.legend(frameon=False, fontsize=8); ax.grid(alpha=.3)
@@ -63,7 +74,7 @@ def main(day, d, out):
     fig.autofmt_xdate(); fig.tight_layout()
     fig.savefig(out / f"{day}.png"); plt.close(fig)
 
-    j = [x for x in jlines(d / "journal.jsonl") if x["t"][:10] == day]
+    j = [x for x in jlines(d / "journal.jsonl") if inwin(x["t"], day)]
     fills = {x["event"]: x for x in j if x["kind"] == "FILL"}
     rows = [f"| {fills[x['event']]['t'][11:16]} | {x['t'][11:16]} | {fills[x['event']]['side']} | "
             f"{fills[x['event']]['qty']} | {fills[x['event']]['px']} | {x['px']} | {x['reason']} | {x['pnl']:+.2f} |"
@@ -74,13 +85,13 @@ def main(day, d, out):
             c = toks.setdefault(x["stage"], [0, 0]); c[0] += 1; c[1] += x["tokens"]
     skips = [x for x in j if x["kind"] in ("SKIP", "REJECT")]
     last = eq.iloc[-1]
-    day_eq = eq[eq.index.strftime("%Y-%m-%d") == day]
-    md = [f"# Intraday gold paper desk, {day} (Bangkok)", "",
+    day_eq = eq[[inwin(s, day) for s in eq.index.strftime("%Y-%m-%d %H:%M")]]
+    md = [f"# Intraday gold paper desk, {day} (Bangkok; period {win(day)[0]} to {win(day)[1]})", "",
           "PAPER ONLY. PAXG/USDT 1m bars from Binance public data. Decisions fill at the next 1m open.", "",
           f"![equity]({day}.png)", "",
           f"- Live book: **{last['equity']:,.2f} USD** ({last['equity']/risk.CAPITAL-1:+.2%} since start); "
           f"PAXG buy & hold 1x: {bh.iloc[-1]:,.2f} ({bh.iloc[-1]/risk.CAPITAL-1:+.2%})",
-          f"- Today: {(day_eq['equity'].iloc[-1]/day_eq['equity'].iloc[0]-1) if len(day_eq) else 0:+.2%}; "
+          f"- Last 24 h (21:00-21:00): {(day_eq['equity'].iloc[-1]/day_eq['equity'].iloc[0]-1) if len(day_eq) else 0:+.2%}; "
           f"halted today: {'yes' if st.get('halted') == day else 'no'}",
           (f"- Unfiltered book (takes every setup, no AI): **{un.iloc[-1]:,.2f} USD** ({un.iloc[-1]/risk.CAPITAL-1:+.2%}); "
            f"AI filter adds {(last['equity']-un.iloc[-1])/risk.CAPITAL:+.2%} of capital"
@@ -95,13 +106,13 @@ def main(day, d, out):
           "## AI desk vs take-every-setup vs 15m candidate", "",
           "Expectancy = average P&L per trade in USD after costs. Profit factor = gross wins / gross losses.", "",
           "| Book, period | Trades | Win rate | Avg win | Avg loss | Expectancy | Profit factor |", "|---|---|---|---|---|---|---|",
-          *[f"| {name}, {per} " + perf([x for x in jlines(p) if x["kind"] == "EXIT" and (per == "since start" or x["t"][:10] == day)])
+          *[f"| {name}, {per} " + perf([x for x in jlines(p) if x["kind"] == "EXIT" and (per == "since start" or inwin(x["t"], day))])
             for name, p in (("AI desk", d / "journal.jsonl"), ("take every setup", d / "unfiltered" / "journal.jsonl"),
                             ("15m candidate", d / "cand15" / "journal.jsonl"))
-            for per in ("today", "since start")], "",
+            for per in ("last 24 h", "since start")], "",
           "Opus stated probabilities (for calibration): " + (", ".join(
               f"{x['event'][9:13]} p={x['answer'].get('p_target')} {x['answer'].get('action')}"
-              for x in j if x["kind"] == "DECISION" and x["stage"] == "opus") or "none today"), "",
+              for x in j if x["kind"] == "DECISION" and x["stage"] == "opus") or "none in the last 24 h"), "",
           "## Model calls and tokens", "", "| Model | Calls | Tokens |", "|---|---|---|",
           *[f"| {k} | {v[0]} | {v[1]:,} |" for k, v in toks.items()],
           f"| total | {sum(v[0] for v in toks.values())} | {sum(v[1] for v in toks.values()):,} |", "",

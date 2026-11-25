@@ -50,8 +50,9 @@ On each `SETUP <id> ...` line:
    levels, the 45-indicator library on 15m and 1h, and the next USD High event; the Opus brief adds 3 h of headlines.
 The broker fills the order at the next 1m open, re-checking every risk rule. Nothing else to do.
 
-Last wake-up of the day (23:00): `python3 report.py`, then commit `trading/intraday` and push to
-`claude/paper-trading`; send the boss 3 lines (equity vs PAXG buy & hold, trades, problems).
+21:07 wake-up: `python3 report.py` (period 21:00 yesterday to 21:00 today, plus since start; three books), snapshot
+`data/live`, commit and push to `claude/paper-trading`, then send the boss 3 lines (equity vs PAXG buy & hold, trades, problems).
+23:07 wake-up: the same refresh and commit, but no message. No other messages to the boss except an ERROR you cannot fix.
 Positions still open at 23:00 are closed by the 03:30 rule; the next day's first start replays it.
 
 ## Test
