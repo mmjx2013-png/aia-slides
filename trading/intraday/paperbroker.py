@@ -26,7 +26,9 @@ class Broker:
         self.s = json.loads(f.read_text()) if f.exists() else dict(
             equity=risk.CAPITAL, pos=None, day=None, day_start=risk.CAPITAL, halted=None,
             last_t=None, start_t=None, start_px=None, last_range=None, last_atr1=None,
-            shadows={str(L): dict(eq=risk.CAPITAL, qty=0.0, dead=None) for L in risk.SHADOW_LEVS})
+            shadows={})
+        for L in risk.SHADOW_LEVS:                         # books added later start fresh
+            self.s["shadows"].setdefault(str(L), dict(eq=risk.CAPITAL, qty=0.0, dead=None))
 
     # ------------------------------------------------------------ helpers
     def log(self, kind, t_ms, **kw):
@@ -55,7 +57,8 @@ class Broker:
             return self.log("REJECT", b["t"], event=o["event"], reason=why)
         d, eq = o["dir"], self.s["equity"]
         stop_dist = o["stop_atr"] * o["atr5"]
-        qty, capped = risk.size(eq, b["o"], stop_dist, o["risk_pct"])
+        ai_lev = o.get("leverage")
+        qty, capped = risk.size(eq, b["o"], stop_dist, 1.0 if ai_lev else o["risk_pct"], ai_lev)
         px = b["o"] + d * risk.COST
         self.s["pos"] = dict(dir=d, qty=qty, entry=px, stop=px - d * stop_dist,
                              target=None if o.get("trail") else px + d * o["target_r"] * stop_dist,
@@ -65,7 +68,10 @@ class Broker:
                  px=round(px, 2), stop=round(px - d * stop_dist, 2),
                  target=None if o.get("trail") else round(px + d * o["target_r"] * stop_dist, 2),
                  lev=round(qty * b["o"] / eq, 2), risk_pct=round(100 * risk_usd / eq, 3),
-                 lev_capped=capped, why=o.get("why", ""))
+                 lev_capped=capped, lev_chosen=ai_lev, lev_requested=o.get("leverage_req"),
+                 lev_why=o.get("lev_why", ""), why=o.get("why", ""))
+        if o.get("leverage_req") not in (None, ai_lev):
+            self.log("LEV_CLAMP", b["t"], event=o["event"], requested=o.get("leverage_req"), used=ai_lev)
         for L, sh in self.s["shadows"].items():
             if not sh["dead"]:
                 sh["qty"], sh["entry"] = float(L) * sh["eq"] / b["o"], px
@@ -152,7 +158,7 @@ def write_order(d, event, dec, created_ms=None):
     """Called by the desk after the model decided to enter. Risk clamps applied here
     and again at the fill. Returns the order dict."""
     o = risk.clamp(dec)
-    o.update(event=event["id"], atr5=event["atr5"], why=str(dec.get("why", ""))[:200], trail=bool(dec.get("trail")),
+    o.update(event=event["id"], atr5=event["atr5"], why=str(dec.get("why", ""))[:200], trail=bool(dec.get("trail")), lev_why=str(dec.get("lev_why", ""))[:160],
              created_ms=int(created_ms if created_ms is not None else time.time() * 1000))
     jdump(Path(d) / "pending_order.json", o)
     return o

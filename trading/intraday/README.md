@@ -11,7 +11,7 @@ PAXG is a gold-backed token, about 1:1 with spot XAU; it trades 24/7, gold does 
 |---|---|
 | `common.py` | fetch, 14-day 1m cache (`data/cache/`, not committed), indicators on 1m/5m/15m |
 | `watcher.py` | poll every 60 s, run the paper broker on every closed bar, detect setups, print `SETUP ...` |
-| `risk.py` | hard limits: 1% risk, ATR stop + target, 3% daily loss halt, 3x max, vol guard, flat 03:30 BKK, no weekend (Sat 04:00-Mon 05:00 BKK) |
+| `risk.py` | hard limits (AI desk: Opus picks leverage 1-10, size = min(lev x equity, 1% risk at its stop); other books 3x): 1% risk, ATR stop + target, 3% daily loss halt, 3x max, vol guard, flat 03:30 BKK, no weekend (Sat 04:00-Mon 05:00 BKK) |
 | `paperbroker.py` | fills at next 1m open +0.35 USD/oz (half spread 0.25 + slippage 0.10) each side; stop wins a same-bar tie; 1x/10x/30x shadow books with liquidation |
 | `desk.py` | escalation Sonnet screen -> Opus final (only Opus enters, owner rules in code), caps 6/3, token + p_target log |
 | `brief.py` | compact market context for briefs (1h klines cached, 1 request per 12 h) |
@@ -28,7 +28,7 @@ Same risk rules and calendar guard as the AI desk (so it is flat by 03:30 Bangko
 
 Live state: `data/live/` (`state.json`, `journal.jsonl`, `events.jsonl`, `equity.csv`, `budget/`, `briefs/`).
 
-## Runbook (each hourly wake-up, 14:00-23:00 Bangkok, weekdays)
+## Runbook (each hourly wake-up: 14:07-23:07 and 00:07-03:07 Bangkok, weekdays; flat by 03:30)
 ```
 cd aia-slides/trading/intraday
 python3 watcher.py status            # STOPPED -> start it:

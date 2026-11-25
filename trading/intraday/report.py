@@ -98,7 +98,7 @@ def main(day, d, out):
            + uf_stats(d, day) if un is not None else "- Unfiltered book: none yet"),
           (f"- 15m candidate book (code only, 0 tokens; true out-of-sample since 2026-11-25): **{cn.iloc[-1]:,.2f} USD** "
            f"({cn.iloc[-1]/risk.CAPITAL-1:+.2%})" if cn is not None and len(cn) else "- 15m candidate book: none yet"),
-          "- Shadow books (AI desk decisions at 1x/10x/30x): " + ", ".join(
+          "- Shadow books (AI desk decisions at fixed 1x/3x/10x/30x; compare 3x with the AI's own leverage): " + ", ".join(
               f"{L}x {s['eq']:,.0f}" + (f" (LIQUIDATED {s['dead']})" if s["dead"] else "")
               for L, s in st["shadows"].items()), "",
           "## Trades", "", "| In | Out | Side | Oz | Entry | Exit | Exit reason | P&L USD |", "|---|---|---|---|---|---|---|---|",
@@ -113,6 +113,11 @@ def main(day, d, out):
           "Opus stated probabilities (for calibration): " + (", ".join(
               f"{x['event'][9:13]} p={x['answer'].get('p_target')} {x['answer'].get('action')}"
               for x in j if x["kind"] == "DECISION" and x["stage"] == "opus") or "none in the last 24 h"), "",
+          "## AI leverage choices (chosen by Opus, clamped 1-10; size = min(leverage x equity, 1% risk at the stop))", "",
+          "| Fill | Requested | Chosen | Effective lev | Risk % | Outcome USD | Reason |", "|---|---|---|---|---|---|---|",
+          *([f"| {x['t'][11:16]} | {x.get('lev_requested')} | {x.get('lev_chosen')} | {x['lev']} | {x['risk_pct']} | "
+             f"{next((e['pnl'] for e in j if e['kind'] == 'EXIT' and e['event'] == x['event']), 'open')} | {x.get('lev_why', '')[:80]} |"
+             for x in j if x["kind"] == "FILL" and x.get("lev_chosen")] or ["| - | - | - | - | - | - | no AI-leveraged fills |"]), "",
           "## Model calls and tokens", "", "| Model | Calls | Tokens |", "|---|---|---|",
           *[f"| {k} | {v[0]} | {v[1]:,} |" for k, v in toks.items()],
           f"| total | {sum(v[0] for v in toks.values())} | {sum(v[1] for v in toks.values()):,} |", "",

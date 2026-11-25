@@ -77,7 +77,7 @@ assert b.s["halted"] == risk.bkk_day(T0), b.s
 ok, why = risk.entry_gate(b.s, T0 + 120_000); assert not ok and "daily loss" in why
 # 10. clamps
 o = risk.clamp(dict(dir="short", stop_atr=0.1, target_r=9, risk_pct=5))
-assert o == dict(dir=-1, stop_atr=1.0, target_r=4.0, risk_pct=1.0), o
+assert o == dict(dir=-1, leverage=None, leverage_req=None, stop_atr=1.0, target_r=4.0, risk_pct=1.0), o
 # 11. breakeven at +1R (option): after the trigger bar, a return to entry exits at about -cost
 risk.BREAKEVEN_AT_R = 1.0
 b, d = fresh()                                    # long, stop 2 USD, target 4 USD
@@ -98,4 +98,19 @@ assert abs(b.s["pos"]["stop"] - 3505.0) < 1e-9
 b.on_bar(bar(3, 3509, 3509.5, 3504, 3504.5))      # hits 3505
 ex = [x for x in kinds(d) if x["kind"] == "EXIT"][0]
 assert ex["reason"] == "stop" and abs(ex["px"] - (3505 - risk.COST)) < 1e-9 and ex["pnl"] > 0, ex
-print("test_broker: 12/12 checks passed")
+# 13. AI leverage: 25 -> clamped to 10 and logged; qty = min(lev x equity, 1% risk at the stop)
+d = tempfile.mkdtemp(); b = Broker(d)
+b.on_bar(bar(0, 3500, 3501, 3499, 3500))
+write_order(d, dict(id="lv", atr5=10.0), dict(dir="long", stop_atr=2.0, target_r=2, leverage=25), created_ms=T0 + 60_000)
+b.on_bar(bar(1, 3500, 3500.5, 3499.5, 3500))
+f = [x for x in kinds(d) if x["kind"] == "FILL"][0]
+assert f["lev_chosen"] == 10 and any(x["kind"] == "LEV_CLAMP" for x in kinds(d)), f
+assert abs(f["qty"] - round(100 / (20 + 0.7), 3)) < 1e-3 and f["risk_pct"] <= 1.0001, f    # 1% risk binds (4.83 oz < 28.6 oz)
+d = tempfile.mkdtemp(); b = Broker(d)
+b.on_bar(bar(0, 3500, 3501, 3499, 3500))
+write_order(d, dict(id="lv2", atr5=10.0), dict(dir="long", stop_atr=2.0, target_r=2, leverage=1), created_ms=T0 + 60_000)
+b.on_bar(bar(1, 3500, 3500.5, 3499.5, 3500))
+f = [x for x in kinds(d) if x["kind"] == "FILL"][0]
+assert f["lev_chosen"] == 1 and f["lev"] <= 1.0 and f["lev_capped"], f                  # 1x binds
+assert set(b.s["shadows"]) == {"1", "3", "10", "30"}
+print("test_broker: 13/13 checks passed")
