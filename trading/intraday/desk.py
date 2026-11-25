@@ -13,6 +13,7 @@ The code re-checks every one of these and logs Opus's p_target on every answer.
 Events older than 10 minutes are skipped (the market has moved on).
 """
 import json
+from pathlib import Path
 import re
 import sys
 import time
@@ -53,27 +54,29 @@ def state():
     return json.loads(f.read_text()) if f.exists() else {"equity": risk.CAPITAL, "pos": None}
 
 
-def write_brief(ev, stage, extra=""):
-    df = load_cache()
+def write_brief(ev, stage, extra="", df=None, out=None):
+    """df/out given = replay: history supplied, brief written to `out`, book shown as flat 10,000."""
+    replay = df is not None
+    df = load_cache() if df is None else df
     df = df[df["t"] < ev["close_ms"]]                      # nothing after the setup bar
     m5 = resample(df.iloc[-600:], 5).iloc[-12:]
     rows = "\n".join(f"{bkk(t).strftime('%H:%M')} {r.o:.2f} {r.h:.2f} {r.l:.2f} {r.c:.2f} {r.v:.1f}"
                      for t, r in m5.iterrows())
-    s = state()
+    s = {"equity": risk.CAPITAL, "pos": None} if replay else state()
     lo, hi = risk.STOP_ATR[:2]
     txt = f"""# PAPER intraday desk, setup {ev['id']}
 Setup: {ev['setup']} ({ev['dir']}) at {ev['t_bkk']} Bangkok, price {ev['px']}. {ev['why']}. Also firing: {ev['also'] or 'none'}
 Indicators: ATR14 1m {ev['atr1']}, 5m {ev['atr5']}, 15m {ev['atr15']}; 15m RSI {ev['rsi15']}, 15m z20 {ev['z15']}
 Last 12 x 5m bars (Bangkok time, open high low close volume-PAXG):
 {rows}
-{context(ev['close_ms'])}
+{context(ev['close_ms'], df, replay=replay)}
 
 Book: equity {s['equity']:.2f} USD, open position: {'none' if not s.get('pos') else 'yes'}.
 Risk engine (hard, in code): stop = {lo}-{hi} x ATR14(5m) = {lo*ev['atr5']:.2f}-{hi*ev['atr5']:.2f} USD; target = 1-4 x stop;
 risk per trade <= 1% of equity; notional <= 3x equity; fill at next 1m open; flat by 03:30 Bangkok.
 {extra}
 {(HERE / 'prompts' / f'{stage}.md').read_text()}"""
-    p = LIVE / "briefs" / ev["id"] / f"{stage}.md"
+    p = Path(out) if out else LIVE / "briefs" / ev["id"] / f"{stage}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(txt)
     return p

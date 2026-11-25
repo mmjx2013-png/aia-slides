@@ -66,11 +66,16 @@ def _trend(d, name):
     return f"| {name} | {dist} | {adx:.0f} | {regime} | {pct:.0f} |", ind
 
 
-def context(close_ms):
-    df1 = load_cache()
+def context(close_ms, df1=None, replay=False):
+    """replay=True: df1 is supplied history (no live caches); the calendar is not replayed."""
+    df1 = load_cache() if df1 is None else df1
     df1 = df1[df1["t"] < close_ms]
     m15 = resample(df1, 15).drop(columns="end")
-    h1 = _h1(df1)
+    if replay:
+        h1 = resample(df1, 60).drop(columns="end")
+        h1["t"] = h1.index.view("int64") // 10**6 if h1.index.dtype.str.endswith("ns]") else h1.index.astype("datetime64[ms, UTC]").view("int64")
+    else:
+        h1 = _h1(df1)
     h1 = h1[h1["t"] + 3_600_000 <= close_ms]
     h4 = resample(h1.assign(), 240) if False else None
     h4 = h1.resample("4h", label="left", closed="left").agg({"o": "first", "h": "max", "l": "min", "c": "last", "v": "sum", "t": "count"})
@@ -105,8 +110,9 @@ def context(close_ms):
     t15, t1 = inds["15m"].iloc[-1], inds["1h"].iloc[-1]
     lines += ["", "## Indicator library (trading/indicators.py; windows are in bars of that timeframe)",
               "indicator,15m,1h", *[f"{c},{t15[c]:.3g},{t1[c]:.3g}" for c in cols]]
-    nh = calendar_guard.next_high(close_ms)
-    lines += ["", "## Calendar", f"- Next USD High-impact event: {nh[0]} in {nh[1]} min" if nh else "- No USD High-impact event left this week",
+    nh = None if replay else calendar_guard.next_high(close_ms)
+    lines += ["", "## Calendar", ("- Not available in this replay (no historical calendar on the allowed hosts)." if replay else
+                                  f"- Next USD High-impact event: {nh[0]} in {nh[1]} min" if nh else "- No USD High-impact event left this week"),
               "- Limitation: no intraday DXY or US yields available (allowed hosts only)."]
     return "\n".join(lines)
 

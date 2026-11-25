@@ -33,7 +33,7 @@ THROTTLE = pd.Timedelta(minutes=15)
 PRIORITY = ["breakout", "vol_expansion", "momentum", "mean_reversion"]
 
 
-def detect(m1, m5, m15, t):
+def detect(m1, m5, m15, t, ends5=None, ends15=None):
     """Setups known at the close of the 1m bar that opened at t (UTC Timestamp)."""
     close_t = t + pd.Timedelta(minutes=1)
     out = []
@@ -46,7 +46,7 @@ def detect(m1, m5, m15, t):
         vr = w["v"].iloc[1:].sum() / (3 * m1["vavg"].iloc[i]) if m1["vavg"].iloc[i] > 0 else 0
         if abs(mv) > 4 * atr and vr > 2 and ((steps > 0).all() or (steps < 0).all()):
             out.append(("momentum", 1 if mv > 0 else -1, f"3-bar move {mv:+.2f} = {abs(mv)/atr:.1f}x ATR1, vol {vr:.1f}x"))
-    if close_t in set(m5["end"]):
+    if close_t in (ends5 if ends5 is not None else set(m5["end"])):
         j = m5.index.get_loc(close_t - pd.Timedelta(minutes=5))
         if j >= 100:
             b, prior = m5.iloc[j], m5.iloc[j - 12:j]
@@ -59,7 +59,7 @@ def detect(m1, m5, m15, t):
             if m5["bbw"].iloc[j - 1] <= bbw.quantile(0.2) and b["rng"] > 2 * m5["atr"].iloc[j - 1]:
                 out.append(("vol_expansion", 1 if b["c"] >= b["o"] else -1,
                             f"squeeze then 5m range {b['rng']:.2f} = {b['rng']/m5['atr'].iloc[j-1]:.1f}x ATR5"))
-    if close_t in set(m15["end"]):
+    if close_t in (ends15 if ends15 is not None else set(m15["end"])):
         k = m15.index.get_loc(close_t - pd.Timedelta(minutes=15))
         if k >= 35:
             b = m15.iloc[k]
