@@ -100,7 +100,7 @@ FOOTER = f'''<footer class="ftr" id="contact">
       <li><a href="activities.html">{T("ภาพกิจกรรม", "Photos")}</a></li><li><a href="calendar.html">{T("ปฏิทิน", "Calendar")}</a></li>
       <li><a href="downloads.html">{T("ดาวน์โหลด", "Downloads")}</a></li><li><a href="services.html">{T("ระบบทะเบียน", "Student registry")}</a></li><li><a href="contact.html">{T("ติดต่อ", "Contact")}</a></li></ul></div>
   </div>
-  <div class="legal"><span>{T("แนวคิดออกแบบใหม่ (Concept redesign) โดย", "Concept redesign by")} <b data-credit>{T("นักเรียน", "a student")}</b> · {T("ไม่ใช่เว็บไซต์ทางการของโรงเรียน", "not the school's official website")}</span>
+  <div class="legal"><span>{T("แนวคิดออกแบบใหม่ (Concept redesign) โดย", "Concept redesign by")} <b data-credit>Supaphir K.</b> · {T("ไม่ใช่เว็บไซต์ทางการของโรงเรียน", "not the school's official website")}</span>
     <span>{T("ฟอนต์ Anuphan และ IBM Plex Sans Thai (SIL OFL)", "Fonts: Anuphan and IBM Plex Sans Thai (SIL OFL)")}</span></div>
 </footer>'''
 

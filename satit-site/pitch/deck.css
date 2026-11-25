@@ -176,17 +176,25 @@ h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.18}
 .scen{transition:opacity .5s,transform .6s var(--ease)}
 .dim{opacity:.32!important}
 
-/* ---------- scores: four gauges sweep from the old score to the new one ---------- */
-.gauge{position:absolute;width:380px;text-align:center}
-.gauge svg{width:380px;height:220px;overflow:visible}
-.gauge .trk{fill:none;stroke:rgba(19,36,27,.1);stroke-width:30;stroke-linecap:round}
-.gauge .old{fill:none;stroke:var(--redL);stroke-width:30;stroke-linecap:round;stroke-dasharray:var(--o) 100}
-.gauge .new{fill:none;stroke:var(--g);stroke-width:30;stroke-linecap:round;stroke-dasharray:0 100;transition:stroke-dasharray 1.6s var(--ease) .6s}
-[data-s="scores"] .slide.on .gauge .new{stroke-dasharray:var(--n) 100}
-.gauge .vals{margin-top:-120px;font:700 64px/1 var(--head);color:var(--g)}
-.gauge .vals small{display:block;font:500 24px/1.3 var(--head);color:var(--red);margin-top:10px}
-.gauge h3{font-size:30px;margin:30px 0 4px;color:var(--ink)}
-.gauge p{margin:0;font-size:21px;line-height:1.45;color:var(--mute)}
+/* ---------- scores: three international standards; each "new site" result turns over on its beat ---------- */
+.scard{position:absolute;width:530px;height:525px;padding:34px 36px;border-radius:28px;background:rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(15,59,42,.14);backdrop-filter:blur(8px)}
+.scard h3{margin:0;font:700 36px/1.25 var(--head);color:var(--ink)}
+.scard .std{margin:6px 0 0;font:500 20px/1.4 var(--text);color:var(--mute);min-height:56px}
+.vals2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.vo,.vt .f,.vt .b{height:196px;border-radius:20px;padding:20px 18px;display:flex;flex-direction:column;justify-content:space-between}
+.vo{background:#FBEDEA}
+.who{font:600 19px/1 var(--head);letter-spacing:.04em;color:var(--mute)}
+.vals2 b{font:700 58px/1.05 var(--head)}.vals2 small{font:500 19px/1.3 var(--text);color:var(--mute)}
+.vo b{color:var(--red)}
+.vt{position:relative;height:196px;perspective:1200px}
+.vt .fl{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s var(--ease)}
+.vt .f,.vt .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.vt .f{background:#EEF1EF}.vt .f b{color:#9AA59F}
+.vt .b{transform:rotateY(180deg);background:#E7F1EB}.vt .b.ok b{color:var(--g2)}
+.vt .b.mid{background:#FBF3DC}.vt .b.mid b{color:var(--goldInk)}
+#sc3 .vals2 b{font-size:36px;line-height:1.15}
+.ge1 .slide.on #sc1 .fl,.ge2 .slide.on #sc2 .fl,.ge3 .slide.on #sc3 .fl{transform:rotateY(180deg)}
+.scard ul{margin:24px 0 0;padding-left:24px;font:400 21px/1.55 var(--text);color:var(--ink)}
 
 /* ---------- compare: drag anywhere across the big phone ---------- */
 .compare{--pos:50%;position:absolute;overflow:hidden;border-radius:56px;background:#0d0f0e;padding:16px;touch-action:none;cursor:ew-resize;user-select:none;-webkit-user-select:none;box-shadow:0 40px 90px rgba(0,0,0,.3)}

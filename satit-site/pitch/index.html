@@ -10,7 +10,7 @@
 <meta name="description" content="Pitch deck: why the Demonstration School of Phetchaburi Rajabhat University should adopt the redesigned website.">
 <link rel="icon" href="img/logo.png" type="image/png">
 <link rel="preload" href="fonts/anuphan-thai-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="deck.css?v=20261125071226">
+<link rel="stylesheet" href="deck.css?v=20261125082602">
 <script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');</script>
 </head>
 <body>
@@ -96,18 +96,34 @@
   </section>
 
   <!-- 7 · scores from Google's own tool -->
-  <section class="slide" id="scores" data-title="คะแนนจาก Lighthouse ของ Google" data-steps="0">
-    <div class="r eb" style="left:120px;top:150px;--i:0">คะแนนจากเครื่องมือของ Google (Lighthouse) · มือถือ</div>
-    <h2 class="r h2" style="left:114px;top:196px;width:1600px;--i:0">ดีขึ้นเกือบทุกด้าน <span class="gold">บอกตรงๆ ด้วย</span></h2>
-    <div class="r gauge" style="left:120px;top:370px;--o:55;--n:96;--i:1"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
-      <div class="vals"><span data-count="96" data-at="0">0</span><small>เดิม 55</small></div><h3>ความเร็ว</h3><p>Performance</p></div>
-    <div class="r gauge" style="left:560px;top:370px;--o:84;--n:94;--i:2"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
-      <div class="vals"><span data-count="94" data-at="0">0</span><small>เดิม 84</small></div><h3>ทุกคนใช้ได้</h3><p>Accessibility: ผู้สูงอายุ สายตาไม่ดี</p></div>
-    <div class="r gauge" style="left:1000px;top:370px;--o:100;--n:96;--i:3"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
-      <div class="vals"><span data-count="96" data-at="0">0</span><small>เดิม 100 (เว็บเดิมดีกว่า)</small></div><h3>แนวปฏิบัติที่ดี</h3><p>Best Practices</p></div>
-    <div class="r gauge" style="left:1440px;top:370px;--o:85;--n:100;--i:4"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
-      <div class="vals"><span data-count="100" data-at="0">0</span><small>เดิม 85</small></div><h3>Google หาเจอ</h3><p>SEO</p></div>
-    <p class="r small" style="left:120px;top:760px;width:1680px;--i:5">ทั้งสองเว็บวัดด้วยเครื่องมือเดียวกัน วันเดียวกัน 3 รอบ ใช้ค่ากลาง · หลังวัด เราแก้จุดที่เว็บใหม่เสียคะแนน (ไอคอนแท็บ สีตัวอักษร ลำดับหัวข้อ) วัดซ้ำได้ 100 ทั้ง 3 หมวด</p>
+  <section class="slide" id="scores" data-title="ตัดสินด้วยมาตรฐานสากล" data-steps="3">
+    <div class="r eb" style="left:120px;top:150px;--i:0">ตัดสินด้วยมาตรฐานสากล ไม่ใช่เกณฑ์ที่เราตั้งเอง · วัดวันเดียวกัน เครื่องมือเดียวกัน</div>
+    <h2 class="r h2" style="left:114px;top:196px;width:1700px;--i:0">สามมาตรฐาน <span class="gold">ที่ทั้งโลกใช้</span></h2>
+    <div class="r scard" id="sc1" style="left:120px;top:350px;--i:1">
+      <h3>ทุกคนเข้าถึงได้</h3><p class="std">WCAG 2.2 ระดับ AA · W3C · ISO/IEC 40500:2025</p>
+      <div class="vals2">
+        <div class="vo"><span class="who">เว็บเดิม</span><b>4 ข้อ</b><small>ไม่ผ่าน</small></div>
+        <div class="vt"><div class="fl"><div class="f"><span class="who">เว็บใหม่</span><b>?</b><small>กดเพื่อดูผล</small></div><div class="b mid"><span class="who">เว็บใหม่</span><b>1 ข้อ</b><small>แก้แล้ว เหลือ 0</small></div></div></div>
+      </div>
+      <ul><li>สีตัวอักษรจางเกินไป (1.4.3)</li><li>ลิงก์ไม่มีชื่อ 19 จุด (2.4.4)</li><li>จุดแตะเล็กเกินไป (2.5.8)</li></ul>
+    </div>
+    <div class="r scard" id="sc2" style="left:695px;top:350px;--i:2">
+      <h3>ความปลอดภัยพื้นฐาน</h3><p class="std">OWASP ASVS 5.0 ระดับ 1</p>
+      <div class="vals2">
+        <div class="vo"><span class="who">เว็บเดิม</span><b>0 / 3</b><small>ข้อที่ผ่าน</small></div>
+        <div class="vt"><div class="fl"><div class="f"><span class="who">เว็บใหม่</span><b>?</b><small>กดเพื่อดูผล</small></div><div class="b ok"><span class="who">เว็บใหม่</span><b>3 / 3</b><small>ข้อที่ผ่าน</small></div></div></div>
+      </div>
+      <ul><li>บังคับใช้ https (HSTS)</li><li>ไม่ยอมเปิดแบบไม่เข้ารหัส</li><li>ซอฟต์แวร์ยังได้รับการดูแล</li></ul>
+    </div>
+    <div class="r scard" id="sc3" style="left:1270px;top:350px;--i:3">
+      <h3>ความเร็วบนมือถือ</h3><p class="std">Core Web Vitals · เกณฑ์ของ Google (ไม่ใช่ ISO)</p>
+      <div class="vals2">
+        <div class="vo"><span class="who">เว็บเดิม</span><b>แย่</b><small>23.6 วินาที</small></div>
+        <div class="vt"><div class="fl"><div class="f"><span class="who">เว็บใหม่</span><b>?</b><small>กดเพื่อดูผล</small></div><div class="b mid"><span class="who">เว็บใหม่</span><b>ต้องปรับปรุง</b><small>2.7 วินาที (ดี ≤ 2.5)</small></div></div></div>
+      </div>
+      <ul><li>คอมพิวเตอร์: เดิม แย่ 4.8 วิ</li><li>ใหม่ ดี 0.6 วิ</li></ul>
+    </div>
+    <p class="r small" style="left:120px;top:925px;width:1680px;--i:4">ผลวัดวันที่ 25 พ.ย. 2569 ทั้งสองเว็บใช้ Lighthouse 13.6 และ axe-core 4.14 ชุดเดียวกัน · ความปลอดภัยตรวจจากส่วนหัวที่เซิร์ฟเวอร์ส่งให้ทุกคน ไม่ได้เจาะระบบ</p>
   </section>
 
   <!-- 8 · before / after: drag anywhere -->
