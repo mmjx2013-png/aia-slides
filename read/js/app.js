@@ -8,7 +8,8 @@ const smooth = t => t * t * (3 - 2 * t);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const phone = matchMedia('(max-width: 820px)');
 const root = document.documentElement;
-const SEQ_BASE = new URLSearchParams(location.search).get('seq') || 'assets/seq';
+// ?seq= may only name a folder of this site (letters, digits, - and /), never another website
+const SEQ_BASE = (q => /^[\w-]+(\/[\w-]+)*$/.test(q || '') ? q : 'assets/seq')(new URLSearchParams(location.search).get('seq'));
 
 /* ------------------------------------------------------------------ */
 /* Camera maths                                                        */
