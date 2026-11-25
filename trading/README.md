@@ -58,3 +58,16 @@ realistic costs**, and does it beat simply buying and holding?
 python3 fetch.py      # downloads once, then uses the cache
 python3 backtest.py   # writes reports/phase1.md tables and reports/equity.png
 ```
+
+## Phase 2: daily gold paper run (`gold_daily.py`)
+Each Thai trading day (~18:10 Bangkok = 11:10 UTC, mid-session for COMEX):
+1. Fresh Yahoo JSON for GC=F (daily + 1h), DXY, ^TNX, THB=X, SI=F, ^GSPC, GLD goes in
+   `data/gold/` (or a folder named by the `GOLD_DATA` environment variable).
+2. `python3 gold_daily.py prepare` — books fills of earlier decisions, writes the desk input.
+   Exit code 3 = no new closed 1h bar (weekend/holiday/stale data): nothing to do.
+3. One Opus desk call reads `data/desk/gold_live/<run>/input.md` and answers JSON.
+4. `python3 gold_daily.py commit --pm answer.json --opus-tokens N --orchestrator-tokens M`
+   — clamps the position to [-1, 1], logs it, logs the token cost in `gold_journal.csv`,
+   writes `reports/gold_daily/<date>.md` + chart, and replays the same decisions at 1x-100x.
+Orders fill at the open of the first 1h bar that starts after the run, never at a past price.
+A day counts as profitable only if the 1x paper P&L beats that day's estimated token cost.

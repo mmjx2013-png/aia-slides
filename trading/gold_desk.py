@@ -53,10 +53,10 @@ def _fmt(df):
     return df
 
 
-def chart_brief(D):
+def chart_brief(D, cutoff=None):
     D = pd.Timestamp(D)
     dd = d[d.index <= D].copy(); dd["adjclose"] = dd["close"]
-    cutoff = D + pd.Timedelta(hours=21)              # bars that started before the close
+    cutoff = cutoff or D + pd.Timedelta(hours=21)    # 1h bars that started before this time
     hh = h[h.index < cutoff].copy(); hh["adjclose"] = hh["close"]
     rows = {"GC=F daily": I.compute(dd).iloc[-1], "GC=F 1h": I.compute(hh.tail(3000)).iloc[-1]}
     t = pd.DataFrame(rows).drop(index=["turnover_mthb"], errors="ignore")

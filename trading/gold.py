@@ -23,7 +23,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-GD = Path(__file__).parent / "data" / "gold"
+GD = Path(__import__("os").environ.get("GOLD_DATA", Path(__file__).parent / "data" / "gold"))
 SPREAD = 0.30
 FIN = 0.06
 STOP_OUT = 0.50
@@ -109,6 +109,7 @@ def simulate(bars, fills, lev, capital, rebalance=True):
     eq, q, sig = capital, 0.0, 0.0
     prev_c, prev_t = None, None
     curve, dead_at, costs, fin_paid, trades = np.empty(len(t)), None, 0.0, 0.0, 0
+    fills = []
     margin = 0.0
     for i in range(len(t)):
         if dead_at is not None:
@@ -126,6 +127,8 @@ def simulate(bars, fills, lev, capital, rebalance=True):
             c = abs(q_new - q) * SPREAD
             eq -= c; costs += c
             trades += int(w != sig)
+            if q_new != q:
+                fills.append((t[i], "BUY" if q_new > q else "SELL", abs(q_new - q), o, c))
             q, sig = q_new, w
             margin = abs(q) * o / lev
         # liquidation check against the bar's worst price
@@ -136,13 +139,14 @@ def simulate(bars, fills, lev, capital, rebalance=True):
                 stop_px = o + (STOP_OUT * margin - eq) / q
                 px = stop_px if (q > 0 and stop_px <= o) or (q < 0 and stop_px >= o) else o
                 eq = eq + q * (px - o) - abs(q) * SPREAD
+                fills.append((t[i], "LIQUIDATED", abs(q), px, abs(q) * SPREAD))
                 eq, q, dead_at = max(eq, 0.0), 0.0, t[i]
                 curve[i] = eq; continue
         eq += q * (C[i] - o)
         prev_c, prev_t = C[i], t[i]
         curve[i] = eq
     e = pd.Series(curve, t)
-    return dict(equity=e, dead_at=dead_at, costs=costs, financing=fin_paid, trades=trades)
+    return dict(equity=e, dead_at=dead_at, costs=costs, financing=fin_paid, trades=trades, fills=fills)
 
 
 def stats(res, capital, rf=0.02):
