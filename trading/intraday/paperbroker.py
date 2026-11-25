@@ -58,11 +58,12 @@ class Broker:
         qty, capped = risk.size(eq, b["o"], stop_dist, o["risk_pct"])
         px = b["o"] + d * risk.COST
         self.s["pos"] = dict(dir=d, qty=qty, entry=px, stop=px - d * stop_dist,
-                             target=px + d * o["target_r"] * stop_dist, t=b["t"], event=o["event"])
+                             target=None if o.get("trail") else px + d * o["target_r"] * stop_dist,
+                             t=b["t"], event=o["event"], trail=bool(o.get("trail")), dist=stop_dist, best=px)
         risk_usd = qty * (stop_dist + 2 * risk.COST)
         self.log("FILL", b["t"], event=o["event"], side="BUY" if d > 0 else "SELL", qty=round(qty, 3),
                  px=round(px, 2), stop=round(px - d * stop_dist, 2),
-                 target=round(px + d * o["target_r"] * stop_dist, 2),
+                 target=None if o.get("trail") else round(px + d * o["target_r"] * stop_dist, 2),
                  lev=round(qty * b["o"] / eq, 2), risk_pct=round(100 * risk_usd / eq, 3),
                  lev_capped=capped, why=o.get("why", ""))
         for L, sh in self.s["shadows"].items():
@@ -117,13 +118,16 @@ class Broker:
             d = p["dir"]
             self._shadow_liq(b, d)
             stop_hit = b["l"] <= p["stop"] if d > 0 else b["h"] >= p["stop"]
-            tgt_hit = b["h"] >= p["target"] if d > 0 else b["l"] <= p["target"]
+            tgt_hit = p["target"] is not None and (b["h"] >= p["target"] if d > 0 else b["l"] <= p["target"])
             if stop_hit:                                    # stop wins a same-bar tie
                 gap = (b["o"] < p["stop"]) if d > 0 else (b["o"] > p["stop"])
                 self._close(b, b["o"] if gap else p["stop"], "stop")
             elif tgt_hit:
                 gap = (b["o"] > p["target"]) if d > 0 else (b["o"] < p["target"])
                 self._close(b, b["o"] if gap else p["target"], "target")
+            elif p.get("trail"):                             # ATR trail: level from prior bars' best price
+                p["best"] = max(p["best"], b["h"]) if d > 0 else min(p["best"], b["l"])
+                p["stop"] = max(p["stop"], p["best"] - p["dist"]) if d > 0 else min(p["stop"], p["best"] + p["dist"])
             elif risk.BREAKEVEN_AT_R and not p.get("be"):    # takes effect from the NEXT bar
                 one_r = abs(p["entry"] - p["stop"]) * risk.BREAKEVEN_AT_R
                 if (b["h"] if d > 0 else -b["l"]) >= (p["entry"] + one_r if d > 0 else -(p["entry"] - one_r)):
@@ -148,7 +152,7 @@ def write_order(d, event, dec, created_ms=None):
     """Called by the desk after the model decided to enter. Risk clamps applied here
     and again at the fill. Returns the order dict."""
     o = risk.clamp(dec)
-    o.update(event=event["id"], atr5=event["atr5"], why=str(dec.get("why", ""))[:200],
+    o.update(event=event["id"], atr5=event["atr5"], why=str(dec.get("why", ""))[:200], trail=bool(dec.get("trail")),
              created_ms=int(created_ms if created_ms is not None else time.time() * 1000))
     jdump(Path(d) / "pending_order.json", o)
     return o

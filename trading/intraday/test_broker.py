@@ -87,4 +87,15 @@ b.on_bar(bar(2, 3502, 3502.1, 3500.0, 3500.2))
 ex = [x for x in kinds(d) if x["kind"] == "EXIT"][0]
 assert ex["reason"] == "stop" and -0.35 * 3 < ex["pnl"] / b.s["equity"] * 0 + ex["pnl"] / 8.57 < 0, ex
 risk.BREAKEVEN_AT_R = None
-print("test_broker: 11/11 checks passed")
+# 12. ATR trail, no target: the stop ratchets up from prior bars' best and exits on the pullback
+d = tempfile.mkdtemp(); b = Broker(d)
+b.on_bar(bar(0, 3500, 3501, 3499, 3500))
+write_order(d, dict(id="tr", atr5=2.0), dict(dir="long", stop_atr=2.5, trail=True), created_ms=T0 + 60_000)
+b.on_bar(bar(1, 3500, 3501, 3499.9, 3500.5))      # entry 3500.35, stop 3495.35, best 3501
+assert b.s["pos"]["target"] is None and abs(b.s["pos"]["stop"] - 3496.0) < 1e-9, b.s["pos"]
+b.on_bar(bar(2, 3500.5, 3510, 3500.4, 3509))      # best 3510 -> stop 3505
+assert abs(b.s["pos"]["stop"] - 3505.0) < 1e-9
+b.on_bar(bar(3, 3509, 3509.5, 3504, 3504.5))      # hits 3505
+ex = [x for x in kinds(d) if x["kind"] == "EXIT"][0]
+assert ex["reason"] == "stop" and abs(ex["px"] - (3505 - risk.COST)) < 1e-9 and ex["pnl"] > 0, ex
+print("test_broker: 12/12 checks passed")

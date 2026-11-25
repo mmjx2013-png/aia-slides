@@ -22,6 +22,9 @@ PAXG is a gold-backed token, about 1:1 with spot XAU; it trades 24/7, gold does 
 
 The watcher also runs `data/live/unfiltered/`, a paper book that takes EVERY setup with default risk.
 The daily report compares it with the AI-filtered book: does the filter add expectancy after costs?
+It also runs `data/live/cand15/`: the best setup from `reports/setup_search_htf.md` (15m Donchian-20 breakout, volume > 1.5x,
+FADED, stop 2.5 x ATR(15m), ATR trailing exit, no target), code only, 0 tokens. **True out-of-sample start: 2026-11-25.**
+Same risk rules and calendar guard as the AI desk (so it is flat by 03:30 Bangkok, unlike the research run).
 
 Live state: `data/live/` (`state.json`, `journal.jsonl`, `events.jsonl`, `equity.csv`, `budget/`, `briefs/`).
 

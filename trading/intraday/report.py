@@ -50,6 +50,13 @@ def main(day, d, out):
     ax.plot(eq.index, eq["equity"], label="paper desk (live book, <=3x)", lw=1.4)
     if un is not None:
         ax.plot(un.index, un, label="unfiltered: take every setup", lw=1.0, ls="--")
+    cf = d / "cand15" / "equity.csv"
+    cn = None
+    if cf.exists():
+        cn = pd.read_csv(cf)
+        cn.index = pd.to_datetime(cn["t"], unit="ms", utc=True).dt.tz_convert(BKK)
+        cn = cn[cn.index.strftime("%Y-%m-%d") <= day]["equity"]
+        ax.plot(cn.index, cn, label="15m candidate (code only, OOS from 2026-11-25)", lw=1.0, ls=":")
     ax.plot(eq.index, bh, label="PAXG buy & hold, 1x", lw=1.0, alpha=.8)
     ax.set_ylabel("USD"); ax.legend(frameon=False, fontsize=8); ax.grid(alpha=.3)
     ax.set_title(f"Intraday gold paper desk, to {day} (Bangkok)", fontsize=9)
@@ -78,16 +85,19 @@ def main(day, d, out):
           (f"- Unfiltered book (takes every setup, no AI): **{un.iloc[-1]:,.2f} USD** ({un.iloc[-1]/risk.CAPITAL-1:+.2%}); "
            f"AI filter adds {(last['equity']-un.iloc[-1])/risk.CAPITAL:+.2%} of capital"
            + uf_stats(d, day) if un is not None else "- Unfiltered book: none yet"),
-          "- Shadow books, same decisions: " + ", ".join(
+          (f"- 15m candidate book (code only, 0 tokens; true out-of-sample since 2026-11-25): **{cn.iloc[-1]:,.2f} USD** "
+           f"({cn.iloc[-1]/risk.CAPITAL-1:+.2%})" if cn is not None and len(cn) else "- 15m candidate book: none yet"),
+          "- Shadow books (AI desk decisions at 1x/10x/30x): " + ", ".join(
               f"{L}x {s['eq']:,.0f}" + (f" (LIQUIDATED {s['dead']})" if s["dead"] else "")
               for L, s in st["shadows"].items()), "",
           "## Trades", "", "| In | Out | Side | Oz | Entry | Exit | Exit reason | P&L USD |", "|---|---|---|---|---|---|---|---|",
           *(rows or ["| - | - | - | - | - | - | no trades | - |"]), "",
-          "## Filtered (AI) against unfiltered (every setup)", "",
+          "## AI desk vs take-every-setup vs 15m candidate", "",
           "Expectancy = average P&L per trade in USD after costs. Profit factor = gross wins / gross losses.", "",
           "| Book, period | Trades | Win rate | Avg win | Avg loss | Expectancy | Profit factor |", "|---|---|---|---|---|---|---|",
           *[f"| {name}, {per} " + perf([x for x in jlines(p) if x["kind"] == "EXIT" and (per == "since start" or x["t"][:10] == day)])
-            for name, p in (("AI filtered", d / "journal.jsonl"), ("unfiltered", d / "unfiltered" / "journal.jsonl"))
+            for name, p in (("AI desk", d / "journal.jsonl"), ("take every setup", d / "unfiltered" / "journal.jsonl"),
+                            ("15m candidate", d / "cand15" / "journal.jsonl"))
             for per in ("today", "since start")], "",
           "Opus stated probabilities (for calibration): " + (", ".join(
               f"{x['event'][9:13]} p={x['answer'].get('p_target')} {x['answer'].get('action')}"

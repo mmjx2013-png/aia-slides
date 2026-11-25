@@ -83,7 +83,28 @@ def make_event(m1, m5, m15, t, setups):
                 vol_guard=bool(b1["rng"] > 4 * b1["atr"]))
 
 
-def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None, unfiltered=None):
+CAND_START = "2026-11-25"   # true out-of-sample start of the 15m candidate book
+
+
+def candidate(m15, close_t):
+    """15m Donchian-20 breakout with volume > 1.5x its 20-bar mean, FADED (setup_search_htf.md).
+    Returns -1/+1 (the faded direction) when the 15m bar that closed at close_t qualifies, else 0."""
+    if close_t not in set(m15["end"]):
+        return 0, None
+    k = m15.index.get_loc(close_t - pd.Timedelta(minutes=15))
+    if k < 21:
+        return 0, None
+    b, prior = m15.iloc[k], m15.iloc[k - 20:k]
+    if not b["v"] > 1.5 * b["vavg"]:
+        return 0, None
+    if b["c"] > prior["h"].max():
+        return -1, b
+    if b["c"] < prior["l"].min():
+        return 1, b
+    return 0, None
+
+
+def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None, unfiltered=None, cand=None):
     """Advance broker(s) and detector over bars df.index[idx] (all closed). Returns last_setup.
     `unfiltered`: a second paper book that takes EVERY setup with default risk (the baseline
     the AI filter is measured against)."""
@@ -95,6 +116,15 @@ def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None, unfi
         broker.on_bar(bd)
         if unfiltered:
             unfiltered.on_bar(bd)
+        if cand:
+            cand.on_bar(bd)
+            d, b15 = candidate(m15, t + pd.Timedelta(minutes=1))
+            if d and emit:
+                close_ms = int(b["t"]) + 60_000
+                ev = dict(id=f"{bkk(t + pd.Timedelta(minutes=1)).strftime('%Y%m%d-%H%M')}-cand15", atr5=float(b15["atr"]))
+                write_order(cand.d, ev, dict(dir="long" if d > 0 else "short", stop_atr=2.5, trail=True,
+                                             why="15m donchian20 vol>1.5x faded, 2.5 ATR15 stop, ATR trail"),
+                            created_ms=close_ms)
         if not emit or risk.in_flat_window(int(b["t"]) + 60_000) or risk.is_weekend(int(b["t"]) + 60_000):
             continue
         setups = detect(m1, m5, m15, t)
@@ -113,6 +143,8 @@ def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None, unfi
     broker.save()
     if unfiltered:
         unfiltered.save()
+    if cand:
+        cand.save()
     return last_setup
 
 
@@ -125,6 +157,7 @@ def run(max_hours):
     try:
         broker = Broker(LIVE)
         unf = Broker(LIVE / "unfiltered")
+        cnd = Broker(LIVE / "cand15")
         df = load_cache()
         df = update_cache(df)
         evs = jlines(LIVE / "events.jsonl")
@@ -133,8 +166,8 @@ def run(max_hours):
         todo = df.index[df["t"] > done] if done else df.index[-1:]
         fresh = pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=3)
         catch = [t for t in todo if t < fresh]
-        last_setup = step(df, broker, LIVE, catch, emit=False, last_setup=last_setup, unfiltered=unf)
-        last_setup = step(df, broker, LIVE, [t for t in todo if t >= fresh], last_setup=last_setup, unfiltered=unf)
+        last_setup = step(df, broker, LIVE, catch, emit=False, last_setup=last_setup, unfiltered=unf, cand=cnd)
+        last_setup = step(df, broker, LIVE, [t for t in todo if t >= fresh], last_setup=last_setup, unfiltered=unf, cand=cnd)
         print(f"watcher up pid={os.getpid()} bars={len(df)} caught_up={len(catch)} "
               f"equity={broker.mtm(df['c'].iloc[-1]):.2f}", flush=True)
         ok, msg = calendar_guard.refresh()
@@ -159,7 +192,7 @@ def run(max_hours):
                     df = update_cache(df)
                     new = df[df["t"] > broker.s["last_t"]]
                 df = merge(df, new).iloc[-3000:]
-                last_setup = step(df, broker, LIVE, list(new.index), last_setup=last_setup, unfiltered=unf)
+                last_setup = step(df, broker, LIVE, list(new.index), last_setup=last_setup, unfiltered=unf, cand=cnd)
                 if new.index[-1].minute % 15 == 0:
                     save_cache(merge(load_cache(), df))
             except Exception as e:
