@@ -323,9 +323,9 @@ adm = f'''{phero(T("รับสมัคร", "Admissions"), T("รับสม
 </div></div></section>
 <section class="sec" id="poster"><div class="wrap story">
   <div class="rv"><div class="eyebrow">{T("โปสเตอร์ประกาศ", "The poster")}</div><h2>{T("สแกน QR ในโปสเตอร์เพื่อสมัคร", "Scan the QR code on the poster to apply")}</h2>
-    <p>{T("โปสเตอร์นี้มาจากหน้าแรกของเว็บโรงเรียน ระบุว่าเปิดรับสมัคร ป.1 ปีการศึกษา 2570 ค่าสมัคร 100 บาท และสอบถามเพิ่มเติมได้ที่ 032-708649", "This poster is from the school's home page: Grade 1 for academic year 2027, a 100 baht fee, and questions to +66 32 708 649.")}</p>
+    <p>{T("ข้อมูลตามโปสเตอร์ประกาศบนหน้าแรกของเว็บโรงเรียน: เปิดรับสมัคร ป.1 ปีการศึกษา 2570 ค่าสมัคร 100 บาท สอบถามเพิ่มเติมได้ที่ 032-708649 · QR พาไปยังลิงก์สมัครเดียวกับโปสเตอร์ต้นฉบับ", "From the poster on the school's home page: Grade 1 for academic year 2027, a 100 baht fee, questions to +66 32 708 649. The QR code opens the same link as the original poster.")}</p>
     <p class="src">{T("ก่อนชำระเงิน โปรดตรวจสอบกับโรงเรียนทางโทรศัพท์อีกครั้ง", "Please confirm with the school by phone before you pay.")}</p></div>
-  <div class="pic rv" style="aspect-ratio:auto;background:none"><img src="img/poster-2570.webp" alt="โปสเตอร์รับสมัครนักเรียน ป.1 ปีการศึกษา 2570 พร้อม QR code สมัคร" width="740" height="1112" loading="lazy" style="width:100%;height:auto;border-radius:24px"></div>
+  <div class="pic rv" style="aspect-ratio:auto;background:none"><img src="img/poster-2570.webp" alt="โปสเตอร์รับสมัครนักเรียน ป.1 ปีการศึกษา 2570 พร้อม QR code สมัคร" width="1080" height="1350" loading="lazy" style="width:100%;height:auto;border-radius:24px"><p style="margin:12px 0 0"><a class="btn btn-ghost" href="img/poster-2570-print.jpg" download>{T("ดาวน์โหลดโปสเตอร์ (ไฟล์ใหญ่สำหรับพิมพ์)", "Download the poster (print size)")}</a></p></div>
 </div></section>
 <section class="sec"><div class="wrap">{head2(T("ขั้นตอน", "How it works"), T("สมัครเรียนใน 5 ขั้น", "Applying in five steps"))}
   <div class="steps rv-s">

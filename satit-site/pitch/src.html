@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ทำไมโรงเรียนสาธิตควรมีเว็บไซต์ใหม่</title>
+<meta name="description" content="Pitch deck: why the Demonstration School of Phetchaburi Rajabhat University should adopt the redesigned website.">
+<link rel="icon" href="img/logo.png" type="image/png">
+<link rel="preload" href="fonts/anuphan-thai-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="deck.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');</script>
+</head>
+<body>
+<main id="vp">
+<div id="stage" data-slide="1" data-s="hook" data-step="0" data-dir="fwd">
+  <div class="plate" id="pPond"><img src="img/photo-pond.webp" alt=""></div>
+  <div class="plate" id="pLab"><img src="img/photo-lab.webp" alt=""></div>
+  <div class="plate" id="pStud"><img src="img/photo-students.webp" alt=""></div>
+  <div class="plate" id="pFlags"><img src="img/photo-flags.webp" alt=""></div>
+  <div class="veil vHook"></div><div class="veil vDark"></div><div class="veil vDeep"></div><div class="veil vLight"></div><div class="veil vEnd"></div>
+  <div id="panel"></div>
+
+  <!-- the parent's phone, old site (A) and new site (B): they travel through the deck -->
+  <div class="phone" id="phA" aria-hidden="true"><div class="scr">
+      <div class="s-blank"></div><img class="s-old-top" src="img/old-top.webp" alt=""><img class="s-long" src="img/old-long.webp" alt="">
+      <div class="s-load"><div class="clock"><span data-race="23.6" data-ms="9440">0.0</span><small>วิ</small></div><div class="bar"><i></i></div></div>
+      <span class="screens">จอที่ <b data-screens>1</b> / 7</span></div><span class="notch"></span><span class="tag">เว็บเดิม</span></div>
+  <div class="phone" id="phB" aria-hidden="true"><div class="scr">
+      <div class="s-blank"></div><img class="s-new-top" src="img/new-top.webp" alt=""><img class="s-new-contact" src="img/new-contact.webp" alt="">
+      <div class="s-load"><div class="clock"><span data-race="2.7" data-ms="1080">0.0</span><small>วิ</small></div><div class="bar"><i></i></div></div>
+      <span class="tap" style="left:8%;top:44%"></span></div><span class="notch"></span><span class="tag">เว็บใหม่</span></div>
+
+  <!-- 1 · the question -->
+  <section class="slide" id="hook" data-title="ผู้ปกครองเห็นอะไร เมื่อเปิดเว็บเราบนมือถือ" data-steps="0">
+    <div class="r eb" style="left:120px;top:250px;--i:0">ข้อเสนอเว็บไซต์ใหม่ · โรงเรียนสาธิต มรภ.เพชรบุรี</div>
+    <h1 class="r h1" style="left:114px;top:300px;width:1100px;--i:1">ผู้ปกครองเห็นอะไร<br>เมื่อเปิดเว็บเรา<br><span class="gold">บนมือถือ?</span></h1>
+    <p class="r lede" style="left:120px;top:720px;width:900px;--i:3">เก็บคำตอบไว้ในใจ เราจะเฉลยในหน้าสุดท้าย</p>
+    <p class="r small" style="left:120px;top:960px;width:1000px;--i:4">ภาพ: เพจ Facebook โรงเรียนสาธิต มรภ.เพชรบุรี (ใช้โดยได้รับอนุญาต)</p>
+  </section>
+
+  <!-- 2 · speed: a race on two phones -->
+  <section class="slide" id="speed" data-title="บนมือถือ เว็บเดิมใช้เวลา 23.6 วินาที" data-steps="0">
+    <div class="r eb dk" style="left:90px;top:190px;--i:0">ความเร็วบนมือถือ</div>
+    <h2 class="r h2 dk" style="left:86px;top:236px;width:640px;--i:0">ผู้ปกครอง<br>ต้องรอนานแค่ไหน</h2>
+    <div class="r" style="left:90px;top:480px;--i:1"><div class="num redt" style="color:var(--redL)">23.6<small>วินาที</small></div><p class="small dk" style="margin:8px 0 0">เว็บเดิม</p></div>
+    <div class="r" style="left:90px;top:690px;--i:2"><div class="num" style="color:var(--gold)">2.7<small>วินาที</small></div><p class="small dk" style="margin:8px 0 0">เว็บใหม่ · <b style="color:#fff">เร็วขึ้นราว 9 เท่า</b></p></div>
+    <p class="r small dk" style="left:90px;top:930px;width:620px;--i:4">เวลาจนเห็นเนื้อหาหลักบนจอ (LCP) วัดด้วย Lighthouse จำลองมือถือบนเน็ต 4G · การแข่งบนจอย่อเวลาลง 2.5 เท่า</p>
+  </section>
+
+  <!-- 3 · weight: files fall into a heap -->
+  <section class="slide" id="weight" data-title="เว็บเดิมหนักกว่า 7 เท่า" data-steps="1">
+    <div class="r eb dk" style="left:120px;top:150px;--i:0">ขนาดหน้าแรก</div>
+    <h2 class="r h2 dk" style="left:114px;top:196px;width:1500px;--i:0">หนักกว่า <span class="gold">7 เท่า</span> ต่อการเปิดหนึ่งครั้ง</h2>
+    <div class="pile old" data-pile="114" style="left:150px;top:420px"></div>
+    <div class="pile new" data-pile="25" style="left:1150px;top:420px"></div>
+    <p class="r lede dk" style="left:150px;top:350px;--i:2"><b style="color:var(--redL)">114 ไฟล์ · 9.9 MB</b></p>
+    <p class="r lede dk" style="left:1150px;top:350px;--i:3"><b style="color:var(--gold)">25 ไฟล์ · 1.4 MB</b></p>
+    <div class="f1" style="left:520px;top:800px;width:1300px"><p class="lede dk" style="margin:0">ยิ่งหนัก ยิ่งช้า และยิ่งกินเน็ตมือถือของผู้ปกครอง<br><span class="small dk">เฉพาะรูปบนหน้าแรกของเว็บเดิม 15 รูป ก็หนัก 6.2 MB แล้ว</span></p></div>
+  </section>
+
+  <!-- 4 · finding things -->
+  <section class="slide" id="find" data-title="เบอร์โทรอยู่ลึก 7 จอ" data-steps="2">
+    <div class="r eb" style="left:1120px;top:190px;--i:0">หาข้อมูลบนมือถือ</div>
+    <h2 class="r h2" style="left:1114px;top:236px;width:740px;--i:0">เบอร์โทร<br>อยู่ลึก <span class="gold">7 จอ</span></h2>
+    <p class="r lede" style="left:1120px;top:470px;width:700px;--i:1">บนมือถือ เว็บเดิมซ่อนเบอร์ไว้ท้ายหน้า และกดโทรออกไม่ได้</p>
+    <div class="f1" style="left:1120px;top:640px;width:700px"><div class="card"><h3>เว็บใหม่: แตะเดียว</h3><p>การ์ด "ติดต่อโรงเรียน" อยู่ในจอแรก กดแล้วโทรออกได้ทันที</p></div></div>
+    <div class="f2" style="left:1120px;top:900px;width:740px"><p class="lede" style="margin:0">จะสมัครเรียน: เว็บเดิม <b class="redt">3 แตะ</b> · เว็บใหม่ <b class="gold">1 แตะ</b></p></div>
+  </section>
+
+  <!-- 5 · the server says what it runs -->
+  <section class="slide" id="software" data-title="ซอฟต์แวร์ของเว็บเดิมหมดอายุการดูแล" data-steps="2">
+    <div class="r eb dk" style="left:120px;top:160px;--i:0">ความปลอดภัย · ส่วนเทคนิค</div>
+    <h2 class="r h2 dk" style="left:114px;top:206px;width:1600px;--i:0">เซิร์ฟเวอร์ <span class="gold">บอกทุกคน</span> ว่าใช้อะไรอยู่</h2>
+    <div class="r term" style="left:120px;top:360px;width:1680px;--i:1"><b>Server:</b> <span class="typed" style="--tw:52ch">Apache/2.4.52 (FreeBSD) OpenSSL/1.1.1a PHP/7.3.33</span></div>
+    <p class="r small dk" style="left:120px;top:480px;width:1600px;--i:2">ทุกครั้งที่มีคนเปิดเว็บเดิม เซิร์ฟเวอร์ตอบกลับพร้อมชื่อและรุ่นของซอฟต์แวร์ เหมือนติดป้ายหน้าบ้านว่าใช้กุญแจรุ่นไหน</p>
+    <div class="f1" style="left:120px;top:570px;width:1680px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+      <div class="card dk exp"><h3>PHP 7.3</h3><p>ภาษาที่ใช้สร้างเว็บ เลิกออกแพตช์ความปลอดภัย 6 ธ.ค. 2564</p><span class="stamp">หมดอายุ</span></div>
+      <div class="card dk exp"><h3>OpenSSL 1.1.1</h3><p>ตัวเข้ารหัสการเชื่อมต่อ เลิกดูแล 11 ก.ย. 2566</p><span class="stamp">หมดอายุ</span></div>
+      <div class="card dk exp"><h3>Apache 2.4.52</h3><p>ตัวเซิร์ฟเวอร์ รุ่นล่าสุดคือ 2.4.71</p><span class="stamp">ตกรุ่น</span></div></div>
+    <div class="f2" style="left:120px;top:880px;width:1680px"><p class="lede dk" style="margin:0"><svg class="lock" viewBox="0 0 60 60"><g class="sh"><path d="M18 26V18a12 12 0 0124 0v8" fill="none" stroke="#F4B3A6" stroke-width="5"/></g><rect x="12" y="26" width="36" height="28" rx="6" fill="#F4B3A6"/></svg>เปิดแบบ <b>http://</b> ได้ ไม่บังคับเข้ารหัส (ไม่มี HSTS)</p></div>
+  </section>
+
+  <!-- 6 · what could actually happen -->
+  <section class="slide" id="danger" data-title="อันตรายที่อาจเกิด อธิบายแบบภาษาคน" data-steps="3">
+    <div class="r eb dk" style="left:900px;top:130px;--i:0">ภาษาคน: อาจเกิดอะไรได้</div>
+    <h2 class="r h2 dk" style="left:894px;top:176px;width:960px;font-size:68px;--i:0">ผู้ปกครอง<span class="gold">เสี่ยงอะไรบ้าง</span></h2>
+    <div class="r poster" style="left:150px;top:150px;width:560px;height:842px;--i:1"><div class="flip"><div class="face"><img src="img/poster.webp" alt="โปสเตอร์รับสมัคร ป.1 ปีการศึกษา 2570"></div>
+      <div class="face back"><div class="qr" data-fakeqr></div><b>QR ปลอม<br>เงินค่าสมัครไปไม่ถึงโรงเรียน</b></div></div></div>
+    <div class="r card dk scen" style="left:900px;top:360px;width:900px;--i:2"><h3>1. QR ค่าสมัครถูกสลับ</h3><p>ถ้าเปิดเว็บผ่าน Wi-Fi สาธารณะแบบ http:// คนในเครือข่ายเดียวกันอาจแก้หน้าเว็บระหว่างทาง เช่น เปลี่ยน QR บนโปสเตอร์</p></div>
+    <div class="f2 card dk scen" style="left:900px;top:600px;width:900px"><h3>2. หน้าเว็บถูกแก้หรือฝังลิงก์หลอก</h3><p>ซอฟต์แวร์ที่เลิกออกแพตช์ จะไม่ถูกแก้เมื่อมีคนพบช่องโหว่ใหม่</p></div>
+    <div class="f3 card dk scen" style="left:900px;top:800px;width:900px"><h3>3. บอตสแกนหาช่องโหว่อัตโนมัติ</h3><p>เว็บบอกรุ่นปลั๊กอิน WordPress ไว้ในหน้า ทำให้บอตเลือกช่องโหว่ได้ตรงจุด</p></div>
+    <p class="r small dk" style="left:150px;top:1018px;width:1700px;--i:5">เป็นความเสี่ยงที่ "อาจ" เกิด · ไม่ได้ทดสอบเจาะระบบ และไม่ได้พบว่าเว็บถูกเจาะ · ควรให้ฝ่ายไอทีของมหาวิทยาลัยตรวจสอบ</p>
+  </section>
+
+  <!-- 7 · scores from Google's own tool -->
+  <section class="slide" id="scores" data-title="คะแนนจาก Lighthouse ของ Google" data-steps="1">
+    <div class="r eb" style="left:120px;top:150px;--i:0">คะแนนจากเครื่องมือของ Google (Lighthouse) · มือถือ</div>
+    <h2 class="r h2" style="left:114px;top:196px;width:1600px;--i:0">ดีขึ้นเกือบทุกด้าน <span class="gold">บอกตรงๆ ด้วย</span></h2>
+    <div class="r gauge" style="left:120px;top:370px;--o:55;--n:96;--i:1"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
+      <div class="vals"><span data-count="96" data-at="0">0</span><small>เดิม 55</small></div><h3>ความเร็ว</h3><p>Performance</p></div>
+    <div class="r gauge" style="left:560px;top:370px;--o:84;--n:94;--i:2"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
+      <div class="vals"><span data-count="94" data-at="0">0</span><small>เดิม 84</small></div><h3>ทุกคนใช้ได้</h3><p>Accessibility: ผู้สูงอายุ สายตาไม่ดี</p></div>
+    <div class="r gauge" style="left:1000px;top:370px;--o:100;--n:96;--i:3"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
+      <div class="vals"><span data-count="96" data-at="0">0</span><small>เดิม 100 (เว็บเดิมดีกว่า)</small></div><h3>มาตรฐานเว็บ</h3><p>Best Practices</p></div>
+    <div class="r gauge" style="left:1440px;top:370px;--o:85;--n:100;--i:4"><svg viewBox="0 0 380 220"><path class="trk" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="old" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/><path class="new" pathLength="100" d="M30 200 A160 160 0 0 1 350 200"/></svg>
+      <div class="vals"><span data-count="100" data-at="0">0</span><small>เดิม 85</small></div><h3>Google หาเจอ</h3><p>SEO</p></div>
+    <p class="r small" style="left:120px;top:760px;width:1680px;--i:5">หลังวัดผล เราแก้จุดที่เสียคะแนนแล้ว (ไอคอนแท็บ สีตัวอักษร ลำดับหัวข้อ) วัดซ้ำได้ ทุกคนใช้ได้ 100 · มาตรฐานเว็บ 100 · SEO 100</p>
+    <div class="f1 slip" style="left:120px;top:850px;width:1700px"><span>ประกาศเดียวกันเขียนทั้ง ปี 2568 และ 2569</span><span>ไอคอนโซเชียล 6 อัน กดไม่ได้สักอัน</span><span>ท้ายเว็บยังเขียน © 2020</span><span>เมนูมือถือ ตัวอักษรถูกตัด</span></div>
+  </section>
+
+  <!-- 8 · before / after: drag anywhere -->
+  <section class="slide" id="compare" data-title="ก่อนและหลัง ลากดูได้" data-steps="0">
+    <div class="r eb" style="left:160px;top:300px;--i:0">ก่อน / หลัง</div>
+    <h2 class="r h2" style="left:154px;top:346px;width:760px;--i:0">ลองลาก<br>ดูด้วยตัวเอง</h2>
+    <p class="r lede" style="left:160px;top:580px;width:700px;--i:1">หน้าจอแรกที่ผู้ปกครองเห็นบนมือถือ ซ้ายคือเว็บเดิม ขวาคือเว็บใหม่</p>
+    <div class="r compare ia" style="left:1060px;top:80px;width:540px;height:920px;--i:2" data-pos="50">
+      <div class="cmp-a" style="background-image:url(img/old-top.webp)"></div><div class="cmp-b" style="background-image:url(img/new-top.webp)"></div>
+      <span class="tagl">เว็บเดิม</span><span class="tagr">เว็บใหม่</span><div class="bar"></div>
+      <div class="knob" tabindex="0" role="slider" aria-label="เทียบเว็บเดิมกับเว็บใหม่" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">⟷</div></div>
+  </section>
+
+  <!-- 9 · what the school gets -->
+  <section class="slide" id="gives" data-title="สิ่งที่โรงเรียนได้" data-steps="1">
+    <div class="r eb" style="left:120px;top:150px;--i:0">สิ่งที่โรงเรียนได้</div>
+    <h2 class="r h2" style="left:114px;top:196px;width:1100px;--i:0">เว็บที่ <span class="gold">ผู้ปกครองใช้ง่าย</span></h2>
+    <div class="bento" style="left:120px;top:360px">
+      <div style="--k:0"><b>2</b><span>ภาษา ไทยและอังกฤษ สลับได้ทุกหน้า</span></div>
+      <div style="--k:1"><b>16</b><span>หน้า เชื่อมกันทั้งหมดในเว็บเดียว</span></div>
+      <div style="--k:2"><b>1 แตะ</b><span>ถึงข้อมูลรับสมัครและเบอร์โทร</span></div>
+      <div style="--k:3"><b>รูปจริง</b><span>จากเพจโรงเรียน ไม่มีภาพปลอม</span></div>
+      <div style="--k:4"><b>ทุกหน้า</b><span>บอกที่มาของข้อมูล ตรวจสอบได้</span></div>
+      <div style="--k:5"><b>ฟรี</b><span>โฮสต์บน GitHub Pages มี HTTPS ในตัว</span></div></div>
+    <div class="f1" style="left:1270px;top:860px;width:560px"><p class="lede" style="margin:0;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)">ลองเปิดดูได้เลย<br><b style="font-size:26px">mmjx2013-png.github.io/aia-slides/satit</b></p></div>
+  </section>
+
+  <!-- 10 · the back office -->
+  <section class="slide" id="admin" data-title="ครูโพสต์กิจกรรมเองได้" data-steps="2">
+    <div class="r eb" style="left:120px;top:140px;--i:0">ระบบหลังบ้าน · กำลังพัฒนา</div>
+    <h2 class="r h2" style="left:114px;top:186px;width:1200px;--i:0">ครูโพสต์กิจกรรมเอง <span class="gold">ใน 3 ขั้น</span></h2>
+    <div class="r win" style="left:120px;top:330px;width:1180px;height:640px;--i:1"><div class="top"><i></i><i></i><i></i>satit/admin</div><div class="body">
+      <div class="pane p-login"><p class="small" style="margin:0 0 14px">1. เข้าสู่ระบบ</p><div class="field">อีเมล:&nbsp;<span class="typed2" style="--tw:11em;width:auto">teacher@school</span></div><div class="field">รหัสผ่าน:&nbsp;<span class="dots" style="--tw:7.5em">●●●●●●●●●●</span></div><span class="btnx">เข้าสู่ระบบ</span></div>
+      <div class="pane p-up"><p class="small" style="margin:0 0 14px">2. อัปรูปและตั้งชื่อกิจกรรม · 3. กดเผยแพร่</p>
+        <div class="field" style="margin-bottom:16px">ชื่อกิจกรรม:&nbsp;<span class="typed2" style="--tw:7.5em">กีฬาสี 2569</span></div>
+        <div class="drop"><i style="--d:.2s;background-image:url(img/photo-flags.webp)"></i><i style="--d:.35s;background-image:url(img/photo-students.webp)"></i><i style="--d:.5s;background-image:url(img/photo-lab.webp)"></i><i style="--d:.65s;background-image:url(img/photo-pond.webp)"></i></div>
+        <span class="btnx pub" style="margin-top:22px">เผยแพร่</span></div>
+      <span class="toast">เผยแพร่แล้ว · ขึ้นเว็บภายใน 1–2 นาที</span></div></div>
+    <p class="r small" style="left:1360px;top:420px;width:460px;--i:2">ล็อกอินแยกรายคน · ทุกการแก้ไขย้อนกลับได้ · ไม่ต้องรู้เรื่องเขียนโค้ด</p>
+    <p class="r small" style="left:120px;top:1000px;width:1200px;--i:3">ตัวอย่างหน้าจอเพื่ออธิบายขั้นตอน ระบบจริงกำลังพัฒนา</p>
+  </section>
+
+  <!-- 11 · honest: the new site's own risks -->
+  <section class="slide" id="risks" data-title="ความเสี่ยงของเว็บใหม่ และวิธีกัน" data-steps="0">
+    <div class="r eb dk" style="left:120px;top:130px;--i:0">พูดตรงๆ</div>
+    <h2 class="r h2 dk" style="left:114px;top:176px;width:1600px;--i:0">เว็บใหม่ก็มีความเสี่ยง <span class="gold">และนี่คือวิธีกัน</span></h2>
+    <div class="rows" style="left:120px;top:300px;gap:14px">
+      <div class="row" style="--k:0"><div class="rk"><b>ขึ้นกับบริการ GitHub</b>ถ้าบริการมีปัญหา เว็บอาจเข้าไม่ได้ชั่วคราว</div><span class="ar"></span><div class="gd"><b>ย้ายได้ทันที</b>เว็บเป็นไฟล์ธรรมดา ย้ายไปเซิร์ฟเวอร์ของมหาวิทยาลัยได้ทั้งเว็บ</div></div>
+      <div class="row" style="--k:1"><div class="rk"><b>บัญชีผู้โพสต์ถูกขโมย</b>คนอื่นอาจโพสต์แทนครู</div><span class="ar"></span><div class="gd"><b>ยืนยันตัวตน 2 ชั้น</b>จำกัดคนโพสต์ และทุกการแก้ไขย้อนกลับได้</div></div>
+      <div class="row" style="--k:2"><div class="rk"><b>รูปนักเรียนเป็นสาธารณะ</b>เด็กอาจถูกระบุตัวได้</div><span class="ar"></span><div class="gd"><b>ใช้รูปที่โรงเรียนเผยแพร่แล้ว</b>ไม่ใส่ชื่อเด็ก และลบทันทีเมื่อผู้ปกครองขอ</div></div>
+      <div class="row" style="--k:3"><div class="rk"><b>ยังไม่มี CSP</b>ตัวกันสคริปต์แปลกปลอม</div><span class="ar"></span><div class="gd"><b>เพิ่มก่อนใช้งานจริง</b>ใส่ในทุกหน้าได้ ไม่ต้องใช้เซิร์ฟเวอร์</div></div>
+      <div class="row" style="--k:4"><div class="rk"><b>QR สมัครผ่านบริการลิงก์ฟรี</b>ลิงก์อาจหมดอายุหรือมีโฆษณาคั่น (ใช้ทั้งโปสเตอร์เดิมและใหม่)</div><span class="ar"></span><div class="gd"><b>ใช้ลิงก์ตรงของโรงเรียน</b>ขอลิงก์แบบฟอร์มสมัครโดยตรง แล้วทำ QR ใหม่</div></div>
+    </div>
+  </section>
+
+  <!-- 12 · service: posters -->
+  <section class="slide" id="service" data-title="บริการออกแบบโปสเตอร์" data-steps="1">
+    <div class="r eb dk" style="left:120px;top:150px;--i:0">บริการเสริม · ออกแบบสื่อประชาสัมพันธ์</div>
+    <h2 class="r h2 dk" style="left:114px;top:196px;width:1000px;--i:0">โปสเตอร์ที่ <span class="gold">ผู้ปกครองอ่านออก</span><br>และสแกนได้จริง</h2>
+    <div class="r mini a" style="left:1290px;top:150px;width:470px;--rot:-2deg;--i:1"><img src="img/old-poster.webp" alt="โปสเตอร์เดิม"></div>
+    <div class="mini b" style="left:1290px;top:150px;width:470px;--rot:3deg"><img src="img/poster.webp" alt="โปสเตอร์ใหม่ที่ออกแบบให้"></div>
+    <p class="r small dk" style="left:120px;top:470px;width:1000px;--i:2">ใช้รูปจริงของโรงเรียน สีของโรงเรียน ข้อมูลครบในหน้าเดียว ทดสอบ QR ทุกชิ้นก่อนส่ง ได้ทั้งไฟล์โพสต์ออนไลน์และไฟล์พิมพ์</p>
+    <div class="price" style="left:120px;top:600px">
+      <div style="--k:0"><h3>ต่อชิ้น</h3><b>490<small>บาท</small></b><p>โพสต์ + ไฟล์พิมพ์ · แก้ได้ 2 ครั้ง · ส่งใน 3 วัน</p></div>
+      <div class="hot" style="--k:1"><h3>รายเดือน</h3><b>1,490<small>บาท</small></b><p>โปสเตอร์ 4 ชิ้น + ลงข่าวบนเว็บให้ทุกชิ้น</p></div>
+      <div style="--k:2"><h3>ทั้งปีการศึกษา</h3><b>14,900<small>บาท</small></b><p>รายเดือนตลอด 12 เดือน · ประหยัดกว่า 2 เดือน</p></div></div>
+    <p class="r small dk" style="left:120px;top:1000px;width:1100px;--i:4">ราคาเสนอ ปรับได้ตามที่ตกลงกัน · เว็บไซต์ใหม่มอบให้โรงเรียนฟรี</p>
+  </section>
+
+  <!-- 13 · the answer -->
+  <section class="slide" id="ask" data-title="คำตอบ และสิ่งที่ขอ" data-steps="2">
+    <div class="r eb dk" style="left:120px;top:460px;--i:0">คำตอบ</div>
+    <h1 class="r h1 dk" style="left:114px;top:506px;width:1200px;--i:1">ผู้ปกครองเห็นโรงเรียนของเรา<br><span class="gold">ภายใน 2.7 วินาที</span></h1>
+    <div class="f1" style="left:120px;top:800px;width:1200px;display:flex;gap:16px;flex-wrap:wrap">
+      <span class="pill" style="background:var(--gold);color:#2a1e03">1. อนุมัติให้ใช้เว็บใหม่</span><span class="pill" style="background:#fff;color:var(--g)">2. ครูผู้ดูแล 1 ท่าน</span><span class="pill" style="background:#fff;color:var(--g)">3. ชื่อโดเมนของโรงเรียน</span><span class="pill" style="background:#fff;color:var(--g)">4. ลองใช้บริการโปสเตอร์</span></div>
+  </section>
+
+  <div id="credits" aria-hidden="true">
+    <div class="eb">ที่มาของข้อมูล</div><h2>ทุกตัวเลขในสไลด์นี้ ตรวจสอบได้</h2>
+    <ol>
+      <li><b>ความเร็วและคะแนน:</b> Lighthouse 13.6.0 รัน 3 รอบต่อหน้า ใช้ค่ากลาง จาก Mac บนเครือข่ายในประเทศไทย 25 พ.ย. 2569 เวลา 13:10–13:30 น.</li>
+      <li><b>คะแนนหลังแก้:</b> Lighthouse 13 วัดซ้ำ 25 พ.ย. 2569 หลังเพิ่มไอคอนแท็บและแก้สีตัวอักษร</li>
+      <li><b>ซอฟต์แวร์ของเซิร์ฟเวอร์:</b> header ที่เว็บเดิมส่งกลับ (curl -sI) วันเดียวกัน</li>
+      <li><b>PHP 7.3:</b> สิ้นสุดการดูแล 6 ธ.ค. 2021 (php.net/eol.php)</li>
+      <li><b>OpenSSL 1.1.1:</b> สิ้นสุดการดูแล 11 ก.ย. 2023 (openssl-library.org)</li>
+      <li><b>Apache:</b> รุ่นล่าสุด 2.4.71 ตามหน้าแรก httpd.apache.org ตรวจ 25 พ.ย. 2569</li>
+      <li><b>จำนวนแตะและภาพหน้าจอ:</b> ทดสอบในเบราว์เซอร์จริง ขนาด 1440×900 และ 390×844</li>
+      <li><b>ภาพถ่าย:</b> เพจ Facebook โรงเรียนสาธิต มรภ.เพชรบุรี ใช้โดยได้รับอนุญาตจากโรงเรียน</li>
+      <li><b>ข้อมูลดิบทั้งหมด:</b> repo mmjx2013-png/aia-slides branch satit-research โฟลเดอร์ research/</li>
+    </ol>
+  </div>
+  <div class="brand"><img src="img/logo.png" alt="">โรงเรียนสาธิต มรภ.เพชรบุรี</div>
+  <div class="grain"></div>
+  <div id="sub" aria-hidden="true"></div>
+  <div class="hud" aria-hidden="true"><span id="cnt">01</span><i></i><span id="tot">13</span></div>
+</div>
+</main>
+<div class="sr" id="live" aria-live="polite"></div>
+<nav id="ctl" aria-label="ปุ่มควบคุม">
+  <button id="bPrev" type="button">‹ ก่อนหน้า</button><span id="pos">1 / 13</span><button id="bNext" type="button">ถัดไป ›</button>
+  <button id="bVoice" type="button" aria-pressed="false">Voice</button><button id="bAuto" type="button" aria-pressed="false">Auto</button>
+  <button id="bMotion" type="button" aria-pressed="true" title="M">Motion on</button><button id="bFull" type="button" title="F">เต็มจอ</button>
+</nav>
+<!--ENGINE-->
+<script>
+/* deck-specific motion: file piles, the speed race clocks, the screen counter, the fake QR */
+(function () {
+  var stage = document.getElementById('stage');
+  document.querySelectorAll('[data-pile]').forEach(function (p) {
+    var n = +p.getAttribute('data-pile'), old = p.classList.contains('old'), seed = 7;
+    function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    for (var k = 0; k < n; k++) {
+      var i = document.createElement('i'), x, y;
+      if (old) { var row = Math.floor(Math.sqrt(k * 2.1)); x = 280 + (rnd() - .5) * (520 - row * 36); y = 290 - row * 22 - rnd() * 10; i.style.setProperty('--r', ((rnd() - .5) * 70) + 'deg'); }
+      else { x = 160 + (k % 5) * 46; y = 120 + Math.floor(k / 5) * 52; i.style.setProperty('--r', '0deg'); }
+      i.style.left = x + 'px'; i.style.top = y + 'px'; i.style.setProperty('--d', (old ? k * 9 : k * 22) + 'ms'); p.appendChild(i);
+    }
+  });
+  var q = document.querySelector('[data-fakeqr]');
+  if (q) { var s = 3; for (var r = 0; r < 21; r++) for (var c = 0; c < 21; c++) {
+    var fin = function (a, b) { return a < 7 && b < 7; }, inF = fin(r, c) || fin(r, 20 - c) || fin(20 - r, c), on;
+    if (inF) { var rr = r < 7 ? r : 20 - r, cc = c < 7 ? c : 20 - c; on = rr === 0 || rr === 6 || cc === 0 || cc === 6 || (rr > 1 && rr < 5 && cc > 1 && cc < 5); }
+    else { s = (s * 9301 + 49297) % 233280; on = s / 233280 > .52; }
+    var i = document.createElement('i'); if (!on) i.className = 'w'; q.appendChild(i); } }
+  var timers = [];
+  function run() {
+    timers.forEach(cancelAnimationFrame); timers = [];
+    var id = stage.getAttribute('data-s'), rm = document.documentElement.classList.contains('rm');
+    document.querySelectorAll('[data-race]').forEach(function (el) {
+      var to = +el.getAttribute('data-race'), ms = +el.getAttribute('data-ms');
+      if (id !== 'speed') { el.textContent = '0.0'; return; }
+      if (rm) { el.textContent = to.toFixed(1); return; }
+      var t0 = performance.now(); (function tick(t) { var p = Math.min(1, (t - t0) / ms); el.textContent = (to * p).toFixed(1); if (p < 1) timers.push(requestAnimationFrame(tick)); })(t0);
+    });
+    var sc = document.querySelector('[data-screens]');
+    if (sc) { if (id !== 'find' || rm) { sc.textContent = id === 'find' ? '7' : '1'; } else { var t1 = performance.now() + 600; (function tk(t) { var p = Math.max(0, Math.min(1, (t - t1) / 6000)); sc.textContent = 1 + Math.round(6 * p); if (p < 1) timers.push(requestAnimationFrame(tk)); })(performance.now()); } }
+  }
+  var last = null; new MutationObserver(function () { var id = stage.getAttribute('data-s'); if (id !== last) { last = id; run(); } }).observe(stage, { attributes: true, attributeFilter: ['data-s'] });
+})();
+</script>
+</body>
+</html>
