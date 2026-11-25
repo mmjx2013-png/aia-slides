@@ -16,6 +16,17 @@ import risk
 from common import BKK, HERE, jlines
 
 
+def perf(exits):
+    """Per-trade stats after costs (P&L in the journal already includes spread and slippage)."""
+    p = [x["pnl"] for x in exits]
+    w, l = [x for x in p if x > 0], [x for x in p if x <= 0]
+    if not p:
+        return "| 0 | - | - | - | - | - |"
+    pf = sum(w) / -sum(l) if l and sum(l) < 0 else float("inf")
+    return (f"| {len(p)} | {len(w)/len(p):.0%} | {(sum(w)/len(w) if w else 0):+.2f} | {(sum(l)/len(l) if l else 0):+.2f} | "
+            f"**{sum(p)/len(p):+.2f}** | {pf:.2f} |")
+
+
 def uf_stats(d, day):
     j = [x for x in jlines(Path(d) / "unfiltered" / "journal.jsonl") if x["t"][:10] == day and x["kind"] == "EXIT"]
     return f"; unfiltered today: {len(j)} trades, {sum(x['pnl'] > 0 for x in j)} wins, {sum(x['pnl'] for x in j):+.2f} USD"
@@ -72,6 +83,15 @@ def main(day, d, out):
               for L, s in st["shadows"].items()), "",
           "## Trades", "", "| In | Out | Side | Oz | Entry | Exit | Exit reason | P&L USD |", "|---|---|---|---|---|---|---|---|",
           *(rows or ["| - | - | - | - | - | - | no trades | - |"]), "",
+          "## Filtered (AI) against unfiltered (every setup)", "",
+          "Expectancy = average P&L per trade in USD after costs. Profit factor = gross wins / gross losses.", "",
+          "| Book, period | Trades | Win rate | Avg win | Avg loss | Expectancy | Profit factor |", "|---|---|---|---|---|---|---|",
+          *[f"| {name}, {per} " + perf([x for x in jlines(p) if x["kind"] == "EXIT" and (per == "since start" or x["t"][:10] == day)])
+            for name, p in (("AI filtered", d / "journal.jsonl"), ("unfiltered", d / "unfiltered" / "journal.jsonl"))
+            for per in ("today", "since start")], "",
+          "Opus stated probabilities (for calibration): " + (", ".join(
+              f"{x['event'][9:13]} p={x['answer'].get('p_target')} {x['answer'].get('action')}"
+              for x in j if x["kind"] == "DECISION" and x["stage"] == "opus") or "none today"), "",
           "## Model calls and tokens", "", "| Model | Calls | Tokens |", "|---|---|---|",
           *[f"| {k} | {v[0]} | {v[1]:,} |" for k, v in toks.items()],
           f"| total | {sum(v[0] for v in toks.values())} | {sum(v[1] for v in toks.values()):,} |", "",
