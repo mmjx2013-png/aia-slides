@@ -15,6 +15,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Cheap options first (for example, RunPod Community GPUs; several GPUs are fine).
 
 ## Presentations
+- For any presentation, use the skill `.claude/skills/type1-deck` (SKILL.md): it holds the type-1 workflow, the example's engine as a template, and a QA script.
 - "Type 1" = perfect, "type 2" = minimum acceptable. Both are defined in PRESENTATION-STYLES.md, with the type-1 reference in reference/from-brand-to-place-cinematic.html.
 - Never deliver a scrolling website that is a wall of text. If the owner says "presentation", build slides.
 - Lessons from the kimono project:
@@ -50,6 +51,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: skill type1-deck added (.claude/skills/type1-deck, on main and the kimono branch).
 - 2026-11-25: owner reviewed the kimono film: boxy, too static, buggy; said not to fix it. Lessons are recorded under Presentations.
 - 2026-11-25: kimono film made from the deck and hosted at /film/ on gh-pages.
 - 2026-11-25: graphify installed; this shared memory created; kimono project closed.
