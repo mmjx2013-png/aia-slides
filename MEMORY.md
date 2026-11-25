@@ -63,6 +63,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: Paper-trading worker: gold Phase 1 done on branch claude/paper-trading (trading/reports/phase1.md). Verdict: 1M USD in 1 year is ~0% likely, ruinous at 30-100x; no rule beat gold buy-and-hold in-sample; AI desk (Opus, 21 weekly calls) +2.0% vs gold -12.2% Jul-Nov 2026, too small a sample; NO-GO for real money. A subagent call costs ~62k tokens minimum. Yahoo 429s cloud IPs: the boss session fetches data.
 - 2026-11-25: Satit: pitch slide 7 rebuilt as three international-standards cards (owner picked B); all 16 pages Lighthouse a11y/BP/SEO 100, mobile LCP <= 2.0 s; CSP without unsafe-inline on the site; owner chose to move hosting to Cloudflare Pages (owner sets up the account; _headers is ready); deployed gh-pages 06137db.
 - 2026-11-25: Satit: speaker-script PDF and speed evidence pack; red team (2 agents) and bug audit; CSP, WCAG 2.2 AA fixes, map on request; deployed gh-pages 2c6c71e. Scores slide now uses measured scores only (owner: no self-made rules).
 - 2026-11-25: Satit site has 15 pages with real school photos and logo (fetched by the Mac chat), deployed at gh-pages b87d534.
