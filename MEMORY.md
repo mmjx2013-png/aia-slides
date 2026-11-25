@@ -13,6 +13,8 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Watch Claude usage. Leave the owner at least 3% of the weekly quota. Say so before a large spend.
 - Models: Fable or Opus for anything people will see and for important backend work. Sonnet only for mechanical work.
 - Cheap options first (for example, RunPod Community GPUs; several GPUs are fine).
+- Comparisons and claims: judge only by international standards (WCAG 2.2 = ISO/IEC 40500:2025, OWASP ASVS 5.0, IETF RFCs; Core Web Vitals labelled as Google's, not ISO). Never use rules we made up; they look unfair.
+- Security and quality: "fix until it passes everything". Run a red team (independent agents) and a bug audit before calling a site done.
 
 ## Presentations
 - For any presentation, use the skill `.claude/skills/type1-deck` (SKILL.md): it holds the type-1 workflow, a neutral engine template, and a QA script. Reach the example's level; never imitate it.
@@ -55,10 +57,13 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - Source in satit-site/ on branch claude/fervent-ramanujan-qp1d26; live at https://mmjx2013-png.github.io/aia-slides/satit/
   - pbru.ac.th blocks cloud IPs and Facebook needs a login: get content and photos from the owner, or via their Mac (Remote Control).
   - Never invent school facts: mark them pending.
-  - EDIT satit-site/build.py and satit-site/src/ (photos.json, about-values.html), then run `python3 build.py`. Never hand-edit the generated *.html: the next build overwrites it. 42 school photos (from the school's Facebook page, used with the school's permission) are in satit-site/img/fb/.
+  - EDIT satit-site/build.py and satit-site/src/ (photos.json, about-values.html), then run `python3 build.py`. The build adds a CSP with the hash of its one inline script, rebuilds every photo tag from checked attributes, and refuses inline handlers or javascript: URLs. Never hand-edit the generated *.html: the next build overwrites it. 42 school photos (from the school's Facebook page, used with the school's permission) are in satit-site/img/fb/.
+  - Pitch deck (13 slides) in satit-site/pitch: edit src.html or deck.css, then `python3 build_deck.py` (splices the engine and hashes the scripts into a CSP). Speaker script: pitch/script.md and script.pdf. Speed evidence: pitch/evidence/ (Lighthouse reports, runs.csv, PDF); PDF generators in tools/satit-pdf/.
+  - Security state (25 Nov): red team found nothing critical or high; WCAG 2.2 AA has no automated violations on 16 pages. Header-only items (frame-ancestors, nosniff) need a host that sends headers: satit-site/_headers is ready for Cloudflare Pages or Netlify.
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: Satit: speaker-script PDF and speed evidence pack; red team (2 agents) and bug audit; CSP, WCAG 2.2 AA fixes, map on request; deployed gh-pages 2c6c71e. Scores slide now uses measured scores only (owner: no self-made rules).
 - 2026-11-25: Satit site has 15 pages with real school photos and logo (fetched by the Mac chat), deployed at gh-pages b87d534.
 - 2026-11-25: Satit PBRU homepage v1 deployed to /satit/ (placeholders where photos and facts are pending).
 - 2026-11-25: skill type1-deck added (.claude/skills/type1-deck, on main and the kimono branch).
