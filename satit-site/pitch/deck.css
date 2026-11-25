@@ -60,7 +60,7 @@ body.ready{opacity:1}
 #phA{--x:2100px;--y:120px;--w:400px}#phB{--x:2100px;--y:120px;--w:400px}
 [data-s="hook"] #phA{--x:1330px;--y:130px;--w:400px}
 [data-s="speed"] #phA{--x:900px;--y:150px;--w:370px}[data-s="speed"] #phB{--x:1400px;--y:150px;--w:370px}
-[data-s="weight"] #phA{--x:330px;--y:770px;--w:120px}[data-s="weight"] #phB{--x:1330px;--y:770px;--w:120px}
+[data-s="weight"] #phA{--x:330px;--y:1180px;--w:370px;opacity:0}[data-s="weight"] #phB{--x:1330px;--y:1180px;--w:370px;opacity:0}
 [data-s="weight"] .phone .tag,[data-s="admin"] #phB .tag{display:none}
 [data-s="find"] #phA{--x:150px;--y:120px;--w:390px}[data-s="find"].ge1 #phB{--x:640px;--y:120px;--w:390px}
 [data-s="admin"].ge2 #phB{--x:1500px;--y:560px;--w:200px}
@@ -278,7 +278,7 @@ h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.18}
 /* the new-site phone holds the REAL site: a live page at phone width (390 css px), scaled to the phone */
 .phone .s-live{position:absolute;left:0;top:0;width:390px;height:822px;border:0;transform-origin:0 0;transform:scale(var(--k));opacity:0;transition:opacity .45s ease;pointer-events:none;background:#fff}
 #phB{--k:.9538}
-[data-s="speed"] #phB{--k:.8823}[data-s="find"] #phB{--k:.93}[data-s="weight"] #phB{--k:.2862}[data-s="admin"].ge2 #phB{--k:.4769}[data-s="ask"] #phB{--k:.9538}
+[data-s="speed"] #phB{--k:.8823}[data-s="find"] #phB{--k:.93}[data-s="weight"] #phB{--k:.8823}[data-s="admin"].ge2 #phB{--k:.4769}[data-s="ask"] #phB{--k:.9538}
 [data-s="speed"] #phB .s-live{animation:appear .3s linear 1.08s both}
 [data-s="weight"] #phB .s-live,[data-s="find"].ge1 #phB .s-live,[data-s="admin"].ge2 #phB .s-live,[data-s="ask"] #phB .s-live{opacity:1}
 [data-s="find"].ge1 #phB .s-live,[data-s="ask"] #phB .s-live,[data-s="speed"] #phB .s-live{pointer-events:auto}
