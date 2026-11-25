@@ -3,8 +3,9 @@
    python3 build.py   ->  writes *.html next to this file.
 Rules kept here: every button stays inside this site; external links appear only as cited sources
 ("ที่มาของข้อมูล") and for the real login system. Facts not confirmed are marked pending, never invented."""
-import pathlib, html
+import pathlib, html, time
 ROOT = pathlib.Path(__file__).parent
+VER = time.strftime('%Y%m%d%H%M')  # cache-buster: browsers fetch fresh CSS/JS after every build
 
 def T(th, en):  # one string in both languages
     return f'<span class="th">{th}</span><span class="en">{en}</span>'
@@ -95,7 +96,7 @@ def page(fname, title_th, title_en, main):
 {'<link rel="preload" as="image" href="img/fb/p079-800.webp" imagesrcset="img/fb/p079-800.webp 800w, img/fb/p079.webp 1400w" imagesizes="(max-width:860px) 100vw, 72vw" fetchpriority="high">' if fname == "index.html" else ""}
 <link rel="icon" href="img/fb/logo.png" type="image/png">
 <link rel="apple-touch-icon" href="img/fb/logo.png">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v={VER}">
 <script>try{{var l=localStorage.getItem('lang');if(l==='en'||l==='th')document.documentElement.lang=l;}}catch(e){{}}</script>
 </head>
 <body>
@@ -104,7 +105,7 @@ def page(fname, title_th, title_en, main):
 {main}
 </main>
 {FOOTER}
-<script src="js/site.js"></script>
+<script src="js/site.js?v={VER}"></script>
 </body>
 </html>
 '''
