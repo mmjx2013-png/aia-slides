@@ -5,7 +5,7 @@ description: Build a "type 1" presentation, the owner's standard for a perfect d
 
 # Type-1 deck
 
-"Type 1" is the owner's word for perfect. The standard is `reference/from-brand-to-place-cinematic.html` in the aia-slides repo (also on `main`). **Make it like this:** reuse the example's structure, motion grammar and engine. Don't invent a new style. The owner judged the kimono deck "nowhere near it". Read the owner's rules in `MEMORY.md` first.
+"Type 1" is the owner's word for perfect. The standard is `reference/from-brand-to-place-cinematic.html` in the aia-slides repo (also on `main`; outside that repo, the same file is `reference.html` beside this SKILL.md). **Make it like this:** reuse the example's structure, motion grammar and engine. Don't invent a new style. The owner judged the kimono deck "nowhere near it". Read the owner's rules in `MEMORY.md` first.
 
 ## The workflow (do not skip steps)
 
