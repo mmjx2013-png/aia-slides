@@ -5,30 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TYPE-1 DECK TEMPLATE</title>
 <!--
-  Type-1 deck template. The engine and the motion grammar are taken from the owner's "perfect" example,
-  reference/from-brand-to-place-cinematic.html, and extended with: narration that drives the beats,
+  Type-1 deck template. The mechanics are modelled on what makes the owner's "perfect" example work (reference/from-brand-to-place-cinematic.html),
+  NOT its look. It includes: narration that drives the beats,
   counting numbers, a drag-anywhere before/after slider, grey placeholder plates for rough mock-ups (?wire),
   and auto-play that holds each slide after the voice and the last animation have finished.
   Keys: Right / Space / Enter = next beat, Left / Backspace = back, 1-9 = jump, Home / End, F = full screen, M = motion, V = voice, A = auto.
-  Replace every placeholder (.ph plate, sample text) before shipping. Fonts: Cine Serif / Cine Sans are renamed Latin subsets of
-  Caladea and Inter (SIL OFL 1.1). For Thai text add a Thai font to --serif / --sans (see SKILL.md).
+  This is a NEUTRAL engine: do not ship its look. Give each deck its own palette, fonts and motifs (see SKILL.md), replace every
+  placeholder (.ph plate, sample text), and invent creative motion for each idea.
 -->
 <script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');
 if(/[?&]wire\b/.test(location.search))document.documentElement.classList.add('wire');</script>
 <style>
-@font-face{font-family:"Cine Serif";font-weight:400;font-style:normal;font-display:block;src:url(fonts/cine-serif-400.woff2) format("woff2")}
-@font-face{font-family:"Cine Serif";font-weight:400;font-style:italic;font-display:block;src:url(fonts/cine-serif-400i.woff2) format("woff2")}
-@font-face{font-family:"Cine Serif";font-weight:700;font-style:normal;font-display:block;src:url(fonts/cine-serif-700.woff2) format("woff2")}
-@font-face{font-family:"Cine Serif";font-weight:700;font-style:italic;font-display:block;src:url(fonts/cine-serif-700i.woff2) format("woff2")}
-@font-face{font-family:"Cine Sans";font-weight:400;font-style:normal;font-display:block;src:url(fonts/cine-sans-400.woff2) format("woff2")}
-@font-face{font-family:"Cine Sans";font-weight:500;font-style:normal;font-display:block;src:url(fonts/cine-sans-500.woff2) format("woff2")}
-@font-face{font-family:"Cine Sans";font-weight:600;font-style:normal;font-display:block;src:url(fonts/cine-sans-600.woff2) format("woff2")}
-@font-face{font-family:"Cine Sans";font-weight:700;font-style:normal;font-display:block;src:url(fonts/cine-sans-700.woff2) format("woff2")}
 :root{
-  --ink:#17110C;--paper:#F3EADB;--paperB:#EDEFE0;--c1:#A84E1B;--c1L:#F4AA72;--c2:#2E5E44;--c2L:#ABD8B5;
-  --mute:#6B5B4D;--ease:cubic-bezier(.22,.8,.24,1);
-  --serif:"Cine Serif",Cambria,Caladea,Georgia,serif;
-  --sans:"Cine Sans",Inter,"Helvetica Neue",Arial,sans-serif;
+  /* NEUTRAL placeholders: every deck chooses its own palette (from its photographs) and its own self-hosted fonts */
+  --ink:#1A1A1A;--paper:#EDEDED;--paperB:#E2E2E2;--c1:#5A5A5A;--c1L:#CFCFCF;--c2:#3F3F3F;--c2L:#B8B8B8;
+  --mute:#666;--ease:cubic-bezier(.22,.8,.24,1);
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;background:#0C0907;overflow:hidden}
