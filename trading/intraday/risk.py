@@ -21,6 +21,7 @@ SHADOW_LEVS = (1, 10, 30)  # same decisions replayed at these leverages
 STOP_OUT = 0.50            # shadow liquidation: equity <= 50% of used margin (as phase 1)
 ORDER_TTL_MS = 5 * 60_000  # an order not filled within 5 min of its decision is dropped
 COST = HALF_SPREAD + SLIPPAGE
+BREAKEVEN_AT_R = None       # e.g. 1.0: move the stop to entry after +1R. OFF until the setup search supports it
 CALENDAR_GUARD = True       # set False only for historical replays without a calendar
 
 

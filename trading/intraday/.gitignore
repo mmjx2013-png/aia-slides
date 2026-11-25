@@ -4,3 +4,4 @@ data/live/watcher.pid
 data/live/watcher.log
 __pycache__/
 data/live/
+data/history/

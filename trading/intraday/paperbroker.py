@@ -124,6 +124,11 @@ class Broker:
             elif tgt_hit:
                 gap = (b["o"] > p["target"]) if d > 0 else (b["o"] < p["target"])
                 self._close(b, b["o"] if gap else p["target"], "target")
+            elif risk.BREAKEVEN_AT_R and not p.get("be"):    # takes effect from the NEXT bar
+                one_r = abs(p["entry"] - p["stop"]) * risk.BREAKEVEN_AT_R
+                if (b["h"] if d > 0 else -b["l"]) >= (p["entry"] + one_r if d > 0 else -(p["entry"] - one_r)):
+                    p["stop"], p["be"] = p["entry"], True
+                    self.log("BREAKEVEN", b["t"], event=p["event"], stop=round(p["entry"], 2))
         if s["pos"] and self.mtm(b["c"]) <= s["day_start"] * (1 - risk.DAILY_LOSS):
             self._close(b, b["c"], "daily loss limit 3%")
             s["halted"] = day

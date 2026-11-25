@@ -78,4 +78,13 @@ ok, why = risk.entry_gate(b.s, T0 + 120_000); assert not ok and "daily loss" in 
 # 10. clamps
 o = risk.clamp(dict(dir="short", stop_atr=0.1, target_r=9, risk_pct=5))
 assert o == dict(dir=-1, stop_atr=1.0, target_r=4.0, risk_pct=1.0), o
-print("test_broker: 10/10 checks passed")
+# 11. breakeven at +1R (option): after the trigger bar, a return to entry exits at about -cost
+risk.BREAKEVEN_AT_R = 1.0
+b, d = fresh()                                    # long, stop 2 USD, target 4 USD
+b.on_bar(bar(1, 3500, 3502.6, 3499.9, 3502))      # +1R touched (entry 3500.35 + 2), no exit
+assert b.s["pos"]["be"] and abs(b.s["pos"]["stop"] - b.s["pos"]["entry"]) < 1e-9
+b.on_bar(bar(2, 3502, 3502.1, 3500.0, 3500.2))
+ex = [x for x in kinds(d) if x["kind"] == "EXIT"][0]
+assert ex["reason"] == "stop" and -0.35 * 3 < ex["pnl"] / b.s["equity"] * 0 + ex["pnl"] / 8.57 < 0, ex
+risk.BREAKEVEN_AT_R = None
+print("test_broker: 11/11 checks passed")
