@@ -8,8 +8,9 @@
 Setups (evaluated only on CLOSED bars; 5m/15m only when that bucket has just closed):
   breakout        5m close beyond the prior 12x5m (1 h) range, 5m volume > 2x its 20-bar mean
   vol_expansion   5m Bollinger width in its lowest 20% of 100 bars, then a 5m range > 2x ATR14(5m)
-  momentum        last 3 1m closes all one way, move > 2.5x ATR14(1m) (ATR floor 0.30)
-  mean_reversion  15m RSI14 < 20 with z20 < -2.5 (long), or RSI > 80 with z > +2.5 (short)
+  momentum        last 3 1m closes all one way, move > 4x ATR14(1m) (floor 0.50), volume > 2x mean
+  mean_reversion  15m RSI14 < 25 with z20 < -2.2 (long), or RSI > 75 with z > +2.2 (short)
+No setups are emitted in the flat window (03:30-14:00 Bangkok): no entries are allowed there.
 Throttle: at most one SETUP per 15 minutes.
 """
 import argparse
@@ -20,6 +21,8 @@ import traceback
 from pathlib import Path
 
 import pandas as pd
+
+import risk
 
 from common import DATA, bkk, frames, jappend, jlines, load_cache, update_cache, backfill, save_cache, merge, fetch
 from paperbroker import Broker, write_order
@@ -38,9 +41,10 @@ def detect(m1, m5, m15, t):
         w = m1.iloc[i - 3:i + 1]
         mv = w["c"].iloc[-1] - w["c"].iloc[0]
         steps = w["c"].diff().iloc[1:]
-        atr = max(m1["atr"].iloc[i - 1], 0.30)
-        if abs(mv) > 2.5 * atr and ((steps > 0).all() or (steps < 0).all()):
-            out.append(("momentum", 1 if mv > 0 else -1, f"3-bar move {mv:+.2f} = {abs(mv)/atr:.1f}x ATR1"))
+        atr = max(m1["atr"].iloc[i - 1], 0.50)
+        vr = w["v"].iloc[1:].sum() / (3 * m1["vavg"].iloc[i]) if m1["vavg"].iloc[i] > 0 else 0
+        if abs(mv) > 4 * atr and vr > 2 and ((steps > 0).all() or (steps < 0).all()):
+            out.append(("momentum", 1 if mv > 0 else -1, f"3-bar move {mv:+.2f} = {abs(mv)/atr:.1f}x ATR1, vol {vr:.1f}x"))
     if close_t in set(m5["end"]):
         j = m5.index.get_loc(close_t - pd.Timedelta(minutes=5))
         if j >= 100:
@@ -58,9 +62,9 @@ def detect(m1, m5, m15, t):
         k = m15.index.get_loc(close_t - pd.Timedelta(minutes=15))
         if k >= 35:
             b = m15.iloc[k]
-            if b["rsi"] < 20 and b["z"] < -2.5:
+            if b["rsi"] < 25 and b["z"] < -2.2:
                 out.append(("mean_reversion", 1, f"15m RSI {b['rsi']:.0f}, z {b['z']:.1f}"))
-            elif b["rsi"] > 80 and b["z"] > 2.5:
+            elif b["rsi"] > 75 and b["z"] > 2.2:
                 out.append(("mean_reversion", -1, f"15m RSI {b['rsi']:.0f}, z {b['z']:.1f}"))
     return sorted(out, key=lambda x: PRIORITY.index(x[0]))
 
@@ -85,7 +89,7 @@ def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None):
         b = m1.loc[t]
         broker.on_bar(dict(t=int(b["t"]), o=b["o"], h=b["h"], l=b["l"], c=b["c"],
                            atr1=None if b["atr"] != b["atr"] else float(b["atr"]), rng=float(b["rng"])))
-        if not emit:
+        if not emit or risk.in_flat_window(int(b["t"]) + 60_000):
             continue
         setups = detect(m1, m5, m15, t)
         if not setups or (last_setup is not None and t - last_setup < THROTTLE):
