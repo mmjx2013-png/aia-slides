@@ -29,14 +29,17 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Voice: Venice API TTS, model tts-elevenlabs-turbo-v2-5, voice "Alice". The key is proxy-injected; ask with request_credential if missing.
 - GPU: RunPod via the GraphQL API at api.runpod.io (rest.runpod.io returns 502 through the proxy). Launcher: tools/pod_launch.py.
 - 3D: `pip install bpy` (Blender 5.3) for Cycles on CPU; GPU renders on RunPod.
+- Deck to film: tools/film/rec.js records the deck's own film mode (served over http on port 8765) with the page clock slowed 3x, so a headless 4-CPU box still gets ~30 fps; tools/film/mux.py lays in the narration at -16 LUFS and keeps the MP4 under GitHub's 100 MB limit.
 - Knowledge graph: graphify (`pip install graphifyy && graphify install`). Query with `graphify query "<question>"`. After editing code, run `graphify update .`.
 
 ## Projects
 - Kimono presentation: DONE (25 Nov 2026).
   - 19-slide type-1 deck, live at the URL above.
   - Source is on branch claude/fervent-ramanujan-qp1d26: read HANDOFF.md there.
+  - Film version (7.5 min, 1080p): https://mmjx2013-png.github.io/aia-slides/film/
   - Still untested: Safari, and a person listening to the narration.
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: kimono film made from the deck and hosted at /film/ on gh-pages.
 - 2026-11-25: graphify installed; this shared memory created; kimono project closed.
