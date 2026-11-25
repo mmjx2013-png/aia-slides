@@ -55,7 +55,7 @@ def header(cur):
   <a class="hide-s" href="activities.html">{T("ภาพกิจกรรม", "Photos")}</a>
 </div>
 <header class="hdr glass">
-  <a class="brand" href="index.html" aria-label="หน้าแรก"><span class="mark" aria-hidden="true">สธ</span>
+  <a class="brand" href="index.html" aria-label="หน้าแรก"><img class="mark logo" src="img/fb/logo.png" alt="" width="46" height="46">
     <span><b class="th">โรงเรียนสาธิต มรภ.เพชรบุรี</b><b class="en">Satit PBRU</b><small class="th">Demonstration School of PBRU</small><small class="en">Demonstration School of Phetchaburi Rajabhat University</small></span></a>
   <nav class="nav" aria-label="เมนูหลัก">{nav}</nav>
   <a class="btn btn-gold" href="admissions.html">{T("สมัครเรียน", "Apply")}</a>
@@ -104,6 +104,16 @@ def page(fname, title_th, title_en, main):
 </body>
 </html>
 '''
+    # swap each placeholder for the school's photograph mapped to that position (src/photos.json)
+    import json, re
+    it = iter(json.loads((ROOT / 'src/photos.json').read_text()).get(fname, []))
+    def swap(mt):
+        img = next(it, None)
+        if not img: return mt.group(0)
+        if mt.group(2):  # revealed only when a card is tapped: load it up front, at low priority, so it is there when the circle opens
+            img = img.replace(' loading="lazy"', ' fetchpriority="low"')
+        return f'<div class="{mt.group(1)} has-img"{mt.group(2) or ""}>{img}</div>'
+    doc = re.sub(r'<div class="(ph(?: base)?)"( data-k="\d")?(?: style="[^"]*")?>.*?</div>', swap, doc)
     (ROOT / fname).write_text(doc, encoding='utf-8')
 
 def phero(crumb, eyebrow, h1a, h1b, lede, frame, vt='', ctas=''):
@@ -235,8 +245,7 @@ about = f'''{phero(T("เกี่ยวกับโรงเรียน", "Abo
     <div class="pt"><div class="yr">{T("2553", "2010")}</div><h3>{T("ก่อตั้งโรงเรียนสาธิต", "The demonstration school opens")}</h3><p>{T("ตามข้อมูลจากเพจโรงเรียน", "According to the school's page.")}</p></div>
     <div class="pt"><div class="yr">{T("วันนี้", "Today")}</div><h3>{T("อนุบาล ถึง ม.6", "Kindergarten to M.6")}</h3><p>{T("เปิดสอนครบทุกช่วงชั้น เน้นวิทยาศาสตร์และคณิตศาสตร์", "Every stage of school, with a focus on science and maths.")}</p></div>
   </div></div></section>
-<section class="sec"><div class="wrap">{head2(T("ปรัชญา วิสัยทัศน์ พันธกิจ", "Philosophy, vision and mission"), T("สิ่งที่เรายึดถือ", "What we stand for"))}
-  <div class="tiles t3 rv-s"><div class="tl"><div class="ic">1</div><h3>{T("ปรัชญา", "Philosophy")}</h3><p>{PENDING}</p></div><div class="tl"><div class="ic">2</div><h3>{T("วิสัยทัศน์", "Vision")}</h3><p>{PENDING}</p></div><div class="tl"><div class="ic">3</div><h3>{T("พันธกิจ", "Mission")}</h3><p>{PENDING}</p></div></div></div></section>
+{(ROOT / 'src/about-values.html').read_text()}
 {nextp("kindergarten.html", T("หลักสูตร", "Programmes"), T("เริ่มที่ระดับอนุบาล", "Start with kindergarten"), PH("เด็กอนุบาล", "kindergarten"))}
 {SOURCES('about', 'fb', 'pbru', 'wiki', 'contact', 'photo')}'''
 page('about.html', 'เกี่ยวกับโรงเรียน', 'About', about)
@@ -245,7 +254,8 @@ page('about.html', 'เกี่ยวกับโรงเรียน', 'About
 AREAS = [('ภาษาไทย', 'Thai'), ('คณิตศาสตร์', 'Mathematics'), ('วิทยาศาสตร์และเทคโนโลยี', 'Science and technology'), ('สังคมศึกษา ศาสนา และวัฒนธรรม', 'Social studies, religion and culture'),
          ('สุขศึกษาและพลศึกษา', 'Health and physical education'), ('ศิลปะ', 'Arts'), ('การงานอาชีพ', 'Occupations'), ('ภาษาต่างประเทศ', 'Foreign languages')]
 def areas(hl):
-    return '<div class="tiles rv-s">' + ''.join(f'<div class="tl{" hl" if i in hl else ""}"><div class="ic">{i + 1}</div><h3>{T(a, b)}</h3></div>' for i, (a, b) in enumerate(AREAS)) + '</div>'
+    focus = '<span class="focus">' + T('จุดเน้นของโรงเรียน', "school's focus") + '</span>'
+    return '<div class="tiles rv-s">' + ''.join(f'<div class="tl"><div class="ic">{i + 1}</div><h3>{T(a, b)}</h3>{focus if i in hl else ""}</div>' for i, (a, b) in enumerate(AREAS)) + '</div>'
 DEVACT = f'''<div class="tiles t3 rv-s">
   <div class="tl"><div class="ic">◎</div><h3>{T("กิจกรรมแนะแนว", "Guidance")}</h3><p>{T("ช่วยให้นักเรียนรู้จักตนเอง วางแผนการเรียนและอนาคต", "Helping pupils know themselves and plan their studies and future.")}</p></div>
   <div class="tl"><div class="ic">◎</div><h3>{T("กิจกรรมนักเรียน", "Student activities")}</h3><p>{T("ลูกเสือ เนตรนารี ยุวกาชาด ชุมนุม และชมรม", "Scouts, Red Cross Youth, clubs and societies.")}</p></div>
@@ -274,7 +284,7 @@ pri = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "P
    T("หกปีที่วางรากฐานการเรียนรู้ ทั้งการอ่าน การเขียน การคิดคำนวณ และวิทยาศาสตร์ พร้อมกิจกรรมที่ฝึกให้คิดและลงมือทำ", "Six years that lay the foundations of reading, writing, numbers and science, with activities that build thinking and doing."),
    PH("นักเรียนประถมในห้องเรียน", "primary pupils in class", "background:linear-gradient(135deg,#e9dcb0,#c9a74e)"), 'vt-p')}
 <section class="sec"><div class="wrap">{head2(T("สิ่งที่เรียน", "What pupils learn"), T("8 กลุ่มสาระการเรียนรู้", "Eight learning areas"))}{areas([1, 2])}
-  <p class="src rv" style="margin-top:14px">{T("โครงสร้างตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 (ฉบับปรับปรุง พ.ศ. 2560) · สีเขียวคือจุดเน้นของโรงเรียน", "Structure of the Basic Education Core Curriculum B.E. 2551 (revised 2017) · green marks the school's focus.")}</p></div></section>
+  <p class="src rv" style="margin-top:14px">{T("โครงสร้างตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 (ฉบับปรับปรุง พ.ศ. 2560)", "Structure of the Basic Education Core Curriculum B.E. 2551 (revised 2017).")}</p></div></section>
 <section class="sec"><div class="wrap">{head2(T("นอกห้องเรียน", "Beyond the classroom"), T("กิจกรรมพัฒนาผู้เรียน", "Student development"))}{DEVACT}</div></section>
 <section class="sec"><div class="wrap">{head2(T("บรรยากาศ", "Life at school"), T("หนึ่งวันของเด็กประถม", "A primary day"))}{gallery([("เรียนในห้อง", "lessons"), ("ทดลองวิทยาศาสตร์", "science experiments"), ("กีฬาสี", "sports day"), ("ทัศนศึกษา", "field trip"), ("ห้องสมุด", "the library")])}</div></section>
 <section class="sec"><div class="wrap"><div class="entry rv"><div><div class="eyebrow">{T("การรับสมัคร", "Admissions")}</div><h2>{T("รับเข้าที่ ป.1 และ ป.4", "Entry at P1 and P4")}</h2><p style="color:var(--ink2)">{T("ตามประกาศรับสมัครปีการศึกษา 2569", "According to the 2026 admissions notice.")}</p>

@@ -1,0 +1,95 @@
+{
+"about.html": [
+"<img src=\"img/fb/p069.webp\" alt=\"อาคารเรียนโรงเรียนสาธิต\" width=\"1400\" height=\"827\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p008.webp\" alt=\"เด็กอนุบาล\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"activities.html": [
+"<img src=\"img/fb/p109.webp\" alt=\"กิจกรรมโรงเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p080.webp\" alt=\"นักเรียนยืนเข้าแถวหน้าอาคาร\" width=\"1400\" height=\"872\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p029.webp\" alt=\"ทัศนศึกษา\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p048.webp\" alt=\"ประกวดโครงงาน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p105.webp\" alt=\"วันสำคัญ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p032.webp\" alt=\"ค่ายวิชาการ\" width=\"1400\" height=\"934\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p085.webp\" alt=\"ห้องเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p013.webp\" alt=\"ห้องแล็บ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p050.webp\" alt=\"ดนตรีและศิลปะ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p001.webp\" alt=\"กิจกรรมอนุบาล\" width=\"1400\" height=\"950\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p062.webp\" alt=\"พิธีการ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"admissions.html": [
+"<img src=\"img/fb/p003.webp\" alt=\"วันรับสมัคร\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p080.webp\" alt=\"หน้าโรงเรียน\" width=\"1400\" height=\"872\" loading=\"lazy\" decoding=\"async\">"
+],
+"calendar.html": [
+"<img src=\"img/fb/p079.webp\" alt=\"กิจกรรมตลอดปี\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"contact.html": [],
+"downloads.html": [
+"<img src=\"img/fb/p064.webp\" alt=\"เอกสาร\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"index.html": [
+"<img src=\"img/fb/p004.webp\" alt=\"รูปประกอบข่าวรับสมัคร\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p047.webp\" alt=\"นักเรียนกับโครงงาน\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p026.webp\" alt=\"ทัศนศึกษา\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p097.webp\" alt=\"ห้องเรียนที่นักเรียนลงมือทำ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p046.webp\" alt=\"นักเรียนทำโครงงาน\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p015.webp\" alt=\"ห้องแล็บวิทยาศาสตร์\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p024.webp\" alt=\"ครูกับนักเรียน\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p035.webp\" alt=\"กิจกรรมพัฒนาผู้เรียน\" width=\"1400\" height=\"934\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p008.webp\" alt=\"เด็กอนุบาล\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p026.webp\" alt=\"นักเรียนประถม\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p080.webp\" alt=\"นักเรียนมัธยม\" width=\"1400\" height=\"872\" loading=\"lazy\" decoding=\"async\">"
+],
+"kindergarten.html": [
+"<img src=\"img/fb/p008.webp\" alt=\"เด็กอนุบาลทำกิจกรรม\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p004.webp\" alt=\"ห้องเรียนอนุบาล\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p057.webp\" alt=\"เล่นกลางแจ้ง\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p010.webp\" alt=\"ศิลปะและงานประดิษฐ์\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p001.webp\" alt=\"กิจกรรมเสริมประสบการณ์\" width=\"1400\" height=\"950\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p087.webp\" alt=\"วันสำคัญ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p026.webp\" alt=\"นักเรียนประถม\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">"
+],
+"news-admissions-2569.html": [
+"<img src=\"img/fb/p003.webp\" alt=\"ภาพข่าว\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p004.webp\" alt=\"ภาพประกอบ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p002.webp\" alt=\"กิจกรรมโรงเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"news-field-trip.html": [
+"<img src=\"img/fb/p019.webp\" alt=\"ภาพข่าว\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p023.webp\" alt=\"ภาพประกอบ\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p026.webp\" alt=\"กิจกรรมโรงเรียน\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">"
+],
+"news-innovation-contest.html": [
+"<img src=\"img/fb/p047.webp\" alt=\"ภาพข่าว\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p056.webp\" alt=\"ภาพประกอบ\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p048.webp\" alt=\"กิจกรรมโรงเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"news.html": [
+"<img src=\"img/fb/p109.webp\" alt=\"กิจกรรมโรงเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p004.webp\" alt=\"รูปประกอบข่าวรับสมัคร\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p047.webp\" alt=\"นักเรียนกับโครงงาน\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p027.webp\" alt=\"ทัศนศึกษา\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">"
+],
+"primary.html": [
+"<img src=\"img/fb/p014.webp\" alt=\"นักเรียนประถมในห้องเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p089.webp\" alt=\"เรียนในห้อง\" width=\"1400\" height=\"983\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p015.webp\" alt=\"ทดลองวิทยาศาสตร์\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p109.webp\" alt=\"นักเรียนเดินแถว\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p028.webp\" alt=\"ทัศนศึกษา\" width=\"1400\" height=\"1050\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p085.webp\" alt=\"นักเรียนทำกระทงจากใบตอง\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p080.webp\" alt=\"นักเรียนมัธยม\" width=\"1400\" height=\"872\" loading=\"lazy\" decoding=\"async\">"
+],
+"secondary.html": [
+"<img src=\"img/fb/p012.webp\" alt=\"นักเรียนมัธยมในห้องแล็บ\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p013.webp\" alt=\"การทดลองในห้องแล็บ\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p016.webp\" alt=\"ห้องแล็บ\" width=\"933\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p049.webp\" alt=\"โครงงาน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p048.webp\" alt=\"นักเรียนที่บูธนิทรรศการของโรงเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p021.webp\" alt=\"ทัศนศึกษา\" width=\"1050\" height=\"1400\" loading=\"lazy\" decoding=\"async\" style=\"object-position:50% 30%\">",
+"<img src=\"img/fb/p035.webp\" alt=\"กิจกรรมชุมนุม\" width=\"1400\" height=\"934\" loading=\"lazy\" decoding=\"async\">",
+"<img src=\"img/fb/p090.webp\" alt=\"ผู้ปกครองและนักเรียน\" width=\"1400\" height=\"933\" loading=\"lazy\" decoding=\"async\">"
+],
+"services.html": [
+"<img src=\"img/fb/p044.webp\" alt=\"นักเรียนใช้คอมพิวเตอร์\" width=\"1400\" height=\"934\" loading=\"lazy\" decoding=\"async\">"
+]
+}
