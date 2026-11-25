@@ -108,6 +108,9 @@ class Broker:
             s["day"], s["day_start"] = day, self.mtm(b["o"])
         if s["pos"] and risk.in_flat_window(b["t"]):
             self._close(b, b["o"], "flat by 03:30 Bangkok")
+        fomc = risk.calendar_guard.fomc_close(b["t"]) if risk.CALENDAR_GUARD else None
+        if s["pos"] and fomc:
+            self._close(b, b["o"], f"calendar: close before {fomc}")
         self._take_order(b)
         p = s["pos"]
         if p:

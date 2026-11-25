@@ -3,6 +3,7 @@
 No model output can override these: the broker re-checks them at the fill.
 PAPER ONLY.
 """
+import calendar_guard
 from common import bkk
 
 CAPITAL = 10_000.0
@@ -20,6 +21,7 @@ SHADOW_LEVS = (1, 10, 30)  # same decisions replayed at these leverages
 STOP_OUT = 0.50            # shadow liquidation: equity <= 50% of used margin (as phase 1)
 ORDER_TTL_MS = 5 * 60_000  # an order not filled within 5 min of its decision is dropped
 COST = HALF_SPREAD + SLIPPAGE
+CALENDAR_GUARD = True       # set False only for historical replays without a calendar
 
 
 def in_flat_window(t_ms):
@@ -63,6 +65,10 @@ def entry_gate(state, t_ms):
         return False, "daily loss limit hit: halted for the Bangkok day"
     if is_weekend(t_ms):
         return False, "weekend: no trading Sat/Sun Bangkok"
+    if CALENDAR_GUARD:
+        why = calendar_guard.entry_block(t_ms)
+        if why:
+            return False, why
     if in_flat_window(t_ms):
         return False, "outside entry hours (flat 03:30-14:00 Bangkok)"
     rng, atr = state.get("last_range"), state.get("last_atr1")

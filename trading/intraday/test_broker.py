@@ -4,6 +4,7 @@ import tempfile
 import pandas as pd
 
 import risk
+risk.CALENDAR_GUARD = False   # synthetic bars: calendar tested separately
 from paperbroker import Broker, write_order
 
 T0 = int(pd.Timestamp("2026-11-24 08:00", tz="UTC").value // 10**6)   # 15:00 Bangkok

@@ -23,6 +23,7 @@ from pathlib import Path
 import pandas as pd
 
 import risk
+import calendar_guard
 
 from common import DATA, bkk, frames, jappend, jlines, load_cache, update_cache, backfill, save_cache, merge, fetch
 from paperbroker import Broker, write_order
@@ -136,10 +137,15 @@ def run(max_hours):
         last_setup = step(df, broker, LIVE, [t for t in todo if t >= fresh], last_setup=last_setup, unfiltered=unf)
         print(f"watcher up pid={os.getpid()} bars={len(df)} caught_up={len(catch)} "
               f"equity={broker.mtm(df['c'].iloc[-1]):.2f}", flush=True)
+        ok, msg = calendar_guard.refresh()
+        print(("calendar " if ok else "ERROR ") + msg, flush=True)
         stop_at = time.time() + max_hours * 3600
         while time.time() < stop_at:
             time.sleep(max(1.0, 62 - time.time() % 60))    # ~2 s after each minute closes
             try:
+                ok, msg = calendar_guard.refresh()
+                if not ok:
+                    print(f"ERROR {msg}", flush=True)
                 new = fetch(limit=5)
                 new = new[new["t"] > df["t"].iloc[-1]]
                 if not len(new):
@@ -176,6 +182,7 @@ def status():
 
 
 def replay(days, auto):
+    risk.CALENDAR_GUARD = False          # no historical calendar: replays run without the guard
     df = backfill(days)
     d = DATA / "replay"
     for f in ("state.json", "journal.jsonl", "events.jsonl", "equity.csv", "pending_order.json"):
