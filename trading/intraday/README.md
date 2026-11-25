@@ -48,3 +48,6 @@ Positions still open at 23:00 are closed by the 03:30 rule; the next day's first
 ## Test
 `python3 test_broker.py` (synthetic) and `python3 watcher.py replay --days 4 --auto` (last 4 days of real
 1m bars through the same code, entering every setup with default risk; output in `data/replay/`).
+
+`data/live/` changes every minute, so it is not tracked. At the 23:07 wake-up copy a snapshot:
+`mkdir -p snapshots && rm -rf snapshots/live && cp -r data/live snapshots/live && rm -f snapshots/live/watcher.*`, then commit.
