@@ -20,6 +20,9 @@ def IMG(tag):  # photos.json holds <img> tags: rebuild each one from checked att
     a = dict(re.findall(r'\s([a-z-]+)="([^"]*)"', tag))
     if not tag.startswith('<img ') or not IMG_OK.match(a.get('src', '')): raise ValueError('bad photo entry: ' + tag[:80])
     out = [f'src="{a["src"]}"', f'alt="{E(html.unescape(a.get("alt", "")))}"', 'lang="th"']
+    small = a['src'][:-5] + '-760.webp'  # phones get a 760 px copy when one exists
+    if a['src'].endswith('.webp') and (ROOT / small).exists():
+        out.append(f'srcset="{small} 760w, {a["src"]} {a.get("width", "1400")}w" sizes="(max-width:860px) 100vw, 50vw"')
     for k in ('width', 'height'):
         if re.fullmatch(r'\d{1,5}', a.get(k, '')): out.append(f'{k}="{a[k]}"')
     if a.get('loading') in ('lazy', 'eager'): out.append(f'loading="{a["loading"]}"')
@@ -147,6 +150,22 @@ def page(fname, title_th, title_en, main):
             img = img.replace(' loading="lazy"', ' loading="lazy" data-wake')
         return f'<div class="{mt.group(1)} has-img"{mt.group(2) or ""}>{img}</div>'
     doc = re.sub(r'<div class="(ph(?: base)?)"( data-k="\d")?(?: style="[^"]*")?>.*?</div>', swap, doc)
+    # the photo at the top of a sub-page is the first thing seen: fetch it at once, first
+    doc = re.sub(r'(<div class="frame[^"]*">(?:(?!</div>).)*?<img[^>]*?) loading="lazy"', r'\1 fetchpriority="high"', doc, count=1, flags=re.S)
+    # inline style="" attributes become small classes, so the CSP can forbid inline styles and allow only this page's own <style> (by hash)
+    used = {}
+    def unstyle(m):
+        tag = m.group(0); val = re.search(r'\sstyle="([^"]*)"', tag).group(1).strip().rstrip(';')
+        cls = 'u' + hashlib.sha1(val.encode()).hexdigest()[:6]; used[cls] = val
+        tag = re.sub(r'\sstyle="[^"]*"', '', tag, count=1)
+        if re.search(r'\sclass="', tag): return re.sub(r'\sclass="([^"]*)"', lambda c: f' class="{c.group(1)} {cls}"', tag, count=1)
+        return re.sub(r'^<([a-zA-Z][\w-]*)', lambda t: f'<{t.group(1)} class="{cls}"', tag, count=1)
+    doc = re.sub(r'<[a-zA-Z][\w-]*(?:\s[^>]*?)?\sstyle="[^"]*"[^>]*>', unstyle, doc)
+    extra = ''.join('.%s{%s}' % (c, ';'.join(d.strip() + ' !important' for d in v.split(';') if d.strip())) for c, v in sorted(used.items()))
+    css = CSS + extra
+    doc = doc.replace('<style>' + CSS + '</style>', '<style>' + css + '</style>', 1)
+    doc = doc.replace("style-src 'self' 'unsafe-inline'", "style-src 'self' " + sha(css), 1)
+    assert ' style="' not in doc, fname + ': an inline style is left'
     # last line of defence: no inline event handlers, no javascript: URLs, no scripts other than ours
     bad = re.findall(r'\son[a-z]+\s*=|javascript:|<script(?![^>]*src="js/site\.js)(?!>try\{var l=)', doc, re.I)
     if bad: raise SystemExit(f'{fname}: unsafe markup {bad[:3]}')
