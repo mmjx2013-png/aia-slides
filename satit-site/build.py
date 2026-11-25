@@ -268,7 +268,7 @@ kg = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "Pr
    PH("เด็กอนุบาลทำกิจกรรม", "kindergarten children at play"), 'vt-k')}
 <section class="sec"><div class="wrap">{head2(T("พัฒนาการ 4 ด้าน", "Four areas of growth"), T("เติบโตอย่างสมดุล", "Growing in balance"))}
   <div class="tiles rv-s">
-    <div class="tl hl"><div class="ic">1</div><h3>{T("ร่างกาย", "Physical")}</h3><p>{T("แข็งแรง เคลื่อนไหวคล่อง ใช้มือได้ดี", "Strong, active and good with their hands.")}</p></div>
+    <div class="tl"><div class="ic">1</div><h3>{T("ร่างกาย", "Physical")}</h3><p>{T("แข็งแรง เคลื่อนไหวคล่อง ใช้มือได้ดี", "Strong, active and good with their hands.")}</p></div>
     <div class="tl"><div class="ic">2</div><h3>{T("อารมณ์และจิตใจ", "Emotional")}</h3><p>{T("ร่าเริง มั่นใจ รู้จักควบคุมตนเอง", "Cheerful, confident and learning self-control.")}</p></div>
     <div class="tl"><div class="ic">3</div><h3>{T("สังคม", "Social")}</h3><p>{T("เล่นและทำงานร่วมกับผู้อื่นได้", "Playing and working with others.")}</p></div>
     <div class="tl"><div class="ic">4</div><h3>{T("สติปัญญา", "Thinking")}</h3><p>{T("ช่างสังเกต อยากรู้ ใช้ภาษาสื่อสาร", "Observant, curious and able to express themselves.")}</p></div></div>
