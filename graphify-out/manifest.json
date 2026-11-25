@@ -348,16 +348,16 @@
     "semantic_hash": "c621cbd8e8e6562f3d71462630782d6b"
   },
   "satit-site/build.py": {
-    "mtime": 1795589360.1586375,
-    "seen": 1795589700.433943,
-    "ast_hash": "6a856c8f948d88e18f0ac9e41a7674fd",
-    "semantic_hash": "6a856c8f948d88e18f0ac9e41a7674fd"
+    "mtime": 1795593528.4289334,
+    "seen": 1795593825.3762796,
+    "ast_hash": "1af7588c2502fab35288cf972b7608ec",
+    "semantic_hash": ""
   },
   "satit-site/js/site.js": {
-    "mtime": 1795584161.106753,
-    "seen": 1795589700.4339442,
-    "ast_hash": "bbd433f0652403efbfb8755952816b2c",
-    "semantic_hash": "bbd433f0652403efbfb8755952816b2c"
+    "mtime": 1795592961.3504295,
+    "seen": 1795593825.3762827,
+    "ast_hash": "a1fb6a0e30c46e20799c30385e77bde6",
+    "semantic_hash": ""
   },
   "satit-site/src/photos.json": {
     "mtime": 1795588680.2236238,
@@ -394,5 +394,65 @@
     "seen": 1795589700.4340043,
     "ast_hash": "acb967c279997a113a45ae2ded46abff",
     "semantic_hash": "acb967c279997a113a45ae2ded46abff"
+  },
+  "satit-site/pitch/build_deck.py": {
+    "mtime": 1795593548.8056746,
+    "seen": 1795593825.3762846,
+    "ast_hash": "597fc15b95e4fafbdd497740d77ae938",
+    "semantic_hash": ""
+  },
+  "tools/satit-pdf/evidence.py": {
+    "mtime": 1795591895.3233082,
+    "seen": 1795593825.3763447,
+    "ast_hash": "c3e6c613a0d882e4898862130181185c",
+    "semantic_hash": ""
+  },
+  "tools/satit-pdf/gen.mjs": {
+    "mtime": 1795591895.3236053,
+    "seen": 1795593825.3763459,
+    "ast_hash": "4a883601029621d010b7682df5d1f87e",
+    "semantic_hash": ""
+  },
+  "tools/satit-pdf/phoneuse.cjs": {
+    "mtime": 1795591895.3236926,
+    "seen": 1795593825.376347,
+    "ast_hash": "7437ebad5ee76a6af744a2d2b200b69d",
+    "semantic_hash": ""
+  },
+  "tools/satit-pdf/print.cjs": {
+    "mtime": 1795591895.3234003,
+    "seen": 1795593825.3763485,
+    "ast_hash": "89591ea64f528b88349224e43869c3a2",
+    "semantic_hash": ""
+  },
+  "tools/satit-pdf/script.py": {
+    "mtime": 1795591895.3233502,
+    "seen": 1795593825.3763497,
+    "ast_hash": "40d5b83c496f9b948541b6d5992dce6e",
+    "semantic_hash": ""
+  },
+  "tools/satit-pdf/thumbs.cjs": {
+    "mtime": 1795591895.3234162,
+    "seen": 1795593825.3763506,
+    "ast_hash": "0333f396cffe645b74a9611c925c53da",
+    "semantic_hash": ""
+  },
+  "satit-site/pitch/script.md": {
+    "mtime": 1795591151.6949155,
+    "seen": 1795593825.3763711,
+    "ast_hash": "09ada27bef890bbf812a772a625886f5",
+    "semantic_hash": ""
+  },
+  "satit-site/pitch/evidence/evidence-speed.pdf": {
+    "mtime": 1795591895.3180263,
+    "seen": 1795593825.3763752,
+    "ast_hash": "44f4b1745ab093e2d86f307fc2e72142",
+    "semantic_hash": ""
+  },
+  "satit-site/pitch/script.pdf": {
+    "mtime": 1795591895.3207917,
+    "seen": 1795593825.3763766,
+    "ast_hash": "b8b9c70fd642740e7e939f9b1fc993ca",
+    "semantic_hash": ""
   }
 }
