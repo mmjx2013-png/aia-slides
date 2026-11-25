@@ -50,9 +50,15 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - Source is on branch claude/fervent-ramanujan-qp1d26: read HANDOFF.md there.
   - Film version (7.5 min, 1080p): https://mmjx2013-png.github.io/aia-slides/film/
   - Still untested: Safari, and a person listening to the narration.
+- School website redesign (owner's portfolio project): Satit PBRU, the demonstration school of Phetchaburi Rajabhat University.
+  - Direction C (big photos, white frosted glass) in a light tone, with a little of B (bento tiles). TH/EN; audience: parents; deliver a working site plus design images; no deadline.
+  - Source in satit-site/ on branch claude/fervent-ramanujan-qp1d26; live at https://mmjx2013-png.github.io/aia-slides/satit/
+  - pbru.ac.th blocks cloud IPs and Facebook needs a login: get content and photos from the owner, or via their Mac (Remote Control).
+  - Never invent school facts: mark them pending.
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: Satit PBRU homepage v1 deployed to /satit/ (placeholders where photos and facts are pending).
 - 2026-11-25: skill type1-deck added (.claude/skills/type1-deck, on main and the kimono branch).
 - 2026-11-25: owner reviewed the kimono film: boxy, too static, buggy; said not to fix it. Lessons are recorded under Presentations.
 - 2026-11-25: kimono film made from the deck and hosted at /film/ on gh-pages.
