@@ -282,6 +282,8 @@ h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.18}
 [data-s="speed"] #phB .s-live{animation:appear .3s linear 1.08s both}
 [data-s="weight"] #phB .s-live,[data-s="find"].ge1 #phB .s-live,[data-s="admin"].ge2 #phB .s-live,[data-s="ask"] #phB .s-live{opacity:1}
 [data-s="find"].ge1 #phB .s-live,[data-s="ask"] #phB .s-live,[data-s="speed"] #phB .s-live{pointer-events:auto}
+/* the loading clock and blank plate sit over the live page: never let them take taps */
+.phone .s-load,.phone .s-blank,.phone .notch{pointer-events:none}
 #phB .live{position:absolute;z-index:4;left:50%;top:calc(var(--w) * -.13);transform:translateX(-50%);white-space:nowrap;font:600 18px/1 var(--head);padding:8px 14px;border-radius:99px;background:rgba(15,59,42,.9);color:#fff;opacity:0;transition:opacity .4s}
 #phB .live i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#5BE38A;margin-right:8px;box-shadow:0 0 0 4px rgba(91,227,138,.25)}
 [data-s="find"].ge1 #phB .live,[data-s="ask"] #phB .live,[data-s="speed"] #phB .live{opacity:1}
