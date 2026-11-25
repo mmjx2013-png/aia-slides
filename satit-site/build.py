@@ -29,7 +29,7 @@ SRC = {
 }
 def SOURCES(*keys):
     items = ''.join(f'<li>{T(SRC[k][0], SRC[k][1])}' + (f' · <a href="{SRC[k][2]}" target="_blank" rel="noopener">{T("ดูต้นฉบับ", "source")}</a>' if SRC[k][2] else '') + '</li>' for k in keys)
-    return f'<section class="wrap sources rv" aria-label="ที่มาของข้อมูล"><h2>{T("ที่มาของข้อมูล", "Sources")}</h2><ol>{items}</ol></section>'
+    return f'<section class="wrap sources" aria-label="ที่มาของข้อมูล"><details><summary>{T("ที่มาของข้อมูล", "Sources")} ({len(keys)})</summary><ol>{items}</ol></details></section>'
 
 NAV = [('index.html', 'หน้าแรก', 'Home'), ('about.html', 'เกี่ยวกับโรงเรียน', 'About'), ('levels', 'หลักสูตร', 'Programmes'),
        ('admissions.html', 'รับสมัคร', 'Admissions'), ('news.html', 'ข่าวสาร', 'News'), ('contact.html', 'ติดต่อ', 'Contact')]
@@ -162,17 +162,14 @@ QUICK = [('admissions.html', 'pen', 'สมัครเรียน', 'Apply', '
          ('contact.html', 'phone', 'ติดต่อโรงเรียน', 'Contact us', '032-708623', '+66 32 708 623')]
 
 home = f'''<section class="hero" id="top" aria-label="แนะนำโรงเรียน">
-  <div class="photo"><img src="img/hero-1920.webp" srcset="img/hero-960.webp 960w, img/hero-1920.webp 1920w" sizes="100vw" alt="ป้ายมหาวิทยาลัยราชภัฏเพชรบุรี ท่ามกลางต้นตาลและสนามหญ้า" fetchpriority="high" width="1920" height="1080"></div>
-  <div class="chip glass c1"><span class="dot"></span>{T("อนุบาล – ม.6", "Kindergarten – M.6")}<small class="th">ครบทุกช่วงชั้น</small><small class="en">Every stage of school</small></div>
-  <div class="chip glass c2"><span class="dot"></span>{T("วิทย์ – คณิต", "Science &amp; Maths")}<small class="th">จุดเน้นของโรงเรียน</small><small class="en">Our focus</small></div>
-  <div class="chip glass c3"><span class="dot"></span>{T("ในรั้วมหาวิทยาลัย", "On a university campus")}<small class="th">มรภ.เพชรบุรี</small><small class="en">Phetchaburi Rajabhat</small></div>
+  <div class="photo"><img src="img/fb/p079.webp" alt="นักเรียนโรงเรียนสาธิตทำกิจกรรมริมสระน้ำในสวนของโรงเรียน" fetchpriority="high" width="1400" height="933"></div>
   <div class="copy">
     <div class="eyebrow">{T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี", "The Demonstration School of Phetchaburi Rajabhat University")}</div>
     <h1><span class="ln">{T("ความอยากรู้", "Curiosity")}</span><span class="ln"><span>{T('เริ่มต้น<span class="gold">ที่นี่</span>', 'starts <span class="gold">here</span>')}</span></span></h1>
     <p class="lede">{T("โรงเรียนต้นแบบในรั้วมหาวิทยาลัย ตั้งแต่อนุบาลถึงมัธยมศึกษาปีที่ 6 มุ่งเน้นความเป็นเลิศด้านวิทยาศาสตร์และคณิตศาสตร์", "A model school on a university campus, from kindergarten to Mathayom 6, with a focus on excellence in science and mathematics.")}</p>
     <div class="ctas"><a class="btn btn-green" href="admissions.html">{T("ข้อมูลการรับสมัคร", "Admissions")}{ARROW}</a><a class="btn btn-ghost" href="about.html">{T("รู้จักโรงเรียน", "Discover the school")}</a></div>
   </div>
-  <p class="credit">{T("ภาพ:", "Photo:")} Fifa 26114, CC BY 4.0</p>
+  <p class="credit">{T("ภาพ: เพจ Facebook โรงเรียน", "Photo: the school's Facebook page")}</p>
 </section>
 <nav class="quick rv-s" aria-label="ทางลัด">{''.join(f'<a class="q glass" href="{h}"><span class="ic">{svg(i)}</span><b>{T(a, b)}<small class="th">{c}</small><small class="en">{d}</small></b></a>' for h, i, a, b, c, d in QUICK)}</nav>
 
@@ -226,7 +223,7 @@ page('index.html', 'หน้าแรก', 'Home', home)
 # ---------------------------------------------------------------- about
 about = f'''{phero(T("เกี่ยวกับโรงเรียน", "About"), T("เกี่ยวกับโรงเรียน", "About the school"), T("โรงเรียนต้นแบบ", "A model school"), T('<span class="gold" style="color:var(--goldInk)">ในรั้วมหาวิทยาลัย</span>', '<span style="color:var(--goldInk)">on a university campus</span>'),
    T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี เป็นโรงเรียนต้นแบบในการจัดการศึกษา มุ่งเน้นความเป็นเลิศด้านวิทยาศาสตร์และคณิตศาสตร์ เปิดสอนตั้งแต่ระดับอนุบาลจนถึงมัธยมศึกษาปีที่ 6", "The Demonstration School of Phetchaburi Rajabhat University is a model school that aims for excellence in science and mathematics, teaching from kindergarten to Mathayom 6."),
-   HERO_IMG + f'<div class="chip glass">{T("มรภ.เพชรบุรี", "Phetchaburi Rajabhat University")}<small class="th">ก่อตั้ง พ.ศ. 2469</small><small class="en">Founded 1926</small></div>')}
+   '<img src="img/fb/p080.webp" alt="นักเรียนโรงเรียนสาธิตหน้าอาคารเรียน" width="1400" height="872" loading="lazy">')}
 <section class="sec"><div class="wrap"><div class="facts rv-s">
   <div class="fact"><b>{T("2553", "2010")}</b><span>{T("ปีที่ก่อตั้งโรงเรียน (พ.ศ.)", "Year the school was founded")}</span></div>
   <div class="fact"><b>{T("อนุบาล–ม.6", "K–M.6")}</b><span>{T("ครบทุกช่วงชั้นในโรงเรียนเดียว", "Every stage in one school")}</span></div>
