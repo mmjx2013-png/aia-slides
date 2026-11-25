@@ -27,6 +27,9 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - Big opaque text boxes over the photo look ugly and hide the object. Put text on the image with a soft scrim, or beside the object.
   - Wants much more animation on every slide (drawn lines, counting numbers, moving diagrams, parallax), not mostly static panels.
   - Auto-advance / film: never change slide the moment the voice stops. Hold the slide after the narration and the last animation have finished.
+  - No video next time. Build slides where the narration is part of the animation (voice and motion cued together), and the viewer can touch and drag things.
+  - Interactions must really work. The kimono "No AI. Just Blender" before/after slider could only be dragged around the middle; it should drag across the whole image and reveal the bare 3D model.
+  - Every brief sent to a worker session must attach the type-1 example (reference/from-brand-to-place-cinematic.html) and say "make it like this". The kimono result was nowhere near it.
   - It shipped with visible bugs (overlapping text). Do a QA pass that screenshots every beat of every slide before calling it done.
 
 ## Tools that work
