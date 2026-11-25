@@ -100,6 +100,8 @@ def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None, unfi
         if not setups or (last_setup is not None and t - last_setup < THROTTLE):
             continue
         last_setup = t
+        if emit and not auto:                       # briefs read the cache: make it current first
+            save_cache(merge(load_cache(), df[df.index <= t]))
         ev = make_event(m1, m5, m15, t, setups)
         jappend(live_dir / "events.jsonl", ev)
         print(f"SETUP {ev['id']} {ev['dir']} px={ev['px']} {ev['why']}", flush=True)

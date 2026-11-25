@@ -1,0 +1,12 @@
+{
+ "calls": {
+  "haiku": 2,
+  "sonnet": 1,
+  "opus": 0
+ },
+ "tokens": {
+  "haiku": 133190,
+  "sonnet": 65919,
+  "opus": 0
+ }
+}
