@@ -37,8 +37,9 @@ Opus's direction, stop and target. R = P&L / stop distance, after costs.
   setup (−0.19 R per trade in this sample) by +0.19 R, but the 95% bootstrap CI is [−0.22, +0.57]: it includes zero.
   The same +0.19 R comes from switching the desk off, so it is not evidence of skill in choosing trades. With 32 setups and
   0 entries, **this test cannot show that Opus selects good trades.** It only shows that Opus, under the 4 rules, declines all of them.
-- **Opus's own plans**, if they had been executed (its direction, stop and target, with code exits), average −0.01 R per setup, against
-  −0.19 R for the default plan. That is a hint that its stop/target/direction choices are less bad, not a result (n = 32, wide CI).
+- **Opus's own plans**, if they had been executed (its stop and target, with code exits), average −0.01 R per setup, against
+  −0.19 R for the default plan. Opus always kept the setup's direction, so the gap comes only from its stop and target choices
+  (sometimes a 2 x ATR stop or a 1.5-1.7 R target). That is a hint, not a result (n = 32, wide CI).
 - **Calibration:** Opus says about 0.40 that the target is hit first; the realised hit rate on its plans is 0.25. That is
   **overconfident by about 15 points** at the levels it used. There are no answers at 0.65 or above, so the 0.65 bar itself cannot be calibrated.
 - **Sample noise:** in this sample, breakout setups averaged +0.69 R (n = 8) and vol_expansion −0.93 R (n = 8). The 9-month search
