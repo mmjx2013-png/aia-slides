@@ -25,10 +25,10 @@
       <div class="s-blank"></div><img class="s-old-top" src="img/old-top.webp" alt=""><img class="s-long" src="img/old-long.webp" alt="">
       <div class="s-load"><div class="clock"><span data-race="23.6" data-ms="9440">0.0</span><small>วิ</small></div><div class="bar"><i></i></div></div>
       <span class="screens">จอที่ <b data-screens>1</b> / 7</span></div><span class="notch"></span><span class="tag">เว็บเดิม</span></div>
-  <div class="phone" id="phB" aria-hidden="true"><div class="scr">
-      <div class="s-blank"></div><img class="s-new-top" src="img/new-top.webp" alt=""><img class="s-new-contact" src="img/new-contact.webp" alt="">
+  <div class="phone ia" id="phB" aria-hidden="true"><div class="scr">
+      <div class="s-blank"></div><iframe class="s-live" src="../index.html" title="เว็บไซต์ใหม่ (หน้าจริง)" tabindex="-1"></iframe>
       <div class="s-load"><div class="clock"><span data-race="2.7" data-ms="1080">0.0</span><small>วิ</small></div><div class="bar"><i></i></div></div>
-      <span class="tap" style="left:8%;top:44%"></span></div><span class="notch"></span><span class="tag">เว็บใหม่</span></div>
+      </div><span class="notch"></span><span class="live"><i></i>เว็บจริง · แตะ เลื่อนได้</span><span class="tag">เว็บใหม่</span></div>
 
   <!-- 1 · the question -->
   <section class="slide" id="hook" data-title="ผู้ปกครองเห็นอะไร เมื่อเปิดเว็บเราบนมือถือ" data-steps="0">
@@ -113,7 +113,7 @@
     <div class="r eb" style="left:160px;top:300px;--i:0">ก่อน / หลัง</div>
     <h2 class="r h2" style="left:154px;top:346px;width:760px;--i:0">ลองลาก<br>ดูด้วยตัวเอง</h2>
     <p class="r lede" style="left:160px;top:580px;width:700px;--i:1">หน้าจอแรกที่ผู้ปกครองเห็นบนมือถือ ซ้ายคือเว็บเดิม ขวาคือเว็บใหม่</p>
-    <div class="r compare ia" style="left:1060px;top:80px;width:540px;height:920px;--i:2" data-pos="50">
+    <div class="r compare ia" style="left:1110px;top:80px;width:453px;height:920px;--i:2" data-pos="50">
       <div class="cmp-a" style="background-image:url(img/old-top.webp)"></div><div class="cmp-b" style="background-image:url(img/new-top.webp)"></div>
       <span class="tagl">เว็บเดิม</span><span class="tagr">เว็บใหม่</span><div class="bar"></div>
       <div class="knob" tabindex="0" role="slider" aria-label="เทียบเว็บเดิมกับเว็บใหม่" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">⟷</div></div>
@@ -344,7 +344,9 @@
     var sc = document.querySelector('[data-screens]');
     if (sc) { if (id !== 'find' || rm) { sc.textContent = id === 'find' ? '7' : '1'; } else { var t1 = performance.now() + 600; (function tk(t) { var p = Math.max(0, Math.min(1, (t - t1) / 6000)); sc.textContent = 1 + Math.round(6 * p); if (p < 1) timers.push(requestAnimationFrame(tk)); })(performance.now()); } }
   }
-  var last = null; new MutationObserver(function () { var id = stage.getAttribute('data-s'); if (id !== last) { last = id; run(); } }).observe(stage, { attributes: true, attributeFilter: ['data-s'] });
+  var live = document.querySelector('#phB .s-live');
+  function page() { var want = stage.getAttribute('data-s') === 'find' ? '../contact.html' : '../index.html'; if (live && live.getAttribute('data-cur') !== want) { live.setAttribute('data-cur', want); live.src = want; } }
+  var last = null; new MutationObserver(function () { var id = stage.getAttribute('data-s'); if (id !== last) { last = id; run(); page(); } }).observe(stage, { attributes: true, attributeFilter: ['data-s'] });
 })();
 </script>
 </body>
