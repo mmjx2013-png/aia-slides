@@ -17,6 +17,7 @@ ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width
 
 SRC = {
   'notice': ('ประกาศรับสมัครนักเรียน ปีการศึกษา 2569 (มหาวิทยาลัยราชภัฏเพชรบุรี)', 'Admissions notice, academic year 2026 (PBRU)', 'https://www.pbru.ac.th/pbru/news/123294'),
+  'poster': ('โปสเตอร์รับสมัคร ป.1 ปีการศึกษา 2570 บนหน้าแรกเว็บโรงเรียน (เว็บไซต์ มรภ.เพชรบุรี)', "Admissions poster for Grade 1, academic year 2027, on the school's page (PBRU website)", 'https://www.pbru.ac.th/pbru/satit'),
   'about': ('หน้าเกี่ยวกับโรงเรียนสาธิต (เว็บไซต์ มรภ.เพชรบุรี)', 'About the Demonstration School (PBRU website)', 'https://www.pbru.ac.th/pbru/satit-about-2'),
   'contact': ('หน้าติดต่อโรงเรียนสาธิต (เว็บไซต์ มรภ.เพชรบุรี)', 'Contact page (PBRU website)', 'https://www.pbru.ac.th/pbru/satit-contact'),
   'act': ('กิจกรรมพัฒนานักเรียน โรงเรียนสาธิต (เว็บไซต์ มรภ.เพชรบุรี)', 'Student development activities (PBRU website)', 'https://www.pbru.ac.th/pbru/satit-act-dev-student'),
@@ -68,11 +69,11 @@ def header(cur):
 
 FOOTER = f'''<footer class="ftr" id="contact">
   <div class="fgrid">
-    <div><h4>{T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี", "The Demonstration School of Phetchaburi Rajabhat University")}</h4>
+    <div><h2 class="fh">{T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี", "The Demonstration School of Phetchaburi Rajabhat University")}</h2>
       <p>{T("38 หมู่ 8 ถนนหาดเจ้าสำราญ ตำบลนาวุ้ง อำเภอเมือง จังหวัดเพชรบุรี 76000", "38 Moo 8, Hat Chao Samran Road, Na Wung, Mueang Phetchaburi, Phetchaburi 76000, Thailand")}<br>
       <a href="tel:032708623">032-708623</a> · <a href="mailto:satitpbru@mail.pbru.ac.th">satitpbru@mail.pbru.ac.th</a></p></div>
-    <div><h4>{T("หลักสูตร", "Programmes")}</h4><ul>{''.join(f'<li><a href="{h}">{T(a, b)}</a></li>' for h, a, b, c, d in LEVELS)}<li><a href="admissions.html">{T("รับสมัคร", "Admissions")}</a></li></ul></div>
-    <div><h4>{T("เว็บไซต์", "This site")}</h4><ul>
+    <div><h2 class="fh">{T("หลักสูตร", "Programmes")}</h2><ul>{''.join(f'<li><a href="{h}">{T(a, b)}</a></li>' for h, a, b, c, d in LEVELS)}<li><a href="admissions.html">{T("รับสมัคร", "Admissions")}</a></li></ul></div>
+    <div><h2 class="fh">{T("เว็บไซต์", "This site")}</h2><ul>
       <li><a href="about.html">{T("เกี่ยวกับโรงเรียน", "About")}</a></li><li><a href="news.html">{T("ข่าวสาร", "News")}</a></li>
       <li><a href="activities.html">{T("ภาพกิจกรรม", "Photos")}</a></li><li><a href="calendar.html">{T("ปฏิทิน", "Calendar")}</a></li>
       <li><a href="downloads.html">{T("ดาวน์โหลด", "Downloads")}</a></li><li><a href="services.html">{T("ระบบทะเบียน", "Student registry")}</a></li><li><a href="contact.html">{T("ติดต่อ", "Contact")}</a></li></ul></div>
@@ -91,6 +92,9 @@ def page(fname, title_th, title_en, main):
 <meta name="description" content="{html.escape(title_en)}: concept redesign of the Demonstration School of Phetchaburi Rajabhat University website. Not the official website.">
 <meta name="theme-color" content="#F6F4EE">
 <link rel="preload" href="fonts/anuphan-thai-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+{'<link rel="preload" as="image" href="img/fb/p079-800.webp" imagesrcset="img/fb/p079-800.webp 800w, img/fb/p079.webp 1400w" imagesizes="(max-width:860px) 100vw, 72vw" fetchpriority="high">' if fname == "index.html" else ""}
+<link rel="icon" href="img/fb/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="img/fb/logo.png">
 <link rel="stylesheet" href="css/site.css">
 <script>try{{var l=localStorage.getItem('lang');if(l==='en'||l==='th')document.documentElement.lang=l;}}catch(e){{}}</script>
 </head>
@@ -135,6 +139,7 @@ HERO_IMG = '<img src="img/hero-1920.webp" srcset="img/hero-960.webp 960w, img/he
 
 # ---------------------------------------------------------------- home
 NEWS = [  # internal article pages; each names its source
+  ('news-admissions-2570.html', 'รับสมัคร', 'Admissions', 'เปิดรับสมัครนักเรียน ป.1 ปีการศึกษา 2570', 'Grade 1 admissions open for 2027', 'ถึง 30 พ.ย. 2569', 'until 30 Nov 2026', 'admissions', 'โปสเตอร์รับสมัคร', 'admissions poster'),
   ('news-admissions-2569.html', 'รับสมัคร', 'Admissions', 'ประกาศรับสมัครนักเรียน ปีการศึกษา 2569', 'Admissions for academic year 2026 announced', '10 พ.ย. 2568', '10 Nov 2025', 'admissions', 'รูปประกอบข่าวรับสมัคร', 'admissions photo'),
   ('news-innovation-contest.html', 'ผลงานนักเรียน', 'Student work', 'ประกวดโครงงานสิ่งประดิษฐ์และนวัตกรรม', 'Invention and innovation project contest', 'ประจำปี 2562', '2019', 'work', 'นักเรียนกับโครงงาน', 'students and their projects'),
   ('news-field-trip.html', 'กิจกรรม', 'Activities', 'ทัศนศึกษา เรียนรู้นอกห้องเรียน', 'Field trips: learning beyond the classroom', 'กิจกรรมพัฒนานักเรียน', 'Student development', 'activities', 'ทัศนศึกษา', 'a field trip'),
@@ -162,7 +167,7 @@ QUICK = [('admissions.html', 'pen', 'สมัครเรียน', 'Apply', '
          ('contact.html', 'phone', 'ติดต่อโรงเรียน', 'Contact us', '032-708623', '+66 32 708 623')]
 
 home = f'''<section class="hero" id="top" aria-label="แนะนำโรงเรียน">
-  <div class="photo"><img src="img/fb/p079.webp" alt="นักเรียนโรงเรียนสาธิตทำกิจกรรมริมสระน้ำในสวนของโรงเรียน" fetchpriority="high" width="1400" height="933"></div>
+  <div class="photo"><img src="img/fb/p079.webp" srcset="img/fb/p079-800.webp 800w, img/fb/p079.webp 1400w" sizes="(max-width:860px) 100vw, 72vw" alt="นักเรียนโรงเรียนสาธิตทำกิจกรรมริมสระน้ำในสวนของโรงเรียน" fetchpriority="high" width="1400" height="933"></div>
   <div class="copy">
     <div class="eyebrow">{T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี", "The Demonstration School of Phetchaburi Rajabhat University")}</div>
     <h1><span class="ln">{T("ความอยากรู้", "Curiosity")}</span><span class="ln"><span>{T('เริ่มต้น<span class="gold">ที่นี่</span>', 'starts <span class="gold">here</span>')}</span></span></h1>
@@ -171,18 +176,18 @@ home = f'''<section class="hero" id="top" aria-label="แนะนำโรง�
   </div>
   <p class="credit">{T("ภาพ: เพจ Facebook โรงเรียน", "Photo: the school's Facebook page")}</p>
 </section>
-<nav class="quick rv-s" aria-label="ทางลัด">{''.join(f'<a class="q glass" href="{h}"><span class="ic">{svg(i)}</span><b>{T(a, b)}<small class="th">{c}</small><small class="en">{d}</small></b></a>' for h, i, a, b, c, d in QUICK)}</nav>
+<nav class="quick" aria-label="ทางลัด">{''.join(f'<a class="q glass{" q-tel" if h == "contact.html" else ""}" href="{h}"><span class="ic">{svg(i)}</span><b>{T(a, b)}<small class="th">{c}</small><small class="en">{d}</small></b></a>' for h, i, a, b, c, d in QUICK)}</nav>
 
-<section class="sec" aria-label="ข้อมูลสำคัญ"><div class="wrap"><div class="bento rv-s">
-  <a class="tile t-green" href="admissions.html" style="text-decoration:none"><div><div class="eyebrow">{T("รับสมัครนักเรียน", "Admissions")}</div><h3 style="margin-top:12px">{T("ประกาศรับสมัคร<br>ปีการศึกษา 2569", "Admissions notice,<br>academic year 2026")}</h3></div>
-    <div class="levels">{T("อนุบาล 1", "K1")}{T("ป.1", "P1")}{T("ป.4", "P4")}</div><span class="ring"></span></a>
+<section class="sec" aria-label="ข้อมูลสำคัญ"><div class="wrap"><h2 class="sr">ข้อมูลสำคัญ</h2><div class="bento rv-s">
+  <a class="tile t-green" href="admissions.html" style="text-decoration:none"><div><div class="eyebrow">{T("เปิดรับสมัครแล้ว", "Admissions open")}</div><h3 style="margin-top:12px">{T("ป.1 ปีการศึกษา 2570", "Grade 1, academic year 2027")}</h3><p style="margin-top:8px">{T("สมัครได้ถึง 30 พ.ย. 2569", "Apply by 30 November 2026")}</p></div>
+    <div class="levels">{T("ค่าสมัคร 100 บาท", "Fee: 100 baht")}{T("สมัครผ่าน QR", "Apply by QR")}</div><span class="ring"></span></a>
   <a class="tile t-gold" href="kindergarten.html" style="text-decoration:none"><div class="eyebrow">{T("ระดับชั้น", "Levels")}</div><div><h3>{T("อนุบาล – ม.6", "K – M.6")}</h3><p>{T("เรียนต่อเนื่องในโรงเรียนเดียว", "One school, from the first day to graduation")}</p></div><span class="ring"></span></a>
   <a class="tile t-white" href="about.html" style="text-decoration:none;color:inherit"><div class="eyebrow">{T("ก่อตั้ง", "Founded")}</div><div><div class="num"><span class="th" data-count="2553">2553</span><span class="en" data-count="2010">2010</span></div><p style="color:var(--ink2)">{T("พ.ศ. · ตามข้อมูลจากเพจโรงเรียน", "According to the school's page")}</p></div></a>
 </div></div></section>
 
 <section class="sec" aria-labelledby="h-news"><div class="wrap">
   {head2(T("ข่าวสารและประกาศ", "News &amp; notices"), f'<span id="h-news">{T("เกิดอะไรขึ้นที่สาธิต", "What is happening at Satit")}</span>', f'<a class="more" href="news.html">{T("ข่าวทั้งหมด →", "All news →")}</a>')}
-  <div class="news"><div class="cards rv-s">{''.join(ncard(n) for n in NEWS)}</div>
+  <div class="news"><div class="cards rv-s">{''.join(ncard(n) for n in NEWS[:3])}</div>
     <a class="cal rv" href="calendar.html" style="text-decoration:none;color:inherit"><h3>{T("ปฏิทินกิจกรรม", "Calendar")} <span class="sample">{T("ตัวอย่าง", "sample")}</span></h3><ol>
       <li><span class="d">{T("ธ.ค.", "Dec")}</span><span>{T("ประชุมผู้ปกครองภาคเรียนที่ 2", "Parents' meeting, term 2")}</span></li>
       <li><span class="d">{T("ม.ค.", "Jan")}</span><span>{T("กิจกรรมวันเด็กแห่งชาติ", "National Children's Day")}</span></li>
@@ -309,13 +314,19 @@ page('secondary.html', 'มัธยมศึกษา', 'Secondary', sec)
 
 # ---------------------------------------------------------------- admissions
 adm = f'''{phero(T("รับสมัคร", "Admissions"), T("รับสมัครนักเรียน", "Admissions"), T("ก้าวแรก", "The first step"), T('<span style="color:var(--goldInk)">สู่สาธิต</span>', '<span style="color:var(--goldInk)">to Satit</span>'),
-   T("ประกาศรับสมัครนักเรียนล่าสุด ปีการศึกษา 2569 รับชั้นอนุบาล 1 ประถมศึกษาปีที่ 1 และประถมศึกษาปีที่ 4", "The latest notice, for academic year 2026, opened places in Kindergarten 1, Prathom 1 and Prathom 4."),
-   PH("วันรับสมัคร", "admissions day"), '', f'<div class="ctas" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><a class="btn btn-green" href="news-admissions-2569.html">{T("อ่านประกาศ", "Read the notice")}{ARROW}</a><a class="btn btn-ghost" href="contact.html">{T("สอบถามโรงเรียน", "Ask the school")}</a></div>')}
+   T("เปิดรับสมัครนักเรียนชั้นประถมศึกษาปีที่ 1 ปีการศึกษา 2570 สมัครได้ถึงวันที่ 30 พฤศจิกายน 2569", "Grade 1 places for academic year 2027 are open. Apply by 30 November 2026."),
+   PH("วันรับสมัคร", "admissions day"), '', f'<div class="ctas" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><a class="btn btn-green" href="#poster">{T("ดูโปสเตอร์และ QR สมัคร", "See the poster and QR code")}{ARROW}</a><a class="btn btn-ghost" href="contact.html">{T("สอบถามโรงเรียน", "Ask the school")}</a></div>')}
 <section class="sec"><div class="wrap"><div class="bento rv-s">
-  <div class="tile t-green"><div class="eyebrow">{T("ปีการศึกษา 2569", "Academic year 2026")}</div><div><h3>{T("ชั้นที่เปิดรับ", "Entry grades")}</h3><div class="levels" style="margin-top:12px">{T("อนุบาล 1", "K1")}{T("ป.1", "P1")}{T("ป.4", "P4")}</div></div><span class="ring"></span></div>
-  <div class="tile t-gold"><div class="eyebrow">{T("ปิดรับสมัคร", "Closing date")}</div><div><h3>{T("28 พ.ย. 2568", "28 Nov 2025")}</h3><p>{T("ตามประกาศปีการศึกษา 2569", "Per the 2026 notice")}</p></div><span class="ring"></span></div>
-  <div class="tile t-white"><div class="eyebrow">{T("ปีการศึกษาถัดไป", "Next year")}</div><div><h3 style="font-size:clamp(24px,2.4vw,32px)">{T("ติดตามประกาศใหม่", "Watch for the new notice")}</h3><p style="color:var(--ink2)">{T("โทร 032-708623", "Call +66 32 708 623")}</p></div></div>
+  <div class="tile t-green"><div class="eyebrow">{T("ปีการศึกษา 2570", "Academic year 2027")}</div><div><h3>{T("ประถมศึกษาปีที่ 1", "Grade 1")}</h3><p style="margin-top:6px">Tāhūrangi Program</p></div><span class="ring"></span></div>
+  <div class="tile t-gold"><div class="eyebrow">{T("ปิดรับสมัคร", "Closing date")}</div><div><h3>{T("30 พ.ย. 2569", "30 Nov 2026")}</h3><p>{T("ค่าสมัคร 100 บาท", "Application fee: 100 baht")}</p></div><span class="ring"></span></div>
+  <div class="tile t-white"><div class="eyebrow">{T("สอบถาม", "Questions")}</div><div><h3 style="font-size:clamp(24px,2.4vw,32px)"><a href="tel:032708649" style="text-decoration:none">032-708649</a></h3><p style="color:var(--ink2)">{T("เบอร์ในโปสเตอร์รับสมัคร", "Number on the admissions poster")}</p></div></div>
 </div></div></section>
+<section class="sec" id="poster"><div class="wrap story">
+  <div class="rv"><div class="eyebrow">{T("โปสเตอร์ประกาศ", "The poster")}</div><h2>{T("สแกน QR ในโปสเตอร์เพื่อสมัคร", "Scan the QR code on the poster to apply")}</h2>
+    <p>{T("โปสเตอร์นี้มาจากหน้าแรกของเว็บโรงเรียน ระบุว่าเปิดรับสมัคร ป.1 ปีการศึกษา 2570 ค่าสมัคร 100 บาท และสอบถามเพิ่มเติมได้ที่ 032-708649", "This poster is from the school's home page: Grade 1 for academic year 2027, a 100 baht fee, and questions to +66 32 708 649.")}</p>
+    <p class="src">{T("ก่อนชำระเงิน โปรดตรวจสอบกับโรงเรียนทางโทรศัพท์อีกครั้ง", "Please confirm with the school by phone before you pay.")}</p></div>
+  <div class="pic rv" style="aspect-ratio:auto;background:none"><img src="img/poster-2570.webp" alt="โปสเตอร์รับสมัครนักเรียน ป.1 ปีการศึกษา 2570 พร้อม QR code สมัคร" width="740" height="1112" loading="lazy" style="width:100%;height:auto;border-radius:24px"></div>
+</div></section>
 <section class="sec"><div class="wrap">{head2(T("ขั้นตอน", "How it works"), T("สมัครเรียนใน 5 ขั้น", "Applying in five steps"))}
   <div class="steps rv-s">
     <div class="step"><h3>{T("ติดตามประกาศ", "Read the notice")}</h3><p>{T("ดูชั้นที่เปิดรับ คุณสมบัติ และกำหนดการ", "Check grades, eligibility and dates.")}</p></div>
@@ -325,13 +336,13 @@ adm = f'''{phero(T("รับสมัคร", "Admissions"), T("รับสม
     <div class="step"><h3>{T("มอบตัว", "Enrol")}</h3><p>{T("รายงานตัวและมอบตัวเป็นนักเรียน", "Register as a pupil.")}</p></div></div>
   <p class="src rv" style="margin-top:14px">{T("ขั้นตอนโดยทั่วไป รายละเอียดจริงให้ยึดตามประกาศของแต่ละปี", "General steps; each year's notice is what counts.")}</p></div></section>
 <section class="sec"><div class="wrap faq rv">{head2(T("คำถามที่พบบ่อย", "FAQ"), T("ผู้ปกครองมักถาม", "What parents ask"))}
-  <details><summary>{T("ปีนี้เปิดรับชั้นไหนบ้าง", "Which grades are open?")}</summary><p>{T("ประกาศปีการศึกษา 2569 เปิดรับอนุบาล 1, ป.1 และ ป.4 ส่วนปีถัดไปให้ติดตามประกาศใหม่", "The 2026 notice opened K1, P1 and P4. Watch for next year's notice.")}</p></details>
+  <details><summary>{T("ตอนนี้เปิดรับชั้นไหน", "Which grades are open now?")}</summary><p>{T("ปีการศึกษา 2570 เปิดรับ ป.1 ถึง 30 พ.ย. 2569 (ปีการศึกษา 2569 เคยเปิดรับ อนุบาล 1, ป.1 และ ป.4)", "For 2027, Grade 1, until 30 November 2026. (For 2026 the school opened K1, P1 and P4.)")}</p></details>
   <details><summary>{T("ค่าเล่าเรียนเท่าไร", "What are the fees?")}</summary><p>{T("สอบถามโรงเรียนโดยตรงที่ 032-708623", "Please ask the school on +66 32 708 623.")}</p></details>
   <details><summary>{T("เยี่ยมชมโรงเรียนก่อนสมัครได้ไหม", "Can we visit first?")}</summary><p>{T("โทรหรืออีเมลนัดหมายกับโรงเรียนได้", "Call or email the school to arrange a visit.")}</p></details>
   <details><summary>{T("ติดต่อสอบถามที่ไหน", "Who do we contact?")}</summary><p>032-708623 · satitpbru@mail.pbru.ac.th</p></details>
 </div></section>
 {nextp("contact.html", T("ต่อไป", "Next"), T("แผนที่และการติดต่อ", "Map and contact"), PH("หน้าโรงเรียน", "the school entrance"))}
-{SOURCES('notice', 'contact')}'''
+{SOURCES('poster', 'notice', 'contact')}'''
 page('admissions.html', 'รับสมัคร', 'Admissions', adm)
 
 # ---------------------------------------------------------------- news + articles
@@ -345,6 +356,8 @@ newsp = f'''{phero(T("ข่าวสาร", "News"), T("ข่าวสาร�
 page('news.html', 'ข่าวสาร', 'News', newsp)
 
 ARTICLES = {
+ 'news-admissions-2570.html': (T("เปิดรับสมัคร ป.1<br>ปีการศึกษา 2570", "Grade 1 admissions<br>for 2027 are open"),
+   f'<p>{T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี เปิดรับสมัครนักเรียนชั้นประถมศึกษาปีที่ 1 (Tāhūrangi Program) ปีการศึกษา 2570 ตั้งแต่วันนี้ถึงวันที่ 30 พฤศจิกายน 2569", "The school is taking applications for Grade 1 (Tāhūrangi Program), academic year 2027, until 30 November 2026.")}</p><p>{T("ค่าสมัคร 100 บาท สมัครโดยสแกน QR code ในโปสเตอร์ สอบถามเพิ่มเติม 032-708649", "The fee is 100 baht. Apply by scanning the QR code on the poster. Questions: +66 32 708 649.")}</p>', ('poster',), 'admissions.html#poster', T("ดูโปสเตอร์และ QR", "See the poster and QR code")),
  'news-admissions-2569.html': (T("ประกาศรับสมัครนักเรียน<br>ปีการศึกษา 2569", "Admissions for academic year 2026"),
    f'<p>{T("มหาวิทยาลัยราชภัฏเพชรบุรีประกาศรับสมัครนักเรียนโรงเรียนสาธิต ประจำปีการศึกษา 2569 เมื่อวันที่ 10 พฤศจิกายน 2568", "Phetchaburi Rajabhat University announced admissions to the Demonstration School for academic year 2026 on 10 November 2025.")}</p><p>{T("ชั้นที่เปิดรับ: อนุบาล 1, ประถมศึกษาปีที่ 1 และประถมศึกษาปีที่ 4 รับสมัครถึงวันที่ 28 พฤศจิกายน 2568", "Entry grades: Kindergarten 1, Prathom 1 and Prathom 4. Applications closed on 28 November 2025.")}</p><p>{T("รายละเอียดคุณสมบัติ เอกสาร และกำหนดการทั้งหมดอยู่ในประกาศต้นฉบับ", "Eligibility, documents and the full timetable are in the original notice.")}</p>', ('notice',), 'admissions.html', T("ขั้นตอนการสมัคร", "How to apply")),
  'news-innovation-contest.html': (T("ประกวดโครงงาน<br>สิ่งประดิษฐ์และนวัตกรรม", "Invention and innovation<br>project contest"),

@@ -466,3 +466,6 @@ html[lang="th"] .lang [data-l="th"],html[lang="en"] .lang [data-l="en"]{backgrou
   .nlist{grid-template-columns:1fr}
   .strip{grid-template-rows:140px 140px 140px}
 }
+.t-green .levels span{background:rgba(255,255,255,.16);color:#fff}
+.ftr h2.fh{font-size:16px;margin-bottom:10px}
+@media (max-width:860px){.q.q-tel b small.th,html[lang="en"] .q.q-tel b small.en{display:block!important;margin-top:2px;font-size:12px}html[lang="th"] .q.q-tel b small.en{display:none!important}}
