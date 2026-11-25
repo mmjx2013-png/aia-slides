@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TYPE-1 DECK TEMPLATE</title>
+<!--
+  Type-1 deck template. The engine and the motion grammar are taken from the owner's "perfect" example,
+  reference/from-brand-to-place-cinematic.html, and extended with: narration that drives the beats,
+  counting numbers, a drag-anywhere before/after slider, grey placeholder plates for rough mock-ups (?wire),
+  and auto-play that holds each slide after the voice and the last animation have finished.
+  Keys: Right / Space / Enter = next beat, Left / Backspace = back, 1-9 = jump, Home / End, F = full screen, M = motion, V = voice, A = auto.
+  Replace every placeholder (.ph plate, sample text) before shipping. Fonts: Cine Serif / Cine Sans are renamed Latin subsets of
+  Caladea and Inter (SIL OFL 1.1). For Thai text add a Thai font to --serif / --sans (see SKILL.md).
+-->
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');
+if(/[?&]wire\b/.test(location.search))document.documentElement.classList.add('wire');</script>
+<style>
+@font-face{font-family:"Cine Serif";font-weight:400;font-style:normal;font-display:block;src:url(fonts/cine-serif-400.woff2) format("woff2")}
+@font-face{font-family:"Cine Serif";font-weight:400;font-style:italic;font-display:block;src:url(fonts/cine-serif-400i.woff2) format("woff2")}
+@font-face{font-family:"Cine Serif";font-weight:700;font-style:normal;font-display:block;src:url(fonts/cine-serif-700.woff2) format("woff2")}
+@font-face{font-family:"Cine Serif";font-weight:700;font-style:italic;font-display:block;src:url(fonts/cine-serif-700i.woff2) format("woff2")}
+@font-face{font-family:"Cine Sans";font-weight:400;font-style:normal;font-display:block;src:url(fonts/cine-sans-400.woff2) format("woff2")}
+@font-face{font-family:"Cine Sans";font-weight:500;font-style:normal;font-display:block;src:url(fonts/cine-sans-500.woff2) format("woff2")}
+@font-face{font-family:"Cine Sans";font-weight:600;font-style:normal;font-display:block;src:url(fonts/cine-sans-600.woff2) format("woff2")}
+@font-face{font-family:"Cine Sans";font-weight:700;font-style:normal;font-display:block;src:url(fonts/cine-sans-700.woff2) format("woff2")}
+:root{
+  --ink:#17110C;--paper:#F3EADB;--paperB:#EDEFE0;--c1:#A84E1B;--c1L:#F4AA72;--c2:#2E5E44;--c2L:#ABD8B5;
+  --mute:#6B5B4D;--ease:cubic-bezier(.22,.8,.24,1);
+  --serif:"Cine Serif",Cambria,Caladea,Georgia,serif;
+  --sans:"Cine Sans",Inter,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:#0C0907;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;opacity:0;transition:opacity .25s ease}
+body.ready{opacity:1}
+#vp{position:fixed;inset:0;overflow:hidden;cursor:default}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#120D09}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- photographic plates persist; scenes change them with clip-path wipes and splits ---------- */
+.plate{position:absolute;inset:0;overflow:hidden;transition:clip-path .7s var(--ease),opacity .7s ease}
+.plate img,.plate .ph{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;animation:drift 28s ease-in-out infinite alternate;will-change:transform}
+@keyframes drift{from{transform:scale(1.05) translate3d(0,-1.1%,0)}to{transform:scale(1.05) translate3d(0,1.1%,0)}}
+/* placeholder plate for rough mock-ups: no render, no photo; the label says what the real picture will be */
+.ph{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#4a423a 0 22px,#433b34 22px 44px)}
+.ph::after{content:attr(data-label);font:600 22px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:rgba(243,234,219,.55);max-width:60%;text-align:center}
+.wire .plate img{visibility:hidden}
+.wire .plate{background:repeating-linear-gradient(135deg,#4a423a 0 22px,#433b34 22px 44px)}
+.wire .grain{display:none}
+#pA{clip-path:inset(0 0 0 0)}
+#pB{clip-path:inset(0 0 0 100%)}
+[data-s="diagram"] #pB,[data-s="compare"] #pB{clip-path:inset(0 0 0 0)}
+[data-s="compare"] #pA{clip-path:inset(0 100% 0 0)}
+.veil{position:absolute;inset:0;opacity:0;transition:opacity .55s ease;pointer-events:none}
+.v1{background:linear-gradient(90deg,rgba(14,9,6,.93) 0%,rgba(14,9,6,.84) 46%,rgba(14,9,6,.5) 100%)}
+.v2{background:linear-gradient(180deg,rgba(14,9,6,.1) 0%,rgba(14,9,6,.18) 48%,rgba(14,9,6,.9) 78%,rgba(14,9,6,.94) 100%)}
+.v3{background:linear-gradient(90deg,rgba(14,9,6,.86) 0%,rgba(14,9,6,.7) 42%,rgba(14,9,6,.35) 100%)}
+[data-s="hook"] .v1,[data-s="split"] .v2,[data-s="diagram"] .v3{opacity:1}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.11;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .7 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* ---------- persistent paper labels: they travel, grow into edge-to-edge panels, shrink back and flip ---------- */
+.label{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);perspective:1800px;
+  transition:left .64s var(--ease),top .64s var(--ease),width .64s var(--ease),height .64s var(--ease)}
+.flip{position:absolute;inset:0;transform-style:preserve-3d}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);overflow:hidden;container-type:size;
+  box-shadow:0 26px 70px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.28);transition:border-radius .5s ease}
+.face.back{transform:rotateY(180deg)}
+#LA .face{background:var(--paper)} #LB .face{background:var(--paperB)}
+#LA{--x:1150px;--y:330px;--w:610px;--h:250px;--r:12px;z-index:6}
+#LB{--x:1150px;--y:620px;--w:610px;--h:250px;--r:12px;z-index:5}
+/* a label becomes a panel by growing to the frame edge (radius 0), never into a floating box over the subject */
+[data-s="split"] #LA{--x:690px;--y:0px;--w:1230px;--h:1080px;--r:0px}
+[data-s="split"] #LB,[data-s="diagram"] #LB{--x:1970px;--y:620px}
+[data-s="diagram"] #LA{--x:-780px;--y:0px;--w:690px;--h:1080px;--r:0px}
+[data-s="compare"] #LA{--x:110px;--y:690px;--w:560px;--h:290px}
+[data-s="compare"] #LB{--x:1250px;--y:690px;--w:560px;--h:290px}
+[data-s="compare"] .label .flip{transition:transform .72s cubic-bezier(.3,.7,.2,1)}
+[data-s="compare"] #LB .flip{transition-delay:.11s}
+[data-s="compare"].ge1 .label .flip{transform:rotateY(180deg)}
+.lc{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .14s ease,visibility 0s linear .14s}
+/* label content shows only after the label has landed: text never slides */
+[data-s="hook"] .lc.t-hook,[data-s="split"] .lc.t-split,[data-s="compare"] .lc.t-compare{opacity:1;visibility:visible;transition:opacity .36s ease .34s,visibility 0s}
+.tag{display:flex;flex-direction:column;justify-content:center;padding:0 5cqw 0 7cqw}
+.tag .cap{font:600 7.6cqh/1 var(--sans);letter-spacing:.15em;text-transform:uppercase;color:var(--mute);margin-bottom:5cqh}
+.tag .big{font:700 30cqh/.95 var(--serif);letter-spacing:-.01em;color:var(--ink)}
+.ans{display:flex;flex-direction:column;justify-content:center;padding:0 10cqw 0 7cqw}
+.ans .cap{font:600 7.2cqh/1 var(--sans);letter-spacing:.15em;text-transform:uppercase;color:var(--mute);margin-bottom:3.5cqh}
+.ans .big{font:700 30cqh/.95 var(--serif);letter-spacing:-.012em;white-space:nowrap}
+.ans p{margin:4cqh 0 0;font:500 8.6cqh/1.25 var(--sans);color:var(--ink)}
+.c1{color:var(--c1)} .c2{color:var(--c2)}
+
+/* ---------- scene text ---------- */
+.slide{position:absolute;inset:0;z-index:10;pointer-events:none;visibility:hidden;transition:visibility 0s linear .2s}
+.slide.on{visibility:visible;transition-delay:0s}
+.slide>*{position:absolute;margin:0}
+.slide .ia{pointer-events:auto}
+.r{opacity:0;transform:translate3d(0,20px,0);transition:opacity .15s ease,transform .15s ease}
+[data-dir="back"] .r{transform:translate3d(0,-20px,0)}
+.slide.on .r{opacity:1;transform:none;transition:opacity .42s ease calc(.26s + var(--i,0)*70ms),transform .62s var(--ease) calc(.26s + var(--i,0)*70ms)}
+/* beat-gated text: .f1 appears on beat 1, .f2 on beat 2 ... ; .h0 shows until beat 1, .h1 replaces it */
+.f1,.f2,.f3,.h0,.h1{opacity:0;transform:translate3d(0,16px,0);transition:opacity .15s ease,transform .15s ease}
+.ge1 .slide.on .f1,.ge2 .slide.on .f2,.ge3 .slide.on .f3,.ge1 .slide.on .h1{opacity:1;transform:none;transition:opacity .4s ease .08s,transform .55s var(--ease) .08s}
+.slide.on .h0{opacity:1;transform:none;transition:opacity .42s ease .3s,transform .6s var(--ease) .3s}
+.ge1 .slide.on .h0{opacity:0;transform:translate3d(0,-16px,0);transition:opacity .15s ease,transform .15s ease}
+.dk{color:var(--paper)} .ik{color:var(--ink)}
+.k{font:600 21px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.k.ik{color:var(--c1)} .k.dk{color:var(--c1L)}
+em.a1,em.a2{font-style:italic}
+.dk em.a1{color:var(--c1L)} .dk em.a2{color:var(--c2L)} .ik em.a1{color:var(--c1)} .ik em.a2{color:var(--c2)}
+.cr{font:500 17px/1.35 var(--sans);letter-spacing:.01em}
+.cr.dk{color:rgba(243,234,219,.74)} .cr.ik{color:var(--mute)}
+h1,h2,h3{font-weight:700}
+.d1{font:700 118px/1.02 var(--serif);letter-spacing:-.02em}
+.d2{font:700 78px/1.04 var(--serif);letter-spacing:-.018em}
+.d3{font:700 66px/1.04 var(--serif);letter-spacing:-.016em}
+.lede{font:500 34px/1.3 var(--sans)}
+.fn{font:500 20px/1.35 var(--sans);color:var(--mute)}
+.mast b{display:block;font:italic 700 46px/1 var(--serif);letter-spacing:-.01em}
+.mast span{display:block;margin-top:12px;font:600 20px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:rgba(243,234,219,.78)}
+.rows .row{display:grid;grid-template-columns:318px 1fr;column-gap:34px;height:176px;padding-top:22px;border-top:1.5px solid rgba(23,17,12,.2)}
+.row q{font:italic 700 41px/1.1 var(--serif);color:var(--c1);quotes:"\201C" "\201D"}
+.row h3{margin:0 0 8px;font:700 20px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.row p{margin:0;font:400 28px/1.3 var(--sans)}
+/* big number that counts up when its beat arrives (data-count, data-at = beat) */
+.num{font:700 150px/1 var(--serif);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+/* strands draw themselves (stroke-dashoffset), then the node and the arrow tip appear */
+svg.strands{left:0;top:0;width:1920px;height:1080px;overflow:visible}
+.strand{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .15s ease}
+.slide.on .strand{stroke-dashoffset:0;transition:stroke-dashoffset .62s cubic-bezier(.45,0,.2,1) .5s}
+.slide.on .strand.out{transition:stroke-dashoffset .4s cubic-bezier(.45,0,.2,1) 1.12s}
+.node,.tip{opacity:0;transition:opacity .15s ease}
+.slide.on .node{opacity:1;transition:opacity .3s ease 1.02s}
+.slide.on .tip{opacity:1;transition:opacity .25s ease 1.45s}
+/* before/after: drag ANYWHERE on the picture, across its full width; arrow keys on the handle */
+.compare{--pos:50%;overflow:hidden;border-radius:8px;box-shadow:0 26px 70px rgba(0,0,0,.4);touch-action:none;cursor:ew-resize;user-select:none;-webkit-user-select:none}
+.compare>.cmp-a,.compare>.cmp-b{position:absolute;inset:0}
+.compare>.cmp-b{clip-path:inset(0 0 0 var(--pos))}
+.compare .bar{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;margin-left:-1.5px;background:var(--paper);box-shadow:0 0 12px rgba(0,0,0,.5)}
+.compare .knob{position:absolute;top:50%;left:var(--pos);width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--paper);box-shadow:0 6px 20px rgba(0,0,0,.45);
+  display:flex;align-items:center;justify-content:center;font:700 22px/1 var(--sans);color:var(--ink)}
+.compare .knob:focus-visible{outline:3px solid var(--c1L);outline-offset:3px}
+.compare .tagl,.compare .tagr{position:absolute;top:24px;padding:8px 14px 7px;border-radius:99px;background:rgba(20,15,11,.72);font:700 16px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+.compare .tagl{left:24px} .compare .tagr{right:24px}
+/* sources sheet slides up on the last beat */
+#credits{position:absolute;inset:0;z-index:20;background:var(--paper);transform:translate3d(0,102%,0);transition:transform .62s var(--ease);padding:84px 110px 0}
+[data-s="compare"].ge2 #credits{transform:none}
+#credits h2{margin:18px 0 0;font:700 60px/1.04 var(--serif);letter-spacing:-.016em}
+#credits li{margin:0 0 20px;font:400 24.5px/1.36 var(--sans)}
+/* narration subtitle line */
+#sub{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);z-index:25;max-width:1300px;padding:10px 20px 9px;border-radius:8px;background:rgba(12,9,6,.72);
+  font:500 30px/1.3 var(--sans);color:var(--paper);text-align:center;opacity:0;transition:opacity .25s ease;pointer-events:none}
+#sub.on{opacity:1}
+.hud{position:absolute;right:70px;top:76px;z-index:30;font:600 19px/1 var(--sans);letter-spacing:.14em;color:var(--hud,rgba(243,234,219,.85));transition:color .4s ease;pointer-events:none}
+.hud i{display:inline-block;width:44px;height:1.5px;margin:0 12px;background:currentColor;vertical-align:5px;opacity:.6}
+[data-s="split"] .hud{--hud:rgba(23,17,12,.78)}
+#ctl{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:12px;background:rgba(20,15,11,.82);
+  box-shadow:0 8px 30px rgba(0,0,0,.4);opacity:0;transition:opacity .3s ease;font:500 14px/1 var(--sans)}
+#ctl.show{opacity:1}
+#ctl:has(:focus-visible){opacity:1}
+#ctl button{font:inherit;color:var(--paper);background:transparent;border:1px solid rgba(243,234,219,.28);border-radius:8px;padding:8px 12px;cursor:pointer}
+#ctl button:hover{background:rgba(243,234,219,.14)}
+#ctl button[aria-pressed="true"]{background:rgba(243,234,219,.2)}
+#ctl button:focus-visible{outline:2px solid var(--c1L);outline-offset:2px}
+#ctl #pos{min-width:92px;text-align:center;color:var(--paper);font-variant-numeric:tabular-nums}
+.rm *,.rm *::before,.rm *::after{transition-duration:.01ms!important;transition-delay:0s!important;animation:none!important}
+.rm .plate img,.rm .plate .ph{transform:scale(1.05)}
+@media print{html,body{overflow:visible}#ctl{display:none}}
+</style>
+</head>
+<body>
+<main id="vp">
+<div id="stage" data-slide="1" data-s="hook" data-step="0" data-dir="fwd">
+
+  <!-- PLATES: replace each .ph with <img alt="" src="media/....jpg"> (real photographs, credited) -->
+  <div class="plate" id="pA"><div class="ph" data-label="Photo A: the everyday scene the question comes from"></div></div>
+  <div class="plate" id="pB"><div class="ph" data-label="Photo B: the place, or the case study"></div></div>
+  <div class="veil v1"></div><div class="veil v2"></div><div class="veil v3"></div>
+  <div class="grain"></div>
+
+  <!-- label B: the second idea -->
+  <div class="label" id="LB"><div class="flip">
+    <div class="face front">
+      <div class="lc t-hook t-compare tag"><span class="cap">Concept B, as an object</span><span class="big">Object B</span></div>
+    </div>
+    <div class="face back">
+      <div class="lc t-compare ans"><span class="cap">Concept B</span><span class="big c2">WHERE</span><p>One line that settles it.</p></div>
+    </div>
+  </div></div>
+
+  <!-- label A: the first idea -->
+  <div class="label" id="LA"><div class="flip">
+    <div class="face front">
+      <div class="lc t-hook t-compare tag"><span class="cap">Concept A, as an object</span><span class="big">Object A</span></div>
+      <div class="lc t-split" style="padding:84px 90px 0 90px">
+        <div class="k ik">Part 1 · The kinds</div>
+        <h2 class="d2 ik" style="margin:14px 0 30px">Three kinds, three promises</h2>
+        <div class="rows ik">
+          <div class="row"><q>A first-person line.</q><div><h3>Kind one</h3><p>One plain sentence on what it does.</p></div></div>
+          <div class="row"><q>Another voice.</q><div><h3>Kind two</h3><p>One plain sentence on what it does.</p></div></div>
+          <div class="row"><q>A third voice.</q><div><h3>Kind three</h3><p>One plain sentence on what it does.</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="face back">
+      <div class="lc t-compare ans"><span class="cap">Concept A</span><span class="big c1">WHO</span><p>One line that settles it.</p></div>
+    </div>
+  </div></div>
+
+  <!-- 1 · hook: one question, two persistent objects -->
+  <section class="slide" id="hook" data-title="The question" data-steps="0" data-audio="" data-cues="">
+    <div class="r mast dk" style="left:110px;top:84px;--i:0"><b>Deck title</b><span>Subject · audience</span></div>
+    <h1 class="r d1 dk" style="left:106px;top:264px;width:1010px;--i:1">One question<br>with an <em class="a1">answer A</em><br>and an <em class="a2">answer B</em>?</h1>
+    <p class="r lede dk" style="left:110px;top:806px;width:900px;--i:3">Pick one for each. We settle it on the last slide.</p>
+    <p class="r cr dk" style="left:110px;top:1010px;width:1300px;--i:4">Caption with the caveat and the credit. Photo: author · licence · cropped, darkened</p>
+  </section>
+
+  <!-- 2 · split: label A grows into the right two thirds; the plate stays on the left -->
+  <section class="slide" id="split" data-title="Three kinds" data-steps="1" data-audio="" data-cues="4.0">
+    <p class="r d3 dk" style="left:70px;top:742px;width:560px;--i:2">Every object makes a promise.</p>
+    <p class="f1 lede dk" style="left:70px;top:900px;width:560px">The beat-1 line, cued by the narration.</p>
+  </section>
+
+  <!-- 3 · diagram: strands draw, a number counts up on beat 1 -->
+  <section class="slide" id="diagram" data-title="How it links" data-steps="1" data-audio="" data-cues="5.0">
+    <div class="r k dk" style="left:110px;top:84px;--i:0;color:var(--c2L)">Part 2 · The link</div>
+    <h2 class="r d2 dk" style="left:105px;top:118px;width:1100px;--i:0">Two causes meet in one place</h2>
+    <svg class="strands" viewBox="0 0 1920 1080" aria-hidden="true">
+      <path class="strand" pathLength="1" d="M470 520 C650 520 640 634 790 634" stroke="#ABD8B5"/>
+      <path class="strand" pathLength="1" d="M470 752 C650 752 640 634 790 634" stroke="#F4AA72"/>
+      <g class="node"><circle cx="800" cy="634" r="27" fill="none" stroke="#F3EADB" stroke-width="2"/><circle cx="800" cy="634" r="12" fill="#F3EADB"/></g>
+      <path class="strand out" pathLength="1" d="M828 634 C950 634 968 480 1082 436" stroke="#F3EADB" stroke-width="4"/>
+      <path class="tip" d="M1071 424 L1096 431 L1078 450 Z" fill="#F3EADB"/>
+    </svg>
+    <div class="r dk" style="left:110px;top:488px;width:340px;--i:2"><b class="k" style="color:var(--c2L)">Cause one</b><p class="lede" style="margin:10px 0 0;font-size:29px">What it brings</p></div>
+    <div class="r dk" style="left:110px;top:720px;width:340px;--i:3"><b class="k" style="color:var(--c1L)">Cause two</b><p class="lede" style="margin:10px 0 0;font-size:29px">What it brings</p></div>
+    <div class="f1 dk" style="left:1130px;top:330px;width:700px"><p class="num" data-count="1636" data-at="1" style="color:var(--c1L)">0</p><p class="lede" style="margin:12px 0 0">A dated fact that the number makes concrete.</p></div>
+    <p class="r fn" style="left:110px;top:1006px;width:900px;color:rgba(243,234,219,.7);--i:6">Source, paraphrased: author, title, page.</p>
+  </section>
+
+  <!-- 4 · compare: drag the picture; then the labels turn over (beat 1); then the sources (beat 2) -->
+  <section class="slide" id="compare" data-title="Before and after" data-steps="2" data-audio="" data-cues="6.0 11.0">
+    <div class="r k dk" style="left:110px;top:84px;--i:0">Takeaway</div>
+    <h2 class="h0 d2 dk" style="left:105px;top:116px;width:1500px">Drag the picture. Which is which?</h2>
+    <h2 class="h1 d2 dk" style="left:105px;top:116px;width:1500px">A is <em class="a1">answer A</em>. B is <em class="a2">answer B</em>.</h2>
+    <div class="r compare ia" style="left:110px;top:250px;width:1700px;height:410px;--i:1" data-pos="50">
+      <div class="cmp-a ph" data-label="Before: the bare model / the raw state"></div>
+      <div class="cmp-b ph" data-label="After: the finished picture" style="background:repeating-linear-gradient(135deg,#6a5d4f 0 22px,#62564a 22px 44px)"></div>
+      <span class="tagl">Before</span><span class="tagr">After</span>
+      <div class="bar"></div>
+      <div class="knob" tabindex="0" role="slider" aria-label="Before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">⟷</div>
+    </div>
+  </section>
+
+  <div id="credits" aria-hidden="true">
+    <div class="k ik">Sources and credits</div>
+    <h2>The answer, once more, in one line.</h2>
+    <ol style="margin:40px 0 0;padding:0;list-style:none"><li><b>Source 1.</b> Author, title, page, link.</li><li><b>Photo 1.</b> Title by author, licence, link. Cropped and darkened.</li></ol>
+  </div>
+
+  <div id="sub" aria-hidden="true"></div>
+  <div class="hud" aria-hidden="true"><span id="cnt">01</span><i></i><span id="tot">04</span></div>
+</div>
+</main>
+<div class="sr" id="live" aria-live="polite"></div>
+<nav id="ctl" aria-label="Presentation controls">
+  <button id="bPrev" type="button" aria-label="Back">‹ Back</button>
+  <span id="pos">1 / 4</span>
+  <button id="bNext" type="button" aria-label="Next">Next ›</button>
+  <button id="bVoice" type="button" aria-pressed="false" title="V">Voice off</button>
+  <button id="bAuto" type="button" aria-pressed="false" title="A">Auto off</button>
+  <button id="bMotion" type="button" aria-pressed="true" title="M">Motion on</button>
+  <button id="bFull" type="button" title="F">Full screen</button>
+</nav>
+<script>
+(function(){
+  var doc=document.documentElement,stage=document.getElementById('stage'),vp=document.getElementById('vp'),
+      slides=[].slice.call(document.querySelectorAll('.slide')),credits=document.getElementById('credits'),
+      cnt=document.getElementById('cnt'),pos=document.getElementById('pos'),live=document.getElementById('live'),ctl=document.getElementById('ctl'),sub=document.getElementById('sub'),
+      bMotion=document.getElementById('bMotion'),bVoice=document.getElementById('bVoice'),bAuto=document.getElementById('bAuto'),N=slides.length,
+      STEPS=slides.map(function(s){return +s.getAttribute('data-steps')||0;}),
+      HOLD=3200,   // ms the slide stays after the voice AND the last animation have finished (auto mode); never switch the moment the voice stops
+      i=0,st=0,hideT=0,voice=false,auto=false,autoT=0,audio=new Audio(),cues=[],voiceDone=true;
+  document.getElementById('tot').textContent=('0'+N).slice(-2);
+  function fit(){var s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='translate('+((innerWidth-1920*s)/2)+'px,'+((innerHeight-1080*s)/2)+'px) scale('+s+')';}
+  function render(dir,changed){
+    stage.setAttribute('data-slide',i+1);stage.setAttribute('data-s',slides[i].id);stage.setAttribute('data-step',st);stage.setAttribute('data-dir',dir);
+    if(changed)stage.setAttribute('data-arr','1');else stage.removeAttribute('data-arr');
+    for(var g=1;g<=5;g++)stage.classList.toggle('ge'+g,st>=g);
+    slides.forEach(function(s,k){var on=k===i;s.classList.toggle('on',on);s.setAttribute('aria-hidden',on?'false':'true');});
+    var cr=i===N-1&&st>=STEPS[N-1]&&STEPS[N-1]>0;credits.setAttribute('aria-hidden',cr?'false':'true');if('inert' in credits)credits.inert=!cr;
+    cnt.textContent=('0'+(i+1)).slice(-2);pos.textContent=(i+1)+' / '+N+(STEPS[i]?'  ·  '+st+'/'+STEPS[i]:'');
+    live.textContent='Slide '+(i+1)+' of '+N+': '+slides[i].getAttribute('data-title');
+    counters();
+    if(changed){stopVoice();if(voice&&dir==='fwd')playVoice();}
+    scheduleAuto();
+    try{history.replaceState(null,'','#'+(i+1));}catch(e){}
+  }
+  function next(){if(st<STEPS[i]){st++;seekToCue();render('fwd',false);}else if(i<N-1){i++;st=0;render('fwd',true);}}
+  function prev(){if(st>0){st--;render('back',false);}else if(i>0){i--;st=STEPS[i];render('back',true);}}
+  function jump(k,end){k=Math.max(0,Math.min(N-1,k));var d=k>=i?'fwd':'back',ch=k!==i;i=k;st=end?STEPS[i]:0;render(d,ch);}
+
+  /* ---------- counting numbers: count up once their beat is on screen ---------- */
+  function counters(){[].forEach.call(document.querySelectorAll('[data-count]'),function(el){
+    var on=el.closest('.slide')===slides[i]&&st>=(+el.getAttribute('data-at')||0),to=+el.getAttribute('data-count');
+    if(!on){el.textContent='0';el.__run=0;return;}if(el.__run)return;el.__run=1;
+    if(doc.classList.contains('rm')){el.textContent=to.toLocaleString('en');return;}
+    var t0=performance.now()+380,dur=1300;(function tick(t){if(!el.__run)return;var p=Math.max(0,Math.min(1,(t-t0)/dur)),e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(to*e).toLocaleString('en');if(p<1)requestAnimationFrame(tick);})(performance.now());});}
+
+  /* ---------- narration drives the beats: each cue (seconds) fires the next beat while the voice plays ---------- */
+  function cuesOf(k){return (slides[k].getAttribute('data-cues')||'').trim().split(/\s+/).filter(Boolean).map(Number);}
+  function playVoice(){var src=slides[i].getAttribute('data-audio');cues=cuesOf(i);if(!src){voiceDone=true;return;}
+    voiceDone=false;audio.src=src;audio.currentTime=0;var vtt=src.replace(/\.(mp3|m4a|wav)$/,'.vtt');loadVTT(vtt);
+    var p=audio.play();if(p&&p.catch)p.catch(function(){voiceDone=true;scheduleAuto();});}
+  function stopVoice(){try{audio.pause();}catch(e){}voiceDone=true;sub.classList.remove('on');}
+  function seekToCue(){if(!voiceDone&&cues[st-1]!=null&&audio.currentTime<cues[st-1])try{audio.currentTime=cues[st-1];}catch(e){}}
+  var vtt=[];function loadVTT(u){vtt=[];fetch(u).then(function(r){return r.ok?r.text():'';}).then(function(t){t.split(/\n\n+/).forEach(function(b){
+    var m=b.match(/(\d+):(\d+)\.(\d+)\s+-->\s+(\d+):(\d+)\.(\d+)\s*\n([\s\S]+)/);if(m)vtt.push({a:+m[1]*60+ +m[2]+m[3]/1000,b:+m[4]*60+ +m[5]+m[6]/1000,t:m[7].trim()});});}).catch(function(){});}
+  audio.addEventListener('timeupdate',function(){var t=audio.currentTime;
+    while(st<STEPS[i]&&cues[st]!=null&&t>=cues[st]){st++;render('fwd',false);}
+    var c=null;for(var k=0;k<vtt.length;k++)if(t>=vtt[k].a&&t<vtt[k].b)c=vtt[k];if(c){if(sub.textContent!==c.t)sub.textContent=c.t;sub.classList.add('on');}else sub.classList.remove('on');});
+  audio.addEventListener('ended',function(){voiceDone=true;sub.classList.remove('on');scheduleAuto();});
+  function setVoice(on){voice=on;bVoice.textContent=on?'Voice on':'Voice off';bVoice.setAttribute('aria-pressed',on?'true':'false');if(on)playVoice();else stopVoice();}
+
+  /* ---------- auto: remaining beats, then HOLD after the voice and the animation, then the next slide ---------- */
+  function scheduleAuto(){clearTimeout(autoT);if(!auto)return;
+    if(!voiceDone){autoT=setTimeout(scheduleAuto,400);return;}
+    autoT=setTimeout(function(){if(!auto)return;if(st<STEPS[i]||i<N-1)next();},(+slides[i].getAttribute('data-hold')||HOLD)+1400);}
+  function setAuto(on){auto=on;bAuto.textContent=on?'Auto on':'Auto off';bAuto.setAttribute('aria-pressed',on?'true':'false');scheduleAuto();}
+
+  /* ---------- before/after: pointer capture on the whole picture, so a drag works from any point ---------- */
+  [].forEach.call(document.querySelectorAll('.compare'),function(c){
+    var knob=c.querySelector('.knob');function set(p){p=Math.max(0,Math.min(100,p));c.style.setProperty('--pos',p+'%');c.setAttribute('data-pos',Math.round(p));if(knob)knob.setAttribute('aria-valuenow',Math.round(p));}
+    function at(e){var r=c.getBoundingClientRect();set((e.clientX-r.left)/r.width*100);}
+    c.addEventListener('pointerdown',function(e){e.preventDefault();e.stopPropagation();c.setPointerCapture(e.pointerId);c.__drag=1;at(e);});
+    c.addEventListener('pointermove',function(e){if(c.__drag)at(e);});
+    c.addEventListener('pointerup',function(e){c.__drag=0;e.stopPropagation();});c.addEventListener('pointercancel',function(){c.__drag=0;});
+    c.addEventListener('click',function(e){e.stopPropagation();});
+    if(knob)knob.addEventListener('keydown',function(e){var p=+c.getAttribute('data-pos');if(e.key==='ArrowLeft'){set(p-5);e.preventDefault();e.stopPropagation();}else if(e.key==='ArrowRight'){set(p+5);e.preventDefault();e.stopPropagation();}});
+    set(+c.getAttribute('data-pos')||50);});
+
+  function setMotion(on){doc.classList.toggle('rm',!on);bMotion.textContent=on?'Motion on':'Motion off';bMotion.setAttribute('aria-pressed',on?'true':'false');}
+  function full(){if(document.fullscreenElement){document.exitFullscreen();}else if(doc.requestFullscreen){doc.requestFullscreen();}}
+  function wake(){ctl.classList.add('show');clearTimeout(hideT);hideT=setTimeout(function(){ctl.classList.remove('show');},2400);}
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey)return;var k=e.key,t=e.target;
+    if(t&&(t.tagName==='A'||t.tagName==='BUTTON')&&(k==='Enter'||k===' '))return;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '||k==='Enter'||k==='ArrowDown'){e.preventDefault();next();}
+    else if(k==='ArrowLeft'||k==='PageUp'||k==='Backspace'||k==='ArrowUp'){e.preventDefault();prev();}
+    else if(k==='Home'){jump(0);}else if(k==='End'){jump(N-1,true);}
+    else if(/^[1-9]$/.test(k)&&+k<=N){jump(+k-1);}
+    else if(k==='f'||k==='F'){full();}else if(k==='m'||k==='M'){setMotion(doc.classList.contains('rm'));}
+    else if(k==='v'||k==='V'){setVoice(!voice);}else if(k==='a'||k==='A'){setAuto(!auto);}
+  });
+  vp.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a,.ia,#ctl'))return;var r=vp.getBoundingClientRect();if((e.clientX-r.left)<r.width*0.22)prev();else next();});
+  var x0=null,y0=null;
+  vp.addEventListener('touchstart',function(e){if(e.target.closest&&e.target.closest('.ia')){x0=null;return;}x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+  vp.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)>46&&Math.abs(dx)>Math.abs(dy)){e.preventDefault();if(dx<0)next();else prev();}});
+  document.getElementById('bNext').addEventListener('click',next);
+  document.getElementById('bPrev').addEventListener('click',prev);
+  bMotion.addEventListener('click',function(){setMotion(doc.classList.contains('rm'));});
+  bVoice.addEventListener('click',function(){setVoice(!voice);});
+  bAuto.addEventListener('click',function(){setAuto(!auto);});
+  document.getElementById('bFull').addEventListener('click',full);
+  document.addEventListener('mousemove',wake);ctl.addEventListener('focusin',wake);
+  window.addEventListener('resize',fit);
+  window.addEventListener('hashchange',function(){var k=parseInt(location.hash.slice(1),10);if(k&&k-1!==i)jump(k-1);});
+  setMotion(!doc.classList.contains('rm'));fit();
+  var k0=parseInt(location.hash.slice(1),10);if(k0&&k0>=1&&k0<=N)i=k0-1;
+  stage.setAttribute('data-slide',i+1);stage.setAttribute('data-s',slides[i].id);
+  function start(){if(document.body.classList.contains('ready'))return;document.body.classList.add('ready');requestAnimationFrame(function(){requestAnimationFrame(function(){render('fwd',true);});});}
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(start);setTimeout(start,1500);}else{start();}
+  window.__deck={next:next,prev:prev,jump:jump,state:function(){return {slide:i+1,id:slides[i].id,step:st,steps:STEPS[i],n:N};}};
+})();
+</script>
+</body>
+</html>
