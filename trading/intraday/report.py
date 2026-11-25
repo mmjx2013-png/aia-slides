@@ -27,6 +27,14 @@ def perf(exits):
             f"**{sum(p)/len(p):+.2f}** | {pf:.2f} |")
 
 
+def read_eq(path):
+    """t, equity, px from an equity.csv whose shadow columns may change over time."""
+    rows = [ln.split(",")[:3] for ln in Path(path).read_text().splitlines()[1:] if ln.strip()]
+    e = pd.DataFrame(rows, columns=["t", "equity", "px"]).astype({"t": "int64", "equity": float, "px": float})
+    e.index = pd.to_datetime(e["t"], unit="ms", utc=True).dt.tz_convert(BKK)
+    return e
+
+
 def win(day):
     """Report period: 21:00 Bangkok the previous day to 21:00 on `day` (journal times are Bangkok)."""
     prev = (pd.Timestamp(day) - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
@@ -47,15 +55,13 @@ def main(day, d, out):
     d, out = Path(d), Path(out)
     out.mkdir(parents=True, exist_ok=True)
     st = json.loads((d / "state.json").read_text())
-    eq = pd.read_csv(d / "equity.csv")
-    eq.index = pd.to_datetime(eq["t"], unit="ms", utc=True).dt.tz_convert(BKK)
+    eq = read_eq(d / "equity.csv")
     eq = eq[eq.index.strftime("%Y-%m-%d %H:%M") < win(day)[1]]
     bh = risk.CAPITAL * eq["px"] / st["start_px"]
     uf = d / "unfiltered" / "equity.csv"
     un = None
     if uf.exists():
-        un = pd.read_csv(uf)
-        un.index = pd.to_datetime(un["t"], unit="ms", utc=True).dt.tz_convert(BKK)
+        un = read_eq(uf)
         un = un[un.index.strftime("%Y-%m-%d %H:%M") < win(day)[1]]["equity"]
     fig, ax = plt.subplots(figsize=(7, 3), dpi=110)
     ax.plot(eq.index, eq["equity"], label="paper desk (live book, <=3x)", lw=1.4)
@@ -64,8 +70,7 @@ def main(day, d, out):
     cf = d / "cand15" / "equity.csv"
     cn = None
     if cf.exists():
-        cn = pd.read_csv(cf)
-        cn.index = pd.to_datetime(cn["t"], unit="ms", utc=True).dt.tz_convert(BKK)
+        cn = read_eq(cf)
         cn = cn[cn.index.strftime("%Y-%m-%d %H:%M") < win(day)[1]]["equity"]
         ax.plot(cn.index, cn, label="15m candidate (code only, OOS from 2026-11-25)", lw=1.0, ls=":")
     ax.plot(eq.index, bh, label="PAXG buy & hold, 1x", lw=1.0, alpha=.8)
