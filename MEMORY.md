@@ -23,6 +23,10 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - No film mode unless asked.
   - Use 3D as a virtual camera.
   - Downloaded CC0/CC BY models are fine.
+- Owner feedback on the finished kimono deck (25 Nov), to apply next time:
+  - Big opaque text boxes over the photo look ugly and hide the object. Put text on the image with a soft scrim, or beside the object.
+  - Wants much more animation on every slide (drawn lines, counting numbers, moving diagrams, parallax), not mostly static panels.
+  - It shipped with visible bugs (overlapping text). Do a QA pass that screenshots every beat of every slide before calling it done.
 
 ## Tools that work
 - Hosting: GitHub Pages from branch gh-pages at https://mmjx2013-png.github.io/aia-slides/
@@ -41,5 +45,6 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: owner reviewed the kimono film: boxy, too static, buggy; said not to fix it. Lessons are recorded under Presentations.
 - 2026-11-25: kimono film made from the deck and hosted at /film/ on gh-pages.
 - 2026-11-25: graphify installed; this shared memory created; kimono project closed.
