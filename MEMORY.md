@@ -15,7 +15,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Cheap options first (for example, RunPod Community GPUs; several GPUs are fine).
 
 ## Presentations
-- For any presentation, use the skill `.claude/skills/type1-deck` (SKILL.md): it holds the type-1 workflow, the example's engine as a template, and a QA script.
+- For any presentation, use the skill `.claude/skills/type1-deck` (SKILL.md): it holds the type-1 workflow, a neutral engine template, and a QA script. Reach the example's level; never imitate it.
 - "Type 1" = perfect, "type 2" = minimum acceptable. Both are defined in PRESENTATION-STYLES.md, with the type-1 reference in reference/from-brand-to-place-cinematic.html.
 - Never deliver a scrolling website that is a wall of text. If the owner says "presentation", build slides.
 - Lessons from the kimono project:
@@ -31,7 +31,9 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - Auto-advance / film: never change slide the moment the voice stops. Hold the slide after the narration and the last animation have finished.
   - No video next time. Build slides where the narration is part of the animation (voice and motion cued together), and the viewer can touch and drag things.
   - Interactions must really work. The kimono "No AI. Just Blender" before/after slider could only be dragged around the middle; it should drag across the whole image and reveal the bare 3D model.
-  - Every brief sent to a worker session must attach the type-1 example (reference/from-brand-to-place-cinematic.html) and say "make it like this". The kimono result was nowhere near it.
+  - Every brief sent to a worker session attaches the type-1 example (reference/from-brand-to-place-cinematic.html) as the QUALITY BAR, and says: reach this level, but do not imitate it. Match its content and slide craft, with the deck's own look. The kimono result was nowhere near it.
+  - The background stays visible, and every slide is different (no repeated layouts): that is what makes it striking, not boring.
+  - Animation must be creative and tied to the idea, not simple left-right or top-down swipes.
   - It shipped with visible bugs (overlapping text). Do a QA pass that screenshots every beat of every slide before calling it done.
 
 ## Tools that work
