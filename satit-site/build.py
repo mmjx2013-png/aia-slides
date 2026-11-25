@@ -75,7 +75,7 @@ def header(cur):
   <a class="hide-s" href="activities.html">{T("ภาพกิจกรรม", "Photos")}</a>
 </nav>
 <header class="hdr glass">
-  <a class="brand" href="index.html"><img class="mark logo" src="img/fb/logo.png" alt="" width="46" height="46">
+  <a class="brand" href="index.html"><img class="mark logo" src="img/fb/logo-96.webp" alt="" width="46" height="46">
     <span><b class="th">โรงเรียนสาธิต มรภ.เพชรบุรี</b><b class="en">Satit PBRU</b><small class="th">Demonstration School of PBRU</small><small class="en">Demonstration School of Phetchaburi Rajabhat University</small></span></a>
   <nav class="nav" {AL("เมนูหลัก", "Main menu")}>{nav}</nav>
   <a class="btn btn-gold" href="admissions.html">{T("สมัครเรียน", "Apply")}</a>

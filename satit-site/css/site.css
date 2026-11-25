@@ -214,7 +214,8 @@ html[lang="th"] .lang [data-l="th"],html[lang="en"] .lang [data-l="en"]{backgrou
     .rv-s>*:nth-child(4){animation-range:entry 24% entry 100%}
   }
 }
-@keyframes rv{from{opacity:0;transform:translateY(40px) scale(.98)}}
+/* a wipe, not a fade: text keeps full contrast at every moment of the reveal (WCAG 1.4.3 holds mid-animation too) */
+@keyframes rv{from{clip-path:inset(0 0 100% 0);transform:translateY(40px)}to{clip-path:inset(-80px)}}
 
 /* mobile */
 .mnav{display:none}

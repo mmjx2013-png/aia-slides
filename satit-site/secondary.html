@@ -228,7 +228,8 @@ html[lang="th"] .lang [data-l="th"],html[lang="en"] .lang [data-l="en"]{backgrou
     .rv-s>*:nth-child(4){animation-range:entry 24% entry 100%}
   }
 }
-@keyframes rv{from{opacity:0;transform:translateY(40px) scale(.98)}}
+/* a wipe, not a fade: text keeps full contrast at every moment of the reveal (WCAG 1.4.3 holds mid-animation too) */
+@keyframes rv{from{clip-path:inset(0 0 100% 0);transform:translateY(40px)}to{clip-path:inset(-80px)}}
 
 /* mobile */
 .mnav{display:none}
@@ -498,7 +499,7 @@ html[lang="th"] .lang [data-l="th"],html[lang="en"] .lang [data-l="en"]{backgrou
   <a class="hide-s" href="activities.html"><span class="th" lang="th">ภาพกิจกรรม</span><span class="en" lang="en">Photos</span></a>
 </nav>
 <header class="hdr glass">
-  <a class="brand" href="index.html"><img class="mark logo" src="img/fb/logo.png" alt="" width="46" height="46">
+  <a class="brand" href="index.html"><img class="mark logo" src="img/fb/logo-96.webp" alt="" width="46" height="46">
     <span><b class="th">โรงเรียนสาธิต มรภ.เพชรบุรี</b><b class="en">Satit PBRU</b><small class="th">Demonstration School of PBRU</small><small class="en">Demonstration School of Phetchaburi Rajabhat University</small></span></a>
   <nav class="nav" aria-label="เมนูหลัก" data-al-th="เมนูหลัก" data-al-en="Main menu"><a href="index.html"><span class="th" lang="th">หน้าแรก</span><span class="en" lang="en">Home</span></a><a href="about.html"><span class="th" lang="th">เกี่ยวกับโรงเรียน</span><span class="en" lang="en">About</span></a><div class="dd"><a href="kindergarten.html" aria-current="page"><span class="th" lang="th">หลักสูตร</span><span class="en" lang="en">Programmes</span> ▾</a><div class="menu glass"><a href="kindergarten.html"><i></i><span><b><span class="th" lang="th">อนุบาล</span><span class="en" lang="en">Kindergarten</span></b><small><span class="th" lang="th">ปฐมวัย · เรียนรู้ผ่านการเล่น</span><span class="en" lang="en">Early years · learning through play</span></small></span></a><a href="primary.html"><i></i><span><b><span class="th" lang="th">ประถมศึกษา</span><span class="en" lang="en">Primary</span></b><small><span class="th" lang="th">ป.1 – ป.6</span><span class="en" lang="en">Prathom 1–6</span></small></span></a><a href="secondary.html"><i></i><span><b><span class="th" lang="th">มัธยมศึกษา</span><span class="en" lang="en">Secondary</span></b><small><span class="th" lang="th">ม.1 – ม.6 · เน้นวิทย์-คณิต</span><span class="en" lang="en">Mathayom 1–6 · science and maths</span></small></span></a></div></div><a href="admissions.html"><span class="th" lang="th">รับสมัคร</span><span class="en" lang="en">Admissions</span></a><a href="news.html"><span class="th" lang="th">ข่าวสาร</span><span class="en" lang="en">News</span></a><a href="contact.html"><span class="th" lang="th">ติดต่อ</span><span class="en" lang="en">Contact</span></a></nav>
   <a class="btn btn-gold" href="admissions.html"><span class="th" lang="th">สมัครเรียน</span><span class="en" lang="en">Apply</span></a>
@@ -546,6 +547,6 @@ html[lang="th"] .lang [data-l="th"],html[lang="en"] .lang [data-l="en"]{backgrou
   <div class="legal"><span><span class="th" lang="th">แนวคิดออกแบบใหม่ (Concept redesign) โดย</span><span class="en" lang="en">Concept redesign by</span> <b data-credit><span class="th" lang="th">นักเรียน</span><span class="en" lang="en">a student</span></b> · <span class="th" lang="th">ไม่ใช่เว็บไซต์ทางการของโรงเรียน</span><span class="en" lang="en">not the school's official website</span></span>
     <span><span class="th" lang="th">ฟอนต์ Anuphan และ IBM Plex Sans Thai (SIL OFL)</span><span class="en" lang="en">Fonts: Anuphan and IBM Plex Sans Thai (SIL OFL)</span></span></div>
 </footer>
-<script src="js/site.js?v=202611250758"></script>
+<script src="js/site.js?v=202611250805"></script>
 </body>
 </html>
