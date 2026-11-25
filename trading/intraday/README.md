@@ -16,7 +16,7 @@ PAXG is a gold-backed token, about 1:1 with spot XAU; it trades 24/7, gold does 
 | `desk.py` | escalation Sonnet screen -> Opus final (only Opus enters, owner rules in code), caps 6/3, token + p_target log |
 | `brief.py` | compact market context for briefs (1h klines cached, 1 request per 12 h) |
 | `news.py` | Google News RSS headlines, 3 h before the setup |
-| `calendar_guard.py` | ForexFactory week calendar (6 h cache): no entries ±30 min around USD High events, close 5 min before FOMC; fail safe = no entries |
+| `calendar_guard.py` | ForexFactory week calendar (6 h cache): no entries ±30 min around USD High events, close 5 min before any USD High event; fail safe = no entries |
 | `report.py` | `reports/YYYY-MM-DD.md` + `.png` |
 | `test_broker.py` | synthetic checks of fills, stops, gaps, flat window, guards, liquidation |
 

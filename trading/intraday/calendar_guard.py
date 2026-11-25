@@ -3,7 +3,7 @@
 Source: https://nfs.faireconomy.media/ff_calendar_thisweek.json, cached in data/cache/calendar.json,
 refreshed at most every 6 h (polite). Rules (risk.py / paperbroker.py use these):
 - no new entries from 30 min before to 30 min after any USD High-impact event;
-- open positions are closed 5 min before FOMC rate decisions / statements / press conferences.
+- open positions are closed 5 min before ANY USD High-impact event (CPI, NFP, PCE, FOMC, ...).
 If the calendar cannot be loaded, or does not cover the current time, entries are blocked
 (fail safe) and the watcher prints an ERROR line.
 """
@@ -72,13 +72,12 @@ def entry_block(t_ms):
 
 
 def fomc_close(t_ms):
-    """Title of an FOMC event 0-5 min ahead (or up to 30 min past), else None."""
+    """Title of a USD High-impact event 0-5 min ahead (or up to 30 min past), else None."""
     m = events()
     if not m:
         return None
     for t, title, cc, imp in m["events"]:
-        if cc == "USD" and any(w.lower() in title.lower() for w in FOMC_WORDS) and \
-                t - FOMC_CLOSE_MS <= t_ms <= t + WINDOW_MS:
+        if cc == "USD" and imp == "High" and t - FOMC_CLOSE_MS <= t_ms <= t + WINDOW_MS:
             return title
     return None
 
