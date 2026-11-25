@@ -27,7 +27,7 @@ Live state: `data/live/` (`state.json`, `journal.jsonl`, `events.jsonl`, `equity
 ```
 cd aia-slides/trading/intraday
 python3 watcher.py status            # STOPPED -> start it:
-python3 watcher.py run > data/live/watcher.log 2>&1    # Bash run_in_background (stops itself after 1.9 h)
+python3 -u watcher.py run >> data/live/watcher.log 2>&1   # Bash run_in_background WITH timeout 7200000 (default 30 min kills it)
 ```
 Arm Monitor (timeout 1 h): `tail -n0 -F data/live/watcher.log | grep --line-buffered -E "SETUP |ERROR|Traceback"`.
 On restart the watcher first replays the missed bars through the broker (stops, targets, 03:30 flat),
