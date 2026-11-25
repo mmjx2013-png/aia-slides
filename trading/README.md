@@ -71,3 +71,49 @@ Each Thai trading day (~18:10 Bangkok = 11:10 UTC, mid-session for COMEX):
    writes `reports/gold_daily/<date>.md` + chart, and replays the same decisions at 1x-100x.
 Orders fill at the open of the first 1h bar that starts after the run, never at a past price.
 A day counts as profitable only if the 1x paper P&L beats that day's estimated token cost.
+
+## Phase 2 runbook (a new session can follow this cold)
+PAPER ONLY. Never connect a broker, never ask for or store a login or key. Repo root below = `aia-slides`.
+Boss session (for data and questions): `session_01C9ca2KN3JSyFyGevdABYip` (use the send_message tool).
+
+**0. Once per new session (bootstrap):**
+```
+cd aia-slides && git fetch origin claude/paper-trading && git checkout claude/paper-trading
+pip install pandas matplotlib tabulate
+git fetch origin claude/fervent-ramanujan-qp1d26
+git checkout FETCH_HEAD -- trading-data/ && git reset -q trading-data   # long history, not committed here
+mkdir -p trading/data/gold /tmp/mdata && tar xzf trading-data/market-data-2026-11-25.tgz -C /tmp/mdata
+cp -n /tmp/mdata/yahoo-gold/*.json trading/data/gold/                   # 10y daily + 730d 1h cache
+```
+**1. Data (each run, ~18:10 Bangkok):**
+```
+cd aia-slides/trading && python3 fetch_yahoo.py       # ONE attempt per symbol -> ../trading-data/latest/
+```
+- Exit 0: go on. Exit 2 (e.g. 429): send_message the boss `need data` plus the printed `NEED DATA:` line,
+  then wait up to 30 minutes for a reply with a commit sha. Then
+  `git fetch origin claude/fervent-ramanujan-qp1d26 && git checkout FETCH_HEAD -- trading-data/latest && git reset -q trading-data`.
+  No reply in 30 minutes: write one journal line and stop:
+  `echo "$(date -u +%F),-,NO_DATA,0,0,0,no data no trade" >> gold_journal.csv`, then commit (step 5).
+- Then merge: `python3 gold_merge.py ../trading-data/latest`
+**2. Prepare:** `python3 gold_daily.py prepare` (exit 3 = no new closed 1h bar: no trade today; commit and stop).
+It prints the input path `data/desk/gold_live/<run>/input.md`.
+**3. Desk call (one SONNET subagent, isolated: it sees only that file):** Agent tool, model `sonnet`, prompt:
+"PAPER-trading research test. Make exactly one tool call: Read <absolute path of input.md>. Use no other tool, file
+or memory of later events. Then reply with ONLY the JSON object it asks for."
+Save the reply to `data/desk/gold_live/<run>/answer.json`. Note the subagent's `subagent_tokens`.
+(The role prompt inside input.md is `prompts/gold_onecall.md`.)
+**4. Commit the decision:**
+`python3 gold_daily.py commit --pm data/desk/gold_live/<run>/answer.json --sonnet-tokens <subagent_tokens> --orchestrator-tokens <your estimate>`
+It writes `reports/gold_daily/<date>.md` + `.png`, `gold_journal.csv`, `gold_portfolio.json`.
+**5. Commit and push:**
+```
+cd aia-slides && git add trading && git commit -m "Gold paper run <date>
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: <this session's URL>" && git push -u origin claude/paper-trading
+```
+Then send the boss 3 lines: 1x equity vs gold buy & hold, today's decision, P&L vs token cost.
+**Friday, after step 4:** `python3 gold_daily.py review` prints a file path; run ONE OPUS subagent (same isolated
+prompt as step 3, model `opus`) on it; save its JSON to `reports/gold_daily/review-<date>.json`, log its tokens with
+`python3 gold_daily.py commit --opus-tokens <n>` (no --pm: records cost only, keeps the position), commit and push,
+and send the boss the review summary. Rule changes need the boss's OK; do not edit prompts on your own.
