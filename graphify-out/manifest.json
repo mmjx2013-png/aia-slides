@@ -1,0 +1,26 @@
+{
+  "CLAUDE.md": {
+    "mtime": 1795574125.2046423,
+    "seen": 1795574126.8752315,
+    "ast_hash": "96c2c6699a34917c4f7b7662bd1f3a6e",
+    "semantic_hash": ""
+  },
+  "MEMORY.md": {
+    "mtime": 1795574125.2046194,
+    "seen": 1795574126.8752396,
+    "ast_hash": "69da963cf6b3cfdcfe3bbe5ecbe4b3ac",
+    "semantic_hash": ""
+  },
+  "PRESENTATION-STYLES.md": {
+    "mtime": 1795574125.204866,
+    "seen": 1795574126.8752432,
+    "ast_hash": "fec941b0a7ea38a9aa8030a5d2b5c077",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1795574110.063582,
+    "seen": 1795574126.8752453,
+    "ast_hash": "ef46d70c3225b164eae2a2e38d210afa",
+    "semantic_hash": ""
+  }
+}

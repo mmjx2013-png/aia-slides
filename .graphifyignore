@@ -1,0 +1,19 @@
+# media and generated output: skipped to save tokens
+renders/
+previews/
+images/
+deck/
+site/
+audio/
+assets/
+tools/vendor/
+build/
+*.html
+*.webp
+*.png
+*.jpg
+*.mp4
+*.webm
+*.mp3
+*.wav
+*.words.json
