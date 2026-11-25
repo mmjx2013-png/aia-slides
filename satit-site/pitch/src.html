@@ -7,7 +7,7 @@
 <meta name="description" content="Pitch deck: why the Demonstration School of Phetchaburi Rajabhat University should adopt the redesigned website.">
 <link rel="icon" href="img/logo.png" type="image/png">
 <link rel="preload" href="fonts/anuphan-thai-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="deck.css?v=20261125070339">
+<link rel="stylesheet" href="deck.css?v=20261125071226">
 <script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');</script>
 </head>
 <body>
@@ -244,7 +244,17 @@
     if (sc) { if (id !== 'find' || rm) { sc.textContent = id === 'find' ? '7' : '1'; } else { var t1 = performance.now() + 600; (function tk(t) { var p = Math.max(0, Math.min(1, (t - t1) / 6000)); sc.textContent = 1 + Math.round(6 * p); if (p < 1) timers.push(requestAnimationFrame(tk)); })(performance.now()); } }
   }
   var live = document.querySelector('#phB .s-live');
-  function page() { var want = stage.getAttribute('data-s') === 'find' ? '../contact.html' : '../index.html'; if (live && live.getAttribute('data-cur') !== want) { live.setAttribute('data-cur', want); live.src = want; } }
+  function page() { // each slide opens its own page in the phone, even after the presenter has tapped around in it
+    if (!live) return; var want = stage.getAttribute('data-s') === 'find' ? '../contact.html' : '../index.html', cur = live.getAttribute('data-cur');
+    try { cur = live.contentWindow.location.pathname.split('/').pop() === want.slice(3) ? want : 'other'; } catch (err) {}
+    if (cur !== want) { live.setAttribute('data-cur', want); live.src = want; } }
+  // a click inside the live phone moves keyboard focus into the page; send the deck keys (arrows, clicker PageUp/PageDown) back to the deck
+  if (live) live.addEventListener('load', function () {
+    try { live.contentWindow.addEventListener('keydown', function (e) {
+      var k = e.key; if (k !== 'ArrowRight' && k !== 'ArrowLeft' && k !== 'PageDown' && k !== 'PageUp') return;
+      e.preventDefault(); live.blur(); window.focus(); (k === 'ArrowRight' || k === 'PageDown') ? window.__deck.next() : window.__deck.prev();
+    }); } catch (err) {}
+  });
   var last = null; new MutationObserver(function () { var id = stage.getAttribute('data-s'); if (id !== last) { last = id; run(); page(); } }).observe(stage, { attributes: true, attributeFilter: ['data-s'] });
 })();
 </script>
