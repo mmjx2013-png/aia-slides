@@ -20,6 +20,52 @@ LOT = 100
 DIV_TAX = 0.10
 
 
+def rebalance(cash, sh, targets, opens, last_close, lot=LOT, band=0.25):
+    """Move holdings `sh` (dict, changed in place) toward target weights at the open.
+
+    Sells first, then buys as far as cash allows. A stock with no open price
+    today is not traded. Returns (cash, fills); a fill is
+    (ticker, side, shares, price, cost).
+    """
+    fills = []
+    value = cash + sum(n * (opens[t] if opens[t] == opens[t] else last_close[t])
+                       for t, n in sh.items())
+    budget = value * (1 - COST)
+    target = {}
+    for t, w in targets.items():
+        px = opens.get(t, np.nan)
+        if w > 0 and px == px and px > 0:
+            target[t] = int(budget * w / (px * lot)) * lot
+    for t in list(sh):
+        px = opens[t]
+        if px != px:
+            continue
+        tgt = target.get(t, 0)
+        diff = sh[t] - tgt
+        if diff <= 0 or (tgt > 0 and diff < band * tgt):
+            continue
+        v = diff * px
+        cash += v * (1 - COST)
+        fills.append((t, "SELL", diff, px, v * COST))
+        sh[t] -= diff
+        if sh[t] == 0:
+            del sh[t]
+    for t, tgt in target.items():
+        px = opens[t]
+        cur = sh.get(t, 0)
+        diff = tgt - cur
+        if diff <= 0 or (cur > 0 and diff < band * tgt):
+            continue
+        diff = min(diff, int(cash / (px * (1 + COST) * lot)) * lot)
+        if diff <= 0:
+            continue
+        v = diff * px
+        cash -= v * (1 + COST)
+        fills.append((t, "BUY", diff, px, v * COST))
+        sh[t] = cur + diff
+    return cash, fills
+
+
 @dataclass
 class Result:
     name: str
@@ -57,51 +103,11 @@ def simulate(name, decide, P, start, end, capital=100_000.0, dd_stop=None,
 
         # 2) fill yesterday's decision at today's open
         if pending is not None:
-            opens = O.loc[d]
-            value = cash + sum(n * (opens[t] if opens[t] == opens[t] else Cf.at[d, t])
-                               for t, n in sh.items())
-            budget = value * (1 - COST)
-            target = {}
-            for t, w in pending.items():
-                px = opens.get(t, np.nan)
-                if w > 0 and px == px and px > 0:
-                    target[t] = int(budget * w / (px * lot)) * lot
-            # sells first (anything not in target, or above target)
-            for t in list(sh):
-                px = opens[t]
-                if px != px:            # no bar today: cannot trade, keep it
-                    continue
-                tgt = target.get(t, 0)
-                diff = sh[t] - tgt
-                if diff <= 0:
-                    continue
-                if tgt > 0 and diff < band * tgt:
-                    continue
-                v = diff * px
-                cash += v * (1 - COST)
-                res.costs += v * COST
-                res.traded_value += v
-                res.trades.append((d, t, "SELL", diff, px, v * COST))
-                sh[t] -= diff
-                if sh[t] == 0:
-                    del sh[t]
-            # then buys, as far as cash allows
-            for t, tgt in target.items():
-                px = opens[t]
-                cur = sh.get(t, 0)
-                diff = tgt - cur
-                if diff <= 0 or (cur > 0 and diff < band * tgt):
-                    continue
-                afford = int(cash / (px * (1 + COST) * lot)) * lot
-                diff = min(diff, afford)
-                if diff <= 0:
-                    continue
-                v = diff * px
-                cash -= v * (1 + COST)
-                res.costs += v * COST
-                res.traded_value += v
-                res.trades.append((d, t, "BUY", diff, px, v * COST))
-                sh[t] = cur + diff
+            cash, fills = rebalance(cash, sh, pending, O.loc[d], Cf.loc[d], lot, band)
+            for f in fills:
+                res.costs += f[4]
+                res.traded_value += f[2] * f[3]
+                res.trades.append((d, *f))
             pending = None
 
         # 3) mark to market at the close

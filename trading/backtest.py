@@ -50,7 +50,7 @@ def run_period(period, names):
     rows, curves = [], {}
     for b in (index_bh(*period),
               simulate("Equal-weight SET50 stocks B&H (with dividends)",
-                       S.buy_and_hold_equal(P), P, *period)):
+                       S.buy_and_hold_equal(P), P, *period, lot=1)):
         rows.append({"family": "Benchmark", **metrics(b)}); curves[b.name] = b.equity
     for n in names:
         fam, make = VARIANTS[n]

@@ -19,10 +19,16 @@ def url_for(symbol, period1=START, period2=None):
             "&interval=1d&events=div%7Csplit")
 
 
-def fetch(symbol, refresh=False, tries=6, wait=30):
-    """Return the parsed JSON for one symbol, from cache when possible."""
-    path = RAW / f"{symbol.replace('^', '_')}.json"
-    if path.exists() and not refresh:
+def path_for(symbol):
+    return RAW / f"{symbol.replace('^', '_').replace('=', '_')}.json"
+
+
+def fetch(symbol, refresh=False, tries=6, wait=30, max_age=None):
+    """Return the parsed JSON for one symbol, from cache when possible.
+    refresh=True re-downloads unless the cached file is younger than max_age s."""
+    path = path_for(symbol)
+    fresh = path.exists() and max_age and time.time() - path.stat().st_mtime < max_age
+    if path.exists() and (not refresh or fresh):
         return json.loads(path.read_text())
     for i in range(tries):
         req = urllib.request.Request(url_for(symbol), headers={"User-Agent": UA})
@@ -43,9 +49,9 @@ def fetch(symbol, refresh=False, tries=6, wait=30):
 
 if __name__ == "__main__":
     from universe import TICKERS, INDEX
-    syms = [INDEX] + [t + ".BK" for t in TICKERS]
+    syms = [INDEX, "THB=X"] + [t + ".BK" for t in TICKERS]
     for s in syms:
-        cached = (RAW / f"{s.replace('^', '_')}.json").exists()
+        cached = path_for(s).exists()
         d = fetch(s, refresh="--refresh" in sys.argv)
         ok = d and d.get("chart", {}).get("result")
         print(f"{s:12s} {'cached' if cached else 'fetched'} {'OK' if ok else 'MISSING'}", flush=True)
