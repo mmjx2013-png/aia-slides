@@ -12,11 +12,13 @@
 
   /* mobile menu */
   var mnav = document.getElementById('mnav'), open = document.querySelector('.hdr .menu-btn');
+  if (mnav && open) {
   function setMenu(on) { mnav.classList.toggle('open', on); open.setAttribute('aria-expanded', on ? 'true' : 'false'); if (on) mnav.querySelector('a').focus(); else open.focus(); }
   open.addEventListener('click', function () { setMenu(true); });
   mnav.querySelector('.close').addEventListener('click', function () { setMenu(false); });
   mnav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && mnav.classList.contains('open')) setMenu(false); });
+  }
 
   /* numbers count up when they come into view */
   var nums = document.querySelectorAll('[data-count]');
@@ -46,4 +48,21 @@
       });
     });
   }
+})();
+/* news filters: the list reflows with a same-page view transition where supported */
+(function () {
+  var bs = document.querySelectorAll('.filters [data-f]'); if (!bs.length) return;
+  var cards = document.querySelectorAll('.nlist .card');
+  cards.forEach(function (c, i) { c.style.viewTransitionName = 'n' + i; });
+  function apply(f) {
+    bs.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-f') === f ? 'true' : 'false'); });
+    cards.forEach(function (c) { c.hidden = !(f === 'all' || c.getAttribute('data-cat') === f); });
+  }
+  bs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-f');
+      if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(function () { apply(f); });
+      else apply(f);
+    });
+  });
 })();
