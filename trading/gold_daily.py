@@ -193,6 +193,27 @@ def report(s, usd_today):
     print(f"Report: {DAILY / (day + '.md')}")
 
 
+def review(a):
+    """Friday: build the input for one Opus risk review of the week."""
+    s = load_state()
+    day = pd.Timestamp(s["last_run"]).strftime("%Y-%m-%d")
+    reps = sorted(DAILY.glob("20*.md"))[-5:]
+    txt = ["# Role: risk reviewer of a PAPER gold desk (research test).",
+           "Read the week's journal, decisions and daily reports. Check: rule breaks, oversized or",
+           "inconsistent positions, costs vs P&L (including AI token cost), liquidation risk at 3x-100x,",
+           "and whether the desk prompt or rules should change next week. Be blunt; 'no change' is fine.",
+           "Reply with ONLY JSON: {\"risk_flags\": [\"...\"], \"keep_rules\": true|false,",
+           " \"suggested_changes\": [\"<= 25 words each\"], \"summary\": \"<= 60 words\"}", "",
+           "## Decisions", json.dumps(s["decisions"][-7:], indent=0), "",
+           "## Journal", JOURNAL.read_text() if JOURNAL.exists() else "(empty)", ""]
+    for r in reps:
+        txt += [f"## {r.name}", r.read_text()]
+    out = LIVE / f"review-{day}.md"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(txt))
+    print(out)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -200,5 +221,6 @@ if __name__ == "__main__":
     c = sub.add_parser("commit"); c.add_argument("--pm")
     for k in ("--sonnet-tokens", "--opus-tokens", "--orchestrator-tokens"):
         c.add_argument(k, type=int, default=0)
+    sub.add_parser("review")
     a = ap.parse_args()
-    prepare(a) if a.cmd == "prepare" else commit(a)
+    {"prepare": prepare, "commit": commit, "review": review}[a.cmd](a)

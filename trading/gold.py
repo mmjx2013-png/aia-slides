@@ -51,7 +51,8 @@ def daily():
 def hourly():
     h = load("GC_F_1h")
     stub = (h["high"] == h["low"]) & (h["volume"].fillna(0) < 50)
-    return h[~stub]  # drop settlement stubs (flat bar, ~0 volume)
+    h = h[~stub]  # drop settlement stubs (flat bar, ~0 volume)
+    return h[(h.index.minute == 0) & (h.index.second == 0)]  # drop Yahoo's live partial bar
 
 
 # ---------------------------------------------------------------- rule signals

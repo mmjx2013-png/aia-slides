@@ -27,6 +27,34 @@ Asset: COMEX gold futures (GC=F, front month, Yahoo data). Long and short allowe
 5. **Recommendation: do not trade real money with this.** None of the go/no-go
    criteria is met (see below).
 
+## The four caveats, with numbers
+1. **Statistical power.** The AI desk test is 21 weekly decisions over 0.40 years.
+   Its 1x Sharpe ratio is 0.43 with a standard error of about 1.65, so the 95%
+   range is roughly -2.8 to +3.7: it cannot be told apart from zero, from
+   buy-and-hold, or from luck. Showing a true Sharpe of 0.5 with 80% confidence
+   needs about 31 years of results; a Sharpe of 1.0 needs about 8 years.
+   One paper week adds 5 data points.
+2. **Real token use, including orchestration.** The 21 desk calls used 1,421,908
+   tokens (plus 196,539 for cost tests). The orchestrating session (the worker
+   that runs the calls) is extra: each of its ~45 turns re-reads its own long
+   context (~120-170k tokens), roughly 6M more tokens during the test, almost all
+   cache reads. That cost is an estimate (not measurable from inside the session).
+   For the daily run, a short, fresh orchestrating session is much cheaper than a
+   long one.
+3. **Independence check not run.** Pass 2 (a second, independent Opus run over
+   the same dates, to see how much the decisions vary) was skipped on the boss's
+   instruction to stay near budget; it would cost ~1.4M tokens. So we do not know
+   how repeatable these decisions are.
+4. **Token cost as a drag on returns** (daily: one Sonnet desk call ~68k + ~15k
+   orchestration; plus one Opus review per week ~70k; 250 trading days):
+   | Cost assumption | USD per year | 100,000 THB account | 10,000 USD account |
+   |---|---|---|---|
+   | Upper bound (list prices, no caching) | ~141 USD (4,789 THB) | **-4.8%/yr** | **-1.4%/yr** |
+   | Lower bound (90% cache reads) | ~22 USD (760 THB) | -0.8%/yr | -0.2%/yr |
+   The AI desk's annualised 1x return in the test was +5.0%. At 100k THB the
+   upper-bound drag would erase almost all of it. (Prices are assumed list
+   prices; the owner's subscription quota is the real cost and is not in USD.)
+
 ## Leverage and liquidation rules used
 - Position = signal x leverage x equity, reset at every daily decision (constant leverage).
 - Used margin = notional / leverage. **Liquidation when equity <= 50% of used margin**,
@@ -53,12 +81,13 @@ figures are averages, not a salary.
 |---|---|---|
 | (1) AI desk beats buy-and-hold out-of-sample after costs, max DD no worse | **Not proven** | +2.0% vs -12.2% with DD -3% vs -26%, but only 21 decisions in 5 months; one pass (pass 2 not run, see tokens). Too small to count as evidence. The rule yardstick did not beat buy-and-hold in-sample. |
 | (2) AI-trader test not worse than benchmark | Met in this window, weak evidence | same sample-size caveat |
-| (3) Paper week runs without errors, logs P&L after costs and token cost | **Not yet** | the paper week has not started |
+| (3) Paper week runs without errors, logs P&L after costs and token cost | **Not yet** | paper week starts 25 Nov 2026 (18:10 Bangkok run) |
 Result: **NO-GO.** Even if all three were met, the leverage needed for the
 1M USD goal is ruinous by the Monte Carlo numbers.
 
 ## Token use (Phase 1b, gold)
 - 21 weekly decisions, one Opus call each (news note + chart note + decision in one call): 1,421,908 tokens.
+  Each call saw only data up to its own decision date (a separate subagent per date, for that reason).
 - Measurement tests before that: 196,539. Total 1,618,447 (budget ~1.5M).
 - Measured floor: every subagent call costs ~62k tokens even with no tool use (its fixed system prompt).
   So separate news/chart/PM agents (~200k per decision) and the second PM pass (~1.4M more) were not run.
@@ -71,8 +100,7 @@ Result: **NO-GO.** Even if all three were met, the leverage needed for the
 ## Limitations
 - GC=F is a continuous front-month series: roll jumps every ~2 months are in the prices.
 - 1-hour data only from Jul 2024; earlier tests use daily bars.
-- Yahoo's daily index for SET50 came back with a single bar, so the SET50 stock backtest
-  (secondary since the pivot) was not run.
+- Yahoo's ^SET50.BK came back with a single bar; the SET50 section uses the TDEX ETF as a proxy.
 - The AI test window is after the model's knowledge cutoff (Jun 2026), but the
   model may still carry general priors about gold.
 
@@ -94,6 +122,22 @@ Charts: [ai_trader.png](ai_trader.png), [gold_leverage.png](gold_leverage.png), 
 | Gold buy & hold                 | 100x       |  28,995 | +189.9% | +1308.4% | -62.6%  | +390.3% |     1.5  |        1 |     423 |       2,394 | 2026-07-07 01:00 |                142 |
 | Rule: TS-momentum 3m long/short | 1x         |   8,544 | -14.6%  | -32.4%   | -27.8%  | +23.6%  |    -1.33 |       15 |      18 |           0 | no               |                130 |
 | Rule: SMA200 long/short         | 1x         |  10,576 | +5.8%   | +14.9%   | -17.3%  | +23.7%  |     0.51 |        5 |       7 |           0 | no               |                125 |
+
+## Secondary: SET50 stocks, rule strategies only (100,000 THB, 100-share lots, 0.22%/side)
+Index benchmark: **SET50 (TDEX ETF proxy)**, because Yahoo returns only one bar for ^SET50.BK.
+Universe: a 2025 SET50 list from memory (SET's site is blocked here), all 50 load on Yahoo;
+**survivorship bias** (today's members used for 2016-2023) flatters every in-sample number.
+- Chosen in-sample (best Sharpe 0.91): Momentum 6m top 10 with 15% drawdown stop, +159.9% in 2016-2023.
+- **Out-of-sample 2024 to 25 Nov 2026: -9.5%**, vs TDEX proxy +12.5% (price only) and the
+  equal-weight stocks +19.2% (with dividends). **It did not beat buy-and-hold.**
+- Every variant is reported (reports/phase1_in_sample.csv, phase1_out_of_sample.csv). Momentum
+  12m top 10 did well out-of-sample (+40.6%), but it was not the in-sample pick; choosing it now
+  would be hindsight.
+- Mean reversion lost money in both periods: weekly turnover of 25-55x a year paid 15-108k THB in costs.
+- "Equal-weight all 50 stocks" variants are not really buildable with 100,000 THB and
+  100-share lots (one lot of many stocks costs more than its 2,000 THB share), so they held
+  only a few cheap stocks; treat those rows as broken by account size, not as a strategy result.
+- Chart: [equity.png](equity.png).
 
 ## Rules, leverage study and Monte Carlo (full tables)
 

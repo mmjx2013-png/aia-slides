@@ -11,7 +11,7 @@ SOURCE AND ITS LIMITS (read this):
   2016-2023 makes the past look better than an investor could have known,
   because yesterday's losers that fell out of the index are missing.
 """
-INDEX = "^SET50.BK"
+INDEX = "TDEX.BK"  # SET50 (TDEX ETF proxy): Yahoo returns only 1 bar for ^SET50.BK
 
 TICKERS = [
     "ADVANC", "AOT", "AWC", "BANPU", "BBL", "BCP", "BDMS", "BEM", "BH", "BJC",

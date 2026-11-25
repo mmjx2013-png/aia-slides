@@ -42,7 +42,7 @@ def index_bh(start, end, capital=100_000.0):
     """SET50 price index, bought once (one-side cost). Dividends NOT included."""
     s = ic[(ic.index >= start) & (ic.index <= end)]
     eq = capital * (1 - COST) * s / s.iloc[0]
-    return Result("SET50 index B&H (price only)", eq, trades=[None], costs=capital * COST,
+    return Result("SET50 (TDEX ETF proxy) B&H (price only)", eq, trades=[None], costs=capital * COST,
                   traded_value=capital)
 
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # Chart: growth of 100,000 THB; OOS restarts from cash on 2024-01-02 and
     # is chained onto the in-sample end value so the lines are continuous.
-    bm = ["SET50 index B&H (price only)", "Equal-weight SET50 stocks B&H (with dividends)"]
+    bm = ["SET50 (TDEX ETF proxy) B&H (price only)", "Equal-weight SET50 stocks B&H (with dividends)"]
     fig, ax = plt.subplots(figsize=(11, 5.5), dpi=150)
     colors = {best: "#c2410c", bm[0]: "#475569", bm[1]: "#0f766e"}
     for k in [best] + bm:
@@ -109,10 +109,10 @@ if __name__ == "__main__":
     ax.legend(frameon=False, fontsize=9, loc="upper left")
     fig.tight_layout(); fig.savefig(OUT / "equity.png")
 
-    with open(OUT / "_tables.md", "w") as f:
+    with open(OUT / "set50_tables.md", "w") as f:
         f.write(f"Chosen (best in-sample Sharpe): **{best}**\n\n")
         f.write(f"Tickers missing from Yahoo: {missing or 'none'}\n\n")
         f.write(f"Data: {idx.index[0].date()} to {idx.index[-1].date()}\n\n")
         f.write("### In-sample 2016-2023\n\n" + fmt(is_df) + "\n\n")
         f.write(f"### Out-of-sample 2024-01-01 to {idx.index[-1].date()}\n\n" + fmt(oos_df) + "\n")
-    print(open(OUT / "_tables.md").read())
+    print(open(OUT / "set50_tables.md").read())
