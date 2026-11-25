@@ -3,3 +3,5 @@ data/*.log
 __pycache__/
 data/news/
 data/desk/
+data/gold/
+data/*.log

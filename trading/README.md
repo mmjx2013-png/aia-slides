@@ -1,4 +1,12 @@
-# Can an AI-designed strategy beat buy-and-hold on Thai stocks? (paper money only)
+# Can an AI trade profitably? Thai stocks, then gold (paper money only)
+
+**Update, 25 Nov 2026: the owner switched the focus to GOLD with leverage.**
+Results are in [reports/phase1.md](reports/phase1.md). Gold code:
+`gold.py` (data, rules, leverage simulator with 1h margin checks and liquidation),
+`gold_study.py` (rules in/out-of-sample, leverage study, Monte Carlo goal check),
+`gold_desk.py` + `prompts/gold_onecall.md` (the Claude "desk" past test).
+The SET50 stock part below is kept as built but was not run (the index data came back broken).
+
 
 This folder is an honest test. It uses **virtual money only**. Nothing here
 connects to a broker or places a real order, and no results here are real profit.

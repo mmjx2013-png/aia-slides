@@ -97,3 +97,15 @@ def brief(items):
         s = i["snippet"] if i["snippet"] and i["title"][:30] not in i["snippet"] else ""
         out.append(f"{d} {i['title']}" + (f" | {s[:100]}" if s else ""))
     return "\n".join(out)
+
+
+def google(query, after, before, lang="th", n=8):
+    """Generic Google News RSS search with date filters; nothing on/after `before`."""
+    loc = {"th": "&hl=th&gl=TH&ceid=TH:th", "en": "&hl=en-US&gl=US&ceid=US:en"}[lang]
+    q = f"{query} after:{after} before:{before}"
+    url = "https://news.google.com/rss/search?q=" + urllib.parse.quote(q) + loc
+    live = before > time.strftime("%Y-%m-%d")
+    items = [i for i in _parse(_get(url, max_age=3600 if live else None))
+             if i["when"] is None or i["when"].strftime("%Y-%m-%d") < before]
+    items.sort(key=lambda i: i["when"].timestamp() if i["when"] else 0, reverse=True)
+    return items[:n]
