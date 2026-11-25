@@ -3,11 +3,28 @@
   var doc = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* language: TH / EN, remembered */
+  function labels() { // screen-reader labels follow the chosen language too
+    var k = doc.lang === 'en' ? 'data-al-en' : 'data-al-th';
+    document.querySelectorAll('[data-al-en]').forEach(function (e) { e.setAttribute('aria-label', e.getAttribute(k)); });
+  }
+  labels();
   document.querySelectorAll('.lang [data-l]').forEach(function (b) {
+    b.setAttribute('aria-pressed', b.getAttribute('data-l') === doc.lang ? 'true' : 'false');
     b.addEventListener('click', function () {
       doc.lang = b.getAttribute('data-l');
       try { localStorage.setItem('lang', doc.lang); } catch (e) {}
+      document.querySelectorAll('.lang [data-l]').forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      labels();
     });
+  });
+
+  /* map: Google's map loads only when the visitor asks for it */
+  var mb = document.querySelector('[data-map]');
+  if (mb) mb.addEventListener('click', function () {
+    var box = document.getElementById('map'), f = document.createElement('iframe');
+    f.className = 'bigmap'; f.id = 'map'; f.referrerPolicy = 'strict-origin-when-cross-origin';
+    f.title = mb.getAttribute(doc.lang === 'en' ? 'data-title-en' : 'data-title-th');
+    f.src = mb.getAttribute('data-map'); box.parentNode.replaceChild(f, box); f.focus();
   });
 
   /* mobile menu */
@@ -36,6 +53,9 @@
   /* how we learn: the chosen card opens its picture with a circle that grows from the card */
   var learn = document.querySelector('.learn');
   if (learn) {
+    // its pictures are lazy (they cost nothing on first load); start fetching them as the section comes near
+    var wake = function () { learn.querySelectorAll('img[data-wake]').forEach(function (i) { i.loading = 'eager'; }); };
+    if ('IntersectionObserver' in window) { var wio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { wake(); wio.disconnect(); } }, { rootMargin: '900px 0px' }); wio.observe(learn); } else wake();
     var layers = learn.querySelectorAll('.stage .ph[data-k]'), cards = learn.querySelectorAll('.lc');
     cards.forEach(function (c) {
       c.addEventListener('click', function () {

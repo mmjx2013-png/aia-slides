@@ -3,12 +3,29 @@
    python3 build.py   ->  writes *.html next to this file.
 Rules kept here: every button stays inside this site; external links appear only as cited sources
 ("ที่มาของข้อมูล") and for the real login system. Facts not confirmed are marked pending, never invented."""
-import pathlib, html, time
+import pathlib, html, time, hashlib, base64, json, re
 ROOT = pathlib.Path(__file__).parent
 VER = time.strftime('%Y%m%d%H%M')  # cache-buster: browsers fetch fresh CSS/JS after every build
 
-def T(th, en):  # one string in both languages
-    return f'<span class="th">{th}</span><span class="en">{en}</span>'
+def T(th, en):  # one string in both languages. TRUSTED markup written in this file only; data from files goes through IMG()/E()
+    return f'<span class="th" lang="th">{th}</span><span class="en" lang="en">{en}</span>'
+
+E = html.escape  # escape any text that comes from data files (news, activities posted later)
+
+def AL(th, en):  # an aria-label that follows the page language (js/site.js swaps it)
+    return f'aria-label="{E(th)}" data-al-th="{E(th)}" data-al-en="{E(en)}"'
+
+IMG_OK = re.compile(r'^img/[\w./-]+\.(webp|jpg|jpeg|png)$')
+def IMG(tag):  # photos.json holds <img> tags: rebuild each one from checked attributes so no markup or script can ride along
+    a = dict(re.findall(r'\s([a-z-]+)="([^"]*)"', tag))
+    if not tag.startswith('<img ') or not IMG_OK.match(a.get('src', '')): raise ValueError('bad photo entry: ' + tag[:80])
+    out = [f'src="{a["src"]}"', f'alt="{E(html.unescape(a.get("alt", "")))}"', 'lang="th"']
+    for k in ('width', 'height'):
+        if re.fullmatch(r'\d{1,5}', a.get(k, '')): out.append(f'{k}="{a[k]}"')
+    if a.get('loading') in ('lazy', 'eager'): out.append(f'loading="{a["loading"]}"')
+    if a.get('decoding') in ('async', 'sync', 'auto'): out.append(f'decoding="{a["decoding"]}"')
+    if re.fullmatch(r'object-position:\s*[\d.]+%\s+[\d.]+%;?', a.get('style', '')): out.append(f'style="{a["style"]}"')
+    return '<img ' + ' '.join(out) + '>'
 
 def PH(th, en, style=''):  # placeholder picture until the school's photos arrive
     return f'<div class="ph"{f" style={chr(34)}{style}{chr(34)}" if style else ""}>{T("ภาพ: " + th, "Photo: " + en)}</div>'
@@ -31,7 +48,7 @@ SRC = {
 }
 def SOURCES(*keys):
     items = ''.join(f'<li>{T(SRC[k][0], SRC[k][1])}' + (f' · <a href="{SRC[k][2]}" target="_blank" rel="noopener">{T("ดูต้นฉบับ", "source")}</a>' if SRC[k][2] else '') + '</li>' for k in keys)
-    return f'<section class="wrap sources" aria-label="ที่มาของข้อมูล"><details><summary>{T("ที่มาของข้อมูล", "Sources")} ({len(keys)})</summary><ol>{items}</ol></details></section>'
+    return f'<section class="wrap sources" {AL("ที่มาของข้อมูล", "Sources")}><details><summary>{T("ที่มาของข้อมูล", "Sources")} ({len(keys)})</summary><ol>{items}</ol></details></section>'
 
 NAV = [('index.html', 'หน้าแรก', 'Home'), ('about.html', 'เกี่ยวกับโรงเรียน', 'About'), ('levels', 'หลักสูตร', 'Programmes'),
        ('admissions.html', 'รับสมัคร', 'Admissions'), ('news.html', 'ข่าวสาร', 'News'), ('contact.html', 'ติดต่อ', 'Contact')]
@@ -50,21 +67,22 @@ def header(cur):
     nav = ''.join(link(*n) for n in NAV)
     mob = ''.join(f'<a href="{h}">{T(a, b)}</a>' for h, a, b in [n for n in NAV if n[0] != 'levels'][:2] + [(l[0], l[1], l[2]) for l in LEVELS] + [n for n in NAV if n[0] != 'levels'][2:])
     return f'''<a class="sr" href="#main">{T("ข้ามไปเนื้อหา", "Skip to content")}</a>
-<div class="util">
-  <div class="lang" role="group" aria-label="Language"><button type="button" data-l="th">TH</button><button type="button" data-l="en">EN</button></div>
-  <a href="services.html">{T("ระบบทะเบียน", "Student registry")}</a>
+<nav class="util" {AL("ลิงก์ด่วน", "Quick links")}>
+  <span class="proto">{T("เว็บต้นแบบ · ยังไม่ใช่เว็บทางการ", "Prototype · not the official site")}</span>
+  <div class="lang" role="group" {AL("ภาษา", "Language")}><button type="button" data-l="th">TH</button><button type="button" data-l="en">EN</button></div>
+  <a class="hide-s" href="services.html">{T("ระบบทะเบียน", "Student registry")}</a>
   <a class="hide-s" href="calendar.html">{T("ปฏิทินการศึกษา", "Calendar")}</a>
   <a class="hide-s" href="activities.html">{T("ภาพกิจกรรม", "Photos")}</a>
-</div>
+</nav>
 <header class="hdr glass">
-  <a class="brand" href="index.html" aria-label="หน้าแรก"><img class="mark logo" src="img/fb/logo.png" alt="" width="46" height="46">
+  <a class="brand" href="index.html"><img class="mark logo" src="img/fb/logo.png" alt="" width="46" height="46">
     <span><b class="th">โรงเรียนสาธิต มรภ.เพชรบุรี</b><b class="en">Satit PBRU</b><small class="th">Demonstration School of PBRU</small><small class="en">Demonstration School of Phetchaburi Rajabhat University</small></span></a>
-  <nav class="nav" aria-label="เมนูหลัก">{nav}</nav>
+  <nav class="nav" {AL("เมนูหลัก", "Main menu")}>{nav}</nav>
   <a class="btn btn-gold" href="admissions.html">{T("สมัครเรียน", "Apply")}</a>
-  <button class="menu-btn" type="button" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="mnav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <button class="menu-btn" type="button" {AL("เปิดเมนู", "Open menu")} aria-expanded="false" aria-controls="mnav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
-<nav class="mnav" id="mnav" aria-label="เมนู">
-  <button class="menu-btn close" type="button" aria-label="ปิดเมนู"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<nav class="mnav" id="mnav" {AL("เมนู", "Menu")}>
+  <button class="menu-btn close" type="button" {AL("ปิดเมนู", "Close menu")}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   {mob}
 </nav>'''
 
@@ -79,25 +97,36 @@ FOOTER = f'''<footer class="ftr" id="contact">
       <li><a href="activities.html">{T("ภาพกิจกรรม", "Photos")}</a></li><li><a href="calendar.html">{T("ปฏิทิน", "Calendar")}</a></li>
       <li><a href="downloads.html">{T("ดาวน์โหลด", "Downloads")}</a></li><li><a href="services.html">{T("ระบบทะเบียน", "Student registry")}</a></li><li><a href="contact.html">{T("ติดต่อ", "Contact")}</a></li></ul></div>
   </div>
-  <div class="legal"><span>{T("แนวคิดออกแบบใหม่ (Concept redesign) โดย", "Concept redesign by")} <b data-credit>[ชื่อผู้ออกแบบ]</b> · {T("ไม่ใช่เว็บไซต์ทางการของโรงเรียน", "not the school's official website")}</span>
+  <div class="legal"><span>{T("แนวคิดออกแบบใหม่ (Concept redesign) โดย", "Concept redesign by")} <b data-credit>{T("นักเรียน", "a student")}</b> · {T("ไม่ใช่เว็บไซต์ทางการของโรงเรียน", "not the school's official website")}</span>
     <span>{T("ฟอนต์ Anuphan และ IBM Plex Sans Thai (SIL OFL)", "Fonts: Anuphan and IBM Plex Sans Thai (SIL OFL)")}</span></div>
 </footer>'''
+
+LANG_JS = ("try{var l=localStorage.getItem('lang');if(l==='en'||l==='th')document.documentElement.lang=l;}catch(e){}"
+           # someone else's page framing ours (clickjacking): hide and break out. Our own deck may frame us (same origin).
+           "try{if(top!==self&&top.location.origin!==location.origin)throw 0;}catch(e){document.documentElement.style.display='none';try{top.location=location.href;}catch(f){}}")
+def sha(js): return "'sha256-" + base64.b64encode(hashlib.sha256(js.encode()).digest()).decode() + "'"
+CSP = ("default-src 'none'; script-src 'self' " + sha(LANG_JS) + "; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; "
+       "frame-src https://www.google.com; connect-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; "
+       "require-trusted-types-for 'script'; trusted-types 'none'; upgrade-insecure-requests")
+CSS = (ROOT / 'css/site.css').read_text().replace('url(../', 'url(')  # inlined: one less round trip before the first paint
 
 def page(fname, title_th, title_en, main):
     doc = f'''<!doctype html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{html.escape(title_th)} · โรงเรียนสาธิต มรภ.เพชรบุรี</title>
 <meta name="description" content="{html.escape(title_en)}: concept redesign of the Demonstration School of Phetchaburi Rajabhat University website. Not the official website.">
 <meta name="theme-color" content="#F6F4EE">
-<link rel="preload" href="fonts/anuphan-thai-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-{'<link rel="preload" as="image" href="img/fb/p079-800.webp" imagesrcset="img/fb/p079-800.webp 800w, img/fb/p079.webp 1400w" imagesizes="(max-width:860px) 100vw, 72vw" fetchpriority="high">' if fname == "index.html" else ""}
+<link rel="preload" href="fonts/anuphan-thai-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+{'<link rel="preload" as="image" href="img/fb/p079-760.webp" imagesrcset="img/fb/p079-760.webp 760w, img/fb/p079-1000.webp 1000w, img/fb/p079.webp 1400w" imagesizes="(max-width:860px) 100vw, 72vw" fetchpriority="high">' if fname == "index.html" else ""}
 <link rel="icon" href="img/fb/logo.png" type="image/png">
 <link rel="apple-touch-icon" href="img/fb/logo.png">
-<link rel="stylesheet" href="css/site.css?v={VER}">
-<script>try{{var l=localStorage.getItem('lang');if(l==='en'||l==='th')document.documentElement.lang=l;}}catch(e){{}}</script>
+<style>{CSS}</style>
+<script>{LANG_JS}</script>
 </head>
 <body>
 {header(fname)}
@@ -110,15 +139,17 @@ def page(fname, title_th, title_en, main):
 </html>
 '''
     # swap each placeholder for the school's photograph mapped to that position (src/photos.json)
-    import json, re
-    it = iter(json.loads((ROOT / 'src/photos.json').read_text()).get(fname, []))
+    it = iter(IMG(t) for t in json.loads((ROOT / 'src/photos.json').read_text()).get(fname, []))
     def swap(mt):
         img = next(it, None)
         if not img: return mt.group(0)
         if mt.group(2):  # revealed only when a card is tapped: load it up front, at low priority, so it is there when the circle opens
-            img = img.replace(' loading="lazy"', ' fetchpriority="low"')
+            img = img.replace(' loading="lazy"', ' loading="lazy" data-wake')
         return f'<div class="{mt.group(1)} has-img"{mt.group(2) or ""}>{img}</div>'
     doc = re.sub(r'<div class="(ph(?: base)?)"( data-k="\d")?(?: style="[^"]*")?>.*?</div>', swap, doc)
+    # last line of defence: no inline event handlers, no javascript: URLs, no scripts other than ours
+    bad = re.findall(r'\son[a-z]+\s*=|javascript:|<script(?![^>]*src="js/site\.js)(?!>try\{var l=)', doc, re.I)
+    if bad: raise SystemExit(f'{fname}: unsafe markup {bad[:3]}')
     (ROOT / fname).write_text(doc, encoding='utf-8')
 
 def phero(crumb, eyebrow, h1a, h1b, lede, frame, vt='', ctas=''):
@@ -167,8 +198,8 @@ QUICK = [('admissions.html', 'pen', 'สมัครเรียน', 'Apply', '
          ('activities.html', 'pic', 'ภาพกิจกรรม', 'Photos', 'บรรยากาศในโรงเรียน', 'Life at school'),
          ('contact.html', 'phone', 'ติดต่อโรงเรียน', 'Contact us', '032-708623', '+66 32 708 623')]
 
-home = f'''<section class="hero" id="top" aria-label="แนะนำโรงเรียน">
-  <div class="photo"><img src="img/fb/p079.webp" srcset="img/fb/p079-800.webp 800w, img/fb/p079.webp 1400w" sizes="(max-width:860px) 100vw, 72vw" alt="นักเรียนโรงเรียนสาธิตทำกิจกรรมริมสระน้ำในสวนของโรงเรียน" fetchpriority="high" width="1400" height="933"></div>
+home = f'''<section class="hero" id="top" {AL("แนะนำโรงเรียน", "About the school")}>
+  <div class="photo"><img src="img/fb/p079.webp" srcset="img/fb/p079-760.webp 760w, img/fb/p079-1000.webp 1000w, img/fb/p079.webp 1400w" sizes="(max-width:860px) 100vw, 72vw" alt="นักเรียนโรงเรียนสาธิตทำกิจกรรมริมสระน้ำในสวนของโรงเรียน" fetchpriority="high" width="1400" height="933"></div>
   <div class="copy">
     <div class="eyebrow">{T("โรงเรียนสาธิต มหาวิทยาลัยราชภัฏเพชรบุรี", "The Demonstration School of Phetchaburi Rajabhat University")}</div>
     <h1><span class="ln">{T("ความอยากรู้", "Curiosity")}</span><span class="ln"><span>{T('เริ่มต้น<span class="gold">ที่นี่</span>', 'starts <span class="gold">here</span>')}</span></span></h1>
@@ -177,9 +208,9 @@ home = f'''<section class="hero" id="top" aria-label="แนะนำโรง�
   </div>
   <p class="credit">{T("ภาพ: เพจ Facebook โรงเรียน", "Photo: the school's Facebook page")}</p>
 </section>
-<nav class="quick" aria-label="ทางลัด">{''.join(f'<a class="q glass{" q-tel" if h == "contact.html" else ""}" href="{h}"><span class="ic">{svg(i)}</span><b>{T(a, b)}<small class="th">{c}</small><small class="en">{d}</small></b></a>' for h, i, a, b, c, d in QUICK)}</nav>
+<nav class="quick" {AL("ทางลัด", "Shortcuts")}>{''.join(f'<a class="q glass{" q-tel" if h == "contact.html" else ""}" href="{h}"><span class="ic">{svg(i)}</span><b>{T(a, b)}<small class="th">{c}</small><small class="en">{d}</small></b></a>' for h, i, a, b, c, d in QUICK)}</nav>
 
-<section class="sec" aria-label="ข้อมูลสำคัญ"><div class="wrap"><h2 class="sr">ข้อมูลสำคัญ</h2><div class="bento rv-s">
+<section class="sec" {AL("ข้อมูลสำคัญ", "Key facts")}><div class="wrap"><h2 class="sr">{T("ข้อมูลสำคัญ", "Key facts")}</h2><div class="bento rv-s">
   <a class="tile t-green" href="admissions.html" style="text-decoration:none"><div><div class="eyebrow">{T("เปิดรับสมัครแล้ว", "Admissions open")}</div><h3 style="margin-top:12px">{T("ป.1 ปีการศึกษา 2570", "Grade 1, academic year 2027")}</h3><p style="margin-top:8px">{T("สมัครได้ถึง 30 พ.ย. 2569", "Apply by 30 November 2026")}</p></div>
     <div class="levels">{T("ค่าสมัคร 100 บาท", "Fee: 100 baht")}{T("สมัครผ่าน QR", "Apply by QR")}</div><span class="ring"></span></a>
   <a class="tile t-gold" href="kindergarten.html" style="text-decoration:none"><div class="eyebrow">{T("ระดับชั้น", "Levels")}</div><div><h3>{T("อนุบาล – ม.6", "K – M.6")}</h3><p>{T("เรียนต่อเนื่องในโรงเรียนเดียว", "One school, from the first day to graduation")}</p></div><span class="ring"></span></a>
@@ -214,8 +245,8 @@ home = f'''<section class="hero" id="top" aria-label="แนะนำโรง�
   {head2(T("หลักสูตร", "Programmes"), f'<span id="h-levels">{T("ระดับชั้นที่เปิดสอน", "Levels we teach")}</span>')}
   <div class="levels-row rv-s">
     <a class="lv vt-k" href="kindergarten.html">{PH("เด็กอนุบาล", "kindergarten")}<div class="txt"><span class="grade">{T("ปฐมวัย", "Early years")}</span><h3>{T("อนุบาล", "Kindergarten")}</h3><p class="more-t">{T("เรียนรู้ผ่านการเล่นและประสบการณ์ตรง พัฒนาครบ 4 ด้าน", "Learning through play and real experience, growing in four areas.")}</p></div></a>
-    <a class="lv vt-p" href="primary.html">{PH("นักเรียนประถม", "primary pupils", "background:linear-gradient(135deg,#e9dcb0,#c9a74e)")}<div class="txt"><span class="grade">ป.1 – ป.6</span><h3>{T("ประถมศึกษา", "Primary")}</h3><p class="more-t">{T("วางพื้นฐานให้แน่น ทั้งภาษา คณิตศาสตร์ และวิทยาศาสตร์", "Strong foundations in language, maths and science.")}</p></div></a>
-    <a class="lv vt-s" href="secondary.html">{PH("นักเรียนมัธยม", "secondary students", "background:linear-gradient(135deg,#bcd0c3,#5f8a72)")}<div class="txt"><span class="grade">ม.1 – ม.6</span><h3>{T("มัธยมศึกษา", "Secondary")}</h3><p class="more-t">{T("มุ่งเน้นความเป็นเลิศด้านวิทยาศาสตร์และคณิตศาสตร์", "A focus on excellence in science and mathematics.")}</p></div></a>
+    <a class="lv vt-p" href="primary.html">{PH("นักเรียนประถม", "primary pupils", "background:linear-gradient(135deg,#e9dcb0,#c9a74e)")}<div class="txt"><span class="grade">{T("ป.1 – ป.6", "P1–P6")}</span><h3>{T("ประถมศึกษา", "Primary")}</h3><p class="more-t">{T("วางพื้นฐานให้แน่น ทั้งภาษา คณิตศาสตร์ และวิทยาศาสตร์", "Strong foundations in language, maths and science.")}</p></div></a>
+    <a class="lv vt-s" href="secondary.html">{PH("นักเรียนมัธยม", "secondary students", "background:linear-gradient(135deg,#bcd0c3,#5f8a72)")}<div class="txt"><span class="grade">{T("ม.1 – ม.6", "M1–M6")}</span><h3>{T("มัธยมศึกษา", "Secondary")}</h3><p class="more-t">{T("มุ่งเน้นความเป็นเลิศด้านวิทยาศาสตร์และคณิตศาสตร์", "A focus on excellence in science and mathematics.")}</p></div></a>
   </div></div></section>
 
 <section class="wrap" aria-labelledby="h-visit"><div class="visit rv"><span class="ring"></span>
@@ -283,7 +314,7 @@ kg = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "Pr
 {SOURCES('ec', 'notice', 'fb')}'''
 page('kindergarten.html', 'อนุบาล', 'Kindergarten', kg)
 
-pri = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "Programmes")}</a> / {T("ประถมศึกษา", "Primary")}', "ป.1 – ป.6", T("ประถมศึกษา", "Primary"), T('<span style="color:var(--goldInk)">พื้นฐานที่แน่น</span>', '<span style="color:var(--goldInk)">strong foundations</span>'),
+pri = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "Programmes")}</a> / {T("ประถมศึกษา", "Primary")}', T("ป.1 – ป.6", "Prathom 1–6"), T("ประถมศึกษา", "Primary"), T('<span style="color:var(--goldInk)">พื้นฐานที่แน่น</span>', '<span style="color:var(--goldInk)">strong foundations</span>'),
    T("หกปีที่วางรากฐานการเรียนรู้ ทั้งการอ่าน การเขียน การคิดคำนวณ และวิทยาศาสตร์ พร้อมกิจกรรมที่ฝึกให้คิดและลงมือทำ", "Six years that lay the foundations of reading, writing, numbers and science, with activities that build thinking and doing."),
    PH("นักเรียนประถมในห้องเรียน", "primary pupils in class", "background:linear-gradient(135deg,#e9dcb0,#c9a74e)"), 'vt-p')}
 <section class="sec"><div class="wrap">{head2(T("สิ่งที่เรียน", "What pupils learn"), T("8 กลุ่มสาระการเรียนรู้", "Eight learning areas"))}{areas([1, 2])}
@@ -296,7 +327,7 @@ pri = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "P
 {SOURCES('core', 'notice', 'about', 'act')}'''
 page('primary.html', 'ประถมศึกษา', 'Primary', pri)
 
-sec = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "Programmes")}</a> / {T("มัธยมศึกษา", "Secondary")}', "ม.1 – ม.6", T("มัธยมศึกษา", "Secondary"), T('<span style="color:var(--goldInk)">เก่งวิทย์ คิดเป็น</span>', '<span style="color:var(--goldInk)">science-minded</span>'),
+sec = f'''{phero(f'<a href="kindergarten.html">{T("หลักสูตร", "Programmes")}</a> / {T("มัธยมศึกษา", "Secondary")}', T("ม.1 – ม.6", "Mathayom 1–6"), T("มัธยมศึกษา", "Secondary"), T('<span style="color:var(--goldInk)">เก่งวิทย์ คิดเป็น</span>', '<span style="color:var(--goldInk)">science-minded</span>'),
    T("มัธยมศึกษาตอนต้นและตอนปลาย ที่มุ่งเน้นความเป็นเลิศด้านวิทยาศาสตร์และคณิตศาสตร์ ฝึกคิด ทดลอง และสร้างนวัตกรรม", "Lower and upper secondary with a focus on excellence in science and mathematics: thinking, experimenting and building new things."),
    PH("นักเรียนมัธยมในห้องแล็บ", "secondary students in the lab", "background:linear-gradient(135deg,#bcd0c3,#5f8a72)"), 'vt-s')}
 <section class="sec"><div class="wrap">{head2(T("จุดเน้น", "Our focus"), T("วิทยาศาสตร์และคณิตศาสตร์", "Science and mathematics"))}
@@ -317,7 +348,7 @@ page('secondary.html', 'มัธยมศึกษา', 'Secondary', sec)
 adm = f'''{phero(T("รับสมัคร", "Admissions"), T("รับสมัครนักเรียน", "Admissions"), T("ก้าวแรก", "The first step"), T('<span style="color:var(--goldInk)">สู่สาธิต</span>', '<span style="color:var(--goldInk)">to Satit</span>'),
    T("เปิดรับสมัครนักเรียนชั้นประถมศึกษาปีที่ 1 ปีการศึกษา 2570 สมัครได้ถึงวันที่ 30 พฤศจิกายน 2569", "Grade 1 places for academic year 2027 are open. Apply by 30 November 2026."),
    PH("วันรับสมัคร", "admissions day"), '', f'<div class="ctas" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><a class="btn btn-green" href="#poster">{T("ดูโปสเตอร์และ QR สมัคร", "See the poster and QR code")}{ARROW}</a><a class="btn btn-ghost" href="contact.html">{T("สอบถามโรงเรียน", "Ask the school")}</a></div>')}
-<section class="sec"><div class="wrap"><div class="bento rv-s">
+<section class="sec"><div class="wrap"><h2 class="sr">{T("สรุปการรับสมัคร", "Admissions at a glance")}</h2><div class="bento rv-s">
   <div class="tile t-green"><div class="eyebrow">{T("ปีการศึกษา 2570", "Academic year 2027")}</div><div><h3>{T("ประถมศึกษาปีที่ 1", "Grade 1")}</h3><p style="margin-top:6px">Tāhūrangi Program</p></div><span class="ring"></span></div>
   <div class="tile t-gold"><div class="eyebrow">{T("ปิดรับสมัคร", "Closing date")}</div><div><h3>{T("30 พ.ย. 2569", "30 Nov 2026")}</h3><p>{T("ค่าสมัคร 100 บาท", "Application fee: 100 baht")}</p></div><span class="ring"></span></div>
   <div class="tile t-white"><div class="eyebrow">{T("สอบถาม", "Questions")}</div><div><h3 style="font-size:clamp(24px,2.4vw,32px)"><a href="tel:032708649" style="text-decoration:none">032-708649</a></h3><p style="color:var(--ink2)">{T("เบอร์ในโปสเตอร์รับสมัคร", "Number on the admissions poster")}</p></div></div>
@@ -349,10 +380,10 @@ page('admissions.html', 'รับสมัคร', 'Admissions', adm)
 # ---------------------------------------------------------------- news + articles
 newsp = f'''{phero(T("ข่าวสาร", "News"), T("ข่าวสารและประกาศ", "News &amp; notices"), T("ข่าวจาก", "News from"), T('<span style="color:var(--goldInk)">สาธิต</span>', '<span style="color:var(--goldInk)">Satit</span>'),
    T("ประกาศ กิจกรรม และผลงานของนักเรียน", "Notices, activities and student work."), PH("กิจกรรมโรงเรียน", "school life"))}
-<section class="sec"><div class="wrap"><div class="filters" role="group" aria-label="หมวดข่าว">
+<section class="sec"><div class="wrap"><div class="filters" role="group" {AL("หมวดข่าว", "News categories")}>
   <button type="button" data-f="all" aria-pressed="true">{T("ทั้งหมด", "All")}</button><button type="button" data-f="admissions" aria-pressed="false">{T("รับสมัคร", "Admissions")}</button>
   <button type="button" data-f="activities" aria-pressed="false">{T("กิจกรรม", "Activities")}</button><button type="button" data-f="work" aria-pressed="false">{T("ผลงานนักเรียน", "Student work")}</button></div>
-  <div class="nlist">{''.join(ncard(n) for n in NEWS)}</div></div></section>
+  <h2 class="sr">{T("รายการข่าว", "All news")}</h2><div class="nlist">{''.join(ncard(n) for n in NEWS)}</div></div></section>
 {SOURCES('notice', 'act', 'fb')}'''
 page('news.html', 'ข่าวสาร', 'News', newsp)
 
@@ -383,7 +414,7 @@ page('activities.html', 'ภาพกิจกรรม', 'Photos', acts)
 
 cal = f'''{phero(T("ปฏิทิน", "Calendar"), T("ปฏิทินการศึกษา", "Calendar"), T("ปฏิทิน", "The school"), T('<span style="color:var(--goldInk)">การศึกษา</span>', '<span style="color:var(--goldInk)">calendar</span>'),
    T("วันสำคัญและกิจกรรมตลอดปีการศึกษา", "Key dates and events through the year."), PH("กิจกรรมตลอดปี", "the school year"))}
-<section class="sec"><div class="wrap"><div class="cal rv" style="max-width:820px"><h3>{T("ภาคเรียนที่ 2", "Term 2")} <span class="sample">{T("ตัวอย่าง รอปฏิทินจริงจากโรงเรียน", "sample until the school's calendar arrives")}</span></h3><ol>
+<section class="sec"><div class="wrap"><div class="cal rv" style="max-width:820px"><h2 class="calh">{T("ภาคเรียนที่ 2", "Term 2")} <span class="sample">{T("ตัวอย่าง รอปฏิทินจริงจากโรงเรียน", "sample until the school's calendar arrives")}</span></h2><ol>
   <li><span class="d">{T("ธ.ค.", "Dec")}</span><span>{T("ประชุมผู้ปกครองภาคเรียนที่ 2", "Parents' meeting, term 2")}</span></li>
   <li><span class="d">{T("ม.ค.", "Jan")}</span><span>{T("กิจกรรมวันเด็กแห่งชาติ", "National Children's Day")}</span></li>
   <li><span class="d">{T("ก.พ.", "Feb")}</span><span>{T("นิทรรศการโครงงานวิทยาศาสตร์", "Science project fair")}</span></li>
@@ -392,7 +423,7 @@ page('calendar.html', 'ปฏิทินการศึกษา', 'Calendar', 
 
 dl = f'''{phero(T("ดาวน์โหลด", "Downloads"), T("เอกสารดาวน์โหลด", "Downloads"), T("เอกสาร", "Forms and"), T('<span style="color:var(--goldInk)">และแบบฟอร์ม</span>', '<span style="color:var(--goldInk)">documents</span>'),
    T("แบบฟอร์มสำหรับนักเรียนและผู้ปกครอง", "Forms for pupils and parents."), PH("เอกสาร", "documents"))}
-<section class="sec"><div class="wrap"><div class="tiles t3 rv-s">
+<section class="sec"><div class="wrap"><h2 class="sr">{T("แบบฟอร์ม", "Forms")}</h2><div class="tiles t3 rv-s">
   <div class="tl"><div class="ic">PDF</div><h3>{T("ใบสมัครเข้าเรียน", "Application form")}</h3><p>{PENDING}</p></div>
   <div class="tl"><div class="ic">PDF</div><h3>{T("แบบฟอร์มลา", "Leave form")}</h3><p>{PENDING}</p></div>
   <div class="tl"><div class="ic">PDF</div><h3>{T("คำร้องขอเอกสาร", "Document request")}</h3><p>{PENDING}</p></div></div></div></section>'''
@@ -401,7 +432,7 @@ page('downloads.html', 'เอกสารดาวน์โหลด', 'Downloa
 svc = f'''{phero(T("ระบบทะเบียน", "Registry"), T("บริการออนไลน์", "Online services"), T("ระบบทะเบียน", "Student"), T('<span style="color:var(--goldInk)">นักเรียน</span>', '<span style="color:var(--goldInk)">registry</span>'),
    T("ระบบสำหรับนักเรียนและผู้ปกครอง ใช้รหัสที่ได้รับจากโรงเรียนในการเข้าสู่ระบบ", "The system for pupils and parents. Sign in with the details the school gave you."), PH("นักเรียนใช้คอมพิวเตอร์", "a pupil at a computer"), '',
    f'<div class="ctas" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><a class="btn btn-green" href="https://satit.pbru.ac.th/registrarsch/" target="_blank" rel="noopener">{T("เข้าสู่ระบบทะเบียน", "Sign in to the registry")}{ARROW}</a><a class="btn btn-ghost" href="contact.html">{T("ลืมรหัส? ติดต่อโรงเรียน", "Forgot your login? Contact us")}</a></div>')}
-<section class="sec"><div class="wrap"><div class="tiles t3 rv-s">
+<section class="sec"><div class="wrap"><h2 class="sr">{T("วิธีเข้าใช้", "How to sign in")}</h2><div class="tiles t3 rv-s">
   <div class="tl"><div class="ic">1</div><h3>{T("เตรียมรหัส", "Have your login ready")}</h3><p>{T("ใช้ชื่อผู้ใช้และรหัสผ่านที่ได้รับจากโรงเรียน", "Use the username and password from the school.")}</p></div>
   <div class="tl"><div class="ic">2</div><h3>{T("เข้าสู่ระบบ", "Sign in")}</h3><p>{T("ระบบนี้เป็นของโรงเรียน เปิดในหน้าต่างใหม่", "This is the school's own system; it opens in a new tab.")}</p></div>
   <div class="tl"><div class="ic">3</div><h3>{T("มีปัญหา?", "Trouble?")}</h3><p>{T("โทร 032-708623", "Call +66 32 708 623")}</p></div></div></div></section>'''
@@ -410,12 +441,13 @@ page('services.html', 'ระบบทะเบียน', 'Student registry', s
 MAPQ = '%E0%B9%82%E0%B8%A3%E0%B8%87%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%E0%B8%99%E0%B8%AA%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%95+%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5'
 con = f'''{phero(T("ติดต่อ", "Contact"), T("ติดต่อโรงเรียน", "Contact"), T("แวะมา", "Come and"), T('<span style="color:var(--goldInk)">คุยกับเรา</span>', '<span style="color:var(--goldInk)">talk to us</span>'),
    T("ยินดีต้อนรับผู้ปกครองทุกท่าน โทรหรืออีเมลเพื่อนัดเยี่ยมชมโรงเรียนได้", "Parents are always welcome. Call or email to arrange a visit."), HERO_IMG)}
-<section class="sec"><div class="wrap"><div class="ccards rv-s">
+<section class="sec"><div class="wrap"><h2 class="sr">{T("ช่องทางติดต่อ", "Ways to reach us")}</h2><div class="ccards rv-s">
   <a class="ccard" href="tel:032708623"><span class="ic">{svg('phone')}</span><h3>{T("โทรศัพท์", "Phone")}</h3><p>032-708623</p></a>
   <a class="ccard" href="mailto:satitpbru@mail.pbru.ac.th"><span class="ic">{svg('mail')}</span><h3>{T("อีเมล", "Email")}</h3><p>satitpbru@mail.pbru.ac.th</p></a>
   <a class="ccard" href="#map"><span class="ic">{svg('pin')}</span><h3>{T("ที่อยู่", "Address")}</h3><p>{T("38 หมู่ 8 ถ.หาดเจ้าสำราญ ต.นาวุ้ง อ.เมือง จ.เพชรบุรี 76000", "38 Moo 8, Hat Chao Samran Rd, Na Wung, Phetchaburi 76000")}</p></a>
   <a class="ccard" href="activities.html"><span class="ic">{svg('pic')}</span><h3>{T("ภาพกิจกรรม", "Photos")}</h3><p>{T("บรรยากาศในโรงเรียน", "Life at school")}</p></a></div>
-  <iframe class="bigmap rv" id="map" title="แผนที่โรงเรียน" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q={MAPQ}&amp;output=embed"></iframe></div></section>
+  <div class="bigmap mapf rv" id="map"><div><span class="ic">{svg('pin')}</span><p>{T("แผนที่ของ Google จะโหลดเมื่อกดปุ่มนี้เท่านั้น เพื่อไม่ส่งข้อมูลของผู้เข้าชมให้ Google โดยไม่จำเป็น", "Google's map loads only when you press the button, so nothing about your visit goes to Google before that.")}</p>
+    <button type="button" class="btn btn-green" data-map="https://www.google.com/maps?q={MAPQ}&amp;output=embed" data-title-th="แผนที่โรงเรียน" data-title-en="Map of the school">{T("แสดงแผนที่", "Show the map")}</button></div></div></div></section>
 {SOURCES('contact', 'photo')}'''
 page('contact.html', 'ติดต่อ', 'Contact', con)
 print('built', len(list(ROOT.glob('*.html'))), 'pages')
