@@ -1,1 +1,7 @@
 {"kind": "FILL", "t": "2026-11-25 18:30:00", "event": "20261125-1830-breakout", "side": "SELL", "qty": 8.536, "px": 3514.09, "stop": 3518.96, "target": 3504.35, "lev": 3.0, "risk_pct": 0.476, "lev_capped": true, "why": "take every setup"}
+{"kind": "EXIT", "t": "2026-11-25 18:43:00", "event": "20261125-1830-breakout", "reason": "target", "px": 3504.7, "pnl": 80.19, "equity": 10080.19, "minutes": 13}
+{"kind": "FILL", "t": "2026-11-25 18:45:00", "event": "20261125-1845-breakout", "side": "SELL", "qty": 8.626, "px": 3505.37, "stop": 3511.2, "target": 3493.71, "lev": 3.0, "risk_pct": 0.559, "lev_capped": true, "why": "take every setup"}
+{"kind": "EXIT", "t": "2026-11-25 18:51:00", "event": "20261125-1845-breakout", "reason": "stop", "px": 3511.55, "pnl": -53.29, "equity": 10026.9, "minutes": 6}
+{"kind": "FILL", "t": "2026-11-25 19:00:00", "event": "20261125-1900-breakout", "side": "SELL", "qty": 8.627, "px": 3486.58, "stop": 3495.54, "target": 3468.66, "lev": 3.0, "risk_pct": 0.831, "lev_capped": true, "why": "take every setup"}
+{"kind": "EXIT", "t": "2026-11-25 19:04:00", "event": "20261125-1900-breakout", "reason": "stop", "px": 3495.89, "pnl": -80.32, "equity": 9946.58, "minutes": 4}
+{"kind": "REJECT", "t": "2026-11-25 20:35:00", "event": "20261125-2035-breakout", "reason": "calendar: USD High 'Core PCE Price Index m/m' at 13:30 UTC \u00b130 min"}
