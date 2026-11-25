@@ -16,6 +16,11 @@ import risk
 from common import BKK, HERE, jlines
 
 
+def uf_stats(d, day):
+    j = [x for x in jlines(Path(d) / "unfiltered" / "journal.jsonl") if x["t"][:10] == day and x["kind"] == "EXIT"]
+    return f"; unfiltered today: {len(j)} trades, {sum(x['pnl'] > 0 for x in j)} wins, {sum(x['pnl'] for x in j):+.2f} USD"
+
+
 def main(day, d, out):
     d, out = Path(d), Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -24,8 +29,16 @@ def main(day, d, out):
     eq.index = pd.to_datetime(eq["t"], unit="ms", utc=True).dt.tz_convert(BKK)
     eq = eq[eq.index.strftime("%Y-%m-%d") <= day]
     bh = risk.CAPITAL * eq["px"] / st["start_px"]
+    uf = d / "unfiltered" / "equity.csv"
+    un = None
+    if uf.exists():
+        un = pd.read_csv(uf)
+        un.index = pd.to_datetime(un["t"], unit="ms", utc=True).dt.tz_convert(BKK)
+        un = un[un.index.strftime("%Y-%m-%d") <= day]["equity"]
     fig, ax = plt.subplots(figsize=(7, 3), dpi=110)
     ax.plot(eq.index, eq["equity"], label="paper desk (live book, <=3x)", lw=1.4)
+    if un is not None:
+        ax.plot(un.index, un, label="unfiltered: take every setup", lw=1.0, ls="--")
     ax.plot(eq.index, bh, label="PAXG buy & hold, 1x", lw=1.0, alpha=.8)
     ax.set_ylabel("USD"); ax.legend(frameon=False, fontsize=8); ax.grid(alpha=.3)
     ax.set_title(f"Intraday gold paper desk, to {day} (Bangkok)", fontsize=9)
@@ -51,6 +64,9 @@ def main(day, d, out):
           f"PAXG buy & hold 1x: {bh.iloc[-1]:,.2f} ({bh.iloc[-1]/risk.CAPITAL-1:+.2%})",
           f"- Today: {(day_eq['equity'].iloc[-1]/day_eq['equity'].iloc[0]-1) if len(day_eq) else 0:+.2%}; "
           f"halted today: {'yes' if st.get('halted') == day else 'no'}",
+          (f"- Unfiltered book (takes every setup, no AI): **{un.iloc[-1]:,.2f} USD** ({un.iloc[-1]/risk.CAPITAL-1:+.2%}); "
+           f"AI filter adds {(last['equity']-un.iloc[-1])/risk.CAPITAL:+.2%} of capital"
+           + uf_stats(d, day) if un is not None else "- Unfiltered book: none yet"),
           "- Shadow books, same decisions: " + ", ".join(
               f"{L}x {s['eq']:,.0f}" + (f" (LIQUIDATED {s['dead']})" if s["dead"] else "")
               for L, s in st["shadows"].items()), "",

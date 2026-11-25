@@ -27,6 +27,13 @@ def in_flat_window(t_ms):
     return FLAT_FROM <= (b.hour, b.minute) < OPEN_FROM
 
 
+def is_weekend(t_ms):
+    """Gold (COMEX) is shut Fri 17:00 New York -> Sun 18:00 New York, i.e. about
+    Sat 04:00 -> Mon 05:00 Bangkok. PAXG keeps trading, but we do not."""
+    b = bkk(t_ms)
+    return (b.weekday() == 5 and b.hour >= 4) or b.weekday() == 6 or (b.weekday() == 0 and b.hour < 5)
+
+
 def bkk_day(t_ms):
     return bkk(t_ms).strftime("%Y-%m-%d")
 
@@ -54,6 +61,8 @@ def entry_gate(state, t_ms):
         return False, "position already open"
     if state.get("halted") == bkk_day(t_ms):
         return False, "daily loss limit hit: halted for the Bangkok day"
+    if is_weekend(t_ms):
+        return False, "weekend: no trading Sat/Sun Bangkok"
     if in_flat_window(t_ms):
         return False, "outside entry hours (flat 03:30-14:00 Bangkok)"
     rng, atr = state.get("last_range"), state.get("last_atr1")

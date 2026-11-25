@@ -11,11 +11,14 @@ PAXG is a gold-backed token, about 1:1 with spot XAU; it trades 24/7, gold does 
 |---|---|
 | `common.py` | fetch, 14-day 1m cache (`data/cache/`, not committed), indicators on 1m/5m/15m |
 | `watcher.py` | poll every 60 s, run the paper broker on every closed bar, detect setups, print `SETUP ...` |
-| `risk.py` | hard limits: 1% risk, ATR stop + target, 3% daily loss halt, 3x max, vol guard, flat 03:30 BKK |
+| `risk.py` | hard limits: 1% risk, ATR stop + target, 3% daily loss halt, 3x max, vol guard, flat 03:30 BKK, no weekend (Sat 04:00-Mon 05:00 BKK) |
 | `paperbroker.py` | fills at next 1m open +0.35 USD/oz (half spread 0.25 + slippage 0.10) each side; stop wins a same-bar tie; 1x/10x/30x shadow books with liquidation |
 | `desk.py` | escalation Haiku -> Sonnet -> Opus, daily caps 8/4/1, token log |
 | `report.py` | `reports/YYYY-MM-DD.md` + `.png` |
 | `test_broker.py` | synthetic checks of fills, stops, gaps, flat window, guards, liquidation |
+
+The watcher also runs `data/live/unfiltered/`, a paper book that takes EVERY setup with default risk.
+The daily report compares it with the AI-filtered book: does the filter add expectancy after costs?
 
 Live state: `data/live/` (`state.json`, `journal.jsonl`, `events.jsonl`, `equity.csv`, `budget/`, `briefs/`).
 

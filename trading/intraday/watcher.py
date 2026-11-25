@@ -82,14 +82,19 @@ def make_event(m1, m5, m15, t, setups):
                 vol_guard=bool(b1["rng"] > 4 * b1["atr"]))
 
 
-def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None):
-    """Advance broker and detector over bars df.index[idx] (all closed). Returns last_setup."""
+def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None, unfiltered=None):
+    """Advance broker(s) and detector over bars df.index[idx] (all closed). Returns last_setup.
+    `unfiltered`: a second paper book that takes EVERY setup with default risk (the baseline
+    the AI filter is measured against)."""
     m1, m5, m15 = frames(df)
     for t in idx:
         b = m1.loc[t]
-        broker.on_bar(dict(t=int(b["t"]), o=b["o"], h=b["h"], l=b["l"], c=b["c"],
-                           atr1=None if b["atr"] != b["atr"] else float(b["atr"]), rng=float(b["rng"])))
-        if not emit or risk.in_flat_window(int(b["t"]) + 60_000):
+        bd = dict(t=int(b["t"]), o=b["o"], h=b["h"], l=b["l"], c=b["c"],
+                  atr1=None if b["atr"] != b["atr"] else float(b["atr"]), rng=float(b["rng"]))
+        broker.on_bar(bd)
+        if unfiltered:
+            unfiltered.on_bar(bd)
+        if not emit or risk.in_flat_window(int(b["t"]) + 60_000) or risk.is_weekend(int(b["t"]) + 60_000):
             continue
         setups = detect(m1, m5, m15, t)
         if not setups or (last_setup is not None and t - last_setup < THROTTLE):
@@ -100,7 +105,11 @@ def step(df, broker, live_dir, idx, emit=True, auto=False, last_setup=None):
         print(f"SETUP {ev['id']} {ev['dir']} px={ev['px']} {ev['why']}", flush=True)
         if auto:
             write_order(live_dir, ev, dict(dir=ev["dir"], why="auto replay"), created_ms=ev["close_ms"])
+        if unfiltered:
+            write_order(unfiltered.d, ev, dict(dir=ev["dir"], why="take every setup"), created_ms=ev["close_ms"])
     broker.save()
+    if unfiltered:
+        unfiltered.save()
     return last_setup
 
 
@@ -112,6 +121,7 @@ def run(max_hours):
     pidf.write_text(str(os.getpid()))
     try:
         broker = Broker(LIVE)
+        unf = Broker(LIVE / "unfiltered")
         df = load_cache()
         df = update_cache(df)
         evs = jlines(LIVE / "events.jsonl")
@@ -120,8 +130,8 @@ def run(max_hours):
         todo = df.index[df["t"] > done] if done else df.index[-1:]
         fresh = pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=3)
         catch = [t for t in todo if t < fresh]
-        last_setup = step(df, broker, LIVE, catch, emit=False, last_setup=last_setup)
-        last_setup = step(df, broker, LIVE, [t for t in todo if t >= fresh], last_setup=last_setup)
+        last_setup = step(df, broker, LIVE, catch, emit=False, last_setup=last_setup, unfiltered=unf)
+        last_setup = step(df, broker, LIVE, [t for t in todo if t >= fresh], last_setup=last_setup, unfiltered=unf)
         print(f"watcher up pid={os.getpid()} bars={len(df)} caught_up={len(catch)} "
               f"equity={broker.mtm(df['c'].iloc[-1]):.2f}", flush=True)
         stop_at = time.time() + max_hours * 3600
@@ -136,7 +146,7 @@ def run(max_hours):
                     df = update_cache(df)
                     new = df[df["t"] > broker.s["last_t"]]
                 df = merge(df, new).iloc[-3000:]
-                last_setup = step(df, broker, LIVE, list(new.index), last_setup=last_setup)
+                last_setup = step(df, broker, LIVE, list(new.index), last_setup=last_setup, unfiltered=unf)
                 if new.index[-1].minute % 15 == 0:
                     save_cache(merge(load_cache(), df))
             except Exception as e:
