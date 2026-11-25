@@ -55,9 +55,11 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - Source in satit-site/ on branch claude/fervent-ramanujan-qp1d26; live at https://mmjx2013-png.github.io/aia-slides/satit/
   - pbru.ac.th blocks cloud IPs and Facebook needs a login: get content and photos from the owner, or via their Mac (Remote Control).
   - Never invent school facts: mark them pending.
+  - EDIT satit-site/build.py and satit-site/src/ (photos.json, about-values.html), then run `python3 build.py`. Never hand-edit the generated *.html: the next build overwrites it. 42 school photos (from the school's Facebook page, used with the school's permission) are in satit-site/img/fb/.
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-25: Satit site has 15 pages with real school photos and logo (fetched by the Mac chat), deployed at gh-pages b87d534.
 - 2026-11-25: Satit PBRU homepage v1 deployed to /satit/ (placeholders where photos and facts are pending).
 - 2026-11-25: skill type1-deck added (.claude/skills/type1-deck, on main and the kimono branch).
 - 2026-11-25: owner reviewed the kimono film: boxy, too static, buggy; said not to fix it. Lessons are recorded under Presentations.
