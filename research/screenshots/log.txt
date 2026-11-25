@@ -1,0 +1,16 @@
+Captured 2026-11-25 ~13:10 ICT (UTC+7) with Playwright 1.65.1 driving Google Chrome (headless).
+Desktop context: 1440x900, deviceScaleFactor 1. Mobile context: 390x844, deviceScaleFactor 2, isMobile, iPhone Safari user agent.
+Full-page captures after scrolling the page once to trigger lazy images.
+
+old/home-mobile.png               390x6899 CSS px
+old/about-mobile.png              390x12098 CSS px  (satit-about-2)
+old/contact-mobile.png            390x3105 CSS px   (satit-contact)
+old/guardian-and-other-mobile.png 390x3034 CSS px   (satit-guardian-and-other)
+old/act-dev-student-mobile.png    390x13744 CSS px  (satit-act-dev-student)
+old/mobile-menu-open-390x844.jpg  in-app browser, 390x844, menu opened (text clipped at left edge)
+old/BLOCKED-desktop-headless-1440x900.png  what the old site returned to headless Chrome at 1440x900 for all 5 pages ("ACCESS RESTRICTED")
+new/home-desktop.png              1440x4437 CSS px
+new/home-mobile.png               390x3976 CSS px
+
+Old-site desktop full-page captures are MISSING: the site's firewall blocks headless Chrome.
+They were not forced through. Take them by hand in a normal browser (see summary.md).

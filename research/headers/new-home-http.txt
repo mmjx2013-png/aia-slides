@@ -1,0 +1,19 @@
+HTTP/1.1 301 Moved Permanently
+Connection: keep-alive
+Content-Length: 162
+Server: GitHub.com
+Content-Type: text/html
+Location: https://mmjx2013-png.github.io/aia-slides/satit/
+X-GitHub-Request-Id: 3D14:3766DA:1B1079:1C3D55:6B067BF1
+x-github-edge-region: southeastasia
+Accept-Ranges: bytes
+Date: Wed, 25 Nov 2026 06:13:19 GMT
+Via: 1.1 varnish
+Age: 141
+X-Served-By: cache-bkk2280021-BKK
+X-Cache: HIT
+X-Cache-Hits: 1
+X-Timer: S1795587199.433630,VS0,VE0
+Vary: Accept-Encoding
+X-Fastly-Request-ID: b9f79ab668815847aede17d134d76a716523214c
+

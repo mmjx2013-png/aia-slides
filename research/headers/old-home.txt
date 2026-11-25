@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Date: Wed, 25 Nov 2026 06:13:16 GMT
+Server: Apache/2.4.52 (FreeBSD) OpenSSL/1.1.1a-freebsd PHP/7.3.33
+X-Powered-By: PHP/7.3.33
+Set-Cookie: __wpdm_client=<redacted>; path=/; secure; HttpOnly
+Set-Cookie: vsp0cmj7=<redacted>; expires=Mon, 30-Nov-2026 06:13:17 GMT; Max-Age=432000; path=/; secure; HttpOnly
+Set-Cookie: vcwgezk0=<redacted>; expires=Mon, 30-Nov-2026 06:13:17 GMT; Max-Age=432000; path=/; secure; HttpOnly
+Link: <https://www.pbru.ac.th/pbru/wp-json/>; rel="https://api.w.org/"
+Link: <https://www.pbru.ac.th/pbru/wp-json/wp/v2/pages/10807>; rel="alternate"; type="application/json"
+Link: <https://www.pbru.ac.th/pbru/?p=10807>; rel=shortlink
+Content-Type: text/html; charset=UTF-8
+Set-Cookie: cookiesession1=<redacted>;Expires=Thu, 25 Nov 2027 06:13:19 GMT;Path=/;HttpOnly
+
