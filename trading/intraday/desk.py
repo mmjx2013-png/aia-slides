@@ -1,13 +1,13 @@
 """Escalation desk for intraday SETUP events. PAPER ONLY.
 
   python3 desk.py brief <event_id|last>
-      -> 'HAIKU <brief path>'  or  'SKIP <reason>' (no tokens spent)
-  python3 desk.py answer <event_id> <haiku|sonnet|opus> '<json reply>' <tokens>
-      -> 'SONNET <path>' | 'OPUS <path>' | 'ORDER <summary>' | 'DONE <reason>'
+      -> 'SONNET <brief path>'  or  'SKIP <reason>' (no tokens spent)
+  python3 desk.py answer <event_id> <sonnet|opus> '<json reply>' <tokens>
+      -> 'OPUS <path>' | 'ORDER <summary>' | 'DONE <reason>'
   python3 desk.py caps        today's calls and tokens
 
-Daily caps (Bangkok day): 8 Haiku, 6 Sonnet, 3 Opus. After a cap: skip and log.
-Haiku screens, Sonnet screens again, and ONLY Opus can enter, and only if p_target >= 0.65,
+Daily caps (Bangkok day): 6 Sonnet, 3 Opus. After a cap: skip and log.
+Sonnet screens (pass/skip), and ONLY Opus can enter, and only if p_target >= 0.65,
 reward:risk after costs >= 1.5, trend agrees (or an argued mean-reversion case) and news is clear.
 The code re-checks every one of these and logs Opus's p_target on every answer.
 Events older than 10 minutes are skipped (the market has moved on).
@@ -24,8 +24,9 @@ from common import BKK, HERE, bkk, jappend, jdump, jlines, load_cache, resample
 from paperbroker import write_order
 from watcher import LIVE
 from news import headlines
+from brief import context
 
-CAPS = {"haiku": 8, "sonnet": 6, "opus": 3}
+CAPS = {"sonnet": 6, "opus": 3}
 P_MIN, RR_MIN = 0.65, 1.5
 MAX_AGE_MS = 10 * 60_000
 
@@ -36,7 +37,7 @@ def today():
 
 def budget():
     f = LIVE / "budget" / f"{today()}.json"
-    b = json.loads(f.read_text()) if f.exists() else {"calls": {k: 0 for k in CAPS}, "tokens": {k: 0 for k in CAPS}}
+    b = json.loads(f.read_text()) if f.exists() else {"calls": {}, "tokens": {}}
     return f, b
 
 
@@ -55,7 +56,7 @@ def state():
 def write_brief(ev, stage, extra=""):
     df = load_cache()
     df = df[df["t"] < ev["close_ms"]]                      # nothing after the setup bar
-    m5 = resample(df.iloc[-600:], 5).iloc[-24:]
+    m5 = resample(df.iloc[-600:], 5).iloc[-12:]
     rows = "\n".join(f"{bkk(t).strftime('%H:%M')} {r.o:.2f} {r.h:.2f} {r.l:.2f} {r.c:.2f} {r.v:.1f}"
                      for t, r in m5.iterrows())
     s = state()
@@ -63,8 +64,10 @@ def write_brief(ev, stage, extra=""):
     txt = f"""# PAPER intraday desk, setup {ev['id']}
 Setup: {ev['setup']} ({ev['dir']}) at {ev['t_bkk']} Bangkok, price {ev['px']}. {ev['why']}. Also firing: {ev['also'] or 'none'}
 Indicators: ATR14 1m {ev['atr1']}, 5m {ev['atr5']}, 15m {ev['atr15']}; 15m RSI {ev['rsi15']}, 15m z20 {ev['z15']}
-Last 24 x 5m bars (Bangkok time, open high low close volume-PAXG):
+Last 12 x 5m bars (Bangkok time, open high low close volume-PAXG):
 {rows}
+{context(ev['close_ms'])}
+
 Book: equity {s['equity']:.2f} USD, open position: {'none' if not s.get('pos') else 'yes'}.
 Risk engine (hard, in code): stop = {lo}-{hi} x ATR14(5m) = {lo*ev['atr5']:.2f}-{hi*ev['atr5']:.2f} USD; target = 1-4 x stop;
 risk per trade <= 1% of equity; notional <= 3x equity; fill at next 1m open; flat by 03:30 Bangkok.
@@ -78,7 +81,7 @@ risk per trade <= 1% of equity; notional <= 3x equity; fill at next 1m open; fla
 
 def gate(ev, stage):
     f, b = budget()
-    if b["calls"][stage] >= CAPS[stage]:
+    if b["calls"].get(stage, 0) >= CAPS[stage]:
         return f"{stage} cap {CAPS[stage]}/day reached"
     if time.time() * 1000 - ev["close_ms"] > MAX_AGE_MS:
         return "event older than 10 minutes"
@@ -91,9 +94,9 @@ def issue(ev, stage, extra=""):
     if why:
         jappend(LIVE / "journal.jsonl", dict(kind="SKIP", t=str(pd.Timestamp.now(tz=BKK))[:19], event=ev["id"],
                                              stage=stage, reason=why))
-        return f"SKIP {why}" if stage == "haiku" else f"DONE skipped before {stage}: {why}"
+        return f"SKIP {why}" if stage == "sonnet" else f"DONE skipped before {stage}: {why}"
     f, b = budget()
-    b["calls"][stage] += 1
+    b["calls"][stage] = b["calls"].get(stage, 0) + 1
     jdump(f, b)
     return f"{stage.upper()} {write_brief(ev, stage, extra)}"
 
@@ -129,12 +132,10 @@ def answer(eid, stage, reply, tokens):
     ev = event(eid)
     dec = parse(reply)
     f, b = budget()
-    b["tokens"][stage] += int(tokens)
+    b["tokens"][stage] = b["tokens"].get(stage, 0) + int(tokens)
     jdump(f, b)
     jappend(LIVE / "journal.jsonl", dict(kind="DECISION", t=str(pd.Timestamp.now(tz=BKK))[:19], event=ev["id"],
                                          stage=stage, tokens=int(tokens), answer=dec))
-    if stage == "haiku":
-        return issue(ev, "sonnet", f"Triage note: {dec.get('why', '')}") if dec.get("look") else "DONE triage said no"
     if stage == "sonnet":
         if dec.get("action") not in ("pass", "enter"):
             return f"DONE sonnet skipped: {dec.get('why', '')}"
@@ -156,7 +157,7 @@ def answer(eid, stage, reply, tokens):
 if __name__ == "__main__":
     a = sys.argv[1:]
     if a[0] == "brief":
-        print(issue(event(a[1]), "haiku"))
+        print(issue(event(a[1]), "sonnet"))
     elif a[0] == "answer":
         print(answer(a[1], a[2], a[3], a[4]))
     elif a[0] == "caps":

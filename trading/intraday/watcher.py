@@ -139,6 +139,11 @@ def run(max_hours):
               f"equity={broker.mtm(df['c'].iloc[-1]):.2f}", flush=True)
         ok, msg = calendar_guard.refresh()
         print(("calendar " if ok else "ERROR ") + msg, flush=True)
+        try:
+            import brief
+            brief.refresh_h1()
+        except Exception as e:
+            print(f"ERROR 1h klines: {type(e).__name__}: {e}", flush=True)
         stop_at = time.time() + max_hours * 3600
         while time.time() < stop_at:
             time.sleep(max(1.0, 62 - time.time() % 60))    # ~2 s after each minute closes
