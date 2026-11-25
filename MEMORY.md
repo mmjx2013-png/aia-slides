@@ -26,6 +26,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Owner feedback on the finished kimono deck (25 Nov), to apply next time:
   - Big opaque text boxes over the photo look ugly and hide the object. Put text on the image with a soft scrim, or beside the object.
   - Wants much more animation on every slide (drawn lines, counting numbers, moving diagrams, parallax), not mostly static panels.
+  - Auto-advance / film: never change slide the moment the voice stops. Hold the slide after the narration and the last animation have finished.
   - It shipped with visible bugs (overlapping text). Do a QA pass that screenshots every beat of every slide before calling it done.
 
 ## Tools that work
