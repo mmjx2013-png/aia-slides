@@ -132,7 +132,7 @@ def main(root, out):
         lines += [f"PAXG buy and hold since the AI book started: {bh:+.2f}%. Shadow books (same AI decisions, fixed notional): {', '.join(sh)}.", ""]
     from follower import SPECS, CAPITAL as F_CAP
     lines += ["## The owner's real 70 USD account, mirroring the AI trades (code only)",
-              "| Book | Trades | Wins | Equity | Return | Max drawdown | Blown up / stopped out |", "|---|---|---|---|---|---|---|"]
+              "| Book | Trades | Wins | Trading | Locked | Total | Return | Max drawdown | Blown up / stopped out |", "|---|---|---|---|---|---|---|---|---|"]
     for n in (*SPECS, "real70_follow_2100"):
         fs = root / n / "state.json"
         if not fs.exists():
@@ -140,15 +140,18 @@ def main(root, out):
         x, fj = json.loads(fs.read_text()), jlines(root / n / "journal.jsonl")
         ex = [e for e in fj if e["kind"] == "EXIT"]
         dead = next((f"{e['t'][5:16]} {e.get('reason', e['kind'])}" for e in fj if e["kind"] in ("STOP_OUT", "DEAD")), "no")
-        eq = x["equity"] + 0.0
-        lines.append(f"| {n} | {len(ex)} | {sum(e['pnl'] > 0 for e in ex)} | {eq:.2f} | {100 * (eq / F_CAP - 1):+.1f}% | {x['maxdd']:.1f}% | {dead} |")
+        eq, lk = x["equity"] + 0.0, x.get("locked", 0.0)
+        lines.append(f"| {n} | {len(ex)} | {sum(e['pnl'] > 0 for e in ex)} | {eq:.2f} | {lk:.2f} | {eq + lk:.2f} | {100 * ((eq + lk) / F_CAP - 1):+.1f}% | {x['maxdd']:.1f}% | {dead} |")
     ag = read_eq(root / "aggr30")
     if ag is not None and len(ag):
         wk = ag["equity"].groupby(ag.index.to_period("W-SUN")).agg(["first", "last"])
         lines += ["", "aggr30 weekly return vs the +30%/week target: " + "; ".join(
             f"week of {str(p.start_time.date())}: {100 * (r['last'] / r['first'] - 1):+.1f}% (target +30%)" if r["first"] > 0 else
             f"week of {str(p.start_time.date())}: dead" for p, r in wk.iterrows())]
-    lines += ["aggr30: 20% risk per trade, max 10x, main-book costs, stop-out at 50% margin level, dead stays dead. "
+    lines += [f"Withdrawal policy (real70_paxg, real70_follow_2100, aggr30; at the 21:02 run, from cash only): milestones once each "
+              f"(2x start -> the 70 USD stake; 10k / 100k / 1M THB -> 30% / 40% / 50%; 1M USD -> 70%), then 25% of gains above the "
+              f"high-water mark. Locked money never trades again. Rate fixed at {34.0:.1f} THB/USD.",
+              "aggr30: 20% risk per trade, max 10x, main-book costs, stop-out at 50% margin level, dead stays dead. "
               "PAXG spot: 2% risk, max 1x, 0.10% fee per side. XAU CFD: always 1 oz (0.01 lot), 0.30/oz spread per side, "
               "1:100 margin, stop-out at 50% margin level; a stop of S USD loses about S USD, i.e. S/70 of the account.", ""]
     dec = [x for x in j["ai"] if x["kind"] == "DECISION"]

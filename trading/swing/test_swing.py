@@ -257,6 +257,23 @@ check("daily: AI short -> STAY CASH", dd.daily(T0 + 3 * 86400_000, 4000.0, dict(
 dd.daily(T0 + 4 * 86400_000, 4000.0, dict(dir=1, stop=3950.0))
 check("daily: AI flat -> SELL ALL", dd.daily(T0 + 5 * 86400_000, 4001.0, None).startswith("REAL70: SELL ALL"))
 
+# 17 withdrawal policy
+from follower import withdraw
+dw = Daily2100(tempfile.mkdtemp())
+dw.s["equity"] = 100.0
+check("skim 25% above the high-water mark", abs(withdraw(dw, T0) - 7.5) < 1e-9 and dw.s["hwm"] == 92.5 and dw.s["locked"] == 7.5)
+dw.s["equity"] = 150.0
+got = withdraw(dw, T0)
+check("2x milestone: the 70 stake, then skim on the rest", abs(got - (70 + 0)) < 1e-9 and dw.s["equity"] == 80.0)
+dw.s["equity"] = 160.0
+check("milestone fires only once", abs(withdraw(dw, T0) - 0.25 * (160 - 92.5)) < 1e-9)
+dw.s["equity"] = 400.0
+withdraw(dw, T0)
+check("10,000 THB milestone takes 30%", "10,000 THB: withdraw 30%" in dw.s["milestones"])
+dw.s["pos"] = dict(dir=1, qty=0.01, entry=4000, stop=3900, t=T0)
+dw.s["equity"] = 999.0
+check("no withdrawal while a position is open", withdraw(dw, T0) == 0.0)
+
 # 15 confidence sizing
 check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])
 check("kelly: p_cal 0.40, R 2 -> f 0.10, risk 1.25% (eighth)", abs(R.kelly_risk(0.40, 2)[0] - 0.0125) < 1e-9)

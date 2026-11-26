@@ -174,3 +174,44 @@ class Daily2100:
                  instruction=line, equity=round(self.mtm(px), 2))
         self.save()
         return line + f"; follower book equity {self.mtm(px):.2f} USD (start 70)"
+
+
+# ---------------------------------------------------------------- owner's profit-withdrawal policy
+THB_PER_USD = 34.0                       # fixed conversion rate (stated in the report)
+MILESTONES = [("2x start: withdraw the 70 USD stake", 2 * CAPITAL, "stake"),
+              ("10,000 THB: withdraw 30%", 10_000 / THB_PER_USD, 0.30),
+              ("100,000 THB: withdraw 40%", 100_000 / THB_PER_USD, 0.40),
+              ("1,000,000 THB: withdraw 50%", 1_000_000 / THB_PER_USD, 0.50),
+              ("1,000,000 USD: withdraw 70%", 1_000_000, 0.70)]
+SKIM = 0.25
+WITHDRAW_BOOKS = ("real70_paxg", "real70_follow_2100", "aggr30")
+
+
+def withdraw(book, t):
+    """Apply the policy at the 21:02 run. Only from cash, so only when flat (deferred while a position is
+    open). Milestones first (each once), then the high-water skim. Returns USD withdrawn today."""
+    s = book.s
+    s.setdefault("locked", 0.0)
+    s.setdefault("hwm", CAPITAL)
+    s.setdefault("milestones", [])
+    if s["pos"] or s.get("dead"):
+        return 0.0
+    out = 0.0
+    for name, level, what in MILESTONES:
+        if name not in s["milestones"] and s["equity"] >= level:
+            amt = CAPITAL if what == "stake" else what * s["equity"]
+            s["equity"] -= amt
+            s["locked"] += amt
+            s["milestones"].append(name)
+            out += amt
+            book.log("WITHDRAW", t, rule=name, usd=round(amt, 2), trading=round(s["equity"], 2), locked=round(s["locked"], 2))
+    if s["equity"] > s["hwm"]:
+        amt = SKIM * (s["equity"] - s["hwm"])
+        s["equity"] -= amt
+        s["locked"] += amt
+        s["hwm"] = s["equity"]
+        out += amt
+        book.log("WITHDRAW", t, rule="high-water skim 25%", usd=round(amt, 2), trading=round(s["equity"], 2), locked=round(s["locked"], 2))
+    s["peak"] -= out                  # a withdrawal is not a drawdown
+    book.save()
+    return out

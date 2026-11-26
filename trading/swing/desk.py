@@ -302,8 +302,15 @@ if __name__ == "__main__":
         n = do_sync()[3]
         print(f"synced, {n} new bars")
     elif a[0] == "daily":                     # the 21:02 run: sync, then the owner's instruction line
+        from follower import withdraw, WITHDRAW_BOOKS
         ai = do_sync()[0]
-        px = float(load_cache()["c"].iloc[-1])
-        print(Daily2100(BOOKS / "real70_follow_2100").daily(now_ms(), px, ai.s["pos"]))
+        px, t = float(load_cache()["c"].iloc[-1]), now_ms()
+        d = Daily2100(BOOKS / "real70_follow_2100")
+        line = d.daily(t, px, ai.s["pos"])
+        got = {n: withdraw(d if n == "real70_follow_2100" else Follower(BOOKS / n, n), t) for n in WITHDRAW_BOOKS}
+        w = got["real70_follow_2100"]
+        head, tail = line.split("; ", 1)
+        print(head + (f" | WITHDRAW {w:.2f} USD" if w else "") + "; " + tail.replace(
+            "USD (start 70)", f"USD trading + {d.s.get('locked', 0):.2f} locked (start 70)"))
     elif a[0] == "status":
         status()
