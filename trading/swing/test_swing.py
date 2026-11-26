@@ -223,4 +223,20 @@ write_pending(b.d, "open", T0 + 3 * M, id="t2", dir=1, stop=3950, target=4030, l
 b.on_bar(bar(3, 3960))
 check("dead xau account stays flat", fx.s["pos"] is None and b.s["pos"] is not None)
 
+# 14 aggr30: 20% risk, max 10x, stop-out at 50% margin
+b = fresh(profile=R.MAIN)
+b.followers = [Follower(Path(td) / "a", "aggr30")]
+opened(b, stop=3900, target=4300)
+fa = b.followers[0]
+check("aggr30 risks 20% at a wide stop", abs(fa.s["pos"]["qty"] - 14 / (100 + 0.7)) < 1e-9)
+b = fresh(profile=R.MAIN)
+b.followers = [Follower(Path(td) / "a2", "aggr30")]
+opened(b, stop=3990, target=4030)
+fa = b.followers[0]
+check("aggr30 capped at 10x on a tight stop", abs(fa.s["pos"]["qty"] - 700 / 4000) < 1e-9)
+fa.bar(bar(1, 3995, l=3992), False)
+check("aggr30 alive after a small dip", not fa.s["dead"])
+fa.bar(bar(2, 3700), False)                 # a gap: 10x on -7.5% leaves equity under 50% of margin
+check("aggr30 stopped out on a gap and dead", fa.s["dead"] and fa.s["pos"] is None and fa.s["equity"] < 35)
+
 print(f"test_swing: {ok}/{ok + fail} checks passed")

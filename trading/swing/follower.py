@@ -6,6 +6,9 @@ real70_paxg        PAXG spot, fractional qty, no leverage (notional <= 1x equity
 real70_xau_minlot  XAU CFD, always exactly 0.01 lot = 1 oz (the broker minimum; 1 USD P&L per 1 USD move),
                    0.30 USD/oz spread per side, margin 1:100, stop-out when equity <= 50% of margin
                    (checked on each bar's worst price). A stopped-out (or under-margined) account stays dead.
+aggr30             the owner's "+30% a week" target in practice: 20% of equity at risk per trade, notional capped
+                   at 10x, the main book's fill prices (0.35/oz per side), margin = notional / 10, stop-out at 50%
+                   margin level; dead stays dead.
 PAXG prices stand in for XAU (about 1:1).
 """
 import json
@@ -17,7 +20,9 @@ CAPITAL = 70.0
 SPECS = {
     "real70_paxg": dict(kind="spot", fee=0.001, risk=0.02),
     "real70_xau_minlot": dict(kind="cfd", qty=1.0, spread=0.30, margin=0.01, stop_out=0.50),
+    "aggr30": dict(kind="lev", risk=0.20, lev=10, cost=0.35, stop_out=0.50),
 }
+TARGET_WEEK = 0.30
 
 
 class Follower:
@@ -46,6 +51,9 @@ class Follower:
         if k["kind"] == "spot":
             px = fill * (1 + d * k["fee"])
             qty = min(k["risk"] * eq / (abs(px - stop) + 2 * k["fee"] * px), eq / px)
+        elif k["kind"] == "lev":
+            px = fill
+            qty = min(k["risk"] * eq / (abs(raw - stop) + 2 * k["cost"]), k["lev"] * eq / raw)
         else:
             px, qty = raw + d * k["spread"], k["qty"]
             if eq < qty * raw * k["margin"]:
@@ -60,7 +68,8 @@ class Follower:
         p = self.s["pos"]
         if not p:
             return
-        px = fill * (1 - p["dir"] * self.k["fee"]) if self.k["kind"] == "spot" else raw - p["dir"] * self.k["spread"]
+        k = self.k
+        px = fill * (1 - p["dir"] * k["fee"]) if k["kind"] == "spot" else fill if k["kind"] == "lev" else raw - p["dir"] * k["spread"]
         self._settle(t, px, reason)
 
     def _settle(self, t, px, reason):
@@ -72,10 +81,11 @@ class Follower:
 
     def bar(self, b, write):
         s, p, k = self.s, self.s["pos"], self.k
-        if p and k["kind"] == "cfd":
-            margin = p["qty"] * p["entry"] * k["margin"]
+        if p and k["kind"] in ("cfd", "lev"):
+            margin = p["qty"] * p["entry"] * (k["margin"] if k["kind"] == "cfd" else 1 / k["lev"])
+            cost = k["spread"] if k["kind"] == "cfd" else k["cost"]
             worst = b["l"] if p["dir"] > 0 else b["h"]
-            if self.mtm(worst - p["dir"] * k["spread"]) <= k["stop_out"] * margin:
+            if self.mtm(worst - p["dir"] * cost) <= k["stop_out"] * margin:
                 lvl = p["entry"] + (k["stop_out"] * margin - s["equity"]) / (p["dir"] * p["qty"])
                 raw = b["o"] if (p["dir"] > 0 and b["o"] < lvl) or (p["dir"] < 0 and b["o"] > lvl) else lvl
                 self._settle(b["t"], raw, "broker stop-out (margin level 50%)")

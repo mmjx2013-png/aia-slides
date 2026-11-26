@@ -141,7 +141,14 @@ def main(root, out):
         dead = next((f"{e['t'][5:16]} {e.get('reason', e['kind'])}" for e in fj if e["kind"] in ("STOP_OUT", "DEAD")), "no")
         eq = x["equity"] + 0.0
         lines.append(f"| {n} | {len(ex)} | {sum(e['pnl'] > 0 for e in ex)} | {eq:.2f} | {100 * (eq / F_CAP - 1):+.1f}% | {x['maxdd']:.1f}% | {dead} |")
-    lines += ["PAXG spot: 2% risk, max 1x, 0.10% fee per side. XAU CFD: always 1 oz (0.01 lot), 0.30/oz spread per side, "
+    ag = read_eq(root / "aggr30")
+    if ag is not None and len(ag):
+        wk = ag["equity"].groupby(ag.index.to_period("W-SUN")).agg(["first", "last"])
+        lines += ["", "aggr30 weekly return vs the +30%/week target: " + "; ".join(
+            f"week of {str(p.start_time.date())}: {100 * (r['last'] / r['first'] - 1):+.1f}% (target +30%)" if r["first"] > 0 else
+            f"week of {str(p.start_time.date())}: dead" for p, r in wk.iterrows())]
+    lines += ["aggr30: 20% risk per trade, max 10x, main-book costs, stop-out at 50% margin level, dead stays dead. "
+              "PAXG spot: 2% risk, max 1x, 0.10% fee per side. XAU CFD: always 1 oz (0.01 lot), 0.30/oz spread per side, "
               "1:100 margin, stop-out at 50% margin level; a stop of S USD loses about S USD, i.e. S/70 of the account.", ""]
     dec = [x for x in j["ai"] if x["kind"] == "DECISION"]
     fills = [x for x in j["ai"] if x["kind"] == "FILL"]
