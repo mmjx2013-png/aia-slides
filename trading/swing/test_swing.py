@@ -1,0 +1,186 @@
+"""Synthetic checks of the swing broker and the code re-check of Opus's answers. PAPER ONLY.
+  python3 test_swing.py"""
+import json
+import tempfile
+from pathlib import Path
+
+import pandas as pd
+
+import env  # noqa: F401
+import calendar_guard
+import rules as R
+from broker import Broker, write_pending
+import desk
+
+T0 = int(pd.Timestamp("2026-11-24 07:00", tz="UTC").value // 10**6)   # Tue 14:00 Bangkok
+M = 60_000
+ok = fail = 0
+
+
+def check(name, cond):
+    global ok, fail
+    ok, fail = ok + bool(cond), fail + (not cond)
+    print(("PASS " if cond else "FAIL ") + name)
+
+
+def bar(i, o, h=None, l=None, c=None, t0=T0):
+    return dict(t=t0 + i * M, o=o, h=max(o, h or o), l=min(o, l or o), c=c or o)
+
+
+def fresh(**kw):
+    return Broker(tempfile.mkdtemp(), capital=10_000, **kw)
+
+
+def journal(b, kind):
+    return [json.loads(x) for x in (b.d / "journal.jsonl").read_text().splitlines() if json.loads(x)["kind"] == kind] \
+        if (b.d / "journal.jsonl").exists() else []
+
+
+def opened(b, d=1, stop=3990, target=4030, lev=10, i=0, px=4000):
+    write_pending(b.d, "open", T0 + i * M, id="t", dir=d, stop=stop, target=target, lev=lev, p_target=0.6)
+    b.on_bar(bar(i, px))
+
+
+R.CALENDAR = False
+
+# 1 fill at the next open +0.35, sized by 1% risk; stop wins a same-bar tie
+b = fresh()
+write_pending(b.d, "open", T0 + 30_000, id="t", dir=1, stop=3990, target=4030, lev=10, p_target=0.6)
+b.on_bar(bar(0, 4000))
+check("no fill on the bar that opened before the decision", b.s["pos"] is None)
+b.on_bar(bar(1, 4000))
+p = b.s["pos"]
+check("fill at next open + cost", p and abs(p["entry"] - 4000.35) < 1e-9)
+check("1% risk size", abs(p["qty"] - 100 / (10 + 0.7)) < 1e-9)
+b.on_bar(bar(2, 4000, h=4040, l=3980))
+e = journal(b, "EXIT")[-1]
+check("stop wins a same-bar tie", e["reason"] == "stop" and abs(e["px"] - (3990 - 0.35)) < 0.01)
+check("loss is 1% of equity", abs(b.s["equity"] - 9900) < 0.01)
+
+# 2 gap through the stop fills at the open
+b = fresh()
+opened(b)
+b.on_bar(bar(1, 3980, h=3985, l=3975))
+check("gap through stop fills at open", abs(journal(b, "EXIT")[-1]["px"] - (3980 - 0.35)) < 0.01)
+
+# 3 target, then breakeven
+b = fresh()
+opened(b, d=-1, stop=4010, target=3970)
+b.on_bar(bar(1, 3990, l=3960))
+check("short target", journal(b, "EXIT")[-1]["reason"] == "target")
+b = fresh()
+opened(b)
+b.on_bar(bar(1, 4005, h=4011))
+check("breakeven armed after +1R", b.s["pos"]["stop"] == b.s["pos"]["entry"])
+b.on_bar(bar(2, 4001, l=3999))
+check("breakeven stop exit", journal(b, "EXIT")[-1]["reason"] == "breakeven stop")
+
+# 4 tighten and close
+b = fresh()
+opened(b)
+write_pending(b.d, "tighten", T0 + M, id="x", stop=3995)
+b.on_bar(bar(1, 4002))
+check("tighten applied", b.s["pos"]["stop"] == 3995)
+write_pending(b.d, "tighten", T0 + 2 * M, id="x", stop=3992)
+b.on_bar(bar(2, 4002))
+check("loosening rejected", b.s["pos"]["stop"] == 3995 and journal(b, "REJECT"))
+write_pending(b.d, "close", T0 + 3 * M, id="x")
+b.on_bar(bar(3, 4003))
+check("PM close at open", journal(b, "EXIT")[-1]["reason"] == "PM close" and b.s["pos"] is None)
+
+# 5 max hold, weekend close, no weekend entry
+# (with no weekend holds a trade can last at most Mon 05:00 -> Sat 03:30, under 5 days: test the
+# mechanism with a 1-day limit)
+keep, R.MAX_HOLD_MS = R.MAX_HOLD_MS, 86400_000
+b = fresh()
+opened(b, stop=3900, target=4100)
+b.on_bar(bar(1440 - 1, 4001))
+check("still open just under the max hold", b.s["pos"] is not None)
+b.on_bar(bar(1440, 4001))
+check("closed at the max hold", journal(b, "EXIT")[-1]["reason"] == "max hold 5 days")
+R.MAX_HOLD_MS = keep
+fri = int(pd.Timestamp("2026-11-27 20:00", tz="UTC").value // 10**6)       # Sat 03:00 Bangkok
+b = fresh()
+write_pending(b.d, "open", fri, id="t", dir=1, stop=3900, target=4100, lev=3, p_target=0.6)
+b.on_bar(bar(0, 4000, t0=fri))
+check("no entry on Saturday", b.s["pos"] is None and journal(b, "REJECT"))
+thu = fri - 24 * 3600_000
+b = fresh()
+write_pending(b.d, "open", thu, id="t", dir=1, stop=3900, target=4100, lev=3, p_target=0.6)
+b.on_bar(bar(0, 4000, t0=thu))
+b.on_bar(bar(24 * 60 + 29, 4001, t0=thu))
+check("held at Sat 03:29", b.s["pos"] is not None)
+b.on_bar(bar(24 * 60 + 30, 4001, t0=thu))
+check("flat at Sat 03:30 Bangkok", journal(b, "EXIT")[-1]["reason"].startswith("weekend"))
+
+# 6 leverage: min(chosen, 1% risk); clamp 1..10
+b = fresh()
+opened(b, stop=3990, target=4030, lev=2)
+check("leverage cap binds on a wide stop", abs(b.s["pos"]["qty"] - 2 * 10_000 / 4000) < 1e-9 and journal(b, "FILL")[-1]["binding"] == "leverage")
+check("clamp 15 -> 10, 0 -> 1", R.clamp_lev(15)[0] == 10 and R.clamp_lev(0)[0] == 1)
+
+# 7 halts and kill switch (hold 10x notional, stop far away)
+b = fresh(shadows=())
+b.s.update(day=R.day_key(T0), day_start=10_320.0)
+opened(b, stop=3900, target=5000, lev=10)
+b.on_bar(bar(1, 4000, c=3999))
+check("daily halt at -3%", b.s["pos"] is None and b.s["halted_day"] == R.day_key(T0) and journal(b, "HALT"))
+write_pending(b.d, "open", T0 + 2 * M, id="t2", dir=1, stop=3900, target=4200, lev=3, p_target=0.6)
+b.on_bar(bar(2, 3990))
+check("no entry while halted", b.s["pos"] is None)
+b = fresh(shadows=())
+b.s.update(peak=11_200.0)
+opened(b, stop=3000, target=5000, lev=1)
+b.on_bar(bar(1, 4000, c=3999))
+check("kill switch at -10% from peak", b.s["killed"] and journal(b, "KILL"))
+check("kill switch blocks entries", b.entry_block(T0 + 5 * M).startswith("kill"))
+b = fresh(shadows=())
+b.s.update(week=R.week_key(T0), week_start=10_650.0, day=R.day_key(T0), day_start=10_000.0)
+opened(b, stop=3000, target=5000, lev=1)
+b.on_bar(bar(1, 4000, c=3999))
+check("weekly halt at -6%", b.s["halted_week"] == R.week_key(T0))
+
+# 8 shadow liquidation at 30x on a -2% move
+b = fresh()
+opened(b, stop=3000, target=5000, lev=1)
+b.on_bar(bar(1, 3950, l=3910))
+check("30x shadow liquidated, 1x alive", b.s["shadows"]["30"]["dead"] and not b.s["shadows"]["1"]["dead"])
+
+# 9 stale order
+b = fresh()
+write_pending(b.d, "open", T0, id="t", dir=1, stop=3990, target=4030, lev=3, p_target=0.6)
+b.on_bar(bar(20, 4000))
+check("order older than 15 min rejected", b.s["pos"] is None and "stale" in journal(b, "REJECT")[-1]["reason"])
+
+# 10 the code re-check of Opus's open
+f = dict(px=4000.0, atr1h=8.0, atr4h=16.0, atr1d=40.0, trend4="up", levels={"prev day low": 3995.0, "round 50 above": 4050.0},
+         asof_ms=T0)
+b = fresh()
+good = dict(action="open", dir="long", stop=3980, target=4040, leverage=5, p_target=0.6)
+o, why = desk.check_open(good, f, b, T0)
+check("good long passes", o is not None and o["lev"] == 5)
+check("p 0.50 rejected", "p_target" in desk.check_open(dict(good, p_target=0.5), f, b, T0)[1])
+check("rr 1.4 rejected", "reward" in desk.check_open(dict(good, target=4029), f, b, T0)[1])
+check("stop under 0.5 ATR(1h) rejected", "stop distance" in desk.check_open(dict(good, stop=3997, target=4020), f, b, T0)[1])
+sh = dict(good, dir="short", stop=4020, target=3960)
+check("counter-trend without a case rejected", "mean-reversion" in desk.check_open(sh, f, b, T0)[1])
+check("counter-trend far from a level rejected", "key level" in desk.check_open(dict(sh, mean_reversion_case="x"), dict(f, levels={"a": 3900.0}), b, T0)[1])
+check("counter-trend at a level passes", desk.check_open(dict(sh, mean_reversion_case="fade prev day low"), f, b, T0)[0] is not None)
+
+# 11 calendar: close 5 min before a USD High event; no entry within 2 h before it
+R.CALENDAR = True
+ev_t = T0 + 90 * M
+calendar_guard._mem.update(mtime="test", events=[(ev_t, "Test CPI", "USD", "High")], span=(T0 - 86400_000, T0 + 86400_000))
+calendar_guard.events = lambda: calendar_guard._mem
+check("entry blocked 90 min before an event", "calendar" in (R.calendar_block(T0) or ""))
+check("entry allowed 3 h before", R.calendar_block(ev_t - 3 * 3600_000) is None)
+b = fresh()
+R.CALENDAR = False
+opened(b, stop=3900, target=4100)
+R.CALENDAR = True
+b.on_bar(bar(84, 4001))
+check("held 6 min before", b.s["pos"] is not None)
+b.on_bar(bar(85, 4001))
+check("closed 5 min before the event", journal(b, "EXIT")[-1]["reason"].startswith("calendar"))
+
+print(f"test_swing: {ok}/{ok + fail} checks passed")

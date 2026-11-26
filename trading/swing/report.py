@@ -1,0 +1,179 @@
+"""Daily swing report: reports/YYYY-MM-DD.md + .png. PAPER ONLY.
+  python3 report.py [--root data/books] [--out reports]
+All books since start; the 21:00 -> 21:00 Bangkok period; win rate, average win/loss, expectancy,
+profit factor; Opus calibration (opened trades and the scored best_idea of every answer); tokens.
+"""
+import argparse
+import json
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+import env  # noqa: F401
+import rules as R
+from common import BKK, bkk, jlines, load_cache
+
+HERE = Path(__file__).resolve().parent
+
+
+def read_eq(d):
+    f = Path(d) / "equity.csv"
+    if not f.exists():
+        return None
+    rows = [x.split(",") for x in f.read_text().splitlines()]
+    head, body = rows[0], [r for r in rows[1:] if r and r[0] != "t"]
+    df = pd.DataFrame([r[:len(head)] for r in body], columns=head).astype(float)
+    df.index = pd.to_datetime(df["t"].astype("int64"), unit="ms", utc=True).dt.tz_convert(BKK)
+    return df
+
+
+def stats(exits, start_eq):
+    if not exits:
+        return dict(n=0)
+    pnl = np.array([e["pnl"] for e in exits])
+    r = np.array([e.get("r", np.nan) for e in exits], dtype=float)
+    w, l = pnl[pnl > 0], pnl[pnl <= 0]
+    eq = start_eq + np.cumsum(pnl)
+    peak = np.maximum.accumulate(np.r_[start_eq, eq])
+    return dict(n=len(pnl), win=len(w) / len(pnl), avg_win=w.mean() if len(w) else 0, avg_loss=l.mean() if len(l) else 0,
+                exp_usd=pnl.mean(), exp_r=np.nanmean(r) if np.isfinite(r).any() else np.nan,
+                pf=w.sum() / -l.sum() if l.sum() < 0 else np.inf, pnl=pnl.sum(), maxdd=100 * ((np.r_[start_eq, eq] - peak) / peak).min())
+
+
+def fmt(name, s, eq, start_eq):
+    ret = 100 * (eq / start_eq - 1)
+    if not s["n"]:
+        return f"| {name} | 0 | - | - | - | - | - | {eq:,.2f} | {ret:+.2f}% |"
+    return (f"| {name} | {s['n']} | {100 * s['win']:.0f}% | {s['avg_win']:+.2f} / {s['avg_loss']:+.2f} | "
+            f"{s['exp_usd']:+.2f} | {'-' if s['exp_r'] != s['exp_r'] else format(s['exp_r'], '+.2f')} | {s['pf']:.2f} | {eq:,.2f} | {ret:+.2f}% |")
+
+
+def score_idea(m1, t_ms, d, stop, tgt):
+    """First touch after t_ms: 1 target, 0 stop (stop wins a tie), None unresolved; stops at 5 days / weekend."""
+    x = m1[(m1["t"] > t_ms) & (m1["t"] <= t_ms + R.MAX_HOLD_MS)]
+    for t, h, l in zip(x["t"].values, x["h"].values, x["l"].values):
+        if R.weekend_close(int(t)):
+            return None, "weekend"
+        hs, ht = (l <= stop, h >= tgt) if d > 0 else (h >= stop, l <= tgt)
+        if hs:
+            return 0, "stop"
+        if ht:
+            return 1, "target"
+    return None, "open" if len(x) and x["t"].iloc[-1] < t_ms + R.MAX_HOLD_MS else "time"
+
+
+def calibration(dec, exits, m1, store):
+    """Rows (source, p, hit) for opened trades (realised) and every best_idea (scored on 1m bars)."""
+    res = json.loads(store.read_text()) if store.exists() else {}
+    rows = []
+    for e in exits:
+        if e.get("p_target") is not None:
+            rows.append(("trade", float(e["p_target"]), 1 if e["reason"] == "target" else 0))
+    for x in dec:
+        if str(x.get("result", "")).startswith(("ORDER long", "ORDER short")):
+            continue                      # that idea was traded: counted once, as a trade
+        bi = (x.get("answer") or {}).get("best_idea") or {}
+        try:
+            d = 1 if str(bi["dir"]).lower().startswith("l") else -1
+            p, stop, tgt = float(bi["p_target"]), float(bi["stop"]), float(bi["target"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not ((d > 0 and stop < x["px"] < tgt) or (d < 0 and tgt < x["px"] < stop)):
+            continue
+        key = f"{x['id']}"
+        if key not in res:
+            hit, why = score_idea(m1, x["t_ms"], d, stop, tgt)
+            if why in ("open",):
+                continue
+            res[key] = [p, hit]
+        if res[key][1] is not None:
+            rows.append(("idea", res[key][0], res[key][1]))
+    store.write_text(json.dumps(res))
+    return rows
+
+
+def main(root, out):
+    root, out = Path(root), Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    now = pd.Timestamp.now(tz=BKK)
+    end = now.normalize() + pd.Timedelta(hours=21)
+    end = end if now >= end - pd.Timedelta(minutes=30) else end - pd.Timedelta(days=1)
+    start = end - pd.Timedelta(days=1)
+    j = {b: jlines(root / b / "journal.jsonl") for b in ("ai", "every4h", "cand15")}
+    st = {b: json.loads((root / b / "state.json").read_text()) for b in j if (root / b / "state.json").exists()}
+    eqs = {b: read_eq(root / b) for b in j}
+    lines = [f"# Swing desk report (PAPER), {end.strftime('%Y-%m-%d')} 21:00 Bangkok", "",
+             "PAXG/USDT, paper only. AI = one Opus call per 4h wake, code re-checks every rule; "
+             "every4h = code takes every 4h Donchian-20 signal (unfiltered baseline, 3x cap); cand15 = 15m candidate (code, intraday rules).", ""]
+    hdr = ["| Book | Trades | Win | Avg win / loss USD | Exp USD | Exp R | PF | Equity | Return |", "|---|---|---|---|---|---|---|---|---|"]
+    caps = {"ai": R.CAPITAL, "every4h": R.CAPITAL, "cand15": 10_000.0}
+    for label, lo in (("Since start", None), (f"Period {start.strftime('%m-%d %H:%M')} -> {end.strftime('%m-%d %H:%M')}", start)):
+        lines += [f"## {label}", *hdr]
+        for b in j:
+            if b not in st:
+                continue
+            ex = [e for e in j[b] if e["kind"] == "EXIT" and (lo is None or pd.Timestamp(e["t"], tz=BKK) >= lo)]
+            ex = [e for e in ex if pd.Timestamp(e["t"], tz=BKK) < end] if lo is not None else ex
+            e = eqs[b]
+            eq_now = float(e["equity"].iloc[-1]) if e is not None and len(e) else st[b]["equity"]
+            base = caps[b]
+            if lo is not None and e is not None and len(e[e.index < lo]):
+                base = float(e[e.index < lo]["equity"].iloc[-1])
+            lines.append(fmt(b, stats(ex, base), eq_now, base))
+        lines.append("")
+    ai_eq = eqs["ai"]
+    if ai_eq is not None and len(ai_eq):
+        bh = 100 * (ai_eq["px"].iloc[-1] / st["ai"]["start_px"] - 1)
+        sh = [f"{c[1:]}x {ai_eq[c].iloc[-1]:,.2f}" + (" (liquidated)" if st["ai"]["shadows"][c[1:]]["dead"] else "")
+              for c in ai_eq.columns if c.startswith("x")]
+        lines += [f"PAXG buy and hold since the AI book started: {bh:+.2f}%. Shadow books (same AI decisions, fixed notional): {', '.join(sh)}.", ""]
+    dec = [x for x in j["ai"] if x["kind"] == "DECISION"]
+    fills = [x for x in j["ai"] if x["kind"] == "FILL"]
+    lines += ["## AI decisions", f"Opus calls {len(dec)}, tokens {sum(x['tokens'] for x in dec):,} "
+              f"(period: {sum(1 for x in dec if pd.Timestamp(x['t'], tz=BKK) >= start)} calls, "
+              f"{sum(x['tokens'] for x in dec if pd.Timestamp(x['t'], tz=BKK) >= start):,} tokens). "
+              f"Skipped wakes (no call, flat and entries blocked): {sum(1 for x in j['ai'] if x['kind'] == 'SKIP')}.",
+              "| Time | Action | p | Lev | Result |", "|---|---|---|---|---|"]
+    lines += [f"| {x['t'][5:16]} | {x['action']} | {x.get('p_target')} | {x.get('leverage')} | {x['result'][:90]} |" for x in dec[-12:]]
+    if fills:
+        lines += ["", "Fills: " + "; ".join(f"{x['t'][5:16]} {x['side']} lev {x['lev']}x (chosen {x['lev_chosen']}, {x['binding']} binds) p {x['p_target']}" for x in fills[-6:])]
+    m1 = load_cache()
+    rows = calibration(dec, [e for e in j["ai"] if e["kind"] == "EXIT"], m1, root / "ai" / "ideas_scored.json")
+    lines += ["", "## Calibration (p_target vs target hit before stop; ideas = best_idea of every answer, scored on 1m bars, never traded)",
+              "| p bucket | n | mean p | hit rate |", "|---|---|---|---|"]
+    for lo_, hi_ in ((0, .4), (.4, .5), (.5, .55), (.55, .65), (.65, 1.01)):
+        b = [r for r in rows if lo_ <= r[1] < hi_]
+        lines.append(f"| {lo_:.2f}-{min(hi_, 1):.2f} | {len(b)} | {np.mean([r[1] for r in b]):.2f} | {np.mean([r[2] for r in b]):.2f} |" if b
+                     else f"| {lo_:.2f}-{min(hi_, 1):.2f} | 0 | - | - |")
+    lines += ["", f"Halts / kill: AI {st['ai'].get('halted_day')}, {st['ai'].get('halted_week')}, killed {st['ai'].get('killed')}." if "ai" in st else ""]
+    path = out / f"{end.strftime('%Y-%m-%d')}.md"
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots(figsize=(9, 4), dpi=110)
+        for b, e in eqs.items():
+            if e is not None and len(e):
+                ax.plot(e.index, 100 * (e["equity"] / caps[b] - 1), label=b, lw=1.4)
+        if ai_eq is not None and len(ai_eq):
+            ax.plot(ai_eq.index, 100 * (ai_eq["px"] / st["ai"]["start_px"] - 1), label="PAXG buy & hold", lw=1, color="0.6", ls="--")
+        ax.axhline(0, color="0.8", lw=0.8)
+        ax.set_ylabel("return since start, %")
+        ax.legend(frameon=False, fontsize=8)
+        ax.spines[["top", "right"]].set_visible(False)
+        fig.tight_layout()
+        fig.savefig(path.with_suffix(".png"))
+        lines += ["", f"![equity]({path.with_suffix('.png').name})"]
+    except Exception as e:  # chart is optional
+        lines += ["", f"(chart failed: {type(e).__name__})"]
+    path.write_text("\n".join(lines) + "\n")
+    return path
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--root", default=str(HERE / "data" / "books"))
+    ap.add_argument("--out", default=str(HERE / "reports"))
+    a = ap.parse_args()
+    print(main(a.root, a.out))

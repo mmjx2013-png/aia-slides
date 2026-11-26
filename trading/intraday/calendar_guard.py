@@ -34,14 +34,27 @@ def refresh(force=False):
         assert isinstance(data, list) and data
         CACHE.mkdir(parents=True, exist_ok=True)
         f.write_text(json.dumps(data))
+        _archive(data)
         return True, f"fetched {len(data)} events"
     except Exception as e:
         return False, f"calendar fetch failed: {type(e).__name__}: {e}"
 
 
+def _archive(data):
+    """Keep every week ever fetched (calendar_archive.json), so replays across a week boundary
+    still see last week's events."""
+    a = CACHE / "calendar_archive.json"
+    old = json.loads(a.read_text()) if a.exists() else []
+    seen = {(e.get("date"), e.get("title"), e.get("country")) for e in data}
+    a.write_text(json.dumps([e for e in old if (e.get("date"), e.get("title"), e.get("country")) not in seen] + data))
+
+
 def events():
-    """USD High-impact events as (t_ms, title), from the cache (re-read when it changes)."""
-    f = CACHE / "calendar.json"
+    """USD High-impact events as (t_ms, title), from the archive if present, else the week cache
+    (re-read when it changes)."""
+    f = CACHE / "calendar_archive.json"
+    if not f.exists():
+        f = CACHE / "calendar.json"
     if not f.exists():
         return None
     m = f.stat().st_mtime

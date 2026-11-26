@@ -1,26 +1,668 @@
 {
   "CLAUDE.md": {
-    "mtime": 1795574125.2046423,
-    "seen": 1795574126.8752315,
+    "mtime": 1795600512.609826,
+    "seen": 1795657008.489579,
     "ast_hash": "96c2c6699a34917c4f7b7662bd1f3a6e",
     "semantic_hash": ""
   },
   "MEMORY.md": {
-    "mtime": 1795574125.2046194,
-    "seen": 1795574126.8752396,
-    "ast_hash": "69da963cf6b3cfdcfe3bbe5ecbe4b3ac",
+    "mtime": 1795600512.609826,
+    "seen": 1795657008.4895806,
+    "ast_hash": "4d29f77d05cf096f1a3d898220d5e4f1",
     "semantic_hash": ""
   },
   "PRESENTATION-STYLES.md": {
-    "mtime": 1795574125.204866,
-    "seen": 1795574126.8752432,
+    "mtime": 1795600512.609826,
+    "seen": 1795657008.4895818,
     "ast_hash": "fec941b0a7ea38a9aa8030a5d2b5c077",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1795574110.063582,
-    "seen": 1795574126.8752453,
+    "mtime": 1795600512.609826,
+    "seen": 1795657008.4895828,
     "ast_hash": "ef46d70c3225b164eae2a2e38d210afa",
+    "semantic_hash": ""
+  },
+  ".claude/skills/type1-deck/scripts/qa.cjs": {
+    "mtime": 1795600512.609826,
+    "seen": 1795657008.4895303,
+    "ast_hash": "c621cbd8e8e6562f3d71462630782d6b",
+    "semantic_hash": ""
+  },
+  "trading/ai_backtest.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895358,
+    "ast_hash": "9f60bf5222eaaa9f33e6837a45b6b9f7",
+    "semantic_hash": ""
+  },
+  "trading/backtest.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.489538,
+    "ast_hash": "337acc956fabe215dcd91be681f2165f",
+    "semantic_hash": ""
+  },
+  "trading/daily.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895391,
+    "ast_hash": "31c34938dbe24a3bb33a626a3f151e66",
+    "semantic_hash": ""
+  },
+  "trading/data.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895403,
+    "ast_hash": "39c61a8524ced11bb9650951f2cbeb39",
+    "semantic_hash": ""
+  },
+  "trading/desk.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895413,
+    "ast_hash": "fb3bb673ba583cefcdb0b0db29e71b54",
+    "semantic_hash": ""
+  },
+  "trading/engine.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895422,
+    "ast_hash": "be6d298c2c429b545d13c112f9cea846",
+    "semantic_hash": ""
+  },
+  "trading/fetch.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895434,
+    "ast_hash": "b09085b0ea321cfa79c85b769e358687",
+    "semantic_hash": ""
+  },
+  "trading/fetch_yahoo.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.489544,
+    "ast_hash": "a906edf58029cff28fd8fba2be50af44",
+    "semantic_hash": ""
+  },
+  "trading/gold.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.489545,
+    "ast_hash": "2ff9f520af9cb239086a6e33267b04d2",
+    "semantic_hash": ""
+  },
+  "trading/gold_daily.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895458,
+    "ast_hash": "6913ce90d9702135e1d2cf2df1bbb726",
+    "semantic_hash": ""
+  },
+  "trading/gold_desk.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895468,
+    "ast_hash": "c6ecd537cda6c8e3304c11e119f4c428",
+    "semantic_hash": ""
+  },
+  "trading/gold_merge.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895477,
+    "ast_hash": "5808ef3768afaf7d87fc7fd5659fa393",
+    "semantic_hash": ""
+  },
+  "trading/gold_study.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895487,
+    "ast_hash": "4adc3166bd546f4da11de0abe2a1e240",
+    "semantic_hash": ""
+  },
+  "trading/indicators.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895496,
+    "ast_hash": "c454abd01c10b5038aa4505e9e5cef42",
+    "semantic_hash": ""
+  },
+  "trading/intraday/brief.py": {
+    "mtime": 1795616036.096477,
+    "seen": 1795657008.4895504,
+    "ast_hash": "cd96ff81bb8e09bdad894c21303759e4",
+    "semantic_hash": ""
+  },
+  "trading/intraday/calendar_guard.py": {
+    "mtime": 1795656535.1879745,
+    "seen": 1795657008.489551,
+    "ast_hash": "7f669f87e384fd98cbe1b5bc304167a4",
+    "semantic_hash": ""
+  },
+  "trading/intraday/common.py": {
+    "mtime": 1795602051.7831511,
+    "seen": 1795657008.4895518,
+    "ast_hash": "cc487c339426fbeec32551dc2c72a74a",
+    "semantic_hash": ""
+  },
+  "trading/intraday/desk.py": {
+    "mtime": 1795616036.0966752,
+    "seen": 1795657008.489553,
+    "ast_hash": "1a5a767040c612c3f6e4b79201e3c441",
+    "semantic_hash": ""
+  },
+  "trading/intraday/news.py": {
+    "mtime": 1795606751.3342736,
+    "seen": 1795657008.4895537,
+    "ast_hash": "b8b04db7814be91ce9979574c909ae9f",
+    "semantic_hash": ""
+  },
+  "trading/intraday/paperbroker.py": {
+    "mtime": 1795617101.8384185,
+    "seen": 1795657008.4895544,
+    "ast_hash": "e34cbb74dcdadcbe19e22fa9a534ae1c",
+    "semantic_hash": ""
+  },
+  "trading/intraday/report.py": {
+    "mtime": 1795622930.5026104,
+    "seen": 1795657008.4895551,
+    "ast_hash": "36920405da52bcf1246d42d1a9dbf185",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/ai_replay_setups.json": {
+    "mtime": 1795616726.8657484,
+    "seen": 1795657008.4895556,
+    "ast_hash": "e83a207489370587c0a1908c84c262c0",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/fetch_history.py": {
+    "mtime": 1795608662.3390243,
+    "seen": 1795657008.4895566,
+    "ast_hash": "65543821bdda984734f43084c046a6c2",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/replay_ai.py": {
+    "mtime": 1795616691.3723862,
+    "seen": 1795657008.4895573,
+    "ast_hash": "bba9a73490064b77808d3613728501b6",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/search.py": {
+    "mtime": 1795608779.2500124,
+    "seen": 1795657008.489558,
+    "ast_hash": "2731365e7567e68bb7fb0aae88039b7e",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/search_htf.py": {
+    "mtime": 1795609368.531449,
+    "seen": 1795657008.4895587,
+    "ast_hash": "790bfd75388f25688e506380f2adc02b",
+    "semantic_hash": ""
+  },
+  "trading/intraday/risk.py": {
+    "mtime": 1795617101.8381562,
+    "seen": 1795657008.4895597,
+    "ast_hash": "7e8f2229b80712a695c64c104fe37b84",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/budget/2026-11-25.json": {
+    "mtime": 1795622936.2832942,
+    "seen": 1795657008.4895604,
+    "ast_hash": "b9001725938668650e9147efe1ce352e",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/cand15/state.json": {
+    "mtime": 1795622936.2839353,
+    "seen": 1795657008.489561,
+    "ast_hash": "0cfbf2cd534cdbdce577ee1024a8c1e2",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/state.json": {
+    "mtime": 1795622936.2829757,
+    "seen": 1795657008.4895618,
+    "ast_hash": "5d730b6a7c3ca4a0b32b3384d627abd7",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/unfiltered/state.json": {
+    "mtime": 1795622936.2831392,
+    "seen": 1795657008.4895623,
+    "ast_hash": "f2071b009c2848af147dae8d22b930f5",
+    "semantic_hash": ""
+  },
+  "trading/intraday/test_broker.py": {
+    "mtime": 1795617109.4523304,
+    "seen": 1795657008.4895632,
+    "ast_hash": "29d7805ebdee253d33eca87fcf099d42",
+    "semantic_hash": ""
+  },
+  "trading/intraday/watcher.py": {
+    "mtime": 1795616691.3720424,
+    "seen": 1795657008.4895637,
+    "ast_hash": "bdcf0eb1389541c7ab85881de8a4b6b3",
+    "semantic_hash": ""
+  },
+  "trading/news.py": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895644,
+    "ast_hash": "94b78f18d86e5a3a54ec99501de3e16b",
+    "semantic_hash": ""
+  },
+  "trading/strategies.py": {
+    "mtime": 1795600512.654238,
+    "seen": 1795657008.4895651,
+    "ast_hash": "deb8c805aa24f42c06a6cbb5ff889c4a",
+    "semantic_hash": ""
+  },
+  "trading/swing/brief.py": {
+    "mtime": 1795656666.478575,
+    "seen": 1795657008.4895658,
+    "ast_hash": "44f3bac86613af84a7ed071d87eff455",
+    "semantic_hash": ""
+  },
+  "trading/swing/broker.py": {
+    "mtime": 1795656600.8697765,
+    "seen": 1795657008.4895668,
+    "ast_hash": "c93d01a894cec32a74f05c0e777ea98c",
+    "semantic_hash": ""
+  },
+  "trading/swing/desk.py": {
+    "mtime": 1795656891.8755965,
+    "seen": 1795657008.4895678,
+    "ast_hash": "f8941b9e642e3ad18b86e73bb3ae4b49",
+    "semantic_hash": ""
+  },
+  "trading/swing/env.py": {
+    "mtime": 1795656553.977373,
+    "seen": 1795657008.4895701,
+    "ast_hash": "25a780fe4e7ce12d82217d206a0241d7",
+    "semantic_hash": ""
+  },
+  "trading/swing/market.py": {
+    "mtime": 1795656622.5772264,
+    "seen": 1795657008.489571,
+    "ast_hash": "baa9472f718580e1c071e86810226683",
+    "semantic_hash": ""
+  },
+  "trading/swing/news.py": {
+    "mtime": 1795656938.6893737,
+    "seen": 1795657008.4895718,
+    "ast_hash": "0c0ac853169b481da081870902e71876",
+    "semantic_hash": ""
+  },
+  "trading/swing/report.py": {
+    "mtime": 1795656924.5935183,
+    "seen": 1795657008.4895728,
+    "ast_hash": "971ebcafa6baad1d69ca861d6a48b3e1",
+    "semantic_hash": ""
+  },
+  "trading/swing/rules.py": {
+    "mtime": 1795656560.419923,
+    "seen": 1795657008.4895737,
+    "ast_hash": "ac7f0b3a5b2dd1942406c33a98d868a1",
+    "semantic_hash": ""
+  },
+  "trading/swing/test_replay.py": {
+    "mtime": 1795656891.8787782,
+    "seen": 1795657008.4895747,
+    "ast_hash": "5b990da1e1294c395f382e07dbd56f31",
+    "semantic_hash": ""
+  },
+  "trading/swing/test_swing.py": {
+    "mtime": 1795656799.337603,
+    "seen": 1795657008.4895751,
+    "ast_hash": "22245a68c87e858d47ea6329a5aa6c0d",
+    "semantic_hash": ""
+  },
+  "trading/tools_save_dec.py": {
+    "mtime": 1795600512.654238,
+    "seen": 1795657008.4895759,
+    "ast_hash": "e1844cf94303d7f1b870c30b4a55e3d4",
+    "semantic_hash": ""
+  },
+  "trading/universe.py": {
+    "mtime": 1795600512.654238,
+    "seen": 1795657008.4895768,
+    "ast_hash": "0c13109a14f07747d6e4c4763b719209",
+    "semantic_hash": ""
+  },
+  ".claude/skills/type1-deck/SKILL.md": {
+    "mtime": 1795600512.609696,
+    "seen": 1795657008.4895773,
+    "ast_hash": "d0e007d344522a8f6e209c7c746c9890",
+    "semantic_hash": ""
+  },
+  "trading/README.md": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4895837,
+    "ast_hash": "1f24f2502f3e33f24edb9144fa02f321",
+    "semantic_hash": ""
+  },
+  "trading/intraday/README.md": {
+    "mtime": 1795617117.9669633,
+    "seen": 1795657008.4895847,
+    "ast_hash": "a723292899a4530ffc78cdeb96dc2952",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260701-1830-breakout.md": {
+    "mtime": 1795616739.1342978,
+    "seen": 1795657008.4895852,
+    "ast_hash": "26d0016b4ed2969ab62b09b5de7b8796",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260702-1915-vol_expansion.md": {
+    "mtime": 1795616743.031347,
+    "seen": 1795657008.4895859,
+    "ast_hash": "e12f1dcbc16e76df456a895707090cf4",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260716-0105-breakout.md": {
+    "mtime": 1795616747.428666,
+    "seen": 1795657008.4895866,
+    "ast_hash": "274816a7568853876e6d7af9c1175e00",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260717-0133-momentum.md": {
+    "mtime": 1795616751.491263,
+    "seen": 1795657008.4895873,
+    "ast_hash": "3fd466780ed1181a7e8c42b842eeb6e8",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260717-2000-mean_reversion.md": {
+    "mtime": 1795616755.3059282,
+    "seen": 1795657008.489588,
+    "ast_hash": "d90bea48a103488ede91a6a1aa75d78c",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260721-1715-vol_expansion.md": {
+    "mtime": 1795616759.4141018,
+    "seen": 1795657008.4895885,
+    "ast_hash": "cf03ed2ab8f44536a757d24b5438ab97",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260723-1500-mean_reversion.md": {
+    "mtime": 1795616763.4278767,
+    "seen": 1795657008.4895892,
+    "ast_hash": "0cd3628cac031d9195a1bc922736c422",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260725-0216-momentum.md": {
+    "mtime": 1795616767.4919293,
+    "seen": 1795657008.4895902,
+    "ast_hash": "46ab71cead448a5de05d9bb502f6fc47",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260804-0020-vol_expansion.md": {
+    "mtime": 1795616771.6324925,
+    "seen": 1795657008.489591,
+    "ast_hash": "ed718bc0153bdee6a5e809083e2b3875",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260811-1427-momentum.md": {
+    "mtime": 1795616897.1408758,
+    "seen": 1795657008.4895918,
+    "ast_hash": "9b1c8fda45ec6ad7ef61c433c267d97d",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260814-1930-mean_reversion.md": {
+    "mtime": 1795616779.6680129,
+    "seen": 1795657008.4895923,
+    "ast_hash": "562d8f307a3819a43f97283da1d75c68",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260819-2030-mean_reversion.md": {
+    "mtime": 1795616783.6818273,
+    "seen": 1795657008.489593,
+    "ast_hash": "2da5562ba13de1cca4d908be5fbde647",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260826-2148-momentum.md": {
+    "mtime": 1795616787.9594016,
+    "seen": 1795657008.4895937,
+    "ast_hash": "03bb0cff5a0503c354246c093b628a83",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260826-2205-breakout.md": {
+    "mtime": 1795616791.683489,
+    "seen": 1795657008.4895947,
+    "ast_hash": "d81bb462aac0803b55da2dbfff9536b1",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260828-1720-vol_expansion.md": {
+    "mtime": 1795616795.6597595,
+    "seen": 1795657008.4895954,
+    "ast_hash": "063730d6219cca1daebff07c327bdf79",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260828-2050-breakout.md": {
+    "mtime": 1795616799.5641494,
+    "seen": 1795657008.4895961,
+    "ast_hash": "244851eea2ff28b2c824919ab0319b45",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260901-1600-mean_reversion.md": {
+    "mtime": 1795616803.9605868,
+    "seen": 1795657008.4895968,
+    "ast_hash": "01d132face9f0d73636fc8d1a77bc759",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260904-0300-vol_expansion.md": {
+    "mtime": 1795616808.196053,
+    "seen": 1795657008.4895978,
+    "ast_hash": "be42d0b21e4698418019389cdda4da63",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260908-0300-vol_expansion.md": {
+    "mtime": 1795616812.2932675,
+    "seen": 1795657008.4895985,
+    "ast_hash": "6d7249896aca5ea20c06a2e9d731dc99",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260914-2010-breakout.md": {
+    "mtime": 1795616816.3345625,
+    "seen": 1795657008.4895992,
+    "ast_hash": "6c83ba1d757afc3f9c9c027d70e35056",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260917-0230-mean_reversion.md": {
+    "mtime": 1795616820.1363006,
+    "seen": 1795657008.4896,
+    "ast_hash": "84a6a0b51e2ff23930403cbbc35de8ac",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260918-1800-momentum.md": {
+    "mtime": 1795616824.1157827,
+    "seen": 1795657008.4896007,
+    "ast_hash": "e4381bc22174e870ca1936653908e681",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260918-2330-breakout.md": {
+    "mtime": 1795616828.087769,
+    "seen": 1795657008.4896014,
+    "ast_hash": "da87b9e0f55cfad561dc7056fa29f557",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20260923-2154-momentum.md": {
+    "mtime": 1795616832.4289913,
+    "seen": 1795657008.489602,
+    "ast_hash": "6c447498f9dd392e7668d51037fefff2",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261005-2010-breakout.md": {
+    "mtime": 1795616836.6148567,
+    "seen": 1795657008.4896028,
+    "ast_hash": "f67ef9be435a6edb05a1296fc9a6cda5",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261014-2015-mean_reversion.md": {
+    "mtime": 1795616840.52203,
+    "seen": 1795657008.4896035,
+    "ast_hash": "bd4e799960f672c1a15db56506b0eb4f",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261015-1900-vol_expansion.md": {
+    "mtime": 1795616844.8991432,
+    "seen": 1795657008.4896047,
+    "ast_hash": "6e7e6aa0f42a0dac19ea0f43d6371058",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261024-0038-momentum.md": {
+    "mtime": 1795616849.0839703,
+    "seen": 1795657008.4896054,
+    "ast_hash": "2bcb2763fa76b11651eed4d166cdcd1e",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261102-1815-breakout.md": {
+    "mtime": 1795616901.367863,
+    "seen": 1795657008.4896061,
+    "ast_hash": "7c4da4ab65845788ca8584508d84c8eb",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261104-1800-vol_expansion.md": {
+    "mtime": 1795616857.2529268,
+    "seen": 1795657008.4896069,
+    "ast_hash": "add7e6c8e8fb11f699adc029820a5ed2",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261109-1500-mean_reversion.md": {
+    "mtime": 1795616861.7234933,
+    "seen": 1795657008.4896076,
+    "ast_hash": "99b003df7d93485a583e267db60837e2",
+    "semantic_hash": ""
+  },
+  "trading/intraday/data/replay_ai/20261113-0203-momentum.md": {
+    "mtime": 1795616905.8502247,
+    "seen": 1795657008.4896092,
+    "ast_hash": "537a8caaaeb542233e5cffd56d82c94e",
+    "semantic_hash": ""
+  },
+  "trading/intraday/prompts/opus.md": {
+    "mtime": 1795617101.838572,
+    "seen": 1795657008.48961,
+    "ast_hash": "61497b66bb3ddc084f5270c3d6ae89ac",
+    "semantic_hash": ""
+  },
+  "trading/intraday/prompts/sonnet.md": {
+    "mtime": 1795608614.7996166,
+    "seen": 1795657008.4896107,
+    "ast_hash": "66ce14c6a354b5d7100c1d4628e2f107",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/2026-11-25.md": {
+    "mtime": 1795622931.0266438,
+    "seen": 1795657008.4896116,
+    "ast_hash": "a3c8119d99f18e81f7c3e91b9388fa8b",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/ai_replay.md": {
+    "mtime": 1795617069.110893,
+    "seen": 1795657008.4896123,
+    "ast_hash": "f4aa547fe386660173d2b580e069c610",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/setup_search.md": {
+    "mtime": 1795609294.7863646,
+    "seen": 1795657008.489613,
+    "ast_hash": "ffbbf67158637639c93573f6a20cf7e1",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/setup_search_htf.md": {
+    "mtime": 1795609406.3703685,
+    "seen": 1795657008.4896138,
+    "ast_hash": "3d1426272924262ad58d10e5cdef3cb9",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/briefs/20261125-1830-breakout/haiku.md": {
+    "mtime": 1795622936.2836056,
+    "seen": 1795657008.4896145,
+    "ast_hash": "8b20eafb07ea970e44bc10bcce51fd17",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/briefs/20261125-1830-breakout/sonnet.md": {
+    "mtime": 1795622936.2837148,
+    "seen": 1795657008.4896152,
+    "ast_hash": "8e83de0fec4fe37cbce6b76b0ac0c9b9",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/briefs/20261125-1900-breakout/haiku.md": {
+    "mtime": 1795622936.2835355,
+    "seen": 1795657008.489616,
+    "ast_hash": "ba92ec3a008562382c1097eb831f4099",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/briefs/20261125-2217-momentum/opus.md": {
+    "mtime": 1795622936.2838955,
+    "seen": 1795657008.4896166,
+    "ast_hash": "a4006fbd60d05535235c3aa67063989f",
+    "semantic_hash": ""
+  },
+  "trading/intraday/snapshots/live/briefs/20261125-2217-momentum/sonnet.md": {
+    "mtime": 1795622936.283783,
+    "seen": 1795657008.4896173,
+    "ast_hash": "58c09b4302ec4c1f38ae4f9302efef0c",
+    "semantic_hash": ""
+  },
+  "trading/prompts/chart.md": {
+    "mtime": 1795600512.6526003,
+    "seen": 1795657008.4896178,
+    "ast_hash": "0fba5eba3c1da56e7a1bd76b87d53f41",
+    "semantic_hash": ""
+  },
+  "trading/prompts/gold_analysts.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.4896188,
+    "ast_hash": "a992158d22ec593514aa9cd0112ddd86",
+    "semantic_hash": ""
+  },
+  "trading/prompts/gold_chart.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.4896195,
+    "ast_hash": "b14e78fe597582805eb5421bfafbb0e8",
+    "semantic_hash": ""
+  },
+  "trading/prompts/gold_news.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.48962,
+    "ast_hash": "23cd6c732be0f9644b53b4b05ae7b11b",
+    "semantic_hash": ""
+  },
+  "trading/prompts/gold_onecall.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.4896207,
+    "ast_hash": "4c90e6e37287e8717e4c1d0323c66687",
+    "semantic_hash": ""
+  },
+  "trading/prompts/gold_pm.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.4896214,
+    "ast_hash": "c7a1924dd4b1d455c6eee39e40beac58",
+    "semantic_hash": ""
+  },
+  "trading/prompts/news.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.489622,
+    "ast_hash": "0cfac99230013d044862a44a95eb0ec5",
+    "semantic_hash": ""
+  },
+  "trading/prompts/pm.md": {
+    "mtime": 1795600512.6532671,
+    "seen": 1795657008.4896228,
+    "ast_hash": "de6e0dcc14aec5d3de7fa9453fcc5445",
+    "semantic_hash": ""
+  },
+  "trading/reports/gold_tables.md": {
+    "mtime": 1795600512.654238,
+    "seen": 1795657008.4896233,
+    "ast_hash": "a4ae395f03917bc5965deab8f66df933",
+    "semantic_hash": ""
+  },
+  "trading/reports/phase1.md": {
+    "mtime": 1795600512.654238,
+    "seen": 1795657008.489624,
+    "ast_hash": "0ff04b0ce954c3492d4628b127103474",
+    "semantic_hash": ""
+  },
+  "trading/reports/set50_tables.md": {
+    "mtime": 1795600512.654238,
+    "seen": 1795657008.4896247,
+    "ast_hash": "85fb6cb2ba7cb8b6a7eca44201ed741f",
+    "semantic_hash": ""
+  },
+  "trading/swing/README.md": {
+    "mtime": 1795657003.632767,
+    "seen": 1795657008.4896257,
+    "ast_hash": "1879116dd27f6020d6221e554b52179e",
+    "semantic_hash": ""
+  },
+  "trading/swing/prompts/pm.md": {
+    "mtime": 1795656740.2247577,
+    "seen": 1795657008.4896264,
+    "ast_hash": "8903a80457ac759ea738c23e453c61b6",
     "semantic_hash": ""
   }
 }
