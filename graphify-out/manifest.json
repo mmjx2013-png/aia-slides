@@ -348,16 +348,16 @@
     "semantic_hash": "c621cbd8e8e6562f3d71462630782d6b"
   },
   "satit-site/build.py": {
-    "mtime": 1795593528.4289334,
-    "seen": 1795593825.3762796,
-    "ast_hash": "1af7588c2502fab35288cf972b7608ec",
-    "semantic_hash": ""
+    "mtime": 1795595069.1001058,
+    "seen": 1795670594.9892423,
+    "ast_hash": "93e44f9b0acf49b9ecda7593335025b7",
+    "semantic_hash": "93e44f9b0acf49b9ecda7593335025b7"
   },
   "satit-site/js/site.js": {
     "mtime": 1795592961.3504295,
-    "seen": 1795593825.3762827,
+    "seen": 1795670594.989246,
     "ast_hash": "a1fb6a0e30c46e20799c30385e77bde6",
-    "semantic_hash": ""
+    "semantic_hash": "a1fb6a0e30c46e20799c30385e77bde6"
   },
   "satit-site/src/photos.json": {
     "mtime": 1795588680.2236238,
@@ -397,62 +397,92 @@
   },
   "satit-site/pitch/build_deck.py": {
     "mtime": 1795593548.8056746,
-    "seen": 1795593825.3762846,
+    "seen": 1795670594.9892485,
     "ast_hash": "597fc15b95e4fafbdd497740d77ae938",
-    "semantic_hash": ""
+    "semantic_hash": "597fc15b95e4fafbdd497740d77ae938"
   },
   "tools/satit-pdf/evidence.py": {
     "mtime": 1795591895.3233082,
-    "seen": 1795593825.3763447,
+    "seen": 1795670594.989334,
     "ast_hash": "c3e6c613a0d882e4898862130181185c",
-    "semantic_hash": ""
+    "semantic_hash": "c3e6c613a0d882e4898862130181185c"
   },
   "tools/satit-pdf/gen.mjs": {
     "mtime": 1795591895.3236053,
-    "seen": 1795593825.3763459,
+    "seen": 1795670594.9893363,
     "ast_hash": "4a883601029621d010b7682df5d1f87e",
-    "semantic_hash": ""
+    "semantic_hash": "4a883601029621d010b7682df5d1f87e"
   },
   "tools/satit-pdf/phoneuse.cjs": {
     "mtime": 1795591895.3236926,
-    "seen": 1795593825.376347,
+    "seen": 1795670594.9893386,
     "ast_hash": "7437ebad5ee76a6af744a2d2b200b69d",
-    "semantic_hash": ""
+    "semantic_hash": "7437ebad5ee76a6af744a2d2b200b69d"
   },
   "tools/satit-pdf/print.cjs": {
     "mtime": 1795591895.3234003,
-    "seen": 1795593825.3763485,
+    "seen": 1795670594.9893408,
     "ast_hash": "89591ea64f528b88349224e43869c3a2",
-    "semantic_hash": ""
+    "semantic_hash": "89591ea64f528b88349224e43869c3a2"
   },
   "tools/satit-pdf/script.py": {
     "mtime": 1795591895.3233502,
-    "seen": 1795593825.3763497,
+    "seen": 1795670594.9893432,
     "ast_hash": "40d5b83c496f9b948541b6d5992dce6e",
-    "semantic_hash": ""
+    "semantic_hash": "40d5b83c496f9b948541b6d5992dce6e"
   },
   "tools/satit-pdf/thumbs.cjs": {
     "mtime": 1795591895.3234162,
-    "seen": 1795593825.3763506,
+    "seen": 1795670594.9893477,
     "ast_hash": "0333f396cffe645b74a9611c925c53da",
-    "semantic_hash": ""
+    "semantic_hash": "0333f396cffe645b74a9611c925c53da"
   },
   "satit-site/pitch/script.md": {
-    "mtime": 1795591151.6949155,
-    "seen": 1795593825.3763711,
-    "ast_hash": "09ada27bef890bbf812a772a625886f5",
-    "semantic_hash": ""
+    "mtime": 1795595373.168777,
+    "seen": 1795670594.9893775,
+    "ast_hash": "8ca841579822f63e49a99083a771a4a7",
+    "semantic_hash": "8ca841579822f63e49a99083a771a4a7"
   },
   "satit-site/pitch/evidence/evidence-speed.pdf": {
     "mtime": 1795591895.3180263,
-    "seen": 1795593825.3763752,
+    "seen": 1795670594.989385,
     "ast_hash": "44f4b1745ab093e2d86f307fc2e72142",
-    "semantic_hash": ""
+    "semantic_hash": "44f4b1745ab093e2d86f307fc2e72142"
   },
   "satit-site/pitch/script.pdf": {
-    "mtime": 1795591895.3207917,
-    "seen": 1795593825.3763766,
-    "ast_hash": "b8b9c70fd642740e7e939f9b1fc993ca",
-    "semantic_hash": ""
+    "mtime": 1795595472.3665495,
+    "seen": 1795670594.9893866,
+    "ast_hash": "b5340405d335f15a6540e611bd9002e1",
+    "semantic_hash": "b5340405d335f15a6540e611bd9002e1"
+  },
+  "tools/fetch_latest.sh": {
+    "mtime": 1795600303.808762,
+    "seen": 1795670594.9893138,
+    "ast_hash": "70d38e712304cc89fe8286b368853a61",
+    "semantic_hash": "70d38e712304cc89fe8286b368853a61"
+  },
+  "tools/satit-pdf/security_report.py": {
+    "mtime": 1795595459.8202271,
+    "seen": 1795670594.9893453,
+    "ast_hash": "73f4884156b17123d1ffdafd7d97dbdb",
+    "semantic_hash": "73f4884156b17123d1ffdafd7d97dbdb"
+  },
+  "trading-data/TDEX_BK.json": {
+    "mtime": 1795599415.0577934,
+    "seen": 1795670594.9893565,
+    "ast_hash": "ed4480b20efca169d252da302bb27951",
+    "semantic_hash": "ed4480b20efca169d252da302bb27951"
+  },
+  "trading-data/README.md": {
+    "mtime": 1795599415.0577934,
+    "seen": 1795670594.9893827,
+    "ast_hash": "5a86a8e0f8edfb91f16e75be08a1a6a2",
+    "semantic_hash": "5a86a8e0f8edfb91f16e75be08a1a6a2"
+  },
+  "satit-site/pitch/security-report.pdf": {
+    "mtime": 1795595472.3699102,
+    "seen": 1795670594.989388,
+    "ast_hash": "e85402711a79f8a98b55c9c295288929",
+    "semantic_hash": "e85402711a79f8a98b55c9c295288929"
   }
 }
