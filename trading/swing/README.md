@@ -50,7 +50,7 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
 `claude/paper-trading`, then send the boss 3 lines plus a 4th: the REAL70 line and that book's equity. We stay paper: the owner acts on it by hand. The `daily` step also applies the owner's withdrawal policy to real70_paxg, real70_follow_2100 and aggr30 (from cash only; milestones once each, then 25% above the high-water mark; 34.0 THB/USD), and adds `| WITHDRAW <USD>` to the REAL70 line when a rule fires. Send no other messages, except the kill-switch ERROR.
 
 ## Test
-- `python3 test_swing.py`: 79 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
+- `python3 test_swing.py`: 83 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
   halts, kill switch, liquidation, stale order, the code re-check of Opus's open, calendar close and block).
 - `python3 test_replay.py --days 5`: the last N days of real 1m bars through the live code path. A stub PM stands in
   for Opus (0 tokens) on the real wake schedule. Output goes to `data/replay5/`.
@@ -121,8 +121,9 @@ Limits:
   its gold impact. The block goes into both Opus briefs. No x.com, no truthsocial.
 - `shocks.py`, at the 1m-replay step: an unscheduled move of more than 5 x ATR(1m) in 5 min that is also at least
   1 x ATR(1h), or more than 2% in 30 min.
-  - Code-enforced action: no entries for 30 min, and a wrong-side stop is tightened to max/min(breakeven, price -/+ 0.5R),
-    never widened.
+  - Code-enforced action: no entries for 30 min. A wrong-side stop becomes max(old, price - 0.5R) for a long (the mirror for a
+    short), lifted to breakeven only when the trade is up at least 0.25R. It is never widened and never forces a market exit.
+    The 2%/30m rule and weekend flags are logged only.
   - Live, the hour of headlines before the shock is classified and logged to `data/books/shocks.jsonl`. The next brief
     shows the last 24 h of shocks.
   - The ATR(1h) floor is an addition: as specified, the rule flagged 690 shocks in 30 days (`reports/shock_scan_30d.md`).

@@ -104,3 +104,14 @@ if __name__ == "__main__":
     t = int(time.time() * 1000)
     b = block(t)
     print(b, f"\n~{len(b) // 4} tokens, Venice calls {venice.calls['n']}")
+
+
+def trim(block_text, max_chars):
+    """Drop the oldest headline lines until the block fits in max_chars (keeps the header and the tally)."""
+    lines = block_text.splitlines()
+    while len("\n".join(lines)) > max(max_chars, 0):
+        ages = [(float(m.group(1)), i) for i, l in enumerate(lines) if (m := re.match(r"- (\d+) h ago:", l))]
+        if not ages:
+            break
+        lines.pop(max(ages)[1])
+    return "\n".join(lines)

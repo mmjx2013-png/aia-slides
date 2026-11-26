@@ -1,12 +1,13 @@
 """SHOCK DETECTOR (code, at the 1m-replay step). PAPER ONLY.
 
-A shock = an unscheduled move (no USD High calendar event within +/-30 min) of
-  more than 5 x ATR14(1m) close-to-close within 5 min, or more than 2% within 30 min.
+A shock = an unscheduled move (no USD High calendar event within +/-30 min) of more than 5 x ATR14(1m)
+  close-to-close within 5 min AND at least 1 x ATR14(1h) (boss-confirmed). A move of more than 2% in 30 min is
+  logged only (no action). Weekend flags are logged only: the desk is flat then.
 One shock per 30 min at most. On a shock (code-enforced, AI book and its same-decision books):
   - no new entries for 30 min;
-  - an open position on the WRONG side of the shock gets its stop tightened to the tighter of the current stop
-    and the larger(long) / smaller(short) of breakeven and price -/+ 0.5R. Never widened. If that level is
-    already through the price, the next bar's open takes the position out.
+  - an open position on the WRONG side of the shock: new stop = max(old, price - 0.5R) for a long (min / + for a
+    short); lifted to breakeven only when breakeven <= price - 0.25R (the trade is already winning). Never widened,
+    and never a market exit just because of a shock (the new stop is always away from the price).
 Live, the last hour of headlines (gold, the people list, "breaking") is pulled and classified by Venice; the
 shock log goes into the next Opus brief. Log: data/books/shocks.jsonl.
 """
@@ -16,6 +17,7 @@ import numpy as np
 import pandas as pd
 
 import env  # noqa: F401
+import rules as R
 from common import bkk, jappend, jlines
 
 ATR_K, MOVE_5M, PCT_30M = 5.0, 5, 0.02
@@ -58,7 +60,7 @@ def scan(m1, from_t=None, last_shock_t=None):
         mv5, mv30 = c[k] - c[k - MOVE_5M], c[k] / c[k - 30] - 1
         hit5 = atr[k] > 0 and abs(mv5) > ATR_K * atr[k] and \
             (not FLOOR_ATR1H or (atr1h[k] == atr1h[k] and abs(mv5) >= FLOOR_ATR1H * atr1h[k]))
-        hit30 = abs(mv30) > PCT_30M
+        hit30 = abs(mv30) > PCT_30M                                  # log only
         if not (hit5 or hit30) or (last is not None and t - last < COOLDOWN_MS):
             continue
         sch, title = scheduled(t)
@@ -68,7 +70,8 @@ def scan(m1, from_t=None, last_shock_t=None):
         out.append(dict(t=str(bkk(t + 60_000))[:16], t_ms=t + 60_000, px=float(c[k]),
                         dir=int(np.sign(mv5 if hit5 else mv30)), move5=round(float(mv5), 2), atr1=round(float(atr[k]), 2),
                         x_atr=round(float(abs(mv5) / atr[k]), 1) if atr[k] > 0 else None, move30_pct=round(100 * float(mv30), 2),
-                        rule="5xATR/5m" if hit5 else "2%/30m", calendar="not covered" if sch is None else "clear"))
+                        rule="5xATR/5m" if hit5 else "2%/30m (log only)", calendar="not covered" if sch is None else "clear",
+                        alert=bool(hit5) and not R.no_entry_time(t + 60_000)))
     return out
 
 
@@ -79,9 +82,11 @@ def act(broker, sh):
     if not p or p["dir"] == sh["dir"]:
         return "entries blocked 30 min"
     one_r = abs(p["entry"] - p["stop0"])
-    px = sh["px"]
-    cand = max(p["entry"], px - 0.5 * one_r) if p["dir"] > 0 else min(p["entry"], px + 0.5 * one_r)
-    new = max(p["stop"], cand) if p["dir"] > 0 else min(p["stop"], cand)
+    px, d = sh["px"], p["dir"]
+    cand = px - d * 0.5 * one_r
+    if d * (px - p["entry"]) >= 0.25 * one_r:                  # already winning: breakeven is allowed
+        cand = max(cand, p["entry"]) if d > 0 else min(cand, p["entry"])
+    new = max(p["stop"], cand) if d > 0 else min(p["stop"], cand)
     if new != p["stop"]:
         broker.log("SHOCK_TIGHTEN", sh["t_ms"], old=round(p["stop"], 2), new=round(new, 2), shock=sh["t"])
         p["stop"] = new
@@ -111,7 +116,7 @@ def headlines(sh):
 
 
 def recent_block(root, asof_ms, hours=24):
-    rows = [x for x in jlines(root / "shocks.jsonl") if asof_ms - hours * 3600_000 <= x["t_ms"] <= asof_ms]
+    rows = [x for x in jlines(root / "shocks.jsonl") if asof_ms - hours * 3600_000 <= x["t_ms"] <= asof_ms and x.get("action") != "log only"]
     if not rows:
         return "## Shocks (unscheduled moves, last 24 h)\n- none"
     out = ["## Shocks (unscheduled moves, last 24 h; code blocked entries 30 min after each)"]

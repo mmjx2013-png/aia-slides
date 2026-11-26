@@ -93,7 +93,10 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
             for x in ai.mirrors:
                 x.on_bar(b)
             sh = found.get(int(r["t"]))
-            if sh:
+            if sh and not sh.get("alert"):
+                jappend(Path(root) / "shocks.jsonl", dict(sh, action="log only"))
+                sst.write_text(json.dumps(dict(last=sh["t_ms"])))
+            elif sh:
                 notes = {x.d.name: SH.act(x, sh) for x in (ai, *ai.mirrors)}
                 if asof_ms - sh["t_ms"] < 24 * 3600_000 and Path(root) == BOOKS:
                     sh["headlines"] = SH.headlines(sh)
@@ -163,8 +166,11 @@ def wake(root=BOOKS, asof_ms=None, m1=None, heads=True, start_ms=None):
     txt, facts = build(asof_ms, fr, ai.s, headlines(asof_ms) if heads else None, ai.pending())
     import shocks as SH
     import statements as ST
-    txt += "\n" + SH.recent_block(Path(root), asof_ms) + "\n\n" + (ST.block(asof_ms) if heads else "## Influential statements\n(not fetched in this replay)")
-    txt += "\n\n" + (env.HERE / "prompts" / "pm.md").read_text()
+    stb = ST.block(asof_ms) if heads else "## Influential statements\n(not fetched in this replay)"
+    txt += "\n" + SH.recent_block(Path(root), asof_ms) + "\n\n"
+    tail = "\n\n" + (env.HERE / "prompts" / "pm.md").read_text()
+    txt += ST.trim(stb, 3000 * 4 - len(txt) - len(tail))     # brief <= 3k tokens: drop the oldest headlines first
+    txt += tail
     p = Path(root) / "ai" / "briefs" / f"{wid}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(txt)
