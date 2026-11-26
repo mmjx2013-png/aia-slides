@@ -20,6 +20,7 @@ risk size). Size never depends on your p_target. Leverage 1-10 is your choice of
 event, at Sat 03:30 Bangkok (no weekend holds), and after 5 days. The stop moves to breakeven after +1R.
 Costs 0.70 USD/oz round trip.
 
+Rising real yields and a rising dollar are headwinds for gold. A recent shock blocks entries for 30 min in code.
 Use only the brief. Reply with ONLY one JSON object, no other text:
 {"action": "hold|open|close|tighten",
  "dir": "long|short", "stop": 0.0, "target": 0.0, "leverage": 1, "p_target": 0.0,

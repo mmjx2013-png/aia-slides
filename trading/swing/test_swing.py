@@ -289,6 +289,24 @@ check("BEA GDP", O.extract("Prelim GDP q/q", "Real gross domestic product (GDP )
 check("Fed upper bound with fractions", O.extract("Federal Funds Rate", "maintain the target range for the federal funds rate at 3-3/4 to 4 percent") == 4)
 check("BLS has no official source (403): headlines only", O.source_for("CPI m/m") is None and O.source_for("Non-Farm Employment Change") is None)
 
+# 20 shock action: block entries 30 min; tighten a wrong-side stop, never widen
+import shocks as SHK
+b = fresh(profile=R.MAIN)
+opened(b, stop=3980, target=4100)                       # long, entry 4000.35, 1R = 20.35
+note = SHK.act(b, dict(t_ms=T0 + 2 * M, t="x", dir=-1, px=4010.0))
+check("shock against a long: stop to max(entry, px - 0.5R)", abs(b.s["pos"]["stop"] - max(4000.35, 4010 - 0.5 * 20.35)) < 1e-9)
+check("shock blocks entries for 30 min", "shock" in b.entry_block(T0 + 10 * M) or b.s["pos"])
+b2 = fresh(profile=R.MAIN)
+opened(b2, stop=3980, target=4100)
+SHK.act(b2, dict(t_ms=T0 + 2 * M, t="x", dir=1, px=4010.0))
+check("shock with the position: stop untouched", b2.s["pos"]["stop"] == 3980)
+b2.s["pos"]["stop"] = 4005.0
+SHK.act(b2, dict(t_ms=T0 + 3 * M, t="x", dir=-1, px=4006.0))
+check("shock never widens a stop", b2.s["pos"]["stop"] == 4005.0)
+b3 = fresh(profile=R.MAIN)
+b3.s["shock_until"] = T0 + 30 * M
+check("entry blocked during the shock window", "shock" in b3.entry_block(T0 + 5 * M) and b3.entry_block(T0 + 31 * M) is None)
+
 # 15 confidence sizing
 check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])
 check("kelly: p_cal 0.40, R 2 -> f 0.10, risk 1.25% (eighth)", abs(R.kelly_risk(0.40, 2)[0] - 0.0125) < 1e-9)

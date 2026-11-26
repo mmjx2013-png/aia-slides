@@ -175,6 +175,20 @@ def main(root, out):
         lines += [f"Fallback usage (live events): {fb}/{len(live)}" + (f" = {100 * fb / len(live):.0f}%" if live else "") +
                   " (decided without the actual number). Venice parser: " +
                   (f"{vbt.get('choice')} (benchmark {vbt.get('measured')}, median {vbt['models'][0]['median_s']} s)" if vbt.get("models") else "not benchmarked"), ""]
+    import shocks as SH
+    shk = jlines(root / "shocks.jsonl")
+    per = [x for x in shk if start <= pd.Timestamp(x["t_ms"], unit="ms", tz="UTC").tz_convert(BKK) < end]
+    lines += ["## Shocks and statements", f"Shocks (unscheduled moves; code blocked entries 30 min, tightened wrong-side stops): "
+              f"{len(per)} in the period, {len(shk)} since start."]
+    for x in per[-6:]:
+        hl = "; ".join(f"{h['title'][:60]} [{h.get('impact', '?')}]" for h in (x.get("headlines") or [])[:2]) or "no headlines"
+        lines.append(f"- {x['t']} {'up' if x['dir'] > 0 else 'down'} {x['move5']:+.1f} USD/5m ({x['x_atr']}x ATR1m), {x['action'].get('ai', '')}: {hl}")
+    try:
+        import statements as ST
+        tally = ST.block(int(end.value // 10**6)).splitlines()[-1] if root == HERE / "data" / "books" else "(not fetched for this book root)"
+    except Exception as e:
+        tally = f"(statements fetch failed: {type(e).__name__})"
+    lines += [f"Statements now: {tally}", ""]
     dec = [x for x in j["ai"] if x["kind"] == "DECISION"]
     fills = [x for x in j["ai"] if x["kind"] == "FILL"]
     lines += ["## AI decisions", f"Opus calls {len(dec)}, tokens {sum(x['tokens'] for x in dec):,} "

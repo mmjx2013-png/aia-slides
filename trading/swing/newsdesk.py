@@ -95,7 +95,16 @@ PAXG price {px:.2f} (about 1:1 with spot gold).
 ## Headlines (positioning context)
 {hl}
 
+{_extra(asof_ms, heads)}
+
 {(HERE / 'prompts' / 'news_playbook.md').read_text()}"""
+
+
+def _extra(asof_ms, heads):
+    import shocks as SH
+    import statements as ST
+    from desk import BOOKS
+    return SH.recent_block(BOOKS, asof_ms) + "\n\n" + (ST.block(asof_ms) if heads else "## Influential statements\n(not fetched in this replay)")
 
 
 def validate(pb, evs):

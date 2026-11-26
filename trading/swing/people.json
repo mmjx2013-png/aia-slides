@@ -1,0 +1,9 @@
+{"_note": "Names taken from Google News headlines on 2026-11-26 (Trump, 'Fed Chair Warsh', Bessent); update when they change. Only Google News RSS and federalreserve.gov feeds are used: no x.com, no truthsocial.",
+ "queries": [
+  {"label": "US President (Trump)", "q": "Trump gold OR tariffs OR Fed OR dollar"},
+  {"label": "Fed Chair (Kevin Warsh)", "q": "Warsh Fed"},
+  {"label": "Treasury Secretary (Scott Bessent)", "q": "Bessent"},
+  {"label": "Fed governors on rates/gold", "q": "\"Fed governor\" rates OR gold"},
+  {"label": "Central-bank gold buying", "q": "central bank gold buying OR PBoC gold reserves"}
+ ],
+ "fed_feeds": ["speeches.xml", "press_monetary.xml"]}

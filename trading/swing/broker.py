@@ -61,6 +61,8 @@ class Broker:
             return f"daily loss limit -{100 * self.k['daily']:.0f}%: halted for the Bangkok day"
         if s["halted_week"] == R.week_key(t_ms):
             return f"weekly loss limit -{100 * self.k['weekly']:.0f}%: halted for the week"
+        if s.get("shock_until") and t_ms < s["shock_until"]:
+            return "shock: no new entries for 30 min after an unscheduled move"
         if R.no_entry_time(t_ms):
             return "weekend: no entries Sat 00:00 - Mon 05:00 Bangkok"
         return R.calendar_block(t_ms)

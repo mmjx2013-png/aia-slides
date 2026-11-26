@@ -81,6 +81,10 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
     i1 = indicators(m1.iloc[-len(new) - 200:])
     m15 = indicators(resample(m1.iloc[-len(new) - 3000:], 15))
     ends15 = set(m15["end"])
+    import shocks as SH
+    sst = Path(root) / "shocks_state.json"
+    last_sh = json.loads(sst.read_text())["last"] if sst.exists() else None
+    found = {x["t_ms"] - 60_000: x for x in SH.scan(m1.iloc[-len(new) - 40:], from_t=last, last_shock_t=last_sh)}
     for t, r in new.iterrows():
         b = dict(t=int(r["t"]), o=r["o"], h=r["h"], l=r["l"], c=r["c"])
         started = ai.s["last_t"] is not None or b["t"] >= start_ms
@@ -88,6 +92,13 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
             ai.on_bar(b)
             for x in ai.mirrors:
                 x.on_bar(b)
+            sh = found.get(int(r["t"]))
+            if sh:
+                notes = {x.d.name: SH.act(x, sh) for x in (ai, *ai.mirrors)}
+                if asof_ms - sh["t_ms"] < 24 * 3600_000 and Path(root) == BOOKS:
+                    sh["headlines"] = SH.headlines(sh)
+                jappend(Path(root) / "shocks.jsonl", dict(sh, action=notes))
+                sst.write_text(json.dumps(dict(last=sh["t_ms"])))
             e4.on_bar(b)
         a1 = i1["atr"].get(t)
         c15.on_bar(dict(b, atr1=None if a1 is None or a1 != a1 else float(a1), rng=float(r["h"] - r["l"])))
@@ -150,7 +161,10 @@ def wake(root=BOOKS, asof_ms=None, m1=None, heads=True, start_ms=None):
     fr = frames(asof_ms, m1)
     from news import headlines
     txt, facts = build(asof_ms, fr, ai.s, headlines(asof_ms) if heads else None, ai.pending())
-    txt += "\n" + (env.HERE / "prompts" / "pm.md").read_text()
+    import shocks as SH
+    import statements as ST
+    txt += "\n" + SH.recent_block(Path(root), asof_ms) + "\n\n" + (ST.block(asof_ms) if heads else "## Influential statements\n(not fetched in this replay)")
+    txt += "\n\n" + (env.HERE / "prompts" / "pm.md").read_text()
     p = Path(root) / "ai" / "briefs" / f"{wid}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(txt)
