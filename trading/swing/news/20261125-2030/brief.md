@@ -8,6 +8,14 @@ PAXG price 3494.20 (about 1:1 with spot gold).
 - 4h: trend down, ADX 28, ATR14 38.34 USD, close vs EMA20/50 -2.21% / -3.96%
 - 1h: trend down, ADX 34, ATR14 19.02 USD, close vs EMA20/50 -1.33% / -2.08%
 
+## Macro (FRED, daily, about 1 day lag)
+- DFII10 (10y real yield %): 2.79 on 2026-11-24; 1w -0.10 pp, 1m +0.13 pp
+- DTWEXBGS (broad USD index): 123.60 on 2026-11-20; 1w +0.95, 1m +2.26
+- T10YIE (10y breakeven %): 2.12 on 2026-11-24; 1w -0.09 pp, 1m -0.22 pp
+- DGS10 (10y nominal %): 4.91 on 2026-11-24; 1w -0.19 pp, 1m -0.09 pp
+- 20-day correlation of PAXG daily returns with daily changes: DFII10 -0.03 (n=20), DTWEXBGS -0.63 (n=20)
+- Rising real yields and a rising dollar are headwinds for gold; falling ones are tailwinds.
+
 ## Recent reactions to USD High releases (PAXG, from the release-minute open)
 - none with 1m data in the cache
 
@@ -29,10 +37,23 @@ Scenarios: a trigger is either
 Code checks surprise scenarios first, in your order, as soon as a confident actual is known (within no_actual_after_s).
 Reaction scenarios are used only in fallback mode "reaction_only". The first scenario that matches is taken. Direction "none" = no trade.
 
+When SEVERAL releases share this time, you MUST cover ALL of them with a combined score (code computes it):
+- per release: typical_surprise (the size of a normal surprise, in the indicator's units) and gold_sign: +1 if a
+  number ABOVE forecast is bullish for gold, -1 if it is bearish (hot inflation or strong growth -> -1), and a weight
+  (weights sum to 1);
+- score = sum(weight x gold_sign x (actual - forecast) / typical_surprise); > 0 is gold-bullish;
+- buy if score >= buy_threshold, sell if score <= -sell_threshold, else no trade;
+- conflict rule: when the releases point in opposite gold directions (or one is in-line, |z| < 0.5, and another is
+  big, |z| >= 1), trade only if the score passes AND the first 60 s of price agrees by at least confirm_usd.
+A release whose actual is missing at decision time is left out and the weights are rescaled (logged).
+For a single release, the same block with one entry is fine.
+
 Reply with ONLY this JSON (no other text):
 {"summary": "<= 40 words",
  "scenarios": [{"name": "hot", "prob": 0.3, "trigger": {...}, "direction": "buy|sell|none",
                 "stop_usd": 0.0, "target_usd": 0.0, "max_hold_min": 20}],
+ "combined": {"releases": [{"indicator": "<exact title>", "typical_surprise": 0.1, "gold_sign": -1, "weight": 0.6}],
+              "buy_threshold": 1.0, "sell_threshold": 1.0, "confirm_usd": 3.0, "stop_usd": 0.0, "target_usd": 0.0, "max_hold_min": 20},
  "contingency": {"adverse_usd": 0.0, "adverse_within_min": 0.0, "no_trade_if_both_ways_usd": 0.0, "max_reversals": 1,
                  "reverse_on_stop": false},
  "fallback": {"no_actual_after_s": 90, "mode": "reaction_only|stay_out"}}

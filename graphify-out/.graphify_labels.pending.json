@@ -4,7 +4,7 @@
   "2": "CLAUDE.md",
   "3": "README.md",
   "4": "bkk",
-  "5": "pandas",
+  "5": "ai_backtest.py",
   "6": "numpy",
   "7": "common.py",
   "8": "trading/news.py",
@@ -18,7 +18,7 @@
   "16": "bkk",
   "17": "news_playbook.md",
   "18": "intraday/desk.py",
-  "19": "tools_save_dec.py",
+  "19": "json",
   "20": "pathlib",
   "21": "calendar_guard.py",
   "22": "Result",
@@ -81,7 +81,13 @@
   "79": "Broker",
   "80": "test_replay.py",
   "81": "paperbroker.py",
-  "82": "Daily2100",
+  "82": "gold_daily.py",
   "83": "Follower",
-  "84": "gold_desk.py"
+  "84": "gold_desk.py",
+  "85": "daily.py",
+  "86": "backtest.py",
+  "87": "market.py",
+  "88": "fetch.py",
+  "89": "Swing gold PAPER desk (PAXG/USDT)",
+  "90": "data.py"
 }

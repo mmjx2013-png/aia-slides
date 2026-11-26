@@ -197,10 +197,49 @@ class Exec:
         return x
 
     # ------------------------------------------------------------ decision
+    def combined(self, now):
+        """Code score over ALL releases at this time. Returns (scenario|None|'wait', why)."""
+        cb, el = self.pb["combined"], (now - self.T) / 1000
+        rel = cb["releases"]
+        have = [r for r in rel if r["indicator"] in self.actual]
+        if len(have) < len(rel) and el < self.pb["fallback"]["no_actual_after_s"]:
+            return "wait", None                      # wait for every release, up to the window
+        wsum = sum(r["weight"] for r in have)
+        parts, score = [], 0.0
+        for r in have:
+            ev = next(x for x in self.meta["events"] if x["title"] == r["indicator"])
+            z = (self.actual[r["indicator"]][0] - venice.num(ev["forecast"])) / r["typical_surprise"]
+            g = r["gold_sign"] * z
+            score += r["weight"] / wsum * g
+            parts.append((r["indicator"], round(z, 2), round(g, 2)))
+        d = 1 if score >= cb["buy_threshold"] else -1 if score <= -cb["sell_threshold"] else 0
+        gs = [g for _, _, g in parts]
+        conflict = (any(g > 0 for g in gs) and any(g < 0 for g in gs)) or \
+                   (any(abs(z) < 0.5 for _, z, _ in parts) and any(abs(z) >= 1 for _, z, _ in parts))
+        why = (f"score {score:+.2f} from " + ", ".join(f"{n.split()[0]} z {z:+.2f} gold {g:+.2f}" for n, z, g in parts) +
+               (f" (missing: {', '.join(r['indicator'] for r in rel if r not in have)}; weights rescaled)" if len(have) < len(rel) else "") +
+               f"; thresholds +{cb['buy_threshold']}/-{cb['sell_threshold']}" + ("; CONFLICT" if conflict else ""))
+        self.combined_log = dict(score=round(score, 3), parts=parts, conflict=conflict)
+        if not d:
+            return None, why + " -> no trade"
+        if conflict:
+            if el < 60:
+                return "wait", None                  # need the first 60 s of price
+            pre, x = self.pre_px(), self.window(0, 60)
+            mv = float(x["c"].iloc[-1]) - pre if len(x) and pre is not None else 0.0
+            if d * mv < cb["confirm_usd"]:
+                return None, why + f"; first 60 s {mv:+.2f} USD does not confirm by {cb['confirm_usd']} -> no trade"
+            why += f"; first 60 s {mv:+.2f} USD confirms"
+        s = dict(name="combined " + ("buy" if d > 0 else "sell"), direction="buy" if d > 0 else "sell",
+                 stop_usd=cb["stop_usd"], target_usd=cb["target_usd"], max_hold_min=cb["max_hold_min"])
+        return s, why
+
     def match(self, now):
         fb = self.pb["fallback"]
         el = (now - self.T) / 1000
         sc = self.pb["scenarios"]
+        if self.pb.get("combined") and self.actual and el <= fb["no_actual_after_s"] + 30:
+            return self.combined(now)
         if self.actual and el <= fb["no_actual_after_s"] + 30:
             for s in sc:
                 tr = s["trigger"]
@@ -320,7 +359,8 @@ class Exec:
                 s, why = None, f"no trade: first 60 s spiked both ways > {self.pb['contingency']['no_trade_if_both_ways_usd']}"
             path = "actual" if self.actual and (now - self.T) / 1000 <= self.pb["fallback"]["no_actual_after_s"] + 30 else \
                 ("fallback: " + self.pb["fallback"]["mode"])
-            self.decision = dict(scenario=s["name"] if s else None, why=why, t_ms=now, path=path)
+            self.decision = dict(scenario=s["name"] if s else None, why=why, t_ms=now, path=path,
+                                 combined=getattr(self, "combined_log", None))
             self.log(now, "DECISION", scenario=s["name"] if s else None, direction=s["direction"] if s else "none", why=why)
             if s and s["direction"] != "none":
                 self.pending = (1 if s["direction"] == "buy" else -1, s, now, why)

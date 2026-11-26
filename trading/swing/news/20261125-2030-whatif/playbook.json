@@ -1,0 +1,112 @@
+{
+ "summary": "WHAT-IF only: the same playbook with sell_threshold 0.5 instead of 0.7",
+ "scenarios": [
+  {
+   "name": "hot_core_pce",
+   "prob": 0.3,
+   "trigger": {
+    "type": "surprise",
+    "indicator": "Core PCE Price Index m/m",
+    "op": ">=",
+    "value": 0.1
+   },
+   "direction": "sell",
+   "stop_usd": 16.0,
+   "target_usd": 28.0,
+   "max_hold_min": 25.0
+  },
+  {
+   "name": "cool_core_pce",
+   "prob": 0.25,
+   "trigger": {
+    "type": "surprise",
+    "indicator": "Core PCE Price Index m/m",
+    "op": "<=",
+    "value": -0.1
+   },
+   "direction": "buy",
+   "stop_usd": 15.0,
+   "target_usd": 22.0,
+   "max_hold_min": 20.0
+  },
+  {
+   "name": "inline_core_pce",
+   "prob": 0.35,
+   "trigger": {
+    "type": "surprise",
+    "indicator": "Core PCE Price Index m/m",
+    "op": "abs<=",
+    "value": 0.05
+   },
+   "direction": "none",
+   "stop_usd": 0.0,
+   "target_usd": 0.0,
+   "max_hold_min": 0
+  },
+  {
+   "name": "reaction_drop",
+   "prob": 0.05,
+   "trigger": {
+    "type": "reaction",
+    "window_s": 90,
+    "op": "<=",
+    "move_usd": -9.0
+   },
+   "direction": "sell",
+   "stop_usd": 15.0,
+   "target_usd": 24.0,
+   "max_hold_min": 20.0
+  },
+  {
+   "name": "reaction_rally",
+   "prob": 0.05,
+   "trigger": {
+    "type": "reaction",
+    "window_s": 90,
+    "op": ">=",
+    "move_usd": 10.0
+   },
+   "direction": "buy",
+   "stop_usd": 15.0,
+   "target_usd": 20.0,
+   "max_hold_min": 15.0
+  }
+ ],
+ "combined": {
+  "releases": [
+   {
+    "indicator": "Core PCE Price Index m/m",
+    "typical_surprise": 0.1,
+    "gold_sign": -1,
+    "weight": 0.7
+   },
+   {
+    "indicator": "Prelim GDP q/q",
+    "typical_surprise": 0.4,
+    "gold_sign": -1,
+    "weight": 0.3
+   }
+  ],
+  "buy_threshold": 0.9,
+  "sell_threshold": 0.5,
+  "confirm_usd": 4.0,
+  "stop_usd": 16.0,
+  "target_usd": 26.0,
+  "max_hold_min": 25.0
+ },
+ "contingency": {
+  "adverse_usd": 10.0,
+  "adverse_within_min": 3.0,
+  "no_trade_if_both_ways_usd": 8.0,
+  "max_reversals": 0,
+  "reverse_on_stop": false
+ },
+ "fallback": {
+  "no_actual_after_s": 90,
+  "mode": "reaction_only"
+ },
+ "event_id": "20261125-2030",
+ "saved_ms": 1795676292286,
+ "opus_tokens": 67255,
+ "problems": []
+}

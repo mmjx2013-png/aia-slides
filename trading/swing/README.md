@@ -106,3 +106,10 @@ Limits:
 - Each result logs the official latency next to the headline latency.
 - Test on the real 2026-11-25 BEA pages (`result_sim_official_real.json`): Core PCE 0.3 (in line) and GDP 4.3 were read by
   code; the playbook said in-line = no trade.
+- Several releases at one time: the playbook must contain a `combined` block covering every release (typical
+  surprise, gold sign, weight, thresholds, confirm_usd). Code computes the score: weight x gold_sign x
+  (actual - forecast) / typical. When the signals conflict, a trade also needs the first 60 s of price to agree. The validator
+  rejects a playbook that leaves a release out. Nov 25 replay with the real BEA figures (`result_sim_combined_real.json`):
+  Core PCE z 0, GDP z +2.0, score -0.60 against a sell threshold of -0.7, conflict -> no trade. The price then fell 30
+  USD in 15 min. The what-if at threshold 0.5 (`news/20261125-2030-whatif/`) sells at T+60 s and is stopped out in the next
+  minute (on 1m bars the stop wins a tie).

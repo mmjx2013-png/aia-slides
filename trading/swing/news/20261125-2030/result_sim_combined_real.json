@@ -1,0 +1,63 @@
+{
+ "event_id": "20261125-2030",
+ "mode": "sim",
+ "events": [
+  {
+   "title": "Core PCE Price Index m/m",
+   "forecast": "0.3%",
+   "previous": "0.3%"
+  },
+  {
+   "title": "Prelim GDP q/q",
+   "forecast": "3.5%",
+   "previous": "3.4%"
+  }
+ ],
+ "summary": "Core PCE drives gold here; GDP is secondary. Trend is down on 4h and 1h and the dollar is firm. Sell a hot print, buy a cool one with tighter size logic, stay flat on in-line data.",
+ "actual": {
+  "Core PCE Price Index m/m": {
+   "value": 0.3,
+   "latency_s": 5.0,
+   "source": "official BEA (code)",
+   "official_latency_s": 5.0,
+   "headline_latency_s": 240.0
+  },
+  "Prelim GDP q/q": {
+   "value": 4.3,
+   "latency_s": 5.0,
+   "source": "official BEA (code)",
+   "official_latency_s": 5.0,
+   "headline_latency_s": null
+  }
+ },
+ "decision": {
+  "scenario": null,
+  "why": "score -0.60 from Core z +0.00 gold -0.00, Prelim z +2.00 gold -2.00; thresholds +0.9/-0.7; CONFLICT -> no trade",
+  "t_ms": 1795613405000,
+  "path": "actual",
+  "combined": {
+   "score": -0.6,
+   "parts": [
+    [
+     "Core PCE Price Index m/m",
+     0.0,
+     -0.0
+    ],
+    [
+     "Prelim GDP q/q",
+     2.0,
+     -2.0
+    ]
+   ],
+   "conflict": true
+  }
+ },
+ "trades": [],
+ "pnl": 0.0,
+ "equity": 10000.0,
+ "used_fallback": false,
+ "opus_tokens": 67255,
+ "venice_calls": 1,
+ "venice_model": "deepseek-v4-1-flash-1017-ultrafast",
+ "first_fill_latency_s": null
+}

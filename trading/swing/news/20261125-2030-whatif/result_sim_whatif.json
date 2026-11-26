@@ -1,0 +1,73 @@
+{
+ "event_id": "20261125-2030-whatif",
+ "mode": "sim",
+ "events": [
+  {
+   "title": "Core PCE Price Index m/m",
+   "forecast": "0.3%",
+   "previous": "0.3%"
+  },
+  {
+   "title": "Prelim GDP q/q",
+   "forecast": "3.5%",
+   "previous": "3.4%"
+  }
+ ],
+ "summary": "WHAT-IF only: the same playbook with sell_threshold 0.5 instead of 0.7",
+ "actual": {
+  "Core PCE Price Index m/m": {
+   "value": 0.3,
+   "latency_s": 5.0,
+   "source": "official BEA (code)",
+   "official_latency_s": 5.0,
+   "headline_latency_s": null
+  },
+  "Prelim GDP q/q": {
+   "value": 4.3,
+   "latency_s": 5.0,
+   "source": "official BEA (code)",
+   "official_latency_s": 5.0,
+   "headline_latency_s": null
+  }
+ },
+ "decision": {
+  "scenario": "combined sell",
+  "why": "score -0.60 from Core z +0.00 gold -0.00, Prelim z +2.00 gold -2.00; thresholds +0.9/-0.5; CONFLICT; first 60 s -13.02 USD confirms",
+  "t_ms": 1795613460000,
+  "path": "actual",
+  "combined": {
+   "score": -0.6,
+   "parts": [
+    [
+     "Core PCE Price Index m/m",
+     0.0,
+     -0.0
+    ],
+    [
+     "Prelim GDP q/q",
+     2.0,
+     -2.0
+    ]
+   ],
+   "conflict": true
+  }
+ },
+ "trades": [
+  {
+   "scenario": "combined sell",
+   "dir": -1,
+   "entry": 3488.38,
+   "exit": 3506.88,
+   "pnl": -88.1,
+   "reason": "stop",
+   "held_s": 60
+  }
+ ],
+ "pnl": -88.1,
+ "equity": 9911.9,
+ "used_fallback": false,
+ "opus_tokens": 67255,
+ "venice_calls": 0,
+ "venice_model": null,
+ "first_fill_latency_s": 60.0
+}

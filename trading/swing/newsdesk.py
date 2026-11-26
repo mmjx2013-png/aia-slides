@@ -118,6 +118,24 @@ def validate(pb, evs):
                 if not isinstance(s.get(k), (int, float)) or s[k] <= 0:
                     bad.append(f"{s.get('name')}: {k} must be > 0")
             s["max_hold_min"] = min(float(s.get("max_hold_min") or 30), 30)
+    cb = pb.get("combined")
+    if len(evs) > 1 and not cb:
+        bad.append("several releases share this time but there is no combined block")
+    if cb:
+        rel = cb.get("releases") or []
+        if {r.get("indicator") for r in rel} != names:
+            bad.append(f"combined must cover every release: {sorted(names)}")
+        for r in rel:
+            if not (isinstance(r.get("typical_surprise"), (int, float)) and r["typical_surprise"] > 0 and r.get("gold_sign") in (1, -1)):
+                bad.append(f"combined {r.get('indicator')}: typical_surprise > 0 and gold_sign +1/-1 needed")
+        w = sum(float(r.get("weight", 0)) for r in rel)
+        for r in rel:
+            r["weight"] = float(r.get("weight", 0)) / w if w > 0 else 1 / max(len(rel), 1)
+        for k in ("buy_threshold", "sell_threshold", "stop_usd", "target_usd"):
+            if not isinstance(cb.get(k), (int, float)) or cb[k] <= 0:
+                bad.append(f"combined {k} must be > 0")
+        cb["max_hold_min"] = min(float(cb.get("max_hold_min") or 30), 30)
+        cb.setdefault("confirm_usd", 0.0)
     c = pb.setdefault("contingency", {})
     c["max_reversals"] = min(int(c.get("max_reversals", 1) or 0), 1)
     fb = pb.setdefault("fallback", {})

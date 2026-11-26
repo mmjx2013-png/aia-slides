@@ -1,5 +1,5 @@
 {
- "summary": "Core PCE drives gold. Hot print: sell with the 4h/1h downtrend. Cool print: buy a smaller counter-trend bounce. In-line: no trade. If the actual is late, trade only a clear 90s reaction that beats the ~5 USD costs.",
+ "summary": "Core PCE drives gold here; GDP is secondary. Trend is down on 4h and 1h and the dollar is firm. Sell a hot print, buy a cool one with tighter size logic, stay flat on in-line data.",
  "scenarios": [
   {
    "name": "hot_core_pce",
@@ -31,7 +31,7 @@
   },
   {
    "name": "inline_core_pce",
-   "prob": 0.45,
+   "prob": 0.35,
    "trigger": {
     "type": "surprise",
     "indicator": "Core PCE Price Index m/m",
@@ -45,7 +45,7 @@
   },
   {
    "name": "reaction_drop",
-   "prob": 0.0,
+   "prob": 0.05,
    "trigger": {
     "type": "reaction",
     "window_s": 90,
@@ -53,13 +53,13 @@
     "move_usd": -9.0
    },
    "direction": "sell",
-   "stop_usd": 14.0,
-   "target_usd": 22.0,
+   "stop_usd": 15.0,
+   "target_usd": 24.0,
    "max_hold_min": 20.0
   },
   {
    "name": "reaction_rally",
-   "prob": 0.0,
+   "prob": 0.05,
    "trigger": {
     "type": "reaction",
     "window_s": 90,
@@ -67,11 +67,33 @@
     "move_usd": 10.0
    },
    "direction": "buy",
-   "stop_usd": 14.0,
+   "stop_usd": 15.0,
    "target_usd": 20.0,
    "max_hold_min": 15.0
   }
  ],
+ "combined": {
+  "releases": [
+   {
+    "indicator": "Core PCE Price Index m/m",
+    "typical_surprise": 0.1,
+    "gold_sign": -1,
+    "weight": 0.7
+   },
+   {
+    "indicator": "Prelim GDP q/q",
+    "typical_surprise": 0.4,
+    "gold_sign": -1,
+    "weight": 0.3
+   }
+  ],
+  "buy_threshold": 0.9,
+  "sell_threshold": 0.7,
+  "confirm_usd": 4.0,
+  "stop_usd": 16.0,
+  "target_usd": 26.0,
+  "max_hold_min": 25.0
+ },
  "contingency": {
   "adverse_usd": 10.0,
   "adverse_within_min": 3.0,
@@ -84,7 +106,7 @@
   "mode": "reaction_only"
  },
  "event_id": "20261125-2030",
- "saved_ms": 1795675435582,
- "opus_tokens": 66128,
+ "saved_ms": 1795676292286,
+ "opus_tokens": 67255,
  "problems": []
 }
