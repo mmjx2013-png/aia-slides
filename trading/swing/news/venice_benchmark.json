@@ -1,0 +1,102 @@
+{
+ "measured": "2026-11-26 06:49 UTC",
+ "choice": "nvidia-nemotron-3-nano-30b-a3b",
+ "models": [
+  {
+   "model": "nvidia-nemotron-3-nano-30b-a3b",
+   "median_s": 0.52,
+   "valid": "5/5",
+   "times": [
+    0.61,
+    0.5,
+    0.52,
+    0.73,
+    0.42
+   ]
+  },
+  {
+   "model": "gemma-4-uncensored",
+   "median_s": 0.59,
+   "valid": "5/5",
+   "times": [
+    0.55,
+    0.85,
+    0.6,
+    0.52,
+    0.59
+   ]
+  },
+  {
+   "model": "qwen3-235b-a22b-instruct-2507",
+   "median_s": 0.84,
+   "valid": "5/5",
+   "times": [
+    0.84,
+    0.72,
+    0.66,
+    1.12,
+    0.88
+   ]
+  },
+  {
+   "model": "venice-uncensored-1-2",
+   "median_s": 0.86,
+   "valid": "5/5",
+   "times": [
+    0.74,
+    0.78,
+    0.86,
+    0.86,
+    1.0
+   ]
+  },
+  {
+   "model": "openai-gpt-4o-mini-2024-07-18",
+   "median_s": 0.93,
+   "valid": "5/5",
+   "times": [
+    0.82,
+    1.07,
+    0.93,
+    0.78,
+    0.98
+   ]
+  },
+  {
+   "model": "mistral-small-3-2-24b-instruct",
+   "median_s": 1.03,
+   "valid": "5/5",
+   "times": [
+    0.85,
+    2.22,
+    1.09,
+    0.93,
+    1.03
+   ]
+  },
+  {
+   "model": "google-gemma-3-27b-it",
+   "median_s": 1.08,
+   "valid": "5/5",
+   "times": [
+    0.93,
+    2.0,
+    0.98,
+    1.08,
+    7.68
+   ]
+  },
+  {
+   "model": "qwen3-vl-235b-a22b",
+   "median_s": 2.08,
+   "valid": "5/5",
+   "times": [
+    2.08,
+    2.44,
+    1.53,
+    1.11,
+    2.62
+   ]
+  }
+ ]
+}

@@ -13,6 +13,7 @@ import env  # noqa: F401
 import indicators as lib
 import rules as R
 from common import bkk
+from macro import block as macro_block
 
 SKIP = {"turnover_mthb", "rel_ret_3m", "beta_120", "mom_12_1", "ret_12m", "ret_6m", "dd_52w_high", "from_52w_low",
         "williams_r", "stoch_d", "aroon_down", "vol60"}
@@ -124,6 +125,8 @@ Code's 4h trend for the entry rule (EMA20 vs EMA50): {trend4}.
 ## Indicator library (windows in bars of that timeframe)
 indicator,4h,1h
 {chr(10).join(f'{c},{i4[c]:.3g},{i1[c]:.3g}' for c in cols)}
+
+{macro_block(asof_ms, fr['1d'])}
 
 ## USD High-impact events, next 24 h
 {cal}

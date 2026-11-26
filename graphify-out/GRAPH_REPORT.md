@@ -1,18 +1,18 @@
 # Graph Report - aia-slides  (2026-11-26)
 
 ## Corpus Check
-- 125 files · ~94,014 words
+- 127 files · ~95,019 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 44 file(s) not represented in the graph (top: .csv 13, .ttf 12, .jsonl 10)
-- WARNING: 44 of 169 files seen (26%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
+- WARNING: 44 of 171 files seen (26%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 921 nodes · 1796 edges · 75 communities (59 shown, 16 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 63 edges (avg confidence: 0.85)
+- 936 nodes · 1834 edges · 86 communities (67 shown, 19 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 63 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0f376fb2`
+- Built from commit: `b1ecab49`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,21 +21,24 @@
 - Presentation styles: the owner's vocabulary
 - CLAUDE.md
 - README.md
-- json
+- bkk
 - pandas
 - numpy
 - common.py
 - trading/news.py
 - Phase 1 report: can an AI trade gold profitably? (PAPER money only)
-- json
+- swing/desk.py
 - strategies.py
 - qa.cjs
-- gold_desk.py
+- newsdesk.py
 - Exec
 - PAPER news desk playbook, event 20261125-2030
 - bkk
 - news_playbook.md
-- gold_daily.py
+- intraday/desk.py
+- json
+- pathlib
+- calendar_guard.py
 - Result
 - Result
 - Type-1 deck
@@ -90,6 +93,14 @@
 - news.md
 - trading/prompts/pm.md
 - swing/prompts/pm.md
+- time
+- Broker
+- test_replay.py
+- paperbroker.py
+- Daily2100
+- Follower
+- market.py
+- Swing gold PAPER desk (PAXG/USDT)
 
 ## God Nodes (most connected - your core abstractions)
 1. `bkk()` - 41 edges
@@ -97,8 +108,8 @@
 3. `Exec` - 17 edges
 4. `Broker` - 17 edges
 5. `step()` - 17 edges
-6. `run()` - 15 edges
-7. `replay()` - 15 edges
+6. `replay()` - 15 edges
+7. `run()` - 15 edges
 8. `Broker` - 14 edges
 9. `Daily2100` - 13 edges
 10. `jappend()` - 13 edges
@@ -106,19 +117,19 @@
 ## Surprising Connections (you probably didn't know these)
 - `Swing gold PAPER desk (PAXG/USDT)` --references--> `sync()`  [INFERRED]
   trading/swing/README.md → trading/swing/market.py
-- `eid()` --calls--> `bkk()`  [INFERRED]
-  trading/swing/newsdesk.py → trading/intraday/common.py
-- `reactions()` --calls--> `bkk()`  [INFERRED]
-  trading/swing/newsdesk.py → trading/intraday/common.py
-- `brief()` --calls--> `bkk()`  [INFERRED]
-  trading/swing/newsdesk.py → trading/intraday/common.py
-- `p_calibrated()` --calls--> `calibration()`  [INFERRED]
-  trading/swing/desk.py → trading/swing/report.py
+- `day_key()` --calls--> `bkk()`  [INFERRED]
+  trading/swing/rules.py → trading/intraday/common.py
+- `week_key()` --calls--> `bkk()`  [INFERRED]
+  trading/swing/rules.py → trading/intraday/common.py
+- `_bars_txt()` --calls--> `bkk()`  [INFERRED]
+  trading/swing/brief.py → trading/intraday/common.py
+- `position_txt()` --calls--> `bkk()`  [INFERRED]
+  trading/swing/brief.py → trading/intraday/common.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (75 total, 16 thin omitted)
+## Communities (86 total, 19 thin omitted)
 
 ### Community 0 - "MEMORY.md: shared memory for every Claude chat"
 Cohesion: 0.29
@@ -128,21 +139,21 @@ Nodes (6): How the owner works, Log (newest first; one line each; date, what, wh
 Cohesion: 0.33
 Nodes (5): Lessons for next time (the owner's feedback, 24 Nov 2026), Never, Presentation styles: the owner's vocabulary, Type 1: the target ("perfect"), Type 2: acceptable, the minimum standard
 
-### Community 4 - "json"
-Cohesion: 0.08
-Nodes (24): jappend(), jdump(), jlines(), answer(), budget(), event(), gate(), issue() (+16 more)
+### Community 4 - "bkk"
+Cohesion: 0.13
+Nodes (12): bkk(), Broker, select(), bkk_day(), clamp(), clamp_lev(), _clip(), entry_gate() (+4 more)
 
 ### Community 5 - "pandas"
-Cohesion: 0.05
-Nodes (51): decision_dates(), decisions(), ds(), make_decide(), prep(), replay(), report(), state() (+43 more)
+Cohesion: 0.06
+Nodes (46): decision_dates(), decisions(), ds(), make_decide(), prep(), replay(), report(), state() (+38 more)
 
 ### Community 6 - "numpy"
-Cohesion: 0.08
-Nodes (32): daily_records(), monte_carlo(), pct(), row(), indicators(), resample(), briefs(), headlines() (+24 more)
+Cohesion: 0.06
+Nodes (40): daily_fills(), hourly(), hourly_fills(), load(), daily(), rules(), sig_donchian(), sig_sma() (+32 more)
 
 ### Community 7 - "common.py"
-Cohesion: 0.05
-Nodes (43): context(), _h1(), refresh_h1(), _std(), _trend(), _archive(), entry_block(), events() (+35 more)
+Cohesion: 0.17
+Nodes (14): backfill(), frames(), jlines(), load_cache(), merge(), save_cache(), update_cache(), candidate() (+6 more)
 
 ### Community 8 - "trading/news.py"
 Cohesion: 0.11
@@ -152,9 +163,9 @@ Nodes (9): headlines(), brief(), _clean(), _get(), google(), market_news(), _par
 Cohesion: 0.08
 Nodes (23): Can an AI trade profitably? Thai stocks, then gold (paper money only), How the test works, Known weaknesses (please read), Phase 2: daily gold paper run (`gold_daily.py`), Phase 2 runbook (a new session can follow this cold), Run it, The question, AI desk past test, 1 Jul to 24 Nov 2026 (start 10,000 USD) (+15 more)
 
-### Community 10 - "json"
-Cohesion: 0.05
-Nodes (24): write_pending(), answer(), books(), check_open(), do_sync(), _f(), need_opus(), now_ms() (+16 more)
+### Community 10 - "swing/desk.py"
+Cohesion: 0.19
+Nodes (12): answer(), books(), check_open(), do_sync(), _f(), need_opus(), now_ms(), replay() (+4 more)
 
 ### Community 11 - "strategies.py"
 Cohesion: 0.16
@@ -164,13 +175,13 @@ Nodes (13): buy_and_hold_equal(), decide(), _eligible(), _equal(), _first_of(), 
 Cohesion: 0.10
 Nodes (11): args, BROWSER, { execFileSync }, fs, http, OUT, path, pw (+3 more)
 
-### Community 13 - "gold_desk.py"
-Cohesion: 0.34
-Nodes (10): chart_brief(), decision_dates(), ds(), news_brief(), prep(), read_pos(), replay(), report() (+2 more)
+### Community 13 - "newsdesk.py"
+Cohesion: 0.13
+Nodes (11): parse(), parse(), block(), series(), brief(), eid(), groups(), next_event() (+3 more)
 
 ### Community 14 - "Exec"
-Cohesion: 0.17
-Nodes (7): Exec, _chat(), num(), parse(), pick_model(), _req(), sane()
+Cohesion: 0.23
+Nodes (3): Exec, num(), sane()
 
 ### Community 15 - "PAPER news desk playbook, event 20261125-2030"
 Cohesion: 0.33
@@ -178,11 +189,23 @@ Nodes (5): Headlines (positioning context), PAPER news desk playbook, event 2026
 
 ### Community 16 - "bkk"
 Cohesion: 0.06
-Nodes (25): compute(), _ema(), _rsi(), table(), bkk(), _atr(), _bars_txt(), build() (+17 more)
+Nodes (23): compute(), _ema(), _rsi(), table(), _trend(), _atr(), _bars_txt(), build() (+15 more)
 
-### Community 19 - "gold_daily.py"
-Cohesion: 0.13
-Nodes (13): daily_fills(), hourly(), hourly_fills(), load(), bars(), merge(), daily(), rules() (+5 more)
+### Community 18 - "intraday/desk.py"
+Cohesion: 0.18
+Nodes (11): jappend(), jdump(), answer(), budget(), event(), gate(), issue(), opus_rules() (+3 more)
+
+### Community 19 - "json"
+Cohesion: 0.08
+Nodes (24): fetch(), path_for(), url_for(), closed_bars(), commit(), fills_series(), journal(), load_state() (+16 more)
+
+### Community 20 - "pathlib"
+Cohesion: 0.18
+Nodes (4): write_pending(), withdraw(), bar(), opened()
+
+### Community 21 - "calendar_guard.py"
+Cohesion: 0.17
+Nodes (6): _archive(), entry_block(), events(), fomc_close(), next_high(), refresh()
 
 ### Community 22 - "Result"
 Cohesion: 0.20
@@ -356,23 +379,43 @@ Nodes (3): Intraday gold PAPER desk (PAXG/USDT, 1m), Runbook (each hourly wake-u
 Cohesion: 0.50
 Nodes (3): Role: chart / indicator analyst, gold desk (PAPER trading), Role: news analyst, gold desk (PAPER trading), Two desk roles in one call (to save tokens): write the NEWS note and the CHART note independently.
 
+### Community 78 - "time"
+Cohesion: 0.25
+Nodes (8): context(), _h1(), refresh_h1(), _std(), fetch(), _frame(), _pace(), resample()
+
+### Community 80 - "test_replay.py"
+Cohesion: 0.31
+Nodes (4): history(), main(), schedule(), stub()
+
+### Community 81 - "paperbroker.py"
+Cohesion: 0.29
+Nodes (3): write_order(), bar(), fresh()
+
+### Community 84 - "market.py"
+Cohesion: 0.36
+Nodes (5): _bars(), frames(), seed(), _seed_file(), sync()
+
+### Community 85 - "Swing gold PAPER desk (PAXG/USDT)"
+Cohesion: 0.33
+Nodes (5): Macro block and the Venice benchmark, News desk (separate PAPER book "news", 10,000 USD, 1% risk; the main book's calendar guard is unchanged), Runbook (each 4h wake), Swing gold PAPER desk (PAXG/USDT), Test
+
 ## Knowledge Gaps
-- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `bkk()` connect `bkk` to `json`, `pandas`, `numpy`, `common.py`, `json`, `Exec`?**
-  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+- **Why does `bkk()` connect `bkk` to `pandas`, `common.py`, `swing/desk.py`, `newsdesk.py`, `time`, `Broker`, `bkk`, `paperbroker.py`, `intraday/desk.py`, `Daily2100`, `Follower`, `Exec`?**
+  _High betweenness centrality (0.037) - this node is a cross-community bridge._
 - **Are the 25 inferred relationships involving `bkk()` (e.g. with `_bars_txt()` and `build()`) actually correct?**
   _`bkk()` has 25 INFERRED edges - model-reasoned connections that need verification._
-- **Should `json` be split into smaller, more focused modules?**
-  _Cohesion score 0.0803633822501747 - nodes in this community are weakly interconnected._
+- **Should `bkk` be split into smaller, more focused modules?**
+  _Cohesion score 0.13227513227513227 - nodes in this community are weakly interconnected._
 - **Why does `Exec` connect `Exec` to `trading/news.py`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Should `pandas` be split into smaller, more focused modules?**
-  _Cohesion score 0.05047250859106529 - nodes in this community are weakly interconnected._
-- **Why does `sync()` connect `common.py` to `json`, `pandas`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _Cohesion score 0.05910364145658263 - nodes in this community are weakly interconnected._
+- **Why does `sync()` connect `market.py` to `swing/desk.py`, `Swing gold PAPER desk (PAXG/USDT)`, `pandas`, `common.py`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Should `numpy` be split into smaller, more focused modules?**
-  _Cohesion score 0.07982583454281568 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05874125874125874 - nodes in this community are weakly interconnected._

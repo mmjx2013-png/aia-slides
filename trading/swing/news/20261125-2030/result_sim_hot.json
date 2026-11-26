@@ -24,7 +24,8 @@
  "decision": {
   "scenario": "hot_core_pce",
   "why": "surprise +0.1 >= 0.1",
-  "t_ms": 1795613445000
+  "t_ms": 1795613445000,
+  "path": "actual"
  },
  "trades": [
   {
@@ -39,8 +40,9 @@
  ],
  "pnl": -88.1,
  "equity": 9911.9,
+ "used_fallback": false,
  "opus_tokens": 66128,
  "venice_calls": 1,
- "venice_model": "mistral-small-3-2-24b-instruct",
+ "venice_model": "nvidia-nemotron-3-nano-30b-a3b",
  "first_fill_latency_s": 60.0
 }

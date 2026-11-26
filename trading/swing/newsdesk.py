@@ -23,6 +23,7 @@ import rules as R
 from brief import trend
 from common import bkk, jlines, load_cache
 from market import frames
+from macro import block as macro_block
 
 HERE = env.HERE
 NEWS = HERE / "news"
@@ -85,6 +86,8 @@ PAXG price {px:.2f} (about 1:1 with spot gold).
 ## Trend
 - 4h: {t4['regime']}, ADX {t4['adx']:.0f}, ATR14 {t4['atr']:.2f} USD, close vs EMA20/50 {100 * (px / t4['e'][20] - 1):+.2f}% / {100 * (px / t4['e'][50] - 1):+.2f}%
 - 1h: {t1['regime']}, ADX {t1['adx']:.0f}, ATR14 {t1['atr']:.2f} USD, close vs EMA20/50 {100 * (px / t1['e'][20] - 1):+.2f}% / {100 * (px / t1['e'][50] - 1):+.2f}%
+
+{macro_block(asof_ms, fr['1d'])}
 
 ## Recent reactions to USD High releases (PAXG, from the release-minute open)
 {reactions(m1, asof_ms)}

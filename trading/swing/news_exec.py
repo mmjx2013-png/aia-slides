@@ -127,6 +127,8 @@ class Exec:
             t0 = time.time()
             r, raw = venice.parse(self.model, ind, ev["forecast"], ev["previous"], fresh)
             lat = round(time.time() - t0, 2)
+            if r and r.get("actual") is not None:
+                r["actual"] = venice.normalize(r["actual"], ev["forecast"])
             ok = bool(r) and r.get("confident") and venice.sane(r.get("actual"), ev["forecast"], ev["previous"])
             self.log(now, "VENICE", indicator=ind, model=self.model, reply=r if r else raw[:120], call_s=lat, accepted=bool(ok))
             if ok:
@@ -262,7 +264,9 @@ class Exec:
             self.decided = True
             if s and s["direction"] != "none" and self.spiky():
                 s, why = None, f"no trade: first 60 s spiked both ways > {self.pb['contingency']['no_trade_if_both_ways_usd']}"
-            self.decision = dict(scenario=s["name"] if s else None, why=why, t_ms=now)
+            path = "actual" if self.actual and (now - self.T) / 1000 <= self.pb["fallback"]["no_actual_after_s"] + 30 else \
+                ("fallback: " + self.pb["fallback"]["mode"])
+            self.decision = dict(scenario=s["name"] if s else None, why=why, t_ms=now, path=path)
             self.log(now, "DECISION", scenario=s["name"] if s else None, direction=s["direction"] if s else "none", why=why)
             if s and s["direction"] != "none":
                 self.pending = (1 if s["direction"] == "buy" else -1, s, now, why)
@@ -285,7 +289,8 @@ class Exec:
         acq = {k: dict(value=v[0], latency_s=round((v[1] - self.T) / 1000, 1), source=v[2]) for k, v in self.actual.items()}
         res = dict(event_id=self.id, mode="sim" if self.sim else "live", events=self.meta["events"], summary=self.pb.get("summary"),
                    actual=acq, decision=self.decision, trades=self.trades, pnl=round(self.equity - self.eq0, 2),
-                   equity=round(self.equity, 2), opus_tokens=self.pb.get("opus_tokens"), venice_calls=venice.calls["n"],
+                   equity=round(self.equity, 2), used_fallback=bool(self.decision and self.decision.get("path", "").startswith("fallback")),
+                   opus_tokens=self.pb.get("opus_tokens"), venice_calls=venice.calls["n"],
                    venice_model=self.model, first_fill_latency_s=next(((r["t_ms"] - self.T) / 1000 for r in self.log_rows if r["kind"] == "FILL"), None))
         tag = "result_sim.json" if self.sim else "result.json"
         (self.d / tag).write_text(json.dumps(res, indent=1))

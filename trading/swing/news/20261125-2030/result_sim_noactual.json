@@ -18,7 +18,8 @@
  "decision": {
   "scenario": "reaction_drop",
   "why": "reaction -13.02 USD in 90s <= -9.0",
-  "t_ms": 1795613490000
+  "t_ms": 1795613490000,
+  "path": "fallback: reaction_only"
  },
  "trades": [
   {
@@ -33,6 +34,7 @@
  ],
  "pnl": 107.89,
  "equity": 10107.89,
+ "used_fallback": true,
  "opus_tokens": 66128,
  "venice_calls": 0,
  "venice_model": null,

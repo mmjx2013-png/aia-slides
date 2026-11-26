@@ -167,7 +167,13 @@ def main(root, out):
             tr = "; ".join(f"{'S' if t['dir'] < 0 else 'B'} {t['entry']}->{t['exit']} {t['reason']}" for t in r["trades"]) or "-"
             lines.append(f"| {r['event_id']} | {f.stem.replace('result', '').strip('_') or r['mode']} | {(r.get('summary') or '')[:70]} | {act} | "
                          f"{(r['decision'] or {}).get('scenario')} | {tr} | {r['pnl']:+.2f} | {r['first_fill_latency_s']} s | {r['opus_tokens']} | {r['venice_calls']} |")
-        lines.append("")
+        live = [json.loads(f.read_text()) for f in res if f.name == "result.json"]
+        fb = sum(r.get("used_fallback", False) for r in live)
+        vb = env.HERE / "news" / "venice_benchmark.json"
+        vbt = json.loads(vb.read_text()) if vb.exists() else {}
+        lines += [f"Fallback usage (live events): {fb}/{len(live)}" + (f" = {100 * fb / len(live):.0f}%" if live else "") +
+                  " (decided without the actual number). Venice parser: " +
+                  (f"{vbt.get('choice')} (benchmark {vbt.get('measured')}, median {vbt['models'][0]['median_s']} s)" if vbt.get("models") else "not benchmarked"), ""]
     dec = [x for x in j["ai"] if x["kind"] == "DECISION"]
     fills = [x for x in j["ai"] if x["kind"] == "FILL"]
     lines += ["## AI decisions", f"Opus calls {len(dec)}, tokens {sum(x['tokens'] for x in dec):,} "

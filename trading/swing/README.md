@@ -82,3 +82,14 @@ Limits:
   Expect the reaction fallback most of the time.
 - Live polling (about 500 kline requests in 40 min) is far above the desk's usual pace of 1 request a minute. It is
   allowed only inside the event window.
+
+## Macro block and the Venice benchmark
+- `macro.py`: FRED DFII10 (10y real yield), DTWEXBGS (broad USD), T10YIE, DGS10. It fetches them once a day and caches
+  them. Both Opus briefs get the level, the 1w and 1m change, and the 20-day correlation of PAXG daily returns with
+  DFII10 and DTWEXBGS changes. Live, only published values are cached. In replays, a value dated the day before the
+  as-of day may not have been published yet (a small lookahead).
+- `venice.py benchmark`: 5 test prompts on each small chat model the API lists (text, structured output, no
+  reasoning, input price at most 0.30 USD per M tokens). It picks the lowest median time to a valid answer and re-measures
+  after 7 days. Results are in `news/venice_benchmark.json`. Parsed numbers are converted into the forecast's unit
+  (212000 -> 212 for a "150K" forecast) before the sanity check.
+- News results record `used_fallback`, and the report shows the fallback usage rate over live events.

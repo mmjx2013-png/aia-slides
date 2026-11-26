@@ -34,31 +34,53 @@ def _chat(model, msgs, max_tokens=60, timeout=15):
     return r["choices"][0]["message"]["content"]
 
 
-def pick_model(max_candidates=3):
-    f = CACHE / "venice_model.json"
-    if f.exists() and time.time() - f.stat().st_mtime < 86400:
-        return json.loads(f.read_text())
-    models = _req("/models")["data"]
-    cand = []
-    for m in models:
+TESTS = [("Core PCE Price Index m/m", "0.3%", "US core PCE prices rose 0.4% in October, above the 0.3% forecast", 0.4),
+         ("Non-Farm Employment Change", "150K", "US employers added 212,000 jobs in November", 212.0),
+         ("CPI m/m", "0.2%", "Consumer prices climbed 0.3% last month, the Labor Department said", 0.3),
+         ("ISM Manufacturing PMI", "48.5", "ISM factory index rises to 49.2 in November", 49.2),
+         ("Unemployment Rate", "4.3%", "Jobless rate holds at 4.3%", 4.3)]
+BENCH = env.HERE / "news" / "venice_benchmark.json"
+
+
+def small_models():
+    """Small chat models: text, structured output, not reasoning-only, input price <= 0.30 USD per M tokens."""
+    out = []
+    for m in _req("/models")["data"]:
         s = m.get("model_spec", {})
         c, p = s.get("capabilities", {}), s.get("pricing", {})
-        if m.get("type", "text") != "text" or c.get("supportsReasoning") or not c.get("supportsResponseSchema"):
-            continue
-        cand.append((p.get("input", {}).get("usd", 99), m["id"]))
-    cand.sort()
-    timed = []
-    for _, mid in cand[:max_candidates]:
-        t = time.time()
-        try:
-            _chat(mid, [{"role": "user", "content": "Headline: 'Payrolls rose 100K'. Extract the number."}])
-            timed.append((time.time() - t, mid))
-        except Exception:
-            continue
-    best = dict(model=min(timed)[1], latency_s=round(min(timed)[0], 2), tried=[[m, round(s, 2)] for s, m in timed]) if timed \
-        else dict(model=None, latency_s=None, tried=[])
-    f.write_text(json.dumps(best))
-    return best
+        if m.get("type", "text") == "text" and c.get("supportsResponseSchema") and not c.get("supportsReasoning") \
+                and p.get("input", {}).get("usd", 99) <= 0.30:
+            out.append(m["id"])
+    return out
+
+
+def benchmark():
+    """5 test prompts per small model; median seconds to a VALID answer (correct number); failures count as 30 s."""
+    import statistics
+    rows = []
+    for mid in small_models():
+        ts, ok = [], 0
+        for ind, fc, h, want in TESTS:
+            t = time.time()
+            r, _ = parse(mid, ind, fc, fc, [h])
+            dt = time.time() - t
+            good = bool(r) and r.get("actual") is not None and abs(normalize(r["actual"], fc) - want) < 1e-6
+            ok += good
+            ts.append(dt if good else 30.0)
+        rows.append(dict(model=mid, median_s=round(statistics.median(ts), 2), valid=f"{ok}/5", times=[round(x, 2) for x in ts]))
+    rows.sort(key=lambda r: (r["median_s"], -int(r["valid"][0])))
+    res = dict(measured=time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()), choice=rows[0]["model"] if rows else None, models=rows)
+    BENCH.parent.mkdir(parents=True, exist_ok=True)
+    BENCH.write_text(json.dumps(res, indent=1))
+    return res
+
+
+def pick_model(max_candidates=None):
+    """The benchmark winner; re-measured when the benchmark is older than 7 days."""
+    if not BENCH.exists() or time.time() - BENCH.stat().st_mtime > 7 * 86400:
+        benchmark()
+    b = json.loads(BENCH.read_text())
+    return dict(model=b["choice"], measured=b["measured"])
 
 
 def parse(model, indicator, forecast, previous, headlines):
@@ -80,6 +102,17 @@ def num(x):
         return float(str(x).strip().rstrip("%KMBkmb").replace(",", ""))
     except ValueError:
         return None
+
+
+def normalize(actual, forecast):
+    """Put the model's number in the forecast's unit: '150K' forecast and 212000 -> 212.0 (the same for M / B)."""
+    if actual is None:
+        return None
+    a, f = float(actual), str(forecast).strip().upper()
+    for suf, k in (("K", 1e3), ("M", 1e6), ("B", 1e9)):
+        if f.endswith(suf) and abs(a) >= k:
+            return a / k
+    return a
 
 
 def sane(actual, forecast, previous):
