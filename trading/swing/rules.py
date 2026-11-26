@@ -4,10 +4,12 @@ import calendar_guard
 from common import bkk
 
 CAPITAL = 10_080.23          # carried over from the retired intraday AI desk
-RISK = 0.01                  # 1% of equity lost if the stop is hit (incl. costs)
-LEV_MAX = 10                 # Opus picks 1..10; size = min(lev x equity, 1% risk size)
+# Risk profiles: the main AI book (from 2026-11-26) and the 1%-risk shadow on the same decisions.
+# Size never depends on Opus's p_target.
+MAIN = dict(name="2% risk", risk=0.02, daily=0.05, weekly=0.08, kill=0.15)
+ONE_PCT = dict(name="1% risk", risk=0.01, daily=0.03, weekly=0.06, kill=0.10)
+LEV_MAX = 10                 # Opus picks 1..10; size = min(lev x equity, risk size)
 BASE_LEV = 3                 # code books (take every 4h signal)
-DAILY_LOSS, WEEKLY_LOSS, KILL_DD = 0.03, 0.06, 0.10
 MAX_HOLD_MS = 5 * 86400_000
 HALF_SPREAD, SLIPPAGE = 0.25, 0.10
 COST = HALF_SPREAD + SLIPPAGE    # per side; 0.70/oz round trip
@@ -97,10 +99,10 @@ def clamp_lev(x):
     return int(min(max(round(req), 1), LEV_MAX)), req
 
 
-def size(equity, px, stop_dist, lev):
-    """Ounces = min(lev x equity / px, 1% risk at this stop incl. both sides' costs).
+def size(equity, px, stop_dist, lev, risk):
+    """Ounces = min(lev x equity / px, `risk` of equity at this stop incl. both sides' costs).
     Returns (qty, binding) where binding is 'leverage' or 'risk'."""
-    q_risk = RISK * equity / (stop_dist + 2 * COST)
+    q_risk = risk * equity / (stop_dist + 2 * COST)
     q_lev = lev * equity / px
     return (q_lev, "leverage") if q_lev < q_risk else (q_risk, "risk")
 

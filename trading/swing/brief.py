@@ -104,7 +104,7 @@ def build(asof_ms, fr, state, heads=None, pending=None):
 Price {px:.2f} (last closed 1m bar). Your decision executes at the next 1m open.
 
 ## Book
-Equity {s['equity']:.2f} USD (peak {s['peak']:.2f}, drawdown {dd:.1f}%; kill switch at 10%). Halts: {halts}.
+Equity {s['equity']:.2f} USD (peak {s['peak']:.2f}, drawdown {dd:.1f}%; kill switch at {100 * R.MAIN['kill']:.0f}%; risk {100 * R.MAIN['risk']:.0f}% per trade). Halts: {halts}.
 {position_txt(s, px, asof_ms)}{chr(10) + 'Pending, not yet executed: ' + pending['action'] if pending else ''}
 
 ## Trend (close vs EMA20 / 50 / 200; ADX14 (+DI/-DI); ATR14 in USD; ATR percentile of the last 250 bars)

@@ -43,7 +43,9 @@ def books(root=BOOKS):
     legacy = env.HERE.parent / "intraday" / "data" / "live" / "cand15"
     if not c15.exists() and legacy.exists() and root == BOOKS:   # carry the live candidate book over
         shutil.copytree(legacy, c15)
-    return Broker(root / "ai"), Broker(root / "every4h", shadows=()), ipb.Broker(c15)
+    ai = Broker(root / "ai")
+    ai.one = Broker(root / "ai_1pct", shadows=(), profile=R.ONE_PCT)   # 1%-risk shadow, same decisions, old halts
+    return ai, Broker(root / "every4h", shadows=(), profile=R.ONE_PCT), ipb.Broker(c15)
 
 
 def signal4h(h4, close_ms):
@@ -81,6 +83,7 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
         started = ai.s["last_t"] is not None or b["t"] >= start_ms
         if started:
             ai.on_bar(b)
+            ai.one.on_bar(b)
             e4.on_bar(b)
         a1 = i1["atr"].get(t)
         c15.on_bar(dict(b, atr1=None if a1 is None or a1 != a1 else float(a1), rng=float(r["h"] - r["l"])))
@@ -97,7 +100,7 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
                 ipb.write_order(c15.d, dict(id=f"{bkk(ct).strftime('%Y%m%d-%H%M')}-cand15", atr5=float(b15["atr"])),
                                 dict(dir="long" if d > 0 else "short", stop_atr=2.5, trail=True,
                                      why="15m donchian20 vol>1.5x faded, 2.5 ATR15 stop, ATR trail"), created_ms=close)
-    for x in (ai, e4, c15):
+    for x in (ai, ai.one, e4, c15):
         x.save()
     return ai, e4, c15, len(new)
 
@@ -204,6 +207,7 @@ def check_open(dec, f, ai, t_ms):
 def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
     t_ms = now_ms() if t_ms is None else t_ms
     ai = Broker(Path(root) / "ai")
+    one = Path(root) / "ai_1pct"
     f = json.loads((Path(root) / "ai" / "briefs" / f"{wid}.json").read_text())
     dec = parse(reply)
     a = str(dec.get("action", "")).lower()
@@ -216,6 +220,7 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
         o, why = check_open(dec, f, ai, t_ms)
         if o:
             write_pending(ai.d, "open", t_ms, id=wid, **o)
+            write_pending(one, "open", t_ms, id=wid, **o)
             res = f"ORDER {'long' if o['dir'] > 0 else 'short'} stop {o['stop']} target {o['target']} lev {o['lev']} p {o['p_target']} rr {o['rr']}"
         else:
             res = f"REJECT open: {why}"
@@ -223,6 +228,7 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
         res = "ORDER close" if ai.s["pos"] else "REJECT close: no position"
         if ai.s["pos"]:
             write_pending(ai.d, "close", t_ms, id=wid)
+            write_pending(one, "close", t_ms, id=wid)
     elif a == "tighten":
         p, ns = ai.s["pos"], _f(dec.get("new_stop", dec.get("stop")))
         if not p or ns is None:
@@ -231,6 +237,7 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
             res = f"REJECT tighten: {ns} is not between the stop {p['stop']:.2f} and price {f['px']:.2f}"
         else:
             write_pending(ai.d, "tighten", t_ms, id=wid, stop=round(ns, 2))
+            write_pending(one, "tighten", t_ms, id=wid, stop=round(ns, 2))
             res = f"ORDER tighten stop to {ns}"
     elif a == "hold":
         res = "HOLD"
@@ -242,7 +249,7 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
 
 def status():
     ai, e4, c15 = books()
-    for n, b in (("ai", ai), ("every4h", e4)):
+    for n, b in (("ai", ai), ("ai_1pct", ai.one), ("every4h", e4)):
         s = b.s
         print(n, f"equity {s['equity']:.2f} peak {s['peak']:.2f} pos {bool(s['pos'])} killed {s['killed']} last {bkk(s['last_t']) if s['last_t'] else None}")
     print("cand15", f"equity {c15.s['equity']:.2f} pos {bool(c15.s['pos'])}")

@@ -75,7 +75,7 @@ def main(days):
         log.append(line)
     desk.replay(int(m1["t"].iloc[-1]) + 60_000, root, m1, start)
     print("\n".join(log))
-    for b in ("ai", "every4h", "cand15"):
+    for b in ("ai", "ai_1pct", "every4h", "cand15"):
         j = [json.loads(x) for x in (root / b / "journal.jsonl").read_text().splitlines()] if (root / b / "journal.jsonl").exists() else []
         kinds = pd.Series([x["kind"] for x in j]).value_counts().to_dict()
         st = json.loads((root / b / "state.json").read_text())

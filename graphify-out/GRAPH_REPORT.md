@@ -1,18 +1,18 @@
 # Graph Report - aia-slides  (2026-11-26)
 
 ## Corpus Check
-- 111 files · ~85,451 words
+- 111 files · ~85,721 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 36 file(s) not represented in the graph (top: .ttf 12, .csv 9, .jsonl 6)
 - WARNING: 36 of 147 files seen (24%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 837 nodes · 1592 edges · 78 communities (62 shown, 16 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.85)
+- 837 nodes · 1591 edges · 78 communities (62 shown, 16 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 48 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e50482cc`
+- Built from commit: `ecc5a4ac`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -96,22 +96,22 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `bkk()` - 31 edges
-2. `step()` - 17 edges
-3. `Broker` - 17 edges
+2. `Broker` - 17 edges
+3. `step()` - 17 edges
 4. `load_cache()` - 16 edges
-5. `run()` - 15 edges
-6. `replay()` - 15 edges
+5. `replay()` - 15 edges
+6. `run()` - 15 edges
 7. `Broker` - 14 edges
-8. `prepare()` - 13 edges
-9. `resample()` - 13 edges
-10. `answer()` - 13 edges
+8. `resample()` - 13 edges
+9. `answer()` - 13 edges
+10. `prepare()` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Swing gold PAPER desk (PAXG/USDT)` --references--> `wake()`  [INFERRED]
   trading/swing/README.md → trading/swing/desk.py
-- `day_key()` --calls--> `bkk()`  [INFERRED]
-  trading/swing/rules.py → trading/intraday/common.py
 - `week_key()` --calls--> `bkk()`  [INFERRED]
+  trading/swing/rules.py → trading/intraday/common.py
+- `day_key()` --calls--> `bkk()`  [INFERRED]
   trading/swing/rules.py → trading/intraday/common.py
 - `Swing gold PAPER desk (PAXG/USDT)` --references--> `sync()`  [INFERRED]
   trading/swing/README.md → trading/swing/market.py

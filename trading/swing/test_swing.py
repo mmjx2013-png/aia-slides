@@ -28,6 +28,7 @@ def bar(i, o, h=None, l=None, c=None, t0=T0):
 
 
 def fresh(**kw):
+    kw.setdefault("profile", R.ONE_PCT)
     return Broker(tempfile.mkdtemp(), capital=10_000, **kw)
 
 
@@ -182,5 +183,26 @@ b.on_bar(bar(84, 4001))
 check("held 6 min before", b.s["pos"] is not None)
 b.on_bar(bar(85, 4001))
 check("closed 5 min before the event", journal(b, "EXIT")[-1]["reason"].startswith("calendar"))
+
+# 12 main profile: 2% risk, halts -5% / -8%, kill -15%
+R.CALENDAR = False
+b = fresh(profile=R.MAIN)
+opened(b)
+check("main book risks 2%", abs(b.s["pos"]["qty"] - 200 / (10 + 0.7)) < 1e-9)
+b = fresh(profile=R.MAIN, shadows=())
+b.s.update(day=R.day_key(T0), day_start=10_480.0)
+opened(b, stop=3900, target=5000, lev=10)
+check("main book not halted at -4.6%", b.s["halted_day"] is None)
+b = fresh(profile=R.MAIN, shadows=())
+b.s.update(day=R.day_key(T0), day_start=10_530.0)
+opened(b, stop=3900, target=5000, lev=10)
+check("main book halts at -5%", b.s["halted_day"] == R.day_key(T0))
+b = fresh(profile=R.MAIN, shadows=())
+b.s.update(peak=11_500.0)
+opened(b, stop=3900, target=5000, lev=1)
+check("main kill switch not at -13%", not b.s["killed"])
+b.s.update(peak=11_800.0)
+b.on_bar(bar(1, 4000, c=3999))
+check("main kill switch at -15%", b.s["killed"])
 
 print(f"test_swing: {ok}/{ok + fail} checks passed")

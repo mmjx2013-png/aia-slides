@@ -9,8 +9,8 @@ decision time; it executes at the OPEN of the first 1m bar that starts at or aft
 - Breakeven: after +1R the stop moves to entry, from the next bar.
 - Forced closes at the bar open: 5 min before any USD High event, Sat 03:30 Bangkok (no weekend
   holds), after 5 days held.
-- Halts: daily -3% (rest of the Bangkok day), weekly -6% (rest of the week), kill switch at -10%
-  from the equity peak (flat for good; the desk sends the ERROR).
+- Risk profile (rules.MAIN / rules.ONE_PCT): risk per trade, daily halt (rest of the Bangkok day),
+  weekly halt (rest of the week), kill switch from the equity peak (flat for good; the desk sends the ERROR).
 - Shadow books take the same entries and exits at fixed 1x/3x/10x/30x notional, with
   liquidation when equity <= 50% of used margin (checked on the bar's worst price).
 """
@@ -22,8 +22,9 @@ from common import bkk, jappend, jdump
 
 
 class Broker:
-    def __init__(self, d, capital=R.CAPITAL, shadows=R.SHADOW_LEVS):
+    def __init__(self, d, capital=R.CAPITAL, shadows=R.SHADOW_LEVS, profile=R.MAIN):
         self.d = Path(d)
+        self.k = profile
         self.d.mkdir(parents=True, exist_ok=True)
         f = self.d / "state.json"
         self.s = json.loads(f.read_text()) if f.exists() else dict(
@@ -50,13 +51,13 @@ class Broker:
     def entry_block(self, t_ms):
         s = self.s
         if s["killed"]:
-            return "kill switch: -10% from peak, desk stopped"
+            return f"kill switch: -{100 * self.k['kill']:.0f}% from peak, desk stopped"
         if s["pos"]:
             return "position already open"
         if s["halted_day"] == R.day_key(t_ms):
-            return "daily loss limit -3%: halted for the Bangkok day"
+            return f"daily loss limit -{100 * self.k['daily']:.0f}%: halted for the Bangkok day"
         if s["halted_week"] == R.week_key(t_ms):
-            return "weekly loss limit -6%: halted for the week"
+            return f"weekly loss limit -{100 * self.k['weekly']:.0f}%: halted for the week"
         if R.no_entry_time(t_ms):
             return "weekend: no entries Sat 00:00 - Mon 05:00 Bangkok"
         return R.calendar_block(t_ms)
@@ -72,7 +73,7 @@ class Broker:
             return self.log("REJECT", b["t"], id=o["id"], reason=why)
         eq = self.s["equity"]
         dist = abs(b["o"] - o["stop"])
-        qty, binding = R.size(eq, b["o"], dist, o.get("lev", R.BASE_LEV))
+        qty, binding = R.size(eq, b["o"], dist, o.get("lev", R.BASE_LEV), self.k["risk"])
         self.s["pos"] = dict(dir=d, qty=qty, entry=px, stop=o["stop"], stop0=o["stop"], target=o["target"],
                              t=b["t"], id=o["id"], be=False, p=o.get("p_target"))
         self.log("FILL", b["t"], id=o["id"], side="BUY" if d > 0 else "SELL", qty=round(qty, 4), px=round(px, 2),
@@ -174,19 +175,19 @@ class Broker:
                         p["stop"] = p["entry"]
                         self.log("BREAKEVEN", b["t"], id=p["id"], stop=round(p["entry"], 2))
         m = self.mtm(b["c"])
-        if not s["killed"] and m <= s["peak"] * (1 - R.KILL_DD):
+        if not s["killed"] and m <= s["peak"] * (1 - self.k["kill"]):
             if s["pos"]:
-                self._close(b, b["c"], "kill switch -10% from peak")
+                self._close(b, b["c"], f"kill switch -{100 * self.k['kill']:.0f}% from peak")
             s["killed"] = str(bkk(b["t"]))[:16]
             self.log("KILL", b["t"], equity=round(s["equity"], 2), peak=round(s["peak"], 2))
-        if m <= s["day_start"] * (1 - R.DAILY_LOSS) and s["halted_day"] != day:
+        if m <= s["day_start"] * (1 - self.k["daily"]) and s["halted_day"] != day:
             if s["pos"]:
-                self._close(b, b["c"], "daily loss limit -3%")
+                self._close(b, b["c"], f"daily loss limit -{100 * self.k['daily']:.0f}%")
             s["halted_day"] = day
             self.log("HALT", b["t"], scope="day", equity=round(s["equity"], 2))
-        if m <= s["week_start"] * (1 - R.WEEKLY_LOSS) and s["halted_week"] != week:
+        if m <= s["week_start"] * (1 - self.k["weekly"]) and s["halted_week"] != week:
             if s["pos"]:
-                self._close(b, b["c"], "weekly loss limit -6%")
+                self._close(b, b["c"], f"weekly loss limit -{100 * self.k['weekly']:.0f}%")
             s["halted_week"] = week
             self.log("HALT", b["t"], scope="week", equity=round(s["equity"], 2))
         m = self.mtm(b["c"])

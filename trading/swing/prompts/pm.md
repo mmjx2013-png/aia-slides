@@ -15,8 +15,8 @@ Hard rules, re-checked in code (an answer that fails any of them is rejected):
    0.5 x ATR(4h) of one of the key levels listed.
 4. No USD High-impact event in the next 2 h (see the calendar line).
 5. Stop distance between 0.5 x ATR(1h) and 3 x ATR(1d).
-Risk is fixed in code: each trade risks 1% of equity at its stop; size = min(leverage x equity, the 1%
-risk size). Leverage 1-10 is your choice of the notional CAP. The code closes 5 min before any USD High
+Risk is fixed in code: each trade risks 2% of equity at its stop; size = min(leverage x equity, the 2%
+risk size). Size never depends on your p_target. Leverage 1-10 is your choice of the notional CAP. The code closes 5 min before any USD High
 event, at Sat 03:30 Bangkok (no weekend holds), and after 5 days. The stop moves to breakeven after +1R.
 Costs 0.70 USD/oz round trip.
 

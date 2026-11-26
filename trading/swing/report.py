@@ -100,14 +100,15 @@ def main(root, out):
     end = now.normalize() + pd.Timedelta(hours=21)
     end = end if now >= end - pd.Timedelta(minutes=30) else end - pd.Timedelta(days=1)
     start = end - pd.Timedelta(days=1)
-    j = {b: jlines(root / b / "journal.jsonl") for b in ("ai", "every4h", "cand15")}
+    j = {b: jlines(root / b / "journal.jsonl") for b in ("ai", "ai_1pct", "every4h", "cand15")}
     st = {b: json.loads((root / b / "state.json").read_text()) for b in j if (root / b / "state.json").exists()}
     eqs = {b: read_eq(root / b) for b in j}
     lines = [f"# Swing desk report (PAPER), {end.strftime('%Y-%m-%d')} 21:00 Bangkok", "",
-             "PAXG/USDT, paper only. AI = one Opus call per 4h wake, code re-checks every rule; "
+             "PAXG/USDT, paper only. ai = one Opus call per 4h wake, code re-checks every rule, 2% risk, halts -5%/-8%, kill -15%; "
+             "ai_1pct = the same decisions at 1% risk, halts -3%/-6%, kill -10%; "
              "every4h = code takes every 4h Donchian-20 signal (unfiltered baseline, 3x cap); cand15 = 15m candidate (code, intraday rules).", ""]
     hdr = ["| Book | Trades | Win | Avg win / loss USD | Exp USD | Exp R | PF | Equity | Return |", "|---|---|---|---|---|---|---|---|---|"]
-    caps = {"ai": R.CAPITAL, "every4h": R.CAPITAL, "cand15": 10_000.0}
+    caps = {"ai": R.CAPITAL, "ai_1pct": R.CAPITAL, "every4h": R.CAPITAL, "cand15": 10_000.0}
     for label, lo in (("Since start", None), (f"Period {start.strftime('%m-%d %H:%M')} -> {end.strftime('%m-%d %H:%M')}", start)):
         lines += [f"## {label}", *hdr]
         for b in j:
