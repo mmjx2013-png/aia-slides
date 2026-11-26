@@ -50,7 +50,7 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
 `claude/paper-trading`, then send the boss 3 lines plus a 4th: the REAL70 line and that book's equity. We stay paper: the owner acts on it by hand. The `daily` step also applies the owner's withdrawal policy to real70_paxg, real70_follow_2100 and aggr30 (from cash only; milestones once each, then 25% above the high-water mark; 34.0 THB/USD), and adds `| WITHDRAW <USD>` to the REAL70 line when a rule fires. Send no other messages, except the kill-switch ERROR.
 
 ## Test
-- `python3 test_swing.py`: 70 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
+- `python3 test_swing.py`: 74 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
   halts, kill switch, liquidation, stale order, the code re-check of Opus's open, calendar close and block).
 - `python3 test_replay.py --days 5`: the last N days of real 1m bars through the live code path. A stub PM stands in
   for Opus (0 tokens) on the real wake schedule. Output goes to `data/replay5/`.
@@ -96,3 +96,13 @@ Limits:
   after 7 days. Results are in `news/venice_benchmark.json`. Parsed numbers are converted into the forecast's unit
   (212000 -> 212 for a "150K" forecast) before the sanity check.
 - News results record `used_fallback`, and the report shows the fallback usage rate over live events.
+
+## Official sources (news executor)
+- `officials.py` polls BEA `news/current-releases` (PCE, GDP, personal income) and the Fed `feeds/press_all.xml`
+  (FOMC statement) every 3 s, from T-1 to T+3 min only.
+- A new release link is fetched from the same host and the figure is extracted in code (regex on the official
+  wording). The ultrafast Venice model is used only if that fails.
+- BLS (CPI, NFP) answers 403 to automated requests and is not used: those events keep the headline path and the reaction fallback.
+- Each result logs the official latency next to the headline latency.
+- Test on the real 2026-11-25 BEA pages (`result_sim_official_real.json`): Core PCE 0.3 (in line) and GDP 4.3 were read by
+  code; the playbook said in-line = no trade.

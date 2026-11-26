@@ -23,6 +23,7 @@ from email.utils import parsedate_to_datetime
 import pandas as pd
 
 import env  # noqa: F401
+import officials
 import venice
 from common import bkk, load_cache
 from newsdesk import NEWS, CAPITAL, RISK
@@ -41,7 +42,11 @@ class Exec:
         self.log_rows = []
         self.bars = pd.DataFrame(columns=["t", "o", "h", "l", "c", "dur"])
         self.heads, self.seen = [], set()
-        self.actual = {}                  # indicator -> (value, t_obtained, source)
+        self.actual = {}                  # indicator -> (value, t_obtained, source): the first source wins
+        self.headline_lat = {}            # indicator -> seconds after T the headline path got it (kept for comparison)
+        self.official_lat = {}            # indicator -> (seconds after T, source)
+        srcs = {officials.source_for(e["title"]) for e in self.meta["events"]} - {None}
+        self.pollers = {s: officials.Poller(s) for s in srcs}
         self.pos, self.trades, self.reversals = None, [], 0
         self.decided, self.decision = False, None
         self.pending = None               # (dir, scenario, t_decided)
@@ -114,8 +119,43 @@ class Exec:
                     self.actual[e["title"]] = (v, now, "calendar")
                     self.log(now, "ACTUAL", indicator=e["title"], value=v, source="calendar", latency_s=round((now - self.T) / 1000, 1))
 
+    def official(self, now):
+        """Poll BEA / Fed every 3 s from T-1 to T+3 min; code extraction first, Venice only if that fails."""
+        for src, p in self.pollers.items():
+            try:
+                new = p.poll() if not self.sim else self.sim_official(src, now)
+            except Exception as e:
+                self.log(now, "OFFICIAL_ERROR", source=src, error=type(e).__name__)
+                continue
+            for url, lt, txt, fs in new:
+                self.log(now, "OFFICIAL_PAGE", source=src, url=url, title=lt[:100], fetch_s=fs)
+                for ev in self.meta["events"]:
+                    if officials.source_for(ev["title"]) != src or ev["title"] in self.official_lat or not officials.relevant(ev["title"], url):
+                        continue
+                    v, how = officials.extract(ev["title"], txt), "code"
+                    if v is None:
+                        r, _ = venice.parse(venice.PRIMARY, ev["title"], ev["forecast"], ev["previous"], [txt[:3000]])
+                        v, how = (venice.normalize(r["actual"], ev["forecast"]) if r and r.get("confident") and r.get("actual") is not None else None), "venice"
+                    if v is None or not venice.sane(v, ev["forecast"], ev["previous"]):
+                        self.log(now, "OFFICIAL_NO_FIGURE", indicator=ev["title"], how=how, value=v)
+                        continue
+                    lat = round((now - self.T) / 1000, 1)
+                    self.official_lat[ev["title"]] = (lat, f"{src} ({how})")
+                    self.log(now, "ACTUAL", indicator=ev["title"], value=v, source=f"official {src} ({how})", latency_s=lat)
+                    if ev["title"] not in self.actual:
+                        self.actual[ev["title"]] = (v, now, f"official {src} ({how})")
+
+    def sim_official(self, src, now):
+        out = []
+        for at, url in self.sim.get("official", []):
+            if self.T + at * 1000 <= now and url not in self.seen and officials.source_for(self.meta["events"][0]["title"]) == src:
+                self.seen.add(url)
+                t0 = time.time()
+                out.append((url, url.rsplit("/", 1)[-1], officials.text(officials._get(url)), round(time.time() - t0, 2)))
+        return out
+
     def parse_actuals(self, now):
-        need = {s["trigger"]["indicator"] for s in self.pb["scenarios"] if s["trigger"]["type"] == "surprise"} - set(self.actual)
+        need = {s["trigger"]["indicator"] for s in self.pb["scenarios"] if s["trigger"]["type"] == "surprise"} - set(self.headline_lat)
         fresh = [h for t, h in self.heads if t <= now]
         if not need or not fresh or self.parsed_n == len(fresh):
             return
@@ -136,6 +176,9 @@ class Exec:
             ok = bool(r) and r.get("confident") and venice.sane(r.get("actual"), ev["forecast"], ev["previous"])
             self.log(now, "VENICE", indicator=ind, model=used, reply=r if r else raw[:120], call_s=lat, accepted=bool(ok))
             if ok:
+                self.headline_lat[ind] = round((now - self.T) / 1000, 1)
+                if ind in self.actual:
+                    continue
                 self.actual[ind] = (float(r["actual"]), now, "headline+venice")
                 self.log(now, "ACTUAL", indicator=ind, value=float(r["actual"]), source="headline+venice",
                          latency_s=round((now - self.T) / 1000, 1))
@@ -254,6 +297,13 @@ class Exec:
                 self.enter(b, d, s, why)
             elif self.pos:
                 self.manage(b)
+        if self.pollers and self.T - 60_000 <= now <= self.T + 180_000 and now - self.last_off >= 3_000:
+            self.official(now)
+            self.last_off = now
+        if self.decided and now <= self.T + 10 * 60_000 and now - self.last_news >= 15_000:
+            self.news(now)                           # keep timing the headline path for the comparison
+            self.last_news = now
+            self.parse_actuals(now)
         if now >= self.T and not self.decided:
             if now - self.last_news >= 15_000:
                 self.news(now)
@@ -276,7 +326,7 @@ class Exec:
                 self.pending = (1 if s["direction"] == "buy" else -1, s, now, why)
 
     def run(self):
-        self.done_bars, self.last_news, self.last_cal, self.parsed_n = [], 0, 0, 0
+        self.done_bars, self.last_news, self.last_cal, self.parsed_n, self.last_off = [], 0, 0, 0, 0
         self.log(self.T, "RELEASE", events=[e["title"] for e in self.meta["events"]], mode="sim" if self.sim else "live")
         end = self.T + 40 * 60_000
         now = self.T - 5 * 60_000 if self.sim else int(time.time() * 1000)
@@ -290,7 +340,9 @@ class Exec:
         if self.pos:
             last = self.bars.iloc[-1]
             self.exit(int(last["t"] + last["dur"]), float(last["c"]), "end of the 40-min window")
-        acq = {k: dict(value=v[0], latency_s=round((v[1] - self.T) / 1000, 1), source=v[2]) for k, v in self.actual.items()}
+        acq = {k: dict(value=v[0], latency_s=round((v[1] - self.T) / 1000, 1), source=v[2],
+                       official_latency_s=self.official_lat.get(k, (None,))[0], headline_latency_s=self.headline_lat.get(k))
+               for k, v in self.actual.items()}
         res = dict(event_id=self.id, mode="sim" if self.sim else "live", events=self.meta["events"], summary=self.pb.get("summary"),
                    actual=acq, decision=self.decision, trades=self.trades, pnl=round(self.equity - self.eq0, 2),
                    equity=round(self.equity, 2), used_fallback=bool(self.decision and self.decision.get("path", "").startswith("fallback")),
@@ -311,6 +363,8 @@ if __name__ == "__main__":
     ap.add_argument("--actual", type=float)
     ap.add_argument("--at", type=float, default=45, help="sim: seconds after the release when the headline appears")
     ap.add_argument("--headline")
+    ap.add_argument("--official", nargs=2, action="append", metavar=("AT_S", "URL"),
+                    help="sim: an official release page that appears at T+AT_S seconds")
     a = ap.parse_args()
     sim = None
     if a.mode == "sim":
@@ -318,6 +372,6 @@ if __name__ == "__main__":
         e = meta["events"][0]
         h = a.headline or (f"US {e['title']} comes in at {a.actual}{'%' if '%' in e['forecast'] else ''} vs {e['forecast']} expected"
                            if a.actual is not None else None)
-        sim = dict(m1=load_cache(), heads=[(a.at, h)] if h else [])
+        sim = dict(m1=load_cache(), heads=[(a.at, h)] if h else [], official=[(float(x), u) for x, u in (a.official or [])])
     r = Exec(a.event_id, sim).run()
     print("RESULT", json.dumps({k: r[k] for k in ("decision", "trades", "pnl", "actual", "venice_calls", "first_fill_latency_s")}))

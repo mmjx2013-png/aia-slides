@@ -163,7 +163,8 @@ def main(root, out):
                   "|---|---|---|---|---|---|---|---|---|---|"]
         for f in res:
             r = json.loads(f.read_text())
-            act = "; ".join(f"{k.split()[0]} {v['value']} ({v['latency_s']}s, {v['source']})" for k, v in r["actual"].items()) or "none"
+            act = "; ".join(f"{k.split()[0]} {v['value']} ({v['source']} {v['latency_s']}s; official {v.get('official_latency_s')}s, "
+                            f"headline {v.get('headline_latency_s')}s)" for k, v in r["actual"].items()) or "none"
             tr = "; ".join(f"{'S' if t['dir'] < 0 else 'B'} {t['entry']}->{t['exit']} {t['reason']}" for t in r["trades"]) or "-"
             lines.append(f"| {r['event_id']} | {f.stem.replace('result', '').strip('_') or r['mode']} | {(r.get('summary') or '')[:70]} | {act} | "
                          f"{(r['decision'] or {}).get('scenario')} | {tr} | {r['pnl']:+.2f} | {r['first_fill_latency_s']} s | {r['opus_tokens']} | {r['venice_calls']} |")

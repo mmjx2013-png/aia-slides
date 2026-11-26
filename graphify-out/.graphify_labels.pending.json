@@ -18,7 +18,7 @@
   "16": "bkk",
   "17": "news_playbook.md",
   "18": "intraday/desk.py",
-  "19": "json",
+  "19": "tools_save_dec.py",
   "20": "pathlib",
   "21": "calendar_guard.py",
   "22": "Result",
@@ -83,6 +83,5 @@
   "81": "paperbroker.py",
   "82": "Daily2100",
   "83": "Follower",
-  "84": "market.py",
-  "85": "Swing gold PAPER desk (PAXG/USDT)"
+  "84": "gold_desk.py"
 }

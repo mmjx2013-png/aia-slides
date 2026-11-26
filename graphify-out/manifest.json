@@ -276,9 +276,9 @@
     "semantic_hash": ""
   },
   "trading/swing/report.py": {
-    "mtime": 1795675808.181468,
-    "seen": 1795675835.4774058,
-    "ast_hash": "728ccbe21636af0ee1916041a05e50c3",
+    "mtime": 1795676203.3223631,
+    "seen": 1795676204.8972948,
+    "ast_hash": "3f4a27ea424a533e4f95bd983b942405",
     "semantic_hash": ""
   },
   "trading/swing/rules.py": {
@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "trading/swing/test_swing.py": {
-    "mtime": 1795673859.3084233,
-    "seen": 1795673879.5766807,
-    "ast_hash": "2d5e1f155bfef1afb1ff42da8cbc9f7b",
+    "mtime": 1795676203.3227532,
+    "seen": 1795676204.897302,
+    "ast_hash": "191773e84d7a0d11e2db51889d6f9f7f",
     "semantic_hash": ""
   },
   "trading/tools_save_dec.py": {
@@ -654,9 +654,9 @@
     "semantic_hash": ""
   },
   "trading/swing/README.md": {
-    "mtime": 1795675834.3278644,
-    "seen": 1795675835.477475,
-    "ast_hash": "6a6f4cd6269910a60951c048da8a777b",
+    "mtime": 1795676203.6625738,
+    "seen": 1795676204.8973641,
+    "ast_hash": "90d93dc57347a508be63c4a6b32fa523",
     "semantic_hash": ""
   },
   "trading/swing/prompts/pm.md": {
@@ -720,9 +720,9 @@
     "semantic_hash": ""
   },
   "trading/swing/news_exec.py": {
-    "mtime": 1795675808.1812239,
-    "seen": 1795675835.4774032,
-    "ast_hash": "38abfff9ede626ec83d65e29f62d9224",
+    "mtime": 1795676189.5239053,
+    "seen": 1795676204.8972921,
+    "ast_hash": "f721c2276f30cb4c5bf91192eb1ff8ab",
     "semantic_hash": ""
   },
   "trading/swing/newsdesk.py": {
@@ -732,9 +732,9 @@
     "semantic_hash": ""
   },
   "trading/swing/venice.py": {
-    "mtime": 1795675747.2536993,
-    "seen": 1795675835.4774137,
-    "ast_hash": "087e14a07d00701836115d2b72540a3e",
+    "mtime": 1795675891.954957,
+    "seen": 1795676204.897303,
+    "ast_hash": "ef480cb66ed0e12604169c4917d6bf58",
     "semantic_hash": ""
   },
   "trading/swing/news/20261125-2030/brief.md": {
@@ -759,6 +759,18 @@
     "mtime": 1795675795.3865263,
     "seen": 1795675835.4774022,
     "ast_hash": "1db47abf305a3cb6217ef2f235d2ce01",
+    "semantic_hash": ""
+  },
+  "trading/swing/news/20261125-2030/result_sim_official_real.json": {
+    "mtime": 1795676191.0870533,
+    "seen": 1795676204.897289,
+    "ast_hash": "185b2abbb91902db3cdcf60dcba0c200",
+    "semantic_hash": ""
+  },
+  "trading/swing/officials.py": {
+    "mtime": 1795676189.523564,
+    "seen": 1795676204.8972938,
+    "ast_hash": "2cbf600e43afae2524409e9623cc8ffb",
     "semantic_hash": ""
   }
 }

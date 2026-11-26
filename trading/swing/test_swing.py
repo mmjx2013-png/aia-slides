@@ -280,6 +280,15 @@ check("142000 for a '150K' forecast -> 142", venice.normalize(142000, "150K") ==
 check("bps and fraction-percent normalised", venice.normalize(0.25, "25bps") == 25.0 and abs(venice.normalize(0.031, "3.1%") - 3.1) < 1e-9)
 check("sanity: 142 vs 150K ok, 4.0 vs 0.3% rejected", venice.sane(142, "150K", "120K") and not venice.sane(4.0, "0.3%", "0.3%"))
 
+# 19 official-source extraction (BEA / Fed wording, offline)
+import officials as O
+pce = ("From the preceding month, the PCE price index for October increased 0.3 percent . Excluding food and energy, "
+       "the PCE price index also increased 0.4 percent.")
+check("BEA core PCE and headline PCE m/m", O.extract("Core PCE Price Index m/m", pce) == 0.4 and O.extract("PCE Price Index m/m", pce) == 0.3)
+check("BEA GDP", O.extract("Prelim GDP q/q", "Real gross domestic product (GDP ) increased at an annual rate of 4.3 percent in the third") == 4.3)
+check("Fed upper bound with fractions", O.extract("Federal Funds Rate", "maintain the target range for the federal funds rate at 3-3/4 to 4 percent") == 4)
+check("BLS has no official source (403): headlines only", O.source_for("CPI m/m") is None and O.source_for("Non-Farm Employment Change") is None)
+
 # 15 confidence sizing
 check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])
 check("kelly: p_cal 0.40, R 2 -> f 0.10, risk 1.25% (eighth)", abs(R.kelly_risk(0.40, 2)[0] - 0.0125) < 1e-9)

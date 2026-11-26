@@ -1,0 +1,7 @@
+{"t": "2026-11-25 20:30:00+07:", "t_ms": 1795613400000, "dt_s": 0.0, "kind": "RELEASE", "events": ["Core PCE Price Index m/m", "Prelim GDP q/q"], "mode": "sim"}
+{"t": "2026-11-25 20:30:05+07:", "t_ms": 1795613405000, "dt_s": 5.0, "kind": "OFFICIAL_PAGE", "source": "BEA", "url": "https://www.bea.gov/news/2026/personal-income-and-outlays-october-2026", "title": "personal-income-and-outlays-october-2026", "fetch_s": 0.37}
+{"t": "2026-11-25 20:30:05+07:", "t_ms": 1795613405000, "dt_s": 5.0, "kind": "ACTUAL", "indicator": "Core PCE Price Index m/m", "value": 0.3, "source": "official BEA (code)", "latency_s": 5.0}
+{"t": "2026-11-25 20:30:05+07:", "t_ms": 1795613405000, "dt_s": 5.0, "kind": "OFFICIAL_PAGE", "source": "BEA", "url": "https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-3rd-quarter-2026", "title": "gdp-second-estimate-and-corporate-profits-3rd-quarter-2026", "fetch_s": 0.1}
+{"t": "2026-11-25 20:30:05+07:", "t_ms": 1795613405000, "dt_s": 5.0, "kind": "ACTUAL", "indicator": "Prelim GDP q/q", "value": 4.3, "source": "official BEA (code)", "latency_s": 5.0}
+{"t": "2026-11-25 20:30:05+07:", "t_ms": 1795613405000, "dt_s": 5.0, "kind": "DECISION", "scenario": "inline_core_pce", "direction": "none", "why": "surprise +0 abs<= 0.05"}
+{"t": "2026-11-25 20:34:00+07:", "t_ms": 1795613640000, "dt_s": 240.0, "kind": "VENICE", "indicator": "Core PCE Price Index m/m", "model": "deepseek-v4-1-flash-1017-ultrafast", "reply": {"actual": 0.3, "unit": "%", "confident": true}, "call_s": 0.34, "accepted": true}
