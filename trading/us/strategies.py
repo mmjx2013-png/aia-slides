@@ -28,6 +28,10 @@ def _hold(C, sym):
     return W
 
 
+def _half(a, b):
+    return (a + b) / 2
+
+
 def buy_hold(C, sym):
     return _hold(C, sym)
 
@@ -118,6 +122,9 @@ def families(sectors, stocks):
     f = {"trend": [], "dual_momentum": [], "sector_rotation": [], "rsi2": [], "stocks_momentum (survivor-biased)": []}
     for a, n, b, off in itertools.product(["SPY", "QQQ"], [100, 150, 200], [0.0, 0.02], ["cash", "IEF"]):
         f["trend"].append((f"{a} > SMA{n} band {b:.0%} else {off}", lambda C, a=a, n=n, b=b, off=off: trend(C, a, n, b, off)))
+    for n, off in itertools.product([150, 200], ["cash", "IEF"]):
+        f["trend"].append((f"50/50 SPY+QQQ, each > SMA{n} else {off}",
+                           lambda C, n=n, off=off: _half(trend(C, "SPY", n, 0.02, off), trend(C, "QQQ", n, 0.02, off))))
     for m, safe in itertools.product([3, 6, 9, 12], ["IEF", "cash"]):
         f["dual_momentum"].append((f"best of SPY/QQQ/IWM by {m}m, else {safe}", lambda C, m=m, safe=safe: dual_momentum(C, ["SPY", "QQQ", "IWM"], m, safe)))
     for m, k, flt in itertools.product([3, 6, 12], [1, 2, 3], [True, False]):

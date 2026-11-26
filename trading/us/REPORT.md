@@ -3,7 +3,7 @@
 Data: Yahoo daily dump from the boss (commit 3fc1638), total-return adjusted, 2016-11-28 .. 2026-11-25.
 Fit / choose on 2016-11-28 .. 2022-12-30; judge ONLY on 2023-01-03 .. 2026-11-25. 70 USD cash account, fills at the next open,
 commission 0.10% + 7% VAT and 0.05% slippage each side, SEC fee on sells, fractional shares, no leverage, no shorts, cash earns 0.
-**68 variants tried** in 5 families; each family's variant is chosen by in-sample Sharpe only.
+**72 variants tried** in 5 families; each family's variant is chosen by in-sample Sharpe only.
 
 Pass rule: out-of-sample Sharpe above BOTH buy-and-hold SPY and QQQ, AND a max drawdown no deeper than the shallower of the two.
 
@@ -29,6 +29,25 @@ Pass rule: out-of-sample Sharpe above BOTH buy-and-hold SPY and QQQ, AND a max d
 | stocks_momentum (survivor-biased) | top 3 large caps by 12-1m | IS | +33.1% | 1.01 | -38.2% | 7.6 | 63% | 1.16% | 83% |
 | | | **OOS** | +52.4% | 1.26 | -35.9% | 9.5 | 68% | 1.58% | 100% |
 
+## Out-of-sample Sharpe difference vs buy-and-hold SPY (block bootstrap, 2,000 draws, 20-day blocks)
+| Family | Sharpe diff | 90% interval | P(diff > 0) |
+|---|---|---|---|
+| trend | -0.17 | [-0.85, +0.39] | 26% |
+| dual_momentum | -0.64 | [-1.37, -0.16] | 2% |
+| sector_rotation | -1.07 | [-1.89, -0.50] | 0% |
+| rsi2 | -0.74 | [-1.60, -0.01] | 5% |
+| stocks_momentum (survivor-biased) | +0.05 | [-0.67, +0.76] | 54% |
+
+## Calendar-year returns, full period (2022 = the bear year, in-sample)
+| Book | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| trend | +0% | +14% | +4% | +22% | +40% | +29% | -13% | +33% | +20% | +14% | +5% |
+| dual_momentum | +0% | +17% | +0% | +13% | +27% | +35% | -15% | +33% | +8% | +5% | -6% |
+| sector_rotation | +0% | +1% | -0% | +19% | +41% | +23% | +59% | +1% | +21% | +7% | -21% |
+| rsi2 | +0% | +0% | -4% | -4% | +20% | +9% | -4% | +5% | +13% | +3% | -1% |
+| stocks_momentum (survivor-biased) | +0% | -1% | +5% | +58% | +187% | +10% | -2% | +61% | +105% | -0% | +52% |
+| buy and hold SPY | +2% | +21% | -5% | +31% | +17% | +31% | -19% | +27% | +26% | +18% | +6% |
+
 OOS bars to beat: Sharpe > 1.20, max DD no deeper than -18.8%.
 
 ## Verdict
@@ -38,8 +57,16 @@ OOS bars to beat: Sharpe > 1.20, max DD no deeper than -18.8%.
 - rsi2: QQQ RSI2 < 15 above SMA200, exit rsi70: fails (OOS Sharpe 0.46, max DD -12.0%)
 - stocks_momentum (survivor-biased): top 3 large caps by 12-1m: fails (OOS Sharpe 1.26, max DD -35.9%) - second check only, survivor-biased list
 
-Out of sample, 6 of 68 variants beat the Sharpe bar and 3 beat both bars (any variant, not just the chosen ones: picking the best of these after the fact would be look-ahead).
+Out of sample, 6 of 72 variants beat the Sharpe bar and 3 beat both bars (any variant, not just the chosen ones: picking the best of these after the fact would be look-ahead).
 
-Caveats: one out-of-sample window of about 4 years, mostly a bull market; with 68 variants some pass by luck. The large-cap list is today's winners (survivorship bias), so its results overstate any edge.
+Caveats: one out-of-sample window of about 4 years, mostly a bull market; with 72 variants some pass by luck. The large-cap list is today's winners (survivorship bias), so its results overstate any edge.
 
-Full table: results.csv. Run time 29 s.
+## Conclusion (plain)
+- No tested rule family has an edge over simply holding SPY or QQQ after costs, out of sample. For a 70 USD account the honest
+  baseline is buy-and-hold (or regular small buys) of a broad index ETF.
+- The 200/150-day trend filter is the only near-miss: a lower Sharpe out of sample (90% interval includes zero), but it cut 2022
+  from -19% (SPY) to -13% and the OOS drawdown from -18.8% to -16.1%. It is a drawdown-control choice, not an edge.
+- Short-term mean reversion (RSI2) is eaten by costs at this account size (cost drag about 5% a year).
+- No forward paper book is started (nothing passed). orders.md stays empty until something does.
+
+Full table: results.csv. Run time 32 s.
