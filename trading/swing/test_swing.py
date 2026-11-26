@@ -239,4 +239,14 @@ check("aggr30 alive after a small dip", not fa.s["dead"])
 fa.bar(bar(2, 3700), False)                 # a gap: 10x on -7.5% leaves equity under 50% of margin
 check("aggr30 stopped out on a gap and dead", fa.s["dead"] and fa.s["pos"] is None and fa.s["equity"] < 35)
 
+# 15 confidence sizing
+check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])
+check("kelly: p_cal 0.40, R 2 -> f 0.10, risk 2.5%", abs(R.kelly_risk(0.40, 2)[0] - 0.025) < 1e-9)
+check("kelly: skip when f <= 0", R.kelly_risk(0.30, 2)[0] is None)
+check("kelly: clamp 0.5%..4%", R.kelly_risk(0.34, 2)[0] == 0.005 and R.kelly_risk(0.9, 3)[0] == 0.04)
+b = fresh(profile=R.MAIN)
+write_pending(b.d, "open", T0, id="t", dir=1, stop=3990, target=4030, lev=10, p_target=0.7, risk=0.025)
+b.on_bar(bar(0, 4000))
+check("order's own risk used", abs(b.s["pos"]["qty"] - 250 / 10.7) < 1e-9)
+
 print(f"test_swing: {ok}/{ok + fail} checks passed")

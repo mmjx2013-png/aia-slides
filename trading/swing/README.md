@@ -20,7 +20,9 @@ Books (in `data/books/`, not tracked; snapshots are committed in `snapshots/`):
 
 | Book | Who decides | Rules |
 |---|---|---|
-| `ai` | Opus decides, and the code re-checks every rule | from 2026-11-26: size = min(leverage x equity, 2% risk); halts -5% / -8%, kill -15% |
+| `ai` | Opus decides, and the code re-checks every rule | from 2026-11-26 15:10: risk linear in Opus's p (0.55 1%, 0.65 2%, >= 0.75 3%); size = min(leverage x equity, that risk); halts -5% / -8%, kill -15% |
+| `flat2` | the same decisions | flat 2% risk (the main rule before 2026-11-26 15:10) |
+| `kelly_cal` | the same decisions | quarter Kelly on calibrated p: f = p_cal - (1 - p_cal)/R, risk 0.25 f clamped 0.5-4%, skip if f <= 0; p_cal = p - 0.15 until 20 resolved decisions, then the realised bucket hit rate (the rule used is journalled) |
 | `ai_1pct` | the same decisions | 1% risk, halts -3% / -6%, kill -10%: the comparison book (size never uses Opus's p) |
 | shadows | the same AI decisions | fixed 1x, 3x, 10x and 30x notional, with liquidation |
 | `every4h` | code takes every 4h Donchian-20 signal | the unfiltered baseline: stop 2 x ATR(4h), target 3R, 3x cap, filled 10 min after the 4h close like the AI |
@@ -47,7 +49,7 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
 `claude/paper-trading`, then send the boss 3 lines. Send no other messages, except the kill-switch ERROR.
 
 ## Test
-- `python3 test_swing.py`: 51 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
+- `python3 test_swing.py`: 56 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
   halts, kill switch, liquidation, stale order, the code re-check of Opus's open, calendar close and block).
 - `python3 test_replay.py --days 5`: the last N days of real 1m bars through the live code path. A stub PM stands in
   for Opus (0 tokens) on the real wake schedule. Output goes to `data/replay5/`.

@@ -48,7 +48,7 @@ def stub(f, st):
         return dict(action="hold", why="stub")
     d = 1 if f["trend4"] == "up" else -1
     a = f["atr4h"]
-    idea = dict(dir="long" if d > 0 else "short", stop=round(px - d * 1.5 * a, 2), target=round(px + d * 4 * a, 2), p_target=0.6)
+    idea = dict(dir="long" if d > 0 else "short", stop=round(px - d * 1.5 * a, 2), target=round(px + d * 4 * a, 2), p_target=round(0.55 + 0.05 * ((f["asof_ms"] // 14_400_000) % 5), 2))   # vary p to exercise sizing
     return dict(action="open", leverage=5, best_idea=idea, why="stub: with the 4h trend", **idea)
 
 
@@ -75,7 +75,7 @@ def main(days):
         log.append(line)
     desk.replay(int(m1["t"].iloc[-1]) + 60_000, root, m1, start)
     print("\n".join(log))
-    for b in ("ai", "ai_1pct", "every4h", "cand15"):
+    for b in ("ai", "flat2", "kelly_cal", "ai_1pct", "every4h", "cand15"):
         j = [json.loads(x) for x in (root / b / "journal.jsonl").read_text().splitlines()] if (root / b / "journal.jsonl").exists() else []
         kinds = pd.Series([x["kind"] for x in j]).value_counts().to_dict()
         st = json.loads((root / b / "state.json").read_text())

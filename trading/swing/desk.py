@@ -46,6 +46,7 @@ def books(root=BOOKS):
         shutil.copytree(legacy, c15)
     ai = Broker(root / "ai")
     ai.one = Broker(root / "ai_1pct", shadows=(), profile=R.ONE_PCT)   # 1%-risk shadow, same decisions, old halts
+    ai.mirrors = [ai.one, Broker(root / "flat2", shadows=()), Broker(root / "kelly_cal", shadows=())]
     ai.followers = [Follower(root / n, n) for n in FSPECS]             # the owner's real 70 USD account, mirrored
     return ai, Broker(root / "every4h", shadows=(), profile=R.ONE_PCT), ipb.Broker(c15)
 
@@ -85,7 +86,8 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
         started = ai.s["last_t"] is not None or b["t"] >= start_ms
         if started:
             ai.on_bar(b)
-            ai.one.on_bar(b)
+            for x in ai.mirrors:
+                x.on_bar(b)
             e4.on_bar(b)
         a1 = i1["atr"].get(t)
         c15.on_bar(dict(b, atr1=None if a1 is None or a1 != a1 else float(a1), rng=float(r["h"] - r["l"])))
@@ -102,7 +104,7 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
                 ipb.write_order(c15.d, dict(id=f"{bkk(ct).strftime('%Y%m%d-%H%M')}-cand15", atr5=float(b15["atr"])),
                                 dict(dir="long" if d > 0 else "short", stop_atr=2.5, trail=True,
                                      why="15m donchian20 vol>1.5x faded, 2.5 ATR15 stop, ATR trail"), created_ms=close)
-    for x in (ai, ai.one, e4, c15):
+    for x in (ai, *ai.mirrors, e4, c15):
         x.save()
     return ai, e4, c15, len(new)
 
@@ -206,10 +208,38 @@ def check_open(dec, f, ai, t_ms):
                 rr=round(rr, 2)), ""
 
 
+MIRRORS = ("ai_1pct", "flat2", "kelly_cal")
+BUCKETS = ((0, .4), (.4, .5), (.5, .55), (.55, .65), (.65, 1.01))
+
+
+def p_calibrated(p, root):
+    """(p_cal, rule). Offset p - 0.15 until >= 20 resolved forward decisions (trades + scored best ideas),
+    then the realised hit rate of p's bucket (offset again if that bucket has < 5 outcomes)."""
+    from report import calibration
+    j = jlines(Path(root) / "ai" / "journal.jsonl")
+    rows = calibration([x for x in j if x["kind"] == "DECISION"], [x for x in j if x["kind"] == "EXIT"],
+                       load_cache(), Path(root) / "ai" / "ideas_scored.json")
+    if len(rows) >= R.CAL_MIN_N:
+        lo, hi = next(b for b in BUCKETS if b[0] <= p < b[1])
+        hits = [r[2] for r in rows if lo <= r[1] < hi]
+        if len(hits) >= 5:
+            return sum(hits) / len(hits), f"bucket {lo:.2f}-{min(hi, 1):.2f} realised {sum(hits)}/{len(hits)} ({len(rows)} resolved)"
+    return max(p - R.P_OFFSET, 0.0), f"offset p-{R.P_OFFSET} ({len(rows)} resolved < {R.CAL_MIN_N} or thin bucket)"
+
+
+def sizing(o, root):
+    """Risk per book for one open: main p-linear, 1% and flat 2% shadows, quarter Kelly on calibrated p."""
+    p = o["p_target"]
+    pc, rule = p_calibrated(p, root)
+    k, f = R.kelly_risk(pc, o["rr"])
+    return {"ai": (R.risk_from_p(p), f"p {p:.2f} linear"), "ai_1pct": (0.01, "flat 1%"), "flat2": (0.02, "flat 2%"),
+            "kelly_cal": (k, f"quarter Kelly p_cal {pc:.2f} R {o['rr']:.2f} f {f:.3f}; {rule}" + ("" if k else " -> skip, f <= 0"))}
+
+
 def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
     t_ms = now_ms() if t_ms is None else t_ms
     ai = Broker(Path(root) / "ai")
-    one = Path(root) / "ai_1pct"
+    mirrors = {n: Path(root) / n for n in MIRRORS}
     f = json.loads((Path(root) / "ai" / "briefs" / f"{wid}.json").read_text())
     dec = parse(reply)
     a = str(dec.get("action", "")).lower()
@@ -221,8 +251,11 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
     elif a == "open":
         o, why = check_open(dec, f, ai, t_ms)
         if o:
-            write_pending(ai.d, "open", t_ms, id=wid, **o)
-            write_pending(one, "open", t_ms, id=wid, **o)
+            risks = sizing(o, root)
+            for n, d in [("ai", ai.d), *mirrors.items()]:
+                if risks[n][0]:
+                    write_pending(d, "open", t_ms, id=wid, **dict(o, risk=risks[n][0], risk_rule=risks[n][1]))
+            base["sizing"] = {n: [round(r, 4) if r else None, why] for n, (r, why) in risks.items()}
             res = f"ORDER {'long' if o['dir'] > 0 else 'short'} stop {o['stop']} target {o['target']} lev {o['lev']} p {o['p_target']} rr {o['rr']}"
         else:
             res = f"REJECT open: {why}"
@@ -230,7 +263,8 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
         res = "ORDER close" if ai.s["pos"] else "REJECT close: no position"
         if ai.s["pos"]:
             write_pending(ai.d, "close", t_ms, id=wid)
-            write_pending(one, "close", t_ms, id=wid)
+            for d in mirrors.values():
+                write_pending(d, "close", t_ms, id=wid)
     elif a == "tighten":
         p, ns = ai.s["pos"], _f(dec.get("new_stop", dec.get("stop")))
         if not p or ns is None:
@@ -239,7 +273,8 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
             res = f"REJECT tighten: {ns} is not between the stop {p['stop']:.2f} and price {f['px']:.2f}"
         else:
             write_pending(ai.d, "tighten", t_ms, id=wid, stop=round(ns, 2))
-            write_pending(one, "tighten", t_ms, id=wid, stop=round(ns, 2))
+            for d in mirrors.values():
+                write_pending(d, "tighten", t_ms, id=wid, stop=round(ns, 2))
             res = f"ORDER tighten stop to {ns}"
     elif a == "hold":
         res = "HOLD"
@@ -251,7 +286,7 @@ def answer(wid, reply, tokens, root=BOOKS, t_ms=None):
 
 def status():
     ai, e4, c15 = books()
-    for n, b in (("ai", ai), ("ai_1pct", ai.one), ("every4h", e4)):
+    for n, b in (("ai", ai), *((x.d.name, x) for x in ai.mirrors), ("every4h", e4)):
         s = b.s
         print(n, f"equity {s['equity']:.2f} peak {s['peak']:.2f} pos {bool(s['pos'])} killed {s['killed']} last {bkk(s['last_t']) if s['last_t'] else None}")
     print("cand15", f"equity {c15.s['equity']:.2f} pos {bool(c15.s['pos'])}")

@@ -8,6 +8,8 @@ CAPITAL = 10_080.23          # carried over from the retired intraday AI desk
 # Size never depends on Opus's p_target.
 MAIN = dict(name="2% risk", risk=0.02, daily=0.05, weekly=0.08, kill=0.15)
 ONE_PCT = dict(name="1% risk", risk=0.01, daily=0.03, weekly=0.06, kill=0.10)
+P_RISK = ((0.55, 0.01), (0.65, 0.02), (0.75, 0.03))   # main book (from 2026-11-26 15:10): risk linear in Opus's p, cap 3%
+KELLY_FRACTION, KELLY_MIN, KELLY_MAX, P_OFFSET, CAL_MIN_N = 0.25, 0.005, 0.04, 0.15, 20
 LEV_MAX = 10                 # Opus picks 1..10; size = min(lev x equity, risk size)
 BASE_LEV = 3                 # code books (take every 4h signal)
 MAX_HOLD_MS = 5 * 86400_000
@@ -105,6 +107,24 @@ def size(equity, px, stop_dist, lev, risk):
     q_risk = risk * equity / (stop_dist + 2 * COST)
     q_lev = lev * equity / px
     return (q_lev, "leverage") if q_lev < q_risk else (q_risk, "risk")
+
+
+def risk_from_p(p):
+    """Main book: 1% at p 0.55, 2% at 0.65, 3% at >= 0.75, linear in between."""
+    (p0, r0), (p1, r1), (p2, r2) = P_RISK
+    if p <= p0:
+        return r0
+    if p <= p1:
+        return r0 + (p - p0) / (p1 - p0) * (r1 - r0)
+    return min(r1 + (p - p1) / (p2 - p1) * (r2 - r1), r2)
+
+
+def kelly_risk(p_cal, rr):
+    """Quarter Kelly: f = p - (1 - p) / R; risk = 0.25 f, clamped 0.5%..4%; None when f <= 0 (skip)."""
+    f = p_cal - (1 - p_cal) / rr
+    if f <= 0:
+        return None, f
+    return min(max(KELLY_FRACTION * f, KELLY_MIN), KELLY_MAX), f
 
 
 def rr_after_costs(px, stop, target):

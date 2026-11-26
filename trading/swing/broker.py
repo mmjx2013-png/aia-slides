@@ -76,12 +76,13 @@ class Broker:
             return self.log("REJECT", b["t"], id=o["id"], reason=why)
         eq = self.s["equity"]
         dist = abs(b["o"] - o["stop"])
-        qty, binding = R.size(eq, b["o"], dist, o.get("lev", R.BASE_LEV), self.k["risk"])
+        risk = o.get("risk") or self.k["risk"]                # per-order risk (p-sized / Kelly books) or the profile's
+        qty, binding = R.size(eq, b["o"], dist, o.get("lev", R.BASE_LEV), risk)
         self.s["pos"] = dict(dir=d, qty=qty, entry=px, stop=o["stop"], stop0=o["stop"], target=o["target"],
                              t=b["t"], id=o["id"], be=False, p=o.get("p_target"))
         self.log("FILL", b["t"], id=o["id"], side="BUY" if d > 0 else "SELL", qty=round(qty, 4), px=round(px, 2),
                  stop=o["stop"], target=o["target"], lev=round(qty * b["o"] / eq, 2), lev_chosen=o.get("lev"),
-                 lev_requested=o.get("lev_req"), binding=binding,
+                 lev_requested=o.get("lev_req"), binding=binding, risk_rule=o.get("risk_rule"),
                  risk_pct=round(100 * qty * (dist + 2 * R.COST) / eq, 3), p_target=o.get("p_target"))
         for f in self.followers:
             f.open(b["t"], d, b["o"], o["stop"], px)
