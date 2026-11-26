@@ -84,7 +84,7 @@ def replay(asof_ms, root=BOOKS, m1=None, start_ms=None):
     import shocks as SH
     sst = Path(root) / "shocks_state.json"
     last_sh = json.loads(sst.read_text())["last"] if sst.exists() else None
-    found = {x["t_ms"] - 60_000: x for x in SH.scan(m1.iloc[-len(new) - 40:], from_t=last, last_shock_t=last_sh)}
+    found = {x["t_ms"] - 60_000: x for x in SH.scan(m1.iloc[-len(new) - 1500:], from_t=last, last_shock_t=last_sh)}   # 25 h of history for ATR(1h)
     for t, r in new.iterrows():
         b = dict(t=int(r["t"]), o=r["o"], h=r["h"], l=r["l"], c=r["c"])
         started = ai.s["last_t"] is not None or b["t"] >= start_ms
