@@ -246,15 +246,15 @@
     "semantic_hash": ""
   },
   "trading/swing/broker.py": {
-    "mtime": 1795663589.5447187,
-    "seen": 1795663644.4916573,
-    "ast_hash": "68e64ffa8cb682789178c5568fc3aa5f",
+    "mtime": 1795673429.3323271,
+    "seen": 1795673486.5523682,
+    "ast_hash": "0bea38d57a49b5625dd50694c5a81ae2",
     "semantic_hash": ""
   },
   "trading/swing/desk.py": {
-    "mtime": 1795663632.0920906,
-    "seen": 1795663644.4916582,
-    "ast_hash": "7a2ab593d30e9ebef62624e2a076784b",
+    "mtime": 1795673429.3331456,
+    "seen": 1795673486.5523698,
+    "ast_hash": "371d98634c42b7500ed64ece1fbf4f82",
     "semantic_hash": ""
   },
   "trading/swing/env.py": {
@@ -276,9 +276,9 @@
     "semantic_hash": ""
   },
   "trading/swing/report.py": {
-    "mtime": 1795663610.7091985,
-    "seen": 1795663644.4916613,
-    "ast_hash": "157aaefe15f0f64a549d8b0192e5558c",
+    "mtime": 1795673444.6894276,
+    "seen": 1795673486.5523758,
+    "ast_hash": "a293db7d1fa898c97e4b76cda511a2af",
     "semantic_hash": ""
   },
   "trading/swing/rules.py": {
@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "trading/swing/test_swing.py": {
-    "mtime": 1795663610.7094743,
-    "seen": 1795663644.4916642,
-    "ast_hash": "3fe02b068b047d81b575d2e972c7d510",
+    "mtime": 1795673483.2485516,
+    "seen": 1795673486.5523822,
+    "ast_hash": "be78f767b6a3e64d563806bdaa83daf7",
     "semantic_hash": ""
   },
   "trading/tools_save_dec.py": {
@@ -654,15 +654,45 @@
     "semantic_hash": ""
   },
   "trading/swing/README.md": {
-    "mtime": 1795663632.102778,
-    "seen": 1795663644.4917269,
-    "ast_hash": "4646092f0bf60c78ec994c4a265b1a82",
+    "mtime": 1795673483.6030295,
+    "seen": 1795673486.5524452,
+    "ast_hash": "9d94df6ecbd32376ca5bf0976edc100b",
     "semantic_hash": ""
   },
   "trading/swing/prompts/pm.md": {
     "mtime": 1795663589.5449846,
     "seen": 1795663644.4917276,
     "ast_hash": "89a53b649d6556f91d23255c555b8931",
+    "semantic_hash": ""
+  },
+  "trading/swing/follower.py": {
+    "mtime": 1795673429.2997584,
+    "seen": 1795673486.552372,
+    "ast_hash": "0d0dd84e322ba0af26a370095358454d",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/ai/state.json": {
+    "mtime": 1795666275.3838508,
+    "seen": 1795673486.5523777,
+    "ast_hash": "5033debed7ec4de87ee61af839bbd6e8",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/ai_1pct/state.json": {
+    "mtime": 1795666275.3839066,
+    "seen": 1795673486.5523787,
+    "ast_hash": "2b3679ad3cf63046c07bc05fd8b3d65f",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/cand15/state.json": {
+    "mtime": 1795666275.3838248,
+    "seen": 1795673486.5523794,
+    "ast_hash": "b329a03d7d73c43b5517868918b0b5e8",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/every4h/state.json": {
+    "mtime": 1795666275.383932,
+    "seen": 1795673486.55238,
+    "ast_hash": "2b3679ad3cf63046c07bc05fd8b3d65f",
     "semantic_hash": ""
   }
 }

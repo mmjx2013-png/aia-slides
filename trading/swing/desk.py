@@ -23,6 +23,7 @@ import env  # noqa: F401
 import calendar_guard
 import rules as R
 from broker import Broker, write_pending
+from follower import Follower, SPECS as FSPECS
 from brief import build, _atr
 from common import DATA, bkk, indicators, jappend, jlines, load_cache, resample
 from market import frames, sync as market_sync
@@ -45,6 +46,7 @@ def books(root=BOOKS):
         shutil.copytree(legacy, c15)
     ai = Broker(root / "ai")
     ai.one = Broker(root / "ai_1pct", shadows=(), profile=R.ONE_PCT)   # 1%-risk shadow, same decisions, old halts
+    ai.followers = [Follower(root / n, n) for n in FSPECS]             # the owner's real 70 USD account, mirrored
     return ai, Broker(root / "every4h", shadows=(), profile=R.ONE_PCT), ipb.Broker(c15)
 
 

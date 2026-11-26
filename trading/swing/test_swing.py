@@ -205,4 +205,22 @@ b.s.update(peak=11_800.0)
 b.on_bar(bar(1, 4000, c=3999))
 check("main kill switch at -15%", b.s["killed"])
 
+# 13 the 70 USD followers
+from follower import Follower
+b = fresh(profile=R.MAIN)
+td = tempfile.mkdtemp()
+b.followers = [Follower(Path(td) / "p", "real70_paxg"), Follower(Path(td) / "x", "real70_xau_minlot")]
+opened(b, stop=3900, target=4300)
+fp, fx = b.followers
+check("paxg follower: 2% risk at a wide stop, under 1x", abs(fp.s["pos"]["qty"] * (abs(fp.s["pos"]["entry"] - 3900) + 0.002 * fp.s["pos"]["entry"]) - 1.4) < 0.01)
+check("xau follower trades exactly 1 oz", fx.s["pos"]["qty"] == 1.0 and abs(fx.s["pos"]["entry"] - 4000.30) < 1e-9)
+b.on_bar(bar(1, 3995, l=3945))          # AI stop 3900 not hit; the CFD is stopped out at 50% margin (equity 20)
+check("xau follower stopped out at 50% margin and dead", fx.s["dead"] and fx.s["pos"] is None and abs(fx.s["equity"] - 20) < 0.01)
+write_pending(b.d, "close", T0 + 2 * M, id="c")
+b.on_bar(bar(2, 3960))
+check("paxg follower exits with the AI", fp.s["pos"] is None and 68 < fp.s["equity"] < 70)
+write_pending(b.d, "open", T0 + 3 * M, id="t2", dir=1, stop=3950, target=4030, lev=3, p_target=0.6)
+b.on_bar(bar(3, 3960))
+check("dead xau account stays flat", fx.s["pos"] is None and b.s["pos"] is not None)
+
 print(f"test_swing: {ok}/{ok + fail} checks passed")

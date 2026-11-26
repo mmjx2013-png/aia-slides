@@ -24,6 +24,8 @@ Books (in `data/books/`, not tracked; snapshots are committed in `snapshots/`):
 | `ai_1pct` | the same decisions | 1% risk, halts -3% / -6%, kill -10%: the comparison book (size never uses Opus's p) |
 | shadows | the same AI decisions | fixed 1x, 3x, 10x and 30x notional, with liquidation |
 | `every4h` | code takes every 4h Donchian-20 signal | the unfiltered baseline: stop 2 x ATR(4h), target 3R, 3x cap, filled 10 min after the 4h close like the AI |
+| `real70_paxg` | mirrors the AI trades | the owner's real 70 USD: PAXG spot, no leverage, 2% risk, 0.10% fee per side |
+| `real70_xau_minlot` | mirrors the AI trades | 70 USD, XAU CFD, always 1 oz (0.01 lot), 0.30/oz spread, 1:100, stop-out at 50% margin; dead stays dead |
 | `cand15` | code: the 15m candidate | carried over from the intraday book, with intraday rules; true out of sample from 2026-11-25 |
 
 ## Runbook (each 4h wake)
@@ -44,7 +46,7 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
 `claude/paper-trading`, then send the boss 3 lines. Send no other messages, except the kill-switch ERROR.
 
 ## Test
-- `python3 test_swing.py`: 42 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
+- `python3 test_swing.py`: 47 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
   halts, kill switch, liquidation, stale order, the code re-check of Opus's open, calendar close and block).
 - `python3 test_replay.py --days 5`: the last N days of real 1m bars through the live code path. A stub PM stands in
   for Opus (0 tokens) on the real wake schedule. Output goes to `data/replay5/`.

@@ -25,6 +25,7 @@ class Broker:
     def __init__(self, d, capital=R.CAPITAL, shadows=R.SHADOW_LEVS, profile=R.MAIN):
         self.d = Path(d)
         self.k = profile
+        self.followers = []                                  # follower.Follower books (code only)
         self.d.mkdir(parents=True, exist_ok=True)
         f = self.d / "state.json"
         self.s = json.loads(f.read_text()) if f.exists() else dict(
@@ -43,6 +44,8 @@ class Broker:
 
     def save(self):
         jdump(self.d / "state.json", self.s)
+        for f in self.followers:
+            f.save()
 
     def pending(self):
         f = self.d / "pending.json"
@@ -80,6 +83,8 @@ class Broker:
                  stop=o["stop"], target=o["target"], lev=round(qty * b["o"] / eq, 2), lev_chosen=o.get("lev"),
                  lev_requested=o.get("lev_req"), binding=binding,
                  risk_pct=round(100 * qty * (dist + 2 * R.COST) / eq, 3), p_target=o.get("p_target"))
+        for f in self.followers:
+            f.open(b["t"], d, b["o"], o["stop"], px)
         for L, sh in self.s["shadows"].items():
             if not sh["dead"]:
                 sh["qty"], sh["entry"] = float(L) * sh["eq"] / b["o"], px
@@ -88,6 +93,8 @@ class Broker:
         p = self.s["pos"]
         px = raw_px - p["dir"] * R.COST
         pnl = p["dir"] * p["qty"] * (px - p["entry"])
+        for f in self.followers:
+            f.close(b["t"], raw_px, px, reason)
         r_mult = p["dir"] * (px - p["entry"]) / (abs(p["entry"] - p["stop0"]) + R.COST)
         self.s["equity"] += pnl
         for sh in self.s["shadows"].values():
@@ -194,6 +201,8 @@ class Broker:
         s["peak"] = max(s["peak"], m)
         s["last_t"] = b["t"]
         bk = bkk(b["t"])
+        for f in self.followers:
+            f.bar(b, bk.minute % 15 == 14 or bool(f.s["pos"]))
         if bk.minute % 15 == 14 or s["pos"] or p:            # every 15 min, and every bar while in a trade
             sh = {L: round(x["eq"] + (s["pos"]["dir"] * x["qty"] * (b["c"] - x["entry"]) if s["pos"] and x["qty"] else 0), 2)
                   for L, x in s["shadows"].items()}
