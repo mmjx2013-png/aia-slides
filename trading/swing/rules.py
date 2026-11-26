@@ -9,7 +9,7 @@ CAPITAL = 10_080.23          # carried over from the retired intraday AI desk
 MAIN = dict(name="2% risk", risk=0.02, daily=0.05, weekly=0.08, kill=0.15)
 ONE_PCT = dict(name="1% risk", risk=0.01, daily=0.03, weekly=0.06, kill=0.10)
 P_RISK = ((0.55, 0.01), (0.65, 0.02), (0.75, 0.03))   # main book (from 2026-11-26 15:10): risk linear in Opus's p, cap 3%
-KELLY_FRACTION, KELLY_MIN, KELLY_MAX, P_OFFSET, CAL_MIN_N = 0.25, 0.005, 0.04, 0.15, 20
+KELLY_FRACTION, KELLY_MIN, KELLY_MAX, P_OFFSET, CAL_MIN_N = 0.125, 0.005, 0.03, 0.15, 20   # eighth Kelly from 2026-11-26
 LEV_MAX = 10                 # Opus picks 1..10; size = min(lev x equity, risk size)
 BASE_LEV = 3                 # code books (take every 4h signal)
 MAX_HOLD_MS = 5 * 86400_000
@@ -120,7 +120,7 @@ def risk_from_p(p):
 
 
 def kelly_risk(p_cal, rr):
-    """Quarter Kelly: f = p - (1 - p) / R; risk = 0.25 f, clamped 0.5%..4%; None when f <= 0 (skip)."""
+    """Eighth Kelly: f = p - (1 - p) / R; risk = 0.125 f, clamped 0.5%..3%; None when f <= 0 (skip)."""
     f = p_cal - (1 - p_cal) / rr
     if f <= 0:
         return None, f

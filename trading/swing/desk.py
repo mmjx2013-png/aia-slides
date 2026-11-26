@@ -228,12 +228,12 @@ def p_calibrated(p, root):
 
 
 def sizing(o, root):
-    """Risk per book for one open: main p-linear, 1% and flat 2% shadows, quarter Kelly on calibrated p."""
+    """Risk per book for one open: main p-linear, 1% and flat 2% shadows, eighth Kelly on calibrated p."""
     p = o["p_target"]
     pc, rule = p_calibrated(p, root)
     k, f = R.kelly_risk(pc, o["rr"])
     return {"ai": (R.risk_from_p(p), f"p {p:.2f} linear"), "ai_1pct": (0.01, "flat 1%"), "flat2": (0.02, "flat 2%"),
-            "kelly_cal": (k, f"quarter Kelly p_cal {pc:.2f} R {o['rr']:.2f} f {f:.3f}; {rule}" + ("" if k else " -> skip, f <= 0"))}
+            "kelly_cal": (k, f"eighth Kelly p_cal {pc:.2f} R {o['rr']:.2f} f {f:.3f}; {rule}" + ("" if k else " -> skip, f <= 0"))}
 
 
 def answer(wid, reply, tokens, root=BOOKS, t_ms=None):

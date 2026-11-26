@@ -22,7 +22,7 @@ Books (in `data/books/`, not tracked; snapshots are committed in `snapshots/`):
 |---|---|---|
 | `ai` | Opus decides, and the code re-checks every rule | from 2026-11-26 15:10: risk linear in Opus's p (0.55 1%, 0.65 2%, >= 0.75 3%); size = min(leverage x equity, that risk); halts -5% / -8%, kill -15% |
 | `flat2` | the same decisions | flat 2% risk (the main rule before 2026-11-26 15:10) |
-| `kelly_cal` | the same decisions | quarter Kelly on calibrated p: f = p_cal - (1 - p_cal)/R, risk 0.25 f clamped 0.5-4%, skip if f <= 0; p_cal = p - 0.15 until 20 resolved decisions, then the realised bucket hit rate (the rule used is journalled) |
+| `kelly_cal` | the same decisions | eighth Kelly on calibrated p (quarter until 2026-11-26 13:20): f = p_cal - (1 - p_cal)/R, risk 0.125 f clamped 0.5-3%, skip if f <= 0; p_cal = p - 0.15 until 20 resolved decisions, then the realised bucket hit rate (the rule used is journalled) |
 | `ai_1pct` | the same decisions | 1% risk, halts -3% / -6%, kill -10%: the comparison book (size never uses Opus's p) |
 | shadows | the same AI decisions | fixed 1x, 3x, 10x and 30x notional, with liquidation |
 | `every4h` | code takes every 4h Donchian-20 signal | the unfiltered baseline: stop 2 x ATR(4h), target 3R, 3x cap, filled 10 min after the 4h close like the AI |

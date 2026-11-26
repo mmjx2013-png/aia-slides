@@ -105,7 +105,7 @@ def main(root, out):
     eqs = {b: read_eq(root / b) for b in j}
     lines = [f"# Swing desk report (PAPER), {end.strftime('%Y-%m-%d')} 21:00 Bangkok", "",
              "PAXG/USDT, paper only. ai = one Opus call per 4h wake, code re-checks every rule; risk linear in Opus p (0.55 1%, 0.65 2%, >=0.75 3%), halts -5%/-8%, kill -15%; "
-             "flat2 = same decisions at flat 2%; kelly_cal = quarter Kelly on calibrated p (0.5-4%, skip if f <= 0); "
+             "flat2 = same decisions at flat 2%; kelly_cal = eighth Kelly on calibrated p (0.5-3%, skip if f <= 0); "
              "ai_1pct = the same decisions at 1% risk, halts -3%/-6%, kill -10%; "
              "every4h = code takes every 4h Donchian-20 signal (unfiltered baseline, 3x cap); cand15 = 15m candidate (code, intraday rules).", ""]
     hdr = ["| Book | Trades | Win | Avg win / loss USD | Exp USD | Exp R | PF | Equity | Return |", "|---|---|---|---|---|---|---|---|---|"]
