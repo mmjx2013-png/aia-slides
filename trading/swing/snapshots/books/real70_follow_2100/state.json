@@ -4,5 +4,8 @@
  "maxdd": 0.0,
  "pos": null,
  "dead": null,
- "last_run": null
+ "last_run": "2026-11-26 21:03",
+ "locked": 0.0,
+ "hwm": 70.0,
+ "milestones": []
 }
