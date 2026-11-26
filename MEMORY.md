@@ -69,6 +69,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-26: owner asked about 1-minute "guess right, double the money" trades (binary options). Tested 60k PAXG 1m bars: best rule or logistic model was 50-51% accurate out of sample (luck band +/-0.8%), but 55.6% is needed at an 80% payout. Advised against: negative expectation, the platform is the counterparty, unlicensed in Thailand, banned for retail in the EU since 2018.
 - 2026-11-26: US stocks with real money (later): recommended Webull Thailand (0.10% + VAT, no minimum per order) or Dime! (KKP, has an under-20 secondary account); avoid $1.99-minimum brokers for a $70 account. Backtest first; owner places every real order; the AI never touches the account.
 - 2026-11-26: Trading: AI replay (Opus 0/32 entries, overconfident); intraday desk retired; swing desk (4h, Opus PM, code risk limits) live, paper only.
 - 2026-11-25: Gold paper-trading desk set up (2 worker sessions); phase 1 gold results; intraday paper desk live from 18:07 Bangkok; reviews scheduled Mon 30 Nov 08:20 and Fri 4 Dec 23:40.
