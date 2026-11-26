@@ -178,6 +178,9 @@ def main(root, out):
     import shocks as SH
     shk = jlines(root / "shocks.jsonl")
     per = [x for x in shk if start <= pd.Timestamp(x["t_ms"], unit="ms", tz="UTC").tz_convert(BKK) < end]
+    us = env.HERE.parent / "us" / "summary.txt"
+    if us.exists():
+        lines += ["## US stocks side study (paper)", *us.read_text().strip().splitlines(), ""]
     lines += ["## Shocks and statements", f"Shocks (unscheduled moves; code blocked entries 30 min, tightened wrong-side stops): "
               f"{len(per)} in the period, {len(shk)} since start."]
     for x in per[-6:]:

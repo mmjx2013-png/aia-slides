@@ -1,0 +1,2 @@
+US stocks (paper research, 68 variants, OOS 2023-2026): no ETF rule family beats buy-and-hold SPY/QQQ out of sample after costs.
+Best chosen OOS: trend QQQ > SMA150 band 2% else cash Sharpe 1.03 vs SPY 1.20; full table trading/us/REPORT.md.
