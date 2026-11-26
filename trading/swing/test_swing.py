@@ -274,6 +274,12 @@ dw.s["pos"] = dict(dir=1, qty=0.01, entry=4000, stop=3900, t=T0)
 dw.s["equity"] = 999.0
 check("no withdrawal while a position is open", withdraw(dw, T0) == 0.0)
 
+# 18 Venice unit normalisation (no network)
+import venice
+check("142000 for a '150K' forecast -> 142", venice.normalize(142000, "150K") == 142.0 and venice.normalize(142, "150K") == 142)
+check("bps and fraction-percent normalised", venice.normalize(0.25, "25bps") == 25.0 and abs(venice.normalize(0.031, "3.1%") - 3.1) < 1e-9)
+check("sanity: 142 vs 150K ok, 4.0 vs 0.3% rejected", venice.sane(142, "150K", "120K") and not venice.sane(4.0, "0.3%", "0.3%"))
+
 # 15 confidence sizing
 check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])
 check("kelly: p_cal 0.40, R 2 -> f 0.10, risk 1.25% (eighth)", abs(R.kelly_risk(0.40, 2)[0] - 0.0125) < 1e-9)

@@ -50,7 +50,7 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
 `claude/paper-trading`, then send the boss 3 lines plus a 4th: the REAL70 line and that book's equity. We stay paper: the owner acts on it by hand. The `daily` step also applies the owner's withdrawal policy to real70_paxg, real70_follow_2100 and aggr30 (from cash only; milestones once each, then 25% above the high-water mark; 34.0 THB/USD), and adds `| WITHDRAW <USD>` to the REAL70 line when a rule fires. Send no other messages, except the kill-switch ERROR.
 
 ## Test
-- `python3 test_swing.py`: 67 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
+- `python3 test_swing.py`: 70 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
   halts, kill switch, liquidation, stale order, the code re-check of Opus's open, calendar close and block).
 - `python3 test_replay.py --days 5`: the last N days of real 1m bars through the live code path. A stub PM stands in
   for Opus (0 tokens) on the real wake schedule. Output goes to `data/replay5/`.
@@ -88,7 +88,10 @@ Limits:
   them. Both Opus briefs get the level, the 1w and 1m change, and the 20-day correlation of PAXG daily returns with
   DFII10 and DTWEXBGS changes. Live, only published values are cached. In replays, a value dated the day before the
   as-of day may not have been published yet (a small lookahead).
-- `venice.py benchmark`: 5 test prompts on each small chat model the API lists (text, structured output, no
+- Venice parser: primary `deepseek-v4-1-flash-1017-ultrafast` (temperature 0, max_tokens 120, thinking disabled; boss's benchmark
+  median 0.40 s, 5/5), with one retry on `mistral-small-3-2-24b-instruct` if it fails. Numbers are converted into the
+  forecast's unit (K/M/B, bps, %) before the sanity check.
+- `venice.py benchmark` (reference only): 5 test prompts on each small chat model the API lists (text, structured output, no
   reasoning, input price at most 0.30 USD per M tokens). It picks the lowest median time to a valid answer and re-measures
   after 7 days. Results are in `news/venice_benchmark.json`. Parsed numbers are converted into the forecast's unit
   (212000 -> 212 for a "150K" forecast) before the sanity check.

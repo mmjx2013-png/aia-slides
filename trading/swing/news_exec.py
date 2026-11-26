@@ -126,11 +126,15 @@ class Exec:
             ev = next(x for x in self.meta["events"] if x["title"] == ind)
             t0 = time.time()
             r, raw = venice.parse(self.model, ind, ev["forecast"], ev["previous"], fresh)
+            used = self.model
+            if not r:                                # primary failed: one try on the fallback model
+                used = venice.FALLBACK
+                r, raw = venice.parse(used, ind, ev["forecast"], ev["previous"], fresh)
             lat = round(time.time() - t0, 2)
             if r and r.get("actual") is not None:
                 r["actual"] = venice.normalize(r["actual"], ev["forecast"])
             ok = bool(r) and r.get("confident") and venice.sane(r.get("actual"), ev["forecast"], ev["previous"])
-            self.log(now, "VENICE", indicator=ind, model=self.model, reply=r if r else raw[:120], call_s=lat, accepted=bool(ok))
+            self.log(now, "VENICE", indicator=ind, model=used, reply=r if r else raw[:120], call_s=lat, accepted=bool(ok))
             if ok:
                 self.actual[ind] = (float(r["actual"]), now, "headline+venice")
                 self.log(now, "ACTUAL", indicator=ind, value=float(r["actual"]), source="headline+venice",

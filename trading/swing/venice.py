@@ -25,11 +25,18 @@ def _req(path, body=None, timeout=20):
         return json.load(r)
 
 
-def _chat(model, msgs, max_tokens=60, timeout=15):
+PRIMARY = "deepseek-v4-1-flash-1017-ultrafast"     # boss's benchmark: median 0.40 s, 5/5 valid (thinking off)
+FALLBACK = "mistral-small-3-2-24b-instruct"          # 1.25 s, 3/3
+
+
+def _chat(model, msgs, max_tokens=120, timeout=15):
     calls["n"] += 1
+    vp = {"include_venice_system_prompt": False}
+    if model == PRIMARY:
+        vp["disable_thinking"] = True                # with thinking on it needs >= 300 tokens and is slower
     body = {"model": model, "messages": msgs, "temperature": 0, "max_tokens": max_tokens,
             "response_format": {"type": "json_schema", "json_schema": {"name": "actual", "strict": True, "schema": SCHEMA}},
-            "venice_parameters": {"include_venice_system_prompt": False}}
+            "venice_parameters": vp}
     r = _req("/chat/completions", body, timeout)
     return r["choices"][0]["message"]["content"]
 
@@ -76,11 +83,8 @@ def benchmark():
 
 
 def pick_model(max_candidates=None):
-    """The benchmark winner; re-measured when the benchmark is older than 7 days."""
-    if not BENCH.exists() or time.time() - BENCH.stat().st_mtime > 7 * 86400:
-        benchmark()
-    b = json.loads(BENCH.read_text())
-    return dict(model=b["choice"], measured=b["measured"])
+    """The primary model (owner's choice); our own small-model benchmark is kept for reference only."""
+    return dict(model=PRIMARY, fallback=FALLBACK)
 
 
 def parse(model, indicator, forecast, previous, headlines):
@@ -99,7 +103,7 @@ def parse(model, indicator, forecast, previous, headlines):
 def num(x):
     """'0.3%' -> 0.3, '250K' -> 250.0, '' -> None."""
     try:
-        return float(str(x).strip().rstrip("%KMBkmb").replace(",", ""))
+        return float(str(x).strip().upper().removesuffix("BPS").rstrip("%KMB").replace(",", ""))
     except ValueError:
         return None
 
@@ -109,6 +113,10 @@ def normalize(actual, forecast):
     if actual is None:
         return None
     a, f = float(actual), str(forecast).strip().upper()
+    if f.endswith("BPS") and abs(a) < 5:          # '25bps' forecast, model said 0.25 (percent)
+        return a * 100
+    if f.endswith("%") and 0 < abs(a) < 0.05 and abs(num(forecast) or 0) >= 0.5:   # 0.031 for '3.1%'
+        return a * 100
     for suf, k in (("K", 1e3), ("M", 1e6), ("B", 1e9)):
         if f.endswith(suf) and abs(a) >= k:
             return a / k
