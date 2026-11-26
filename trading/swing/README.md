@@ -59,3 +59,26 @@ Notes:
 - With 1% risk and ATR stops the notional is about 0.5-0.7x (about 1-1.4x at 2%), so Opus's leverage choice rarely binds.
   The fixed-notional shadow books show what leverage does to the same decisions.
 - With no weekend holds, the longest possible trade is Mon 05:00 to Sat 03:30, which is under 5 days. The 5-day limit is a backstop.
+
+## News desk (separate PAPER book "news", 10,000 USD, 1% risk; the main book's calendar guard is unchanged)
+- `newsdesk.py`: event discovery from the calendar feed, the playbook brief (event, forecast/previous, 1h/4h trend,
+  recent reactions, headlines), validation, and saving `news/<id>/playbook.json`.
+- `news_exec.py`: the executor (T-5 to T+40 min). It polls 1s klines every 5 s (1m fallback), the calendar every 60 s and
+  Google News every 15 s. Venice (`venice.py`) parses the number, and code maps it to a scenario. It writes
+  `news/<id>/result.json` and `log.jsonl`. Event costs from T-2 to T+10 min: spread 1.50 + slippage 1.00 per side.
+
+Runbook, added to each 4h wake after `desk.py wake`: run `python3 newsdesk.py next`.
+- `NONE ...`: nothing to do.
+- `PLAYBOOK <brief.md>`:
+  1. Make one Opus call, the same way as the PM call.
+  2. Run `python3 newsdesk.py playbook <id> '<reply>' <tokens>`.
+  3. Run `send_later` at the printed T-5 time with: "News desk: cd aia-slides/trading/swing && python3 -u news_exec.py run
+     <id> > news/<id>/exec.out 2>&1 (Bash run_in_background, timeout 3000000), then commit news/<id> and push."
+- Test: `python3 news_exec.py sim <id> --actual <x> --at <s>` replays a past release on 1m bars with a simulated
+  actual headline. Omit `--actual` to test the fallback.
+
+Limits:
+- The ForexFactory JSON has no `actual` field, so the number comes from headlines, which are often minutes late.
+  Expect the reaction fallback most of the time.
+- Live polling (about 500 kline requests in 40 min) is far above the desk's usual pace of 1 request a minute. It is
+  allowed only inside the event window.

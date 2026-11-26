@@ -1,0 +1,46 @@
+{
+ "event_id": "20261125-2030",
+ "mode": "sim",
+ "events": [
+  {
+   "title": "Core PCE Price Index m/m",
+   "forecast": "0.3%",
+   "previous": "0.3%"
+  },
+  {
+   "title": "Prelim GDP q/q",
+   "forecast": "3.5%",
+   "previous": "3.4%"
+  }
+ ],
+ "summary": "Core PCE drives gold. Hot print: sell with the 4h/1h downtrend. Cool print: buy a smaller counter-trend bounce. In-line: no trade. If the actual is late, trade only a clear 90s reaction that beats the ~5 USD costs.",
+ "actual": {
+  "Core PCE Price Index m/m": {
+   "value": 0.4,
+   "latency_s": 45.0,
+   "source": "headline+venice"
+  }
+ },
+ "decision": {
+  "scenario": "hot_core_pce",
+  "why": "surprise +0.1 >= 0.1",
+  "t_ms": 1795613445000
+ },
+ "trades": [
+  {
+   "scenario": "hot_core_pce",
+   "dir": -1,
+   "entry": 3488.38,
+   "exit": 3506.88,
+   "pnl": -88.1,
+   "reason": "stop",
+   "held_s": 60
+  }
+ ],
+ "pnl": -88.1,
+ "equity": 9911.9,
+ "opus_tokens": 66128,
+ "venice_calls": 1,
+ "venice_model": "mistral-small-3-2-24b-instruct",
+ "first_fill_latency_s": 60.0
+}

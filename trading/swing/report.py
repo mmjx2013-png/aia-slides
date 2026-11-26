@@ -144,7 +144,7 @@ def main(root, out):
         lines.append(f"| {n} | {len(ex)} | {sum(e['pnl'] > 0 for e in ex)} | {eq:.2f} | {lk:.2f} | {eq + lk:.2f} | {100 * ((eq + lk) / F_CAP - 1):+.1f}% | {x['maxdd']:.1f}% | {dead} |")
     ag = read_eq(root / "aggr30")
     if ag is not None and len(ag):
-        wk = ag["equity"].groupby(ag.index.to_period("W-SUN")).agg(["first", "last"])
+        wk = ag["equity"].groupby(ag.index.tz_localize(None).to_period("W-SUN")).agg(["first", "last"])
         lines += ["", "aggr30 weekly return vs the +30%/week target: " + "; ".join(
             f"week of {str(p.start_time.date())}: {100 * (r['last'] / r['first'] - 1):+.1f}% (target +30%)" if r["first"] > 0 else
             f"week of {str(p.start_time.date())}: dead" for p, r in wk.iterrows())]
@@ -154,6 +154,20 @@ def main(root, out):
               "aggr30: 20% risk per trade, max 10x, main-book costs, stop-out at 50% margin level, dead stays dead. "
               "PAXG spot: 2% risk, max 1x, 0.10% fee per side. XAU CFD: always 1 oz (0.01 lot), 0.30/oz spread per side, "
               "1:100 margin, stop-out at 50% margin level; a stop of S USD loses about S USD, i.e. S/70 of the account.", ""]
+    nd = env.HERE / "news"
+    res = sorted(nd.glob("*/result*.json")) if nd.exists() else []
+    if res:
+        bk = json.loads((nd / "book.json").read_text())["equity"] if (nd / "book.json").exists() else 10_000.0
+        lines += ["## News desk (separate PAPER book, 10,000 USD start, 1%% risk; live equity %.2f; sim = replay with a simulated actual)" % bk,
+                  "| Event | Mode | Playbook | Actual (latency) | Decision | Trades | P&L | First fill | Opus tokens | Venice calls |",
+                  "|---|---|---|---|---|---|---|---|---|---|"]
+        for f in res:
+            r = json.loads(f.read_text())
+            act = "; ".join(f"{k.split()[0]} {v['value']} ({v['latency_s']}s, {v['source']})" for k, v in r["actual"].items()) or "none"
+            tr = "; ".join(f"{'S' if t['dir'] < 0 else 'B'} {t['entry']}->{t['exit']} {t['reason']}" for t in r["trades"]) or "-"
+            lines.append(f"| {r['event_id']} | {f.stem.replace('result', '').strip('_') or r['mode']} | {(r.get('summary') or '')[:70]} | {act} | "
+                         f"{(r['decision'] or {}).get('scenario')} | {tr} | {r['pnl']:+.2f} | {r['first_fill_latency_s']} s | {r['opus_tokens']} | {r['venice_calls']} |")
+        lines.append("")
     dec = [x for x in j["ai"] if x["kind"] == "DECISION"]
     fills = [x for x in j["ai"] if x["kind"] == "FILL"]
     lines += ["## AI decisions", f"Opus calls {len(dec)}, tokens {sum(x['tokens'] for x in dec):,} "

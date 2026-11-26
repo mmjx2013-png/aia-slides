@@ -1,0 +1,4 @@
+{"t": "2026-11-25 20:30:00+07:", "t_ms": 1795613400000, "dt_s": 0.0, "kind": "RELEASE", "events": ["Core PCE Price Index m/m", "Prelim GDP q/q"], "mode": "sim"}
+{"t": "2026-11-25 20:31:30+07:", "t_ms": 1795613490000, "dt_s": 90.0, "kind": "DECISION", "scenario": "reaction_drop", "direction": "sell", "why": "reaction -13.02 USD in 90s <= -9.0"}
+{"t": "2026-11-25 20:32:00+07:", "t_ms": 1795613520000, "dt_s": 120.0, "kind": "FILL", "side": "SELL", "qty": 5.263, "px": 3498.49, "stop": 3512.49, "target": 3476.49, "cost_per_side": 2.5, "scenario": "reaction_drop", "why": "reaction -13.02 USD in 90s <= -9.0"}
+{"t": "2026-11-25 20:39:00+07:", "t_ms": 1795613940000, "dt_s": 540.0, "kind": "EXIT", "reason": "target", "px": 3477.99, "pnl": 107.89, "equity": 10107.89}

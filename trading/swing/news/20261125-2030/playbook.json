@@ -1,0 +1,90 @@
+{
+ "summary": "Core PCE drives gold. Hot print: sell with the 4h/1h downtrend. Cool print: buy a smaller counter-trend bounce. In-line: no trade. If the actual is late, trade only a clear 90s reaction that beats the ~5 USD costs.",
+ "scenarios": [
+  {
+   "name": "hot_core_pce",
+   "prob": 0.3,
+   "trigger": {
+    "type": "surprise",
+    "indicator": "Core PCE Price Index m/m",
+    "op": ">=",
+    "value": 0.1
+   },
+   "direction": "sell",
+   "stop_usd": 16.0,
+   "target_usd": 28.0,
+   "max_hold_min": 25.0
+  },
+  {
+   "name": "cool_core_pce",
+   "prob": 0.25,
+   "trigger": {
+    "type": "surprise",
+    "indicator": "Core PCE Price Index m/m",
+    "op": "<=",
+    "value": -0.1
+   },
+   "direction": "buy",
+   "stop_usd": 15.0,
+   "target_usd": 22.0,
+   "max_hold_min": 20.0
+  },
+  {
+   "name": "inline_core_pce",
+   "prob": 0.45,
+   "trigger": {
+    "type": "surprise",
+    "indicator": "Core PCE Price Index m/m",
+    "op": "abs<=",
+    "value": 0.05
+   },
+   "direction": "none",
+   "stop_usd": 0.0,
+   "target_usd": 0.0,
+   "max_hold_min": 0
+  },
+  {
+   "name": "reaction_drop",
+   "prob": 0.0,
+   "trigger": {
+    "type": "reaction",
+    "window_s": 90,
+    "op": "<=",
+    "move_usd": -9.0
+   },
+   "direction": "sell",
+   "stop_usd": 14.0,
+   "target_usd": 22.0,
+   "max_hold_min": 20.0
+  },
+  {
+   "name": "reaction_rally",
+   "prob": 0.0,
+   "trigger": {
+    "type": "reaction",
+    "window_s": 90,
+    "op": ">=",
+    "move_usd": 10.0
+   },
+   "direction": "buy",
+   "stop_usd": 14.0,
+   "target_usd": 20.0,
+   "max_hold_min": 15.0
+  }
+ ],
+ "contingency": {
+  "adverse_usd": 10.0,
+  "adverse_within_min": 3.0,
+  "no_trade_if_both_ways_usd": 8.0,
+  "max_reversals": 0,
+  "reverse_on_stop": false
+ },
+ "fallback": {
+  "no_actual_after_s": 90,
+  "mode": "reaction_only"
+ },
+ "event_id": "20261125-2030",
+ "saved_ms": 1795675435582,
+ "opus_tokens": 66128,
+ "problems": []
+}

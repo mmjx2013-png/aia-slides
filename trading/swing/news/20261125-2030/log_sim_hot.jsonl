@@ -1,0 +1,6 @@
+{"t": "2026-11-25 20:30:00+07:", "t_ms": 1795613400000, "dt_s": 0.0, "kind": "RELEASE", "events": ["Core PCE Price Index m/m", "Prelim GDP q/q"], "mode": "sim"}
+{"t": "2026-11-25 20:30:45+07:", "t_ms": 1795613445000, "dt_s": 45.0, "kind": "VENICE", "indicator": "Core PCE Price Index m/m", "model": "mistral-small-3-2-24b-instruct", "reply": {"actual": 0.4, "unit": "%", "confident": true}, "call_s": 1.17, "accepted": true}
+{"t": "2026-11-25 20:30:45+07:", "t_ms": 1795613445000, "dt_s": 45.0, "kind": "ACTUAL", "indicator": "Core PCE Price Index m/m", "value": 0.4, "source": "headline+venice", "latency_s": 45.0}
+{"t": "2026-11-25 20:30:45+07:", "t_ms": 1795613445000, "dt_s": 45.0, "kind": "DECISION", "scenario": "hot_core_pce", "direction": "sell", "why": "surprise +0.1 >= 0.1"}
+{"t": "2026-11-25 20:31:00+07:", "t_ms": 1795613460000, "dt_s": 60.0, "kind": "FILL", "side": "SELL", "qty": 4.762, "px": 3488.38, "stop": 3504.38, "target": 3460.38, "cost_per_side": 2.5, "scenario": "hot_core_pce", "why": "surprise +0.1 >= 0.1"}
+{"t": "2026-11-25 20:32:00+07:", "t_ms": 1795613520000, "dt_s": 120.0, "kind": "EXIT", "reason": "stop", "px": 3506.88, "pnl": -88.1, "equity": 9911.9}
