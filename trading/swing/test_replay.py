@@ -61,8 +61,15 @@ def main(days):
     wakes = schedule(t0, t1)
     start = int(wakes[0].value // 10**6) - 15 * 60_000
     log, tok = [], []
-    for w in wakes:
+    from follower import Daily2100
+    daily = [d + pd.Timedelta(hours=21, minutes=2) for d in pd.date_range(t0.normalize(), t1.normalize()) if d.weekday() < 5]
+    for w in sorted(wakes + [d for d in daily if t0 <= d <= t1]):
         a = int(w.value // 10**6)
+        if w.hour == 21:
+            ai = desk.replay(a, root, m1, start)[0]
+            px = float(m1[m1["t"] + 60_000 <= a]["c"].iloc[-1])
+            log.append(f"{w.strftime('%a %d %H:%M')} " + Daily2100(root / "real70_follow_2100").daily(a, px, ai.s["pos"]))
+            continue
         r = desk.wake(root, a, m1, heads=False, start_ms=start)
         line = f"{w.strftime('%a %d %H:%M')} {r[:110]}"
         if r.startswith("OPUS"):

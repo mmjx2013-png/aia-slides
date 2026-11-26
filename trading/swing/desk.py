@@ -23,7 +23,7 @@ import env  # noqa: F401
 import calendar_guard
 import rules as R
 from broker import Broker, write_pending
-from follower import Follower, SPECS as FSPECS
+from follower import Daily2100, Follower, SPECS as FSPECS
 from brief import build, _atr
 from common import DATA, bkk, indicators, jappend, jlines, load_cache, resample
 from market import frames, sync as market_sync
@@ -47,7 +47,7 @@ def books(root=BOOKS):
     ai = Broker(root / "ai")
     ai.one = Broker(root / "ai_1pct", shadows=(), profile=R.ONE_PCT)   # 1%-risk shadow, same decisions, old halts
     ai.mirrors = [ai.one, Broker(root / "flat2", shadows=()), Broker(root / "kelly_cal", shadows=())]
-    ai.followers = [Follower(root / n, n) for n in FSPECS]             # the owner's real 70 USD account, mirrored
+    ai.followers = [Follower(root / n, n) for n in FSPECS] + [Daily2100(root / "real70_follow_2100")]
     return ai, Broker(root / "every4h", shadows=(), profile=R.ONE_PCT), ipb.Broker(c15)
 
 
@@ -301,5 +301,9 @@ if __name__ == "__main__":
     elif a[0] == "sync":
         n = do_sync()[3]
         print(f"synced, {n} new bars")
+    elif a[0] == "daily":                     # the 21:02 run: sync, then the owner's instruction line
+        ai = do_sync()[0]
+        px = float(load_cache()["c"].iloc[-1])
+        print(Daily2100(BOOKS / "real70_follow_2100").daily(now_ms(), px, ai.s["pos"]))
     elif a[0] == "status":
         status()

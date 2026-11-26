@@ -26,7 +26,8 @@ Books (in `data/books/`, not tracked; snapshots are committed in `snapshots/`):
 | `ai_1pct` | the same decisions | 1% risk, halts -3% / -6%, kill -10%: the comparison book (size never uses Opus's p) |
 | shadows | the same AI decisions | fixed 1x, 3x, 10x and 30x notional, with liquidation |
 | `every4h` | code takes every 4h Donchian-20 signal | the unfiltered baseline: stop 2 x ATR(4h), target 3R, 3x cap, filled 10 min after the 4h close like the AI |
-| `real70_paxg` | mirrors the AI trades | the owner's real 70 USD: PAXG spot, no leverage, 2% risk, 0.10% fee per side |
+| `real70_paxg` | mirrors the AI trades, LONG ONLY | the owner's real 70 USD: PAXG spot, no leverage, cash when the AI is short, 2% risk, 0.10% fee per side |
+| `real70_follow_2100` | the AI main book's position at the 21:02 run | what the owner can do by hand: long -> buy/hold, flat or short -> cash; 0.5% fee per side; 2% risk to the AI stop, max 100%; exits on its stop between runs |
 | `real70_xau_minlot` | mirrors the AI trades | 70 USD, XAU CFD, always 1 oz (0.01 lot), 0.30/oz spread, 1:100, stop-out at 50% margin; dead stays dead |
 | `aggr30` | mirrors the AI trades | the "+30%/week" test: 70 USD, 20% risk per trade, max 10x, stop-out at 50% margin; weekly return vs +30% in the report |
 | `cand15` | code: the 15m candidate | carried over from the intraday book, with intraday rules; true out of sample from 2026-11-25 |
@@ -44,12 +45,12 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
   It prints `ORDER ...`, `HOLD` or `REJECT ...`. After an ORDER, `python3 desk.py sync` records the fill. It is optional:
   the next wake replays it anyway.
 
-21:02 wake: `python3 desk.py sync && python3 report.py`, then
+21:02 wake: `python3 desk.py daily` (sync, then the owner's instruction line `REAL70: BUY <USD> (stop <px>) | HOLD (stop <px>) | SELL ALL | STAY CASH` from `real70_follow_2100`), then `python3 report.py`, then
 `rm -rf snapshots/books && cp -r data/books snapshots/books && rm -rf snapshots/books/ai/briefs`. Commit and push to
-`claude/paper-trading`, then send the boss 3 lines. Send no other messages, except the kill-switch ERROR.
+`claude/paper-trading`, then send the boss 3 lines plus a 4th: the REAL70 line and that book's equity. We stay paper: the owner acts on it by hand. Send no other messages, except the kill-switch ERROR.
 
 ## Test
-- `python3 test_swing.py`: 56 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
+- `python3 test_swing.py`: 62 synthetic checks (fills, tie, gap, breakeven, tighten/close, weekend, max hold, leverage,
   halts, kill switch, liquidation, stale order, the code re-check of Opus's open, calendar close and block).
 - `python3 test_replay.py --days 5`: the last N days of real 1m bars through the live code path. A stub PM stands in
   for Opus (0 tokens) on the real wake schedule. Output goes to `data/replay5/`.

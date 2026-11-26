@@ -133,7 +133,7 @@ def main(root, out):
     from follower import SPECS, CAPITAL as F_CAP
     lines += ["## The owner's real 70 USD account, mirroring the AI trades (code only)",
               "| Book | Trades | Wins | Equity | Return | Max drawdown | Blown up / stopped out |", "|---|---|---|---|---|---|---|"]
-    for n in SPECS:
+    for n in (*SPECS, "real70_follow_2100"):
         fs = root / n / "state.json"
         if not fs.exists():
             continue

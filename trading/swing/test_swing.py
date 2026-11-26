@@ -239,6 +239,24 @@ check("aggr30 alive after a small dip", not fa.s["dead"])
 fa.bar(bar(2, 3700), False)                 # a gap: 10x on -7.5% leaves equity under 50% of margin
 check("aggr30 stopped out on a gap and dead", fa.s["dead"] and fa.s["pos"] is None and fa.s["equity"] < 35)
 
+# 16 owner follow books: long only, and the daily 21:02 follower
+from follower import Daily2100
+b = fresh(profile=R.MAIN)
+b.followers = [Follower(Path(td) / "lo", "real70_paxg")]
+opened(b, d=-1, stop=4010, target=3970)
+check("real70_paxg does not short", b.followers[0].s["pos"] is None)
+dd = Daily2100(tempfile.mkdtemp())
+line = dd.daily(T0, 4000.0, dict(dir=1, stop=3950.0))
+q = dd.s["pos"]["qty"]
+check("daily: AI long -> BUY with 2% risk to the AI stop", line.startswith("REAL70: BUY") and abs(q * (4020 - 3950 * 0.995) - 1.4) < 1e-6)
+check("daily: AI long again -> HOLD, stop only tightens", dd.daily(T0 + 86400_000, 4010.0, dict(dir=1, stop=3990.0)).startswith("REAL70: HOLD (stop 3990.00)")
+      and dd.daily(T0 + 2 * 86400_000, 4010.0, dict(dir=1, stop=3960.0)).startswith("REAL70: HOLD (stop 3990.00)"))
+dd.bar(bar(0, 3995, l=3985), False)
+check("daily: exits on its stop between runs", dd.s["pos"] is None and journal(dd, "EXIT")[-1]["px"] == round(3990 * 0.995, 2))
+check("daily: AI short -> STAY CASH", dd.daily(T0 + 3 * 86400_000, 4000.0, dict(dir=-1, stop=4050.0)).startswith("REAL70: STAY CASH"))
+dd.daily(T0 + 4 * 86400_000, 4000.0, dict(dir=1, stop=3950.0))
+check("daily: AI flat -> SELL ALL", dd.daily(T0 + 5 * 86400_000, 4001.0, None).startswith("REAL70: SELL ALL"))
+
 # 15 confidence sizing
 check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])
 check("kelly: p_cal 0.40, R 2 -> f 0.10, risk 2.5%", abs(R.kelly_risk(0.40, 2)[0] - 0.025) < 1e-9)
