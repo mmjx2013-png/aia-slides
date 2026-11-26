@@ -69,6 +69,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-26: US stocks with real money (later): recommended Webull Thailand (0.10% + VAT, no minimum per order) or Dime! (KKP, has an under-20 secondary account); avoid $1.99-minimum brokers for a $70 account. Backtest first; owner places every real order; the AI never touches the account.
 - 2026-11-26: Trading: AI replay (Opus 0/32 entries, overconfident); intraday desk retired; swing desk (4h, Opus PM, code risk limits) live, paper only.
 - 2026-11-25: Gold paper-trading desk set up (2 worker sessions); phase 1 gold results; intraday paper desk live from 18:07 Bangkok; reviews scheduled Mon 30 Nov 08:20 and Fri 4 Dec 23:40.
 - 2026-11-25: Paper-trading worker: gold Phase 1 done on branch claude/paper-trading (trading/reports/phase1.md). Verdict: 1M USD in 1 year is ~0% likely, ruinous at 30-100x; no rule beat gold buy-and-hold in-sample; AI desk (Opus, 21 weekly calls) +2.0% vs gold -12.2% Jul-Nov 2026, too small a sample; NO-GO for real money. A subagent call costs ~62k tokens minimum. Yahoo 429s cloud IPs: the boss session fetches data.
