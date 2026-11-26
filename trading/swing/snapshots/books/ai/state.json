@@ -1,0 +1,41 @@
+{
+ "equity": 10080.23,
+ "peak": 10080.23,
+ "pos": null,
+ "day": "2026-11-26",
+ "day_start": 10080.23,
+ "week": "2026-W48",
+ "week_start": 10080.23,
+ "halted_day": null,
+ "halted_week": null,
+ "killed": null,
+ "last_t": 1795666140000,
+ "start_t": 1795665360000,
+ "start_px": 3573.24,
+ "shadows": {
+  "1": {
+   "eq": 10080.23,
+   "qty": 0.0,
+   "entry": null,
+   "dead": null
+  },
+  "3": {
+   "eq": 10080.23,
+   "qty": 0.0,
+   "entry": null,
+   "dead": null
+  },
+  "10": {
+   "eq": 10080.23,
+   "qty": 0.0,
+   "entry": null,
+   "dead": null
+  },
+  "30": {
+   "eq": 10080.23,
+   "qty": 0.0,
+   "entry": null,
+   "dead": null
+  }
+ }
+}
