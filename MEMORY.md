@@ -76,6 +76,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
   - Portfolio links used: /satit/ and /satit/pitch/ on mmjx2013-png.github.io/aia-slides.
   - Trial unit: Math Solution M1 Book 2 (PW.Inter), Unit 4 Statistics (1): 1 statistical questions, 2 data collection, 3 presenting & interpretation, 4 statistics in real life. The owner's rule: do NOT use photos of the book; write our own questions and redraw every chart. Later decks: give students easy tools to write answers and draw graphs.
   - Style samples (27 Nov): A modern clean, B notebook, C cinematic, D step-by-step (like the owner's own explainer sheets). Source: teacher-slides/mockups/ (make2.py + v2.css -> index.html, animated; shoot2.cjs -> stills; style-*.png). The owner wanted real animation and much prettier than the first try; send stills (not a mock page) for the teacher to choose.
+  - Owner verdict: offer only A (modern clean) and B (notebook). C rejected: "looks too AI" (dark glow, gradient text, serif italics) - avoid that look. D might pass only if prettier and easier to understand (less text, bigger, one idea per box).
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
