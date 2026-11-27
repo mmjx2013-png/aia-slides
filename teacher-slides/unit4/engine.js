@@ -101,7 +101,7 @@
     slides.forEach(function (s, k) {
       if (!s.dataset.lesson) return;
       var b = document.createElement('button'); b.type = 'button';
-      b.innerHTML = s.dataset.title + '<small>Slide ' + (k + 1) + '</small>'; b._slide = s;
+      b.textContent = s.dataset.title; var sm = document.createElement('small'); sm.textContent = 'Slide ' + (k + 1); b.appendChild(sm); b._slide = s;
       b.addEventListener('click', function () { closeMenu(); jump(k); });
       menuEl.appendChild(b);
     });

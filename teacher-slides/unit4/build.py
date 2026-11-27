@@ -3,7 +3,7 @@
   python3 build.py                 -> index.html (all parts/*.html in name order; files starting with "_" are skipped)
   python3 build.py --only 20       -> preview-20.html (only parts whose file name contains "20")
 Inlines style.css, tools.css (if present), symbols.svg, engine.js, tools.js (if present)."""
-import sys, re
+import sys, re, hashlib, base64
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -33,10 +33,18 @@ def read(name):
 
 css = read('style.css') + '\n' + read('tools.css')
 js = read('engine.js') + '\n' + read('tools.js')
+def sha(t): return "'sha256-" + base64.b64encode(hashlib.sha256(t.encode('utf-8')).digest()).decode() + "'"
+# Content Security Policy: only this page's own script may run (pinned by hash); nothing is fetched except our fonts;
+# no network calls, no plugins, no forms, no base-URL tricks. Style attributes are used for animation timing, so styles stay inline.
+CSP = ("default-src 'none'; script-src " + sha(js) + "; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; "
+       "connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'")
+if '<script' in body: problems.append('<script> inside a part (not allowed)')
 html = f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<meta name="referrer" content="no-referrer">
 <title>Unit 4 · Statistics (1) · Mathayomsuksa 1</title>
 <style>{css}</style></head>
 <body>
