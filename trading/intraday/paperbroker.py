@@ -89,8 +89,12 @@ class Broker:
             if not sh["dead"] and sh["qty"]:
                 sh["eq"] += p["dir"] * sh["qty"] * (px - sh["entry"])
                 sh["qty"] = 0.0
+        extra = {}
+        if p.get("px0330") is not None:                      # held past 03:30: P&L of the extra hours vs closing then (A)
+            a_px = p["px0330"] - p["dir"] * risk.COST
+            extra = dict(extra_hours_pnl=round(p["dir"] * p["qty"] * (px - a_px) + p.get("swap", 0.0), 2))
         self.log("EXIT", b["t"], event=p["event"], reason=reason, px=round(px, 2), pnl=round(pnl, 2),
-                 equity=round(self.s["equity"], 2), minutes=int((b["t"] - p["t"]) / 60_000))
+                 equity=round(self.s["equity"], 2), minutes=int((b["t"] - p["t"]) / 60_000), **extra)
         self.s["pos"] = None
 
     def _shadow_liq(self, b, d):
@@ -123,7 +127,10 @@ class Broker:
             mult = 3 if bb.weekday() == 3 else 1                 # MT5 XAUUSD swap; triple on the Wednesday night
             fee = s["pos"]["qty"] * (on["swap_long"] if s["pos"]["dir"] > 0 else on["swap_short"]) * mult
             s["equity"] += fee
+            s["pos"]["swap"] = s["pos"].get("swap", 0.0) + fee
             self.log("SWAP", b["t"], event=s["pos"]["event"], usd=round(fee, 2), nights=mult)
+        if s["pos"] and on and (bb.hour, bb.minute) == (3, 30) and s["pos"].get("px0330") is None:
+            s["pos"]["px0330"] = b["o"]                          # where rule A would have closed
         if s["pos"] and on and bb.weekday() == 5 and (bb.hour, bb.minute) >= (3, 30):
             self._close(b, b["o"], "flat before the weekend (Sat 03:30 Bangkok)")
         elif s["pos"] and not on and risk.in_flat_window(b["t"]):

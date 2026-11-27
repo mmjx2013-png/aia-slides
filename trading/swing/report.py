@@ -185,7 +185,11 @@ def main(root, out):
                   *(ss.read_text().strip().splitlines() if ss.exists() else []), ""]
     cv = env.HERE.parent / "intraday" / "reports" / "cand15_overnight_verdict.txt"
     if cv.exists():
-        lines += ["## cand15: flat by 03:30 vs hold overnight (test, live rule unchanged)", *cv.read_text().strip().splitlines(), ""]
+        ex = [e for e in j["cand15"] if e["kind"] == "EXIT" and "extra_hours_pnl" in e]
+        sw = sum(e["usd"] for e in j["cand15"] if e["kind"] == "SWAP")
+        run_line = (f"Running extra-hours P&L (live cand15, rule B since 2026-11-27): {sum(e['extra_hours_pnl'] for e in ex):+,.2f} USD over "
+                    f"{len(ex)} trades held past 03:30 ({sum(e['extra_hours_pnl'] > 0 for e in ex)} gained); swap paid {sw:+,.2f}.")
+        lines += ["## cand15: flat by 03:30 (A) vs hold overnight (B; live since 2026-11-27)", *cv.read_text().strip().splitlines(), run_line, ""]
     us = env.HERE.parent / "us" / "summary.txt"
     if us.exists():
         lines += ["## US stocks side study (paper)", *us.read_text().strip().splitlines(), ""]
