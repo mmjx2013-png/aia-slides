@@ -21,6 +21,12 @@ The owner is a Thai student making slides for a real teacher: Mathayomsuksa 1 (G
 11. Every slide ends with `<aside class="notes">…</aside>`: what the teacher says or asks, the answers and the working.
 12. The first slide of a lesson is an opener (see `sn-open`) with `data-lesson="N" data-title="Lesson N · Title"`.
 
+## Order and presenting (owner, 27 Nov)
+- Order like the book: Lesson N teaching slides → an **Exercise N** divider → the exercise slides (kicker "Exercise N"). Lesson 3 has Exercise 3A (tables, pictograms, bars) and 3B (line, pie). Lesson 4 → Exercise 4 → Summary → Vocabulary → Unit review → closing.
+- Students come to the board and present before the reveal. On every exercise slide, the question and a work tool show first; the answer appears only on a later beat or Show answer. Never put an answer in the first view.
+- Graph builders start from a ready graph that students adjust up or down (`data-start` with plausible wrong values); never start from zero or from blank axes.
+- All ink (pen and w-write) snaps near-straight strokes to lines, and loops to circles or rectangles ("Auto shapes", on by default).
+
 ## Interactive tools (markup → tools.js renders it; all have Check / Show answer / Reset where it makes sense)
 | Markup | What students do |
 |---|---|
@@ -28,8 +34,8 @@ The owner is a Thai student making slides for a real teacher: Mathayomsuksa 1 (G
 | `<div class="w-input ia" data-label="…" data-answer="165" data-accept="165;165 cups" data-unit="cups" data-tol="0"></div>` | type an answer, Check |
 | `<div class="w-write ia" data-label="…" data-lines="3" style="width:..;height:.."></div>` | write by finger or stylus in a lined box; Clear |
 | `<div class="w-sort ia" data-bins="Statistical|Not statistical" style="width:..;height:.."><div class="item" data-bin="0">…</div>…</div>` | drag (or tap, then tap a bin) cards into bins, Check |
-| `<div class="w-bars ia" data-title data-labels="Mon,Tue" data-max="60" data-step="10" data-answer="30,25" data-ylabel="Cups" style=..></div>` | drag bars to the right height |
-| `<div class="w-line ia" data-title data-labels="Jan,Feb" data-min="0" data-max="12" data-step="1" data-answer="4,6" data-ylabel=".." style=..></div>` | tap or drag points; the line joins them |
+| `<div class="w-bars ia" data-title data-labels="Mon,Tue" data-max="60" data-step="10" data-answer="30,25" data-start="20,40" data-ylabel="Cups" style=..></div>` | drag ready bars up or down to the right height |
+| `<div class="w-line ia" data-title data-labels="Jan,Feb" data-min="0" data-max="12" data-step="1" data-answer="4,6" data-start="6,6" data-ylabel=".." style=..></div>` | drag ready points up or down; the line joins them |
 | `<div class="w-pie ia" data-title data-labels="A,B" data-values="12,6" data-mode="angles" style=..></div>` | type each angle (or percent with `data-mode="percent"`); the pie draws live; Check |
 | `<div class="w-picto ia" data-title data-labels="Mon,Tue" data-answer="3,2.5" data-key="10" data-icon="cup" data-unit="cups" style=..></div>` | tap to add icons (and half icons), Check |
 | `<div class="w-dots ia" data-title data-labels="5:30,6:00,6:30" data-answer="1,3,2" style=..></div>` | tap above a label to stack a dot (a dot plot) |
