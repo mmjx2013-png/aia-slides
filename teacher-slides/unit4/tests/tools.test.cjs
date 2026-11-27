@@ -340,7 +340,7 @@ async function run(cfg) {
   ok('sort crowded: the empty card pool takes no space', await page.evaluate(() => document.querySelector('#td-sort2-w .tw-pool').getBoundingClientRect().height === 0));
   await act('td-sort2-w', 'reset'); await sleep(200);
   ok('sort crowded: Reset can be pressed and puts the cards back', (await W('td-sort2-w', 'w.state()')).every(x => x === -1) && (await inside()).length === 0, await inside());
-  for (let k = 0; k < 8; k++) { const c = await page.evaluate(k => { const r = document.getElementById('td-sort2-w').__w.items[k].getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }, k); await tap(c[0], c[1]); const b = await page.evaluate(() => { const r = document.getElementById('td-sort2-w').__w.bins[1].getBoundingClientRect(); return [r.left + r.width / 2, r.top + 20]; }); await tap(b[0], b[1]); await sleep(300); }
+  for (let k = 0; k < 8; k++) { const c = await page.evaluate(k => { const r = document.getElementById('td-sort2-w').__w.items[k].getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }, k); await tap(c[0], c[1]); const b = await page.evaluate(() => { const r = document.getElementById('td-sort2-w').__w.bins[1].firstChild.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * 0.4]; }); await tap(b[0], b[1]); await sleep(300); }
   ok('sort crowded: all 8 cards in one box still fit', (await W('td-sort2-w', 'w.state()')).every(x => x === 1) && (await inside()).length === 0, await inside());
   await act('td-sort2-w', 'check');
   ok('sort crowded: Check still works after a full sort', /1 of 8 correct/.test((await fb('td-sort2-w')).text), await fb('td-sort2-w'));

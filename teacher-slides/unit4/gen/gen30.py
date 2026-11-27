@@ -56,6 +56,11 @@ SLIDES = []
 
 # ---------------------------------------------------------------- shared bits
 CSS.append("""
+#l3a-bar .pl,#l3a-double .pl{list-style:none;display:flex;flex-direction:column;gap:18px}
+#l3a-bar .pl li,#l3a-double .pl li{display:flex;align-items:center;gap:18px;min-height:104px;padding:16px 24px 16px 18px;border-radius:22px;background:rgba(255,255,255,.55);border:2.5px dashed #C3CCE0;font:500 30px/1.35 Inter;transition:background .5s,border-color .5s,box-shadow .5s}
+#l3a-bar .pl .nb,#l3a-double .pl .nb{flex:none;width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:var(--mute);color:#fff;font:800 26px Inter;transition:background .5s}
+#l3a-bar.b1 .pl .s1,#l3a-bar.b2 .pl .s2,#l3a-bar.b3 .pl .s3,#l3a-bar.b4 .pl .s4,#l3a-double.b1 .pl .s1,#l3a-double.b2 .pl .s2,#l3a-double.b3 .pl .s3{background:#fff;border:2.5px solid transparent;box-shadow:0 10px 26px rgba(15,27,51,.08)}
+#l3a-two .qk,#l3a-fair .qk,#l3a-lib .qk,#l3a-make .qk,#l3a-build .qk{font:700 24px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--noc)}
 #l3a-parts .lb,#l3a-picto .lb{position:absolute;display:flex;gap:18px;align-items:flex-start;padding:22px 26px;border-radius:24px;background:#fff;box-shadow:0 14px 36px rgba(15,27,51,.10)}
 #l3a-parts .lb i,#l3a-picto .lb i,#l3a-two .lb i{flex:none;width:50px;height:50px;border-radius:15px;display:grid;place-items:center;color:#fff;font:800 26px Inter;font-style:normal}
 #l3a-parts .lb h3,#l3a-picto .lb h3{font:700 36px/1.1 Display;margin:4px 0 6px}
@@ -117,7 +122,7 @@ def s_open():
  <div style="display:grid;grid-template-columns:200px 1fr 540px;gap:40px;align-items:center;height:100%">
   <div class="num in" style="--d:100">3</div>
   <div class="stack" style="gap:22px">
-   <div class="kicker in" style="--d:200">Lesson 3 · Part 1</div>
+   <div class="kicker in" style="--d:200">Lesson 3</div>
    <h2 class="in" style="--d:280;margin:0">Tables, pictograms<br>&amp; <em>bar charts</em></h2>
    <p class="lede in" style="--d:380;max-width:760px">The same data can be shown in different ways.</p>
    <ul class="goals" style="margin-top:8px">{gl}</ul>
@@ -234,7 +239,7 @@ def s_why():
   </div>
   <div class="stack" style="gap:22px">
    <div class="card in" style="--d:260;padding:28px 34px">
-    <span class="chip sun">Class 1/3 survey</span>
+    <span class="chip sun">Science club vote</span>
     <div class="q" style="margin-top:14px">How many brothers and sisters do you have?</div>
    </div>
    <div style="position:relative;height:330px">
@@ -251,7 +256,7 @@ def s_why():
    <div class="idea g2"><svg><use href="#bulb"/></svg><div>A chart shows the pattern at a glance: most students have <b>1</b> sibling.</div></div>
   </div>
  </div>
- <aside class="notes">Say: "We asked 24 students in 1/3: how many brothers and sisters do you have?" Show the raw slips. Ask: "Which answer is the most common?" Students find it hard: that is why we present data. Click (beat 1): the slips sort themselves into groups and the table counts them. 0 siblings: 5 · 1 sibling: 10 · 2 siblings: 6 · 3 siblings: 3. Check: 5 + 10 + 6 + 3 = 24 ✓ (and again: 10 + 6 = 16, 16 + 5 = 21, 21 + 3 = 24 ✓). Click (beat 2): each pile becomes a bar. Ask: "What do you see now?" Most students have 1 sibling (10 students); the fewest have 3 (3 students). A table gives exact numbers; a chart shows the pattern fast.</aside>
+ <aside class="notes">Say: "We asked the 24 members of the science club: how many brothers and sisters do you have?" Show the raw slips. Ask: "Which answer is the most common?" Students find it hard: that is why we present data. Click (beat 1): the slips sort themselves into groups and the table counts them. 0 siblings: 5 · 1 sibling: 10 · 2 siblings: 6 · 3 siblings: 3. Check: 5 + 10 + 6 + 3 = 24 ✓ (and again: 10 + 6 = 16, 16 + 5 = 21, 21 + 3 = 24 ✓). Click (beat 2): each pile becomes a bar. Ask: "What do you see now?" Most students have 1 sibling (10 students); the fewest have 3 (3 students). A table gives exact numbers; a chart shows the pattern fast.</aside>
 </section>"""
 
 
@@ -328,7 +333,7 @@ def s_parts():
 
 # ======================================================================== 4 two-way table (teaching)
 def s_two():
-    rows = [('1/1', 6, 4), ('1/2', 5, 7), ('1/3', 8, 6)]
+    rows = [('1/7', 6, 4), ('1/8', 5, 7), ('1/9', 8, 6)]
     rt = [b + g for _, b, g in rows]
     bt, gt = sum(b for _, b, _ in rows), sum(g for _, _, g in rows)
     assert rt == [10, 12, 14] and bt == 19 and gt == 17 and bt + gt == sum(rt) == 36
@@ -352,8 +357,8 @@ def s_two():
 """)
     body = ''
     for i, (c, b, g) in enumerate(rows):
-        cls = ' class="r2"' if c == '1/2' else ''
-        gcls = 'cg x' if c == '1/2' else 'cg'
+        cls = ' class="r2"' if c == '1/8' else ''
+        gcls = 'cg x' if c == '1/8' else 'cg'
         body += f'<tr{cls}><td>{c}</td><td>{b}</td><td class="{gcls}">{g}</td><td class="ct"><span class="bl" data-count="{b+g}" data-at="2"></span></td></tr>'
     foot = (f'<tr class="rt"><td>Total</td><td><span class="bl" data-count="{bt}" data-at="3"></span></td>'
             f'<td class="cg"><span class="bl" data-count="{gt}" data-at="3"></span></td><td><span class="bl" data-count="{bt+gt}" data-at="3"></span></td></tr>')
@@ -376,9 +381,9 @@ def s_two():
  <div style="display:grid;grid-template-columns:600px 1fr;gap:50px;height:740px">
   <div class="stack" style="gap:24px">
    <p class="body in" style="--d:250">A <b>two-way table</b> sorts data in two ways: by <b>class</b> and by <b>boys or girls</b>.</p>
-   <div class="card t-coral in" style="--d:400;padding:22px 30px;box-shadow:none"><div class="kicker" style="color:var(--coral)">Try it</div><div class="q" style="margin-top:6px">How many girls in 1/2 ride the bus?</div></div>
+   <div class="card t-coral in" style="--d:400;padding:22px 30px;box-shadow:none"><div class="qk">Try it</div><div class="q" style="margin-top:6px">How many girls in 1/8 ride the bus?</div></div>
    <ol class="steps">
-    <li class="g1"><span>Row 1/2 meets column Girls at <b>7</b>.</span></li>
+    <li class="g1"><span>Row 1/8 meets column Girls at <b>7</b>.</span></li>
     <li class="g2"><span><b>Add across</b> to get each row total.</span></li>
     <li class="g3"><span><b>Add down</b> to get each column total.</span></li>
    </ol>
@@ -392,7 +397,7 @@ def s_two():
    <svg class="chart" viewBox="0 0 1010 700" style="position:absolute;left:0;top:0;width:1010px;height:700px;overflow:visible;pointer-events:none" aria-hidden="true">{arr}</svg>
   </div>
  </div>
- <aside class="notes">A two-way table sorts the same students in two ways: by class (rows) and by boys or girls (columns). Beat 1: "How many girls in 1/2 ride the bus?" Go along row 1/2 and down column Girls: they meet at 7. Beat 2: add across for each row total: 1/1: 6 + 4 = 10 · 1/2: 5 + 7 = 12 · 1/3: 8 + 6 = 14. Beat 3: add down for each column total: boys 6 + 5 + 8 = 19 · girls 4 + 7 + 6 = 17 · all 19 + 17 = 36. Check the other way: 10 + 12 + 14 = 36 ✓. Both ways must give the same grand total.</aside>
+ <aside class="notes">A two-way table sorts the same students in two ways: by class (rows) and by boys or girls (columns). Beat 1: "How many girls in 1/8 ride the bus?" Go along row 1/8 and down column Girls: they meet at 7. Beat 2: add across for each row total: 1/7: 6 + 4 = 10 · 1/8: 5 + 7 = 12 · 1/9: 8 + 6 = 14. Beat 3: add down for each column total: boys 6 + 5 + 8 = 19 · girls 4 + 7 + 6 = 17 · all 19 + 17 = 36. Check the other way: 10 + 12 + 14 = 36 ✓. Both ways must give the same grand total.</aside>
 </section>"""
 
 
@@ -480,7 +485,7 @@ def s_bar():
         s.append(f'<text x="{X0-16}" y="{Y0-U*t+8}" text-anchor="end" class="tick">{t}</text>')
     for i, (n, v) in enumerate(data):
         s.append(f'<text x="{f(xs[i]+bw/2)}" y="{Y0+40}" text-anchor="middle" class="lab">{n}</text>')
-    s.append(f'<text x="{X0}" y="38" class="ttl" style="font-size:30px">How students in 1/2 get to school</text>')
+    s.append(f'<text x="{X0}" y="38" class="ttl" style="font-size:30px">How students in 1/6 get to school</text>')
     s.append(f'<text x="{(X0+X1)//2}" y="{Y0+92}" text-anchor="middle" class="lab" style="font-weight:700">Way to school</text>')
     s.append(f'<text transform="translate(36 {Y0-U*7}) rotate(-90)" text-anchor="middle" class="lab" style="font-weight:700">Number of students</text>')
     # annotations
@@ -512,11 +517,8 @@ def s_bar():
         a.append(f'<path d="M{f(x0+6)} {y} H{f(x1-6)} M{f(x0+16)} {y-9} L{f(x0+6)} {y} L{f(x0+16)} {y+9} M{f(x1-16)} {y-9} L{f(x1-6)} {y} L{f(x1-16)} {y+9}" pathLength="1" class="draw" style="--n:{i};fill:none;stroke:#B7791F;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/>')
     a.append('</g>')
     CSS.append("""
-#l3a-bar .steps>li{font-size:30px}
-#l3a-bar .steps>li:nth-child(1)::before{background:var(--violet)}
-#l3a-bar .steps>li:nth-child(2)::before{background:var(--coral)}
-#l3a-bar .steps>li:nth-child(3)::before{background:var(--mint)}
-#l3a-bar .steps>li:nth-child(4)::before{background:#E0A21B}
+#l3a-bar .side{display:flex;flex-direction:column;justify-content:space-between;height:736px}
+#l3a-bar.b1 .s1 .nb{background:var(--violet)} #l3a-bar.b2 .s2 .nb{background:var(--noc)} #l3a-bar.b3 .s3 .nb{background:var(--okc)} #l3a-bar.b4 .s4 .nb{background:#B7791F}
 """)
     return f"""
 <section class="slide" id="l3a-bar" data-steps="4">
@@ -527,19 +529,111 @@ def s_bar():
   <div class="card in" style="--d:200;padding:26px 30px;height:736px">
    <svg class="chart" viewBox="0 0 {W} {H}" style="width:{W}px;height:{H}px">{''.join(s)}{''.join(a)}</svg>
   </div>
-  <div class="stack" style="gap:22px">
+  <div class="side">
    <p class="body in" style="--d:300">A <b>bar chart</b> uses bars to compare groups. A good one has:</p>
-   <ol class="steps">
-    <li class="g1"><span>A <b>title</b> and <b>axis labels</b></span></li>
-    <li class="g2"><span>A <b>scale</b> with equal steps</span></li>
-    <li class="g3"><span><b>Bars</b> of the same width</span></li>
-    <li class="g4"><span>Equal <b>gaps</b> between bars</span></li>
+   <ol class="pl">
+    <li class="s1 in" style="--d:380"><span class="nb">1</span><span class="g1" style="--d:0">A <b>title</b> and <b>axis labels</b></span></li>
+    <li class="s2 in" style="--d:440"><span class="nb">2</span><span class="g2" style="--d:0">A <b>scale</b> with equal steps</span></li>
+    <li class="s3 in" style="--d:500"><span class="nb">3</span><span class="g3" style="--d:0"><b>Bars</b> of the same width</span></li>
+    <li class="s4 in" style="--d:560"><span class="nb">4</span><span class="g4" style="--d:0">Equal <b>gaps</b> between bars</span></li>
    </ol>
+   <div class="idea in" style="--d:650"><svg><use href="#bulb"/></svg><div>The <b>taller</b> the bar, the more students.</div></div>
   </div>
  </div>
  <aside class="notes">A <b>bar chart</b> compares groups with bars. The taller the bar, the more students. Beat 1: the title and the two <b>axis labels</b> (Way to school, Number of students) say what is shown. Beat 2: the <b>scale</b> goes up in equal steps of 2: 0, 2, 4 … 14. Beat 3: every bar has the same width, so only the height matters. Beat 4: the gaps between bars are equal too. Read the chart: School van 12, Car 9, BTS 7, Motorbike 5, Walk 3. Total 12 + 9 + 7 + 5 + 3 = 36 students (12 + 9 = 21, 21 + 7 = 28, 28 + 5 = 33, 33 + 3 = 36 ✓). Ask: "How many more come by school van than by car?" (12 − 9 = 3).</aside>
 </section>"""
 
+
+
+# ======================================================================== 6b double bar chart (teaching)
+def s_double():
+    data = [('Mango', 8, 10), ('Banana', 5, 3), ('Watermelon', 6, 7), ('Durian', 4, 2)]
+    bt, gt = sum(d[1] for d in data), sum(d[2] for d in data)
+    assert bt == 23 and gt == 22 and bt + gt == 45 and 10 - 8 == 2
+    assert [n for n, b, g in data if b > g] == ['Banana', 'Durian']
+    W, H = 1040, 688
+    X0, X1, Y0, MAXV = 112, 1020, 574, 12
+    U = 36
+    gw = (X1 - X0) / 4
+    bw, inner = 84, 8
+    off = (gw - 2 * bw - inner) / 2
+    VI = 'var(--violet)'
+    s = []
+    for t in range(1, MAXV + 1):
+        st = '' if t % 2 == 0 else ' style="stroke:#EEF1F7"'
+        s.append(f'<line x1="{X0}" y1="{Y0-U*t}" x2="{X1}" y2="{Y0-U*t}" class="grid"{st}/>')
+    G = {}
+    for i, (n, b, g) in enumerate(data):
+        xb = X0 + i * gw + off
+        xg = xb + bw + inner
+        G[n] = (xb, xg, b, g)
+        s.append(f'<rect x="{f(xb)}" y="{Y0-U*b}" width="{bw}" height="{U*b}" rx="8" class="grow f-blue" style="--n:{2*i}"/>')
+        s.append(f'<rect x="{f(xg)}" y="{Y0-U*g}" width="{bw}" height="{U*g}" rx="8" class="grow f-coral" style="--n:{2*i+1}"/>')
+        s.append(f'<text x="{f(X0+i*gw+gw/2)}" y="{Y0+40}" text-anchor="middle" class="lab" style="font-size:26px">{n}</text>')
+    s.append(f'<line x1="{X0}" y1="{Y0}" x2="{X1}" y2="{Y0}" class="axis"/><line x1="{X0}" y1="{Y0-U*MAXV-12}" x2="{X0}" y2="{Y0}" class="axis"/>')
+    for t in range(0, MAXV + 1, 2):
+        s.append(f'<text x="{X0-16}" y="{Y0-U*t+8}" text-anchor="end" class="tick">{t}</text>')
+    s.append(f'<text x="{X0-70}" y="40" class="ttl" style="font-size:30px">Favourite fruit of class 1/1</text>')
+    LX = X1 - 250
+    s.append(f'<rect x="{LX}" y="20" width="26" height="26" rx="7" class="f-blue"/><text x="{LX+38}" y="42" class="lab" style="font-size:26px">Boys</text>'
+             f'<rect x="{LX+132}" y="20" width="26" height="26" rx="7" class="f-coral"/><text x="{LX+170}" y="42" class="lab" style="font-size:26px">Girls</text>')
+    s.append(f'<text x="{f((X0+X1)/2)}" y="{Y0+92}" text-anchor="middle" class="lab" style="font-weight:700">Fruit</text>')
+    s.append(f'<text transform="translate(30 {Y0-U*MAXV/2}) rotate(-90)" text-anchor="middle" class="lab" style="font-weight:700">Number of students</text>')
+
+    def mk(cx, cy, k, n=0):
+        return (f'<g class="mk pop" style="--n:{n};--d:500"><circle cx="{f(cx)}" cy="{f(cy)}" r="21"/>'
+                f'<text x="{f(cx)}" y="{f(cy+8.5)}" text-anchor="middle">{k}</text></g>')
+
+    def val(x, v, n):
+        return f'<text x="{f(x+bw/2)}" y="{Y0-U*v-12}" text-anchor="middle" class="val pop" style="--n:{n};--d:300;font-size:28px">{v}</text>'
+    a = []
+    # beat 1: the legend
+    a.append(f'<g class="g1"><path d="{rr(LX-16, 6, 266, 54, 16)}" pathLength="1" class="draw" style="fill:none;stroke:{VI};stroke-width:4"/>{mk(LX-44, 33, 1)}</g>')
+    # beat 2: +2 bracket on Mango
+    xb, xg, b, g = G['Mango']
+    yb, yg = Y0 - U * b, Y0 - U * g
+    bx = xg + bw + 18
+    a.append(f'<g class="g2">{val(xb, b, 0)}{val(xg, g, 1)}'
+             f'<path d="M{f(xb+bw)} {yb} H{f(bx)}" class="growx" style="--d:500;fill:none;stroke:{VI};stroke-width:3.5;stroke-dasharray:9 7"/>'
+             f'<path d="M{f(bx-10)} {yg} H{f(bx)} V{yb} H{f(bx-10)}" pathLength="1" class="draw" style="--d:900;fill:none;stroke:{VI};stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round"/>'
+             f'<text x="{f(bx+12)}" y="{(yb+yg)/2+12:g}" class="tl pop" style="--d:1300;fill:{VI};font:800 34px Inter">+2</text>'
+             f'{mk(xb+bw/2, yg-64, 2)}</g>')
+    # beat 3: rings on Banana and Durian (more boys than girls)
+    rings = ''
+    for k, name in enumerate(['Banana', 'Durian']):
+        xb, xg, b, g = G[name]
+        top = Y0 - U * max(b, g) - 52
+        rings += (f'<path d="{rr(xb-14, top, 2*bw+inner+28, Y0+8-top, 20)}" pathLength="1" class="draw" style="--n:{k*3};fill:none;stroke:{VI};stroke-width:4"/>'
+                  f'{val(xb, b, k*2)}{val(xg, g, k*2+1)}{mk(xb-14, top, 3, k)}')
+    a.append(f'<g class="g3">{rings}</g>')
+    CSS.append("""
+#l3a-double .side{display:flex;flex-direction:column;gap:26px;height:740px}
+#l3a-double .pl li{min-height:176px;font-size:29px}
+#l3a-double .mk circle{fill:var(--ink)}
+#l3a-double .mk text{fill:#fff;font:800 24px Inter}
+#l3a-double .tl{stroke:#fff;stroke-width:8px;paint-order:stroke;stroke-linejoin:round}
+#l3a-double.b1 .s1 .nb,#l3a-double.b2 .s2 .nb,#l3a-double.b3 .s3 .nb{background:var(--ink)}
+""")
+    return f"""
+<section class="slide" id="l3a-double" data-steps="3">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Lesson 3 · Double bar charts</div>
+ <h2 class="in" style="--d:120">Two bars <em>side by side</em></h2>
+ <div style="display:grid;grid-template-columns:1100px 1fr;gap:40px">
+  <div class="card in" style="--d:200;padding:26px 30px;height:740px">
+   <svg class="chart" viewBox="0 0 {W} {H}" style="width:{W}px;height:{H}px" aria-label="Double bar chart: favourite fruit of class 1/1, boys and girls">{''.join(s)}{''.join(a)}</svg>
+  </div>
+  <div class="side">
+   <p class="body in" style="--d:300">A <b>double bar chart</b> shows two groups side by side.</p>
+   <ol class="pl">
+    <li class="s1 in" style="--d:380"><span class="nb">1</span><span class="g1" style="--d:0">The <b>legend</b>: <b class="blue">blue = boys</b>, <b class="coral">coral = girls</b>.</span></li>
+    <li class="s2 in" style="--d:440"><span class="nb">2</span><span class="g2" style="--d:0"><b>Inside a group</b>: Mango has 10 girls and 8 boys, so <b>2 more girls</b>.</span></li>
+    <li class="s3 in" style="--d:500"><span class="nb">3</span><span class="g3" style="--d:0"><b>Across groups</b>: only Banana and Durian have <b>more boys</b>.</span></li>
+   </ol>
+  </div>
+ </div>
+ <aside class="notes">Teach the double bar chart before Exercise 3A. Data, class 1/1: Mango boys 8, girls 10; Banana 5, 3; Watermelon 6, 7; Durian 4, 2. Boys 8 + 5 + 6 + 4 = 23, girls 10 + 3 + 7 + 2 = 22, class 23 + 22 = 45. Scale: each grid line is 1 student, labels every 2. Beat 1: point at the <b>legend</b> first: blue = boys, coral = girls. Beat 2: inside one group, Mango: 10 − 8 = 2 more girls (the +2 bracket). Beat 3: across the groups: more boys than girls only in Banana (5 and 3) and Durian (4 and 2); Mango (8 and 10) and Watermelon (6 and 7) have more girls. Ask: "Which fruit do the most students like?" (Mango, 8 + 10 = 18).</aside>
+</section>"""
 
 # ======================================================================== 7 Exercise 3A divider
 def s_ex():
@@ -641,7 +735,7 @@ def s_fair():
     return f"""
 <section class="slide" id="l3a-fair" data-steps="2">
  <i class="mesh m3"></i>
- <div class="kicker in">Exercise 3A · Two-way tables</div>
+ <div class="kicker in">Exercise 3A · Task 1 · Two-way tables</div>
  <h2 class="in" style="--d:120">Who joined the <em>Science Fair</em>?</h2>
  <div style="display:grid;grid-template-columns:920px 1fr;gap:56px">
   <div class="card in" style="--d:200;padding:34px 40px;height:726px">
@@ -652,13 +746,13 @@ def s_fair():
    <div class="badge info g1" style="margin-top:16px;--d:500"><svg><use href="#check"/></svg>Check: 16 + 13 + 15 + 20 = 64 = 29 + 35</div>
   </div>
   <div class="stack" style="gap:20px">
-   <div class="kicker in" style="--d:300;color:var(--coral)">Question 1</div>
+   <div class="qk in" style="--d:300">Question 1</div>
    <div class="q in" style="--d:340;margin-top:-8px">Which class sent the most students?</div>
    <div class="ch r2 ia" data-mcq>
     <div class="c in" style="--d:420"><b>A</b>1/1</div><div class="c in" style="--d:470"><b>B</b>1/2</div>
     <div class="c in" style="--d:520"><b>C</b>1/3</div><div class="c ok in" style="--d:570"><b>D</b>1/4</div>
    </div>
-   <div class="kicker in" style="--d:640;color:var(--coral);margin-top:10px">Question 2</div>
+   <div class="qk in" style="--d:640;margin-top:10px">Question 2</div>
    <div class="w-input ia in" style="--d:680;width:684px;height:224px" data-label="How many more girls than boys joined?" data-answer="6" data-accept="6;6 girls;6 students" data-unit="girls"></div>
    <div class="ans g2"><svg><use href="#check"/></svg><div>1. <b>1/4</b> (20 students) · 2. 35 − 29 = <b>6</b></div></div>
   </div>
@@ -690,19 +784,19 @@ def s_lib():
     return f"""
 <section class="slide" id="l3a-lib" data-steps="2">
  <i class="mesh m2"></i>
- <div class="kicker in">Exercise 3A · Pictograms</div>
+ <div class="kicker in">Exercise 3A · Task 2 · Pictograms</div>
  <h2 class="in" style="--d:120">Books borrowed from the <em>library</em></h2>
  {BOOK_SYMBOL}
  <div style="display:grid;grid-template-columns:1fr 800px;gap:60px">
   <div class="stack" style="gap:18px">
-   <div class="kicker in" style="--d:300;color:var(--coral)">Question 1</div>
+   <div class="qk in" style="--d:300">Question 1</div>
    <div class="q in" style="--d:340;margin-top:-6px">How many books were borrowed on Tuesday?</div>
    <div class="ch r1 ia" data-mcq>
     <div class="c in" style="--d:420"><b>A</b>4.5</div><div class="c in" style="--d:470"><b>B</b>80</div>
     <div class="c ok in" style="--d:520"><b>C</b>90</div><div class="c in" style="--d:570"><b>D</b>100</div>
    </div>
    <div class="ans g1"><svg><use href="#check"/></svg><div>4½ books × 20 = <b>90 books</b></div></div>
-   <div class="kicker in" style="--d:640;color:var(--coral);margin-top:16px">Question 2</div>
+   <div class="qk in" style="--d:640;margin-top:16px">Question 2</div>
    <div class="q in" style="--d:680;margin-top:-6px">How many more books on Friday than on Wednesday?</div>
    <div class="ch r2 ia" data-mcq>
     <div class="c in" style="--d:760"><b>A</b>3</div><div class="c in" style="--d:810"><b>B</b>40</div>
@@ -729,27 +823,28 @@ def s_make():
     assert all(s != a for s, a in zip(start, icons))
     CSS.append("""
 #l3a-make .tbl{width:100%;table-layout:fixed;font-size:30px}
-#l3a-make .tbl th,#l3a-make .tbl td{height:64px;padding:0 22px}
+#l3a-make .tbl th,#l3a-make .tbl td{height:70px;padding:0 22px}
+#l3a-make .ans{font-size:30px;padding:18px 26px}
 #l3a-make .tbl th.tc{background:var(--violet)}
 #l3a-make .bl{display:inline-grid;place-items:center;min-width:84px;height:46px;padding:0 10px;border-radius:12px;border:2.5px dashed #AEB8D0;font:800 30px Inter;color:var(--violet);transition:background .5s,border-color .5s}
 #l3a-make.b1 .bl{background:var(--lviolet);border-color:transparent}
-#l3a-make .kn{display:flex;align-items:center;gap:16px;font:600 30px/1.35 Inter}
+#l3a-make .kn{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding:10px 16px;border-radius:16px;background:var(--lsun);font:500 28px/1.3 Inter}
 """)
     trs = ''.join(f'<tr><td>{c}</td><td class="n">{v}</td><td class="n"><span class="bl" data-count="{v/4:g}" data-at="1"></span></td></tr>' for c, v in data)
     return f"""
 <section class="slide" id="l3a-make" data-steps="1">
  <i class="mesh m4"></i>
- <div class="kicker in">Exercise 3A · Build a pictogram</div>
+ <div class="kicker in">Exercise 3A · Task 3 · Build a pictogram</div>
  <h2 class="in" style="--d:120">Fix the <em>pictogram</em></h2>
  <div style="display:grid;grid-template-columns:1fr 560px;gap:50px">
   <div class="w-picto ia in" style="--d:250;width:1050px;height:720px" data-title="Iced cocoa sold at the school fair" data-labels="1/1,1/2,1/3,1/4" data-answer="3,4.5,2,5" data-start="{','.join(f'{s:g}' for s in start)}" data-key="4" data-icon="cup" data-unit="cups"></div>
-  <div class="stack" style="gap:22px">
+  <div class="stack" style="gap:24px">
    <div class="card in" style="--d:300;padding:28px 32px">
-    <div class="kicker" style="color:var(--coral)">Data</div><div style="font:700 30px/1.25 Display;margin:6px 0 16px">Cups sold at each class stall</div>
+    <div class="qk">Data</div><div style="font:700 30px/1.25 Display;margin:6px 0 14px">Cups sold at each class stall</div>
+    <div class="kn"><svg class="cup" viewBox="0 0 64 96" style="width:36px;height:54px"><use href="#cup"/></svg><span><b>= 4 cups</b>, so ½ cup = 2 cups</span></div>
     <table class="tbl"><thead><tr><th>Stall</th><th class="n">Cups</th><th class="n tc">Icons</th></tr></thead><tbody>{trs}</tbody></table>
    </div>
-   <div class="note in" style="--d:420"><div class="nt">Key</div><div class="kn"><svg class="cup" viewBox="0 0 64 96" style="width:40px;height:60px"><use href="#cup"/></svg><span><b>= 4 cups</b></span></div><div style="margin-top:6px">So half a cup = 2 cups.</div></div>
-   <div class="ans g1"><svg><use href="#check"/></svg><div>Icons = cups ÷ 4. So 18 ÷ 4 = <b>4½</b></div></div>
+   <div class="ans g1"><svg><use href="#check"/></svg><div>Icons = cups ÷ 4 · 18 ÷ 4 = <b>4½</b></div></div>
   </div>
  </div>
  <aside class="notes">The pictogram starts WRONG on purpose (2, 5, 3, 3½ cups). Students tap to add or remove cups until each row matches the table, then press Check. Ask a student to fix it at the board and explain each row. Beat 1 reveals the Icons column: 1/1: 12 ÷ 4 = 3 · 1/2: 18 ÷ 4 = 4½ (4 whole cups and a half cup, because half a cup = 2 cups) · 1/3: 8 ÷ 4 = 2 · 1/4: 20 ÷ 4 = 5. Check: 3 + 4½ + 2 + 5 = 14½ icons; 14½ × 4 = 58 cups = 12 + 18 + 8 + 20 ✓.</aside>
@@ -790,12 +885,12 @@ def s_sport():
 
     def line(x, v, colr, n):
         y = Y0 - U * v
-        return f'<path d="M{f(x)} {f(y)} H{X0}" pathLength="1" class="draw" style="--n:{n};fill:none;stroke:{colr};stroke-width:3.5;stroke-linecap:round"/>'
+        return (f'<path d="M{X0} {f(y)} H{f(x)}" class="growx" style="--n:{n};--d:250;fill:none;stroke:{colr};stroke-width:3.5;stroke-dasharray:10 8"/>'
+                f'<circle cx="{X0}" cy="{f(y)}" r="7" class="pop" style="--n:{n};--d:700;fill:{colr}"/>')
 
     def read(x, v, colr, n):
         y = Y0 - U * v
-        return (f'<circle cx="{X0}" cy="{f(y)}" r="7" class="pop" style="--n:{n};--d:700;fill:{colr}"/>'
-                f'<text x="{f(x+bw/2)}" y="{f(y-12)}" text-anchor="middle" class="val pop" style="--n:{n};--d:600;font-size:28px">{v}</text>')
+        return f'<text x="{f(x+bw/2)}" y="{f(y-12)}" text-anchor="middle" class="val pop" style="--n:{n};--d:600;font-size:28px">{v}</text>'
 
     def pill(cx, txt, num, w):
         y = 112
@@ -806,13 +901,14 @@ def s_sport():
     fb, fg, fc = pos['Football']
     bb, bg, bc = pos['Badminton']
     vb, vg, vc = pos['Volleyball']
-    lines = (f'<g class="g1">{line(bg, 13, "var(--coral)", 0)}</g>'
-             f'<g class="g2">{line(fb, 16, "var(--blue)", 0)}{line(fg, 7, "var(--coral)", 1)}</g>'
-             f'<g class="g3">{line(vb, 5, "var(--blue)", 0)}{line(vg, 12, "var(--coral)", 1)}</g>')
+    lines = (f'<g class="g1"><g class="gf gf1">{line(bg, 13, "var(--coral)", 0)}</g></g>'
+             f'<g class="g2"><g class="gf gf2">{line(fb, 16, "var(--blue)", 0)}{line(fg, 7, "var(--coral)", 1)}</g></g>'
+             f'<g class="g3"><g class="gf">{line(vb, 5, "var(--blue)", 0)}{line(vg, 12, "var(--coral)", 1)}</g></g>')
     s.insert(MAXV, lines)
     a = (f'<g class="g1">{read(bg, 13, "var(--coral)", 0)}{pill(bc, "13 girls", 1, 160)}</g>'
          f'<g class="g2">{read(fb, 16, "var(--blue)", 0)}{read(fg, 7, "var(--coral)", 1)}{pill(fc+6, "16 − 7 = 9", 2, 182)}</g>'
          f'<g class="g3">{read(vb, 5, "var(--blue)", 0)}{read(vg, 12, "var(--coral)", 1)}{pill(vc, "5 + 12 = 17", 3, 190)}</g>')
+    CSS.append('#l3a-sport .gf{transition:opacity .5s ease}\n#l3a-sport.b2 .gf1,#l3a-sport.b3 .gf2{opacity:0}')
     qs = [
         ('1. How many girls chose badminton?', '13', '13;13 girls;13 students', 'girls'),
         ('2. Football: how many more boys than girls?', '9', '9;9 boys;9 students;9 more', 'boys'),
@@ -824,7 +920,7 @@ def s_sport():
     return f"""
 <section class="slide" id="l3a-sport" data-steps="3">
  <i class="mesh m3"></i>
- <div class="kicker in">Exercise 3A · Double bar charts</div>
+ <div class="kicker in">Exercise 3A · Task 4 · Double bar charts</div>
  <h2 class="in" style="--d:120">Read a <em>double</em> bar chart</h2>
  <div style="display:grid;grid-template-columns:660px 1fr;gap:46px">
   <div class="stack" style="gap:22px">{qh}</div>
@@ -855,11 +951,11 @@ def s_build():
     return f"""
 <section class="slide" id="l3a-build" data-steps="1">
  <i class="mesh m4"></i>
- <div class="kicker in">Exercise 3A · Build a bar chart</div>
+ <div class="kicker in">Exercise 3A · Task 5 · Build a bar chart</div>
  <h2 class="in" style="--d:120">Fix the <em>bar chart</em></h2>
  <div class="stack" style="gap:26px">
   <div class="card in" style="--d:200;display:flex;align-items:center;gap:40px;padding:22px 34px;height:156px">
-   <div style="width:440px"><div class="kicker" style="color:var(--coral)">Data</div><div style="font:700 30px/1.25 Display;margin-top:6px">Plastic bottles collected by 1/2</div></div>
+   <div style="width:440px"><div class="qk">Data</div><div style="font:700 30px/1.25 Display;margin-top:6px">Plastic bottles collected by 1/2</div></div>
    <table class="hz"><tr><th>Week</th>{ths}<th>Total</th></tr><tr><td>Bottles</td>{tds}<td>{sum(data)}</td></tr></table>
   </div>
   <div style="display:grid;grid-template-columns:1000px 1fr;gap:44px">
@@ -874,7 +970,7 @@ def s_build():
 </section>"""
 
 
-SLIDES = [s_open(), s_why(), s_parts(), s_two(), s_picto(), s_bar(), s_ex(), s_fair(), s_lib(), s_make(), s_sport(), s_build()]
+SLIDES = [s_open(), s_why(), s_parts(), s_two(), s_picto(), s_bar(), s_double(), s_ex(), s_fair(), s_lib(), s_make(), s_sport(), s_build()]
 head = '<!-- 30 · Lesson 3 part 1: tables, pictograms, bar charts + Exercise 3A (prefix l3a-). Generated; numbers checked by assertions. -->\n'
 css = '<style>' + '\n'.join(c.strip() for c in CSS) + '\n</style>\n'
 OUT.write_text(css + head + '\n'.join(s.strip() for s in SLIDES) + '\n', encoding='utf-8')
