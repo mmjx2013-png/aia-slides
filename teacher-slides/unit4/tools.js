@@ -1151,8 +1151,8 @@
       var a = document.activeElement;
       if (a && a !== document.body && a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA' && !a.isContentEditable && a.blur) a.blur();
     }
-    ['pointerup', 'pointercancel'].forEach(function (t) { addEventListener(t, function () { setTimeout(unfocus, 0); }, true); });
-    addEventListener('click', function (e) { if (e.detail > 0) setTimeout(unfocus, 0); }, true);   /* detail 0 = pressed with the keyboard: keep focus */
+    ['pointerup', 'pointercancel'].forEach(function (t) { addEventListener(t, function () { unfocus(); setTimeout(unfocus, 0); }, true); });
+    addEventListener('click', function (e) { if (e.detail > 0) { unfocus(); setTimeout(unfocus, 0); } }, true);   /* detail 0 = pressed with the keyboard: keep focus */
     addEventListener('pointerup', function (e) {
       var d = down; down = null;
       if (!d || d.id !== e.pointerId || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12) return;
