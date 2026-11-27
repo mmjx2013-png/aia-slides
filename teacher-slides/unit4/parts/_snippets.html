@@ -1,0 +1,92 @@
+<!-- REFERENCE SLIDES (not in the deck). Copy patterns from here. Preview: python3 build.py --only _snippets -->
+
+<!-- 1 · lesson opener: number + title + 3 goals + a small visual -->
+<section class="slide opener" id="sn-open" data-steps="0" data-lesson="1" data-title="Lesson 1 · Statistical questions">
+ <i class="mesh m2"></i>
+ <div class="g46" style="align-items:center;height:100%">
+  <div class="num in" style="--d:100">1</div>
+  <div class="stack">
+   <div class="kicker in" style="--d:200">Lesson 1</div>
+   <h2 class="in" style="--d:280;margin:0">Statistical <em>questions</em></h2>
+   <ul class="goals">
+    <li class="in" style="--d:450"><svg><use href="#check"/></svg>Tell a statistical question from one that is not</li>
+    <li class="in" style="--d:540"><svg><use href="#check"/></svg>Explain why answers must vary</li>
+    <li class="in" style="--d:630"><svg><use href="#check"/></svg>Rewrite a question so it needs data</li>
+   </ul>
+  </div>
+ </div>
+ <aside class="notes">Opener. 1 minute.</aside>
+</section>
+
+<!-- 2 · compare two cards, beat 1 shows the second card, beat 2 the verdicts -->
+<section class="slide" id="sn-cmp" data-steps="2">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Lesson 1 · Statistical questions</div>
+ <h2 class="in" style="--d:120">Is it a <em>statistical</em> question?</h2>
+ <div style="display:grid;grid-template-columns:540px 1fr;gap:34px;height:600px">
+  <div class="card in" style="--d:260;display:flex;flex-direction:column">
+   <span class="chip coral" style="align-self:flex-start">Question A</span>
+   <div class="q" style="margin-top:16px">What time did <b>I</b> wake up today?</div>
+   <div class="row" style="flex:1;justify-content:center">
+    <svg class="clock" viewBox="0 0 120 132" aria-hidden="true"><circle cx="27" cy="27" r="16" class="bell"/><circle cx="93" cy="27" r="16" class="bell"/><path d="M34 114 L24 128 M86 114 L96 128" class="leg"/><circle cx="60" cy="72" r="47" class="body"/><circle cx="60" cy="72" r="37" class="face"/><line x1="60" y1="72" x2="60" y2="54" class="hh" style="--a:187.5deg"/><line x1="60" y1="72" x2="60" y2="45" class="mh" style="--a:90deg"/><circle cx="60" cy="72" r="4.5" class="pin"/></svg>
+    <div class="big">6:15</div>
+   </div>
+   <div class="badge no g2" style="align-self:flex-start">1 answer · <b>not statistical</b></div>
+  </div>
+  <div class="card g1" style="display:flex;flex-direction:column">
+   <span class="chip" style="align-self:flex-start">Question B</span>
+   <div class="q" style="margin-top:16px">What time did the students in <b>our class</b> wake up today?</div>
+   <div class="kids" style="margin-top:18px">
+    <div class="k pop" style="--n:0"><svg class="kid" viewBox="0 0 80 100" style="--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"><use href="#kid"/></svg><span class="t">6:00</span></div>
+    <div class="k pop" style="--n:1"><svg class="kid" viewBox="0 0 80 100" style="--skin:#D9A77E;--hair:#3B2A1E;--shirt:var(--k2)"><use href="#kid"/></svg><span class="t">6:30</span></div>
+    <div class="k pop" style="--n:2"><svg class="kid" viewBox="0 0 80 100" style="--skin:#C68B62;--hair:#1E1A17;--shirt:var(--k3)"><use href="#kid"/></svg><span class="t">7:15</span></div>
+   </div>
+   <div class="badge yes g2" style="position:absolute;right:34px;top:28px"><svg><use href="#check"/></svg>Answers vary · <b>statistical</b></div>
+  </div>
+ </div>
+ <aside class="notes">Beat 1: the class question. Beat 2: the verdicts.</aside>
+</section>
+
+<!-- 3 · bar chart drawn in SVG (bars grow), with axis, grid, ticks, labels, values -->
+<section class="slide" id="sn-bar" data-steps="1">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Lesson 3 · Bar charts</div>
+ <h2 class="in" style="--d:120">Favourite fruit in 1/2</h2>
+ <div class="g64">
+  <div class="card in" style="--d:200">
+   <svg class="chart" viewBox="0 0 900 520" style="width:100%">
+    <text x="0" y="24" class="ttl">Favourite fruit of class 1/2</text>
+    <g><line x1="80" y1="460" x2="880" y2="460" class="grid"/><line x1="80" y1="360" x2="880" y2="360" class="grid"/><line x1="80" y1="260" x2="880" y2="260" class="grid"/><line x1="80" y1="160" x2="880" y2="160" class="grid"/><line x1="80" y1="60" x2="880" y2="60" class="grid"/></g>
+    <g text-anchor="end"><text x="66" y="468" class="tick">0</text><text x="66" y="368" class="tick">4</text><text x="66" y="268" class="tick">8</text><text x="66" y="168" class="tick">12</text><text x="66" y="68" class="tick">16</text></g>
+    <rect x="130" y="235" width="110" height="225" rx="8" class="grow f-blue" style="--n:0"/>
+    <rect x="320" y="110" width="110" height="350" rx="8" class="grow f-violet" style="--n:1"/>
+    <rect x="510" y="310" width="110" height="150" rx="8" class="grow f-coral" style="--n:2"/>
+    <rect x="700" y="260" width="110" height="200" rx="8" class="grow f-mint" style="--n:3"/>
+    <line x1="80" y1="460" x2="880" y2="460" class="axis"/><line x1="80" y1="40" x2="80" y2="460" class="axis"/>
+    <g text-anchor="middle"><text x="185" y="496" class="lab">Mango</text><text x="375" y="496" class="lab">Banana</text><text x="565" y="496" class="lab">Apple</text><text x="755" y="496" class="lab">Durian</text></g>
+   </svg>
+  </div>
+  <div class="stack">
+   <div class="q in" style="--d:400">Which fruit is the most popular?</div>
+   <div class="ch r1 ia" data-mcq>
+    <div class="c in" style="--d:500"><b>A</b>Mango</div><div class="c ok in" style="--d:560"><b>B</b>Banana</div>
+    <div class="c in" style="--d:620"><b>C</b>Apple</div><div class="c in" style="--d:680"><b>D</b>Durian</div>
+   </div>
+   <div class="ans g1"><svg><use href="#check"/></svg><div>Banana has the tallest bar: <b>14 students</b></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- 4 · widgets (rendered by tools.js). Give each a fixed size with style="width:..;height:.." -->
+<section class="slide" id="sn-tools" data-steps="0">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Your turn</div>
+ <h2 class="in" style="--d:120">Build the bar chart</h2>
+ <div class="g64">
+  <div class="w-bars ia" data-title="Cups sold this week" data-labels="Mon,Tue,Wed,Thu,Fri" data-max="60" data-step="10" data-answer="30,25,40,20,50" data-ylabel="Cups" style="width:1000px;height:640px"></div>
+  <div class="stack">
+   <div class="w-input ia" data-label="How many cups in total?" data-answer="165" data-accept="165;165 cups" data-unit="cups"></div>
+   <div class="w-write ia" data-label="Explain how you know" data-lines="3" style="width:560px;height:260px"></div>
+  </div>
+ </div>
+</section>

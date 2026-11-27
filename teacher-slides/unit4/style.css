@@ -1,0 +1,211 @@
+/* Unit 4 Statistics (1) · Style A "modern clean" · stage 1920x1080 */
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400 500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700 800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:600 800;unicode-range:U+0E00-0E7F}
+:root{--ease:cubic-bezier(.2,.7,.2,1);
+ --ink:#0F1B33;--blue:#3B6CFF;--violet:#7C5CFF;--coral:#FF6B5B;--sun:#FFC53D;--mint:#1FBF9F;--mute:#5B6785;--line:#D3DAE8;
+ --bg:#F6F7FB;--panel:#fff;--lblue:#EEF2FF;--lcoral:#FFF0EE;--lmint:#E3F8F3;--lsun:#FFF4D6;--lviolet:#F1EDFF;
+ --okc:#0E9F84;--noc:#D9442F;
+ --k1:#3B6CFF;--k2:#FF6B5B;--k3:#1FBF9F;--k4:#7C5CFF;
+ --tea:#F6D7AE;--lid:#3B6CFF;--straw:#FF6B5B;--pearl:#3A2618;--badge:#fff;--ol:transparent;--olw:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0B0E16;overflow:hidden;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--bg)}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .4s ease,visibility 0s linear .4s;padding:92px 130px;background:var(--bg)}
+.slide.on{visibility:visible;opacity:1;transition:opacity .4s ease}
+.slide>*{position:relative}
+.slide>.mesh{position:absolute}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- background ---------- */
+.mesh{inset:-200px;pointer-events:none;background:radial-gradient(820px 620px at 82% 18%,rgba(124,92,255,.20),transparent 62%),radial-gradient(760px 560px at 68% 92%,rgba(59,108,255,.16),transparent 62%),radial-gradient(640px 520px at 4% 104%,rgba(255,107,91,.12),transparent 62%);animation:mesh 22s ease-in-out infinite alternate}
+.mesh.m2{background:radial-gradient(800px 600px at 92% 8%,rgba(124,92,255,.16),transparent 62%),radial-gradient(700px 520px at 4% 100%,rgba(59,108,255,.13),transparent 62%)}
+.mesh.m3{background:radial-gradient(800px 600px at 8% 8%,rgba(255,197,61,.15),transparent 62%),radial-gradient(760px 560px at 96% 96%,rgba(59,108,255,.16),transparent 62%)}
+.mesh.m4{background:radial-gradient(800px 600px at 96% 92%,rgba(31,191,159,.16),transparent 62%),radial-gradient(700px 520px at 6% 6%,rgba(124,92,255,.13),transparent 62%)}
+@keyframes mesh{to{transform:translate(60px,-40px) scale(1.06)}}
+
+/* ---------- type ---------- */
+.kicker{font:700 24px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+h1.t{font:800 140px/.98 Display;letter-spacing:-.04em}
+h2{font:800 76px/1.05 Display;letter-spacing:-.035em;margin:10px 0 30px}
+h2 em,h1 em,.grad{font-style:normal;background:linear-gradient(100deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font:700 40px/1.15 Display;letter-spacing:-.02em}
+.lede{font:500 34px/1.42 Inter;color:var(--mute)}
+.body{font:500 32px/1.45 Inter}
+.small{font:500 26px/1.4 Inter;color:var(--mute)}
+.q{font:600 36px/1.3 Inter}
+.big{font:800 104px/1 Display;letter-spacing:-.035em}
+b.blue,.blue{color:var(--blue)} .coral{color:var(--coral)} .mint{color:var(--okc)} .violet{color:var(--violet)} .mute{color:var(--mute)}
+mark{background:linear-gradient(transparent 55%,rgba(255,197,61,.55) 55%);color:inherit;padding:0 2px}
+
+/* ---------- layout ---------- */
+.row{display:flex;gap:30px;align-items:center}
+.stack{display:flex;flex-direction:column;gap:22px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.g64{display:grid;grid-template-columns:1.5fr 1fr;gap:44px}
+.g46{display:grid;grid-template-columns:1fr 1.5fr;gap:44px}
+.fill{flex:1}
+
+/* ---------- panels ---------- */
+.card{position:relative;background:var(--panel);border-radius:32px;padding:32px 38px;box-shadow:0 26px 64px rgba(15,27,51,.10)}
+.card.flat{box-shadow:0 8px 24px rgba(15,27,51,.06)}
+.card.t-blue{background:var(--lblue)} .card.t-coral{background:var(--lcoral)} .card.t-mint{background:var(--lmint)} .card.t-sun{background:var(--lsun)} .card.t-violet{background:var(--lviolet)}
+.card.hl{outline:3px solid var(--blue)}
+.chip{display:inline-block;font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;border-radius:10px;background:var(--lblue);color:var(--blue)}
+.chip.coral{background:var(--lcoral);color:var(--coral)} .chip.mint{background:var(--lmint);color:var(--okc)} .chip.violet{background:var(--lviolet);color:var(--violet)} .chip.sun{background:var(--lsun);color:#A86F00}
+.pill{display:inline-block;padding:12px 22px;border-radius:999px;background:#fff;box-shadow:0 8px 24px rgba(15,27,51,.08);font:600 24px Inter;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:600 26px Inter}
+.badge svg{width:28px;height:28px}
+.badge.yes{background:var(--lmint);color:var(--okc)} .badge.no{background:var(--lcoral);color:var(--noc)} .badge.info{background:var(--lblue);color:var(--blue)}
+.idea{display:flex;align-items:center;gap:18px;padding:20px 28px;border-radius:22px;background:var(--ink);color:#fff;font:500 30px/1.4 Inter}
+.idea svg{width:42px;height:42px;color:var(--sun);flex:none} .idea b{color:var(--sun)}
+.note{padding:20px 26px;border-radius:20px;background:var(--lsun);border:2px solid #F4D27A;font:500 28px/1.45 Inter}
+.note .nt{font:700 22px Inter;letter-spacing:.1em;text-transform:uppercase;color:#B7791F;margin-bottom:6px}
+.def{padding:26px 32px;border-radius:24px;background:#fff;border-left:10px solid var(--blue);box-shadow:0 14px 40px rgba(15,27,51,.08);font:500 34px/1.45 Inter}
+.def .dt{font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.steps{list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:16px}
+.steps>li{counter-increment:st;display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,27,51,.06);font:500 30px/1.4 Inter}
+.steps>li::before{content:counter(st);flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--blue);color:#fff;font:800 24px Inter}
+.lessons{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.lessons li{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.88);border:1px solid rgba(15,27,51,.06);border-radius:20px;padding:15px 18px;font:600 26px Inter;box-shadow:0 10px 26px rgba(15,27,51,.06);white-space:nowrap}
+.lessons b{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;color:#fff;font:800 24px Inter}
+.n1{background:var(--blue)!important}.n2{background:var(--coral)!important}.n3{background:var(--mint)!important}.n4{background:var(--violet)!important}
+
+/* ---------- data table ---------- */
+.tbl{border-collapse:separate;border-spacing:0;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 14px 40px rgba(15,27,51,.08);font:500 28px Inter}
+.tbl caption{caption-side:top;text-align:left;font:700 26px Inter;padding:0 0 12px}
+.tbl th{background:var(--blue);color:#fff;font:700 26px Inter;padding:16px 22px;text-align:left}
+.tbl td{padding:14px 22px;border-bottom:1.5px solid #E6EAF3}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.n,.tbl th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tbl tfoot td{font-weight:700;background:var(--lblue)}
+.tbl .src{font:500 20px Inter;color:var(--mute)}
+
+/* ---------- choices + answer reveal ---------- */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.c{display:flex;align-items:center;gap:18px;padding:18px 24px;border-radius:22px;background:#fff;box-shadow:0 12px 30px rgba(15,27,51,.08);font:700 36px Display;border:2.5px solid transparent;transition:background .5s,border-color .5s,filter .5s}
+.c b{flex:none;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:var(--lblue);color:var(--blue);font:800 26px Inter;transition:background .5s,color .5s}
+.c.wide{grid-column:1/-1}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok,.on.b3 .ch.r3 .c.ok,.ch .c.ok.picked{border-color:var(--mint);background:var(--lmint)}
+.on.b1 .ch.r1 .c.ok b,.on.b2 .ch.r2 .c.ok b,.on.b3 .ch.r3 .c.ok b,.ch .c.ok.picked b{background:var(--mint);color:#fff}
+.on.b1 .ch.r1 .c:not(.ok),.on.b2 .ch.r2 .c:not(.ok),.on.b3 .ch.r3 .c:not(.ok){filter:grayscale(1) opacity(.55)}
+.ans{display:flex;align-items:center;gap:18px;padding:22px 28px;border-radius:24px;background:var(--ink);color:#fff;font:600 34px/1.35 Inter}
+.ans svg{width:44px;height:44px;color:var(--mint);flex:none}.ans b{color:var(--sun)}
+.yn{display:inline-grid;place-items:center;min-width:92px;padding:8px 16px;border-radius:14px;font:800 26px Inter}
+.yn.y{background:var(--lmint);color:var(--okc)}.yn.n{background:var(--lcoral);color:var(--noc)}
+
+/* ---------- drawings ---------- */
+.kid{display:block;width:86px;height:auto;--ink:#2B2B2B}
+.cup{display:block;flex:none;width:56px;height:84px}
+.halfcup{position:relative;display:block;flex:none}
+.halfcup::after{content:"";position:absolute;top:30%;bottom:0;right:0;width:50%;background:rgba(255,255,255,.8);border-left:2.5px dashed #8C97B2}
+.kids{display:flex;gap:22px;justify-content:center}
+.k{display:flex;flex-direction:column;align-items:center}
+.k .t{margin-top:-4px;font:700 24px Inter;padding:6px 12px;border-radius:10px;background:#fff;box-shadow:0 6px 16px rgba(15,27,51,.12);color:var(--blue)}
+.clock{width:180px}
+.clock .bell,.clock .body{fill:var(--coral)} .clock .face{fill:#fff} .clock .leg{stroke:var(--ink);stroke-width:7;stroke-linecap:round}
+.clock .tk{stroke:var(--ink);stroke-width:3} .clock .hh{stroke:var(--ink);stroke-width:6;stroke-linecap:round} .clock .mh{stroke:var(--blue);stroke-width:5;stroke-linecap:round} .clock .pin{fill:var(--ink)}
+.clock .hh,.clock .mh{transform-origin:60px 72px;transform:rotate(var(--a))}
+svg.chart{display:block;overflow:visible;font-family:Inter}
+.chart .axis{stroke:var(--ink);stroke-width:3;fill:none}
+.chart .grid{stroke:#E1E6F0;stroke-width:2}
+.chart .tick{fill:var(--mute);font:500 22px Inter}
+.chart .lab{fill:var(--ink);font:600 24px Inter}
+.chart .val{fill:var(--ink);font:700 24px Inter}
+.chart .ttl{fill:var(--ink);font:700 26px Inter}
+.chart .ln{fill:none;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.f-blue{fill:var(--blue)}.f-violet{fill:var(--violet)}.f-coral{fill:var(--coral)}.f-mint{fill:var(--mint)}.f-sun{fill:var(--sun)}.f-ink{fill:var(--ink)}.f-mute{fill:#AAB4CC}
+.s-blue{stroke:var(--blue)}.s-violet{stroke:var(--violet)}.s-coral{stroke:var(--coral)}.s-mint{stroke:var(--mint)}.s-sun{stroke:var(--sun)}.s-ink{stroke:var(--ink)}
+.seg{fill:none;stroke-width:34}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;font:600 24px Inter;color:var(--ink)}
+.legend span::before{content:"";display:inline-block;width:18px;height:18px;border-radius:5px;margin-right:9px;vertical-align:-2px;background:var(--c)}
+.prow{display:flex;align-items:center;height:96px;border-bottom:2px dashed var(--line)}
+.prow .day{width:150px;font:700 30px Inter}
+.icons{display:flex;gap:12px;align-items:flex-end}
+.key{display:flex;align-items:center;gap:14px;font:600 26px Inter;color:var(--mute)}
+.key .cup{width:36px;height:54px}
+
+/* ---------- motion ----------
+   .in            enters when the slide opens (delay: style="--d:300" ms)
+   .g1 .g2 .g3 .g4  appear on beat 1..4 (slide data-steps="N"); also take --d
+   .h1 .h2 .h3    visible until beat 1..3, then fade out
+   inside a beat group, .grow (bars) .draw (paths, pathLength="1") .pop .drop .segd (donut) start when the group shows
+   --n on children staggers them (pop/drop/grow use --n * 80ms) */
+.in{opacity:0}
+.on .in{animation:rise .8s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3,.g4{opacity:0}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3,.on.b4 .g4{animation:rise .7s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.on .h1,.on .h2,.on .h3{animation:rise .7s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .h1,.on.b2 .h2,.on.b3 .h3{animation:out .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-16px)}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes drop{from{opacity:0;transform:translateY(-150px)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes grow{from{opacity:1;transform:scaleY(0)}to{opacity:1;transform:none}}
+@keyframes growx{from{opacity:1;transform:scaleX(0)}to{opacity:1;transform:none}}
+@keyframes spin{from{transform:rotate(calc(var(--a) - 720deg))}to{transform:rotate(var(--a))}}
+@keyframes segd{from{stroke-dasharray:0 var(--C)}to{stroke-dasharray:var(--len) var(--C)}}
+@keyframes floatin{from{opacity:0;transform:translateY(70px) rotate(var(--r,0deg)) scale(.94)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes bob{from{opacity:1;transform:rotate(var(--r,0deg))}to{opacity:1;transform:translateY(-14px) rotate(var(--r,0deg))}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.grow{transform-box:fill-box;transform-origin:bottom}
+.growx{transform-box:fill-box;transform-origin:left}
+.pop,.drop{transform-box:fill-box;transform-origin:center}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.segd{stroke-dasharray:0 var(--C)}
+.grow,.growx,.pop,.drop{opacity:0}
+.on .grow{animation:grow .9s var(--ease) both;animation-delay:calc(var(--d,600)*1ms + var(--n,0)*90ms)}
+.on .growx{animation:growx .9s var(--ease) both;animation-delay:calc(var(--d,600)*1ms + var(--n,0)*90ms)}
+.on .pop{animation:pop .45s var(--ease) both;animation-delay:calc(var(--d,500)*1ms + var(--n,0)*80ms)}
+.on .drop{animation:drop .55s var(--ease) both;animation-delay:calc(var(--d,700)*1ms + var(--n,0)*55ms)}
+.on .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,500)*1ms + var(--n,0)*120ms)}
+.on .segd{animation:segd .9s var(--ease) both;animation-delay:calc(var(--d,700)*1ms + var(--n,0)*200ms)}
+.on .clock .hh,.on .clock .mh{animation:spin 1.8s cubic-bezier(.25,.6,.2,1) both .45s}
+/* inside a beat group, wait for the beat */
+.on .g1 :is(.grow,.growx,.pop,.drop,.draw,.segd),.on .g2 :is(.grow,.growx,.pop,.drop,.draw,.segd),.on .g3 :is(.grow,.growx,.pop,.drop,.draw,.segd),.on .g4 :is(.grow,.growx,.pop,.drop,.draw,.segd){animation:none}
+.on.b1 .g1 .grow,.on.b2 .g2 .grow,.on.b3 .g3 .grow,.on.b4 .g4 .grow{animation:grow .9s var(--ease) both;animation-delay:calc(var(--d,300)*1ms + var(--n,0)*90ms)}
+.on.b1 .g1 .growx,.on.b2 .g2 .growx,.on.b3 .g3 .growx,.on.b4 .g4 .growx{animation:growx .9s var(--ease) both;animation-delay:calc(var(--d,300)*1ms + var(--n,0)*90ms)}
+.on.b1 .g1 .pop,.on.b2 .g2 .pop,.on.b3 .g3 .pop,.on.b4 .g4 .pop{animation:pop .45s var(--ease) both;animation-delay:calc(var(--d,250)*1ms + var(--n,0)*80ms)}
+.on.b1 .g1 .drop,.on.b2 .g2 .drop,.on.b3 .g3 .drop,.on.b4 .g4 .drop{animation:drop .55s var(--ease) both;animation-delay:calc(var(--d,400)*1ms + var(--n,0)*55ms)}
+.on.b1 .g1 .draw,.on.b2 .g2 .draw,.on.b3 .g3 .draw,.on.b4 .g4 .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,300)*1ms + var(--n,0)*120ms)}
+.on.b1 .g1 .segd,.on.b2 .g2 .segd,.on.b3 .g3 .segd,.on.b4 .g4 .segd{animation:segd .9s var(--ease) both;animation-delay:calc(var(--d,400)*1ms + var(--n,0)*200ms)}
+.float{opacity:0;transform:rotate(var(--r,0deg))}
+.on .float{animation:floatin 1s var(--ease) both,bob 7s ease-in-out infinite alternate;animation-delay:calc(var(--d,0)*1ms),calc(var(--d,0)*1ms + 1s)}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- lesson opener ---------- */
+.opener .num{font:800 300px/.8 Display;letter-spacing:-.06em;background:linear-gradient(160deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.opener .goals{list-style:none;display:flex;flex-direction:column;gap:16px}
+.opener .goals li{display:flex;gap:16px;align-items:center;font:500 30px Inter}
+.opener .goals li svg{width:34px;height:34px;padding:5px;border-radius:10px;background:var(--lblue);color:var(--blue);flex:none}
+
+/* ---------- control bar + menu (engine) ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;transition:opacity .3s;font:600 14px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1}
+#ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:9px 12px;cursor:pointer;min-width:40px}
+#ctl button:hover{background:rgba(255,255,255,.12)}
+#ctl button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+#ctl button:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+#pos{color:#fff;min-width:120px;text-align:center;font-variant-numeric:tabular-nums}
+#menu{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:51;display:none;min-width:420px;max-height:70vh;overflow:auto;padding:10px;border-radius:16px;background:rgba(15,27,51,.95);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+#menu.open{display:block}
+#menu button{display:block;width:100%;text-align:left;font:600 16px Inter;color:#fff;background:transparent;border:0;border-radius:10px;padding:12px 14px;cursor:pointer}
+#menu button:hover,#menu button:focus-visible{background:rgba(255,255,255,.12);outline:none}
+#menu button small{display:block;font:500 13px Inter;color:#AAB4CC;margin-top:2px}
+.shot #ctl,.shot #menu{display:none!important}
+
+.th{line-height:1.5}
