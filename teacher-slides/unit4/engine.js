@@ -11,12 +11,18 @@
   if (qs.has('still')) root.classList.add('rm', 'shot');
   else if (matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('rm');
 
+  /* Size from the visible area (clientWidth/Height), not innerWidth: on phones and tablets innerWidth can report a
+     larger layout viewport, which made the slide zoom in and get cut off. */
+  function vw() { return root.clientWidth || innerWidth; }
+  function vh() { return root.clientHeight || innerHeight; }
   function fit() {
-    var s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    var s = Math.min(vw() / 1920, vh() / 1080);
     stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
     root.style.setProperty('--scale', s);
   }
-  addEventListener('resize', fit); fit();
+  addEventListener('resize', fit); addEventListener('orientationchange', fit);
+  if (window.visualViewport) visualViewport.addEventListener('resize', fit);
+  fit();
 
   function count(el) {
     var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null;
@@ -60,7 +66,7 @@
   stage.addEventListener('click', function (e) {
     if (menuEl && menuEl.classList.contains('open')) { closeMenu(); return; }
     if (lastPointer !== 'mouse' || busy(e.target)) return;
-    (e.clientX < innerWidth * 0.2) ? prev() : next();
+    (e.clientX < vw() * 0.2) ? prev() : next();
   });
   addEventListener('keydown', function (e) {
     var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
