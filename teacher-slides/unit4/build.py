@@ -36,8 +36,9 @@ js = read('engine.js') + '\n' + read('tools.js')
 def sha(t): return "'sha256-" + base64.b64encode(hashlib.sha256(t.encode('utf-8')).digest()).decode() + "'"
 # Content Security Policy: only this page's own script may run (pinned by hash); nothing is fetched except our fonts;
 # no network calls, no plugins, no forms, no base-URL tricks. Style attributes are used for animation timing, so styles stay inline.
-CSP = ("default-src 'none'; script-src " + sha(js) + "; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; "
+CSP = ("default-src 'none'; script-src " + sha(js) + "; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; "
        "connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'")
+body = re.sub(r'<!--.*?-->', '', body, flags=re.S)   # comments are for authors, not for the published page
 if '<script' in body: problems.append('<script> inside a part (not allowed)')
 html = f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
@@ -53,14 +54,14 @@ html = f'''<!DOCTYPE html>
 {body}
 </main>
 <nav id="ctl" aria-label="Slide controls">
- <button id="mn" type="button" aria-label="Lessons">☰</button>
+ <button id="mn" type="button" aria-label="Lessons" aria-expanded="false" aria-controls="menu">☰</button>
  <button id="pv" type="button" aria-label="Back">‹</button>
  <span id="pos"></span>
  <button id="nx" type="button" aria-label="Next">›</button>
  <button id="pen" type="button" aria-pressed="false" aria-label="Pen">✎ Pen</button>
  <button id="fs" type="button" aria-label="Full screen">⤢</button>
 </nav>
-<div id="menu" role="menu" aria-label="Lessons"></div>
+<nav id="menu" aria-label="Lessons"></nav>
 <div id="live" class="sr" aria-live="polite"></div>
 <script>{js}</script>
 </body></html>

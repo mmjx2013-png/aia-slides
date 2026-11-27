@@ -6,7 +6,7 @@ cd "$ROOT"; python3 tools/build_deck.py
 git fetch -q origin gh-pages
 if [ ! -e "$WT/.git" ]; then git worktree prune; git worktree add -f -B gh-pages "$WT" origin/gh-pages; fi
 cd "$WT"; git reset -q --hard origin/gh-pages
-find . -mindepth 1 -maxdepth 1 ! -name .git ! -name v2 ! -name .nojekyll -exec rm -rf {} +
+find . -mindepth 1 -maxdepth 1 ! -name .git ! -name v2 ! -name .nojekyll ! -name satit ! -name m1-statistics -exec rm -rf {} +   # keep other published projects
 cp -a "$ROOT/deck/." "$WT/"; rm -f src.html slides.html plates.html imgcredits.html; rm -rf audio/raw
 mkdir -p read && cp -a "$ROOT/site/." read/
 touch .nojekyll; git add -A

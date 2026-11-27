@@ -14,7 +14,7 @@ cd "$WT"
 git reset -q --hard origin/gh-pages
 # keep v2 reachable at /v2/
 if [ ! -f v2/index.html ] && [ -f index.html ] && grep -q "Ten slides" index.html; then mkdir -p v2 && cp index.html v2/index.html; fi
-find . -mindepth 1 -maxdepth 1 ! -name .git ! -name v2 ! -name .nojekyll -exec rm -rf {} +
+find . -mindepth 1 -maxdepth 1 ! -name .git ! -name v2 ! -name .nojekyll ! -name satit ! -name m1-statistics -exec rm -rf {} +   # keep other published projects
 cp -a "$ROOT/site/." "$WT/"
 touch .nojekyll
 git add -A

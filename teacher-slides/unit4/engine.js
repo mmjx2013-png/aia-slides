@@ -25,9 +25,9 @@
   fit();
 
   function count(el) {
-    var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null;
+    var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null, tok = el._tok = {};
     if (root.classList.contains('rm')) { el.textContent = to.toFixed(dec); return; }
-    function f(t) { if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(f); }
+    function f(t) { if (el._tok !== tok) return; if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(f); }
     el.textContent = (0).toFixed(dec); requestAnimationFrame(f);
   }
 
@@ -45,7 +45,7 @@
     s.querySelectorAll('[data-count]').forEach(function (el) {
       var at = +(el.dataset.at || 0);
       if (st === at || (dir === 'jump' && st >= at)) count(el);
-      else if (st < at) el.textContent = '';
+      else if (st < at) { el._tok = null; el.textContent = ''; }
     });
     var L = lessonOf(i);
     if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
@@ -61,16 +61,26 @@
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
   /* Only a real mouse click on the slide advances. Touch and stylus taps never do, so a student working at the board
      cannot reveal an answer by accident; on touch screens use swipe or the ‹ › buttons. */
-  var lastPointer = 'mouse';
-  addEventListener('pointerdown', function (e) { lastPointer = e.pointerType || 'mouse'; if (lastPointer !== 'mouse') root.classList.add('touchy'); }, true);
+  var lastPointer = 'mouse', px = 0, py = 0;
+  addEventListener('pointerdown', function (e) { lastPointer = e.pointerType || 'mouse'; px = e.clientX; py = e.clientY; if (lastPointer !== 'mouse') root.classList.add('touchy'); }, true);
   stage.addEventListener('click', function (e) {
-    if (menuEl && menuEl.classList.contains('open')) { closeMenu(); return; }
+    if (menuOpen()) { closeMenu(); return; }
     if (lastPointer !== 'mouse' || busy(e.target)) return;
+    if (Math.abs(e.clientX - px) > 6 || Math.abs(e.clientY - py) > 6) return;
+    var sel = getSelection && getSelection(); if (sel && String(sel).trim()) return;
     (e.clientX < vw() * 0.2) ? prev() : next();
   });
   addEventListener('keydown', function (e) {
     var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
     var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
+    if (menuOpen()) {   /* while the lesson menu is open, keys move inside it and never change the slide */
+      var items = [].slice.call(menuEl.children), at = items.indexOf(document.activeElement);
+      if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); e.stopPropagation(); items[Math.min(items.length - 1, at + 1)].focus(); }
+      else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); e.stopPropagation(); items[Math.max(0, at - 1)].focus(); }
+      else if (k === 'Escape' || k === 'm' || k === 'M') { e.preventDefault(); e.stopPropagation(); closeMenu(); }
+      else if (!(t && t.closest && t.closest('#menu'))) { e.preventDefault(); e.stopPropagation(); }
+      return;
+    }
     if (!nav) return;
     e.preventDefault(); e.stopPropagation();
     if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
@@ -101,8 +111,17 @@
   addEventListener('pointermove', wake); addEventListener('touchstart', wake, { passive: true });
   function fs() { if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); }
   var menuEl = document.getElementById('menu');
-  function closeMenu() { if (menuEl) menuEl.classList.remove('open'); }
-  function menu() { if (menuEl) menuEl.classList.toggle('open'); }
+  function menuOpen() { return !!(menuEl && menuEl.classList.contains('open')); }
+  function closeMenu() {
+    if (!menuOpen()) return;
+    menuEl.classList.remove('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'false');
+    if (menuEl.contains(document.activeElement)) document.activeElement.blur();
+  }
+  function menu() {
+    if (!menuEl) return; if (menuOpen()) { closeMenu(); return; }
+    menuEl.classList.add('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'true');
+    var cur = menuEl.querySelector('[aria-current="true"]') || menuEl.firstChild; if (cur) cur.focus();
+  }
   if (menuEl) {
     slides.forEach(function (s, k) {
       if (!s.dataset.lesson) return;
@@ -120,5 +139,5 @@
   addEventListener('hashchange', function () { var n = parseInt((location.hash || '').slice(1), 10); if (n && n - 1 !== i) jump(n - 1); });
   window.__deck = { next: next, prev: prev, jump: jump, state: function () { return { i: i, st: st, steps: STEPS[i], n: N, id: slides[i].id }; } };
   var h = parseInt((location.hash || '').slice(1), 10);
-  jump(qs.has('s') ? +qs.get('s') : (h ? h - 1 : 0), +(qs.get('b') || 0));
+  jump(h ? h - 1 : (qs.has('s') ? +qs.get('s') : 0), h ? 0 : +(qs.get('b') || 0));
 })();
