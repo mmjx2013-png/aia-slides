@@ -13,7 +13,7 @@
   var qs = new URLSearchParams(location.search);
   var ANSWERS = qs.has('answers');
   var INK = '#0F1B33', BLUE = '#3B6CFF', VIOLET = '#7C5CFF', CORAL = '#FF6B5B', MINT = '#1FBF9F', SUN = '#FFC53D';
-  var PAL = [BLUE, VIOLET, CORAL, MINT, SUN, '#5B6785'];
+  var PAL = [BLUE, VIOLET, CORAL, MINT, SUN, '#5B6785', '#E0569B', '#0EA5C6'];   /* 8 distinct colours: pies with 7–8 slices never repeat a colour */
   var uid = 0, widgets = [];
 
   /* ---------- helpers ---------- */
