@@ -9,3 +9,5 @@
 {"kind": "REJECT", "t": "2026-11-27 09:00:00", "event": "20261127-0900-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
 {"kind": "REJECT", "t": "2026-11-27 09:15:00", "event": "20261127-0915-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
 {"kind": "REJECT", "t": "2026-11-27 09:45:00", "event": "20261127-0945-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
+{"kind": "NOTE", "t": "2026-11-27 11:19:53", "note": "rule change (boss pre-agreed decision, typical retail swap): variant B from the next wake: no 03:30 flat, flat by Sat 03:30 Bangkok, MT5 swap -0.60/+0.20 USD per oz per night (triple Wed), 3x half spread on exits 04:00-06:00 Bangkok. Under the boss swap figure (-6/oz) the rule would have kept A. Report: trading/intraday/reports/cand15_overnight.md"}
+{"kind": "REJECT", "t": "2026-11-27 12:30:00", "event": "20261127-1230-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
