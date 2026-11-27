@@ -121,7 +121,7 @@ def style_a():
 </div>
 <div class="hero">
  <div class="hc c-bar" style="--d:500"><div class="ht">Favourite sport</div>{bars([5, 8, 3, 6])}<div class="hl"><span>Football</span><span>Basket</span><span>Tennis</span><span>Volley</span></div></div>
- <div class="hc c-pie" style="--d:650">{donut([.4, .25, .2, .15])}<div class="ht ctr">Year groups</div></div>
+ <div class="hc c-pie" style="--d:650"><div class="ht">Students by year</div>{donut([.4, .25, .2, .15])}<div class="lg"><span class="l0">Y1 40%</span><span class="l1">Y2 25%</span><span class="l2">Y3 20%</span><span class="l3">Y4 15%</span></div></div>
  <div class="hc c-picto" style="--d:800"><div class="ht">Cups sold</div><div class="row3">{cup(0)}{cup(1)}{cup(2)}{cup(3)}<span class="halfcup" style="--n:4">{cup(4)}</span></div></div>
  <div class="hc c-survey" style="--d:950"><div class="ht">Class survey</div>
    <ul class="sv">{''.join(f'<li style="--n:{i}"><svg><use href="#check"/></svg>{t}</li>' for i, t in enumerate(["Bus", "Walk", "Bike", "Car"]))}</ul></div>
@@ -134,7 +134,7 @@ def style_a():
    <div class="mid">{clock()}<div class="big">6:15</div></div>
    <div class="badge no g2">1 answer · <b>not statistical</b></div></div>
  <div class="pane many g1"><div class="tagq">Question B</div><div class="q">{Q_MANY}</div>
-   {kids_row()}{dotplot()}
+   {kids_row()}{dotplot()}<div class="cap17">Whole class · 17 answers · each dot is one student</div>
    <div class="badge yes g2"><svg><use href="#check"/></svg>Answers vary · <b>statistical</b></div></div>
 </div>
 <div class="idea g2" style="--d:300"><svg><use href="#bulb"/></svg><span>A statistical question expects answers that <b>vary</b>, so we collect data to answer it.</span></div>
@@ -177,7 +177,7 @@ def style_b():
   <div class="mid">{clock()}<div class="big">6:15</div></div>
   <div class="stamp no g2">NO</div><div class="hand v g2">1 answer → not statistical</div></div>
  <div class="sticky s-mint many g1 place" style="--r:1deg"><i class="tape t2"></i><div class="q">“{Q_MANY}”</div>
-  {kids_row()}{dotplot()}
+  {kids_row()}{dotplot()}<div class="cap17 hand">whole class: 17 answers, 1 dot = 1 student</div>
   <div class="stamp yes g2">YES</div><div class="hand v g2">everyone's answer is different!</div></div>
 </div>
 <p class="rule g2" style="--d:400">A statistical question expects answers that <span class="hl">vary</span>, so we collect data.</p>
