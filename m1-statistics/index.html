@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-eTwrtZWD6wDT13isgOBSm5qhSx4jHBUryFRYwWC6Iu4='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Ox9uZeVNVbAC0AOVwkWOV2vk2n1OVpqeTy36Nn2DNp8='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Unit 4 · Statistics (1) · Mathayomsuksa 1</title>
 <style>/* Unit 4 Statistics (1) · Style A "modern clean" · stage 1920x1080 */
@@ -207,7 +207,7 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 .opener .goals li svg{width:34px;height:34px;padding:5px;border-radius:10px;background:var(--lblue);color:var(--blue);flex:none}
 
 /* ---------- control bar + menu (engine) ---------- */
-#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;font:600 14px Inter}
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);box-sizing:border-box;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;font:600 14px Inter}
 #ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
 .touchy #ctl{opacity:.8;pointer-events:auto}
 .touchy #ctl button{padding:12px 16px;font-size:18px}
@@ -217,7 +217,7 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 #ctl button[aria-pressed="true"]{background:#fff;color:var(--ink)}
 #ctl button:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
 #pos{color:#fff;min-width:120px;text-align:center;font-variant-numeric:tabular-nums}
-#menu{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:51;display:none;min-width:420px;max-height:70vh;overflow:auto;padding:10px;border-radius:16px;background:rgba(15,27,51,.95);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+#menu{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:51;display:none;min-width:min(420px,calc(100vw - 16px));max-width:calc(100vw - 16px);box-sizing:border-box;max-height:70vh;overflow:auto;padding:10px;border-radius:16px;background:rgba(15,27,51,.95);box-shadow:0 20px 60px rgba(0,0,0,.45)}
 #menu.open{display:block}
 #menu button{display:block;width:100%;text-align:left;font:600 16px Inter;color:#fff;background:transparent;border:0;border-radius:10px;padding:12px 14px;cursor:pointer}
 #menu button:hover,#menu button:focus-visible{background:rgba(255,255,255,.12);outline:none}
@@ -447,7 +447,7 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 </defs></svg>
 
 <main id="stage" aria-roledescription="slide deck">
-<!-- 00 · title + unit overview (written by the boss session; the lesson parts follow) -->
+
 <section class="slide" id="t-title" data-steps="0" data-lesson="0" data-title="Unit 4 · Statistics (1)">
  <i class="mesh"></i>
  <div style="width:860px;margin-top:34px;z-index:2">
@@ -546,6 +546,10 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 #l1-sort .kk b{color:var(--ink)}
 #l1-sort .kk svg{width:34px;height:34px;flex:none}
 #l1-make .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+#l1-make .why{position:absolute;right:130px;top:132px;display:flex;align-items:center;gap:12px;padding:9px 22px 9px 9px;border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(15,27,51,.08);font:600 28px Inter;color:var(--ink)}
+#l1-make .why b{color:#B8321F}
+#l1-make .why i{flex:none;width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:var(--lcoral);color:var(--coral)}
+#l1-make .why i svg{width:26px;height:26px}
 #l1-make .bf{display:flex;align-items:center;gap:16px;height:132px;padding:0 26px;font:600 30px/1.3 Inter}
 #l1-make .bf>svg,#l1-make .af>svg{flex:none;width:44px;height:44px;padding:8px;border-radius:13px}
 #l1-make .bf>svg{background:#fff;color:var(--noc)}
@@ -581,9 +585,9 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 #l1-exit .st span{padding:10px 18px;border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(15,27,51,.08);font:700 28px Inter;color:var(--blue)}
 </style>
 
-<!-- ===================== LESSON 1 · teaching ===================== -->
 
-<!-- 1 · opener -->
+
+
 <section class="slide opener" id="l1-open" data-steps="0" data-lesson="1" data-title="Lesson 1 · Statistical questions">
  <i class="mesh m2"></i>
  <div style="display:grid;grid-template-columns:860px 1fr;gap:60px;align-items:center;height:100%">
@@ -627,7 +631,7 @@ Ask: "Did they all give the same answer?" No. Thai tea 2, water 2, milk 1, bubbl
 Say: "When one question gets many different answers, we need statistics. That is today's lesson."</aside>
 </section>
 
-<!-- 2 · hook: one answer vs many -->
+
 <section class="slide" id="l1-hook" data-steps="2">
  <i class="mesh"></i>
  <div class="kicker in">Lesson 1 · Statistical questions</div>
@@ -695,7 +699,7 @@ Ask: "What is the most common wake-up time?" 6:15 (4 students).
 Beat 2: A has one answer. B has many answers that vary, so we must collect data to answer it.</aside>
 </section>
 
-<!-- 3 · definition: one question -> many answers -> data -->
+
 <section class="slide" id="l1-def" data-steps="3">
  <i class="mesh m3"></i>
  <div class="kicker in">Lesson 1 · Statistical questions</div>
@@ -750,7 +754,7 @@ Beat 2: we collect the answers as data and count them: Bus 4, BTS 3, Car 2, Walk
 Beat 3: read the definition together. New term: statistical question. Ask: "Which two words matter most?" vary and data.</aside>
 </section>
 
-<!-- 4 · the three checks -->
+
 <section class="slide" id="l1-checks" data-steps="3">
  <i class="mesh m4"></i>
  <div class="kicker in">Lesson 1 · Statistical questions</div>
@@ -811,7 +815,7 @@ Beat 3 · Needs data: yes, we must ask every student and record the times. All 3
 Tip: a group does not have to be people. It can be days, classes or trees in the school garden.</aside>
 </section>
 
-<!-- 5 · examples vs non-examples -->
+
 <section class="slide" id="l1-pairs" data-steps="4">
  <i class="mesh m2"></i>
  <div class="kicker in">Lesson 1 · Statistical questions</div>
@@ -845,9 +849,9 @@ Beat 4 · LINE stickers: Ploy is one person. The whole class gives many answers.
 The small pictures: one dot = one answer; many dots = many answers that vary.</aside>
 </section>
 
-<!-- ===================== EXERCISE 1 ===================== -->
 
-<!-- 6 · exercise divider -->
+
+
 <section class="slide" id="l1-exer" data-steps="0" data-lesson="1" data-title="Exercise 1 · Statistical questions">
  <i class="mesh m3"></i>
  <div class="kicker in" style="--d:100;margin-top:150px">Exercise 1</div>
@@ -871,7 +875,7 @@ The small pictures: one dot = one answer; many dots = many answers that vary.</a
 Remind them of the 3 checks: about a group? answers vary? needs data?</aside>
 </section>
 
-<!-- 7 · sorting activity -->
+
 <section class="slide" id="l1-sort" data-steps="1">
  <i class="mesh m2"></i>
  <div class="kicker in">Exercise 1 · Task 1 · Sort the questions</div>
@@ -903,14 +907,15 @@ Not statistical (4): canteen opening time (one fixed time), days in March (alway
 Check: 4 + 4 = 8 cards.</aside>
 </section>
 
-<!-- 8 · make it statistical -->
+
 <section class="slide" id="l1-make" data-steps="4">
  <i class="mesh m4"></i>
  <div class="kicker in">Exercise 1 · Task 2 · Rewrite</div>
- <h2 class="in" style="--d:120">Make it <em>statistical</em></h2>
+ <h2 class="in" style="--d:120;width:fit-content">Make it <em>statistical</em></h2>
+ <div class="why pop" style="--d:420"><i><svg><use href="#cross"/></svg></i>Only one answer, so <b>not statistical</b></div>
  <div class="cols">
   <div>
-   <div class="card t-coral bf in" style="--d:240"><svg><use href="#cross"/></svg><span>What is Nong's favourite subject?</span></div>
+   <div class="card t-coral bf in" style="--d:240"><svg><use href="#cross"/></svg><span>What is Pim's favourite subject?</span></div>
    <div class="mid in" style="--d:300"><svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4 V50 M8 38 L20 52 L32 38" style="fill:none;stroke:#AAB4CC;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg><span class="chip mint g1" style="--d:500">Ask a group</span></div>
    <div class="slot in" style="--d:340">✎ Your version<div class="af g1"><svg><use href="#check"/></svg><span>What are the favourite subjects of students in 1/2?</span></div></div>
   </div>
@@ -938,13 +943,13 @@ Check: 4 + 4 = 8 cards.</aside>
   </div>
  </div>
  <aside class="notes">Students write their own version in the dashed box with the pen (or on the board) BEFORE each click.
-Beat 1: "What is Nong's favourite subject?" is about one person. Ask a group: "What are the favourite subjects of students in 1/2?"
+Beat 1: "What is Pim's favourite subject?" is about one person. Ask a group: "What are the favourite subjects of students in 1/2?"
 Beat 2: "How many students are in class 1/2?" is one count (one answer). Ask about many classes: "How many students are in each M1 class?" The counts vary from class to class.
 Beat 3: "What time does our school start?" has one fixed time. "What time do students in 1/2 arrive at school?" has many times.
 Your turn: "How many pencils are in my pencil case?" One person, one answer. Beat 4 shows one good answer: "How many pencils do students in 1/2 have?" Accept any version that names a group and expects answers that vary.</aside>
 </section>
 
-<!-- 9 · quick check: two multiple choice -->
+
 <section class="slide" id="l1-check" data-steps="2">
  <i class="mesh m3"></i>
  <div class="kicker in">Exercise 1 · Task 3 · Quick check</div>
@@ -982,7 +987,7 @@ Q1 (beat 1): C. "How long do 1/2 students spend on homework?" is about a group a
 Q2 (beat 2): B. The canteen opens at one fixed time (for example 7:00), so there is only one answer and no data to collect. D is a trap: questions about time CAN be statistical, for example "What time do students in 1/2 wake up?"</aside>
 </section>
 
-<!-- 10 · exit ticket -->
+
 <section class="slide" id="l1-exit" data-steps="1">
  <i class="mesh"></i>
  <div class="kicker in">Exercise 1 · Task 4 · Exit ticket</div>
@@ -1029,7 +1034,7 @@ Common mistake: "What is your favourite sport?" asked to one person. It becomes 
 Next lesson: we will collect data to answer these questions.</aside>
 </section>
 
-<!-- 20 · Lesson 2 · Data collection (prefix l2-). Teaching slides, then the Exercise 2 divider and exercise slides. -->
+
 <style>
 /* opener collage */
 #l2-open .fc{display:flex;align-items:center;gap:12px;margin-bottom:10px;font:700 26px/1.25 Inter}
@@ -1712,7 +1717,7 @@ Next lesson: we will collect data to answer these questions.</aside>
 #l3a-build .hz th:last-child{background:var(--violet)}
 #l3a-build .ans{font-size:30px;line-height:1.4;align-items:flex-start}
 </style>
-<!-- 30 · Lesson 3 part 1: tables, pictograms, bar charts + Exercise 3A (prefix l3a-). Generated; numbers checked by assertions. -->
+
 <section class="slide opener" id="l3a-open" data-steps="0" data-lesson="3" data-title="Lesson 3 · Part 1 · Tables, pictograms &amp; bar charts">
  <i class="mesh m2"></i>
  <div style="display:grid;grid-template-columns:200px 1fr 540px;gap:40px;align-items:center;height:100%">
@@ -2105,7 +2110,7 @@ Next lesson: we will collect data to answer these questions.</aside>
 #l3b-volley .c{font:700 36px Display;padding:14px 0;justify-content:center}
 #l3b-volley .qc .q{font:600 30px/1.3 Inter;display:flex;gap:14px;align-items:flex-start}
 </style>
-<!-- 35 · Lesson 3 part 2: line graphs & pie charts, then Exercise 3B (prefix l3b-) -->
+
 <section class="slide opener" id="l3b-intro" data-steps="1" data-lesson="3b" data-title="Lesson 3 · Part 2 · Line graphs &amp; pie charts">
  <i class="mesh m3"></i>
  <div class="stack" style="width:780px;height:100%;justify-content:center;gap:0;z-index:2">
@@ -2210,11 +2215,11 @@ Next lesson: we will collect data to answer these questions.</aside>
    </div>
    <div class="card qc in" style="--d:420">
     <div class="q"><span class="qn">2</span><span>Find the <b>biggest gap</b> between income and costs.</span></div>
-    <div class="w-input ia" data-answer="12" data-accept="12;12 thousand;12000;12,000" data-unit="thousand baht" data-tol="0" style="width:544px;height:130px;margin-top:14px"></div>
+    <div class="w-input ia" data-answer="12" data-accept="12;12 thousand" data-unit="thousand baht" data-tol="0" style="width:544px;height:130px;margin-top:14px"></div>
    </div>
    <div class="card qc in" style="--d:540">
     <div class="q"><span class="qn">3</span><span>Find the <b>total income</b> (6 months).</span></div>
-    <div class="w-input ia" data-answer="150" data-accept="150;150 thousand;150000;150,000" data-unit="thousand baht" data-tol="0" style="width:544px;height:130px;margin-top:14px"></div>
+    <div class="w-input ia" data-answer="150" data-accept="150;150 thousand" data-unit="thousand baht" data-tol="0" style="width:544px;height:130px;margin-top:14px"></div>
    </div>
   </div>
   <div class="card in" style="--d:200;padding:24px 30px">
@@ -2629,7 +2634,7 @@ Next lesson: we will collect data to answer these questions.</aside>
 #l4-end .nx .ar{flex:none;width:84px;height:84px;border-radius:24px;display:grid;place-items:center;background:var(--lblue)}
 </style>
 
-<!-- ======================= 1 · Lesson 4 opener ======================= -->
+
 <section class="slide opener" id="l4-open" data-steps="0" data-lesson="4" data-title="Lesson 4 · Statistics in real life">
  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="l4-moon" viewBox="0 0 48 48"><path d="M30 6 A19 19 0 1 0 43 32 A15 15 0 0 1 30 6 Z" style="fill:currentColor"/></symbol>
@@ -2695,7 +2700,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Opener, about 1 minute. Ask: "Where did you see numbers or charts today?" (weather app, game scores, a canteen vote, a sleep or step tracker). The phone shows a rain forecast: Wednesday has an 80% chance of rain, so we decide to bring an umbrella. That is statistics in real life: data, then a decision. Read the three goals. Today we learn how data helps people decide, follow the data cycle with a canteen story, and then in Exercise 4 we catch a chart that tries to trick us and plan our own mini project.</aside>
 </section>
 
-<!-- ======================= 2 · Where statistics helps us decide ======================= -->
+
 <section class="slide" id="l4-uses" data-steps="1">
  <i class="mesh m2"></i>
  <div class="kicker in">Lesson 4 · Statistics in real life</div>
@@ -2769,7 +2774,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Four places where data helps us decide. First show only the data in each card and ask: "What would you decide with this data?" Take two or three ideas for each card. Beat 1 shows one possible decision for each card. Canteen: if we know what sells each day, the cook makes more of the favourites and throws away less food. Sports day: with everyone's 50 m running time we can make teams that are fair, with fast and slow runners in every team. Weather: rainfall records from past years show which months are dry, so sports day goes in a dry month. Sleep: if many students sleep too little, they can choose an earlier bedtime on school nights. Key message: data turns a guess into a better decision.</aside>
 </section>
 
-<!-- ======================= 3 · Case study: a new drink ======================= -->
+
 <section class="slide" id="l4-case" data-steps="3">
  <i class="mesh m4"></i>
  <div class="kicker in">Lesson 4 · Case study</div>
@@ -2837,7 +2842,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">A case study that follows the four steps (the tracker at the top lights up). Step 1 Ask: the canteen can add only one new drink. Question: "Which new drink would students buy most?" This is a statistical question because the answers vary. Beat 1, Collect: we asked 120 students, 20 from each grade M1 to M6 (6 × 20 = 120), so every grade has a voice. Votes: Thai tea 42, Mango smoothie 36, Coconut water 24, Butterfly pea juice 18. Check the total: 42 + 36 + 24 + 18 = 120. Beat 2, Present: a bar chart makes the biggest group easy to see (scale: each grid line is 10 votes). Beat 3, Decide: Thai tea has the tallest bar, so add Thai tea. 42 ÷ 120 = 0.35 = 35%. Check: 35% of 120 = 0.35 × 120 = 42. Ask: "Mango smoothie is close (36). What could the canteen do next term?" (try it later, or ask again).</aside>
 </section>
 
-<!-- ======================= 4 · The data cycle ======================= -->
+
 <section class="slide" id="l4-cycle" data-steps="4">
  <i class="mesh"></i>
  <div class="kicker in">Lesson 4 · How we use data</div>
@@ -2883,7 +2888,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">The data cycle: how people use statistics. Reveal one step per click and link each to the canteen story. 1 Ask: write a statistical question ("Which new drink would students buy most?"). Beat 1, 2 Collect: get the data by asking, counting or measuring (we asked 120 students). Beat 2, 3 Present: organise the data in a table or chart (the bar chart). Beat 3, 4 Interpret and decide: read the chart and act (Thai tea had the most votes, 42 of 120, so the canteen adds it). Beat 4: the arrow goes back to Ask. A decision gives a new question, for example "Did drink sales go up?" and the cycle starts again. Ask: "Which step uses a bar chart?" (Present.) "Which step gets the data?" (Collect.)</aside>
 </section>
 
-<!-- ======================= 5 · Exercise 4 divider ======================= -->
+
 <section class="slide" id="l4-ex" data-steps="0" data-lesson="4" data-title="Exercise 4 · Statistics in real life">
  <i class="mesh m4"></i>
  <div style="display:grid;grid-template-columns:1fr 860px;gap:70px;align-items:center;height:100%">
@@ -2938,7 +2943,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Exercise 4 has two tasks. Task 1: a shop's poster uses a chart that tricks the reader. Students find the trick and the real difference. Task 2: in pairs or small groups, students plan their own mini data project with the four steps of the data cycle. For each task, give students time, then invite pairs to the board to present before you click to reveal the answer.</aside>
 </section>
 
-<!-- ======================= 6 · Exercise: misleading chart ======================= -->
+
 <section class="slide" id="l4-trick" data-steps="3">
  <i class="mesh m3"></i>
  <div class="kicker in">Exercise 4 · Task 1 · Misleading charts</div>
@@ -2991,7 +2996,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Task 1. Shop B's poster says "We sell twice as much as Shop A!" and its bar for Shop B looks twice as tall. Let pairs answer the question (tap a choice) and come to the board before you reveal anything. Beat 1 (hint): the coral band shows the y axis only goes from 90 to 100. It starts at 90, not 0, so the bars only show the part above 90: Shop A 94 − 90 = 4, Shop B 98 − 90 = 8. That is why B looks twice as tall. Beat 2: the honest chart starts at 0. The bars are 94 and 98, almost the same height. Students can first sketch it with the pen on the dashed card. Beat 3, answer B: 98 − 94 = 4 more boxes. 4 ÷ 94 ≈ 0.043, about 4% more, not 100% more (twice as many would be 2 × 94 = 188 boxes). Choice C (8) comes from reading the bar heights above 90. Rule: always read the axis before you believe a chart.</aside>
 </section>
 
-<!-- ======================= 7 · Exercise: mini project planner ======================= -->
+
 <section class="slide" id="l4-plan" data-steps="1">
  <i class="mesh m2"></i>
  <div class="kicker in">Exercise 4 · Task 2 · Mini project</div>
@@ -3038,7 +3043,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Task 2, in pairs. Pick a topic (ideas on the left, or your own). Fill the four boxes, one for each step of the data cycle. 1 Our question: it must be a statistical question (the answers vary). 2 How we collect: survey, count or measure, and who you ask (the whole class is a census; some students is a sample). 3 Which chart: choose the chart that fits (categories: pictogram, bar chart or pie chart; change over time: line graph). 4 What we found: one sentence that answers the question (students can write a guess now and finish after they collect real data). Invite two pairs to the board to present their plans, then click to show the example. Example: "How do students in 1/2 get to school?" Ask all 40 students (a census of the class). Bar chart of the five ways. Finding: school bus 14, car 10, walk 8, BTS 6, bicycle 2 (14 + 10 + 8 + 6 + 2 = 40), so most come by school bus, 14 of 40 = 35%.</aside>
 </section>
 
-<!-- ======================= 8 · Unit summary ======================= -->
+
 <section class="slide" id="l4-sum" data-steps="3" data-lesson="5" data-title="Summary · Vocabulary · Review">
  <i class="mesh m4"></i>
  <div class="kicker in">Unit 4 · Summary</div>
@@ -3076,7 +3081,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Unit summary, one lesson per click. Ask the class to say each idea before you click. Lesson 1: a statistical question expects answers that vary, so we collect data (example: "How long do 1/2 students sleep?"). Lesson 2: primary data we collect ourselves; secondary data was collected by someone else (books, websites). A census collects data from everyone in the population; a survey collects data from a sample. Lesson 3: we present data in a table, pictogram, bar chart, line graph or pie chart, and choose the one that fits (line graph for change over time, pie chart for parts of a whole). Lesson 4: the data cycle (ask, collect, present, interpret and decide), and always check the axis before you trust a chart.</aside>
 </section>
 
-<!-- ======================= 9 · Vocabulary 1 ======================= -->
+
 <section class="slide" id="l4-voc1" data-steps="1">
  <i class="mesh m2"></i>
  <div class="kicker in">Vocabulary · 1 of 2</div>
@@ -3107,7 +3112,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Vocabulary 1. Point to each English word and ask: "What is it in Thai?" Click to show the Thai meanings. statistical question = คำถามทางสถิติ · data = ข้อมูล · data collection = การเก็บรวบรวมข้อมูล · primary data = ข้อมูลปฐมภูมิ (we collect it ourselves) · secondary data = ข้อมูลทุติยภูมิ (someone else collected it) · population = ประชากร (the whole group we want to know about) · sample = กลุ่มตัวอย่าง (a part of the population) · census = สำมะโน, collecting data from every member · survey = การสำรวจ, collecting data from a sample. The small picture: the population is all 10 dots; the 4 green dots in the box are a sample.</aside>
 </section>
 
-<!-- ======================= 10 · Vocabulary 2 ======================= -->
+
 <section class="slide" id="l4-voc2" data-steps="1">
  <i class="mesh m3"></i>
  <div class="kicker in">Vocabulary · 2 of 2</div>
@@ -3133,7 +3138,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Vocabulary 2. Ask for the Thai word first, then click. quantitative data = ข้อมูลเชิงปริมาณ (numbers, e.g. height, hours of sleep) · qualitative data = ข้อมูลเชิงคุณภาพ (words or categories, e.g. favourite colour) · data table = ตารางข้อมูล · pictogram = แผนภูมิรูปภาพ · bar chart = แผนภูมิแท่ง · line graph = กราฟเส้น · pie chart = แผนภูมิรูปวงกลม · interpret = ตีความ / แปลความหมาย (say what the data or chart tells us). Quick check: "Is favourite fruit quantitative or qualitative?" (qualitative) "Is your height?" (quantitative).</aside>
 </section>
 
-<!-- ======================= 11 · Unit review: quiz ======================= -->
+
 <section class="slide" id="l4-rev1" data-steps="3">
  <i class="mesh m4"></i>
  <div class="kicker in">Unit review · Part 1</div>
@@ -3194,7 +3199,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Unit review, three questions. Students tap or show their answer (A, B or C with fingers). Invite students to the board to explain, then click once per question. Q1 answer C: the teachers have different ages, so the answers vary and we need data. A has one answer (my age) and B has one answer (the school's age). Q2 answer A: asking every member of the population (all 2,400 students) is a census. A survey collects data from only a sample (some of the students). A pictogram is a chart, not a way to collect data. Q3 answer B: rainfall month by month is change over time, so a line graph fits best. A pie chart shows parts of a whole, and a pictogram is for counts of categories.</aside>
 </section>
 
-<!-- ======================= 12 · Unit review: calculate ======================= -->
+
 <section class="slide" id="l4-rev2" data-steps="2">
  <i class="mesh m2"></i>
  <div class="kicker in">Unit review · Part 2</div>
@@ -3246,7 +3251,7 @@ Next lesson: we will collect data to answer these questions.</aside>
  <aside class="notes">Unit review, calculations. Data: how the 40 students of 1/2 get to school. Check the total: 14 + 10 + 8 + 6 + 2 = 40. The pie shows the same data; the bus slice is marked "?°". Give time to work, then invite two students to the board before you click. Q1 (beat 1): percent = part ÷ total × 100 = 14 ÷ 40 × 100 = 0.35 × 100 = 35%. Check: 35% of 40 = 0.35 × 40 = 14. Q2 (beat 2): angle = part ÷ total × 360° = 14 ÷ 40 × 360° = 0.35 × 360° = 126°, and the pie label changes from ?° to 126°. Check: 126 ÷ 360 = 0.35. The other angles: car 10 ÷ 40 × 360 = 90°, walk 8 ÷ 40 × 360 = 72°, BTS 6 ÷ 40 × 360 = 54°, bicycle 2 ÷ 40 × 360 = 18°. Sum: 126 + 90 + 72 + 54 + 18 = 360°.</aside>
 </section>
 
-<!-- ======================= 13 · Closing ======================= -->
+
 <section class="slide" id="l4-end" data-steps="1">
  <i class="mesh"></i>
  <div style="display:grid;grid-template-columns:1fr 640px;gap:60px;align-items:center;height:100%">
@@ -3304,18 +3309,18 @@ Next lesson: we will collect data to answer these questions.</aside>
 
 </main>
 <nav id="ctl" aria-label="Slide controls">
- <button id="mn" type="button" aria-label="Lessons">☰</button>
+ <button id="mn" type="button" aria-label="Lessons" aria-expanded="false" aria-controls="menu">☰</button>
  <button id="pv" type="button" aria-label="Back">‹</button>
  <span id="pos"></span>
  <button id="nx" type="button" aria-label="Next">›</button>
  <button id="pen" type="button" aria-pressed="false" aria-label="Pen">✎ Pen</button>
  <button id="fs" type="button" aria-label="Full screen">⤢</button>
 </nav>
-<div id="menu" role="menu" aria-label="Lessons"></div>
+<nav id="menu" aria-label="Lessons"></nav>
 <div id="live" class="sr" aria-live="polite"></div>
 <script>/* Deck engine: stage scaling, beats, navigation, lesson menu, control bar.
    Slides: <section class="slide" data-steps="N" data-lesson="1" data-title="...">. Beats add .b1..b4 to the slide.
-   Clicks on .ia / buttons / inputs never advance. While body has .pen-on, clicks and swipes never advance.
+   Only arrow keys, PageUp/PageDown and the ‹ › buttons change the slide; clicks, taps and swipes never do.
    Events: document dispatches 'deck:change' {detail:{i,st,slide}} after every change; listens for 'deck:pen' (tools toggle).
    Test hooks: window.__deck = {next, prev, jump(i, beat), state()}; ?still = no motion (screenshots). */
 (function () {
@@ -3340,9 +3345,9 @@ Next lesson: we will collect data to answer these questions.</aside>
   fit();
 
   function count(el) {
-    var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null;
+    var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null, tok = el._tok = {};
     if (root.classList.contains('rm')) { el.textContent = to.toFixed(dec); return; }
-    function f(t) { if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(f); }
+    function f(t) { if (el._tok !== tok) return; if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(f); }
     el.textContent = (0).toFixed(dec); requestAnimationFrame(f);
   }
 
@@ -3360,7 +3365,7 @@ Next lesson: we will collect data to answer these questions.</aside>
     s.querySelectorAll('[data-count]').forEach(function (el) {
       var at = +(el.dataset.at || 0);
       if (st === at || (dir === 'jump' && st >= at)) count(el);
-      else if (st < at) el.textContent = '';
+      else if (st < at) { el._tok = null; el.textContent = ''; }
     });
     var L = lessonOf(i);
     if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
@@ -3374,18 +3379,21 @@ Next lesson: we will collect data to answer these questions.</aside>
   function jump(k, b) { i = Math.max(0, Math.min(N - 1, k | 0)); st = Math.max(0, Math.min(b | 0, STEPS[i])); show('jump'); }
 
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
-  /* Only a real mouse click on the slide advances. Touch and stylus taps never do, so a student working at the board
-     cannot reveal an answer by accident; on touch screens use swipe or the ‹ › buttons. */
-  var lastPointer = 'mouse';
-  addEventListener('pointerdown', function (e) { lastPointer = e.pointerType || 'mouse'; if (lastPointer !== 'mouse') root.classList.add('touchy'); }, true);
-  stage.addEventListener('click', function (e) {
-    if (menuEl && menuEl.classList.contains('open')) { closeMenu(); return; }
-    if (lastPointer !== 'mouse' || busy(e.target)) return;
-    (e.clientX < vw() * 0.2) ? prev() : next();
-  });
+  /* The slide changes ONLY with the arrow keys (or a clicker's PageUp/PageDown) and the ‹ › buttons (owner, 27 Nov).
+     Clicking, tapping or swiping on the slide never changes it, so a wrong click at the board cannot skip ahead. */
+  addEventListener('pointerdown', function (e) { if ((e.pointerType || 'mouse') !== 'mouse') root.classList.add('touchy'); }, true);
+  stage.addEventListener('click', function () { if (menuOpen()) closeMenu(); });
   addEventListener('keydown', function (e) {
     var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
     var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
+    if (menuOpen()) {   /* while the lesson menu is open, keys move inside it and never change the slide */
+      var items = [].slice.call(menuEl.children), at = items.indexOf(document.activeElement);
+      if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); e.stopPropagation(); items[Math.min(items.length - 1, at + 1)].focus(); }
+      else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); e.stopPropagation(); items[Math.max(0, at - 1)].focus(); }
+      else if (k === 'Escape' || k === 'm' || k === 'M') { e.preventDefault(); e.stopPropagation(); closeMenu(); }
+      else if (!(t && t.closest && t.closest('#menu'))) { e.preventDefault(); e.stopPropagation(); }
+      return;
+    }
     if (!nav) return;
     e.preventDefault(); e.stopPropagation();
     if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
@@ -3395,29 +3403,31 @@ Next lesson: we will collect data to answer these questions.</aside>
     var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     var k = e.key;
     if ((k === ' ' || k === 'Enter') && t && t.closest && t.closest('button,.ia,a')) return;
-    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter') { e.preventDefault(); next(); }
-    else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'Backspace') { e.preventDefault(); prev(); }
+    if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
     else if (k === 'Home') jump(0); else if (k === 'End') jump(N - 1, 9);
     else if (k === 'f' || k === 'F') fs();
     else if (k === 'p' || k === 'P') document.dispatchEvent(new CustomEvent('deck:pen'));
     else if (k === 'm' || k === 'M') menu();
     else if (k === 'Escape') closeMenu();
   });
-  var x0 = null, y0 = null;
-  stage.addEventListener('touchstart', function (e) { if (busy(e.target)) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
-  stage.addEventListener('touchend', function (e) {
-    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { if (e.cancelable) e.preventDefault(); dx < 0 ? next() : prev(); } x0 = null;
-  });
-
   /* control bar: shows on pointer move, hides after 2.5 s */
   var ctl = document.getElementById('ctl'), hideT = null;
   function wake() { if (!ctl) return; ctl.classList.add('show'); clearTimeout(hideT); hideT = setTimeout(function () { ctl.classList.remove('show'); }, 2500); }
   addEventListener('pointermove', wake); addEventListener('touchstart', wake, { passive: true });
   function fs() { if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); }
   var menuEl = document.getElementById('menu');
-  function closeMenu() { if (menuEl) menuEl.classList.remove('open'); }
-  function menu() { if (menuEl) menuEl.classList.toggle('open'); }
+  function menuOpen() { return !!(menuEl && menuEl.classList.contains('open')); }
+  function closeMenu() {
+    if (!menuOpen()) return;
+    menuEl.classList.remove('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'false');
+    if (menuEl.contains(document.activeElement)) document.activeElement.blur();
+  }
+  function menu() {
+    if (!menuEl) return; if (menuOpen()) { closeMenu(); return; }
+    menuEl.classList.add('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'true');
+    var cur = menuEl.querySelector('[aria-current="true"]') || menuEl.firstChild; if (cur) cur.focus();
+  }
   if (menuEl) {
     slides.forEach(function (s, k) {
       if (!s.dataset.lesson) return;
@@ -3435,7 +3445,7 @@ Next lesson: we will collect data to answer these questions.</aside>
   addEventListener('hashchange', function () { var n = parseInt((location.hash || '').slice(1), 10); if (n && n - 1 !== i) jump(n - 1); });
   window.__deck = { next: next, prev: prev, jump: jump, state: function () { return { i: i, st: st, steps: STEPS[i], n: N, id: slides[i].id }; } };
   var h = parseInt((location.hash || '').slice(1), 10);
-  jump(qs.has('s') ? +qs.get('s') : (h ? h - 1 : 0), +(qs.get('b') || 0));
+  jump(h ? h - 1 : (qs.has('s') ? +qs.get('s') : 0), h ? 0 : +(qs.get('b') || 0));
 })();
 
 /* Interactive tools for the Unit 4 deck (vanilla JS, no libraries, no network).
@@ -3525,6 +3535,8 @@ Next lesson: we will collect data to answer these questions.</aside>
         ft.bShow.textContent = 'Hide answer'; ft.bShow.setAttribute('aria-pressed', 'true');
         o.reveal(); ft.say('ok', 'Answer shown');
       },
+      /* back to the student's own work. Check and every edit call this first, so the revealed key is never graded
+         and never becomes the student's work. Only Reset drops the saved work (off). */
       hide: function () { if (!c.shown) return; c.off(); o.restore(saved); ft.say(''); },
       toggle: function () { if (c.shown) c.hide(); else c.show(); },
       off: function () {
@@ -3791,6 +3803,8 @@ Next lesson: we will collect data to answer these questions.</aside>
     self.count = function () { return self.st.strokes.length; };
     self.shapes = function () { return self.st.strokes.map(function (s) { return s.shape || 'free'; }); };
     self.fit = fit;
+    /* the drawing area changed size (web font loaded, label wrapped...): same pixels, new canvas, ink kept as drawn */
+    self.resize = function (w2, h2) { finish(); endMorph(); W = w2; H = h2; ratio = 0; fit(); };
     var rt = null; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fit, 120); });
     fit();
     return self;
@@ -3825,11 +3839,17 @@ Next lesson: we will collect data to answer these questions.</aside>
 
   /* ================= w-input ================= */
   function clean(s) { return String(s).trim().toLowerCase().replace(/\s+/g, ' '); }
+  /* A typed number, or null. Commas (or spaces) count only as proper groups of three: "1,250" is 1250, but
+     "3,5", "1,00" or "1 2" are not numbers. A typed unit, "%", the degree sign, and the words "more" / "than ..." are
+     ignored: "6 more girls" is 6 when the unit is girls. */
   function parseNum(s, unit) {
-    var t = clean(s), u = unit ? clean(unit) : '';
-    if (u && t.length > u.length && t.slice(-u.length) === u) t = t.slice(0, -u.length);
-    t = t.replace(/[\s,]/g, '').replace(/−/g, '-').replace(/^\+/, '').replace(/[%°]$/, '');
-    return /^-?(\d+\.?\d*|\.\d+)$/.test(t) ? parseFloat(t) : null;
+    var t = clean(s).replace(/−/g, '-'), u = unit ? clean(unit) : '';
+    t = t.replace(/\s+than\b.*$/, '').replace(/(\d)\s*\bmore\b/g, '$1 ').replace(/\s+/g, ' ').trim();
+    if (u && t.length > u.length && t.slice(-u.length) === u) t = t.slice(0, -u.length).trim();
+    t = t.replace(/\s*[%°]$/, '').replace(/^\+/, '');
+    var m = /^(-?)(\d{1,3}(?:,\d{3})+|\d{1,3}(?: \d{3})+|\d+)?(\.\d*)?$/.exec(t);
+    if (!m || (!m[2] && !(m[3] && m[3].length > 1))) return null;
+    return parseFloat(m[1] + (m[2] || '0').replace(/[, ]/g, '') + (m[3] || ''));
   }
   function input(w) {
     var d = w.dataset, answer = (d.answer || '').trim(), unit = d.unit || '', tol = num(d.tol, 0), tries = 0;
@@ -3852,14 +3872,16 @@ Next lesson: we will collect data to answer these questions.</aside>
       var a = clean(v), an = parseNum(v, unit);
       return acc.some(function (x) {
         var b = clean(x);
-        if (a === b || a.replace(/[\s,]/g, '') === b.replace(/[\s,]/g, '')) return true;
+        if (a === b) return true;
+        /* spaces may differ ("110cups"), but never inside or between numbers: "1 2" is not "12" */
+        if (!/\d[\s,]+\d/.test(a) && a.replace(/\s/g, '') === b.replace(/\s/g, '')) return true;
         var bn = parseNum(x, unit);
         return an !== null && bn !== null && Math.abs(an - bn) <= tol + 1e-9;
       });
     }
     function mark(k) { inp.classList.remove('ok', 'no'); if (k) inp.classList.add(k); }
     function check() {
-      ac.off();
+      ac.hide();
       if (!inp.value.trim()) { mark(''); ft.say('info', 'Type your answer first'); return; }
       if (match(inp.value)) { mark('ok'); ft.say('ok', 'Correct!'); return; }
       tries++; mark('no');
@@ -3867,14 +3889,14 @@ Next lesson: we will collect data to answer these questions.</aside>
       ft.say('no', tries >= 2 ? 'Check your working' : 'Not yet. Try again');
       if (tries >= 2) ft.bShow.classList.add('nudge');
     }
-    function reset() { ac.off(); inp.value = ''; tries = 0; mark(''); ft.bShow.classList.remove('nudge'); ft.say(''); }
+    function reset() { ac.off(); inp.readOnly = false; inp.value = ''; tries = 0; mark(''); ft.bShow.classList.remove('nudge'); ft.say(''); }
     var ac = answerCtl(w, ft, {
       snap: function () { return { v: inp.value, cls: inp.className }; },
-      reveal: function () { inp.value = answer; mark('ok'); },
-      restore: function (s) { inp.value = s.v; mark(''); }
+      reveal: function () { inp.value = answer; inp.readOnly = true; mark('ok'); },
+      restore: function (s) { inp.value = s.v; inp.readOnly = false; mark(''); }
     });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); } });
-    inp.addEventListener('input', function () { ac.off(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
+    inp.addEventListener('input', function () { ac.hide(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
     return register(w, { type: 'input', show: ac.show, hide: ac.hide, reset: reset, check: check, input: inp, tries: function () { return tries; } });
   }
 
@@ -3900,8 +3922,20 @@ Next lesson: we will collect data to answer these questions.</aside>
     tools.appendChild(bAuto); tools.appendChild(bUndo); tools.appendChild(bClear);
     function sync() { var none = !ink.st.strokes.length; bClear.disabled = none; bUndo.disabled = !ink.st.hist.length; w.classList.toggle('has-ink', !none); }
     ink.onchange = sync; sync();
-    return register(w, { type: 'write', ink: ink, pad: pad, W: W, H: H, reset: function () { ink.clear(); },
+    var api = register(w, { type: 'write', ink: ink, pad: pad, W: W, H: H, reset: function () { ink.clear(); },
       at: function (x, y) { return toClient(pad, x, y, W, H); } });
+    /* measured before the web font loads: when the label wraps later the pad gets shorter. Measure again, or ink is squashed. */
+    function measure() {
+      var w2 = pad.clientWidth, h2 = pad.clientHeight;
+      if (!w2 || !h2 || (w2 === W && h2 === H)) return;
+      W = api.W = w2; H = api.H = h2;
+      pad.style.setProperty('--lh', (H / lines) + 'px');
+      ink.resize(W, H);
+    }
+    api.measure = measure;
+    if (window.ResizeObserver) new ResizeObserver(measure).observe(pad);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    return api;
   }
 
   /* ================= w-sort ================= */
@@ -3950,7 +3984,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       w.classList.add('tight');
       binEls.forEach(function (b) { if (b._slot.scrollHeight > b._slot.clientHeight + 2) b._slot.classList.add('scroll'); });
     }
-    function place(it, target) { ac.off(); move(it, target); if (sel === it) select(it); ft.say(''); }
+    function place(it, target) { ac.hide(); move(it, target); if (sel === it) select(it); ft.say(''); }
     items.forEach(function (it, k) {
       it._k = k; it.tabIndex = 0; it.setAttribute('role', 'button'); it.setAttribute('aria-pressed', 'false');
       pool.appendChild(it);
@@ -3996,7 +4030,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       b.addEventListener('keydown', function (e) { if (e.target === b && key(e, ['Enter', ' '])) drop(); });
     });
     function check() {
-      ac.off();
+      ac.hide();
       var placed = items.filter(function (it) { return where(it) >= 0; }), right = 0;
       if (!placed.length) { ft.say('info', 'Put the cards in the boxes first'); return; }
       placed.forEach(function (it) { var ok = where(it) === +it.dataset.bin; if (ok) right++; mark(it, ok); });
@@ -4119,6 +4153,8 @@ Next lesson: we will collect data to answer these questions.</aside>
     };
     g.keys = function (col, i, get, set, cols) {
       col.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+        if (g.pre) g.pre();   /* leave the shown answer before reading the value */
         var v = get(i);
         if (key(e, ['ArrowUp'])) set(i, g.snapV(v + snap));
         else if (key(e, ['ArrowDown'])) set(i, g.snapV(v - snap));
@@ -4167,7 +4203,7 @@ Next lesson: we will collect data to answer these questions.</aside>
     function all() { for (var k = 0; k < n; k++) draw(k); }
     function stop() { if (tw) { tw.cancel(); tw = null; shown = vals.slice(); } }
     function set(i, v) {
-      stop(); ac.off();
+      ac.hide(); stop();
       if (near(v, vals[i]) && !state[i]) return;
       vals[i] = shown[i] = v; state[i] = ''; draw(i);
       if (g.ft.fb.className !== 'tw-fb') g.ft.say('');
@@ -4177,7 +4213,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       tw = tween(650, function (t) { for (var k = 0; k < n; k++) shown[k] = from[k] + (to[k] - from[k]) * t; all(); }, function () { tw = null; shown = vals.slice(); all(); if (done) done(); });
     }
     function check() {
-      stop(); ac.off(); var bad = 0;
+      ac.hide(); stop(); var bad = 0;
       vals.forEach(function (v, k) { var ok = near(v, g.ans[k]); state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       all();
       g.ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 bar is not right yet' : bad + ' bars are not right yet') : 'Correct! Well done');
@@ -4188,6 +4224,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       reveal: function () { glide(g.ans, g.ans.map(function () { return 'ok'; })); },
       restore: function (s) { glide(s, []); }
     });
+    g.pre = function () { ac.hide(); stop(); };
     g.drag(set, cols);
     all();
     return register(w, { type: 'bars', show: g.ans ? ac.show : null, hide: ac.hide, reset: reset, check: g.ans ? check : null,
@@ -4224,7 +4261,7 @@ Next lesson: we will collect data to answer these questions.</aside>
     }
     function stop() { if (tw) { tw.cancel(); tw = null; shown = vals.slice(); } }
     function set(i, v) {
-      stop(); ac.off();
+      ac.hide(); stop();
       if (near(v, vals[i]) && !state[i]) return;
       vals[i] = shown[i] = v; state[i] = ''; draw();
       if (g.ft.fb.className !== 'tw-fb') g.ft.say('');
@@ -4235,7 +4272,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       if (drawLine) anim(path, [{ strokeDasharray: '1 1', strokeDashoffset: 1 }, { strokeDasharray: '1 1', strokeDashoffset: 0 }], { duration: 900, easing: 'ease' });
     }
     function check() {
-      stop(); ac.off(); var bad = 0;
+      ac.hide(); stop(); var bad = 0;
       vals.forEach(function (v, k) { var ok = near(v, g.ans[k]); state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       draw();
       g.ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 point is not right yet' : bad + ' points are not right yet') : 'Correct! Well done');
@@ -4246,6 +4283,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       reveal: function () { glide(g.ans, g.ans.map(function () { return 'ok'; }), true); },
       restore: function (s) { glide(s, []); }
     });
+    g.pre = function () { ac.hide(); stop(); };
     g.drag(set, cols);
     draw();
     return register(w, { type: 'line', show: g.ans ? ac.show : null, hide: ac.hide, reset: reset, check: g.ans ? check : null,
@@ -4272,7 +4310,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       var cell = el('td', 'n tw-incell'), inp = el('input', 'tw-in');
       inp.type = 'text'; inp.inputMode = 'decimal'; inp.autocomplete = 'off'; inp.setAttribute('aria-label', (pct ? 'Percent for ' : 'Angle for ') + name);
       cell.appendChild(inp); cell.appendChild(el('span', 'tw-unit', suf)); tr.appendChild(cell); tbody.appendChild(tr);
-      inp.addEventListener('input', function () { ac.off(); inp.classList.remove('ok', 'no'); draw(); if (ft.fb.className !== 'tw-fb') ft.say(''); });
+      inp.addEventListener('input', function () { ac.hide(); inp.classList.remove('ok', 'no'); draw(); if (ft.fb.className !== 'tw-fb') ft.say(''); });
       inp.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
         e.preventDefault(); e.stopPropagation();
@@ -4328,15 +4366,16 @@ Next lesson: we will collect data to answer these questions.</aside>
       sumCell.className = 'n tw-sum' + (Math.abs(sum - full) <= tol ? ' ok' : sum > full + tol ? ' no' : '');
     }
     function check() {
-      ac.off(); var right = 0;
+      ac.hide(); var right = 0;
+      if (inputs.every(function (inp) { return !inp.value.trim(); })) { inputs.forEach(function (inp) { inp.classList.remove('ok', 'no'); }); ft.say('info', pct ? 'Type the percents first' : 'Type the angles first'); return; }
       inputs.forEach(function (inp, i) { var v = parseNum(inp.value), ok = v !== null && Math.abs(v - ans[i]) <= tol + 1e-9; inp.classList.remove('ok', 'no'); inp.classList.add(ok ? 'ok' : 'no'); if (ok) right++; });
       if (right === n) ft.say('ok', 'Correct! Total ' + full + suf); else ft.say('no', right + ' of ' + n + ' correct');
     }
-    function reset() { ac.off(); inputs.forEach(function (inp) { inp.value = ''; inp.classList.remove('ok', 'no'); }); draw(); ft.say(''); }
+    function reset() { ac.off(); inputs.forEach(function (inp) { inp.value = ''; inp.readOnly = false; inp.classList.remove('ok', 'no'); }); draw(); ft.say(''); }
     var ac = answerCtl(w, ft, {
       snap: function () { return inputs.map(function (inp) { return inp.value; }); },
-      reveal: function () { inputs.forEach(function (inp, i) { inp.value = String(Math.round(ans[i] * 10) / 10); inp.classList.remove('no'); inp.classList.add('ok'); }); draw(); },
-      restore: function (s) { inputs.forEach(function (inp, i) { inp.value = s[i]; inp.classList.remove('ok', 'no'); }); draw(); }
+      reveal: function () { inputs.forEach(function (inp, i) { inp.value = String(Math.round(ans[i] * 10) / 10); inp.readOnly = true; inp.classList.remove('no'); inp.classList.add('ok'); }); draw(); },
+      restore: function (s) { inputs.forEach(function (inp, i) { inp.value = s[i]; inp.readOnly = false; inp.classList.remove('ok', 'no'); }); draw(); }
     });
     layout(); draw();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { layout(); draw(); });
@@ -4368,9 +4407,9 @@ Next lesson: we will collect data to answer these questions.</aside>
     var rows = labels.map(function (name, i) {
       var lab = el('div', 'tw-pl', name), area = el('div', 'tw-pa'), ctl = el('div', 'tw-pc'), mark = el('span', 'tw-mark');
       area.setAttribute('role', 'img');
-      var minus = btn('−', 'round', 'minus', function () { set(i, vals[i] - (vals[i] % 1 ? 0.5 : 1)); });
-      var half = btn('½', 'round', 'half', function () { set(i, vals[i] + 0.5); });
-      var plus = btn('+', 'round', 'plus', function () { set(i, vals[i] + 1); });
+      var minus = btn('−', 'round', 'minus', function () { ac.hide(); set(i, vals[i] - (vals[i] % 1 ? 0.5 : 1)); });
+      var half = btn('½', 'round', 'half', function () { ac.hide(); set(i, vals[i] + 0.5); });
+      var plus = btn('+', 'round', 'plus', function () { ac.hide(); set(i, vals[i] + 1); });
       minus.setAttribute('aria-label', 'Remove one from ' + name); half.setAttribute('aria-label', 'Add half an icon to ' + name); plus.setAttribute('aria-label', 'Add one icon to ' + name);
       ctl.appendChild(minus); ctl.appendChild(half); ctl.appendChild(plus); ctl.appendChild(mark);
       grid.appendChild(lab); grid.appendChild(area); grid.appendChild(ctl);
@@ -4400,12 +4439,12 @@ Next lesson: we will collect data to answer these questions.</aside>
     }
     function all() { for (var k = 0; k < n; k++) draw(k); }
     function set(i, v) {
-      ac.off(); v = clamp(Math.round(v * 2) / 2, 0, cap);
+      ac.hide(); v = clamp(Math.round(v * 2) / 2, 0, cap);
       var more = v > vals[i]; vals[i] = v; state[i] = ''; draw(i, more);
       if (ft.fb.className !== 'tw-fb') ft.say('');
     }
     function check() {
-      ac.off(); var bad = 0;
+      ac.hide(); var bad = 0;
       vals.forEach(function (v, k) { var ok = near(v, ans[k]); state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       all();
       ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 row is not right yet' : bad + ' rows are not right yet') : 'Correct! Well done');
@@ -4449,6 +4488,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       sv('rect', { x: cx(i) - Math.min(cw - 6, 110) / 2, y: y1 - 30, width: Math.min(cw - 6, 110), height: y0 - y1 + 26, rx: 14, 'class': 'tw-track' }, c);
       layers.push(sv('g', {}, c)); cols.push(c);
       c.addEventListener('keydown', function (e) {
+        if (['ArrowUp', '+', '=', 'Enter', ' ', 'ArrowDown', '-', 'Delete'].indexOf(e.key) >= 0) ac.hide();
         if (key(e, ['ArrowUp', '+', '=', 'Enter', ' '])) set(i, vals[i] + 1);
         else if (key(e, ['ArrowDown', '-', 'Delete'])) set(i, vals[i] - 1);
       });
@@ -4475,7 +4515,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       if (!ans) { var t = vals.reduce(function (a, b) { return a + b; }, 0); ft.say(t ? 'info' : '', t ? 'Total: ' + t : ''); }
     }
     function set(i, v) {
-      ac.off(); v = clamp(v, 0, capN); if (v === vals[i]) return;
+      ac.hide(); v = clamp(v, 0, capN); if (v === vals[i]) return;
       vals[i] = v; state = []; draw();
       if (ans && ft.fb.className !== 'tw-fb') ft.say('');
     }
@@ -4484,10 +4524,11 @@ Next lesson: we will collect data to answer these questions.</aside>
       var p = local(box, e, W, H); if (p.x < x0 || p.x > x1) return;
       var k = clamp(Math.floor((p.x - x0) / cw), 0, n - 1);
       if (e.cancelable) e.preventDefault();
+      ac.hide();
       if (vals[k] > 0 && p.y >= y0 - vals[k] * dia && p.y <= y0) set(k, vals[k] - 1); else set(k, vals[k] + 1);
     });
     function check() {
-      ac.off(); var bad = 0;
+      ac.hide(); var bad = 0;
       vals.forEach(function (v, k) { var ok = v === ans[k]; state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       draw();
       ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 stack is not right yet' : bad + ' stacks are not right yet') : 'Correct! Well done');
@@ -4582,7 +4623,7 @@ Next lesson: we will collect data to answer these questions.</aside>
     addEventListener('pointerdown', function (e) { down = e.pointerType === 'mouse' ? null : { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.target }; }, true);
     addEventListener('click', function (e) {
       if (!e.isTrusted) return;
-      if (e.target === synthT && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
+      if (synthT && synthT.contains(e.target) && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
       lastClick = performance.now();
     }, true);
     /* A tap must never leave keyboard focus on a tool: the next Space / Enter / arrow from the clicker belongs to the deck.
