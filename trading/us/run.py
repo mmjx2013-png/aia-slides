@@ -116,6 +116,13 @@ def main():
           "- Short-term mean reversion (RSI2) is eaten by costs at this account size (cost drag about 5% a year).",
           "- No forward paper book is started (nothing passed). orders.md stays empty until something does.",
           f"", f"Full table: results.csv. Run time {time.time() - t0:.0f} s."]
+    import events
+    events.main()
+    L += ["", (HERE / "events.md").read_text(),
+          "Reading: overnight-only and leverage are rejected (costs, drawdowns). Gap-down 20-day drift is positive in both halves",
+          "(+1.6%), but out of sample the band includes zero, and the stock list is today's winners: survivors recover from gaps by",
+          "construction, so this is not a tradeable edge. Our 1-day gap-down result (+0.27% / -0.29%) is smaller than the boss's",
+          "(+2.6% / -0.8%) on a different stock list; both say no stable edge."]
     (HERE / "REPORT.md").write_text("\n".join(L) + "\n")
     passed = [f"{f}: {n}" for f, n, ok, _ in verdict if ok and "survivor" not in f]
     (HERE / "summary.txt").write_text(
