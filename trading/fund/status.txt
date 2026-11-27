@@ -1,2 +1,2 @@
-Fund (owner places orders by hand; paper shadow starts with the first orders): first EDGAR screen done, 200 large caps, valuation pending a price pack.
-No orders yet. Finalists due Tue 1 Dec, memos and the first orders.md by Fri 4 Dec.
+Fund: screen v2 with valuation (200 US large caps, 42 financials/captive-finance unscored, 53 manual flags). Top: ADBE, CMCSA, NVDA, MU, PYPL, BKNG, LEA, BKR, MCK, CAH.
+No orders yet. Finalists due Tue 1 Dec, memos and the first orders.md by Fri 4 Dec (core SPYM/VOO/IVV in 3 weekly tranches).

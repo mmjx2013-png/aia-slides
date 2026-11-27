@@ -6,7 +6,7 @@ recommendations (`orders.md`) and keeps a shadow paper copy to measure skill.
 - **Universe and rules:** long-only US equities in a cash account. No leverage, no options, no shorting.
 - **Execution:** Webull Thailand, 0.107% per side (commission plus VAT), fractional shares.
 - **Benchmark:** S&P 500 total return (SPY with dividends).
-- **Core, 60%:** an S&P 500 ETF, the cheapest of VOO / IVV / SPLG that Webull TH lists (the owner checks). It is bought in
+- **Core, 60%:** an S&P 500 ETF, the cheapest of VOO / IVV / SPYM (SPLG was renamed SPYM) that Webull TH lists (the owner checks). It is bought in
   3 weekly tranches from the week of 2026-11-30, because the market is very volatile now.
 - **Satellite, 40%:** 5 to 8 stocks chosen on fundamentals.
   - Max 8% per name and 20% per industry; semiconductors and memory together are capped at 20%.

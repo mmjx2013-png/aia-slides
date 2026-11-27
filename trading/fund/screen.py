@@ -8,7 +8,8 @@ Scores, as percentile ranks within the universe (financials and REITs are flagge
   growth    3y revenue CAGR, 3y FCF CAGR
   balance   -(net debt / FCF)
   dilution  -(3y change in diluted shares)
-  valuation FCF yield and EV/EBIT vs its own history: NEEDS PRICES (not on the allowed hosts yet); left blank
+  valuation FCF yield (FCF / market cap) and EV/EBIT now vs its median at the last 3 fiscal-year ends (prices from
+          the boss's pack, prices.py; market cap = cover-page shares outstanding x close on the as-of date)
 composite = mean of the available group scores.
   python3 screen.py [--asof 2026-11-27] [--n 200]
 """
@@ -20,6 +21,7 @@ import numpy as np
 import pandas as pd
 
 import edgar as E
+import prices as P
 
 HERE = E.HERE
 REV = ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet",
@@ -57,10 +59,10 @@ def universe(n):
                 if k not in best or period == "CY2025" and best[k][1] != "CY2025" or (best[k][1] == period and x["val"] > best[k][0]):
                     best[k] = (x["val"], period, x["entityName"])
     tick = E.tickers()
-    old_to_new = {o: n for n, olds in SPLICE.items() for o in olds}
-    for o, n in old_to_new.items():                           # e.g. XOM: use the old CIK's revenue, the new CIK's ticker
-        if o in best and n in tick:
-            best[n] = best.pop(o)
+    old_to_new = {o: c for c, olds in SPLICE.items() for o in olds}
+    for o, new in old_to_new.items():                           # e.g. XOM: use the old CIK's revenue, the new CIK's ticker
+        if o in best and new in tick:
+            best[new] = best.pop(o)
     rows = [(k, v[0], v[2], tick[k]) for k, v in best.items() if k in tick]
     rows.sort(key=lambda r: -r[1])
     return rows[:n]
@@ -106,7 +108,20 @@ def _merge(a, b):
     return a
 
 
-def metrics(cik, asof):
+def shares_out(f, asof):
+    """Cover-page shares outstanding (all classes) from the latest filing on or before asof."""
+    v = [x for x in f.get("facts", {}).get("dei", {}).get("EntityCommonStockSharesOutstanding", {}).get("units", {}).get("shares", [])
+         if x.get("filed", "9999") <= asof]
+    if not v:
+        return np.nan
+    last = max(x["filed"] for x in v)
+    if (pd.Timestamp(asof) - pd.Timestamp(last)).days > 200:      # stale cover data (e.g. CMCSA stops in 2010)
+        return np.nan
+    acc = {x["accn"] for x in v if x["filed"] == last}
+    return float(sum(x["val"] for x in v if x["filed"] == last and x["accn"] in acc))
+
+
+def metrics(cik, asof, ticker=None):
     f = E.facts(cik) or {}
     for o in SPLICE.get(cik, []):
         f = _merge(f, E.facts(o) or {})
@@ -142,7 +157,21 @@ def metrics(cik, asof):
     stale = not filed or (pd.Timestamp(asof) - pd.Timestamp(filed)).days > 456
     sh = s["shares"]
     sh_ends = [e for e in ends if e in sh]
+    px = P.price_at(ticker, asof) if ticker else None
+    so = shares_out(f, asof)
+    if so != so:
+        so = at("shares")                                     # fallback: diluted weighted shares, latest 10-K
+    mcap = px * so if px and so == so else np.nan
+    ev_ebit = (mcap + net_debt) / opinc if opinc == opinc and opinc > 0 and mcap == mcap else np.nan
+    hist = []
+    for e in ends[:-1]:
+        pe, se, oe = (P.price_at(ticker, e) if ticker else None), at("shares", e), at("opinc", e)
+        nd = np.nansum([at("debt", e), at("debt_cur", e)]) - (at("cash", e) if at("cash", e) == at("cash", e) else 0)
+        if pe and se == se and oe == oe and oe > 0:
+            hist.append(min((pe * se + nd) / oe, 60.0))       # cap: a near-zero-EBIT year would dominate
     return dict(
+        price=px, mkt_cap=mcap, fcf_yield=fcf[last] / mcap if mcap == mcap and mcap > 0 else np.nan, ev_ebit=ev_ebit,
+        ev_ebit_vs_hist=ev_ebit / np.median(hist) if hist and ev_ebit == ev_ebit and np.median(hist) > 0 else np.nan,
         fy_end=last, revenue=at("rev"), net_income=at("ni"), fcf=fcf[last], op_income=opinc,
         roic=(opinc * 0.79 / ic) if ic and ic == ic and ic > 0 and opinc == opinc else np.nan,
         roe=at("ni") / eq if eq and eq == eq and eq > 0 else np.nan,
@@ -186,7 +215,7 @@ def main(asof, n):
     uni = universe(n)
     rows = []
     for cik, rev, name, tk in uni:
-        m = metrics(cik, asof)
+        m = metrics(cik, asof, tk)
         sub = E.submissions(cik) or {}
         sic = str(sub.get("sic", "") or "")
         if m:
@@ -202,12 +231,12 @@ def main(asof, n):
     b = balance(df)
     dl = pct(df["dilution"], False)
     df["s_quality"], df["s_growth"], df["s_balance"], df["s_dilution"] = q, g, b, dl
-    df["s_valuation"] = np.nan                                   # needs prices
+    df["s_valuation"] = pd.concat([pct(df["fcf_yield"]), pct(df["ev_ebit_vs_hist"], False)], axis=1).mean(axis=1)
     df["composite"] = df[["s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation"]].mean(axis=1, skipna=True)
     df.loc[fin, "composite"] = np.nan                            # FCF/ROIC metrics do not fit banks/insurers/REITs
     df = df.sort_values("composite", ascending=False)
     cols = ["ticker", "name", "industry", "flag", "composite", "s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation", "roic", "roe",
-            "fcf_margin", "fcf_margin_std", "rev_cagr", "fcf_cagr", "net_debt_fcf", "dilution", "revenue", "fcf", "fy_end", "years", "sic",
+            "fcf_yield", "ev_ebit", "ev_ebit_vs_hist", "price", "mkt_cap", "fcf_margin", "fcf_margin_std", "rev_cagr", "fcf_cagr", "net_debt_fcf", "dilution", "revenue", "fcf", "fy_end", "years", "sic",
             "net_debt_ebitda", "debt_equity", "last_10k_filed", "financial_or_reit", "captive_finance", "cik"]
     df[cols].to_csv(HERE / "screen.csv", index=False, float_format="%.4g")
     print(f"screen: {len(df)} names ({int(fin.sum())} financials/REITs unscored), as of {asof}, {time.time() - t0:.0f} s")
