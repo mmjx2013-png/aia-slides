@@ -81,8 +81,8 @@ mark{background:linear-gradient(transparent 55%,rgba(255,197,61,.55) 55%);color:
 .def{padding:26px 32px;border-radius:24px;background:#fff;border-left:10px solid var(--blue);box-shadow:0 14px 40px rgba(15,27,51,.08);font:500 34px/1.45 Inter}
 .def .dt{font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
 .steps{list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:16px}
-.steps>li{counter-increment:st;display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,27,51,.06);font:500 30px/1.4 Inter}
-.steps>li::before{content:counter(st);flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--blue);color:#fff;font:800 24px Inter}
+.steps>li{counter-increment:st;position:relative;min-height:82px;padding:18px 22px 18px 86px;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,27,51,.06);font:500 30px/1.4 Inter}
+.steps>li::before{content:counter(st);position:absolute;left:22px;top:18px;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--blue);color:#fff;font:800 24px Inter}
 .lessons{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
 .lessons li{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.88);border:1px solid rgba(15,27,51,.06);border-radius:20px;padding:15px 18px;font:600 26px Inter;box-shadow:0 10px 26px rgba(15,27,51,.06);white-space:nowrap}
 .lessons b{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;color:#fff;font:800 24px Inter}
