@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-FAp/NA4W4kg8YUVr/vs1mH38lAgtXOz27Sb/KBDCSjs='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-eTwrtZWD6wDT13isgOBSm5qhSx4jHBUryFRYwWC6Iu4='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Unit 4 · Statistics (1) · Mathayomsuksa 1</title>
 <style>/* Unit 4 Statistics (1) · Style A "modern clean" · stage 1920x1080 */
@@ -30,8 +30,9 @@
  --k1:#3B6CFF;--k2:#FF6B5B;--k3:#1FBF9F;--k4:#7C5CFF;
  --tea:#F6D7AE;--lid:#3B6CFF;--straw:#FF6B5B;--pearl:#3A2618;--badge:#fff;--ol:transparent;--olw:0}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#0B0E16;overflow:hidden;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
-#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--bg)}
+html,body{height:100%;background:#0B0E16;overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--bg)}
 .slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .4s ease,visibility 0s linear .4s;padding:92px 130px;background:var(--bg)}
 .slide.on{visibility:visible;opacity:1;transition:opacity .4s ease}
 .slide>*{position:relative}
@@ -3325,12 +3326,18 @@ Next lesson: we will collect data to answer these questions.</aside>
   if (qs.has('still')) root.classList.add('rm', 'shot');
   else if (matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('rm');
 
+  /* Size from the visible area (clientWidth/Height), not innerWidth: on phones and tablets innerWidth can report a
+     larger layout viewport, which made the slide zoom in and get cut off. */
+  function vw() { return root.clientWidth || innerWidth; }
+  function vh() { return root.clientHeight || innerHeight; }
   function fit() {
-    var s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    var s = Math.min(vw() / 1920, vh() / 1080);
     stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
     root.style.setProperty('--scale', s);
   }
-  addEventListener('resize', fit); fit();
+  addEventListener('resize', fit); addEventListener('orientationchange', fit);
+  if (window.visualViewport) visualViewport.addEventListener('resize', fit);
+  fit();
 
   function count(el) {
     var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null;
@@ -3374,7 +3381,7 @@ Next lesson: we will collect data to answer these questions.</aside>
   stage.addEventListener('click', function (e) {
     if (menuEl && menuEl.classList.contains('open')) { closeMenu(); return; }
     if (lastPointer !== 'mouse' || busy(e.target)) return;
-    (e.clientX < innerWidth * 0.2) ? prev() : next();
+    (e.clientX < vw() * 0.2) ? prev() : next();
   });
   addEventListener('keydown', function (e) {
     var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
