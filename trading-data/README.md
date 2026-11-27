@@ -12,3 +12,7 @@ SPY QQQ IWM DIA, the 11 SPDR sector ETFs, TLT IEF HYG, VIX, GSPC, NDX and 34 lar
 (AAPL MSFT NVDA AMZN GOOGL META TSLA AVGO BRK_B JPM LLY V UNH XOM MA COST HD PG JNJ NFLX AMD ORCL CRM ADBE WMT KO PEP BAC CVX MRK ABBV TMO INTC CSCO),
 plus SPY_1h and QQQ_1h (730 days hourly).
 Caveat: the large-cap list is today's winners, so a stock-picking backtest on it has survivorship bias. Judge strategies on the ETFs first.
+
+## Fund price pack (fetched 2026-11-27)
+`fund-prices-2026-11-27.tgz` -> yahoo-fund/: 5y daily chart JSON (dividends and splits) for the 200 tickers in trading/fund/screen.csv (claude/paper-trading @4de9c05), plus VOO IVV SPLG SPY and THB=X.
+File names: dots and "=" become "_" (BRK.B -> BRK_B.json, THB=X -> THB_X.json); Yahoo was queried with "-" for dots.
