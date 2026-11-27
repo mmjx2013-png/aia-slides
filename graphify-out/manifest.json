@@ -216,16 +216,16 @@
     "semantic_hash": "f9f00e96e6d7e57505691a7146d469f9"
   },
   "tools/deploy.sh": {
-    "mtime": 1795512149.9502568,
-    "seen": 1795575004.9197006,
-    "ast_hash": "dfa0c9f7e2ef86d54c1c0414476596db",
-    "semantic_hash": "dfa0c9f7e2ef86d54c1c0414476596db"
+    "mtime": 1795779212.6591067,
+    "seen": 1795779320.0424757,
+    "ast_hash": "d8774c7c55d7cd1dd958d9c714e020a3",
+    "semantic_hash": ""
   },
   "tools/deploy_deck.sh": {
-    "mtime": 1795521735.613274,
-    "seen": 1795575004.9197023,
-    "ast_hash": "99dc438e3f768b4473ac8813ba95289a",
-    "semantic_hash": "99dc438e3f768b4473ac8813ba95289a"
+    "mtime": 1795779212.659885,
+    "seen": 1795779320.0424786,
+    "ast_hash": "35b949ff707f93170a3d39bd4c70922b",
+    "semantic_hash": ""
   },
   "tools/encode_frames.py": {
     "mtime": 1795512149.9502568,
@@ -474,15 +474,183 @@
     "semantic_hash": "ed4480b20efca169d252da302bb27951"
   },
   "trading-data/README.md": {
-    "mtime": 1795599415.0577934,
-    "seen": 1795670594.9893827,
-    "ast_hash": "5a86a8e0f8edfb91f16e75be08a1a6a2",
-    "semantic_hash": "5a86a8e0f8edfb91f16e75be08a1a6a2"
+    "mtime": 1795747878.2739909,
+    "seen": 1795779320.0425873,
+    "ast_hash": "7e102e61c3085405b97ab8d09dc3a112",
+    "semantic_hash": ""
   },
   "satit-site/pitch/security-report.pdf": {
     "mtime": 1795595472.3699102,
     "seen": 1795670594.989388,
     "ast_hash": "e85402711a79f8a98b55c9c295288929",
     "semantic_hash": "e85402711a79f8a98b55c9c295288929"
+  },
+  "teacher-slides/mockups/make.py": {
+    "mtime": 1795766008.868737,
+    "seen": 1795779320.0423474,
+    "ast_hash": "167803474412cd9af60a53873a0ba714",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/make2.py": {
+    "mtime": 1795767611.980341,
+    "seen": 1795779320.0423508,
+    "ast_hash": "a437b7aa056884f65479dac05ebfe782",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/shoot.cjs": {
+    "mtime": 1795765953.1845129,
+    "seen": 1795779320.042353,
+    "ast_hash": "4b5593fc1d27b044ae9f70ddc1948d96",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/shoot2.cjs": {
+    "mtime": 1795766625.1045527,
+    "seen": 1795779320.0423553,
+    "ast_hash": "b839965d8174758ba71c0e5e6fc53e1f",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/build.py": {
+    "mtime": 1795776322.047861,
+    "seen": 1795779320.042357,
+    "ast_hash": "345eb69fc6df34f88cf2d570d576775d",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/engine.js": {
+    "mtime": 1795778092.6360786,
+    "seen": 1795779320.0423636,
+    "ast_hash": "7892b3fd19bced835b4853fc7067a070",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/gen/gen30.py": {
+    "mtime": 1795772365.2042754,
+    "seen": 1795779320.0423656,
+    "ast_hash": "2d8f8238c491b03f2f75a89aa3849c7b",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/gen/gen35.py": {
+    "mtime": 1795769945.5883107,
+    "seen": 1795779320.0423672,
+    "ast_hash": "03c916f0843dd6c4a82b05d16f9ca1ec",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/keys/vault.py": {
+    "mtime": 1795779124.890689,
+    "seen": 1795779320.0423691,
+    "ast_hash": "73cf2aa1dd968e40f08e711dfc828946",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/lock.js": {
+    "mtime": 1795776253.4825182,
+    "seen": 1795779320.042371,
+    "ast_hash": "8998923493493893aeabfe812dec09b6",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/preview-clip.cjs": {
+    "mtime": 1795770051.4149618,
+    "seen": 1795779320.042373,
+    "ast_hash": "6295f7ca0677cfe8a152638eeeb09102",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/qa.cjs": {
+    "mtime": 1795768210.4322267,
+    "seen": 1795779320.0423746,
+    "ast_hash": "75c4bae5bb3ab66d17823e38e8d23951",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/sheet.py": {
+    "mtime": 1795768065.4380314,
+    "seen": 1795779320.0423768,
+    "ast_hash": "76c3f447c63b5f2ab247c039eb98c606",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/tests/engine.test.cjs": {
+    "mtime": 1795775151.591447,
+    "seen": 1795779320.0423787,
+    "ast_hash": "4d8052245683a3811bf2ed0b73052355",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/tests/tools.test.cjs": {
+    "mtime": 1795775422.3594055,
+    "seen": 1795779320.0423808,
+    "ast_hash": "27513edae0a42daae97e67f712761073",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/tools.js": {
+    "mtime": 1795778532.5716147,
+    "seen": 1795779320.0423825,
+    "ast_hash": "3d0e68c011a30267a4460358032c96a9",
+    "semantic_hash": ""
+  },
+  "tools/fetch_fund_prices.sh": {
+    "mtime": 1795753605.1664026,
+    "seen": 1795779320.0424845,
+    "ast_hash": "4812c78294e28731a1d054acb032d692",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/fonts/BricolageGrotesque-OFL.txt": {
+    "mtime": 1795766124.9312727,
+    "seen": 1795779320.0425644,
+    "ast_hash": "bd05ea51cf13ec198f9133c1f1f64da0",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/fonts/InstrumentSans-OFL.txt": {
+    "mtime": 1795766124.9959686,
+    "seen": 1795779320.042567,
+    "ast_hash": "030a9e886b4fe2e1720b5db020eca3ad",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/fonts/NothingYouCouldDo-OFL.txt": {
+    "mtime": 1795765906.1124609,
+    "seen": 1795779320.0425687,
+    "ast_hash": "42a7c035f1ddb3fcda7ddf746519b017",
+    "semantic_hash": ""
+  },
+  "teacher-slides/mockups/fonts/Outfit-OFL.txt": {
+    "mtime": 1795765906.1120946,
+    "seen": 1795779320.0425704,
+    "ast_hash": "af9efd1ed592546b9477763b02d684c1",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/BOOK-ANSWERS.md": {
+    "mtime": 1795776147.013781,
+    "seen": 1795779320.042572,
+    "ast_hash": "e3a96be6b8762b5db2131c95b3a901b1",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/CONTRACT.md": {
+    "mtime": 1795768474.9724357,
+    "seen": 1795779320.042574,
+    "ast_hash": "aacc65e1eda7ee3481d1d1ad0aa99dd2",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795767860.337775,
+    "seen": 1795779320.0425754,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795768146.6604588,
+    "seen": 1795779320.0425775,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/gen/README.md": {
+    "mtime": 1795772365.2060702,
+    "seen": 1795779320.0425797,
+    "ast_hash": "b559f9888e172d0ba2904a290cec2768",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/guide/guide.pdf": {
+    "mtime": 1795779207.5306938,
+    "seen": 1795779320.0425973,
+    "ast_hash": "f5b1c7bd83815f706b1029247f556d28",
+    "semantic_hash": ""
+  },
+  "teacher-slides/unit4/symbols.svg": {
+    "mtime": 1795768045.4340303,
+    "seen": 1795779320.0425992,
+    "ast_hash": "bd4aab3542c8d65e4e6f2ed113a4c092",
+    "semantic_hash": ""
   }
 }
