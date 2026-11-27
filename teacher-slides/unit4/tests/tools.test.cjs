@@ -70,6 +70,8 @@ async function run(cfg) {
   const act = (id, a) => tapEl('#' + id + ' [data-act="' + a + '"]');
   const fb = id => page.evaluate(id => { const f = document.querySelector('#' + id + ' .tw-fb'); return { cls: f.className, text: f.textContent }; }, id);
   const W = (id, expr) => page.evaluate(([id, expr]) => { const w = document.getElementById(id).__w; return new Function('w', 'return ' + expr)(w); }, [id, expr]);
+  /* before the test focuses an element for a keyboard check it waits 60 ms (page clock): a tap blurs its target on a 0 ms timer,
+     and that timer could land after the test's focus() and send Enter to the deck instead (the 1-in-4 flaky MCQ check) */
   const deck = () => page.evaluate(() => __deck.state());
   async function go(k) { await page.evaluate(k => __deck.jump(k, 0), k); await sleep(1500); }
   async function stay(k, what) { const s = await deck(); ok(what + ': the slide did not change', s.i === k && s.st === 0, s); }
@@ -88,7 +90,7 @@ async function run(cfg) {
   ok('mcq: the right choice is not marked yet', await page.evaluate(() => !document.querySelector('#td-mcq-ch .c.picked')));
   await tapEl('#td-mcq-ch .c.ok');
   ok('mcq: the right choice turns mint', await page.evaluate(() => document.querySelector('#td-mcq-ch .c.ok').classList.contains('picked')));
-  await page.evaluate(() => document.querySelector('#td-mcq-ch .c:nth-child(2)').focus()); await page.keyboard.press('Enter');
+  await sleep(60); await page.evaluate(() => document.querySelector('#td-mcq-ch .c:nth-child(2)').focus()); await page.keyboard.press('Enter');
   ok('mcq: Enter on a focused choice works', await page.evaluate(() => document.querySelector('#td-mcq-ch .c:nth-child(2)').classList.contains('wrong')));
   await stay(0, 'mcq');
   await page.evaluate(() => __deck.next()); await sleep(300);
@@ -177,8 +179,8 @@ async function run(cfg) {
   ok('sort: partial feedback counts what is placed and what is left', f.text === '2 placed, both right \u00B7 4 to go', f);
   ok('focus: tapping a card leaves no keyboard focus', await page.evaluate(() => document.activeElement === document.body));
   ok('sort: tap a card, then tap a box', (await W('td-sort-w', 'w.state()'))[1] === 1, await W('td-sort-w', 'w.state()'));
-  await page.evaluate(() => document.getElementById('td-sort-w').__w.items[2].focus()); await page.keyboard.press('Enter');
-  await page.evaluate(() => document.getElementById('td-sort-w').__w.bins[0].focus()); await page.keyboard.press(' ');
+  await sleep(60); await page.evaluate(() => document.getElementById('td-sort-w').__w.items[2].focus()); await page.keyboard.press('Enter');
+  await sleep(60); await page.evaluate(() => document.getElementById('td-sort-w').__w.bins[0].focus()); await page.keyboard.press(' ');
   await sleep(350);
   ok('sort: keyboard (Enter on a card, Space on a box)', (await W('td-sort-w', 'w.state()'))[2] === 0, await W('td-sort-w', 'w.state()'));
   for (const [k, b] of [[3, 1], [4, 0], [5, 1]]) { const c = await itemC(k); await tap(c[0], c[1]); const t = await binC(b); await tap(t[0], t[1]); await sleep(320); }
@@ -218,7 +220,7 @@ async function run(cfg) {
   await act('td-bars-w', 'check');
   f = await fb('td-bars-w');
   ok('bars: Check says correct', / ok/.test(f.cls), f);
-  await page.evaluate(() => document.getElementById('td-bars-w').__w.cols[0].focus());
+  await sleep(60); await page.evaluate(() => document.getElementById('td-bars-w').__w.cols[0].focus());
   await page.keyboard.press('ArrowUp'); await page.keyboard.press('ArrowUp'); await page.keyboard.press('ArrowDown');
   ok('bars: keyboard Up/Down moves the focused bar by one step', (await W('td-bars-w', 'w.values()'))[0] === 20);
   await stay(3, 'bars keyboard (Up/Down inside the chart)');
@@ -240,7 +242,7 @@ async function run(cfg) {
   f = await fb('td-bars-w');
   ok('show+check bars: Check grades the student\'s bars, not the shown answer', / no/.test(f.cls) && (await W('td-bars-w', 'w.values()'))[0] === 20 && await page.evaluate(() => !document.getElementById('td-bars-w').classList.contains('w-shown') && document.querySelectorAll('#td-bars-w .tw-col.no').length === 1), [f, await W('td-bars-w', 'w.values()')]);
   await act('td-bars-w', 'show'); await sleep(900);
-  await page.evaluate(() => document.getElementById('td-bars-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp'); await sleep(100);
+  await sleep(60); await page.evaluate(() => document.getElementById('td-bars-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp'); await sleep(100);
   ok('show+edit bars: a change while the answer is shown starts from the student\'s bars', JSON.stringify(await W('td-bars-w', 'w.values()')) === '[25,20,35,25,30]' && await page.evaluate(() => !document.getElementById('td-bars-w').classList.contains('w-shown')), await W('td-bars-w', 'w.values()'));
   await act('td-bars-w', 'reset'); await sleep(900);
   ok('bars: Reset returns to the start', (await W('td-bars-w', 'w.values()')).every(x => x === 20));
@@ -343,7 +345,7 @@ async function run(cfg) {
   ok('focus: Enter/Space after tapping a dot do not add dots', JSON.stringify(await W('td-dots-w', 'w.values()')) === JSON.stringify(dotsAns) && await page.evaluate(() => document.activeElement === document.body), await W('td-dots-w', 'w.values()'));
   await act('td-dots-w', 'check');
   ok('dots: Check says correct', / ok/.test((await fb('td-dots-w')).cls), await fb('td-dots-w'));
-  await page.evaluate(() => document.getElementById('td-dots-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp');
+  await sleep(60); await page.evaluate(() => document.getElementById('td-dots-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp');
   ok('dots: keyboard Up adds a dot', (await W('td-dots-w', 'w.values()'))[0] === 3);
   await act('td-dots-w', 'check');
   ok('dots: a wrong stack is highlighted', await page.evaluate(() => document.querySelectorAll('#td-dots-w .tw-col.no').length === 1));
