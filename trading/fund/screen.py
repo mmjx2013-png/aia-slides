@@ -234,7 +234,8 @@ def industry_group(df):
     """Industry groups for the caps: semis/memory together (mandate cap 20%), otherwise the 2-digit SIC major group."""
     g = df["sic"].str[:2].map(lambda x: f"SIC {x}")
     g = g.where(~df["sic"].str[:4].isin(SEMIS) & ~df["ticker"].isin({"LRCX", "AMAT", "KLAC", "MU"}), "semis/memory")
-    return g
+    energy = df["sic"].str[:2].isin(["13", "29", "46"]) | df["sic"].str[:4].isin(["3533", "4922", "4923"])
+    return g.where(~energy, "energy")              # oil & gas, refining, pipelines, oilfield equipment: ONE industry
 
 
 def finalists(df, n=12, per_group=3, min_groups=5):

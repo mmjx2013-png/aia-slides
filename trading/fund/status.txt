@@ -1,2 +1,2 @@
-Fund: screen v3 (normalized cyclicals, 20% momentum), 12 finalists: PAA MU LRCX PSX JBL NVDA MPC LEA ROST MAR BKR COP (finalists.md).
+Fund: 12 finalists (finalists.md): PAA MU LRCX PSX JBL NVDA MPC LEA ROST MAR BBY ADBE; energy and semis each capped at 3 names.
 No orders yet; memos and the first orders.md by Fri 4 Dec (core SPYM/VOO/IVV in 3 weekly tranches).
