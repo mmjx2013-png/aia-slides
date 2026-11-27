@@ -45,7 +45,7 @@ python3 desk.py wake     # takes 1-3 min (1 request/min); prints one of:
   It prints `ORDER ...`, `HOLD` or `REJECT ...`. After an ORDER, `python3 desk.py sync` records the fill. It is optional:
   the next wake replays it anyway.
 
-21:02 wake: `python3 desk.py daily` (sync, then the owner's instruction line `REAL70: BUY <USD> (stop <px>) | HOLD (stop <px>) | SELL ALL | STAY CASH` from `real70_follow_2100`), then `python3 report.py`, then
+21:02 wake: `(cd ../fund && python3 shadow.py)` (prices the fund's shadow book), then `python3 desk.py daily` (sync, then the owner's instruction line `REAL70: BUY <USD> (stop <px>) | HOLD (stop <px>) | SELL ALL | STAY CASH` from `real70_follow_2100`), then `python3 report.py`, then
 `rm -rf snapshots/books && cp -r data/books snapshots/books && rm -rf snapshots/books/ai/briefs`. Commit and push to
 `claude/paper-trading`, then send the boss 3 lines plus a 4th: the REAL70 line and that book's equity. We stay paper: the owner acts on it by hand. The `daily` step also applies the owner's withdrawal policy to real70_paxg, real70_follow_2100 and aggr30 (from cash only; milestones once each, then 25% above the high-water mark; 34.0 THB/USD), and adds `| WITHDRAW <USD>` to the REAL70 line when a rule fires. Send no other messages, except the kill-switch ERROR.
 

@@ -11,6 +11,13 @@ Decided 2026-11-27 09:50 Bangkok by one Opus call (89,198 tokens) on 12 Sonnet m
 
 Industry exposure in the satellite: SIC 73 4.0%.
 
+## Correlation with the S&P 500 (daily total returns, SPY)
+| Name | 1-year correlation | 1-year beta | 5-year correlation | 5-year beta |
+|---|---|---|---|---|
+| ADBE | 0.08 | 0.24 | 0.52 | 1.14 |
+
+The 1-year number alone understates how ADBE moves in a broad sell-off: over 5 years it moved with the market (beta about 1.1).
+
 ## Theses and what breaks them
 ### ADBE (4.0%)
 Thesis: A cash machine priced for decline. ARR, RPO and margins are still rising, and buybacks are shrinking the share count about 9%. Holding low-single-digit FCF growth beats the index from a 10% yield, and stabilisation re-rates it.
@@ -33,6 +40,6 @@ Breaks if:
 - FLEX: Expensive mid-cycle (23x normalized EBIT); AI and spin-off risk
 
 ## Portfolio risks
-One small position is a contrarian value/anti-momentum bet on AI not disrupting creative software. It is barely correlated with the S&P 500 (0.08), so its tracking error is mostly idiosyncratic. The satellite trails if ADBE keeps de-rating on AI fears or earnings show ARR slowing. Its 4% size limits the damage, and the core carries the market and AI exposure.
+One small position is a contrarian value/anti-momentum bet on AI not disrupting creative software. It is barely correlated with the S&P 500 over 1 year (0.08; but 0.52 over 5 years, see above), so its tracking error is mostly idiosyncratic. The satellite trails if ADBE keeps de-rating on AI fears or earnings show ARR slowing. Its 4% size limits the damage, and the core carries the market and AI exposure.
 
 Memos: research/<TICKER>.md. Rules: MANDATE.md. This is research, not advice: weights are percentages of whatever amount the owner chooses.

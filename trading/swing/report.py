@@ -180,7 +180,9 @@ def main(root, out):
     per = [x for x in shk if start <= pd.Timestamp(x["t_ms"], unit="ms", tz="UTC").tz_convert(BKK) < end]
     fs = env.HERE.parent / "fund" / "status.txt"
     if fs.exists():
-        lines += ["## The fund (long-term US stocks)", *fs.read_text().strip().splitlines(), ""]
+        ss = env.HERE.parent / "fund" / "shadow_status.txt"
+        lines += ["## The fund (long-term US stocks)", *fs.read_text().strip().splitlines(),
+                  *(ss.read_text().strip().splitlines() if ss.exists() else []), ""]
     us = env.HERE.parent / "us" / "summary.txt"
     if us.exists():
         lines += ["## US stocks side study (paper)", *us.read_text().strip().splitlines(), ""]
