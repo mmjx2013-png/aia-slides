@@ -4,12 +4,13 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const FILE = 'file://' + path.resolve(__dirname, '..', 'preview-_tools-demo.html');
+const ONLY = process.argv[2] || '';   // optional filter, e.g. node tests/tools.test.cjs touch
 const CONFIGS = [
   { name: '1920x1080 mouse', w: 1920, h: 1080, touch: false },
   { name: '1280x720 mouse', w: 1280, h: 720, touch: false },
   { name: '1280x720 touch', w: 1280, h: 720, touch: true },
   { name: '1024x768 touch', w: 1024, h: 768, touch: true }
-];
+].filter(c => c.name.includes(ONLY));
 let failed = 0, total = 0;
 
 /* ---- hand-drawn test strokes, in the drawing surface's own pixels ---- */
@@ -190,7 +191,7 @@ async function run(cfg) {
   for (let i = 0; i < 5; i++) {
     const a = await W('td-bars-w', 'w.at(' + i + ',' + v[i] + ')'), b = await W('td-bars-w', 'w.at(' + i + ',' + barsAns[i] + ')');
     if (i === 1) continue;                                           // already right
-    if (i === 2) { await dragLine([a.x, a.y], [b.x + 4, Math.max(4, b.y - 300)], 6); ok('bars: a bar cannot go above the axis', (await W('td-bars-w', 'w.values()'))[2] === 40); await dragLine([b.x, b.y - 80], [b.x, b.y + 2], 6); }
+    if (i === 2) { await dragLine([a.x, a.y], [b.x + 4, Math.max(4, b.y - 300)], 6); ok('bars: a bar cannot go above the axis', (await W('td-bars-w', 'w.values()'))[2] === 40); const top = await W('td-bars-w', 'w.at(2,40)'); await dragLine([top.x, top.y], [b.x, b.y + 2], 6); }
     else await dragLine([a.x, a.y], [b.x, b.y + 3], 8);              // 3 px off: must snap to the step
   }
   v = await W('td-bars-w', 'w.values()');
