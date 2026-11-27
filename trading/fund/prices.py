@@ -1,4 +1,4 @@
-"""Daily prices from the boss's Yahoo pack (claude/fervent-ramanujan-qp1d26 @ed41106,
+"""Daily prices from the boss's Yahoo pack (claude/fervent-ramanujan-qp1d26 @de3ddcf,
 trading-data/fund-prices-2026-11-27.tgz -> data/yahoo-fund/). We never call Yahoo ourselves.
 File names: '.' and '=' become '_' (BRK.B -> BRK_B.json, THB=X -> THB_X.json)."""
 import json
@@ -11,7 +11,7 @@ import pandas as pd
 
 HERE = Path(__file__).resolve().parent
 DIR = HERE / "data" / "yahoo-fund"
-PACK = ("ed41106", "trading-data/fund-prices-2026-11-27.tgz")
+PACK = ("de3ddcf", "trading-data/fund-prices-2026-11-27.tgz")
 
 
 def unpack():

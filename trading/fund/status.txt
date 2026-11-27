@@ -1,2 +1,2 @@
-Fund: screen v2 with valuation (200 US large caps, 42 financials/captive-finance unscored, 53 manual flags). Top: ADBE, CMCSA, NVDA, MU, PYPL, BKNG, LEA, BKR, MCK, CAH.
-No orders yet. Finalists due Tue 1 Dec, memos and the first orders.md by Fri 4 Dec (core SPYM/VOO/IVV in 3 weekly tranches).
+Fund: screen v3 (normalized cyclicals, 20% momentum), 12 finalists: PAA MU LRCX PSX JBL NVDA MPC LEA ROST MAR BKR COP (finalists.md).
+No orders yet; memos and the first orders.md by Fri 4 Dec (core SPYM/VOO/IVV in 3 weekly tranches).

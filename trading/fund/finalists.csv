@@ -1,0 +1,13 @@
+ticker,name,group,industry,composite,s_quality,s_growth,s_balance,s_dilution,s_valuation,s_momentum,mom_12_1,fcf_yield_used,ev_ebit_used,cyclical_normalized,flag
+PAA,PLAINS ALL AMERICAN PIPELINE LP,SIC 46,Pipe Lines (No Natural Gas),0.6886,0.6597,0.271,0.705,,0.9128,0.8945,0.627,0.1377,11.78,False,
+MU,"Micron Technology, Inc.",semis/memory,Semiconductors & Related Devices,0.6787,0.5362,1,0.8625,0.128,0.4653,1,3.152,0.004822,28.1,True,FCF margin moved > 2x y/y
+LRCX,LAM RESEARCH CORPORATION,semis/memory,"Special Industry Machinery, NEC",0.676,0.7591,0.5595,0.8625,0.7109,0.2214,0.8894,0.609,0.02659,31.43,True,
+PSX,Phillips 66,SIC 29,Petroleum Refining,0.6716,0.5238,0.0853,0.8625,0.8874,0.6513,0.9497,1.058,0.06399,,True,
+JBL,JABIL INC,SIC 36,Printed Circuit Boards,0.6716,0.7436,0.5301,0.515,0.9729,0.4245,0.809,0.438,0.04978,14.18,True,
+NVDA,NVIDIA CORP,semis/memory,Semiconductors & Related Devices,0.6715,0.7248,0.9913,0.8625,0.4275,0.5127,0.5427,0.1967,0.02249,34.6,True,
+MPC,Marathon Petroleum Corporation,SIC 29,Petroleum Refining,0.671,0.6266,0.03863,0.8625,0.9997,0.448,0.9749,1.319,0.08482,8.488,True,
+LEA,LEAR CORP,SIC 37,Motor Vehicle Parts & Accessories,0.6693,0.4838,0.5094,0.8625,0.8178,0.913,0.4774,0.1402,0.1063,4.835,True,
+ROST,"Ross Stores, Inc.",SIC 56,Retail-Family Clothing Stores,0.6607,0.7344,0.7112,0.8625,0.6467,0.3204,0.6834,0.3324,0.03095,25.39,False,
+MAR,MARRIOTT INTERNATIONAL INC /MD/,SIC 70,Hotels & Motels,0.6541,0.6643,0.6021,0.8625,0.9141,0.2098,0.6683,0.3252,0.02436,25.77,False,
+BKR,Baker Hughes Company,SIC 35,Oil & Gas Field Machinery & Equipment,0.6451,0.5151,0.8184,0.8625,,0.4667,0.5628,0.2082,0.04214,18.06,True,
+COP,ConocoPhillips,SIC 29,Petroleum Refining,0.639,0.5052,0.215,0.8625,0.39,0.8718,0.9196,0.7271,0.1191,,True,

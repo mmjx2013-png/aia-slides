@@ -41,6 +41,12 @@ TAGS = {
 }
 # re-domiciled filers: new CIK -> old CIKs whose history is spliced in (frames skipped for them)
 SPLICE = {2115436: [34088]}           # Exxon Mobil (new holding company)
+CYCLICAL_SIC4 = ("3674", "3559", "3672", "3714", "3533", "2911")   # semis, semi equipment, PCBs, auto parts, oilfield, refining
+CYCLICAL_SIC2 = ("13", "29", "10", "33")                            # oil & gas, petroleum, metal mining, primary metals
+CYCLICAL = {"LRCX", "AMAT", "KLAC", "MU", "BKR", "XOM", "CVX", "LEA"}
+SEMIS = {"3674", "3559"}
+# duplicate listings of one business (a holding company that consolidates its operating partnership)
+DUPLICATE = {"PAGP": "holds and consolidates PAA (same cash flows, FCF yield overstated)"}
 # captive finance / floor-plan debt wrecks FCF and debt ratios: listed but unscored, like financials
 CAPTIVE = {"GM", "F", "LAD", "AN", "GPI", "PAG", "KMX", "CAT", "DE", "PCAR", "HOG", "CNH", "ABG", "SAH", "CVNA", "TSLA"}
 CAPTIVE_SIC = ("3711", "55")          # motor vehicles; auto dealers
@@ -163,6 +169,17 @@ def metrics(cik, asof, ticker=None):
         so = at("shares")                                     # fallback: diluted weighted shares, latest 10-K
     mcap = px * so if px and so == so else np.nan
     ev_ebit = (mcap + net_debt) / opinc if opinc == opinc and opinc > 0 and mcap == mcap else np.nan
+    # normalized (through-the-cycle) numbers: average margins over the available years (up to 4-5) x current revenue
+    opm = [at("opinc", e) / at("rev", e) for e in ends if at("rev", e) and at("opinc", e) == at("opinc", e)]
+    fcf_m_avg = float(np.mean(margin)) if margin else np.nan
+    ebit_norm = float(np.mean(opm)) * at("rev") if opm else np.nan
+    fcf_norm = fcf_m_avg * at("rev") if fcf_m_avg == fcf_m_avg else np.nan
+    adj = P.load(ticker) if ticker else None
+    mom = np.nan
+    if adj is not None:
+        a = adj[adj.index <= pd.Timestamp(asof)]["adj"]
+        if len(a) > 260:
+            mom = float(a.iloc[-22] / a.iloc[-253] - 1)          # 12-1 month total return
     hist = []
     for e in ends[:-1]:
         pe, se, oe = (P.price_at(ticker, e) if ticker else None), at("shares", e), at("opinc", e)
@@ -170,6 +187,9 @@ def metrics(cik, asof, ticker=None):
         if pe and se == se and oe == oe and oe > 0:
             hist.append(min((pe * se + nd) / oe, 60.0))       # cap: a near-zero-EBIT year would dominate
     return dict(
+        fcf_margin_avg=fcf_m_avg, fcf_norm=fcf_norm, ebit_norm=ebit_norm, mom_12_1=mom,
+        fcf_yield_norm=fcf_norm / mcap if mcap == mcap and mcap > 0 and fcf_norm == fcf_norm else np.nan,
+        ev_ebit_norm=(mcap + net_debt) / ebit_norm if ebit_norm == ebit_norm and ebit_norm > 0 and mcap == mcap else np.nan,
         price=px, mkt_cap=mcap, fcf_yield=fcf[last] / mcap if mcap == mcap and mcap > 0 else np.nan, ev_ebit=ev_ebit,
         ev_ebit_vs_hist=ev_ebit / np.median(hist) if hist and ev_ebit == ev_ebit and np.median(hist) > 0 else np.nan,
         fy_end=last, revenue=at("rev"), net_income=at("ni"), fcf=fcf[last], op_income=opinc,
@@ -210,6 +230,27 @@ def balance(df, cap=20.0):
     return pd.concat([s1, s2], axis=1).min(axis=1)
 
 
+def industry_group(df):
+    """Industry groups for the caps: semis/memory together (mandate cap 20%), otherwise the 2-digit SIC major group."""
+    g = df["sic"].str[:2].map(lambda x: f"SIC {x}")
+    g = g.where(~df["sic"].str[:4].isin(SEMIS) & ~df["ticker"].isin({"LRCX", "AMAT", "KLAC", "MU"}), "semis/memory")
+    return g
+
+
+def finalists(df, n=12, per_group=3, min_groups=5):
+    """Top composite, scored names only, at most `per_group` per industry group, at least `min_groups` groups."""
+    pool = df[df["composite"].notna() & df["s_valuation"].notna() & ~df["ticker"].isin(DUPLICATE)]   # a finalist needs a valuation
+    pool = pool.sort_values("composite", ascending=False)
+    pick, cnt = [], {}
+    for _, r in pool.iterrows():
+        if cnt.get(r["group"], 0) < per_group:
+            pick.append(r)
+            cnt[r["group"]] = cnt.get(r["group"], 0) + 1
+        if len(pick) >= n and len(cnt) >= min_groups:
+            break
+    return pd.DataFrame(pick)
+
+
 def main(asof, n):
     t0 = time.time()
     uni = universe(n)
@@ -226,19 +267,35 @@ def main(asof, n):
     df["financial_or_reit"] = fin
     df["captive_finance"] = cap & ~fin
     fin = fin | cap
-    q = pd.concat([pct(df["roic"]), pct(df["roe"]), pct(df["fcf_margin"]), pct(df["fcf_margin_std"], False)], axis=1).mean(axis=1)
+    # PM decision 1: cyclicals (semis/memory, energy, auto parts, or a >2x FCF-margin swing) use normalized numbers
+    cyc = (df["sic"].str[:4].isin(CYCLICAL_SIC4) | df["sic"].str[:2].isin(CYCLICAL_SIC2) | df["ticker"].isin(CYCLICAL)
+           | df["flag"].fillna("").str.contains("2x"))
+    df["cyclical_normalized"] = cyc
+    for raw, norm in (("fcf_margin", "fcf_margin_avg"), ("fcf_yield", "fcf_yield_norm"), ("ev_ebit", "ev_ebit_norm")):
+        df[raw + "_used"] = df[norm].where(cyc, df[raw])
+    df["ev_ebit_vs_hist_used"] = (df["ev_ebit_norm"] / (df["ev_ebit"] / df["ev_ebit_vs_hist"])).where(cyc, df["ev_ebit_vs_hist"])
+    q = pd.concat([pct(df["roic"]), pct(df["roe"]), pct(df["fcf_margin_used"]), pct(df["fcf_margin_std"], False)], axis=1).mean(axis=1)
     g = pd.concat([pct(df["rev_cagr"]), pct(df["fcf_cagr"])], axis=1).mean(axis=1)
     b = balance(df)
     dl = pct(df["dilution"], False)
     df["s_quality"], df["s_growth"], df["s_balance"], df["s_dilution"] = q, g, b, dl
-    df["s_valuation"] = pd.concat([pct(df["fcf_yield"]), pct(df["ev_ebit_vs_hist"], False)], axis=1).mean(axis=1)
-    df["composite"] = df[["s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation"]].mean(axis=1, skipna=True)
+    df["s_valuation"] = pd.concat([pct(df["fcf_yield_used"]), pct(df["ev_ebit_vs_hist_used"], False)], axis=1).mean(axis=1)
+    df["s_momentum"] = pct(df["mom_12_1"])
+    # PM decision 2: 12-1 momentum at 20%, the five fundamental groups share the other 80% equally
+    base = df[["s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation"]].mean(axis=1, skipna=True)
+    df["composite"] = np.where(df["s_momentum"].notna(), 0.8 * base + 0.2 * df["s_momentum"], base)
+    df["group"] = industry_group(df)
     df.loc[fin, "composite"] = np.nan                            # FCF/ROIC metrics do not fit banks/insurers/REITs
     df = df.sort_values("composite", ascending=False)
-    cols = ["ticker", "name", "industry", "flag", "composite", "s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation", "roic", "roe",
+    cols = ["ticker", "name", "industry", "group", "flag", "composite", "s_momentum", "mom_12_1", "cyclical_normalized", "s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation", "roic", "roe",
             "fcf_yield", "ev_ebit", "ev_ebit_vs_hist", "price", "mkt_cap", "fcf_margin", "fcf_margin_std", "rev_cagr", "fcf_cagr", "net_debt_fcf", "dilution", "revenue", "fcf", "fy_end", "years", "sic",
             "net_debt_ebitda", "debt_equity", "last_10k_filed", "financial_or_reit", "captive_finance", "cik"]
-    df[cols].to_csv(HERE / "screen.csv", index=False, float_format="%.4g")
+    df[cols + ["fcf_yield_norm", "ev_ebit_norm", "fcf_margin_avg"]].to_csv(HERE / "screen.csv", index=False, float_format="%.4g")
+    df["duplicate_of"] = df["ticker"].map(DUPLICATE)
+    fin = finalists(df)
+    fin[["ticker", "name", "group", "industry", "composite", "s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation", "s_momentum",
+         "mom_12_1", "fcf_yield_used", "ev_ebit_used", "cyclical_normalized", "flag"]].to_csv(HERE / "finalists.csv", index=False, float_format="%.4g")
+    print("finalists:", ", ".join(f"{t} ({g})" for t, g in zip(fin["ticker"], fin["group"])))
     print(f"screen: {len(df)} names ({int(fin.sum())} financials/REITs unscored), as of {asof}, {time.time() - t0:.0f} s")
     print(df[cols[:9]].head(25).to_string(index=False))
 
