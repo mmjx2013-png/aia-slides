@@ -1,0 +1,4 @@
+# generated stills and v1 output (rebuild: python3 make2.py && node shoot2.cjs)
+v2-*.png
+slide-*.png
+mockups.html
