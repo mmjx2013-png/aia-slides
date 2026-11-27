@@ -1,0 +1,164 @@
+<style>
+#b3-table .kicker,#b3-q1 .kicker{width:fit-content}
+#b3-table .bk,#b3-q1 .bk{position:absolute;right:130px;top:82px}
+#b3-table .mlab,#b3-q1 .mlab{display:inline-block;vertical-align:3px;margin-right:10px;font:800 22px/1 Inter;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;border-radius:9px}
+#b3-table .mlab::before,#b3-q1 .mlab::before{content:attr(data-l)}
+#b3-table .mlab.lk,#b3-q1 .mlab.lk{background:var(--lblue);color:var(--blue)}
+#b3-table .mlab.th,#b3-q1 .mlab.th{background:var(--lviolet);color:var(--violet)}
+#b3-table .mlab.wy,#b3-q1 .mlab.wy{background:var(--lmint);color:#0A6E5B}
+#b3-table .mlab.wo,#b3-q1 .mlab.wo{background:var(--lcoral);color:#B8321F}
+#b3-table .tcard,#b3-q1 .tcard{position:relative;padding:30px 32px;height:747px}
+#b3-table .tt,#b3-q1 .tt{height:40px;margin-bottom:16px;font:700 30px/40px Display;letter-spacing:-.01em}
+#b3-table .ct,#b3-q1 .ct{width:885px;table-layout:fixed;box-shadow:none;outline:2px solid #E6EAF3;font:600 28px Inter}
+#b3-table .ct th,#b3-q1 .ct th{padding:0 8px;text-align:center;height:56px;font:700 26px Inter}
+#b3-table .ct th.lv,#b3-q1 .ct th.lv{height:52px;font:600 24px Inter;background:#5B82FF}
+#b3-table .ct th.tc,#b3-q1 .ct th.tc{background:var(--violet)}
+#b3-table .ct th:first-child,#b3-q1 .ct th:first-child{text-align:left;padding-left:22px}
+#b3-table .ct td,#b3-q1 .ct td{height:74px;padding:0 8px;text-align:center;font-variant-numeric:tabular-nums;transition:background .5s,opacity .5s,box-shadow .5s,color .5s}
+#b3-table .ct td:first-child,#b3-q1 .ct td:first-child{text-align:left;padding-left:22px}
+#b3-table .ct tfoot td,#b3-q1 .ct tfoot td{height:82px;font-weight:700}
+#b3-table .ct td.tot,#b3-q1 .ct td.tot{position:relative}
+#b3-table .ct .w-input{padding:0;background:transparent;box-shadow:none;border-radius:0;gap:0;align-items:center}
+#b3-table .ct .w-input .tw-foot{display:none}
+#b3-table .ct .tw-inrow{min-height:0;justify-content:center}
+#b3-table .ct .tw-in{width:140px!important;height:54px;padding:0 8px;font:700 28px/1 Inter;text-align:center;border-style:dashed}
+#b3-table .ct .tw-in:focus,#b3-table .ct .tw-in.ok,#b3-table .ct .tw-in.no{border-style:solid;border-width:3px}
+#b3-table .ct .av{position:absolute;inset:10px 12px;display:grid;place-items:center;border-radius:14px;background:var(--violet);color:#fff;font:800 28px Inter;box-shadow:0 6px 16px rgba(124,92,255,.3);pointer-events:none}
+#b3-table.b1:not(.b2) .ct tr.rB td{background:var(--lblue)}
+#b3-table.b1:not(.b2) .ct .cP{background:var(--lcoral)}
+#b3-table.b1:not(.b2) .ct th.cP{background:var(--coral)}
+#b3-table.b2:not(.b3) .ct tbody td.tot{background:var(--lviolet)}
+#b3-table.b3:not(.b4) .ct tfoot td.tot{background:var(--lviolet)}
+#b3-table.on.b3 .aA,#b3-table.on.b2 .aD1,#b3-table.on.b4 .aD2{animation:out .35s ease both}
+#b3-table .ov{position:absolute;left:0;top:0;width:949px;height:747px;pointer-events:none;overflow:visible}
+#b3-table .lay,#b3-q1 .lay{display:grid;gap:36px;height:747px}
+#b3-table .lay{grid-template-columns:949px 1fr;align-items:start}
+#b3-table .tcard{height:676px}
+#b3-q1 .lay{grid-template-columns:1fr 949px}
+#b3-table .side,#b3-q1 .side{display:flex;flex-direction:column;gap:18px;min-width:0;align-self:stretch}
+#b3-table .qk,#b3-q1 .qk{padding:22px 26px;box-shadow:0 14px 36px rgba(15,27,51,.08)}
+#b3-table .qk ol,#b3-q1 .qk ol{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:12px}
+#b3-table .qk li,#b3-q1 .qk li{display:flex;gap:14px;font:500 28px/1.36 Inter}
+#b3-table .qk li i,#b3-q1 .qk li i{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--ink);color:#fff;font:800 24px Inter;font-style:normal}
+#b3-table .swap,#b3-q1 .swap{position:relative;flex:1;min-height:0}
+#b3-table .pan,#b3-q1 .pan{position:absolute;left:0;right:0;top:0;background:#fff;border-radius:24px;padding:22px 26px;box-shadow:0 14px 36px rgba(15,27,51,.08);font:500 28px/1.36 Inter}
+#b3-table .pan.ph,#b3-q1 .pan.ph{background:transparent;box-shadow:none;border:3px dashed #C9D2E6;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:16px}
+#b3-table .route,#b3-q1 .route{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#b3-table .route span,#b3-q1 .route span{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:#fff;font:700 26px Inter;box-shadow:0 6px 16px rgba(15,27,51,.06)}
+#b3-table .route span i,#b3-q1 .route span i{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--lblue);color:var(--blue);font:800 24px Inter;font-style:normal}
+#b3-table.on.b2 .p1,#b3-table.on.b3 .p2,#b3-table.on.b4 .p3{animation:out .35s ease both}
+#b3-q1.on.b2 .p1,#b3-q1.on.b3 .p2,#b3-q1.on.b4 .p3{animation:out .35s ease both}
+#b3-table .wk,#b3-q1 .wk{display:grid;grid-template-columns:190px 1fr;row-gap:6px;margin-top:12px;font:500 27px/44px Inter;font-variant-numeric:tabular-nums}
+#b3-table .wk .nm,#b3-q1 .wk .nm{font:600 26px/44px Inter;color:var(--mute)}
+#b3-table .wk b,#b3-q1 .wk b{color:var(--violet)}
+#b3-table .wl,#b3-q1 .wl{margin-top:10px;font:500 27px/1.3 Inter;font-variant-numeric:tabular-nums}
+#b3-table .wl .nm,#b3-q1 .wl .nm{display:block;font:600 24px/1.4 Inter;color:var(--mute)}
+#b3-table .wl b,#b3-q1 .wl b{color:var(--violet)}
+#b3-table .tip,#b3-q1 .tip{margin-top:14px;padding:12px 18px;border-radius:16px;background:var(--lsun);font:500 26px/1.35 Inter}
+#b3-table .nw,#b3-q1 .nw{white-space:nowrap}
+#b3-table .pan .ans,#b3-q1 .pan .ans{margin-top:14px;font:600 30px/1.35 Inter;padding:18px 24px}
+#b3-table .arw,#b3-q1 .arw{display:flex;align-items:center;gap:14px;margin-top:12px}
+#b3-table .arw i,#b3-q1 .arw i{flex:none;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;color:#fff;font:800 28px Inter;font-style:normal}
+#b3-q1.b1 .ct td.hv{background:rgba(59,108,255,var(--h))}
+#b3-q1.b2:not(.b3) .ct td.hv:not(.top3){opacity:.3}
+#b3-q1.b2 .ct td.top1{box-shadow:inset 0 0 0 5px var(--coral);font-weight:800}
+#b3-q1.b2 .ct td.rN{color:var(--noc);font-weight:800}
+#b3-q1.b2 .ct th.cP{background:var(--coral)}
+#b3-q1 .ct td.tv{color:var(--violet);font-weight:700;background:#F7F5FF}
+#b3-q1.b3 .ct td.tB,#b3-q1.b3 .ct td.tP{box-shadow:inset 0 0 0 5px var(--sun);background:var(--lsun);color:#8A5A00;font-weight:800}
+#b3-q1 .leg{display:flex;align-items:center;gap:10px;margin-top:22px;font:600 24px Inter;color:var(--mute)}
+#b3-q1 .leg i{width:44px;height:26px;border-radius:7px;background:rgba(59,108,255,var(--h))}
+#b3-q1 .leg i:first-of-type{margin-left:6px}
+#b3-q1 .leg .gap{flex:1}
+#b3-q1 .leg .ky{display:flex;align-items:center;gap:10px}
+#b3-q1 .leg .ky s{width:30px;height:26px;border-radius:7px;text-decoration:none}
+#b3-q1 .note{margin-top:12px;font:500 26px/1.36 Inter;padding:14px 20px}
+</style>
+
+<!-- ===================== BOOK p.169 · maths contest table (after Exercise 3A) ===================== -->
+<section class="slide" id="b3-table" data-steps="4" data-lesson="3" data-title="Book p.169 · Maths contest table">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Exercise 3A · From the book</div>
+ <span class="chip bk in" style="--d:200">Book p.169 · Contest table · Totals &amp; Q2</span>
+ <h2 class="in" style="--d:120">Fill in the <em>totals</em></h2>
+ <div class="lay">
+  <div class="card tcard in" style="--d:200">
+   <div class="tt">Students in a maths contest, B.E. 2554</div>
+   <table class="tbl ct"><colgroup><col style="width:220px"><col style="width:165px"><col style="width:165px"><col style="width:165px"><col style="width:170px"></colgroup><thead><tr><th rowspan="2">Region</th><th colspan="3">Number of students</th><th rowspan="2" class="tc">Total</th></tr><tr><th class="lv cP">Primary</th><th class="lv">Junior high</th><th class="lv">Senior high</th></tr></thead><tbody><tr class="rB"><td>Bangkok</td><td class="cP">1,343</td><td>1,124</td><td>493</td><td class="tot"><div class="w-input ia" data-answer="2,960" data-accept="2960" data-tol="0"></div><span class="av g2" style="--d:150">2,960</span></td></tr><tr><td>Northern</td><td class="cP">1,509</td><td>717</td><td>340</td><td class="tot"><div class="w-input ia" data-answer="2,566" data-accept="2566" data-tol="0"></div><span class="av g2" style="--d:270">2,566</span></td></tr><tr><td>Northeastern</td><td class="cP">774</td><td>776</td><td>324</td><td class="tot"><div class="w-input ia" data-answer="1,874" data-accept="1874" data-tol="0"></div><span class="av g2" style="--d:390">1,874</span></td></tr><tr><td>Central</td><td class="cP">1,407</td><td>739</td><td>398</td><td class="tot"><div class="w-input ia" data-answer="2,544" data-accept="2544" data-tol="0"></div><span class="av g2" style="--d:510">2,544</span></td></tr><tr><td>Southern</td><td class="cP">727</td><td>516</td><td>219</td><td class="tot"><div class="w-input ia" data-answer="1,462" data-accept="1462" data-tol="0"></div><span class="av g2" style="--d:630">1,462</span></td></tr></tbody><tfoot><tr><td>Total</td><td class="tot"><div class="w-input ia" data-answer="5,760" data-accept="5760" data-tol="0"></div><span class="av g3" style="--d:150">5,760</span></td><td class="tot"><div class="w-input ia" data-answer="3,872" data-accept="3872" data-tol="0"></div><span class="av g3" style="--d:300">3,872</span></td><td class="tot"><div class="w-input ia" data-answer="1,774" data-accept="1774" data-tol="0"></div><span class="av g3" style="--d:450">1,774</span></td><td class="tot"><div class="w-input ia" data-answer="11,406" data-accept="11406" data-tol="0"></div><span class="av g4" style="--d:200">11,406</span></td></tr></tfoot></table>
+   <svg class="ov" viewBox="0 0 949 747" aria-hidden="true"><g class="g1"><g class="aA"><path d="M266 259 H738" pathLength="1" class="draw" style="fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round"/><path d="M724 249 L740 259 L724 269" class="pop" style="--d:1000;fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></g><g class="aD1"><path d="M405 204 V552" pathLength="1" class="draw" style="--d:500;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round"/><path d="M395 538 L405 554 L415 538" class="pop" style="--d:1300;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></g></g><g class="g3"><g class="aD2"><path d="M405 204 V552" pathLength="1" class="draw" style="--n:0;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round"/><path d="M395 538 L405 554 L415 538" class="pop" style="--n:0;--d:1000;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/><path d="M570 204 V552" pathLength="1" class="draw" style="--n:1;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round"/><path d="M560 538 L570 554 L580 538" class="pop" style="--n:1;--d:1000;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/><path d="M735 204 V552" pathLength="1" class="draw" style="--n:2;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round"/><path d="M725 538 L735 554 L745 538" class="pop" style="--n:2;--d:1000;fill:none;stroke:var(--coral);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></g></g></svg>
+  </div>
+  <div class="side">
+   <div class="card qk in" style="--d:320">
+    <span class="chip coral">Your turn</span>
+    <ol>
+     <li><i>1</i><span>Fill in the empty <b>Total</b> boxes. Tap a box, type, press Enter.</span></li>
+     <li><i>2</i><span><b>Q2</b> How many students took part at each school level?</span></li>
+    </ol>
+   </div>
+   <div class="swap">
+    <div class="pan ph in h1" style="--d:420"><div class="small" style="color:var(--ink)">Then we check, step by step:</div><div class="route"><span><i>1</i>Look</span><span><i>2</i>Add across</span><span><i>3</i>Add down</span><span><i>4</i>Check</span></div></div>
+    <div class="pan p1 g1"><span class="mlab lk" data-l="Look"></span>Two kinds of total.
+     <div class="arw"><i style="background:var(--blue)">→</i><span><b>Total column:</b> add <b>across</b> one region.</span></div>
+     <div class="arw"><i style="background:var(--coral)">↓</i><span><b>Total row:</b> add <b>down</b> one school level.</span></div>
+    </div>
+    <div class="pan p2 g2"><span class="mlab th" data-l="Think"></span>Add across each row.
+     <div class="wk"><span class="nm">Bangkok</span><span>1,343 + 1,124 + 493 = <b>2,960</b></span><span class="nm">Northern</span><span>1,509 + 717 + 340 = <b>2,566</b></span><span class="nm">Northeastern</span><span>774 + 776 + 324 = <b>1,874</b></span><span class="nm">Central</span><span>1,407 + 739 + 398 = <b>2,544</b></span><span class="nm">Southern</span><span>727 + 516 + 219 = <b>1,462</b></span></div>
+    </div>
+    <div class="pan p3 g3"><span class="mlab th" data-l="Think"></span>Add down each column.
+     <div class="wl"><span class="nm">Primary</span>1,343 + 1,509 + 774 + 1,407 + 727 = <b>5,760</b></div><div class="wl"><span class="nm">Junior high</span>1,124 + 717 + 776 + 739 + 516 = <b>3,872</b></div><div class="wl"><span class="nm">Senior high</span>493 + 340 + 324 + 398 + 219 = <b>1,774</b></div>
+     <div class="tip"><b>Watch out:</b> line up ones, tens, hundreds and thousands.</div>
+    </div>
+    <div class="pan p4 g4"><span class="mlab wy" data-l="Check"></span>Add both ways: the same grand total?
+     <div class="wl"><span class="nm">Total column</span>2,960 + 2,566 + 1,874 + 2,544 + 1,462<br>= <b>11,406</b></div>
+     <div class="wl"><span class="nm">Total row</span>5,760 + 3,872 + 1,774 = <b>11,406</b> ✓ the same</div>
+     <div class="ans" style="--d:300"><svg><use href="#check"/></svg><div><b>Q2</b> <span class="nw">Primary <b>5,760</b> ·</span> <span class="nw">Junior high <b>3,872</b> ·</span> <span class="nw">Senior high <b>1,774</b></span></div></div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Book p.169: students at three school levels who entered a maths contest in academic year B.E. 2554, by region. The table is redrawn; the numbers are the book’s. The book leaves the Total row and Total column empty.
+Beat 0: students come to the board and fill the empty boxes (type a number, press Enter: green = right, red = try again), or work in the book first.
+Beat 1 · LOOK: the Total column adds ACROSS one region (Bangkok row is marked). The Total row adds DOWN one school level (Primary column is marked).
+Beat 2 · ADD ACROSS: Bangkok 1,343 + 1,124 + 493 = 2,960 · Northern 1,509 + 717 + 340 = 2,566 · Northeastern 774 + 776 + 324 = 1,874 · Central 1,407 + 739 + 398 = 2,544 · Southern 727 + 516 + 219 = 1,462.
+Beat 3 · ADD DOWN: Primary 1,343 + 1,509 + 774 + 1,407 + 727 = 5,760 · Junior high 1,124 + 717 + 776 + 739 + 516 = 3,872 · Senior high 493 + 340 + 324 + 398 + 219 = 1,774. Watch out: line up the place values when adding in columns.
+Beat 4 · CHECK: Total column 2,960 + 2,566 + 1,874 + 2,544 + 1,462 = 11,406. Total row 5,760 + 3,872 + 1,774 = 11,406. Same grand total ✓.
+Q2 answer: primary school 5,760 students, junior high school 3,872, senior high school 1,774 (11,406 in all).
+In the book, Q1 comes before Q2. We fill the totals first because the table asks for them; Q1 is on the next slide.</aside>
+</section>
+
+<section class="slide" id="b3-q1" data-steps="4">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Exercise 3A · From the book</div>
+ <span class="chip bk in" style="--d:200">Book p.169 · Contest table · Q1</span>
+ <h2 class="in" style="--d:120">Which region, which <em>level</em>?</h2>
+ <div class="lay">
+  <div class="side">
+   <div class="card qk in" style="--d:220">
+    <span class="chip coral">Q1</span>
+    <div class="q" style="margin-top:12px;font-size:32px">Which region and which school level had the most students in the contest?</div>
+   </div>
+   <div class="in" style="--d:320"><div class="w-write ia" data-label="Your answer, and why?" data-lines="2" style="width:675px;height:212px"></div></div>
+   <div class="swap">
+    <div class="pan ph in h1" style="--d:420"><div class="small" style="color:var(--ink)">Then we check, step by step:</div><div class="route"><span><i>1</i>Look</span><span><i>2</i>Compare</span><span><i>3</i>Watch out</span><span><i>4</i>Answer</span></div></div>
+    <div class="pan p1 g1"><span class="mlab lk" data-l="Look"></span>Read the <b>15 numbers inside</b> the table. Darker blue = more students.</div>
+    <div class="pan p2 g2"><span class="mlab th" data-l="Think"></span>Biggest first: <b>1,509</b> &gt; 1,407 &gt; 1,343. The top cell is in the <b>Northern</b> row and the <b>Primary</b> column.</div>
+    <div class="pan p3 g3"><span class="mlab wo" data-l="Watch out"></span>Q1 can also mean the totals. Regions: <b>Bangkok</b> 2,960 is the most. Levels: <b>primary</b> 5,760 is the most.</div>
+    <div class="pan p4 g4" style="padding:0;background:transparent;box-shadow:none">
+     <div class="ans" style="margin-top:0"><svg><use href="#check"/></svg><div>Book-style answer: <b>Northern region, primary school</b> (1,509 students)</div></div>
+     <div class="note" style="--d:300"><b>Note:</b> by totals it is Bangkok (2,960) and primary school (5,760). Both are fine if you say how you read it.</div>
+    </div>
+   </div>
+  </div>
+  <div class="card tcard in" style="--d:200">
+   <div class="tt">Students in a maths contest, B.E. 2554</div>
+   <table class="tbl ct"><colgroup><col style="width:220px"><col style="width:165px"><col style="width:165px"><col style="width:165px"><col style="width:170px"></colgroup><thead><tr><th rowspan="2">Region</th><th colspan="3">Number of students</th><th rowspan="2" class="tc">Total</th></tr><tr><th class="lv cP">Primary</th><th class="lv">Junior high</th><th class="lv">Senior high</th></tr></thead><tbody><tr><td>Bangkok</td><td class="hv top3" style="--h:0.54">1,343</td><td class="hv" style="--h:0.45">1,124</td><td class="hv" style="--h:0.21">493</td><td class="tv tB">2,960</td></tr><tr><td class="rN">Northern</td><td class="hv top3 top1" style="--h:0.60">1,509</td><td class="hv" style="--h:0.29">717</td><td class="hv" style="--h:0.15">340</td><td class="tv">2,566</td></tr><tr><td>Northeastern</td><td class="hv" style="--h:0.32">774</td><td class="hv" style="--h:0.32">776</td><td class="hv" style="--h:0.14">324</td><td class="tv">1,874</td></tr><tr><td>Central</td><td class="hv top3" style="--h:0.56">1,407</td><td class="hv" style="--h:0.30">739</td><td class="hv" style="--h:0.17">398</td><td class="tv">2,544</td></tr><tr><td>Southern</td><td class="hv" style="--h:0.30">727</td><td class="hv" style="--h:0.22">516</td><td class="hv" style="--h:0.10">219</td><td class="tv">1,462</td></tr></tbody><tfoot><tr><td>Total</td><td class="tv tP">5,760</td><td class="tv">3,872</td><td class="tv">1,774</td><td class="tv">11,406</td></tr></tfoot></table>
+   <div class="leg g1" style="--d:500"><span>fewer</span><i style="--h:0.1"></i><i style="--h:0.22"></i><i style="--h:0.35"></i><i style="--h:0.48"></i><i style="--h:0.6"></i><span>more students</span><span class="gap"></span><span class="ky"><s style="box-shadow:inset 0 0 0 4px var(--coral)"></s>one cell</span><span class="ky"><s style="box-shadow:inset 0 0 0 4px var(--sun);background:var(--lsun)"></s>totals</span></div>
+  </div>
+ </div>
+ <aside class="notes">Book p.169, Q1: “Which region and which school level had the most students in the contest?” (our words). The totals from the last slide are filled in.
+Beat 0: a student writes an answer and says how they found it.
+Beat 1 · LOOK: read the 15 numbers inside the table (not the totals). The blue shading: darker = more students.
+Beat 2 · THINK: compare the biggest numbers: 1,509 (Northern, primary) &gt; 1,407 (Central, primary) &gt; 1,343 (Bangkok, primary). The biggest single number is 1,509: Northern region, primary school.
+Beat 3 · WATCH OUT / ANOTHER WAY: Q1 can also be read with the totals. Region totals: Bangkok 2,960 &gt; Northern 2,566 &gt; Central 2,544 &gt; Northeastern 1,874 &gt; Southern 1,462, so Bangkok has the most. Level totals: primary 5,760 &gt; junior high 3,872 &gt; senior high 1,774, so primary has the most.
+Beat 4 · ANSWER: book-style answer: the Northern region, primary school level (1,509 students), the biggest single number in the table. Kind note: the question is open to two readings. By totals, the answer is Bangkok (region) and primary school (level). Accept either if the student explains which numbers they compared. Our photo does not show the book’s answer key.</aside>
+</section>

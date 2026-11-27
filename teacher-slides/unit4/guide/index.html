@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<title>How to use the slides · Unit 4 Statistics (1) · Teacher guide</title>
+<style>
+@font-face{font-family:Inter;src:url(../fonts/Inter-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Inter;src:url(../fonts/Inter-Medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:Inter;src:url(../fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:Inter;src:url(../fonts/Inter-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:Inter;src:url(../fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:Display;src:url(../fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:Display;src:url(../fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800;font-display:swap}
+:root{
+ --ink:#0F1B33;--blue:#3B6CFF;--violet:#7C5CFF;--coral:#FF6B5B;--sun:#FFC53D;--mint:#1FBF9F;--mute:#5B6785;--line:#D3DAE8;
+ --bg:#F6F7FB;--lblue:#EEF2FF;--lcoral:#FFF0EE;--lmint:#E3F8F3;--lsun:#FFF4D6;--lviolet:#F1EDFF;--okc:#0E9F84;--noc:#D9442F;
+ --r:22px;--shadow:0 12px 34px rgba(15,27,51,.08);--dot:28px}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;font:500 17px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:-120px;z-index:-1;pointer-events:none;
+ background:radial-gradient(760px 560px at 88% 4%,rgba(124,92,255,.16),transparent 62%),radial-gradient(700px 520px at 0% 40%,rgba(59,108,255,.10),transparent 62%),radial-gradient(640px 520px at 100% 96%,rgba(31,191,159,.10),transparent 62%)}
+img{display:block;max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+ul,ol{margin:0;padding:0}
+.wrap{max-width:940px;margin:0 auto;padding:36px 22px 70px}
+
+/* type */
+.kicker{font:700 13px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin:0 0 8px}
+h1{font:800 50px/1.02 Display,Inter,sans-serif;letter-spacing:-.035em;margin:0 0 16px}
+h2{font:800 34px/1.08 Display,Inter,sans-serif;letter-spacing:-.03em;margin:0 0 10px}
+h3{font:700 21px/1.25 Display,Inter,sans-serif;letter-spacing:-.01em;margin:0 0 8px}
+h1 em,h2 em{font-style:normal;color:var(--blue)}
+.lede{font:500 19px/1.55 Inter,sans-serif;color:var(--mute);margin:0 0 4px;max-width:44em}
+.mute{color:var(--mute)}
+b,strong{font-weight:700}
+
+/* blocks */
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:26px 28px;margin:0 0 18px}
+.sec{padding-top:44px}
+.sec-head{margin:0 0 20px}
+.note{display:flex;gap:14px;align-items:flex-start;background:var(--lsun);border:1.5px solid #F5DE9B;border-radius:16px;padding:14px 18px;margin:0 0 18px}
+.note.blue{background:var(--lblue);border-color:#CBD7FF}
+.note.mint{background:var(--lmint);border-color:#AEE8DA}
+.note .ic{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#fff;color:#B7860B;font:800 17px/1 Inter,sans-serif}
+.note.blue .ic{color:var(--blue)} .note.mint .ic{color:var(--okc)}
+.note p{margin:0}
+
+/* keys and bar chips */
+kbd,.chip{display:inline-flex;align-items:center;justify-content:center;min-width:1.9em;height:1.75em;padding:0 .45em;margin:0 .08em;vertical-align:.05em;border-radius:8px;font:700 .86em/1 Inter,system-ui,sans-serif;white-space:nowrap}
+kbd{background:#fff;color:var(--ink);border:1.5px solid #C4CCDD;border-bottom-width:3.5px}
+.chip{background:#1E2A44;color:#fff;border:1px solid #1E2A44}
+.btn-ui{display:inline-flex;align-items:center;height:1.75em;padding:0 .6em;border-radius:8px;font:700 .86em/1 Inter,sans-serif;border:1.5px solid var(--line);background:#fff;white-space:nowrap;vertical-align:.05em}
+.btn-ui.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-ui.mint{background:var(--mint);border-color:var(--mint);color:#fff}
+
+/* hero */
+.hero{padding-top:6px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px;padding:0;list-style:none}
+.facts li{background:#fff;border-radius:999px;padding:6px 14px;font:600 14px/1.3 Inter,sans-serif;box-shadow:0 4px 14px rgba(15,27,51,.06)}
+.facts li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--blue);margin-right:8px;vertical-align:1px}
+.facts li:nth-child(2)::before{background:var(--violet)} .facts li:nth-child(3)::before{background:var(--coral)} .facts li:nth-child(4)::before{background:var(--mint)}
+.linkcard{display:grid;grid-template-columns:1fr auto;gap:10px 20px;align-items:center}
+.linkcard .lab{font:700 13px/1.3 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 4px}
+.url{font:700 20px/1.35 Inter,sans-serif;color:var(--ink);overflow-wrap:anywhere;margin:0}
+.go{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;text-decoration:none;font:700 17px/1 Inter,sans-serif;padding:15px 22px;border-radius:14px;box-shadow:0 8px 18px rgba(59,108,255,.28);white-space:nowrap}
+.linkcard .small{grid-column:1/-1;font-size:15px;color:var(--mute);margin:0}
+
+/* contents */
+.toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.toc a{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #E1E6F0;border-radius:12px;padding:8px 13px;text-decoration:none;color:var(--ink);font:600 15px/1.2 Inter,sans-serif}
+.toc a span{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--lblue);color:var(--blue);font:800 12px/1 Inter,sans-serif}
+
+/* figures with callouts */
+figure{margin:0}
+.pic{position:relative}
+.pic img{width:100%;border-radius:14px;border:1px solid #E3E8F2;background:#fff}
+.frame img{border:0;box-shadow:0 18px 44px rgba(15,27,51,.16)}
+.n{position:absolute;transform:translate(-50%,-50%);width:var(--dot);height:var(--dot);border-radius:50%;background:var(--coral);color:#fff;font:800 15px/var(--dot) Inter,sans-serif;text-align:center;box-shadow:0 0 0 3px #fff,0 4px 12px rgba(15,27,51,.28)}
+.n.ok{background:var(--mint)} .n.no{background:var(--coral)}
+figcaption{font:500 15px/1.45 Inter,sans-serif;color:var(--mute);margin:10px 2px 0}
+.legend{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:9px}
+.legend li{display:flex;gap:12px;align-items:flex-start}
+.legend .k{flex:none;width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font:800 14px/26px Inter,sans-serif;text-align:center;margin-top:1px}
+.legend .k.ok{background:var(--mint)}
+.legend.two{grid-template-columns:1fr 1fr;gap:9px 22px}
+
+/* quick start */
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.steps li{display:flex;gap:18px;align-items:flex-start;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px 22px}
+.big{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font:800 24px/1 Display,Inter,sans-serif;color:#fff;background:var(--blue)}
+.c2{background:var(--violet)} .c3{background:var(--coral)} .c4{background:var(--okc)} .c5{background:#E0A100}
+.steps h3{margin:2px 0 4px}
+.steps p{margin:0}
+
+/* moving */
+.ways{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:4px 0 16px}
+.way{background:var(--lblue);border-radius:16px;padding:16px 16px 14px}
+.way .keys{font-size:21px;margin:0 0 8px;min-height:38px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.way p{margin:0;font-size:15.5px;line-height:1.45}
+.pair{display:grid;grid-template-columns:1fr;gap:12px;margin:18px 0 4px}
+.nw{white-space:nowrap}
+.arrow{display:flex;align-items:center;justify-content:center;gap:10px;font:700 14px/1.2 Inter,sans-serif;color:var(--mute);text-align:center}
+.arrow .kk{display:flex;gap:3px;font-size:18px}
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:26px;align-items:start}
+.map{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:2px;font-size:15px;line-height:1.4}
+.map li{display:grid;grid-template-columns:58px 1fr;gap:8px;padding:6px 0;border-bottom:1px solid #EEF1F7}
+.map li:last-child{border-bottom:0}
+.map b{font:700 13px/1.9 Inter,sans-serif;color:var(--blue);background:var(--lblue);border-radius:7px;text-align:center;align-self:start}
+.map .ex b{color:var(--violet);background:var(--lviolet)}
+.ticks{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:9px}
+.ticks li{position:relative;padding-left:28px}
+.ticks li::before{content:"";position:absolute;left:2px;top:.42em;width:14px;height:14px;border-radius:50%;background:var(--lblue);box-shadow:inset 0 0 0 4px var(--blue)}
+
+/* pen */
+.penrow{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:26px;align-items:start}
+.strip{display:flex;gap:12px;height:500px}
+.strip img{height:100%;width:auto;border-radius:16px;border:1px solid #E3E8F2;background:#fff}
+.strip .labs{position:relative;flex:1}
+.strip .labs span{position:absolute;left:0;transform:translateY(-50%);font:600 14.5px/1.15 Inter,sans-serif;white-space:nowrap;padding-left:16px}
+.strip .labs span::before{content:"";position:absolute;left:-10px;top:50%;width:20px;height:2px;background:#C4CCDD}
+.strip .labs .grp{color:var(--blue)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 2px}
+.duo figcaption b{color:var(--ink)}
+
+/* answer tools */
+h3.sub{font:800 26px/1.15 Display,Inter,sans-serif;letter-spacing:-.02em;margin:30px 0 6px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+.tile{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:18px 18px 20px;margin:0}
+.tile.wide{grid-column:1/-1}
+.tile h3{margin:16px 2px 6px;display:flex;align-items:center;gap:10px}
+.tile h3 i{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font:800 14px/1 Inter,sans-serif;font-style:normal;color:#fff;background:var(--blue)}
+.tile p{margin:0 2px;font-size:16px;line-height:1.5}
+.how{font-weight:700;color:var(--blue)}
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 0;font-size:16px;line-height:1.45}
+.tbl th,.tbl td{text-align:left;vertical-align:top;padding:11px 10px;border-bottom:1px solid #EEF1F7}
+.tbl th{width:150px;font-weight:700;padding-left:0}
+.tbl tr:last-child th,.tbl tr:last-child td{border-bottom:0}
+
+/* routine */
+.flow{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:f}
+.flow li{position:relative;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px 16px 16px;border-top:5px solid var(--blue)}
+.flow li:nth-child(2){border-top-color:var(--violet)} .flow li:nth-child(3){border-top-color:var(--coral)} .flow li:nth-child(4){border-top-color:var(--mint)} .flow li:nth-child(5){border-top-color:var(--sun)}
+.flow .st{font:800 13px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
+.flow h3{font-size:21px;margin:0 0 6px}
+.flow p{font-size:15px;line-height:1.45;margin:0}
+.flow li:not(:last-child)::after{content:"";position:absolute;right:-11px;top:50%;width:10px;height:10px;border-top:2.5px solid #AAB4CC;border-right:2.5px solid #AAB4CC;transform:translateY(-50%) rotate(45deg);z-index:1}
+
+/* troubleshooting */
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.qa .card{margin:0;padding:20px 22px}
+.qa h3{font:700 17.5px/1.35 Inter,sans-serif;letter-spacing:0;display:flex;gap:10px;align-items:flex-start;margin:0 0 8px}
+.qa h3::before{content:"?";flex:none;width:24px;height:24px;border-radius:8px;background:var(--lcoral);color:var(--noc);font:800 14px/24px Inter,sans-serif;text-align:center;margin-top:0}
+.qa p{font-size:16px;line-height:1.5;margin:0 0 0 34px}
+
+/* answer key */
+.key{display:grid;grid-template-columns:64px 1fr;gap:20px}
+.lock{width:64px;height:64px;border-radius:18px;background:var(--lviolet);display:grid;place-items:center}
+.lock svg{width:34px;height:34px}
+.ph{display:block;border:2.5px dashed #E0A100;background:var(--lsun);border-radius:14px;padding:14px 16px;margin:12px 0 14px;font:700 17px/1.4 Inter,sans-serif;color:#7A5600;overflow-wrap:anywhere}
+.ph small{display:block;font:800 12px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#9A6C00;margin-bottom:4px}
+.fields{display:grid;grid-template-columns:120px 1fr;gap:10px 14px;margin:6px 0 14px;font-size:16px}
+.fields dt{font-weight:700}
+.fields dd{margin:0}
+
+/* cheat sheet */
+.cheat{border:2.5px solid var(--ink);box-shadow:none;padding:30px 32px}
+.cheat-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2px solid #E6EAF2;padding-bottom:16px;margin-bottom:18px;flex-wrap:wrap}
+.cheat h2{margin:0}
+.cheat-top p{margin:0;color:var(--mute);font-size:15px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px}
+.cgrid h3{font:800 13px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin:0 0 10px}
+.krow{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #EEF1F7;font-size:16px;line-height:1.35}
+.krow:last-child{border-bottom:0}
+.krow .kk{font-size:18px;display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.krow .or{font:600 12px Inter,sans-serif;color:var(--mute);margin:0 2px}
+.remember{margin-top:22px;background:var(--lmint);border-radius:16px;padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:15px;line-height:1.45}
+.remember b{display:block;font:800 13px/1.3 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--okc);margin-bottom:4px}
+.cheat-foot{margin-top:16px;font-size:14px;color:var(--mute);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.cheat-foot b{color:var(--ink)}
+
+footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
+
+/* ---------- small screens ---------- */
+@media (max-width:820px){
+ .flow{grid-template-columns:1fr 1fr}
+ .flow li:not(:last-child)::after{display:none}
+ .penrow{grid-template-columns:1fr}
+ .split{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+ :root{--dot:22px;--r:18px}
+ body{font-size:16px}
+ .wrap{padding:22px 14px 50px}
+ h1{font-size:36px}
+ h2{font-size:28px}
+ h3{font-size:19px}
+ .lede{font-size:17px}
+ .card{padding:20px 18px}
+ .n{font-size:12px}
+ .linkcard{grid-template-columns:1fr}
+ .go{justify-content:center}
+ .url{font-size:17px}
+ .steps li{padding:16px;gap:14px}
+ .big{width:40px;height:40px;font-size:21px;border-radius:12px}
+ .ways{grid-template-columns:1fr}
+ .way .keys{min-height:0}
+ .duo{grid-template-columns:1fr 1fr;gap:10px}
+ .tiles{grid-template-columns:1fr}
+ .tile{padding:14px 14px 18px}
+ .flow{grid-template-columns:1fr}
+ .qa{grid-template-columns:1fr}
+ .qa p{margin-left:0}
+ .key{grid-template-columns:1fr}
+ .fields{grid-template-columns:1fr;gap:2px}
+ .fields dd{margin-bottom:10px}
+ .legend.two{grid-template-columns:1fr}
+ .strip{height:440px}
+ .tbl th{width:112px}
+ .cheat{padding:22px 18px}
+ .cgrid{grid-template-columns:1fr}
+ .krow{grid-template-columns:122px 1fr}
+ .remember{grid-template-columns:1fr}
+}
+
+/* ---------- print / PDF (A4) ---------- */
+@page{size:A4;margin:11mm 11mm 12mm}
+@media print{
+ :root{--shadow:none;--dot:22px}
+ html{background:#fff}
+ body{font-size:10.6pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ body::before,.noprint{display:none!important}
+ .wrap{max-width:none;padding:0}
+ a{color:inherit;text-decoration:none}
+ .card,.tile,.steps li,.flow li,.qa .card{border:1px solid #DCE2EE;box-shadow:none}
+ .card,.tile,.steps li,.flow li,.note,figure,.way,.krow,.remember,.map li,.tbl tr,.legend li{break-inside:avoid}
+ h1{font-size:34pt} h2{font-size:22pt} h3{font-size:13.5pt}
+ .lede{font-size:12pt}
+ .sec{padding-top:22px}
+ .sec-head,h2,h3.sub,.kicker{break-after:avoid}
+ #cheat,#board{break-before:page}
+ .card.tall{break-inside:auto}
+ .tbl{font-size:10pt} .tbl th{width:118px}
+ .card{padding:18px 20px;margin-bottom:12px}
+ .n{font-size:11px}
+ .frame img{box-shadow:none;border:1px solid #DCE2EE}
+ .hero-pic{max-width:60%;margin:0 auto}
+ .facts{margin:12px 0 14px}
+ .steps{grid-template-columns:1fr 1fr;gap:10px}
+ .steps li{padding:12px 14px;gap:12px}
+ .big{width:36px;height:36px;font-size:19px;border-radius:11px}
+ .pair{grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+ .arrow{flex-direction:column;gap:4px;font-size:9pt}
+ .tile{padding:12px 12px 14px}
+ .tile h3{margin-top:10px}
+ .penrow{grid-template-columns:minmax(0,1fr) 210px}
+ .strip{height:400px}
+ .strip .labs span{font-size:9.5pt}
+ .split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .tiles{gap:12px}
+ .tile p{font-size:10pt}
+ .flow{grid-template-columns:repeat(5,1fr);gap:8px}
+ .flow p{font-size:9.4pt}
+ .flow h3{font-size:12.5pt}
+ .qa{gap:10px}
+ .qa p{font-size:10pt}
+ .qa h3{font-size:10.8pt}
+ .cheat{border:2px solid var(--ink);padding:22px 24px}
+ .krow{font-size:10.5pt;padding:6px 0}
+ .krow .kk{font-size:12pt}
+ .remember{font-size:9.8pt}
+ footer{display:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+ <p class="kicker">Unit 4 · Statistics (1) · Teacher guide</p>
+ <h1>How to use the <em>slides</em></h1>
+ <p class="lede">Hello! This short guide shows you how to teach with the Unit 4 slides. It takes about five minutes to read. There is nothing to install.</p>
+ <ul class="facts">
+  <li>60 slides, 4 lessons</li>
+  <li>Exercises students do on the board</li>
+  <li>Projector, touch board or iPad</li>
+  <li>Chrome or Safari</li>
+ </ul>
+ <div class="card linkcard">
+  <div>
+   <p class="lab">The slides</p>
+   <p class="url">mmjx2013-png.github.io/aia-slides/m1-statistics</p>
+  </div>
+  <a class="go" href="../">Open the slides →</a>
+  <p class="small">Tip: save the link as a bookmark. <span class="noprint">This guide is also a <a href="guide.pdf">PDF</a>, to print or to share on LINE.</span></p>
+ </div>
+ <figure class="frame hero-pic">
+  <div class="pic"><img src="img/overview.jpg" width="1440" height="810" alt="The first slide of the deck: Unit 4 Statistics (1), with the control bar at the bottom."></div>
+  <figcaption>The first slide. The bar at the bottom shows when you move the mouse.</figcaption>
+ </figure>
+</header>
+
+<nav class="sec" aria-label="Contents">
+ <p class="kicker">In this guide</p>
+ <ul class="toc">
+  <li><a href="#quick"><span>1</span>Quick start</a></li>
+  <li><a href="#move"><span>2</span>Moving through the lesson</a></li>
+  <li><a href="#board"><span>3</span>Students at the board</a></li>
+  <li><a href="#routine"><span>4</span>Teaching routine</a></li>
+  <li><a href="#touch"><span>5</span>Touch board or iPad</a></li>
+  <li><a href="#help"><span>6</span>Troubleshooting</a></li>
+  <li><a href="#keys"><span>7</span>Answer-key site</a></li>
+  <li><a href="#cheat"><span>8</span>Cheat sheet</a></li>
+ </ul>
+</nav>
+
+<!-- ================= 1 QUICK START ================= -->
+<section id="quick" class="sec">
+ <div class="sec-head">
+  <p class="kicker">1 · Quick start</p>
+  <h2>Ready in <em>five steps</em></h2>
+ </div>
+ <ol class="steps">
+  <li><span class="big">1</span><div><h3>Open the link</h3><p>Open the slides in <b>Chrome</b> or <b>Safari</b>. Do it before class, while the Wi-Fi is good.</p></div></li>
+  <li><span class="big c2">2</span><div><h3>Show it on the big screen</h3><p>Connect the projector or the touch board. Choose <b>Duplicate</b> (or <b>Mirror</b>), so the class sees what you see.</p></div></li>
+  <li><span class="big c3">3</span><div><h3>Go full screen</h3><p>Press <kbd>F</kbd>, or tap <span class="chip">⤢</span> on the bar at the bottom.</p></div></li>
+  <li><span class="big c4">4</span><div><h3>Move with the arrows</h3><p>Press <kbd>→</kbd> to go forward. Press <kbd>←</kbd> to go back. A presentation clicker works too.</p></div></li>
+  <li><span class="big c5">5</span><div><h3>Find a lesson</h3><p>Press <kbd>M</kbd>, or tap <span class="chip">☰</span>, and choose the lesson.</p></div></li>
+ </ol>
+ <div class="note" style="margin-top:16px"><span class="ic">!</span><p><b>Clicking or tapping a slide never changes the slide.</b> This is on purpose. A student at the board can't skip ahead by mistake.</p></div>
+</section>
+
+<!-- ================= 2 MOVING ================= -->
+<section id="move" class="sec">
+ <div class="sec-head">
+  <p class="kicker">2 · Moving through the lesson</p>
+  <h2>Keys, clicker and <em>buttons</em></h2>
+ </div>
+
+ <div class="card">
+  <h3>Only these change the slide</h3>
+  <div class="ways">
+   <div class="way"><p class="keys"><kbd>←</kbd><kbd>→</kbd></p><p><b>Arrow keys</b> on the keyboard.</p></div>
+   <div class="way"><p class="keys"><kbd>◀</kbd><kbd>▶</kbd></p><p>A <b>presentation clicker</b>. (It sends Page Up and Page Down.)</p></div>
+   <div class="way"><p class="keys"><span class="chip">‹</span><span class="chip">›</span></p><p>The <b>back and next buttons</b> on the bar at the bottom.</p></div>
+  </div>
+  <p>Space, Enter and Backspace do nothing. Clicks, taps and swipes on the slide do nothing. So nothing moves by accident.</p>
+ </div>
+
+ <div class="card">
+  <h3>The bar at the bottom</h3>
+  <figure>
+   <div class="pic">
+    <img src="img/bar.jpg" width="902" height="240" alt="The control bar: menu, back, slide number 1 of 60, next, Pen, full screen.">
+    <span class="n" style="left:12.75%;top:24%" aria-hidden="true">1</span>
+    <span class="n" style="left:22.95%;top:24%" aria-hidden="true">2</span>
+    <span class="n" style="left:42.01%;top:24%" aria-hidden="true">3</span>
+    <span class="n" style="left:61.08%;top:24%" aria-hidden="true">4</span>
+    <span class="n" style="left:74.28%;top:24%" aria-hidden="true">5</span>
+    <span class="n" style="left:87.48%;top:24%" aria-hidden="true">6</span>
+   </div>
+  </figure>
+  <ol class="legend two">
+   <li><span class="k">1</span><span><span class="chip">☰</span> Lesson menu. Or press <kbd>M</kbd>.</span></li>
+   <li><span class="k">2</span><span><span class="chip">‹</span> Back. Same as <kbd>←</kbd>.</span></li>
+   <li><span class="k">3</span><span>Slide number. “1 / 60” means slide 1 of 60.</span></li>
+   <li><span class="k">4</span><span><span class="chip">›</span> Next. Same as <kbd>→</kbd>.</span></li>
+   <li><span class="k">5</span><span><span class="chip">✎ Pen</span> Pen on and off. Or press <kbd>P</kbd>.</span></li>
+   <li><span class="k">6</span><span><span class="chip">⤢</span> Full screen on and off. Or press <kbd>F</kbd>.</span></li>
+  </ol>
+  <p style="margin-top:16px" class="mute">With a mouse, the bar hides after a few seconds. Move the mouse and it comes back. On a touch screen, it stays.</p>
+ </div>
+
+ <div class="card">
+  <h3>Steps: answers come one at a time</h3>
+  <p>Many slides show things step by step. Each <kbd>→</kbd> shows the next step: an answer, a hint or the working. When all the steps are out, the next <kbd>→</kbd> goes to the next slide. <kbd>←</kbd> takes the last step away again.</p>
+  <div class="pair">
+   <figure><div class="pic"><img src="img/step0.jpg" width="1400" height="520" alt="Slide 10 at the start: two questions with choices, no answers shown."></div><figcaption><b>Start:</b> only the questions.</figcaption></figure>
+   <div class="arrow" aria-hidden="true"><span class="kk"><kbd>→</kbd><kbd>→</kbd></span>press → two times</div>
+   <figure><div class="pic"><img src="img/step2.jpg" width="1400" height="520" alt="Slide 10 after two steps: the right choices are green and a dark bar explains each answer."></div><figcaption><b>After two steps:</b> the answers and why.</figcaption></figure>
+  </div>
+  <div class="note blue" style="margin:16px 0 0"><span class="ic">i</span><p>There is no step counter. If you are not sure, just press <kbd>→</kbd>. Nothing is skipped: when the steps are done, the next slide comes.</p></div>
+ </div>
+
+ <div class="card tall">
+  <div class="split">
+   <div>
+    <h3>Jump to a lesson</h3>
+    <figure>
+     <div class="pic">
+      <img src="img/menu.jpg" width="958" height="1120" alt="The lesson menu is open above the bar. The current lesson, Lesson 3 Part 1, is marked in yellow.">
+      <span class="n" style="left:5.5%;top:93.7%" aria-hidden="true">1</span>
+      <span class="n" style="left:95%;top:60.9%" aria-hidden="true">2</span>
+     </div>
+    </figure>
+    <ol class="legend">
+     <li><span class="k">1</span><span>Tap <span class="chip">☰</span> or press <kbd>M</kbd> to open the menu.</span></li>
+     <li><span class="k">2</span><span>The lesson you are in now has a yellow mark. Tap a lesson to go there.</span></li>
+    </ol>
+   </div>
+   <div>
+    <p class="mute" style="margin-top:2px">What is in the menu:</p>
+    <ul class="map">
+     <li><b>1</b><span>Title: Unit 4 · Statistics (1)</span></li>
+     <li><b>2</b><span>Lesson 1 · Statistical questions</span></li>
+     <li class="ex"><b>7</b><span>Exercise 1</span></li>
+     <li><b>12</b><span>Lesson 2 · Data collection</span></li>
+     <li class="ex"><b>19</b><span>Exercise 2</span></li>
+     <li><b>24</b><span>Lesson 3 · Part 1 · Tables, pictograms and bar charts</span></li>
+     <li class="ex"><b>31</b><span>Exercise 3A</span></li>
+     <li><b>37</b><span>Lesson 3 · Part 2 · Line graphs and pie charts</span></li>
+     <li class="ex"><b>43</b><span>Exercise 3B</span></li>
+     <li><b>48</b><span>Lesson 4 · Statistics in real life</span></li>
+     <li class="ex"><b>52</b><span>Exercise 4</span></li>
+     <li><b>55</b><span>Summary, vocabulary and unit review</span></li>
+    </ul>
+    <ul class="ticks">
+     <li>With a keyboard: <kbd>↑</kbd> <kbd>↓</kbd> move in the menu, <kbd>Enter</kbd> opens a lesson, <kbd>Esc</kbd> closes the menu.</li>
+     <li><kbd>Home</kbd> goes to the first slide. <kbd>End</kbd> goes to the last.</li>
+     <li>Open one slide straight away: add <b>#</b> and the slide number to the end of the link. <b class="nw">…/m1-statistics/#25</b> opens slide 25.</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ================= 3 STUDENTS AT THE BOARD ================= -->
+<section id="board" class="sec brk">
+ <div class="sec-head">
+  <p class="kicker">3 · Students at the board</p>
+  <h2>The pen and the <em>answer tools</em></h2>
+  <p class="lede">Students can write on any slide with the pen. Exercise slides also have answer tools: students tap, type, drag or write right on the slide.</p>
+ </div>
+
+ <div class="card">
+  <h3>The pen</h3>
+  <p><span class="how">How:</span> press <kbd>P</kbd> or tap <span class="chip">✎ Pen</span>. To stop, press <kbd>P</kbd> again, press <kbd>Esc</kbd>, or tap <b>✕</b> on the pen bar.</p>
+  <div class="penrow" style="margin-top:16px">
+   <div>
+    <figure>
+     <div class="pic">
+      <img src="img/pen-slide.jpg" width="1440" height="810" alt="Slide 35 with the pen on. A question is highlighted in yellow, a coral circle marks a bar, a straight line goes to the axis, and 13 is written by hand. The pen bar is on the left.">
+      <span class="n" style="left:6.6%;top:96%" aria-hidden="true">1</span>
+      <span class="n" style="left:41.5%;top:26%" aria-hidden="true">2</span>
+      <span class="n" style="left:62.8%;top:43%" aria-hidden="true">3</span>
+      <span class="n" style="left:77.2%;top:50.5%" aria-hidden="true">4</span>
+     </div>
+    </figure>
+    <ol class="legend">
+     <li><span class="k">1</span><span>The pen bar opens on the left.</span></li>
+     <li><span class="k">2</span><span>The highlighter marks words or numbers.</span></li>
+     <li><span class="k">3</span><span>A hand-drawn loop and line, made neat by <b>Auto shapes</b>.</span></li>
+     <li><span class="k">4</span><span>Writing and numbers stay as they are.</span></li>
+    </ol>
+   </div>
+   <div class="strip" aria-label="The pen bar, from top to bottom">
+    <img src="img/penbar.jpg" width="160" height="1356" alt="The pen bar: five colours, thin and thick, pen, highlighter, eraser, Auto shapes, undo, clear this slide, close.">
+    <div class="labs">
+     <span class="grp" style="top:18.7%">5 colours</span>
+     <span style="top:42.3%">Thin / thick</span>
+     <span style="top:53.2%">Pen</span>
+     <span style="top:59.6%">Highlighter</span>
+     <span style="top:66%">Eraser</span>
+     <span style="top:72.4%">Auto shapes</span>
+     <span style="top:80%">Undo</span>
+     <span style="top:86.4%">Clear this slide</span>
+     <span style="top:94.1%">Close the pen</span>
+    </div>
+   </div>
+  </div>
+  <ul class="ticks" style="margin-top:20px">
+   <li>Drawings stay on their slide. Go back, and they are still there.</li>
+   <li>Reloading the page clears all the drawings.</li>
+   <li>The arrow keys still work while the pen is on.</li>
+   <li><b>While the pen is on, a tap draws.</b> Turn the pen off before students tap the answer tools.</li>
+  </ul>
+ </div>
+
+ <div class="card">
+  <h3>Auto shapes</h3>
+  <p>Auto shapes is on when you start. A wobbly line becomes straight. A loop becomes a neat circle, rectangle or triangle. Small writing stays as it is. Tap the shapes button on the pen bar to turn it off.</p>
+  <div class="duo">
+   <figure><div class="pic"><img src="img/auto-off.jpg" width="688" height="352" alt="Auto shapes off: a wobbly loop and a wobbly line, drawn by hand on a bar chart."></div><figcaption><b>Off:</b> exactly what you draw.</figcaption></figure>
+   <figure><div class="pic"><img src="img/auto-on.jpg" width="688" height="352" alt="Auto shapes on: the same strokes become a neat oval and a straight line."></div><figcaption><b>On:</b> the same strokes, made neat.</figcaption></figure>
+  </div>
+ </div>
+
+ <h3 class="sub">The answer tools</h3>
+ <p class="mute">Each tool has a short hint on it, so students know what to do.</p>
+ <div class="tiles">
+  <figure class="tile">
+   <div class="pic">
+    <img src="img/w-choice.jpg" width="1200" height="827" alt="Two choice questions. In question 1, choice C is green. In question 2, choice B is red.">
+   </div>
+   <h3><i>1</i>Tap a choice</h3>
+   <p><span class="how">How:</span> tap a letter. Right turns green. Wrong flashes red: try again. Press <kbd>→</kbd> to show the answer to everyone.</p>
+  </figure>
+  <figure class="tile">
+   <div class="pic">
+    <img src="img/w-type.jpg" width="936" height="682" alt="Two typed answers. 13 is marked Correct with a green tick. 7 is marked Not yet, try again, with a red cross.">
+    <span class="n" style="left:30.8%;top:18.5%" aria-hidden="true">1</span>
+    <span class="n" style="left:14.5%;top:47.5%" aria-hidden="true">2</span>
+    <span class="n" style="left:66%;top:23.7%" aria-hidden="true">3</span>
+   </div>
+   <h3><i>2</i>Type an answer</h3>
+   <p><span class="how">How:</span> <b>1</b> tap the box and type. <b>2</b> Tap <span class="btn-ui pri">Check</span> or press <kbd>Enter</kbd>. <b>3</b> A green tick, or “Not yet”.</p>
+  </figure>
+  <figure class="tile">
+   <div class="pic">
+    <img src="img/w-write.jpg" width="864" height="536" alt="A lined writing box with handwriting: 8 divided by 40 equals 0.2, and 0.2 times 100% equals 20%.">
+    <span class="n" style="left:61.3%;top:4%" aria-hidden="true">1</span>
+    <span class="n" style="left:70.8%;top:4%" aria-hidden="true">2</span>
+    <span class="n" style="left:84.6%;top:4%" aria-hidden="true">3</span>
+   </div>
+   <h3><i>3</i>Write with a finger</h3>
+   <p><span class="how">How:</span> write in the lined box with a finger, a stylus or the mouse. <b>1</b> Auto shapes, <b>2</b> Undo, <b>3</b> Clear.</p>
+  </figure>
+  <figure class="tile">
+   <div class="pic"><img src="img/w-bars.jpg" width="1100" height="660" alt="A bar chart of plastic bottles. After Check, Week 1 has a green tick and the other bars have red crosses."></div>
+   <h3><i>4</i>Fix a bar chart</h3>
+   <p><span class="how">How:</span> drag the top of each bar up or down to the right number. Then <span class="nw">tap <span class="btn-ui pri">Check</span>.</span></p>
+  </figure>
+  <figure class="tile wide">
+   <div class="pic"><img src="img/w-sort.jpg" width="1500" height="575" alt="Question cards sorted into two boxes, Statistical and Not statistical. After Check, three cards have green ticks and one has a red cross."></div>
+   <h3><i>5</i>Sort the cards</h3>
+   <p><span class="how">How:</span> drag each card into the right box. Or tap a card, then tap a box. Then <span class="nw">tap <span class="btn-ui pri">Check</span>.</span></p>
+  </figure>
+  <figure class="tile">
+   <div class="pic"><img src="img/w-line.jpg" width="1100" height="804" alt="A line graph of a bean plant's height over six days, with points to move."></div>
+   <h3><i>6</i>Fix a line graph</h3>
+   <p><span class="how">How:</span> drag each point up or down, or tap where it should go. The line follows. Then <span class="nw">tap <span class="btn-ui pri">Check</span>.</span></p>
+  </figure>
+  <figure class="tile">
+   <div class="pic"><img src="img/w-pie.jpg" width="1200" height="794" alt="A pie chart table with angles 120, 100 and 50 typed in. The pie draws the three slices; one angle is still empty.">
+    <span class="n" style="left:50.1%;top:64.3%" aria-hidden="true">1</span></div>
+   <h3><i>7</i>Fill in a pie chart</h3>
+   <p><span class="how">How:</span> <b>1</b> type the angle for each slice. The pie draws itself. Then <span class="nw">tap <span class="btn-ui pri">Check</span>.</span></p>
+  </figure>
+  <figure class="tile">
+   <div class="pic"><img src="img/w-picto.jpg" width="1150" height="802" alt="A pictogram of iced cocoa cups, with minus, half and plus buttons on each row, and ticks or crosses after Check.">
+    <span class="n" style="left:71.3%;top:21.7%" aria-hidden="true">1</span></div>
+   <h3><i>8</i>Build a pictogram</h3>
+   <p><span class="how">How:</span> <b>1</b> tap <b>+</b> to add an icon, <b>½</b> for half an icon, <b>−</b> to take one away. Then <span class="nw">tap <span class="btn-ui pri">Check</span>.</span></p>
+  </figure>
+  <figure class="tile">
+   <div class="pic"><img src="img/w-dots.jpg" width="1100" height="766" alt="A dot plot: How our class comes to school, with stacks of dots above Walk, Bike, Bus, Car, BTS/MRT and Motorbike. Total 20."></div>
+   <h3><i>9</i>Make a dot plot</h3>
+   <p><span class="how">How:</span> tap above a label to add a dot. Tap a dot to take it away. The total shows at the bottom.</p>
+  </figure>
+ </div>
+
+ <div class="card tall" style="margin-top:18px">
+  <h3>Check, Show answer and Reset</h3>
+  <div class="split">
+   <figure>
+    <div class="pic">
+     <img src="img/w-answer.jpg" width="1100" height="660" alt="The bar chart tool after Show answer: a green frame, an ANSWER tab, every bar correct, and the button now says Hide answer.">
+     <span class="n" style="left:75.5%;top:7%" aria-hidden="true">1</span>
+     <span class="n" style="left:26%;top:98%" aria-hidden="true">2</span>
+     <span class="n" style="left:86%;top:98%" aria-hidden="true">3</span>
+    </div>
+    <ol class="legend">
+     <li><span class="k">1</span><span>A green frame and an <b>ANSWER</b> tab: this is the key, not the student's work.</span></li>
+     <li><span class="k">2</span><span>The button now says <b>Hide answer</b>.</span></li>
+     <li><span class="k">3</span><span>“Answer shown” tells you the key is on the screen.</span></li>
+    </ol>
+   </figure>
+   <div>
+    <table class="tbl">
+     <tr><th><span class="btn-ui pri">Check</span></th><td>Marks the <b>student's own work</b>. Green tick: right. Red cross: not yet.</td></tr>
+     <tr><th><span class="btn-ui">Show answer</span></th><td>Shows the right answer on the tool. The student's work is kept safe.</td></tr>
+     <tr><th><span class="btn-ui mint">Hide answer</span></th><td>The same button. It brings the student's work back.</td></tr>
+     <tr><th><span class="btn-ui">Reset</span></th><td>Clears the tool for the next student.</td></tr>
+    </table>
+    <ul class="ticks">
+     <li>Tap-a-choice questions have no buttons. Press <kbd>→</kbd> to reveal.</li>
+     <li>Writing boxes have Undo and Clear, but no Check. You check them with the class.</li>
+     <li>The dot plot is for your own class data, so it has only Reset.</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ================= 4 ROUTINE ================= -->
+<section id="routine" class="sec brk">
+ <div class="sec-head">
+  <p class="kicker">4 · Teaching routine</p>
+  <h2>One exercise slide, <em>step by step</em></h2>
+  <p class="lede">Students show their thinking first. You reveal the answer last.</p>
+ </div>
+ <ol class="flow">
+  <li><p class="st">Step 1</p><h3>Show</h3><p>Press <kbd>→</kbd> to open the slide. Read the question together. Only the question and the tool are on screen.</p></li>
+  <li><p class="st">Step 2</p><h3>Work</h3><p>Students work alone or in pairs, in their books or on paper.</p></li>
+  <li><p class="st">Step 3</p><h3>Present</h3><p>A student comes to the board. They use the tool or the pen, and explain how they got it.</p></li>
+  <li><p class="st">Step 4</p><h3>Check</h3><p>Tap <span class="btn-ui pri">Check</span>. Green: well done! Red: ask the class to help, then try again.</p></li>
+  <li><p class="st">Step 5</p><h3>Reveal</h3><p>Press <kbd>→</kbd> to show the answer and the working, one step at a time. Talk through each step.</p></li>
+ </ol>
+ <div class="note mint" style="margin-top:16px"><span class="ic">✓</span><p><b>Another student?</b> Tap <span class="btn-ui">Reset</span>. <b>A student is stuck?</b> Tap <span class="btn-ui">Show answer</span>, then <span class="btn-ui mint">Hide answer</span> to go back to their work. <b>Ready to move on?</b> Press <kbd>→</kbd>.</p></div>
+</section>
+
+<!-- ================= 5 TOUCH ================= -->
+<section id="touch" class="sec">
+ <div class="sec-head">
+  <p class="kicker">5 · Touch board or iPad</p>
+  <h2>Using it <em>by touch</em></h2>
+ </div>
+ <div class="card">
+  <div class="split">
+   <figure>
+    <div class="pic">
+     <img src="img/ipad.jpg" width="1200" height="838" alt="The deck on an iPad held sideways. Dark bands above and below the slide, and the control bar at the bottom.">
+     <span class="n" style="left:29.5%;top:95%" aria-hidden="true">1</span>
+    </div>
+    <figcaption><b>1</b> On an iPad, after your first tap, the bar stays on screen.</figcaption>
+   </figure>
+   <ul class="ticks" style="margin-top:0">
+    <li><b>Tap the screen once.</b> The bar at the bottom appears and stays.</li>
+    <li>Use <span class="chip">‹</span> and <span class="chip">›</span> on the bar to change slides. Swiping does not change slides.</li>
+    <li>Fingers and styluses work for the pen and all the answer tools. With an Apple Pencil, lines get thicker when you press harder.</li>
+    <li>Turn the iPad sideways. Dark bands above and below the slide are normal. The slide keeps its shape.</li>
+    <li>Some iPads don't allow full screen for web pages. That's OK: the slide still fits the screen.</li>
+    <li>If the page zooms in by mistake, pinch with two fingers to zoom back out.</li>
+    <li><b>Turn the pen off</b> before students tap the answer tools.</li>
+    <li>A touch board with a computer? A keyboard or a clicker makes moving easier.</li>
+   </ul>
+  </div>
+ </div>
+</section>
+
+<!-- ================= 6 TROUBLESHOOTING ================= -->
+<section id="help" class="sec brk">
+ <div class="sec-head">
+  <p class="kicker">6 · Troubleshooting</p>
+  <h2>If something <em>goes wrong</em></h2>
+ </div>
+ <div class="qa">
+  <div class="card"><h3>I click the slide and nothing happens.</h3><p>That's on purpose. Use <kbd>→</kbd> on the keyboard, the clicker, or <span class="chip">›</span> on the bar.</p></div>
+  <div class="card"><h3>The arrow keys don't work.</h3><p>A student may still be typing in an answer box. Tap an empty part of the slide, then press <kbd>→</kbd>. Is the lesson menu open? Press <kbd>Esc</kbd>. Still nothing? Click the slide once, so the browser window is active.</p></div>
+  <div class="card"><h3>The slide is small, or I can see the browser bar.</h3><p>Press <kbd>F</kbd> or tap <span class="chip">⤢</span> for full screen. Press <kbd>Esc</kbd> to leave full screen.</p></div>
+  <div class="card"><h3>The projector cuts off the edges.</h3><p>Open the projector's menu. Set the picture size (Aspect) to <b>Auto</b> or <b>16:9</b>, and turn off <b>Overscan</b>. On the computer, choose Duplicate (Windows key + P) or Mirror (Mac).</p></div>
+  <div class="card"><h3>The bar at the bottom has gone.</h3><p>Move the mouse. On a touch screen, tap once.</p></div>
+  <div class="card"><h3>A tap draws a line instead of choosing an answer.</h3><p>The pen is on. Press <kbd>P</kbd>, or tap <b>✕</b> on the pen bar.</p></div>
+  <div class="card"><h3>Last class's answers are still on the slides.</h3><p>Reload the page. All answers and drawings clear, and you stay on the same slide. Or tap <span class="btn-ui">Reset</span> on each tool.</p></div>
+  <div class="card"><h3>The link opened inside LINE.</h3><p>Open it in Chrome or Safari instead. In LINE, use the menu (<b>⋯</b> or the share button) and choose to open it in the browser.</p></div>
+  <div class="card"><h3>Something looks wrong, or a tool doesn't respond.</h3><p>Use <b>Chrome</b> or <b>Safari</b>, and keep it up to date. Old browsers may not work well.</p></div>
+  <div class="card"><h3>The school Wi-Fi is slow.</h3><p>Open the link before class. When the first slide shows, the whole lesson has loaded. It keeps working if the Wi-Fi drops. Don't reload while you are offline.</p></div>
+ </div>
+</section>
+
+<!-- ================= 7 ANSWER KEY ================= -->
+<section id="keys" class="sec">
+ <div class="sec-head">
+  <p class="kicker">7 · The answer-key site</p>
+  <h2>For <em>you</em> only</h2>
+ </div>
+ <div class="card key">
+  <div class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#7C5CFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2.5"/></svg></div>
+  <div>
+   <p>The answer keys for the book are on a <b>separate website</b>. It has a <b>password</b>, and it is only for the teacher.</p>
+   <dl class="fields">
+    <dt>Link</dt>
+    <dd><span class="ph"><small>Placeholder · to be added by the owner</small>[ ANSWER-KEY LINK GOES HERE ]</span></dd>
+    <dt>Password</dt>
+    <dd>The owner will give it to you. It is not written in this guide.</dd>
+   </dl>
+   <ul class="ticks">
+    <li>Keep the link and the password private, so students can't see the answers before class.</li>
+    <li>Open it on your own phone or laptop when you prepare.</li>
+   </ul>
+  </div>
+ </div>
+</section>
+
+<!-- ================= 8 CHEAT SHEET ================= -->
+<section id="cheat" class="sec brk">
+ <div class="card cheat">
+  <div class="cheat-top">
+   <div><p class="kicker">8 · Cheat sheet</p><h2>Keys and <em>buttons</em></h2></div>
+   <p>Unit 4 slides · keep it next to the computer</p>
+  </div>
+  <div class="cgrid">
+   <div>
+    <h3>Move</h3>
+    <div class="krow"><span class="kk"><kbd>→</kbd></span><span><b>Next</b> step or slide <span class="mute">(clicker: ▶)</span></span></div>
+    <div class="krow"><span class="kk"><kbd>←</kbd></span><span><b>Back</b> one step <span class="mute">(clicker: ◀)</span></span></div>
+    <div class="krow"><span class="kk"><kbd>M</kbd></span><span>Lesson <b>menu</b></span></div>
+    <div class="krow"><span class="kk"><kbd>Home</kbd></span><span>First slide</span></div>
+    <div class="krow"><span class="kk"><kbd>End</kbd></span><span>Last slide</span></div>
+   </div>
+   <div>
+    <h3>Show and write</h3>
+    <div class="krow"><span class="kk"><kbd>F</kbd></span><span><b>Full screen</b> on / off</span></div>
+    <div class="krow"><span class="kk"><kbd>P</kbd></span><span><b>Pen</b> on / off</span></div>
+    <div class="krow"><span class="kk"><kbd>Esc</kbd></span><span>Close the pen or the menu</span></div>
+    <div class="krow"><span class="kk"><span class="chip">☰</span><span class="chip">‹</span><span class="chip">›</span></span><span>Menu, back, next</span></div>
+    <div class="krow"><span class="kk"><span class="chip">✎ Pen</span><span class="chip">⤢</span></span><span>Pen, full screen</span></div>
+   </div>
+   <div style="grid-column:1/-1">
+    <h3>Answer tools</h3>
+    <div class="krow"><span class="kk"><span class="btn-ui pri">Check</span></span><span>Marks the student's own work: green tick or red cross.</span></div>
+    <div class="krow"><span class="kk"><span class="btn-ui">Show answer</span></span><span>Shows the key. <span class="btn-ui mint">Hide answer</span> brings the student's work back.</span></div>
+    <div class="krow"><span class="kk"><span class="btn-ui">Reset</span></span><span>Clears the tool for the next student.</span></div>
+   </div>
+  </div>
+  <div class="remember">
+   <div><b>Remember</b>Taps and clicks on a slide never change the slide.</div>
+   <div><b>Routine</b>Students present first. Then press → to reveal.</div>
+   <div><b>One slide</b>Add #25 to the end of the link to open slide 25.</div>
+  </div>
+  <div class="cheat-foot"><span>Slides: <b>mmjx2013-png.github.io/aia-slides/m1-statistics</b></span><span>Use Chrome or Safari</span></div>
+ </div>
+</section>
+
+<footer>Unit 4 · Statistics (1) · Teacher guide</footer>
+</main>
+</body>
+</html>
