@@ -317,7 +317,7 @@
       if (pid !== null) finish();
       endMorph();
       pid = e.pointerId; try { host.setPointerCapture(pid); } catch (er) {}
-      e.preventDefault();
+      if (e.cancelable) e.preventDefault();
       if (self.mode === 'erase') { erasing = true; erase(e); return; }
       cur = { color: self.color, size: self.size, alpha: self.alpha, pr: e.pointerType === 'pen' && e.pressure > 0 && self.alpha === 1, pts: [] };
       add(e); clearLive(); paint(lc, cur);
@@ -494,10 +494,21 @@
       var a = it.getBoundingClientRect();
       it.style.transform = ''; it.classList.remove('drag');
       unmark(it); slotOf(target).appendChild(it);
+      if (pool.children.length < items.length) pool.style.minHeight = '';
+      fitBins();
       if (!quiet) {
         var b = it.getBoundingClientRect(), k = scaleOf(it) || 1;
         anim(it, [{ transform: 'translate(' + (a.left - b.left) / k + 'px,' + (a.top - b.top) / k + 'px)' }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.7,.2,1)' });
       }
+    }
+    /* cards must stay inside their box: first tighten the cards, then let the box scroll */
+    function fitBins() {
+      w.classList.remove('tight');
+      binEls.forEach(function (b) { b._slot.classList.remove('scroll'); });
+      function over() { return binEls.some(function (b) { return b._slot.scrollHeight > b._slot.clientHeight + 2; }); }
+      if (!over()) return;
+      w.classList.add('tight');
+      binEls.forEach(function (b) { if (b._slot.scrollHeight > b._slot.clientHeight + 2) b._slot.classList.add('scroll'); });
     }
     function place(it, target) { ac.off(); move(it, target); if (sel === it) select(it); ft.say(''); }
     items.forEach(function (it, k) {
@@ -514,7 +525,7 @@
         if (!st || e.pointerId !== st.id) return;
         var dx = e.clientX - st.x, dy = e.clientY - st.y;
         if (!st.moved && Math.hypot(dx, dy) < 8) return;
-        if (!st.moved) { st.moved = true; st.k = scaleOf(w) || 1; it.classList.add('drag'); }
+        if (!st.moved) { st.moved = true; st.k = scaleOf(w) || 1; it.classList.add('drag'); w.classList.add('dragging'); }
         it.style.transform = 'translate(' + dx / st.k + 'px,' + dy / st.k + 'px) rotate(2deg)';
         var t = under(e); binEls.concat(pool).forEach(function (b) { b.classList.toggle('over', b === t); });
       });
@@ -523,6 +534,7 @@
         var s = st; st = null;
         try { it.releasePointerCapture(e.pointerId); } catch (er) {}
         binEls.concat(pool).forEach(function (b) { b.classList.remove('over'); });
+        w.classList.remove('dragging');
         if (!s.moved) return;
         dragged = true; setTimeout(function () { dragged = false; }, 60);
         var t = e.type === 'pointerup' ? under(e) : null;
@@ -548,8 +560,10 @@
       var placed = items.filter(function (it) { return where(it) >= 0; }), right = 0;
       if (!placed.length) { ft.say('info', 'Put the cards in the boxes first'); return; }
       placed.forEach(function (it) { var ok = where(it) === +it.dataset.bin; if (ok) right++; mark(it, ok); });
+      var np = placed.length, left = items.length - np;
       if (right === items.length) ft.say('ok', 'All correct!');
-      else ft.say('no', right + ' of ' + items.length + ' correct');
+      else if (!left) ft.say('no', right + ' of ' + items.length + ' correct');
+      else ft.say(right === np ? 'info' : 'no', np + ' placed, ' + (right === np ? (np === 1 ? 'right' : np === 2 ? 'both right' : 'all right') : right + ' right') + ' \u00B7 ' + left + ' to go');
     }
     function reset() { ac.off(); if (sel) select(sel); items.forEach(function (it) { move(it, pool, true); }); ft.say(''); }
     var ac = answerCtl(w, ft, {
@@ -558,7 +572,7 @@
       restore: function (s) { binEls.concat(pool).forEach(function (b, k) { s[k].forEach(function (it) { move(it, b, true); }); }); }
     });
     function lock() { if (pool.children.length === items.length) { pool.style.minHeight = ''; pool.style.minHeight = pool.offsetHeight + 'px'; } }
-    lock(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(lock);
+    lock(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { lock(); fitBins(); });
     return register(w, { type: 'sort', show: ac.show, hide: ac.hide, reset: reset, check: check, items: items, bins: binEls, pool: pool,
       state: function () { return items.map(where); } });
   }
@@ -655,7 +669,7 @@
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         var p = g.pt(e), i = g.ax.col(p.x); if (i < 0) return;
         act = { id: e.pointerId, i: i }; try { g.svg.setPointerCapture(e.pointerId); } catch (er) {}
-        e.preventDefault(); cols[i].focus({ preventScroll: true }); w.classList.add('dragging');
+        if (e.cancelable) e.preventDefault(); w.classList.add('dragging');
         set(i, g.snapV(g.ax.V(p.y)));
       });
       g.svg.addEventListener('pointermove', function (e) { if (act && e.pointerId === act.id) set(act.i, g.snapV(g.ax.V(g.pt(e).y))); });
@@ -668,12 +682,6 @@
         var v = get(i);
         if (key(e, ['ArrowUp'])) set(i, g.snapV(v + snap));
         else if (key(e, ['ArrowDown'])) set(i, g.snapV(v - snap));
-        else if (key(e, ['PageUp'])) set(i, g.snapV(v + step));
-        else if (key(e, ['PageDown'])) set(i, g.snapV(v - step));
-        else if (key(e, ['Home'])) set(i, min);
-        else if (key(e, ['End'])) set(i, max);
-        else if (key(e, ['ArrowLeft'])) cols[(i + n - 1) % n].focus();
-        else if (key(e, ['ArrowRight'])) cols[(i + 1) % n].focus();
       });
     };
     return g;
@@ -1002,9 +1010,7 @@
       layers.push(sv('g', {}, c)); cols.push(c);
       c.addEventListener('keydown', function (e) {
         if (key(e, ['ArrowUp', '+', '=', 'Enter', ' '])) set(i, vals[i] + 1);
-        else if (key(e, ['ArrowDown', '-', 'Backspace', 'Delete'])) set(i, vals[i] - 1);
-        else if (key(e, ['ArrowLeft'])) cols[(i + n - 1) % n].focus();
-        else if (key(e, ['ArrowRight'])) cols[(i + 1) % n].focus();
+        else if (key(e, ['ArrowDown', '-', 'Delete'])) set(i, vals[i] - 1);
       });
     })(i);
     sv('line', { x1: x0 - 6, y1: y0, x2: x1 + 6, y2: y0, 'class': 'axis' }, svg);
@@ -1037,7 +1043,7 @@
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       var p = local(box, e, W, H); if (p.x < x0 || p.x > x1) return;
       var k = clamp(Math.floor((p.x - x0) / cw), 0, n - 1);
-      e.preventDefault(); cols[k].focus({ preventScroll: true });
+      if (e.cancelable) e.preventDefault();
       if (vals[k] > 0 && p.y >= y0 - vals[k] * dia && p.y <= y0) set(k, vals[k] - 1); else set(k, vals[k] + 1);
     });
     function check() {
@@ -1075,10 +1081,11 @@
       bar.appendChild(b); return b;
     }
     function sep() { bar.appendChild(el('i', 'ps')); }
-    var colors = [['Ink', INK], ['Blue', BLUE], ['Coral', CORAL], ['Mint', MINT]];
+    var colors = [['Ink', INK], ['Blue', BLUE], ['Coral', CORAL], ['Mint', MINT], ['Yellow', SUN]];
+    var penColor = INK, hiColor = SUN;   /* the highlighter has its own colour: sun yellow by default */
     colors.forEach(function (c) {
       var sw = el('i', 'pc'); sw.style.background = c[1];
-      tb(c[0], sw, 'color', c[1], function () { ink.color = c[1]; if (tool === 'erase') tool = 'pen'; });
+      tb(c[0], sw, 'color', c[1], function () { if (tool === 'erase') tool = 'pen'; if (tool === 'hi') hiColor = c[1]; else penColor = c[1]; });
     });
     sep();
     tb('Thin', '<path d="M4 16 Q9 6 13 12 T20 9" stroke-width="2"/>', 'size', 'thin', function () { size = 'thin'; });
@@ -1097,7 +1104,8 @@
     tb('Close pen', x, null, 'close', function () { set(false); });
     function sync() {
       ink.mode = tool === 'erase' ? 'erase' : 'draw';
-      ink.alpha = tool === 'hi' ? 0.32 : 1;
+      ink.color = tool === 'hi' ? hiColor : penColor;
+      ink.alpha = tool === 'hi' ? (hiColor === SUN ? 0.5 : 0.32) : 1;
       ink.size = tool === 'hi' ? (size === 'thin' ? 22 : 36) : (size === 'thin' ? 5 : 11);
       groups.color.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === ink.color && tool !== 'erase' ? 'true' : 'false'); });
       groups.size.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === size ? 'true' : 'false'); });
@@ -1137,6 +1145,14 @@
       if (e.target === synthT && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
       lastClick = performance.now();
     }, true);
+    /* A tap must never leave keyboard focus on a tool: the next Space / Enter / arrow from the clicker belongs to the deck.
+       Text inputs keep their focus. Elements reached with Tab keep working with the keyboard. */
+    function unfocus() {
+      var a = document.activeElement;
+      if (a && a !== document.body && a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA' && !a.isContentEditable && a.blur) a.blur();
+    }
+    ['pointerup', 'pointercancel'].forEach(function (t) { addEventListener(t, function () { setTimeout(unfocus, 0); }, true); });
+    addEventListener('click', function (e) { if (e.detail > 0) setTimeout(unfocus, 0); }, true);   /* detail 0 = pressed with the keyboard: keep focus */
     addEventListener('pointerup', function (e) {
       var d = down; down = null;
       if (!d || d.id !== e.pointerId || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12) return;
@@ -1146,7 +1162,7 @@
       setTimeout(function () {
         if (lastClick >= at || !t.isConnected || t.disabled) return;
         synthAt = performance.now(); synthT = t;
-        if (t.tagName === 'INPUT') t.focus(); else t.click();
+        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
       }, 90);
     }, true);
   })();

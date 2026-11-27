@@ -46,10 +46,10 @@
 #l4-case.b3 .trk .t4{background:var(--violet);color:#fff}
 #l4-case .trk .t1 i,#l4-case.b1 .trk .t2 i,#l4-case.b2 .trk .t3 i,#l4-case.b3 .trk .t4 i{background:#fff;color:var(--ink)}
 #l4-case .dk{display:flex;align-items:center;gap:16px}
-#l4-case .dk svg{width:34px;height:51px;flex:none}
-#l4-case .tbl td{padding:9px 26px}
-#l4-case .tbl th{padding:14px 26px}
-#l4-case .tbl tfoot td{padding:14px 26px}
+#l4-case .dk svg{width:28px;height:42px;flex:none}
+#l4-case .tbl td{padding:6px 26px}
+#l4-case .tbl th{padding:12px 26px}
+#l4-case .tbl tfoot td{padding:12px 26px}
 #l4-case .stall{position:absolute;inset:0}
 #l4-case .q2{font:700 40px/1.22 Display;letter-spacing:-.02em;margin-top:16px}
 
@@ -69,7 +69,7 @@
 #l4-cycle .ctr .nq{font:700 28px/1.3 Inter;color:var(--violet)}
 
 /* ---------- l4-ex : exercise divider ---------- */
-#l4-ex .big{font:800 150px/1 Display;letter-spacing:-.045em}
+#l4-ex h2.big{font:800 150px/1 Display;letter-spacing:-.045em}
 #l4-ex .task{display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:center;padding:30px 36px}
 #l4-ex .task .pic{height:200px;border-radius:24px;display:grid;place-items:center}
 #l4-ex .task h3{margin:12px 0 8px}
@@ -140,14 +140,24 @@
 #l4-rev1 .ans svg{width:36px;height:36px}
 
 /* ---------- l4-rev2 : calculations ---------- */
-#l4-rev2 .sw{display:inline-block;width:22px;height:22px;border-radius:6px;margin-right:14px;vertical-align:-2px}
-#l4-rev2 .tbl td{padding:11px 26px}
-#l4-rev2 .vis{position:relative;height:262px}
-#l4-rev2 .vis>*{position:absolute;left:0;top:0}
-#l4-rev2 .qk{display:grid;grid-template-columns:540px 1fr;gap:12px 30px;align-items:center;padding:24px 34px 28px}
-#l4-rev2 .qk .hd{grid-column:1/-1}
-#l4-rev2 .qk .q{font:600 34px/1.3 Inter;margin-top:12px}
-#l4-rev2 .ans{font:600 32px/1.35 Inter;align-self:end;margin-bottom:6px}
+#l4-rev2 .cols{display:grid;grid-template-columns:930px 1fr;gap:34px;height:690px;margin-top:-6px}
+#l4-rev2 .lc{display:flex;flex-direction:column;justify-content:space-between}
+#l4-rev2 .top{display:grid;grid-template-columns:480px 420px;gap:30px;align-items:end}
+#l4-rev2 .sw{display:inline-block;width:24px;height:24px;border-radius:7px;margin-right:14px;vertical-align:-3px}
+#l4-rev2 .tbl td{padding:11px 24px}
+#l4-rev2 .tbl th{padding:14px 24px}
+#l4-rev2 .anss{display:flex;flex-direction:column;gap:20px}
+#l4-rev2 .aw{position:relative;height:92px}
+#l4-rev2 .aw>.ans{height:92px}
+#l4-rev2 .pw{position:absolute;inset:0;display:flex;align-items:center;gap:16px;padding:0 26px;border-radius:24px;border:3px dashed #C5CEE0;font:600 28px Inter;color:var(--mute)}
+#l4-rev2 .pw svg{width:34px;height:34px;flex:none}
+#l4-rev2 .ans{font:600 32px/1.3 Inter;padding:20px 28px}
+#l4-rev2 .ans i{font-style:normal;flex:none;padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.14);font:800 24px Inter;color:#fff}
+#l4-rev2 .rc{display:flex;flex-direction:column;justify-content:space-between}
+#l4-rev2 .qk{height:333px;display:flex;flex-direction:column;gap:14px;padding:24px 34px 26px}
+#l4-rev2 .qk .hd{display:flex;gap:16px;align-items:flex-start}
+#l4-rev2 .qk .hd .chip{flex:none;margin-top:4px}
+#l4-rev2 .qk .q{font:600 32px/1.3 Inter}
 
 /* ---------- l4-end : closing ---------- */
 #l4-end .lessons li{font-size:27px}
@@ -310,7 +320,7 @@
     <div class="q2">Which new drink would students buy most?</div>
    </div>
    <table class="tbl g1" style="width:600px">
-    <caption>2 · Survey of 120 students (20 from each grade, M1 to M6)</caption>
+    <caption>2 · Survey of 120 students, M1 to M6</caption>
     <thead><tr><th>Drink</th><th class="n">Votes</th></tr></thead>
     <tbody>
      <tr><td><span class="dk"><svg viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>Thai tea</span></td><td class="n" data-count="42" data-at="1"></td></tr>
@@ -416,7 +426,7 @@
  <div style="display:grid;grid-template-columns:1fr 860px;gap:70px;align-items:center;height:100%">
   <div>
    <div class="kicker in" style="--d:100">Exercise 4</div>
-   <div class="big in" style="--d:200;margin-top:22px">Your <em class="grad">turn</em></div>
+   <h2 class="big in" style="--d:200;margin:22px 0 0">Your <em>turn</em></h2>
    <p class="lede in" style="--d:350;margin-top:30px;max-width:620px">Work with a partner. Then come to the board and show the class.</p>
    <div class="kids in" style="--d:500;justify-content:flex-start;margin-top:50px;gap:26px">
     <div class="k pop" style="--n:0;--d:700"><svg class="kid" viewBox="0 0 80 100" style="width:112px;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"><use href="#kid"/></svg></div>
@@ -468,7 +478,7 @@
 <!-- ======================= 6 · Exercise: misleading chart ======================= -->
 <section class="slide" id="l4-trick" data-steps="3">
  <i class="mesh m3"></i>
- <div class="kicker in">Exercise 4 · Task 1</div>
+ <div class="kicker in">Exercise 4 · Task 1 · Misleading charts</div>
  <h2 class="in" style="--d:120">Be careful with <em>charts</em></h2>
  <div style="display:grid;grid-template-columns:520px 520px 1fr;gap:30px;margin-top:-6px">
   <div class="card cc in" style="--d:200">
@@ -482,7 +492,7 @@
     <rect x="300" y="114" width="110" height="256" rx="8" class="grow f-coral" style="--n:1"/>
     <line x1="70" y1="370" x2="450" y2="370" class="axis"/><line x1="70" y1="40" x2="70" y2="370" class="axis"/>
     <g text-anchor="middle"><text x="165" y="230" class="val">94</text><text x="355" y="102" class="val">98</text><text x="165" y="408" class="lab">Shop A</text><text x="355" y="408" class="lab">Shop B</text></g>
-    <g class="g1"><circle cx="38" cy="371" r="28" pathLength="1" class="draw" style="fill:none;stroke:var(--coral);stroke-width:5"/></g>
+    <g class="g1"><rect x="2" y="34" width="78" height="352" rx="14" style="fill:rgba(255,107,91,.16);stroke:var(--coral);stroke-width:4"/><rect x="92" y="122" width="196" height="48" rx="24" class="f-coral"/><path d="M92 146 L80 146" style="stroke:var(--coral);stroke-width:4"/><text x="190" y="154" text-anchor="middle" style="font:800 25px Inter;fill:#fff">Only 90–100!</text></g>
    </svg>
    <div class="badge no g1" style="align-self:flex-start;margin-top:12px"><svg><use href="#cross"/></svg>The axis starts at 90, not 0</div>
   </div>
@@ -515,13 +525,13 @@
    <div class="ans g3"><svg><use href="#check"/></svg><div>98 − 94 = <b>4 boxes</b>. That is only about 4% more, not twice!</div></div>
   </div>
  </div>
- <aside class="notes">Task 1. Shop B's poster says "We sell twice as much as Shop A!" and its bar for Shop B looks twice as tall. Let pairs answer the question (tap a choice) and come to the board before you reveal anything. Beat 1 (hint): look at the y axis. It starts at 90, not 0, so the bars only show the part above 90: Shop A 94 − 90 = 4, Shop B 98 − 90 = 8. That is why B looks twice as tall. Beat 2: the honest chart starts at 0. The bars are 94 and 98, almost the same height. Students can first sketch it with the pen on the dashed card. Beat 3, answer B: 98 − 94 = 4 more boxes. 4 ÷ 94 ≈ 0.043, about 4% more, not 100% more (twice as many would be 2 × 94 = 188 boxes). Choice C (8) comes from reading the bar heights above 90. Rule: always read the axis before you believe a chart.</aside>
+ <aside class="notes">Task 1. Shop B's poster says "We sell twice as much as Shop A!" and its bar for Shop B looks twice as tall. Let pairs answer the question (tap a choice) and come to the board before you reveal anything. Beat 1 (hint): the coral band shows the y axis only goes from 90 to 100. It starts at 90, not 0, so the bars only show the part above 90: Shop A 94 − 90 = 4, Shop B 98 − 90 = 8. That is why B looks twice as tall. Beat 2: the honest chart starts at 0. The bars are 94 and 98, almost the same height. Students can first sketch it with the pen on the dashed card. Beat 3, answer B: 98 − 94 = 4 more boxes. 4 ÷ 94 ≈ 0.043, about 4% more, not 100% more (twice as many would be 2 × 94 = 188 boxes). Choice C (8) comes from reading the bar heights above 90. Rule: always read the axis before you believe a chart.</aside>
 </section>
 
 <!-- ======================= 7 · Exercise: mini project planner ======================= -->
 <section class="slide" id="l4-plan" data-steps="1">
  <i class="mesh m2"></i>
- <div class="kicker in">Exercise 4 · Task 2</div>
+ <div class="kicker in">Exercise 4 · Task 2 · Mini project</div>
  <h2 class="in" style="--d:120">Plan your own <em>mini project</em></h2>
  <div style="display:grid;grid-template-columns:430px 1fr;gap:34px;margin-top:-6px">
   <div class="side">
@@ -663,7 +673,7 @@
 <!-- ======================= 11 · Unit review: quiz ======================= -->
 <section class="slide" id="l4-rev1" data-steps="3">
  <i class="mesh m4"></i>
- <div class="kicker in">Unit review</div>
+ <div class="kicker in">Unit review · Part 1</div>
  <h2 class="in" style="--d:120">Quick quiz: <em>tap your answer</em></h2>
  <div class="grid3" style="margin-top:-6px">
   <div class="card qc in" style="--d:200">
@@ -718,67 +728,59 @@
    <div class="ans g3"><svg><use href="#check"/></svg><div>A line graph shows <b>change over time</b>.</div></div>
   </div>
  </div>
- <aside class="notes">Unit review, three questions. Students tap or show their answer (A, B or C with fingers). Invite students to the board to explain, then click once per question. Q1 answer C: the teachers have different ages, so the answers vary and we need data. A has one answer (my age) and B has one answer (the school's age). Q2 answer A: asking every member of the population (all 2,400 students) is a census. A sample would be only some students. A pictogram is a chart, not a way to collect data. Q3 answer B: rainfall month by month is change over time, so a line graph fits best. A pie chart shows parts of a whole, and a pictogram is for counts of categories.</aside>
+ <aside class="notes">Unit review, three questions. Students tap or show their answer (A, B or C with fingers). Invite students to the board to explain, then click once per question. Q1 answer C: the teachers have different ages, so the answers vary and we need data. A has one answer (my age) and B has one answer (the school's age). Q2 answer A: asking every member of the population (all 2,400 students) is a census. A survey collects data from only a sample (some of the students). A pictogram is a chart, not a way to collect data. Q3 answer B: rainfall month by month is change over time, so a line graph fits best. A pie chart shows parts of a whole, and a pictogram is for counts of categories.</aside>
 </section>
 
 <!-- ======================= 12 · Unit review: calculate ======================= -->
 <section class="slide" id="l4-rev2" data-steps="2">
  <i class="mesh m2"></i>
- <div class="kicker in">Unit review</div>
+ <div class="kicker in">Unit review · Part 2</div>
  <h2 class="in" style="--d:120">Work it <em>out</em></h2>
- <div style="display:grid;grid-template-columns:520px 1fr;gap:34px;margin-top:-6px">
-  <div class="stack" style="gap:24px">
-   <table class="tbl in" style="--d:200;width:520px">
-    <caption>How students in 1/2 get to school</caption>
-    <thead><tr><th>Way</th><th class="n">Students</th></tr></thead>
-    <tbody>
-     <tr><td><span class="sw" style="background:var(--coral)"></span>School bus</td><td class="n">14</td></tr>
-     <tr><td><span class="sw" style="background:#BFD0FF"></span>Car</td><td class="n">10</td></tr>
-     <tr><td><span class="sw" style="background:#BDEFE3"></span>Walk</td><td class="n">8</td></tr>
-     <tr><td><span class="sw" style="background:#D8CEFF"></span>BTS</td><td class="n">6</td></tr>
-     <tr><td><span class="sw" style="background:#FFE6A6"></span>Bicycle</td><td class="n">2</td></tr>
-    </tbody>
-    <tfoot><tr><td>Total</td><td class="n">40</td></tr></tfoot>
-   </table>
-   <div class="vis">
-    <svg class="h2" viewBox="0 0 520 190" style="--d:400;width:520px;height:190px;top:36px" aria-hidden="true">
-     <rect x="40" y="20" width="420" height="110" rx="26" class="f-sun"/>
-     <rect x="40" y="96" width="420" height="10" style="fill:#F2A900"/>
-     <g style="fill:#fff"><rect x="66" y="38" width="62" height="44" rx="8"/><rect x="144" y="38" width="62" height="44" rx="8"/><rect x="222" y="38" width="62" height="44" rx="8"/><rect x="300" y="38" width="62" height="44" rx="8"/></g>
-     <rect x="380" y="38" width="58" height="78" rx="8" style="fill:#fff"/><rect x="398" y="50" width="22" height="54" rx="4" style="fill:#FFF4D6"/>
-     <rect x="454" y="96" width="14" height="22" rx="4" class="f-coral"/>
-     <circle cx="120" cy="134" r="24" class="f-ink"/><circle cx="120" cy="134" r="9" style="fill:#AAB4CC"/>
-     <circle cx="370" cy="134" r="24" class="f-ink"/><circle cx="370" cy="134" r="9" style="fill:#AAB4CC"/>
-     <path d="M20 168 H500" style="stroke:#D3DAE8;stroke-width:4;stroke-linecap:round"/>
-    </svg>
-    <svg class="chart g2" viewBox="0 0 300 300" style="width:262px;height:262px;left:129px" aria-label="Pie chart: school bus 126 degrees, car 90, walk 72, BTS 54, bicycle 18">
+ <div class="cols">
+  <div class="lc">
+   <div class="top">
+    <table class="tbl in" style="--d:200;width:480px">
+     <caption>How students in 1/2 get to school</caption>
+     <thead><tr><th>Way</th><th class="n">Students</th></tr></thead>
+     <tbody>
+      <tr><td><span class="sw" style="background:var(--coral)"></span>School bus</td><td class="n">14</td></tr>
+      <tr><td><span class="sw" style="background:var(--blue)"></span>Car</td><td class="n">10</td></tr>
+      <tr><td><span class="sw" style="background:var(--mint)"></span>Walk</td><td class="n">8</td></tr>
+      <tr><td><span class="sw" style="background:var(--violet)"></span>BTS</td><td class="n">6</td></tr>
+      <tr><td><span class="sw" style="background:var(--sun)"></span>Bicycle</td><td class="n">2</td></tr>
+     </tbody>
+     <tfoot><tr><td>Total</td><td class="n">40</td></tr></tfoot>
+    </table>
+    <svg class="chart in" viewBox="0 0 300 300" style="--d:300;width:420px;height:420px" aria-label="Pie chart of how 40 students get to school: bus, car, walk, BTS, bicycle. The bus angle is the question.">
      <g transform="rotate(-90 150 150)">
-      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--coral);--len:131.95;--C:376.99;stroke-dashoffset:0;--n:0"/>
-      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#BFD0FF;--len:94.25;--C:376.99;stroke-dashoffset:-131.95;--n:1"/>
-      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#BDEFE3;--len:75.40;--C:376.99;stroke-dashoffset:-226.19;--n:2"/>
-      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#D8CEFF;--len:56.55;--C:376.99;stroke-dashoffset:-301.59;--n:3"/>
-      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#FFE6A6;--len:18.85;--C:376.99;stroke-dashoffset:-358.14;--n:4"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--coral);--len:131.95;--C:376.99;stroke-dashoffset:0;--n:0;--d:500"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--blue);--len:94.25;--C:376.99;stroke-dashoffset:-131.95;--n:1;--d:500"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--mint);--len:75.40;--C:376.99;stroke-dashoffset:-226.19;--n:2;--d:500"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--violet);--len:56.55;--C:376.99;stroke-dashoffset:-301.59;--n:3;--d:500"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--sun);--len:18.85;--C:376.99;stroke-dashoffset:-358.14;--n:4;--d:500"/>
      </g>
-     <path d="M150 150 V30 M150 150 L247.1 220.5" class="pop" style="--d:1300;stroke:#fff;stroke-width:4;stroke-linecap:round"/>
-     <path d="M150 104 A46 46 0 0 1 187.2 177.0" pathLength="1" class="draw" style="--d:1400;fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round"/>
-     <text x="214" y="122" text-anchor="middle" class="pop" style="--d:1600;font:800 32px Display;fill:#fff">126°</text>
+     <path d="M150 150 V30 M150 150 L247.1 220.5" class="pop" style="--d:1500;stroke:#fff;stroke-width:3;stroke-linecap:round"/>
+     <text x="226" y="122" text-anchor="middle" class="h2" style="--d:1600;font:800 30px Display;fill:#fff">?°</text>
+     <g class="g2"><path d="M150 112 A38 38 0 0 1 180.7 172.3" pathLength="1" class="draw" style="fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round"/><text x="226" y="122" text-anchor="middle" style="font:800 30px Display;fill:#fff">126°</text></g>
     </svg>
+   </div>
+   <div class="anss">
+    <div class="aw"><div class="pw h1" style="--d:500"><svg viewBox="0 0 24 24"><use href="#pencil"/></svg>Q1 · Show your working on the board</div><div class="ans g1"><svg><use href="#check"/></svg><i>Q1</i><div>14 ÷ 40 × 100 = <b>35%</b></div></div></div>
+    <div class="aw"><div class="pw h2" style="--d:600"><svg viewBox="0 0 24 24"><use href="#pencil"/></svg>Q2 · Show your working on the board</div><div class="ans g2"><svg><use href="#check"/></svg><i>Q2</i><div>14 ÷ 40 × 360° = <b>126°</b></div></div></div>
    </div>
   </div>
-  <div class="stack" style="gap:24px">
-   <div class="card qk in" style="--d:300">
-    <div class="hd"><span class="chip">Q1 · Percent</span><div class="q">What percent of the class comes by school bus?</div></div>
-    <div class="w-input ia" data-label="Your answer" data-answer="35" data-accept="35;35%;35 %" data-unit="%" data-tol="0" style="width:540px;height:180px"></div>
-    <div class="ans g1"><svg><use href="#check"/></svg><div>14 ÷ 40 × 100<br>= <b>35%</b></div></div>
+  <div class="rc">
+   <div class="card qk in" style="--d:350">
+    <div class="hd"><span class="chip">Q1</span><div class="q">What percent of the class comes by school bus?</div></div>
+    <div class="w-input ia" data-label="Percent" data-answer="35" data-accept="35;35%;35 %" data-unit="%" data-tol="0" style="width:560px;height:180px"></div>
    </div>
-   <div class="card qk in" style="--d:400">
-    <div class="hd"><span class="chip coral">Q2 · Pie chart</span><div class="q">In a pie chart of this data, what is the angle for the school bus?</div></div>
-    <div class="w-input ia" data-label="Your answer" data-answer="126" data-accept="126;126°;126 °;126 degrees" data-unit="°" data-tol="0" style="width:540px;height:180px"></div>
-    <div class="ans g2"><svg><use href="#check"/></svg><div>14 ÷ 40 × 360°<br>= <b>126°</b></div></div>
+   <div class="card qk in" style="--d:450">
+    <div class="hd"><span class="chip coral">Q2</span><div class="q">In the pie chart, what is the angle of the bus slice?</div></div>
+    <div class="w-input ia" data-label="Angle" data-answer="126" data-accept="126;126°;126 °;126 degrees" data-unit="°" data-tol="0" style="width:560px;height:180px"></div>
    </div>
   </div>
  </div>
- <aside class="notes">Unit review, calculations. Data: how the 40 students of 1/2 get to school. Check the total: 14 + 10 + 8 + 6 + 2 = 40. Give time to work, then invite two students to the board before you click. Q1 (beat 1): percent = part ÷ total × 100 = 14 ÷ 40 × 100 = 0.35 × 100 = 35%. Check: 35% of 40 = 0.35 × 40 = 14. Q2 (beat 2): angle = part ÷ total × 360° = 14 ÷ 40 × 360° = 0.35 × 360° = 126°. Check: 126 ÷ 360 = 0.35. The other angles: car 10 ÷ 40 × 360 = 90°, walk 8 ÷ 40 × 360 = 72°, BTS 6 ÷ 40 × 360 = 54°, bicycle 2 ÷ 40 × 360 = 18°. Sum: 126 + 90 + 72 + 54 + 18 = 360°.</aside>
+ <aside class="notes">Unit review, calculations. Data: how the 40 students of 1/2 get to school. Check the total: 14 + 10 + 8 + 6 + 2 = 40. The pie shows the same data; the bus slice is marked "?°". Give time to work, then invite two students to the board before you click. Q1 (beat 1): percent = part ÷ total × 100 = 14 ÷ 40 × 100 = 0.35 × 100 = 35%. Check: 35% of 40 = 0.35 × 40 = 14. Q2 (beat 2): angle = part ÷ total × 360° = 14 ÷ 40 × 360° = 0.35 × 360° = 126°, and the pie label changes from ?° to 126°. Check: 126 ÷ 360 = 0.35. The other angles: car 10 ÷ 40 × 360 = 90°, walk 8 ÷ 40 × 360 = 72°, BTS 6 ÷ 40 × 360 = 54°, bicycle 2 ÷ 40 × 360 = 18°. Sum: 126 + 90 + 72 + 54 + 18 = 360°.</aside>
 </section>
 
 <!-- ======================= 13 · Closing ======================= -->

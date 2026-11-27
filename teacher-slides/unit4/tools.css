@@ -5,7 +5,11 @@
 /* answer shown: a clear, deliberate state */
 .w-shown{box-shadow:0 0 0 4px var(--mint),0 14px 40px rgba(15,27,51,.09)}
 .card>.w-shown{box-shadow:none;outline:4px solid var(--mint);outline-offset:12px;border-radius:14px}
-.w-shown::after{content:"Answer";position:absolute;top:-20px;right:26px;z-index:3;padding:7px 18px;border-radius:999px;background:var(--mint);color:#fff;font:800 24px/1.2 Inter,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 18px rgba(31,191,159,.35);pointer-events:none}
+.w-shown::after{content:"Answer";position:absolute;top:-25px;right:26px;z-index:3;padding:7px 18px;border-radius:999px;background:var(--mint);color:#fff;font:800 24px/1.2 Inter,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 18px rgba(31,191,159,.35);pointer-events:none}
+/* no tab where it could cover content: inside a .card, and on the small typed-answer box (its mint input, "Answer shown" and Hide answer are enough) */
+.card>.w-shown::after,.w-input.w-shown::after{display:none}
+.w-input.w-shown{box-shadow:0 14px 40px rgba(15,27,51,.09)}
+.card>.w-input.w-shown{box-shadow:none;outline:none}
 
 /* shared parts */
 .tw-ttl{flex:none;font:700 28px/36px Inter,system-ui,sans-serif;height:36px;white-space:nowrap}
@@ -68,11 +72,19 @@
 /* sorting */
 .tw-pool{flex:none;display:flex;flex-wrap:wrap;gap:12px;align-content:flex-start;min-height:70px;padding:12px;border-radius:18px;background:#F4F6FB;border:2px dashed transparent}
 .tw-binrow{flex:1;min-height:0;display:flex;gap:16px}
-.tw-bin{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;background:var(--lblue);border:2.5px dashed #A9BCFF;cursor:default;transition:background .15s,border-color .15s}
+.w-sort .tw-pool:empty{display:none}
+.w-sort .tw-foot{position:relative;z-index:6}
+.tw-bin{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;background:var(--lblue);border:2.5px dashed #A9BCFF;cursor:default;transition:background .15s,border-color .15s}
 .tw-bin.b1{background:var(--lviolet);border-color:#C3B4FF}.tw-bin.b2{background:var(--lsun);border-color:#F4D27A}.tw-bin.b3{background:var(--lmint);border-color:#8EDCCB}
 .tw-bint{font:700 26px/1.2 Inter,system-ui,sans-serif;color:var(--blue);text-align:center}
 .tw-bin.b1 .tw-bint{color:var(--violet)}.tw-bin.b2 .tw-bint{color:#A86F00}.tw-bin.b3 .tw-bint{color:var(--okc)}
-.tw-slot{flex:1;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
+.tw-slot{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
+.tw-slot.scroll{overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
+.w-sort.dragging .tw-slot.scroll{overflow:visible}
+.w-sort.tight .tw-slot,.w-sort.tight .tw-pool{gap:7px}
+.w-sort.tight .item{font-size:24px;line-height:1.15;padding:7px 12px;border-radius:13px;gap:7px}
+.w-sort.tight .item>.tw-mark{width:26px;height:26px}
+.w-sort.tight .tw-bin{padding:10px;gap:6px}
 .w-sort.picking .tw-bin,.w-sort.picking .tw-pool{cursor:pointer}
 .w-sort.picking .tw-bin{border-style:solid}
 .tw-bin.over,.tw-pool.over{border-color:var(--blue);border-style:solid;box-shadow:inset 0 0 0 3px rgba(59,108,255,.25)}

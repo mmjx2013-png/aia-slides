@@ -43,7 +43,7 @@ async function run(cfg) {
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push('page error: ' + e.message));
-  page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
+  page.on('console', m => { if (m.type() === 'error' || /cancel/i.test(m.text())) errors.push('console: ' + m.text()); });
   page.on('request', r => { if (!r.url().startsWith('file:') && !r.url().startsWith('data:')) errors.push('external request: ' + r.url()); });
   const cdp = cfg.touch ? await ctx.newCDPSession(page) : null;
   const ok = (name, cond, extra) => { total++; if (!cond) failed++; console.log((cond ? 'PASS' : 'FAIL') + '  [' + cfg.name + '] ' + name + (cond || extra === undefined ? '' : '  -> ' + JSON.stringify(extra))); };
@@ -75,7 +75,7 @@ async function run(cfg) {
   await page.goto(FILE);
   await page.evaluate(() => document.fonts.ready);
   ok('no answer is shown on load', await page.evaluate(() => !document.querySelector('.w-shown, .c.picked')));
-  ok('every widget is rendered', await page.evaluate(() => __tools.widgets.length === 15 && [...document.querySelectorAll('[class^="w-"]')].every(w => w.children.length > 0)), await page.evaluate(() => __tools.widgets.length));
+  ok('every widget is rendered', await page.evaluate(() => __tools.widgets.length === 17 && [...document.querySelectorAll('[class^="w-"]')].every(w => w.children.length > 0)), await page.evaluate(() => __tools.widgets.length));
 
   /* ---------- MCQ ---------- */
   await go(0);
@@ -112,6 +112,7 @@ async function run(cfg) {
   ok('input: text answers ignore case and spaces', / ok/.test((await fb('td-in-text')).cls));
   await type('td-in-text', 'Friday'); await act('td-in-text', 'check');
   await act('td-in-text', 'show');
+  ok('answer tab: a typed-answer box shows no tab and no frame', await page.evaluate(() => { const w = document.getElementById('td-in-text'); return getComputedStyle(w, '::after').display === 'none' && !getComputedStyle(w).boxShadow.includes('31, 191, 159'); }));
   ok('input: Show answer gives a clear answer state', await page.evaluate(() => document.getElementById('td-in-text').classList.contains('w-shown') && document.querySelector('#td-in-text .tw-in').value === 'Thursday'));
   await act('td-in-text', 'show');
   ok('input: Hide answer brings back the student\'s text', await page.evaluate(() => !document.getElementById('td-in-text').classList.contains('w-shown') && document.querySelector('#td-in-text .tw-in').value === 'Friday'));
@@ -165,6 +166,10 @@ async function run(cfg) {
   ok('sort: Check marks a wrong card with a cross', await page.evaluate(() => document.getElementById('td-sort-w').__w.items[0].classList.contains('no')));
   await dragLine(await itemC(0), await binC(0), 10); await sleep(350);
   { const c = await itemC(1); await tap(c[0], c[1]); const b = await binC(1); await tap(b[0], b[1]); await sleep(350); }
+  await act('td-sort-w', 'check');
+  f = await fb('td-sort-w');
+  ok('sort: partial feedback counts what is placed and what is left', f.text === '2 placed, both right \u00B7 4 to go', f);
+  ok('focus: tapping a card leaves no keyboard focus', await page.evaluate(() => document.activeElement === document.body));
   ok('sort: tap a card, then tap a box', (await W('td-sort-w', 'w.state()'))[1] === 1, await W('td-sort-w', 'w.state()'));
   await page.evaluate(() => document.getElementById('td-sort-w').__w.items[2].focus()); await page.keyboard.press('Enter');
   await page.evaluate(() => document.getElementById('td-sort-w').__w.bins[0].focus()); await page.keyboard.press(' ');
@@ -202,12 +207,17 @@ async function run(cfg) {
   await page.evaluate(() => document.getElementById('td-bars-w').__w.cols[0].focus());
   await page.keyboard.press('ArrowUp'); await page.keyboard.press('ArrowUp'); await page.keyboard.press('ArrowDown');
   ok('bars: keyboard Up/Down moves the focused bar by one step', (await W('td-bars-w', 'w.values()'))[0] === 20);
-  await page.keyboard.press('ArrowRight');
-  await stay(3, 'bars keyboard (arrows inside the chart)');
+  await stay(3, 'bars keyboard (Up/Down inside the chart)');
   await act('td-bars-w', 'check');
   f = await fb('td-bars-w');
   ok('bars: Check highlights the wrong bar', / no/.test(f.cls) && await page.evaluate(() => document.querySelectorAll('#td-bars-w .tw-col.no').length === 1), f);
+  ok('focus: dragging a bar leaves no keyboard focus on the chart', await page.evaluate(() => document.activeElement === document.body));
   await act('td-bars-w', 'show'); await sleep(900);
+  ok('focus: tapping Show answer leaves no focus on the button', await page.evaluate(() => document.activeElement === document.body));
+  await page.keyboard.press(' '); await sleep(200);
+  ok('focus: Space after Show answer does not hide the answer again', await page.evaluate(() => document.getElementById('td-bars-w').classList.contains('w-shown')));
+  await page.evaluate(() => __deck.jump(3, 0)); await sleep(700);
+  ok('answer tab: the big builders show the ANSWER tab', await page.evaluate(() => getComputedStyle(document.getElementById('td-bars-w'), '::after').content.includes('Answer') && getComputedStyle(document.getElementById('td-bars-w'), '::after').display !== 'none'));
   ok('bars: Show answer moves the bars to the answer', JSON.stringify(await W('td-bars-w', 'w.values()')) === JSON.stringify(barsAns) && await page.evaluate(() => document.getElementById('td-bars-w').classList.contains('w-shown')));
   ok('bars: the drawn bar heights match the answer', await page.evaluate(() => { const hs = [...document.querySelectorAll('#td-bars-w .tw-bar')].map(b => +b.getAttribute('height')); return hs.every((h, i) => Math.abs(h / hs[1] - [15, 20, 35, 25, 30][i] / 20) < 0.01); }));
   await act('td-bars-w', 'show'); await sleep(900);
@@ -290,9 +300,12 @@ async function run(cfg) {
   ok('dots: tapping stacks dots', JSON.stringify(v) === JSON.stringify(dotsAns), v);
   { const p = await W('td-dots-w', 'w.at(2,5)'); await tap(p.x, p.y); const q = await W('td-dots-w', 'w.at(2,1)'); await tap(q.x, q.y); }
   ok('dots: tapping a dot removes it', (await W('td-dots-w', 'w.values()'))[2] === 5);
+  await page.keyboard.press('Enter'); await page.keyboard.press(' '); await sleep(200);
+  await page.evaluate(() => __deck.jump(8, 0)); await sleep(700);
+  ok('focus: Enter/Space after tapping a dot do not add dots', JSON.stringify(await W('td-dots-w', 'w.values()')) === JSON.stringify(dotsAns) && await page.evaluate(() => document.activeElement === document.body), await W('td-dots-w', 'w.values()'));
   await act('td-dots-w', 'check');
   ok('dots: Check says correct', / ok/.test((await fb('td-dots-w')).cls), await fb('td-dots-w'));
-  await page.evaluate(() => document.getElementById('td-dots-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp'); await page.keyboard.press('ArrowLeft');
+  await page.evaluate(() => document.getElementById('td-dots-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp');
   ok('dots: keyboard Up adds a dot', (await W('td-dots-w', 'w.values()'))[0] === 3);
   await act('td-dots-w', 'check');
   ok('dots: a wrong stack is highlighted', await page.evaluate(() => document.querySelectorAll('#td-dots-w .tw-col.no').length === 1));
@@ -303,6 +316,38 @@ async function run(cfg) {
   ok('dots free survey: Reset', (await W('td-dots-free', 'w.values()')).every(x => x === 0));
   await page.evaluate(() => document.activeElement.blur());
   await stay(8, 'dots');
+
+  /* ---------- crowded sort: nothing may leave its box or cover the buttons ---------- */
+  await go(10);
+  const inside = () => page.evaluate(() => {
+    const w = document.getElementById('td-sort2-w'), W = w.getBoundingClientRect(), F = w.querySelector('.tw-foot').getBoundingClientRect(), bad = [];
+    w.__w.items.forEach((it, k) => {
+      const r = it.getBoundingClientRect(), box = it.closest('.tw-bin, .tw-pool');
+      const s = box.classList.contains('tw-bin') ? box.querySelector('.tw-slot') : box, B = s.getBoundingClientRect(), scroll = s.classList.contains('scroll');
+      if (r.left < W.left - 1 || r.right > W.right + 1) bad.push(k + ' outside the widget');
+      if (!scroll && (r.bottom > B.bottom + 2 || r.top < B.top - 2)) bad.push(k + ' outside its box');
+      if (!scroll && r.bottom > F.top + 1) bad.push(k + ' over the buttons');
+      if (r.left < B.left - 2 || r.right > B.right + 2) bad.push(k + ' wider than its box');
+    });
+    w.__w.bins.forEach((b, k) => { const r = b.getBoundingClientRect(); if (r.bottom > F.top + 1 || r.bottom > W.bottom + 1) bad.push('box ' + k + ' over the buttons'); });
+    const rb = w.querySelector('[data-act="reset"]').getBoundingClientRect(), top = document.elementFromPoint(rb.left + rb.width / 2, rb.top + rb.height / 2);
+    if (!top || !top.closest('[data-act="reset"]')) bad.push('Reset is covered');
+    return bad;
+  });
+  ok('sort crowded: start state fits', (await inside()).length === 0, await inside());
+  await act('td-sort2-w', 'show'); await sleep(450);
+  ok('sort crowded: after Show answer 7 cards fit in one box and the buttons stay free', (await inside()).length === 0 && (await W('td-sort2-w', 'w.state()')).filter(x => x === 0).length === 7, await inside());
+  ok('sort crowded: the empty card pool takes no space', await page.evaluate(() => document.querySelector('#td-sort2-w .tw-pool').getBoundingClientRect().height === 0));
+  await act('td-sort2-w', 'reset'); await sleep(200);
+  ok('sort crowded: Reset can be pressed and puts the cards back', (await W('td-sort2-w', 'w.state()')).every(x => x === -1) && (await inside()).length === 0, await inside());
+  for (let k = 0; k < 8; k++) { const c = await page.evaluate(k => { const r = document.getElementById('td-sort2-w').__w.items[k].getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }, k); await tap(c[0], c[1]); const b = await page.evaluate(() => { const r = document.getElementById('td-sort2-w').__w.bins[1].getBoundingClientRect(); return [r.left + r.width / 2, r.top + 20]; }); await tap(b[0], b[1]); await sleep(300); }
+  ok('sort crowded: all 8 cards in one box still fit', (await W('td-sort2-w', 'w.state()')).every(x => x === 1) && (await inside()).length === 0, await inside());
+  await act('td-sort2-w', 'check');
+  ok('sort crowded: Check still works after a full sort', /1 of 8 correct/.test((await fb('td-sort2-w')).text), await fb('td-sort2-w'));
+  await act('td-in-card', 'show');
+  ok('answer tab: a typed answer inside a .card shows no tab and no frame', await page.evaluate(() => { const w = document.getElementById('td-in-card'), c = getComputedStyle(w); return w.classList.contains('w-shown') && getComputedStyle(w, '::after').display === 'none' && c.outlineStyle === 'none' && c.boxShadow === 'none' && w.querySelector('.tw-in').classList.contains('ok'); }));
+  await act('td-in-card', 'show');
+  await stay(10, 'crowded sort');
 
   /* ---------- global pen ---------- */
   await go(3);
@@ -338,6 +383,10 @@ async function run(cfg) {
   await drag(await stagePts(handCircle(700, 700, 90))); await sleep(250);
   ok('pen: Auto shapes off keeps the circle freehand', (await pen('p.ink.shapes()'))[6] === 'free' && await page.evaluate(() => document.querySelector('#pen-bar [data-pen="auto"]').getAttribute('aria-pressed') === 'false'));
   await penBtn('auto');
+  await penBtn('hi');
+  ok('pen: the highlighter defaults to see-through sun yellow', await pen('p.ink.color === "#FFC53D" && p.ink.alpha < 1 && p.ink.alpha > 0.2') && await page.evaluate(() => document.querySelector('#pen-bar [data-pen="#FFC53D"]').getAttribute('aria-pressed') === 'true'));
+  await penBtn('pen');
+  ok('pen: back on the pen, the pen colour returns', await pen('p.ink.color === "#0F1B33" && p.ink.alpha === 1'));
   await penBtn('hi'); await penBtn('thick'); await penBtn('#FF6B5B');
   await drag(await stagePts(wobblyLine(300, 200, 900, 205))); await sleep(250);
   ok('pen: highlighter, thick and colour are used', await pen('(function(){var s=p.ink.st.strokes[7];return s.alpha<1&&s.size>=30&&s.color==="#FF6B5B"})()'));
