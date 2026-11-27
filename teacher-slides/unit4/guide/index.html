@@ -110,9 +110,9 @@ figcaption{font:500 15px/1.45 Inter,sans-serif;color:var(--mute);margin:10px 2px
 .arrow .kk{display:flex;gap:3px;font-size:18px}
 .split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:26px;align-items:start}
 .map{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:2px;font-size:15px;line-height:1.4}
-.map li{display:grid;grid-template-columns:58px 1fr;gap:8px;padding:6px 0;border-bottom:1px solid #EEF1F7}
+.map li{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid #EEF1F7}
 .map li:last-child{border-bottom:0}
-.map b{font:700 13px/1.9 Inter,sans-serif;color:var(--blue);background:var(--lblue);border-radius:7px;text-align:center;align-self:start}
+.map b{font:700 12px/1.95 Inter,sans-serif;color:var(--blue);background:var(--lblue);border-radius:7px;text-align:center;align-self:start;text-transform:uppercase;letter-spacing:.04em}
 .map .ex b{color:var(--violet);background:var(--lviolet)}
 .ticks{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:9px}
 .ticks li{position:relative;padding-left:28px}
@@ -176,9 +176,11 @@ h3.sub{font:800 26px/1.15 Display,Inter,sans-serif;letter-spacing:-.02em;margin:
 .cheat-top p{margin:0;color:var(--mute);font-size:15px}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px}
 .cgrid h3{font:800 13px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin:0 0 10px}
-.krow{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #EEF1F7;font-size:16px;line-height:1.35}
+.krow{display:grid;grid-template-columns:122px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #EEF1F7;font-size:16px;line-height:1.35}
+.cgrid>div:last-child .krow{grid-template-columns:150px 1fr}
 .krow:last-child{border-bottom:0}
 .krow .kk{font-size:18px;display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.krow .mute{white-space:nowrap}
 .krow .or{font:600 12px Inter,sans-serif;color:var(--mute);margin:0 2px}
 .remember{margin-top:22px;background:var(--lmint);border-radius:16px;padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:15px;line-height:1.45}
 .remember b{display:block;font:800 13px/1.3 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--okc);margin-bottom:4px}
@@ -226,6 +228,7 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
  .cheat{padding:22px 18px}
  .cgrid{grid-template-columns:1fr}
  .krow{grid-template-columns:122px 1fr}
+ .cgrid>div:last-child .krow{grid-template-columns:128px 1fr}
  .remember{grid-template-columns:1fr}
 }
 
@@ -246,14 +249,16 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
  .sec-head,h2,h3.sub,.kicker{break-after:avoid}
  #cheat,#board{break-before:page}
  .tbl{font-size:10pt} .tbl th{width:118px} .tbl th,.tbl td{padding:8px 8px 8px 0}
- .map{grid-template-columns:1fr 1fr;column-gap:16px;font-size:9.6pt}
- .map li{grid-template-columns:34px 1fr;gap:6px;padding:4px 0}
+ .map{font-size:9.8pt}
+ .map li{grid-template-columns:62px 1fr;gap:6px;padding:4px 0}
+ .map b{font-size:7.5pt}
  .split{gap:18px}
  .card{padding:18px 20px;margin-bottom:12px}
  .n{font-size:11px}
  .frame img{box-shadow:none;border:1px solid #DCE2EE}
  .hero-pic{max-width:60%;margin:0 auto}
  .facts{margin:12px 0 14px}
+ .url{font-size:13pt}
  .steps{grid-template-columns:1fr 1fr;gap:10px}
  .steps li{padding:12px 14px;gap:12px}
  .big{width:36px;height:36px;font-size:19px;border-radius:11px}
@@ -271,12 +276,25 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
  .flow p{font-size:9.4pt}
  .flow h3{font-size:12.5pt}
  .qa{gap:10px}
+ .qa .card{padding:12px 16px}
+ .key{grid-template-columns:48px 1fr;gap:14px}
+ .lock{width:48px;height:48px;border-radius:14px}
+ .ph{padding:8px 12px;margin:6px 0 8px;font-size:11pt}
+ .fields{margin:4px 0 8px;font-size:10pt}
  .qa p{font-size:10pt}
  .qa h3{font-size:10.8pt}
- .cheat{border:2px solid var(--ink);padding:22px 24px}
- .krow{font-size:10.5pt;padding:6px 0}
- .krow .kk{font-size:12pt}
- .remember{font-size:9.8pt}
+ .cheat{border:2px solid var(--ink);padding:34px 34px 30px}
+ .cheat h2{font-size:30pt}
+ .cheat-top{margin-bottom:24px;padding-bottom:20px}
+ .cheat-top p{font-size:11pt}
+ .cgrid{gap:30px 36px}
+ .cgrid h3{font-size:10.5pt;margin-bottom:12px}
+ .krow{font-size:13pt;padding:11px 0;grid-template-columns:124px 1fr}
+ .cgrid>div:last-child .krow{grid-template-columns:160px 1fr}
+ .krow .kk{font-size:15pt}
+ .remember{font-size:11.5pt;padding:20px 22px;margin-top:28px}
+ .remember b{font-size:10pt}
+ .cheat-foot{font-size:11pt;margin-top:20px}
  footer{display:none}
 }
 </style>
@@ -290,7 +308,7 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
  <h1>How to use the <em>slides</em></h1>
  <p class="lede">Hello! This short guide shows you how to teach with the Unit 4 slides. It takes about five minutes to read. There is nothing to install.</p>
  <ul class="facts">
-  <li>60 slides, 4 lessons</li>
+  <li>4 lessons, each with exercises</li>
   <li>Exercises students do on the board</li>
   <li>Projector, touch board or iPad</li>
   <li>Chrome or Safari</li>
@@ -360,7 +378,7 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
   <h3>The bar at the bottom</h3>
   <figure>
    <div class="pic">
-    <img src="img/bar.jpg" width="902" height="240" alt="The control bar: menu, back, slide number 1 of 60, next, Pen, full screen.">
+    <img src="img/bar.jpg" width="902" height="240" alt="The control bar: menu, back, slide number, next, Pen, full screen.">
     <span class="n" style="left:12.75%;top:24%" aria-hidden="true">1</span>
     <span class="n" style="left:22.95%;top:24%" aria-hidden="true">2</span>
     <span class="n" style="left:42.01%;top:24%" aria-hidden="true">3</span>
@@ -372,7 +390,7 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
   <ol class="legend two">
    <li><span class="k">1</span><span><span class="chip">☰</span> Lesson menu. Or press <kbd>M</kbd>.</span></li>
    <li><span class="k">2</span><span><span class="chip">‹</span> Back. Same as <kbd>←</kbd>.</span></li>
-   <li><span class="k">3</span><span>Slide number. “1 / 60” means slide 1 of 60.</span></li>
+   <li><span class="k">3</span><span>Slide number: the slide you are on, out of how many.</span></li>
    <li><span class="k">4</span><span><span class="chip">›</span> Next. Same as <kbd>→</kbd>.</span></li>
    <li><span class="k">5</span><span><span class="chip">✎ Pen</span> Pen on and off. Or press <kbd>P</kbd>.</span></li>
    <li><span class="k">6</span><span><span class="chip">⤢</span> Full screen on and off. Or press <kbd>F</kbd>.</span></li>
@@ -384,9 +402,9 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
   <h3>Steps: answers come one at a time</h3>
   <p>Many slides show things step by step. Each <kbd>→</kbd> shows the next step: an answer, a hint or the working. When all the steps are out, the next <kbd>→</kbd> goes to the next slide. <kbd>←</kbd> takes the last step away again.</p>
   <div class="pair">
-   <figure><div class="pic"><img src="img/step0.jpg" width="1400" height="520" alt="Slide 10 at the start: two questions with choices, no answers shown."></div><figcaption><b>Start:</b> only the questions.</figcaption></figure>
+   <figure><div class="pic"><img src="img/step0.jpg" width="1400" height="520" alt="An exercise slide at the start: two questions with choices, no answers shown."></div><figcaption><b>Start:</b> only the questions.</figcaption></figure>
    <div class="arrow" aria-hidden="true"><span class="kk"><kbd>→</kbd><kbd>→</kbd></span>press → two times</div>
-   <figure><div class="pic"><img src="img/step2.jpg" width="1400" height="520" alt="Slide 10 after two steps: the right choices are green and a dark bar explains each answer."></div><figcaption><b>After two steps:</b> the answers and why.</figcaption></figure>
+   <figure><div class="pic"><img src="img/step2.jpg" width="1400" height="520" alt="The same slide after two steps: the right choices are green and a dark bar explains each answer."></div><figcaption><b>After two steps:</b> the answers and why.</figcaption></figure>
   </div>
   <div class="note blue" style="margin:16px 0 0"><span class="ic">i</span><p>There is no step counter. If you are not sure, just press <kbd>→</kbd>. Nothing is skipped: when the steps are done, the next slide comes.</p></div>
  </div>
@@ -408,20 +426,20 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
     </ol>
    </div>
    <div>
-    <p class="mute" style="margin-top:2px">What is in the menu:</p>
+    <p class="mute" style="margin-top:2px">The main parts, in the same order as the book. Each menu entry shows its slide number.</p>
     <ul class="map">
-     <li><b>1</b><span>Title: Unit 4 · Statistics (1)</span></li>
-     <li><b>2</b><span>Lesson 1 · Statistical questions</span></li>
-     <li class="ex"><b>7</b><span>Exercise 1</span></li>
-     <li><b>12</b><span>Lesson 2 · Data collection</span></li>
-     <li class="ex"><b>19</b><span>Exercise 2</span></li>
-     <li><b>24</b><span>Lesson 3 · Part 1 · Tables, pictograms and bar charts</span></li>
-     <li class="ex"><b>31</b><span>Exercise 3A</span></li>
-     <li><b>37</b><span>Lesson 3 · Part 2 · Line graphs and pie charts</span></li>
-     <li class="ex"><b>43</b><span>Exercise 3B</span></li>
-     <li><b>48</b><span>Lesson 4 · Statistics in real life</span></li>
-     <li class="ex"><b>52</b><span>Exercise 4</span></li>
-     <li><b>55</b><span>Summary, vocabulary and unit review</span></li>
+     <li><b>Title</b><span>Unit 4 · Statistics (1)</span></li>
+     <li><b>Lesson</b><span>1 · Statistical questions</span></li>
+     <li class="ex"><b>Exercise</b><span>Exercise 1</span></li>
+     <li><b>Lesson</b><span>2 · Data collection</span></li>
+     <li class="ex"><b>Exercise</b><span>Exercise 2</span></li>
+     <li><b>Lesson</b><span>3 · Part 1 · Tables, pictograms and bar charts</span></li>
+     <li class="ex"><b>Exercise</b><span>Exercise 3A</span></li>
+     <li><b>Lesson</b><span>3 · Part 2 · Line graphs and pie charts</span></li>
+     <li class="ex"><b>Exercise</b><span>Exercise 3B</span></li>
+     <li><b>Lesson</b><span>4 · Statistics in real life</span></li>
+     <li class="ex"><b>Exercise</b><span>Exercise 4</span></li>
+     <li><b>End</b><span>Summary, vocabulary and unit review</span></li>
     </ul>
     <ul class="ticks">
      <li>With a keyboard: <kbd>↑</kbd> <kbd>↓</kbd> move in the menu, <kbd>Enter</kbd> opens a lesson, <kbd>Esc</kbd> closes the menu.</li>
@@ -448,7 +466,7 @@ footer{margin-top:40px;font-size:14px;color:var(--mute);text-align:center}
    <div>
     <figure>
      <div class="pic">
-      <img src="img/pen-slide.jpg" width="1440" height="810" alt="Slide 35 with the pen on. A question is highlighted in yellow, a coral circle marks a bar, a straight line goes to the axis, and 13 is written by hand. The pen bar is on the left.">
+      <img src="img/pen-slide.jpg" width="1440" height="810" alt="An exercise slide with the pen on. A question is highlighted in yellow, a coral circle marks a bar, a straight line goes to the axis, and 13 is written by hand. The pen bar is on the left.">
       <span class="n" style="left:6.6%;top:96%" aria-hidden="true">1</span>
       <span class="n" style="left:41.5%;top:26%" aria-hidden="true">2</span>
       <span class="n" style="left:62.8%;top:43%" aria-hidden="true">3</span>
