@@ -27,7 +27,11 @@ SWAPS = {"boss figure (long -6.00, short +2.00 per oz per night)": (-6.00, 2.00)
 
 
 def history():
+    """9 months of bulk history + the intraday cache + the LIVE swing cache (the only one that is current)."""
     m1 = load_cache()
+    live = HERE.parent.parent / "swing" / "data" / "cache" / "PAXGUSDT_1m.csv"
+    if live.exists():
+        m1 = merge(m1, _frame(pd.read_csv(live)[["t", "o", "h", "l", "c", "v"]].values.tolist()))
     for f in sorted(glob.glob(str(HERE.parent / "data" / "history" / "*.csv.gz"))):
         m1 = merge(_frame(pd.read_csv(f)[["t", "o", "h", "l", "c", "v"]].values.tolist()), m1)
     return m1

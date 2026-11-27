@@ -166,12 +166,19 @@ def wake(root=BOOKS, asof_ms=None, m1=None, heads=True, start_ms=None):
         jappend(ai.d / "journal.jsonl", dict(kind="SKIP", t=str(bkk(asof_ms))[:19], t_ms=asof_ms, id=wid, reason=skip))
         return f"SKIP {skip}"
     fr = frames(asof_ms, m1)
+    import learn
+    try:
+        if Path(root) == BOOKS:                          # the live loop only; replays never touch learn/ideas.csv
+            learn.resolve(None, m1)
+        track = learn.block() if Path(root) == BOOKS else "## Your track record\n(not used in this replay)"
+    except Exception as e:
+        track = f"## Your track record\n(unavailable: {type(e).__name__})"
     from news import headlines
     txt, facts = build(asof_ms, fr, ai.s, headlines(asof_ms) if heads else None, ai.pending())
     import shocks as SH
     import statements as ST
     stb = ST.block(asof_ms) if heads else "## Influential statements\n(not fetched in this replay)"
-    txt += "\n" + SH.recent_block(Path(root), asof_ms) + "\n\n"
+    txt += "\n" + track + "\n\n" + SH.recent_block(Path(root), asof_ms) + "\n\n"
     tail = "\n\n" + (env.HERE / "prompts" / "pm.md").read_text()
     txt += ST.trim(stb, 3000 * 4 - len(txt) - len(tail))     # brief <= 3k tokens: drop the oldest headlines first
     txt += tail
@@ -211,8 +218,11 @@ def check_open(dec, f, ai, t_ms):
     dist = abs(px - stop)
     if not 0.5 * f["atr1h"] <= dist <= 3 * f["atr1d"]:
         return None, f"stop distance {dist:.2f} outside 0.5 x ATR(1h) {0.5 * f['atr1h']:.2f} .. 3 x ATR(1d) {3 * f['atr1d']:.2f}"
+    import learn
+    p_raw = p
+    p, cal_rule = learn.p_cal(p_raw)                     # gate and size on the CALIBRATED p (boss, 2026-11-27)
     if p < R.P_MIN:
-        return None, f"p_target {p:.2f} < {R.P_MIN}"
+        return None, f"calibrated p {p:.2f} (stated {p_raw:.2f}; {cal_rule}) < {R.P_MIN}"
     rr = R.rr_after_costs(px, stop, tgt)
     if rr < R.RR_MIN:
         return None, f"reward:risk after costs {rr:.2f} < {R.RR_MIN}"
@@ -228,8 +238,8 @@ def check_open(dec, f, ai, t_ms):
     if why:
         return None, why
     lev, req = R.clamp_lev(dec.get("leverage"))
-    return dict(dir=d, stop=round(stop, 2), target=round(tgt, 2), lev=lev, lev_req=req, p_target=p,
-                rr=round(rr, 2)), ""
+    return dict(dir=d, stop=round(stop, 2), target=round(tgt, 2), lev=lev, lev_req=req, p_target=p, p_stated=p_raw,
+                p_cal_rule=cal_rule, rr=round(rr, 2)), ""
 
 
 MIRRORS = ("ai_1pct", "flat2", "kelly_cal")
@@ -253,8 +263,8 @@ def p_calibrated(p, root):
 
 def sizing(o, root):
     """Risk per book for one open: main p-linear, 1% and flat 2% shadows, eighth Kelly on calibrated p."""
-    p = o["p_target"]
-    pc, rule = p_calibrated(p, root)
+    p = o["p_target"]                                   # already the calibrated p (learn.p_cal)
+    pc, rule = p, o.get("p_cal_rule", "")
     k, f = R.kelly_risk(pc, o["rr"])
     return {"ai": (R.risk_from_p(p), f"p {p:.2f} linear"), "ai_1pct": (0.01, "flat 1%"), "flat2": (0.02, "flat 2%"),
             "kelly_cal": (k, f"eighth Kelly p_cal {pc:.2f} R {o['rr']:.2f} f {f:.3f}; {rule}" + ("" if k else " -> skip, f <= 0"))}

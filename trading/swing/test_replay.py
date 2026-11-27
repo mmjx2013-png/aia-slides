@@ -13,6 +13,8 @@ import pandas as pd
 import env  # noqa: F401
 import rules as R
 import desk
+import learn
+learn.p_cal = lambda p, df=None: (p, "replay: identity (tests the order path)")
 from common import BKK, _frame, load_cache, merge
 from report import main as report
 

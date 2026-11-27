@@ -153,14 +153,17 @@ write_pending(b.d, "open", T0, id="t", dir=1, stop=3990, target=4030, lev=3, p_t
 b.on_bar(bar(20, 4000))
 check("order older than 15 min rejected", b.s["pos"] is None and "stale" in journal(b, "REJECT")[-1]["reason"])
 
-# 10 the code re-check of Opus's open
+# 10 the code re-check of Opus's open (calibration replaced by the identity here; tested in section 21)
+import learn
+_real_p_cal = learn.p_cal
+learn.p_cal = lambda p, df=None: (p, "test identity")
 f = dict(px=4000.0, atr1h=8.0, atr4h=16.0, atr1d=40.0, trend4="up", levels={"prev day low": 3995.0, "round 50 above": 4050.0},
          asof_ms=T0)
 b = fresh()
 good = dict(action="open", dir="long", stop=3980, target=4040, leverage=5, p_target=0.6)
 o, why = desk.check_open(good, f, b, T0)
 check("good long passes", o is not None and o["lev"] == 5)
-check("p 0.50 rejected", "p_target" in desk.check_open(dict(good, p_target=0.5), f, b, T0)[1])
+check("p 0.50 rejected", "calibrated p 0.50" in desk.check_open(dict(good, p_target=0.5), f, b, T0)[1])
 check("rr 1.4 rejected", "reward" in desk.check_open(dict(good, target=4029), f, b, T0)[1])
 check("stop under 0.5 ATR(1h) rejected", "stop distance" in desk.check_open(dict(good, stop=3997, target=4020), f, b, T0)[1])
 sh = dict(good, dir="short", stop=4020, target=3960)
@@ -322,6 +325,17 @@ check("entry blocked during the shock window", "shock" in b3.entry_block(T0 + 5 
 import statements as STM
 blk = "## S\n[a]\n- 1 h ago: new\n- 20 h ago: old\n- 5 h ago: mid\nTally"
 check("statements trimmed oldest first", STM.trim(blk, len(blk) - 5) == "## S\n[a]\n- 1 h ago: new\n- 5 h ago: mid\nTally")
+
+# 21 learning loop: shrinkage calibration
+learn.p_cal = _real_p_cal
+import pandas as pd
+ideas = pd.DataFrame({"p": [0.4] * 6, "outcome": ["stop"] * 6})
+pc, rule = learn.p_cal(0.40, ideas)
+base = (0 + 10 * 0.30) / 16
+check("bucket shrinkage toward a shrunk base rate", abs(pc - (6 * 0 + 10 * base) / 16) < 1e-9)
+check("empty bucket = base rate", abs(learn.p_cal(0.60, ideas)[0] - base) < 1e-9)
+iso = pd.DataFrame({"p": [0.3] * 15 + [0.6] * 15, "outcome": ["stop"] * 12 + ["target"] * 3 + ["target"] * 9 + ["stop"] * 6})
+check("isotonic from 30 ideas", "isotonic" in learn.p_cal(0.6, iso)[1] and learn.p_cal(0.6, iso)[0] > learn.p_cal(0.3, iso)[0])
 
 # 15 confidence sizing
 check("risk from p: 0.55 1%, 0.60 1.5%, 0.65 2%, 0.75+ 3%", [round(R.risk_from_p(p), 4) for p in (0.55, 0.6, 0.65, 0.75, 0.9)] == [0.01, 0.015, 0.02, 0.03, 0.03])

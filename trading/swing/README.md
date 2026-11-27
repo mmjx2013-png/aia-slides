@@ -127,3 +127,13 @@ Limits:
   - Live, the hour of headlines before the shock is classified and logged to `data/books/shocks.jsonl`. The next brief
     shows the last 24 h of shocks.
   - The ATR(1h) floor is an addition: as specified, the rule flagged 690 shocks in 30 days (`reports/shock_scan_30d.md`).
+
+## Learning loop (code; boss 2026-11-27)
+- `learn.py` runs at every wake and resolves every DECISION's best_idea on 1m bars up to now. The outcome is target,
+  stop, or "neither" after 72 h. Each row in `learn/ideas.csv` also gets R, MFE/MAE and context tags: 4h trend,
+  distance to S/R in ATR, session, ADX and news within 6 h.
+- Calibration: below 30 resolved ideas, each bucket is shrunk toward the base rate, and the base rate itself toward a
+  0.30 prior: p_cal = (n x hit + 10 x base)/(n + 10). From 30 on, isotonic regression is used.
+- The entry gate (>= 0.55) and all risk sizing use **p_cal**, never the stated p. Both are logged.
+- The Opus brief carries a track-record block of at most 350 tokens (calibration, the last 8 ideas, checked lessons).
+  Lessons are proposed by one Sonnet call on Saturdays and kept only if n >= 5 and the hit-rate gap is >= 20 points.
