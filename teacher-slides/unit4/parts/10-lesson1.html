@@ -62,6 +62,10 @@
 #l1-sort .kk b{color:var(--ink)}
 #l1-sort .kk svg{width:34px;height:34px;flex:none}
 #l1-make .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+#l1-make .why{position:absolute;right:130px;top:132px;display:flex;align-items:center;gap:12px;padding:9px 22px 9px 9px;border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(15,27,51,.08);font:600 28px Inter;color:var(--ink)}
+#l1-make .why b{color:#B8321F}
+#l1-make .why i{flex:none;width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:var(--lcoral);color:var(--coral)}
+#l1-make .why i svg{width:26px;height:26px}
 #l1-make .bf{display:flex;align-items:center;gap:16px;height:132px;padding:0 26px;font:600 30px/1.3 Inter}
 #l1-make .bf>svg,#l1-make .af>svg{flex:none;width:44px;height:44px;padding:8px;border-radius:13px}
 #l1-make .bf>svg{background:#fff;color:var(--noc)}
@@ -423,10 +427,11 @@ Check: 4 + 4 = 8 cards.</aside>
 <section class="slide" id="l1-make" data-steps="4">
  <i class="mesh m4"></i>
  <div class="kicker in">Exercise 1 · Task 2 · Rewrite</div>
- <h2 class="in" style="--d:120">Make it <em>statistical</em></h2>
+ <h2 class="in" style="--d:120;width:fit-content">Make it <em>statistical</em></h2>
+ <div class="why pop" style="--d:420"><i><svg><use href="#cross"/></svg></i>Only one answer, so <b>not statistical</b></div>
  <div class="cols">
   <div>
-   <div class="card t-coral bf in" style="--d:240"><svg><use href="#cross"/></svg><span>What is Nong's favourite subject?</span></div>
+   <div class="card t-coral bf in" style="--d:240"><svg><use href="#cross"/></svg><span>What is Pim's favourite subject?</span></div>
    <div class="mid in" style="--d:300"><svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4 V50 M8 38 L20 52 L32 38" style="fill:none;stroke:#AAB4CC;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg><span class="chip mint g1" style="--d:500">Ask a group</span></div>
    <div class="slot in" style="--d:340">✎ Your version<div class="af g1"><svg><use href="#check"/></svg><span>What are the favourite subjects of students in 1/2?</span></div></div>
   </div>
@@ -454,7 +459,7 @@ Check: 4 + 4 = 8 cards.</aside>
   </div>
  </div>
  <aside class="notes">Students write their own version in the dashed box with the pen (or on the board) BEFORE each click.
-Beat 1: "What is Nong's favourite subject?" is about one person. Ask a group: "What are the favourite subjects of students in 1/2?"
+Beat 1: "What is Pim's favourite subject?" is about one person. Ask a group: "What are the favourite subjects of students in 1/2?"
 Beat 2: "How many students are in class 1/2?" is one count (one answer). Ask about many classes: "How many students are in each M1 class?" The counts vary from class to class.
 Beat 3: "What time does our school start?" has one fixed time. "What time do students in 1/2 arrive at school?" has many times.
 Your turn: "How many pencils are in my pencil case?" One person, one answer. Beat 4 shows one good answer: "How many pencils do students in 1/2 have?" Accept any version that names a group and expects answers that vary.</aside>

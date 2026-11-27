@@ -1,6 +1,6 @@
 /* Deck engine: stage scaling, beats, navigation, lesson menu, control bar.
    Slides: <section class="slide" data-steps="N" data-lesson="1" data-title="...">. Beats add .b1..b4 to the slide.
-   Clicks on .ia / buttons / inputs never advance. While body has .pen-on, clicks and swipes never advance.
+   Only arrow keys, PageUp/PageDown and the ‹ › buttons change the slide; clicks, taps and swipes never do.
    Events: document dispatches 'deck:change' {detail:{i,st,slide}} after every change; listens for 'deck:pen' (tools toggle).
    Test hooks: window.__deck = {next, prev, jump(i, beat), state()}; ?still = no motion (screenshots). */
 (function () {
@@ -59,17 +59,10 @@
   function jump(k, b) { i = Math.max(0, Math.min(N - 1, k | 0)); st = Math.max(0, Math.min(b | 0, STEPS[i])); show('jump'); }
 
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
-  /* Only a real mouse click on the slide advances. Touch and stylus taps never do, so a student working at the board
-     cannot reveal an answer by accident; on touch screens use swipe or the ‹ › buttons. */
-  var lastPointer = 'mouse', px = 0, py = 0;
-  addEventListener('pointerdown', function (e) { lastPointer = e.pointerType || 'mouse'; px = e.clientX; py = e.clientY; if (lastPointer !== 'mouse') root.classList.add('touchy'); }, true);
-  stage.addEventListener('click', function (e) {
-    if (menuOpen()) { closeMenu(); return; }
-    if (lastPointer !== 'mouse' || busy(e.target)) return;
-    if (Math.abs(e.clientX - px) > 6 || Math.abs(e.clientY - py) > 6) return;
-    var sel = getSelection && getSelection(); if (sel && String(sel).trim()) return;
-    (e.clientX < vw() * 0.2) ? prev() : next();
-  });
+  /* The slide changes ONLY with the arrow keys (or a clicker's PageUp/PageDown) and the ‹ › buttons (owner, 27 Nov).
+     Clicking, tapping or swiping on the slide never changes it, so a wrong click at the board cannot skip ahead. */
+  addEventListener('pointerdown', function (e) { if ((e.pointerType || 'mouse') !== 'mouse') root.classList.add('touchy'); }, true);
+  stage.addEventListener('click', function () { if (menuOpen()) closeMenu(); });
   addEventListener('keydown', function (e) {
     var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
     var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
@@ -90,21 +83,14 @@
     var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     var k = e.key;
     if ((k === ' ' || k === 'Enter') && t && t.closest && t.closest('button,.ia,a')) return;
-    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter') { e.preventDefault(); next(); }
-    else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'Backspace') { e.preventDefault(); prev(); }
+    if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
     else if (k === 'Home') jump(0); else if (k === 'End') jump(N - 1, 9);
     else if (k === 'f' || k === 'F') fs();
     else if (k === 'p' || k === 'P') document.dispatchEvent(new CustomEvent('deck:pen'));
     else if (k === 'm' || k === 'M') menu();
     else if (k === 'Escape') closeMenu();
   });
-  var x0 = null, y0 = null;
-  stage.addEventListener('touchstart', function (e) { if (busy(e.target)) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
-  stage.addEventListener('touchend', function (e) {
-    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { if (e.cancelable) e.preventDefault(); dx < 0 ? next() : prev(); } x0 = null;
-  });
-
   /* control bar: shows on pointer move, hides after 2.5 s */
   var ctl = document.getElementById('ctl'), hideT = null;
   function wake() { if (!ctl) return; ctl.classList.add('show'); clearTimeout(hideT); hideT = setTimeout(function () { ctl.classList.remove('show'); }, 2500); }
