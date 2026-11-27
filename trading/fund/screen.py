@@ -35,8 +35,14 @@ TAGS = {
     "cash": ["CashAndCashEquivalentsAtCarryingValue", "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"],
     "equity": ["StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
     "shares": ["WeightedAverageNumberOfDilutedSharesOutstanding"],
+    "da": ["DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "DepreciationAmortizationAndAccretionNet"],
 }
-FLOW = {"rev", "ni", "opinc", "ocf", "capex", "shares"}
+# re-domiciled filers: new CIK -> old CIKs whose history is spliced in (frames skipped for them)
+SPLICE = {2115436: [34088]}           # Exxon Mobil (new holding company)
+# captive finance / floor-plan debt wrecks FCF and debt ratios: listed but unscored, like financials
+CAPTIVE = {"GM", "F", "LAD", "AN", "GPI", "PAG", "KMX", "CAT", "DE", "PCAR", "HOG", "CNH", "ABG", "SAH", "CVNA", "TSLA"}
+CAPTIVE_SIC = ("3711", "55")          # motor vehicles; auto dealers
+FLOW = {"rev", "ni", "opinc", "ocf", "capex", "shares", "da"}
 
 
 def universe(n):
@@ -51,6 +57,10 @@ def universe(n):
                 if k not in best or period == "CY2025" and best[k][1] != "CY2025" or (best[k][1] == period and x["val"] > best[k][0]):
                     best[k] = (x["val"], period, x["entityName"])
     tick = E.tickers()
+    old_to_new = {o: n for n, olds in SPLICE.items() for o in olds}
+    for o, n in old_to_new.items():                           # e.g. XOM: use the old CIK's revenue, the new CIK's ticker
+        if o in best and n in tick:
+            best[n] = best.pop(o)
     rows = [(k, v[0], v[2], tick[k]) for k, v in best.items() if k in tick]
     rows.sort(key=lambda r: -r[1])
     return rows[:n]
@@ -86,9 +96,21 @@ def cagr(a, b, yrs):
     return (b / a) ** (1 / yrs) - 1
 
 
+def _merge(a, b):
+    """Splice companyfacts b (old CIK) under a (new CIK)."""
+    for tax, tags in b.get("facts", {}).items():
+        dst = a.setdefault("facts", {}).setdefault(tax, {})
+        for t, v in tags.items():
+            for u, vals in v.get("units", {}).items():
+                dst.setdefault(t, {"units": {}})["units"].setdefault(u, []).extend(vals)
+    return a
+
+
 def metrics(cik, asof):
-    f = E.facts(cik)
-    if not f:
+    f = E.facts(cik) or {}
+    for o in SPLICE.get(cik, []):
+        f = _merge(f, E.facts(o) or {})
+    if not f.get("facts"):
         return None
     s = {k: annual(f, v, asof, k in FLOW) for k, v in TAGS.items()}
     ends = sorted(s["rev"])[-4:]
@@ -109,6 +131,15 @@ def metrics(cik, asof):
     cash = 0 if cash != cash else cash
     ic = eq + debt - cash if eq == eq else np.nan
     yrs = (pd.Timestamp(last) - pd.Timestamp(ends[0])).days / 365.25
+    da = at("da")
+    ebitda = opinc + (da if da == da else 0) if opinc == opinc else np.nan
+    net_debt = debt - cash
+    m_prev = fcf[ends[-2]] / at("rev", ends[-2]) if at("rev", ends[-2]) else np.nan
+    m_last = fcf[last] / at("rev") if at("rev") else np.nan
+    swing = (m_prev == m_prev and m_last == m_last and (m_prev * m_last <= 0 or not 0.5 <= m_last / m_prev <= 2))
+    filed = max((v.get("filed", "") for t in TAGS["rev"] for v in f["facts"].get("us-gaap", {}).get(t, {}).get("units", {}).get("USD", [])
+                 if v.get("form") in ("10-K", "10-K/A") and v.get("filed", "9999") <= asof), default="")
+    stale = not filed or (pd.Timestamp(asof) - pd.Timestamp(filed)).days > 456
     sh = s["shares"]
     sh_ends = [e for e in ends if e in sh]
     return dict(
@@ -119,7 +150,11 @@ def metrics(cik, asof):
         fcf_margin_std=float(np.std(margin)) if len(margin) >= 3 else np.nan,
         rev_cagr=cagr(at("rev", ends[0]), at("rev"), yrs),
         fcf_cagr=cagr(fcf[ends[0]], fcf[last], yrs),
-        net_debt_fcf=(debt - cash) / fcf[last] if fcf[last] and fcf[last] > 0 else np.nan,
+        net_debt=net_debt, ebitda=ebitda, last_10k_filed=filed,
+        net_debt_fcf=net_debt / fcf[last] if fcf[last] and fcf[last] > 0 else np.nan,
+        net_debt_ebitda=net_debt / ebitda if ebitda and ebitda == ebitda and ebitda > 0 else np.nan,
+        debt_equity=debt / eq if eq and eq == eq and eq > 0 else np.nan,
+        flag=("; ".join(x for x in ("FCF margin moved > 2x y/y" if swing else "", "last 10-K older than 15 months" if stale else "") if x)),
         dilution=(sh[sh_ends[-1]] / sh[sh_ends[0]] - 1) if len(sh_ends) >= 2 and sh[sh_ends[0]] else np.nan,
         years=len(ends),
     )
@@ -128,6 +163,22 @@ def metrics(cik, asof):
 def pct(x, higher_better=True):
     r = x.rank(pct=True)
     return r if higher_better else 1 - r + 1 / len(x)
+
+
+def balance(df, cap=20.0):
+    """Leverage score in [0, 1]: the WORSE of net debt / FCF and (net debt / EBITDA, else debt / equity).
+    FCF <= 0 or FCF margin < 1% -> the worst score. Net cash (net debt <= 0) with real FCF -> the best.
+    Otherwise the ratio is capped at `cap` and ranked, lower is better."""
+    def score(ratio, bad):
+        r = ratio.clip(upper=cap)
+        r = r.where(df["net_debt"] > 0, -1.0)                 # net cash: best
+        r = r.where(~bad, cap * 10)                           # no real FCF / earnings: worst
+        return 1 - r.rank(pct=True) + 1 / len(r)
+    no_fcf = (df["fcf"] <= 0) | (df["fcf_margin"] < 0.01) | df["fcf"].isna()
+    s1 = score(df["net_debt_fcf"], no_fcf)
+    second = df["net_debt_ebitda"].where(df["net_debt_ebitda"].notna(), df["debt_equity"])
+    s2 = score(second, second.isna() & (df["net_debt"] > 0) | (df["ebitda"] <= 0))
+    return pd.concat([s1, s2], axis=1).min(axis=1)
 
 
 def main(asof, n):
@@ -142,19 +193,22 @@ def main(asof, n):
             rows.append(dict(ticker=tk, cik=cik, name=name, sic=sic, industry=sub.get("sicDescription", ""), **m))
     df = pd.DataFrame(rows)
     fin = df["sic"].str[:2].isin([str(i) for i in range(60, 68)])
+    cap = df["ticker"].isin(CAPTIVE) | df["sic"].str.startswith(CAPTIVE_SIC)
     df["financial_or_reit"] = fin
+    df["captive_finance"] = cap & ~fin
+    fin = fin | cap
     q = pd.concat([pct(df["roic"]), pct(df["roe"]), pct(df["fcf_margin"]), pct(df["fcf_margin_std"], False)], axis=1).mean(axis=1)
     g = pd.concat([pct(df["rev_cagr"]), pct(df["fcf_cagr"])], axis=1).mean(axis=1)
-    b = pct(df["net_debt_fcf"], False)
+    b = balance(df)
     dl = pct(df["dilution"], False)
     df["s_quality"], df["s_growth"], df["s_balance"], df["s_dilution"] = q, g, b, dl
     df["s_valuation"] = np.nan                                   # needs prices
     df["composite"] = df[["s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation"]].mean(axis=1, skipna=True)
     df.loc[fin, "composite"] = np.nan                            # FCF/ROIC metrics do not fit banks/insurers/REITs
     df = df.sort_values("composite", ascending=False)
-    cols = ["ticker", "name", "industry", "composite", "s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation", "roic", "roe",
+    cols = ["ticker", "name", "industry", "flag", "composite", "s_quality", "s_growth", "s_balance", "s_dilution", "s_valuation", "roic", "roe",
             "fcf_margin", "fcf_margin_std", "rev_cagr", "fcf_cagr", "net_debt_fcf", "dilution", "revenue", "fcf", "fy_end", "years", "sic",
-            "financial_or_reit", "cik"]
+            "net_debt_ebitda", "debt_equity", "last_10k_filed", "financial_or_reit", "captive_finance", "cik"]
     df[cols].to_csv(HERE / "screen.csv", index=False, float_format="%.4g")
     print(f"screen: {len(df)} names ({int(fin.sum())} financials/REITs unscored), as of {asof}, {time.time() - t0:.0f} s")
     print(df[cols[:9]].head(25).to_string(index=False))
