@@ -1,0 +1,541 @@
+<style>
+#l1-open h2{font-size:96px;line-height:1;margin:6px 0 0}
+#l1-open .goals li{background:#fff;border-radius:20px;padding:14px 28px 14px 16px;box-shadow:0 10px 26px rgba(15,27,51,.07);align-self:flex-start}
+#l1-open .goals li:nth-child(2) svg{background:var(--lcoral);color:var(--coral)}
+#l1-open .goals li:nth-child(3) svg{background:var(--lmint);color:var(--okc)}
+#l1-open .vis>*{position:absolute}
+#l1-open .sw{width:220px;display:flex;justify-content:center}
+#l1-open .say{position:relative;display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(15,27,51,.12);font:700 26px Inter;white-space:nowrap}
+#l1-open .say::after{content:"";position:absolute;left:50%;bottom:-8px;width:18px;height:18px;margin-left:-9px;background:#fff;transform:rotate(45deg);border-radius:3px}
+#l1-open .say i{width:14px;height:14px;border-radius:50%;background:var(--c)}
+#l1-open .qt{font:700 46px/1.12 Display;letter-spacing:-.02em;margin-top:16px}
+#l1-hook .tagr{fill:#fff;filter:drop-shadow(0 5px 10px rgba(15,27,51,.14))}
+#l1-hook .tagt{fill:var(--coral);font:700 24px Inter}
+#l1-hook .cap{display:flex;align-items:center;justify-content:center;gap:12px;font:600 24px Inter;color:var(--mute)}
+#l1-hook .cap b{color:var(--ink)}
+#l1-hook .cdot{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--coral)}
+#l1-hook .bdot{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--blue)}
+#l1-def .flow{display:grid;grid-template-columns:430px 70px 1fr 70px 440px;height:470px}
+#l1-def .flow>.card{display:flex;flex-direction:column}
+#l1-def .arw{display:grid;place-items:center}
+#l1-def .arw svg{width:60px;height:60px}
+#l1-def .pills{flex:1;display:flex;flex-wrap:wrap;gap:16px 12px;justify-content:center;align-content:center}
+#l1-def .pl{display:inline-flex;align-items:center;gap:8px;padding:9px 20px 9px 14px;border-radius:999px;font:700 26px Inter;background:var(--bgc);color:var(--fgc)}
+#l1-def .pl svg{width:18px;height:25px;color:var(--fgc)}
+#l1-def .qm{position:absolute;right:30px;top:26px;width:84px;height:84px;border-radius:26px;display:grid;place-items:center;background:linear-gradient(140deg,var(--blue),var(--violet));color:#fff;font:800 56px Display}
+#l1-def .def{margin-top:30px;display:flex;align-items:center;gap:30px}
+#l1-checks .strip{display:flex;align-items:center;gap:24px;padding:22px 30px}
+#l1-checks .ck{display:flex;flex-direction:column;padding:28px 30px;height:560px}
+#l1-checks .art{position:relative;height:200px;border-radius:24px;display:grid;place-items:center;flex:none}
+#l1-checks .hd{display:flex;align-items:center;gap:16px;margin:24px 0 8px}
+#l1-checks .hd b{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;color:#fff;font:800 26px Inter;flex:none}
+#l1-checks .mn{position:absolute;display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(15,27,51,.10);font:700 26px Inter}
+#l1-checks .ck .badge{margin-top:auto;align-self:flex-start}
+#l1-pairs .tb{display:grid;grid-template-columns:1fr 112px 1fr;gap:16px 24px}
+#l1-pairs .slot{position:relative;height:124px;border:2.5px dashed #C9D2E6;border-radius:24px}
+#l1-pairs .pc{position:absolute;inset:-2.5px;display:flex;align-items:center;gap:18px;padding:0 26px 0 30px;border-radius:24px;background:#fff;box-shadow:0 12px 30px rgba(15,27,51,.08);font:600 30px/1.32 Inter}
+#l1-pairs .pc.no{border-left:9px solid var(--coral)}
+#l1-pairs .pc.yes{border-left:9px solid var(--mint)}
+#l1-pairs .pc span{flex:1}
+#l1-pairs .pc svg{flex:none;width:84px;height:52px}
+#l1-pairs .ic{display:grid;place-items:center}
+#l1-pairs .ic>div{width:104px;height:104px;border-radius:32px;background:#fff;box-shadow:0 12px 30px rgba(15,27,51,.08);display:grid;place-items:center}
+#l1-pairs .ic svg{width:62px;height:62px}
+#l1-exer .tasks{display:grid;grid-template-columns:repeat(4,340px);gap:30px;margin-top:64px}
+#l1-exer .task{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:30px 32px}
+#l1-exer .tile{width:84px;height:84px;border-radius:24px;display:grid;place-items:center;margin-bottom:22px}
+#l1-exer .tile svg{width:46px;height:46px}
+#l1-exer .task .small{margin-top:6px}
+#l1-sort .tip{display:flex;align-items:center;gap:18px;padding:12px 0;font:600 30px Inter}
+#l1-sort .tip+.tip{border-top:2px solid #EEF1F7}
+#l1-sort .tip i{flex:none;width:58px;height:58px;border-radius:17px;display:grid;place-items:center}
+#l1-sort .tip i svg{width:34px;height:34px}
+#l1-sort .key{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+#l1-sort .key ul{list-style:none;display:flex;flex-direction:column;gap:8px;font:600 28px Inter}
+#l1-sort .key li{display:flex;align-items:center;gap:10px}
+#l1-sort .key li svg{width:28px;height:28px;flex:none}
+#l1-make .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+#l1-make .bf{display:flex;align-items:center;gap:16px;height:132px;padding:0 26px;font:600 30px/1.3 Inter}
+#l1-make .bf>svg,#l1-make .af>svg{flex:none;width:44px;height:44px;padding:8px;border-radius:13px}
+#l1-make .bf>svg{background:#fff;color:var(--noc)}
+#l1-make .mid{display:flex;align-items:center;justify-content:center;gap:16px;height:72px}
+#l1-make .mid>svg{width:40px;height:60px;flex:none}
+#l1-make .slot{position:relative;height:160px;border:2.5px dashed #C2CCE2;border-radius:28px;display:grid;place-items:center;font:600 26px Inter;color:var(--mute)}
+#l1-make .af{position:absolute;inset:-2.5px;display:flex;align-items:center;gap:16px;padding:0 26px;border-radius:28px;background:var(--lmint);border:2.5px solid var(--mint);font:600 30px/1.3 Inter;color:var(--ink)}
+#l1-make .af>svg{background:var(--mint);color:#fff}
+#l1-make .turn{display:grid;grid-template-columns:560px 1fr;gap:30px;margin-top:30px;height:276px}
+#l1-make .ans{font:600 28px/1.32 Inter;padding:16px 22px;gap:14px}
+#l1-make .ans svg{width:36px;height:36px}
+#l1-check .qq{display:flex;flex-direction:column;height:680px}
+#l1-check .ch{grid-template-columns:1fr;gap:14px}
+#l1-check .c{font:600 30px/1.25 Inter;padding:11px 20px}
+#l1-check .c b{width:46px;height:46px;font-size:24px}
+#l1-check .ans{margin-top:auto;font:600 30px/1.3 Inter;padding:18px 24px}
+#l1-check .ans svg{width:38px;height:38px}
+#l1-check .bub{display:flex;align-items:center;gap:22px;margin:18px 0 16px;padding:16px 22px;border-radius:24px;background:var(--lsun)}
+#l1-check .bub .clock{width:104px;flex:none}
+#l1-exit .ticket{position:relative;display:grid;grid-template-columns:220px 1fr;width:1080px;height:690px;border-radius:34px;background:#fff;box-shadow:0 26px 64px rgba(15,27,51,.10)}
+#l1-exit .stub{position:relative;border-radius:34px 0 0 34px;background:linear-gradient(165deg,var(--blue),var(--violet));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:40px 0 34px}
+#l1-exit .stub .vt{writing-mode:vertical-rl;transform:rotate(180deg);font:800 44px Display;letter-spacing:.08em}
+#l1-exit .stub .cls{font:700 26px Inter;padding:8px 16px;border-radius:12px;background:rgba(255,255,255,.18)}
+#l1-exit .perf{position:absolute;left:220px;top:28px;bottom:28px;border-left:4px dashed #D3DAE8}
+#l1-exit .nt{position:absolute;left:202px;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+#l1-exit .main{padding:38px 44px;display:flex;flex-direction:column;gap:22px}
+#l1-exit .cl{display:flex;align-items:center;gap:18px;padding:14px 0;font:600 30px Inter}
+#l1-exit .cl+.cl{border-top:2px solid #EEF1F7}
+#l1-exit .box{flex:none;width:46px;height:46px;border-radius:12px;border:3px solid #B9C4DC}
+#l1-exit .ic{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center}
+#l1-exit .ic svg{width:28px;height:28px}
+#l1-exit .st{display:flex;flex-wrap:wrap;gap:12px}
+#l1-exit .st span{padding:10px 18px;border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(15,27,51,.08);font:700 28px Inter;color:var(--blue)}
+</style>
+
+<!-- ===================== LESSON 1 · teaching ===================== -->
+
+<!-- 1 · opener -->
+<section class="slide opener" id="l1-open" data-steps="0" data-lesson="1" data-title="Lesson 1 · Statistical questions">
+ <i class="mesh m2"></i>
+ <div style="display:grid;grid-template-columns:860px 1fr;gap:60px;align-items:center;height:100%">
+  <div>
+   <div class="row" style="gap:44px;align-items:center">
+    <div class="num in" style="--d:100">1</div>
+    <div>
+     <div class="kicker in" style="--d:200">Lesson 1</div>
+     <h2 class="in" style="--d:280">Statistical<br><em>questions</em></h2>
+    </div>
+   </div>
+   <p class="lede in" style="--d:400;margin:44px 0 32px;max-width:760px">Some questions have one answer. Some have many. Today we learn to tell them apart.</p>
+   <ul class="goals">
+    <li class="in" style="--d:520"><svg><use href="#target"/></svg>Spot a statistical question</li>
+    <li class="in" style="--d:610"><svg><use href="#check"/></svg>Use 3 checks: group, vary, data</li>
+    <li class="in" style="--d:700"><svg><use href="#pencil"/></svg>Rewrite a question so it needs data</li>
+   </ul>
+  </div>
+  <div class="vis" style="position:relative;width:740px;height:800px" aria-hidden="true">
+   <div class="card float" style="left:70px;top:300px;width:600px;--r:-2deg;--d:300;padding:30px 36px">
+    <span class="chip">One question</span>
+    <div class="qt">Which drink do students in 1/2 like best?</div>
+   </div>
+   <svg class="kid pop" viewBox="0 0 80 100" style="left:70px;top:150px;--n:0;--d:700;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"><use href="#kid"/></svg>
+   <svg class="kid pop" viewBox="0 0 80 100" style="left:327px;top:100px;--n:1;--d:700;--skin:#C68B62;--hair:#1E1A17;--shirt:var(--k2)"><use href="#kid"/></svg>
+   <svg class="kid pop" viewBox="0 0 80 100" style="left:584px;top:150px;--n:2;--d:700;--skin:#E8B48C;--hair:#3B2A1E;--shirt:var(--k3)"><use href="#kid"/></svg>
+   <svg class="kid pop" viewBox="0 0 80 100" style="left:70px;top:630px;--n:3;--d:700;--skin:#D9A77E;--hair:#151212;--shirt:var(--k4)"><use href="#kid"/></svg>
+   <svg class="kid pop" viewBox="0 0 80 100" style="left:327px;top:680px;--n:4;--d:700;--skin:#F0C29A;--hair:#2A1D14;--shirt:var(--sun)"><use href="#kid"/></svg>
+   <svg class="kid pop" viewBox="0 0 80 100" style="left:584px;top:630px;--n:5;--d:700;--skin:#B9805A;--hair:#1E1A17;--shirt:var(--k1)"><use href="#kid"/></svg>
+   <div class="sw" style="left:3px;top:78px"><span class="say pop" style="--n:0;--d:1150;--c:var(--coral)"><i></i>Thai tea</span></div>
+   <div class="sw" style="left:260px;top:28px"><span class="say pop" style="--n:1;--d:1150;--c:var(--blue)"><i></i>Water</span></div>
+   <div class="sw" style="left:517px;top:78px"><span class="say pop" style="--n:2;--d:1150;--c:var(--violet)"><i></i>Milk</span></div>
+   <div class="sw" style="left:3px;top:558px"><span class="say pop" style="--n:3;--d:1150;--c:var(--sun)"><i></i>Bubble tea</span></div>
+   <div class="sw" style="left:260px;top:608px"><span class="say pop" style="--n:4;--d:1150;--c:var(--coral)"><i></i>Thai tea</span></div>
+   <div class="sw" style="left:517px;top:558px"><span class="say pop" style="--n:5;--d:1150;--c:var(--blue)"><i></i>Water</span></div>
+  </div>
+ </div>
+ <aside class="notes">Opener, about 1 minute. Read the three goals together.
+Point to the picture: six students in 1/2 answered ONE question, "Which drink do students in 1/2 like best?"
+Ask: "Did they all give the same answer?" No. Thai tea 2, water 2, milk 1, bubble tea 1. Check: 2 + 2 + 1 + 1 = 6 answers from 6 students.
+Say: "When one question gets many different answers, we need statistics. That is today's lesson."</aside>
+</section>
+
+<!-- 2 · hook: one answer vs many -->
+<section class="slide" id="l1-hook" data-steps="3">
+ <i class="mesh"></i>
+ <div class="kicker in">Lesson 1 · Warm-up</div>
+ <h2 class="in" style="--d:120">One answer or <em>many</em>?</h2>
+ <div style="display:grid;grid-template-columns:500px 1fr;gap:34px;height:622px">
+  <div class="card in" style="--d:240;display:flex;flex-direction:column">
+   <span class="chip coral" style="align-self:flex-start">Question A</span>
+   <div class="q" style="margin-top:16px">What time did <b>I</b> wake up today?</div>
+   <div class="row" style="flex:1;justify-content:center;gap:24px">
+    <svg class="clock" viewBox="0 0 120 132" aria-hidden="true"><circle cx="27" cy="27" r="16" class="bell"/><circle cx="93" cy="27" r="16" class="bell"/><path d="M34 114 L24 128 M86 114 L96 128" class="leg"/><circle cx="60" cy="72" r="47" class="body"/><circle cx="60" cy="72" r="37" class="face"/><line x1="60" y1="72" x2="60" y2="54" class="hh" style="--a:187.5deg"/><line x1="60" y1="72" x2="60" y2="45" class="mh" style="--a:90deg"/><circle cx="60" cy="72" r="4.5" class="pin"/></svg>
+    <div class="big">6:15</div>
+   </div>
+   <div class="badge no g3" style="align-self:flex-start"><svg><use href="#cross"/></svg>Only <b>1</b> answer</div>
+  </div>
+  <div class="card in" style="--d:360;display:flex;flex-direction:column">
+   <span class="chip" style="align-self:flex-start">Question B</span>
+   <div class="q" style="margin-top:16px">What time did the students in <b>our class</b> wake up today?</div>
+   <svg class="chart" viewBox="0 0 1050 352" style="width:1050px;height:352px;margin-top:18px" role="img" aria-label="Six students and a dot plot of wake-up times for the whole class">
+    <g>
+     <use href="#kid" class="pop" x="157" y="0" width="76" height="95" style="--n:0;--d:500;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"/>
+     <use href="#kid" class="pop" x="267" y="0" width="76" height="95" style="--n:1;--d:500;--skin:#D9A77E;--hair:#3B2A1E;--shirt:var(--k2)"/>
+     <use href="#kid" class="pop" x="377" y="0" width="76" height="95" style="--n:2;--d:500;--skin:#C68B62;--hair:#1E1A17;--shirt:var(--k3)"/>
+     <use href="#kid" class="pop" x="487" y="0" width="76" height="95" style="--n:3;--d:500;--skin:#E8B48C;--hair:#151212;--shirt:var(--k4)"/>
+     <use href="#kid" class="pop" x="597" y="0" width="76" height="95" style="--n:4;--d:500;--skin:#F0C29A;--hair:#2A1D14;--shirt:var(--sun)"/>
+     <use href="#kid" class="pop" x="817" y="0" width="76" height="95" style="--n:5;--d:500;--skin:#B9805A;--hair:#2B2118;--shirt:var(--k1)"/>
+    </g>
+    <g class="g1">
+     <g class="pop" style="--n:0"><rect x="153" y="98" width="84" height="40" rx="11" class="tagr"/><text x="195" y="126" text-anchor="middle" class="tagt">5:45</text></g>
+     <g class="pop" style="--n:1"><rect x="263" y="98" width="84" height="40" rx="11" class="tagr"/><text x="305" y="126" text-anchor="middle" class="tagt">6:00</text></g>
+     <g class="pop" style="--n:2"><rect x="373" y="98" width="84" height="40" rx="11" class="tagr"/><text x="415" y="126" text-anchor="middle" class="tagt">6:15</text></g>
+     <g class="pop" style="--n:3"><rect x="483" y="98" width="84" height="40" rx="11" class="tagr"/><text x="525" y="126" text-anchor="middle" class="tagt">6:30</text></g>
+     <g class="pop" style="--n:4"><rect x="593" y="98" width="84" height="40" rx="11" class="tagr"/><text x="635" y="126" text-anchor="middle" class="tagt">6:45</text></g>
+     <g class="pop" style="--n:5"><rect x="813" y="98" width="84" height="40" rx="11" class="tagr"/><text x="855" y="126" text-anchor="middle" class="tagt">7:15</text></g>
+    </g>
+    <g class="g2">
+     <line x1="30" y1="306" x2="1020" y2="306" class="axis"/>
+     <g class="s-ink" style="stroke-width:3"><line x1="85" y1="306" x2="85" y2="315"/><line x1="195" y1="306" x2="195" y2="315"/><line x1="305" y1="306" x2="305" y2="315"/><line x1="415" y1="306" x2="415" y2="315"/><line x1="525" y1="306" x2="525" y2="315"/><line x1="635" y1="306" x2="635" y2="315"/><line x1="745" y1="306" x2="745" y2="315"/><line x1="855" y1="306" x2="855" y2="315"/><line x1="965" y1="306" x2="965" y2="315"/></g>
+     <g text-anchor="middle"><text x="85" y="344" class="tick">5:30</text><text x="195" y="344" class="tick">5:45</text><text x="305" y="344" class="tick">6:00</text><text x="415" y="344" class="tick">6:15</text><text x="525" y="344" class="tick">6:30</text><text x="635" y="344" class="tick">6:45</text><text x="745" y="344" class="tick">7:00</text><text x="855" y="344" class="tick">7:15</text><text x="965" y="344" class="tick">7:30</text></g>
+     <g class="f-coral">
+      <circle cx="195" cy="286" r="14" class="drop" style="--n:0"/><circle cx="305" cy="286" r="14" class="drop" style="--n:1"/><circle cx="415" cy="286" r="14" class="drop" style="--n:2"/><circle cx="525" cy="286" r="14" class="drop" style="--n:3"/><circle cx="635" cy="286" r="14" class="drop" style="--n:4"/><circle cx="855" cy="286" r="14" class="drop" style="--n:5"/>
+     </g>
+     <g class="f-blue">
+      <circle cx="85" cy="286" r="14" class="drop" style="--n:7"/>
+      <circle cx="195" cy="254" r="14" class="drop" style="--n:8"/>
+      <circle cx="305" cy="254" r="14" class="drop" style="--n:9"/><circle cx="305" cy="222" r="14" class="drop" style="--n:12"/>
+      <circle cx="415" cy="254" r="14" class="drop" style="--n:10"/><circle cx="415" cy="222" r="14" class="drop" style="--n:13"/><circle cx="415" cy="190" r="14" class="drop" style="--n:16"/>
+      <circle cx="525" cy="254" r="14" class="drop" style="--n:11"/><circle cx="525" cy="222" r="14" class="drop" style="--n:14"/>
+      <circle cx="635" cy="254" r="14" class="drop" style="--n:15"/>
+      <circle cx="745" cy="286" r="14" class="drop" style="--n:17"/>
+     </g>
+    </g>
+   </svg>
+   <div class="cap g2" style="--d:500;margin-top:8px"><span class="cdot"></span>our 6 friends<span class="bdot" style="margin-left:18px"></span>the rest of the class<span style="margin-left:18px">· 1 dot = 1 student · <b data-count="17" data-at="2">17</b> students</span></div>
+   <div class="badge yes g3" style="position:absolute;right:34px;top:28px"><svg><use href="#check"/></svg>Answers <b>vary</b></div>
+  </div>
+ </div>
+ <div class="idea g3" style="--d:300;margin-top:22px"><svg><use href="#bulb"/></svg><div>To answer B, we must <b>collect data</b> from the whole class.</div></div>
+ <aside class="notes">Beat 0: read both questions. Ask: "How many answers does each question have?"
+Question A is about one person ("I"), so it has one answer: 6:15.
+Beat 1: six friends answer question B: 5:45, 6:00, 6:15, 6:30, 6:45, 7:15. All different!
+Beat 2: everyone in the class answers. Each dot is one student (coral = our 6 friends, blue = the other 11).
+Count per time: 5:30 1, 5:45 2, 6:00 3, 6:15 4, 6:30 3, 6:45 2, 7:00 1, 7:15 1, 7:30 0. Check: 1+2+3+4+3+2+1+1+0 = 17 students (6 coral + 11 blue = 17).
+Ask: "What is the most common wake-up time?" 6:15 (4 students).
+Beat 3: A has one answer. B has many answers that vary, so we must collect data to answer it.</aside>
+</section>
+
+<!-- 3 · definition: one question -> many answers -> data -->
+<section class="slide" id="l1-def" data-steps="3">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Lesson 1 · Key idea</div>
+ <h2 class="in" style="--d:120">What is a <em>statistical question</em>?</h2>
+ <div class="flow">
+  <div class="card in" style="--d:240">
+   <span class="chip" style="align-self:flex-start">1 · One question</span>
+   <div class="qm pop" style="--d:600">?</div>
+   <div class="q" style="margin-top:auto;font-size:40px;line-height:1.25">How do members of the <b class="blue">art club</b> get to school?</div>
+   <div class="small" style="margin-top:18px">Asked to 12 members</div>
+  </div>
+  <div class="arw g1"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M6 30 H50" pathLength="1" class="draw" style="fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round"/><path d="M36 16 L52 30 L36 44" pathLength="1" class="draw" style="--d:500;fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg></div>
+  <div class="card g1" style="--d:150">
+   <span class="chip violet" style="align-self:flex-start">2 · Many answers</span>
+   <div class="pills">
+    <span class="pl pop" style="--n:0;--bgc:var(--lblue);--fgc:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Bus</span>
+    <span class="pl pop" style="--n:1;--bgc:var(--lmint);--fgc:#0B7F69"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Walk</span>
+    <span class="pl pop" style="--n:2;--bgc:var(--lviolet);--fgc:var(--violet)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>BTS</span>
+    <span class="pl pop" style="--n:3;--bgc:var(--lblue);--fgc:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Bus</span>
+    <span class="pl pop" style="--n:4;--bgc:var(--lcoral);--fgc:var(--noc)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Car</span>
+    <span class="pl pop" style="--n:5;--bgc:var(--lsun);--fgc:#8A5A00"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Bike</span>
+    <span class="pl pop" style="--n:6;--bgc:var(--lviolet);--fgc:var(--violet)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>BTS</span>
+    <span class="pl pop" style="--n:7;--bgc:var(--lblue);--fgc:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Bus</span>
+    <span class="pl pop" style="--n:8;--bgc:var(--lmint);--fgc:#0B7F69"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Walk</span>
+    <span class="pl pop" style="--n:9;--bgc:var(--lcoral);--fgc:var(--noc)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Car</span>
+    <span class="pl pop" style="--n:10;--bgc:var(--lviolet);--fgc:var(--violet)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>BTS</span>
+    <span class="pl pop" style="--n:11;--bgc:var(--lblue);--fgc:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg>Bus</span>
+   </div>
+   <div class="small" style="text-align:center">The answers <b style="color:var(--ink)">vary</b></div>
+  </div>
+  <div class="arw g2"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M6 30 H50" pathLength="1" class="draw" style="fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round"/><path d="M36 16 L52 30 L36 44" pathLength="1" class="draw" style="--d:500;fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg></div>
+  <div class="card g2" style="--d:150">
+   <span class="chip mint" style="align-self:flex-start">3 · Data</span>
+   <svg class="chart" viewBox="0 0 364 270" style="width:364px;height:270px;margin-top:auto" role="img" aria-label="Bar chart: Bus 4, BTS 3, Car 2, Walk 2, Bike 1">
+    <g class="lab"><text x="0" y="37">Bus</text><text x="0" y="89">BTS</text><text x="0" y="141">Car</text><text x="0" y="193">Walk</text><text x="0" y="245">Bike</text></g>
+    <rect x="80" y="12" width="248" height="36" rx="8" class="growx f-blue" style="--n:0"/>
+    <rect x="80" y="64" width="186" height="36" rx="8" class="growx f-violet" style="--n:1"/>
+    <rect x="80" y="116" width="124" height="36" rx="8" class="growx f-coral" style="--n:2"/>
+    <rect x="80" y="168" width="124" height="36" rx="8" class="growx f-mint" style="--n:3"/>
+    <rect x="80" y="220" width="62" height="36" rx="8" class="growx f-sun" style="--n:4"/>
+    <line x1="80" y1="2" x2="80" y2="266" class="axis"/>
+    <g class="val"><text x="338" y="38">4</text><text x="276" y="90">3</text><text x="214" y="142">2</text><text x="214" y="194">2</text><text x="152" y="246">1</text></g>
+   </svg>
+   <div class="small" style="margin-top:auto;text-align:center">4 + 3 + 2 + 2 + 1 = <b style="color:var(--ink)">12</b></div>
+  </div>
+ </div>
+ <div class="def g3"><div><div class="dt">Definition</div>A <b>statistical question</b> expects answers that <mark>vary</mark>. We answer it by collecting <mark>data</mark> from a group.</div></div>
+ <aside class="notes">Beat 0: one question, asked to the 12 members of the art club.
+Beat 1: 12 members give 12 answers, and they are not all the same. The answers vary.
+Beat 2: we collect the answers as data and count them: Bus 4, BTS 3, Car 2, Walk 2, Bike 1. Check: 4 + 3 + 2 + 2 + 1 = 12 members. (Pills: Bus at 1st, 4th, 8th, 12th = 4; BTS 3rd, 7th, 11th = 3; Car 5th, 10th = 2; Walk 2nd, 9th = 2; Bike 6th = 1.)
+Beat 3: read the definition together. New term: statistical question. Ask: "Which two words matter most?" vary and data.</aside>
+</section>
+
+<!-- 4 · the three checks -->
+<section class="slide" id="l1-checks" data-steps="3">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Lesson 1 · Key idea</div>
+ <h2 class="in" style="--d:120">Three <em>checks</em> for every question</h2>
+ <div class="card flat strip in" style="--d:240">
+  <span class="chip violet">Test it</span>
+  <div class="q" style="flex:1">How long do students in 1/2 take to get to school?</div>
+  <div class="badge yes g3" style="--d:900"><svg><use href="#check"/></svg>3 of 3 · <b>statistical</b></div>
+ </div>
+ <div class="grid3" style="margin-top:28px">
+  <div class="card ck g1">
+   <div class="art" style="background:var(--lblue)">
+    <svg viewBox="0 0 300 170" style="width:300px;height:170px" aria-hidden="true">
+     <use href="#person" x="8" y="104" width="44" height="62" class="pop" style="--n:0;color:var(--sun)"/>
+     <use href="#person" x="248" y="104" width="44" height="62" class="pop" style="--n:4;color:var(--mint)"/>
+     <use href="#person" x="50" y="80" width="58" height="82" class="pop" style="--n:1;color:var(--coral)"/>
+     <use href="#person" x="192" y="80" width="58" height="82" class="pop" style="--n:3;color:var(--violet)"/>
+     <use href="#person" x="113" y="54" width="74" height="104" class="pop" style="--n:2;color:var(--blue)"/>
+    </svg>
+   </div>
+   <div class="hd"><b class="n1">1</b><h3>About a group</h3></div>
+   <div class="body">It asks about many people or things.</div>
+   <div class="badge yes"><svg><use href="#check"/></svg>Students in 1/2</div>
+  </div>
+  <div class="card ck g2">
+   <div class="art" style="background:var(--lcoral)">
+    <span class="mn pop" style="--n:0;left:36px;top:30px;color:var(--blue)">5 min</span>
+    <span class="mn pop" style="--n:1;left:250px;top:22px;color:var(--violet)">20 min</span>
+    <span class="mn pop" style="--n:2;left:96px;top:116px;color:var(--okc)">12 min</span>
+    <span class="mn pop" style="--n:3;left:300px;top:112px;color:var(--noc)">45 min</span>
+   </div>
+   <div class="hd"><b class="n2">2</b><h3>Answers vary</h3></div>
+   <div class="body">We expect different answers.</div>
+   <div class="badge yes"><svg><use href="#check"/></svg>5, 12, 20, 45 min …</div>
+  </div>
+  <div class="card ck g3">
+   <div class="art" style="background:var(--lmint)">
+    <svg viewBox="0 0 300 170" style="width:300px;height:170px" aria-hidden="true">
+     <rect x="92" y="16" width="116" height="148" rx="14" style="fill:#fff;stroke:var(--ink);stroke-width:4"/>
+     <rect x="124" y="6" width="52" height="20" rx="7" class="f-mint"/>
+     <g style="fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round">
+      <path d="M116 48 V86" pathLength="1" class="draw" style="--n:0"/><path d="M130 48 V86" pathLength="1" class="draw" style="--n:1"/><path d="M144 48 V86" pathLength="1" class="draw" style="--n:2"/><path d="M158 48 V86" pathLength="1" class="draw" style="--n:3"/>
+      <path d="M108 80 L168 54" pathLength="1" class="draw" style="--n:4;stroke:var(--coral)"/>
+      <path d="M116 108 V146" pathLength="1" class="draw" style="--n:5"/><path d="M130 108 V146" pathLength="1" class="draw" style="--n:6"/><path d="M144 108 V146" pathLength="1" class="draw" style="--n:7"/>
+     </g>
+     <g style="color:var(--blue)"><use href="#pencil" x="196" y="96" width="62" height="62" class="pop" style="--n:8"/></g>
+    </svg>
+   </div>
+   <div class="hd"><b class="n3">3</b><h3>Needs data</h3></div>
+   <div class="body">We collect answers to find out.</div>
+   <div class="badge yes"><svg><use href="#check"/></svg>Ask everyone, record it</div>
+  </div>
+ </div>
+ <aside class="notes">Use the test question at the top: "How long do students in 1/2 take to get to school?"
+Beat 1 · About a group: yes, it asks about all the students in 1/2, not one person.
+Beat 2 · Answers vary: yes, one student lives close (5 min), another far away (45 min).
+Beat 3 · Needs data: yes, we must ask every student and record the times. All 3 checks pass, so it is a statistical question.
+Tip: a group does not have to be people. It can be days, classes or trees in the school garden.</aside>
+</section>
+
+<!-- 5 · examples vs non-examples -->
+<section class="slide" id="l1-pairs" data-steps="4">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Lesson 1 · Examples</div>
+ <h2 class="in" style="--d:120">Same topic, <em>different</em> question</h2>
+ <div class="tb">
+  <div class="badge no in" style="--d:220;justify-self:start"><svg><use href="#cross"/></svg>Not statistical · one answer</div>
+  <div></div>
+  <div class="badge yes in" style="--d:300;justify-self:start"><svg><use href="#check"/></svg>Statistical · answers vary</div>
+
+  <div class="slot in" style="--d:360"><div class="pc no g1"><span>How much is a bowl of noodles at our canteen?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#E9B4AC;stroke-width:3;stroke-linecap:round"/><circle cx="42" cy="34" r="9" class="f-coral"/></svg></div></div>
+  <div class="ic in" style="--d:420"><div><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 30 H56 Q55 50 32 54 Q9 50 8 30 Z" class="f-coral"/><rect x="20" y="53" width="24" height="6" rx="3" class="f-coral"/><path d="M24 23 Q20 17 24 11 M33 23 Q29 17 33 11" style="fill:none;stroke:#AAB4CC;stroke-width:3;stroke-linecap:round"/><path d="M46 4 L36 30 M55 7 L42 30" style="stroke:var(--ink);stroke-width:3;stroke-linecap:round"/></svg></div></div>
+  <div class="slot in" style="--d:380"><div class="pc yes g1" style="--d:350"><span>How much do students in 1/2 spend at the canteen each day?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#A8E3D6;stroke-width:3;stroke-linecap:round"/><g class="f-mint"><circle cx="16" cy="36" r="7"/><circle cx="32" cy="36" r="7"/><circle cx="32" cy="20" r="7"/><circle cx="48" cy="36" r="7"/><circle cx="48" cy="20" r="7"/><circle cx="48" cy="4" r="0"/><circle cx="64" cy="36" r="7"/></g></svg></div></div>
+
+  <div class="slot in" style="--d:440"><div class="pc no g2"><span>How fast did Krit run 100 m on sports day?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#E9B4AC;stroke-width:3;stroke-linecap:round"/><circle cx="42" cy="34" r="9" class="f-coral"/></svg></div></div>
+  <div class="ic in" style="--d:500"><div><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="37" r="21" style="fill:#fff;stroke:var(--blue);stroke-width:5"/><rect x="26" y="5" width="12" height="8" rx="3" class="f-blue"/><path d="M50 16 L54 12" style="stroke:var(--blue);stroke-width:5;stroke-linecap:round"/><path d="M32 37 V24 M32 37 L41 42" style="stroke:var(--ink);stroke-width:4;stroke-linecap:round"/></svg></div></div>
+  <div class="slot in" style="--d:460"><div class="pc yes g2" style="--d:350"><span>How fast did M1 students run 100 m on sports day?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#A8E3D6;stroke-width:3;stroke-linecap:round"/><g class="f-mint"><circle cx="16" cy="36" r="7"/><circle cx="16" cy="20" r="7"/><circle cx="32" cy="36" r="7"/><circle cx="48" cy="36" r="7"/><circle cx="48" cy="20" r="7"/><circle cx="48" cy="4" r="7"/><circle cx="64" cy="36" r="7"/></g></svg></div></div>
+
+  <div class="slot in" style="--d:520"><div class="pc no g3"><span>Did it rain at our school today?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#E9B4AC;stroke-width:3;stroke-linecap:round"/><circle cx="42" cy="34" r="9" class="f-coral"/></svg></div></div>
+  <div class="ic in" style="--d:580"><div><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 38 Q8 38 8 29 Q8 20 18 20 Q21 9 32 9 Q44 9 46 20 Q56 20 56 29 Q56 38 46 38 Z" class="f-violet"/><path d="M20 46 L17 55 M32 46 L29 57 M44 46 L41 55" style="stroke:var(--blue);stroke-width:4;stroke-linecap:round"/></svg></div></div>
+  <div class="slot in" style="--d:540"><div class="pc yes g3" style="--d:350"><span>How much rain fell in Bangkok each day in September?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#A8E3D6;stroke-width:3;stroke-linecap:round"/><g class="f-mint"><circle cx="16" cy="36" r="7"/><circle cx="32" cy="36" r="7"/><circle cx="32" cy="20" r="7"/><circle cx="32" cy="4" r="7"/><circle cx="48" cy="36" r="7"/><circle cx="64" cy="36" r="7"/><circle cx="64" cy="20" r="7"/></g></svg></div></div>
+
+  <div class="slot in" style="--d:600"><div class="pc no g4"><span>How many LINE sticker sets does Ploy have?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#E9B4AC;stroke-width:3;stroke-linecap:round"/><circle cx="42" cy="34" r="9" class="f-coral"/></svg></div></div>
+  <div class="ic in" style="--d:660"><div><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 14 Q10 8 16 8 H48 Q54 8 54 14 V38 Q54 44 48 44 H28 L18 54 V44 H16 Q10 44 10 38 Z" class="f-mint"/><circle cx="25" cy="23" r="3.2" style="fill:#fff"/><circle cx="39" cy="23" r="3.2" style="fill:#fff"/><path d="M24 31 Q32 38 40 31" style="fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round"/></svg></div></div>
+  <div class="slot in" style="--d:620"><div class="pc yes g4" style="--d:350"><span>How many LINE sticker sets do students in our class have?</span><svg viewBox="0 0 84 52" aria-hidden="true"><line x1="6" y1="46" x2="78" y2="46" style="stroke:#A8E3D6;stroke-width:3;stroke-linecap:round"/><g class="f-mint"><circle cx="16" cy="36" r="7"/><circle cx="16" cy="20" r="7"/><circle cx="32" cy="36" r="7"/><circle cx="32" cy="20" r="7"/><circle cx="48" cy="36" r="7"/><circle cx="64" cy="36" r="7"/></g></svg></div></div>
+ </div>
+ <aside class="notes">Four topics, two questions each. Before each beat, name the topic and ask students to make up both questions themselves.
+Beat 1 · Canteen: one bowl of noodles has one price (for example 40 baht), so one answer. Spending per student varies (20 baht, 45 baht, 60 baht …).
+Beat 2 · Sports day: Krit has one time. All M1 runners have many different times.
+Beat 3 · Rain: "Did it rain today?" is yes or no, one answer. Rain each day in September gives 30 amounts (September has 30 days), so the group is days, not people.
+Beat 4 · LINE stickers: Ploy is one person. The whole class gives many answers.
+The small pictures: one dot = one answer; many dots = many answers that vary.</aside>
+</section>
+
+<!-- ===================== EXERCISE 1 ===================== -->
+
+<!-- 6 · exercise divider -->
+<section class="slide" id="l1-exer" data-steps="0" data-lesson="1" data-title="Exercise 1 · Statistical questions">
+ <i class="mesh m3"></i>
+ <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+  <div class="pill in" style="--d:100">Exercise 1</div>
+  <h2 class="in" style="--d:200;font-size:100px;margin:34px 0 18px">Practise: <em>statistical</em> or not?</h2>
+  <p class="lede in" style="--d:320">Work it out on the board first. Then we check together.</p>
+  <div class="tasks">
+   <div class="card task pop" style="--n:0;--d:500"><div class="tile" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h8v6H3zM13 13h8v6h-8zM7 11v4h6M17 13V9h-6" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round"/></svg></div><h3>Sort</h3><div class="small">8 question cards</div></div>
+   <div class="card task pop" style="--n:1;--d:500"><div class="tile" style="background:var(--lcoral);color:var(--coral)"><svg aria-hidden="true"><use href="#pencil"/></svg></div><h3>Rewrite</h3><div class="small">Make 4 questions statistical</div></div>
+   <div class="card task pop" style="--n:2;--d:500"><div class="tile" style="background:var(--lviolet);color:var(--violet)"><svg aria-hidden="true"><use href="#target"/></svg></div><h3>Quick check</h3><div class="small">Tap the right answer</div></div>
+   <div class="card task pop" style="--n:3;--d:500"><div class="tile" style="background:var(--lmint);color:var(--okc)"><svg aria-hidden="true"><use href="#clipboard"/></svg></div><h3>Exit ticket</h3><div class="small">Write your own question</div></div>
+  </div>
+ </div>
+ <aside class="notes">Exercise 1 starts here. Four short tasks. Students come to the board, explain their answer to the class, and only then do we click to show the answer.
+Remind them of the 3 checks: about a group? answers vary? needs data?</aside>
+</section>
+
+<!-- 7 · sorting activity -->
+<section class="slide" id="l1-sort" data-steps="1">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Exercise 1 · Sort</div>
+ <h2 class="in" style="--d:120">Statistical or <em>not</em>?</h2>
+ <div style="display:grid;grid-template-columns:1060px 1fr;gap:40px">
+  <div class="in" style="--d:240">
+   <div class="w-sort ia" data-bins="Statistical|Not statistical" style="width:1060px;height:690px">
+    <div class="item" data-bin="0">How long do students in 1/2 sleep each night?</div>
+    <div class="item" data-bin="1">What time does the canteen open?</div>
+    <div class="item" data-bin="1">How many days are in March?</div>
+    <div class="item" data-bin="0">Which fruit do students in 1/2 like best?</div>
+    <div class="item" data-bin="0">How many brothers and sisters do M1 students have?</div>
+    <div class="item" data-bin="1">How tall is the school flagpole?</div>
+    <div class="item" data-bin="0">How far do students in 1/2 live from school?</div>
+    <div class="item" data-bin="1">How old is our principal?</div>
+   </div>
+  </div>
+  <div class="stack" style="gap:26px">
+   <div class="card in" style="--d:360;padding:26px 32px">
+    <div class="chip violet">Ask the 3 checks</div>
+    <div style="margin-top:12px">
+     <div class="tip"><i style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg></i>About a group?</div>
+     <div class="tip"><i style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><path d="M4 18 V12 M10 18 V6 M16 18 V10 M22 18 V14" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></svg></i>Answers vary?</div>
+     <div class="tip"><i style="background:var(--lmint);color:var(--okc)"><svg><use href="#clipboard"/></svg></i>Needs data?</div>
+    </div>
+   </div>
+   <div class="card g1" style="padding:26px 30px">
+    <div class="chip sun">Answers</div>
+    <div class="key" style="margin-top:16px">
+     <ul style="color:var(--okc)"><li><svg><use href="#check"/></svg>sleep</li><li><svg><use href="#check"/></svg>fruit</li><li><svg><use href="#check"/></svg>siblings</li><li><svg><use href="#check"/></svg>how far</li></ul>
+     <ul style="color:var(--noc)"><li><svg><use href="#cross"/></svg>canteen</li><li><svg><use href="#cross"/></svg>March</li><li><svg><use href="#cross"/></svg>flagpole</li><li><svg><use href="#cross"/></svg>principal</li></ul>
+    </div>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Students take turns: drag one card into a bin and say which check it passes or fails. Then press Check, then click for the answers.
+Statistical (4): sleep each night, favourite fruit, brothers and sisters, how far they live. Each is about a group and the answers vary.
+Not statistical (4): canteen opening time (one fixed time), days in March (always 31), height of the flagpole (one height), age of the principal (one person, one age).
+Check: 4 + 4 = 8 cards.</aside>
+</section>
+
+<!-- 8 · make it statistical -->
+<section class="slide" id="l1-make" data-steps="4">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Exercise 1 · Rewrite</div>
+ <h2 class="in" style="--d:120">Make it <em>statistical</em></h2>
+ <div class="cols">
+  <div>
+   <div class="card t-coral bf in" style="--d:240"><svg><use href="#cross"/></svg><span>What is Nong's favourite subject?</span></div>
+   <div class="mid in" style="--d:300"><svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4 V50 M8 38 L20 52 L32 38" style="fill:none;stroke:#AAB4CC;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg><span class="chip mint g1" style="--d:500">Ask a group</span></div>
+   <div class="slot in" style="--d:340">✎ Your version<div class="af g1"><svg><use href="#check"/></svg><span>What are the favourite subjects of students in 1/2?</span></div></div>
+  </div>
+  <div>
+   <div class="card t-coral bf in" style="--d:300"><svg><use href="#cross"/></svg><span>How many students are in class 1/2?</span></div>
+   <div class="mid in" style="--d:360"><svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4 V50 M8 38 L20 52 L32 38" style="fill:none;stroke:#AAB4CC;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg><span class="chip mint g2" style="--d:500">Many classes</span></div>
+   <div class="slot in" style="--d:400">✎ Your version<div class="af g2"><svg><use href="#check"/></svg><span>How many students are in each M1 class?</span></div></div>
+  </div>
+  <div>
+   <div class="card t-coral bf in" style="--d:360"><svg><use href="#cross"/></svg><span>What time does our school start?</span></div>
+   <div class="mid in" style="--d:420"><svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4 V50 M8 38 L20 52 L32 38" style="fill:none;stroke:#AAB4CC;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg><span class="chip mint g3" style="--d:500">Times vary</span></div>
+   <div class="slot in" style="--d:460">✎ Your version<div class="af g3"><svg><use href="#check"/></svg><span>What time do students in 1/2 arrive at school?</span></div></div>
+  </div>
+ </div>
+ <div class="turn">
+  <div class="stack" style="gap:16px">
+   <div class="card in" style="--d:520;padding:22px 28px">
+    <span class="chip coral">Your turn · rewrite this one</span>
+    <div class="q" style="margin-top:12px;font-size:34px">How many pencils are in my pencil case?</div>
+   </div>
+   <div class="ans g4"><svg><use href="#check"/></svg><div>For example: How many pencils do students in 1/2 have?</div></div>
+  </div>
+  <div class="in" style="--d:600">
+   <div class="w-write ia" data-label="Your turn: rewrite this one" data-lines="2" style="width:1070px;height:276px"></div>
+  </div>
+ </div>
+ <aside class="notes">Students write their own version in the dashed box with the pen (or on the board) BEFORE each click.
+Beat 1: "What is Nong's favourite subject?" is about one person. Ask a group: "What are the favourite subjects of students in 1/2?"
+Beat 2: "How many students are in class 1/2?" is one count (one answer). Ask about many classes: "How many students are in each M1 class?" The counts vary from class to class.
+Beat 3: "What time does our school start?" has one fixed time. "What time do students in 1/2 arrive at school?" has many times.
+Your turn: "How many pencils are in my pencil case?" One person, one answer. Beat 4 shows one good answer: "How many pencils do students in 1/2 have?" Accept any version that names a group and expects answers that vary.</aside>
+</section>
+
+<!-- 9 · quick check: two multiple choice -->
+<section class="slide" id="l1-check" data-steps="2">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Exercise 1 · Quick check</div>
+ <h2 class="in" style="--d:120">Tap the <em>best</em> answer</h2>
+ <div style="display:grid;grid-template-columns:900px 1fr;gap:34px">
+  <div class="card qq in" style="--d:240">
+   <span class="chip" style="align-self:flex-start">Question 1</span>
+   <div class="q" style="margin:14px 0 22px">Which question is <b class="blue">statistical</b>?</div>
+   <div class="ch ia r1" data-mcq>
+    <div class="c"><b>A</b>How tall is the school gate?</div>
+    <div class="c"><b>B</b>How many legs does a spider have?</div>
+    <div class="c ok"><b>C</b>How long do 1/2 students spend on homework?</div>
+    <div class="c"><b>D</b>What colour is our school bus?</div>
+   </div>
+   <div class="ans g1"><svg><use href="#check"/></svg><div><b>C</b> is about a group, and the answers vary.</div></div>
+  </div>
+  <div class="card qq in" style="--d:340">
+   <span class="chip coral" style="align-self:flex-start">Question 2</span>
+   <div class="bub">
+    <svg class="clock" viewBox="0 0 120 132" aria-hidden="true"><circle cx="27" cy="27" r="16" class="bell"/><circle cx="93" cy="27" r="16" class="bell"/><path d="M34 114 L24 128 M86 114 L96 128" class="leg"/><circle cx="60" cy="72" r="47" class="body"/><circle cx="60" cy="72" r="37" class="face"/><line x1="60" y1="72" x2="60" y2="54" class="hh" style="--a:210deg"/><line x1="60" y1="72" x2="60" y2="45" class="mh" style="--a:0deg"/><circle cx="60" cy="72" r="4.5" class="pin"/></svg>
+    <div class="q" style="font-size:34px">“What time does the canteen open?”</div>
+   </div>
+   <div class="q" style="font-size:32px;margin-bottom:18px">Why is it <b class="coral">not</b> statistical?</div>
+   <div class="ch ia r2" data-mcq>
+    <div class="c"><b>A</b>It is about food</div>
+    <div class="c ok"><b>B</b>It has only one answer</div>
+    <div class="c"><b>C</b>It is too short</div>
+    <div class="c"><b>D</b>It asks about a time</div>
+   </div>
+   <div class="ans g2"><svg><use href="#check"/></svg><div><b>B</b>: the canteen opens at one time.</div></div>
+  </div>
+ </div>
+ <aside class="notes">Students tap a choice (or come to the board and point) and explain why. Then click.
+Q1 (beat 1): C. "How long do 1/2 students spend on homework?" is about a group and the times vary. A (one gate), B (always 8 legs) and D (one bus colour) each have one answer.
+Q2 (beat 2): B. The canteen opens at one fixed time (for example 7:00), so there is only one answer and no data to collect. D is a trap: questions about time CAN be statistical, for example "What time do students in 1/2 wake up?"</aside>
+</section>
+
+<!-- 10 · exit ticket -->
+<section class="slide" id="l1-exit" data-steps="1">
+ <i class="mesh"></i>
+ <div class="kicker in">Exercise 1 · Exit ticket</div>
+ <h2 class="in" style="--d:120">Ask <em>our class</em> a question</h2>
+ <div style="display:grid;grid-template-columns:1080px 1fr;gap:40px">
+  <div class="ticket in" style="--d:240">
+   <div class="stub">
+    <div class="vt">EXIT TICKET</div>
+    <svg class="kid" viewBox="0 0 80 100" style="width:110px;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--sun)" aria-hidden="true"><use href="#kid"/></svg>
+    <div class="cls">Class 1/2</div>
+   </div>
+   <div class="perf"></div><div class="nt" style="top:-20px"></div><div class="nt" style="bottom:-20px"></div>
+   <div class="main">
+    <div class="q" style="font-size:38px">Write one <b class="blue">statistical question</b> about our class.</div>
+    <div class="w-write ia" data-label="My statistical question" data-lines="3" style="width:772px;height:500px"></div>
+   </div>
+  </div>
+  <div class="stack" style="gap:26px">
+   <div class="card in" style="--d:360;padding:26px 32px">
+    <div class="chip mint">Check your question</div>
+    <div style="margin-top:10px">
+     <div class="cl"><span class="box"></span>About a group?<span class="ic" style="margin-left:auto;background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg></span></div>
+     <div class="cl"><span class="box"></span>Answers vary?<span class="ic" style="margin-left:auto;background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><path d="M4 18 V12 M10 18 V6 M16 18 V10 M22 18 V14" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></svg></span></div>
+     <div class="cl"><span class="box"></span>Needs data?<span class="ic" style="margin-left:auto;background:var(--lmint);color:var(--okc)"><svg><use href="#clipboard"/></svg></span></div>
+    </div>
+   </div>
+   <div style="position:relative;height:330px">
+    <div class="card flat h1" style="--d:480;position:absolute;inset:0;padding:26px 32px">
+     <div class="chip">Start with</div>
+     <div class="st" style="margin-top:18px"><span>How many …?</span><span>How long …?</span><span>What time …?</span><span>Which … best?</span></div>
+    </div>
+    <div class="card t-mint g1" style="position:absolute;inset:0;padding:26px 32px">
+     <div class="chip mint">Good examples</div>
+     <div class="body" style="margin-top:14px;font-size:30px;line-height:1.35">How many hours do students in 1/2 sleep?</div>
+     <div class="body" style="margin-top:12px;font-size:30px;line-height:1.35">Which sport do students in 1/2 like best?</div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Last 3 minutes. Each student writes one statistical question about our class, then ticks the 3 checks.
+Ask 2 or 3 students to read theirs aloud; the class says which checks pass.
+Beat 1 shows two good examples: "How many hours do students in 1/2 sleep?" and "Which sport do students in 1/2 like best?"
+Common mistake: "What is your favourite sport?" asked to one person. It becomes statistical only when we ask the whole group and collect the answers.
+Next lesson: we will collect data to answer these questions.</aside>
+</section>
