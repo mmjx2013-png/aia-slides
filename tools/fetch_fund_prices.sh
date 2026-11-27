@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 T=$(mktemp -d); D="$T/fund-latest"; mkdir -p "$D"
-LIST="SPYM VOO IVV SPY ADBE JBL FLEX MU LRCX NVDA ROST AAPL BBY MA LMT MCK THB=X $*"
+LIST="SPYM VOO IVV SPY SGOV BIL ADBE JBL FLEX MU LRCX NVDA ROST AAPL BBY MA LMT MCK THB=X $*"
 ok=0; bad=""
 for s in $LIST; do
   y=$(echo "$s" | tr '.' '-'); f=$(echo "$s" | tr '=.' '__'); c=000
