@@ -1,2 +1,2 @@
-Fund launch decided: SPYM 96% (core 60% + unfilled satellite 36%), ADBE 4%, the only BUY-candidate of 12 memos. First orders in orders.md for the week of 30 Nov.
-The satellite is mostly unfilled on purpose: 11 finalists are WATCH (fully priced or peak-cycle). Opus tokens for the launch: 89k.
+Fund: monthly DCA 10,000 THB (LOW 20% SGOV, MEDIUM 70% = SPYM 96% + ADBE 4%, HIGH 10% gold reserve in SGOV); orders.md has the Dec lines in THB and USD.
+First buy Mon 30 Nov or Tue 1 Dec; shadow book (DCA, money-weighted vs SPY) starts with the Dec deposit.

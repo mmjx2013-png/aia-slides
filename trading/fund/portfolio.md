@@ -1,10 +1,13 @@
 # Fund portfolio: target weights (PAPER research; the owner places real orders by hand)
 
+**Funding (from 2026-11-27):** 10,000 THB a month by DCA. The weights below are the MEDIUM bucket's (70% of each month).
+LOW (20%) goes to SGOV, and HIGH (10%) is a gold-desk reserve held in SGOV until approved. See MANDATE.md and orders.md.
+
 Decided 2026-11-27 09:50 Bangkok by one Opus call (89,198 tokens) on 12 Sonnet memos, then checked in code against MANDATE.md.
 
 | Holding | Weight | Group | Reason |
 |---|---|---|---|
-| SPYM (core, S&P 500; expense ratio 0.02%/y, the lowest of SPYM, VOO, IVV) | 96.0% | core | the benchmark itself, bought in 3 weekly tranches; includes 36.0% of unfilled satellite |
+| SPYM (core, S&P 500; expense ratio 0.02%/y, the lowest of SPYM, VOO, IVV) | 96.0% | core | the benchmark itself, bought monthly by DCA; includes 36.0% of unfilled satellite |
 | ADBE | 4.0% | SIC 73 | Only memo rated BUY-candidate: 10.9% FCF yield, 10.5x EV/EBIT, ARR +11.5%, near-zero net debt. Starter size because of AI-disruption and earnings event risk. |
 
 **The satellite is partly unfilled: 4.0% of 40%.** Only ADBE has a margin of safety and a written BUY case. Every other finalist is WATCH: fully priced, or cyclical names that look expensive on normalized numbers. The remaining 36% stays in the core ETF. The unfilled 36.0% sits in SPYM until a name passes research (WATCH names are re-checked at each quarterly review or new 10-Q/10-K).
