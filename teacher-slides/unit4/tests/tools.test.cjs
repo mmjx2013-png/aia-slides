@@ -1,6 +1,6 @@
 // Drives every interactive tool on the demo preview and checks that it really works.
 //   cd teacher-slides/unit4 && python3 build.py --only _tools-demo && node tests/tools.test.cjs
-// Runs three times: 1920x1080 mouse, 1280x720 mouse, 1280x720 touch. Prints PASS/FAIL per check; exit code 1 on any failure.
+// Runs four times: 1920x1080 mouse, 1280x720 mouse, 1280x720 touch, 1024x768 touch. Prints PASS/FAIL per check; exit code 1 on any failure.
 const { chromium } = require('playwright');
 const path = require('path');
 const FILE = 'file://' + path.resolve(__dirname, '..', 'preview-_tools-demo.html');
@@ -382,9 +382,8 @@ async function run(cfg) {
 }
 
 (async () => {
-  for (const cfg of CONFIGS) {
-    try { await run(cfg); } catch (e) { failed++; total++; console.log('FAIL  [' + cfg.name + '] test run crashed -> ' + (e && e.stack || e)); }
-  }
+  /* the four runs are independent browsers, so they run side by side (lines are labelled with the run's name) */
+  await Promise.all(CONFIGS.map(cfg => run(cfg).catch(e => { failed++; total++; console.log('FAIL  [' + cfg.name + '] test run crashed -> ' + (e && e.stack || e)); })));
   console.log('\n' + (total - failed) + ' of ' + total + ' checks passed' + (failed ? ', ' + failed + ' FAILED' : ''));
   process.exit(failed ? 1 : 0);
 })();

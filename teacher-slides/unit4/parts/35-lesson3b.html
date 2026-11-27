@@ -19,7 +19,7 @@
 #l3b-parts .mk circle{fill:var(--ink)}
 #l3b-parts .mk text{fill:#fff;font:800 24px Inter}
 #l3b-parts .tl,#l3b-double .tl{font:700 24px Inter;stroke:#fff;stroke-width:7px;paint-order:stroke;stroke-linejoin:round}
-#l3b-double .qc{padding:22px 28px}
+#l3b-double .qc{padding:26px 28px}
 #l3b-double .qc .q{font:600 28px/1.32 Inter;display:flex;gap:14px;align-items:flex-start}
 #l3b-double .qn,#l3b-drinks .qn,#l3b-volley .qn{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--blue);color:#fff;font:800 24px Inter}
 #l3b-double .ch{grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px}
@@ -34,7 +34,7 @@
 #l3b-whole .tok{font:800 128px/1 Display;letter-spacing:-.04em}
 #l3b-whole .fr{display:flex;align-items:center;gap:22px;padding:20px 26px}
 #l3b-whole .fr svg{width:84px;height:84px;flex:none}
-#l3b-whole .fr .k{font:700 26px Inter;color:var(--mute)}
+#l3b-whole .fr .fk{font:700 26px Inter;color:var(--mute)}
 #l3b-whole .fr .v{font:800 46px/1.1 Display;letter-spacing:-.02em}
 #l3b-whole .vv{display:grid}
 #l3b-whole .vv>span{grid-area:1/1}
@@ -49,10 +49,10 @@
 #l3b-drinks .qc{padding:24px 30px}
 #l3b-drinks .qc .q{font:600 30px/1.3 Inter;display:flex;gap:14px;align-items:center}
 #l3b-drinks .aa{position:absolute;right:30px;bottom:30px;width:370px;justify-content:center;font-size:30px;padding:18px 20px}
-#l3b-make .pc{fill:none;stroke-width:240px}
+#l3b-make .pc{fill:none;stroke-width:266px}
 #l3b-make .pn{font:700 26px Inter;text-anchor:middle;fill:#fff}
 #l3b-make .pv{font:800 34px Display;text-anchor:middle;fill:#fff}
-#l3b-make .tbl td,#l3b-make .tbl th{padding:13px 20px}
+#l3b-make .tbl td,#l3b-make .tbl th{padding:16px 20px}
 #l3b-make .tbl .w{font-weight:600;color:var(--blue)}
 #l3b-make .tbl .w b{color:var(--ink)}
 #l3b-make .stp{display:grid;height:96px}
@@ -189,8 +189,8 @@
  <i class="mesh"></i>
  <div class="kicker in">Lesson 3 · Line graphs</div>
  <h2 class="in" style="--d:120">Two lines on <em>one graph</em></h2>
- <div style="display:grid;grid-template-columns:600px 1fr;gap:40px;align-items:start">
-  <div class="stack" style="gap:16px">
+ <div style="display:grid;grid-template-columns:600px 1fr;gap:40px;align-items:stretch">
+  <div class="stack" style="gap:16px;justify-content:space-between">
    <div class="card qc in" style="--d:300">
     <div class="q"><span class="qn">1</span><span>When are income and costs <b>equal</b>?</span></div>
     <div class="ch ia r1" data-mcq><div class="c">Jan</div><div class="c ok">Feb</div><div class="c">Mar</div><div class="c">Apr</div><div class="c">May</div><div class="c">Jun</div></div>
@@ -205,24 +205,24 @@
    </div>
   </div>
   <div class="card in" style="--d:200;padding:24px 30px">
-   <svg class="chart" viewBox="0 0 940 540" style="width:960px;height:551px">
-    <rect x="252" y="78" width="96" height="412" rx="14" class="g1" style="fill:var(--lsun)"/>
-    <line x1="80" y1="440" x2="930" y2="440" class="grid"/><line x1="80" y1="390" x2="930" y2="390" class="grid"/><line x1="80" y1="340" x2="930" y2="340" class="grid"/><line x1="80" y1="290" x2="930" y2="290" class="grid"/><line x1="80" y1="240" x2="930" y2="240" class="grid"/><line x1="80" y1="190" x2="930" y2="190" class="grid"/><line x1="80" y1="140" x2="930" y2="140" class="grid"/><line x1="80" y1="90" x2="930" y2="90" class="grid"/>
-    <g text-anchor="end"><text x="66" y="498" class="tick">0</text><text x="66" y="448" class="tick">5</text><text x="66" y="398" class="tick">10</text><text x="66" y="348" class="tick">15</text><text x="66" y="298" class="tick">20</text><text x="66" y="248" class="tick">25</text><text x="66" y="198" class="tick">30</text><text x="66" y="148" class="tick">35</text><text x="66" y="98" class="tick">40</text></g>
+   <svg class="chart" viewBox="0 0 940 584" style="width:960px;height:596px">
+    <rect x="252" y="78" width="96" height="452" rx="14" class="g1" style="fill:var(--lsun)"/>
+    <line x1="80" y1="475" x2="930" y2="475" class="grid"/><line x1="80" y1="420" x2="930" y2="420" class="grid"/><line x1="80" y1="365" x2="930" y2="365" class="grid"/><line x1="80" y1="310" x2="930" y2="310" class="grid"/><line x1="80" y1="255" x2="930" y2="255" class="grid"/><line x1="80" y1="200" x2="930" y2="200" class="grid"/><line x1="80" y1="145" x2="930" y2="145" class="grid"/><line x1="80" y1="90" x2="930" y2="90" class="grid"/>
+    <g text-anchor="end"><text x="66" y="538" class="tick">0</text><text x="66" y="483" class="tick">5</text><text x="66" y="428" class="tick">10</text><text x="66" y="373" class="tick">15</text><text x="66" y="318" class="tick">20</text><text x="66" y="263" class="tick">25</text><text x="66" y="208" class="tick">30</text><text x="66" y="153" class="tick">35</text><text x="66" y="98" class="tick">40</text></g>
     <text x="80" y="30" class="ttl" style="font-size:28px">Aunt Noi’s mango sticky rice stall</text>
     <g class="lg"><line x1="650" y1="22" x2="690" y2="22" class="s-blue" style="stroke-width:6;stroke-linecap:round"/><text x="700" y="30">Income</text><line x1="806" y1="22" x2="846" y2="22" class="s-coral" style="stroke-width:6;stroke-linecap:round"/><text x="856" y="30">Costs</text></g>
-    <text transform="translate(16 290) rotate(-90)" text-anchor="middle" class="tick" style="fill:var(--ink);font-weight:600">Thousand baht</text>
-    <path d="M80 490H930M80 80V490" class="axis"/>
-    <path d="M150 330 L300 310 L450 290 L600 250 L750 230 L900 290" pathLength="1" class="ln draw s-coral" style="--d:900"/>
-    <path d="M150 350 L300 310 L450 250 L600 150 L750 110 L900 270" pathLength="1" class="ln draw s-blue" style="--d:600"/>
-    <circle cx="150" cy="350" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:700"/><circle cx="300" cy="310" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:790"/><circle cx="450" cy="250" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:880"/><circle cx="600" cy="150" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:970"/><circle cx="750" cy="110" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:1060"/><circle cx="900" cy="270" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:1150"/><circle cx="150" cy="330" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1000"/><circle cx="300" cy="310" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1090"/><circle cx="450" cy="290" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1180"/><circle cx="600" cy="250" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1270"/><circle cx="750" cy="230" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1360"/><circle cx="900" cy="290" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1450"/>
-    <g class="pop" style="--d:1600"><text x="150" y="386" class="tl" text-anchor="middle" style="fill:var(--blue)">14</text><text x="150" y="312" class="tl" text-anchor="middle" style="fill:var(--noc)">16</text><text x="300" y="290" class="tl" text-anchor="middle" style="fill:var(--ink)">18</text><text x="450" y="232" class="tl" text-anchor="middle" style="fill:var(--blue)">24</text><text x="450" y="326" class="tl" text-anchor="middle" style="fill:var(--noc)">20</text><text x="600" y="132" class="tl" text-anchor="middle" style="fill:var(--blue)">34</text><text x="600" y="286" class="tl" text-anchor="middle" style="fill:var(--noc)">24</text><text x="750" y="92" class="tl" text-anchor="middle" style="fill:var(--blue)">38</text><text x="750" y="266" class="tl" text-anchor="middle" style="fill:var(--noc)">26</text><text x="900" y="252" class="tl" text-anchor="middle" style="fill:var(--blue)">22</text><text x="900" y="326" class="tl" text-anchor="middle" style="fill:var(--noc)">20</text></g>
-    <g text-anchor="middle"><text x="150" y="528" class="lab">Jan</text><text x="300" y="528" class="lab">Feb</text><text x="450" y="528" class="lab">Mar</text><text x="600" y="528" class="lab">Apr</text><text x="750" y="528" class="lab">May</text><text x="900" y="528" class="lab">Jun</text></g>
+    <text transform="translate(16 310) rotate(-90)" text-anchor="middle" class="tick" style="fill:var(--ink);font-weight:600">Thousand baht</text>
+    <path d="M80 530H930M80 80V530" class="axis"/>
+    <path d="M150 354 L300 332 L450 310 L600 266 L750 244 L900 310" pathLength="1" class="ln draw s-coral" style="--d:900"/>
+    <path d="M150 376 L300 332 L450 266 L600 156 L750 112 L900 288" pathLength="1" class="ln draw s-blue" style="--d:600"/>
+    <circle cx="150" cy="376" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:700"/><circle cx="300" cy="332" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:790"/><circle cx="450" cy="266" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:880"/><circle cx="600" cy="156" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:970"/><circle cx="750" cy="112" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:1060"/><circle cx="900" cy="288" r="9" class="pop" style="fill:var(--blue);stroke:#fff;stroke-width:3;--d:1150"/><circle cx="150" cy="354" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1000"/><circle cx="300" cy="332" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1090"/><circle cx="450" cy="310" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1180"/><circle cx="600" cy="266" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1270"/><circle cx="750" cy="244" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1360"/><circle cx="900" cy="310" r="9" class="pop" style="fill:var(--coral);stroke:#fff;stroke-width:3;--d:1450"/>
+    <g class="pop" style="--d:1600"><text x="150" y="412" class="tl" text-anchor="middle" style="fill:var(--blue)">14</text><text x="150" y="336" class="tl" text-anchor="middle" style="fill:var(--noc)">16</text><text x="300" y="312" class="tl" text-anchor="middle" style="fill:var(--ink)">18</text><text x="450" y="248" class="tl" text-anchor="middle" style="fill:var(--blue)">24</text><text x="450" y="346" class="tl" text-anchor="middle" style="fill:var(--noc)">20</text><text x="600" y="138" class="tl" text-anchor="middle" style="fill:var(--blue)">34</text><text x="600" y="302" class="tl" text-anchor="middle" style="fill:var(--noc)">24</text><text x="750" y="94" class="tl" text-anchor="middle" style="fill:var(--blue)">38</text><text x="750" y="280" class="tl" text-anchor="middle" style="fill:var(--noc)">26</text><text x="900" y="270" class="tl" text-anchor="middle" style="fill:var(--blue)">22</text><text x="900" y="346" class="tl" text-anchor="middle" style="fill:var(--noc)">20</text></g>
+    <g text-anchor="middle"><text x="150" y="570" class="lab">Jan</text><text x="300" y="570" class="lab">Feb</text><text x="450" y="570" class="lab">Mar</text><text x="600" y="570" class="lab">Apr</text><text x="750" y="570" class="lab">May</text><text x="900" y="570" class="lab">Jun</text></g>
     <g class="g1"><rect x="254" y="92" width="92" height="40" rx="20" style="fill:var(--sun)"/><text x="300" y="120" text-anchor="middle" style="font:800 22px Inter;fill:var(--ink)">EQUAL</text></g>
     <g class="g2">
-     <path d="M728 122V218M718 122H738M718 218H738" pathLength="1" class="draw" style="fill:none;stroke:var(--violet);stroke-width:4;stroke-linecap:round"/>
-     <rect x="630" y="154" width="84" height="52" rx="14" class="pop" style="fill:var(--violet)"/>
-     <text x="672" y="190" text-anchor="middle" class="pop" style="fill:#fff;font:800 30px Inter">12</text>
+     <path d="M728 124V232M718 124H738M718 232H738" pathLength="1" class="draw" style="fill:none;stroke:var(--violet);stroke-width:4;stroke-linecap:round"/>
+     <rect x="630" y="162" width="84" height="52" rx="14" class="pop" style="fill:var(--violet)"/>
+     <text x="672" y="198" text-anchor="middle" class="pop" style="fill:#fff;font:800 30px Inter">12</text>
     </g>
    </svg>
    <div class="sum g3"><svg><use href="#check"/></svg><span>14 + 18 + 24 + 34 + 38 + 22 = <b>150 thousand baht</b></span></div>
@@ -253,16 +253,16 @@
    <g class="g1"><path d="M300 300 L300 20" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:700"/><path d="M300 300 L300 580" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:700"/></g>
    <g class="g2"><path d="M300 300 L580 300" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:700"/><path d="M300 266H334V300" style="fill:none;stroke:#fff;stroke-width:4"/></g>
    <g class="g3"><path d="M300 300 L135.4 73.5" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:700"/></g>
-   <g class="h1"><text x="300" y="306" class="pv" style="font-size:72px">100%</text><text x="300" y="360" class="dg" style="font-size:34px">360°</text></g>
+   <g class="h1" style="--d:1100"><text x="300" y="306" class="pv" style="font-size:72px">100%</text><text x="300" y="360" class="dg" style="font-size:34px">360°</text></g>
    <g class="g1"><g class="h2"><g class=""><text x="450" y="292" class="pv">50%</text><text x="450" y="328" class="dg">180°</text></g></g></g>
    <g class="g1"><g class="h3"><g class=""><text x="150" y="292" class="pv">50%</text><text x="150" y="328" class="dg">180°</text></g></g></g>
    <g class="g2"><g class=""><text x="416.7" y="177.3" class="pv">25%</text><text x="416.7" y="213.3" class="dg">90°</text></g><g class=""><text x="416.7" y="410.7" class="pv">25%</text><text x="416.7" y="446.7" class="dg">90°</text></g></g>
    <g class="g3"><g class=""><text x="147.8" y="343.4" class="pv">40%</text><text x="147.8" y="379.4" class="dg">144°</text></g><text x="236.7" y="111" class="pv" style="font-size:36px">10%</text></g>
   </svg>
   <div class="stack" style="gap:20px">
-   <div class="card fr in" style="--d:700"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" style="fill:var(--lblue)"/><path d="M42 42L42 80A38 38 0 0 1 42 4Z" style="fill:var(--violet)"/><circle cx="42" cy="42" r="38" style="fill:none;stroke:var(--ink);stroke-width:2.5"/></svg><div><div class="k">Half</div><div class="v vv"><span class="h1 qm">? % = ? °</span><span class="g1">50% = 180°</span></div></div></div>
-   <div class="card fr in" style="--d:800"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" style="fill:var(--lblue)"/><path d="M42 42L80 42A38 38 0 0 1 42 80Z" style="fill:var(--coral)"/><circle cx="42" cy="42" r="38" style="fill:none;stroke:var(--ink);stroke-width:2.5"/></svg><div><div class="k">Quarter</div><div class="v vv"><span class="h2 qm">? % = ? °</span><span class="g2">25% = 90°</span></div></div></div>
-   <div class="card fr in" style="--d:900"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" style="fill:var(--lblue)"/><path d="M42 42L19.7 11.3A38 38 0 0 1 42 4Z" style="fill:var(--mint)"/><circle cx="42" cy="42" r="38" style="fill:none;stroke:var(--ink);stroke-width:2.5"/></svg><div><div class="k">One tenth</div><div class="v vv"><span class="h3 qm">? % = ? °</span><span class="g3">10% = 36°</span></div></div></div>
+   <div class="card fr in" style="--d:700"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" style="fill:var(--lblue)"/><path d="M42 42L42 80A38 38 0 0 1 42 4Z" style="fill:var(--violet)"/><circle cx="42" cy="42" r="38" style="fill:none;stroke:var(--ink);stroke-width:2.5"/></svg><div><div class="fk">Half</div><div class="v vv"><span class="h1 qm">? % = ? °</span><span class="g1">50% = 180°</span></div></div></div>
+   <div class="card fr in" style="--d:800"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" style="fill:var(--lblue)"/><path d="M42 42L80 42A38 38 0 0 1 42 80Z" style="fill:var(--coral)"/><circle cx="42" cy="42" r="38" style="fill:none;stroke:var(--ink);stroke-width:2.5"/></svg><div><div class="fk">Quarter</div><div class="v vv"><span class="h2 qm">? % = ? °</span><span class="g2">25% = 90°</span></div></div></div>
+   <div class="card fr in" style="--d:900"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" style="fill:var(--lblue)"/><path d="M42 42L19.7 11.3A38 38 0 0 1 42 4Z" style="fill:var(--mint)"/><circle cx="42" cy="42" r="38" style="fill:none;stroke:var(--ink);stroke-width:2.5"/></svg><div><div class="fk">One tenth</div><div class="v vv"><span class="h3 qm">? % = ? °</span><span class="g3">10% = 36°</span></div></div></div>
   </div>
  </div>
  <div class="def in" style="--d:800;margin-top:22px;padding:20px 30px"><b>Pie chart</b>: a circle cut into <b>slices</b>. Each slice is a part of the whole.</div>
@@ -313,6 +313,7 @@
     <tbody><tr><td><span style="display:inline-block;width:18px;height:18px;border-radius:5px;background:var(--blue);margin-right:12px"></span>School bus</td><td class="n">14</td><td class="w"><span class="g2" style="--d:0">14 ÷ 40 × 360° = <b>126°</b></span></td></tr><tr><td><span style="display:inline-block;width:18px;height:18px;border-radius:5px;background:var(--coral);margin-right:12px"></span>Car</td><td class="n">12</td><td class="w"><span class="g3" style="--d:0">12 ÷ 40 × 360° = <b>108°</b></span></td></tr><tr><td><span style="display:inline-block;width:18px;height:18px;border-radius:5px;background:var(--mint);margin-right:12px"></span>Walk</td><td class="n">8</td><td class="w"><span class="g3" style="--d:150">8 ÷ 40 × 360° = <b>72°</b></span></td></tr><tr><td><span style="display:inline-block;width:18px;height:18px;border-radius:5px;background:var(--violet);margin-right:12px"></span>BTS</td><td class="n">6</td><td class="w"><span class="g3" style="--d:300">6 ÷ 40 × 360° = <b>54°</b></span></td></tr></tbody>
     <tfoot><tr><td>Total</td><td class="n"><b class="g1" style="color:var(--blue)">40</b></td><td><b class="g3" style="--d:500;color:var(--okc)">360° ✓</b></td></tr></tfoot>
    </table>
+   <div class="note in" style="--d:550"><div class="nt">Remember</div>All the slices together make a full turn: <b>360°</b>.</div>
   </div>
   <div class="stack" style="gap:18px">
    <div class="stp">
@@ -322,13 +323,13 @@
     <div class="g3"><span class="l3b-h4 ic"><span class="sn">Step 3</span><span>Check: 126 + 108 + 72 + 54 = <b>360°</b></span></span></div>
     <div class="g4"><span class="ic"><span class="sn">Step 4</span><span>Draw from 12 o’clock with a protractor</span></span></div>
    </div>
-   <svg viewBox="0 0 520 520" width="520" height="520" style="margin:0 auto" aria-label="pie chart">
-    <circle cx="260" cy="260" r="240" style="fill:#fff;stroke:#C5CDE0;stroke-width:3;stroke-dasharray:10 9"/>
-    <g transform="rotate(-90 260 260)"><g class="g2"><circle cx="260" cy="260" r="120.0" class="pc segd s-blue" style="--len:263.89;--C:753.98;stroke-dashoffset:-0.00;--d:200;--n:0"/></g><g class="g3"><circle cx="260" cy="260" r="120.0" class="pc segd s-coral" style="--len:226.19;--C:753.98;stroke-dashoffset:-263.89;--d:200;--n:0"/></g><g class="g3"><circle cx="260" cy="260" r="120.0" class="pc segd s-mint" style="--len:150.80;--C:753.98;stroke-dashoffset:-490.09;--d:200;--n:1"/></g><g class="g3"><circle cx="260" cy="260" r="120.0" class="pc segd s-violet" style="--len:113.10;--C:753.98;stroke-dashoffset:-640.88;--d:200;--n:2"/></g></g>
-    <g class="g2"><path d="M260 260 L260 20" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:900"/></g><g class="g3"><path d="M260 260 L454.2 401.1" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:900"/></g><g class="g3"><path d="M260 260 L65.8 401.1" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:1100"/></g><g class="g3"><path d="M260 260 L65.8 118.9" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:1300"/></g>
-    <g class="g2" style="--d:700"><text x="384.7" y="190.4" class="pn">Bus</text><text x="384.7" y="226.4" class="pv">126°</text></g><g class="g3" style="--d:700"><text x="260" y="394" class="pn">Car</text><text x="260" y="430" class="pv">108°</text></g><g class="g3" style="--d:900"><text x="120" y="254" class="pn">Walk</text><text x="120" y="290" class="pv">72°</text></g><g class="g3" style="--d:1100"><text x="196.4" y="129.3" class="pn">BTS</text><text x="196.4" y="165.3" class="pv">54°</text></g>
-    <g class="in" style="--d:700"><path d="M248 2L272 2L260 18Z" style="fill:var(--ink)"/></g>
-    <g class="g4"><path d="M260 148A112 112 0 0 1 260 372Z" class="pro"/><line x1="260" y1="170" x2="260" y2="148" class="pt"/><line x1="277.4" y1="161.5" x2="279.4" y2="149.7" class="pt"/><line x1="294.2" y1="166" x2="298.3" y2="154.8" class="pt"/><line x1="305" y1="182.1" x2="316" y2="163" class="pt"/><line x1="324.3" y1="183.4" x2="332" y2="174.2" class="pt"/><line x1="336.6" y1="195.7" x2="345.8" y2="188" class="pt"/><line x1="337.9" y1="215" x2="357" y2="204" class="pt"/><line x1="354" y1="225.8" x2="365.2" y2="221.7" class="pt"/><line x1="358.5" y1="242.6" x2="370.3" y2="240.6" class="pt"/><line x1="350" y1="260" x2="372" y2="260" class="pt"/><line x1="358.5" y1="277.4" x2="370.3" y2="279.4" class="pt"/><line x1="354" y1="294.2" x2="365.2" y2="298.3" class="pt"/><line x1="337.9" y1="305" x2="357" y2="316" class="pt"/><line x1="336.6" y1="324.3" x2="345.8" y2="332" class="pt"/><line x1="324.3" y1="336.6" x2="332" y2="345.8" class="pt"/><line x1="305" y1="337.9" x2="316" y2="357" class="pt"/><line x1="294.2" y1="354" x2="298.3" y2="365.2" class="pt"/><line x1="277.4" y1="358.5" x2="279.4" y2="370.3" class="pt"/><line x1="260" y1="350" x2="260" y2="372" class="pt"/><circle cx="260" cy="260" r="7" style="fill:var(--ink)"/></g>
+   <svg viewBox="0 0 560 560" width="560" height="560" style="margin:0 auto" aria-label="pie chart">
+    <circle cx="280" cy="280" r="266" style="fill:#fff;stroke:#C5CDE0;stroke-width:3;stroke-dasharray:10 9"/>
+    <g transform="rotate(-90 280 280)"><g class="g2"><circle cx="280" cy="280" r="133.0" class="pc segd s-blue" style="--len:292.48;--C:835.66;stroke-dashoffset:-0.00;--d:200;--n:0"/></g><g class="g3"><circle cx="280" cy="280" r="133.0" class="pc segd s-coral" style="--len:250.70;--C:835.66;stroke-dashoffset:-292.48;--d:200;--n:0"/></g><g class="g3"><circle cx="280" cy="280" r="133.0" class="pc segd s-mint" style="--len:167.13;--C:835.66;stroke-dashoffset:-543.18;--d:200;--n:1"/></g><g class="g3"><circle cx="280" cy="280" r="133.0" class="pc segd s-violet" style="--len:125.35;--C:835.66;stroke-dashoffset:-710.31;--d:200;--n:2"/></g></g>
+    <g class="g2"><path d="M280 280 L280 14" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:900"/></g><g class="g3"><path d="M280 280 L495.2 436.4" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:900"/></g><g class="g3"><path d="M280 280 L64.8 436.4" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:1100"/></g><g class="g3"><path d="M280 280 L64.8 123.6" pathLength="1" class="draw" style="stroke:#fff;stroke-width:5;--d:1300"/></g>
+    <g class="g2" style="--d:700"><text x="419" y="203.2" class="pn">Bus</text><text x="419" y="239.2" class="pv">126°</text></g><g class="g3" style="--d:700"><text x="280" y="430" class="pn">Car</text><text x="280" y="466" class="pv">108°</text></g><g class="g3" style="--d:900"><text x="124" y="274" class="pn">Walk</text><text x="124" y="310" class="pv">72°</text></g><g class="g3" style="--d:1100"><text x="209.2" y="135" class="pn">BTS</text><text x="209.2" y="171" class="pv">54°</text></g>
+    <g class="in" style="--d:700"><path d="M268 2L292 2L280 18Z" style="fill:var(--ink)"/></g>
+    <g class="g4"><path d="M280 184A96 96 0 0 1 280 376Z" class="pro"/><line x1="280" y1="204" x2="280" y2="184" class="pt"/><line x1="294.9" y1="195.3" x2="296.7" y2="185.5" class="pt"/><line x1="309.4" y1="199.2" x2="312.8" y2="189.8" class="pt"/><line x1="318" y1="214.2" x2="328" y2="196.9" class="pt"/><line x1="335.3" y1="214.1" x2="341.7" y2="206.5" class="pt"/><line x1="345.9" y1="224.7" x2="353.5" y2="218.3" class="pt"/><line x1="345.8" y1="242" x2="363.1" y2="232" class="pt"/><line x1="360.8" y1="250.6" x2="370.2" y2="247.2" class="pt"/><line x1="364.7" y1="265.1" x2="374.5" y2="263.3" class="pt"/><line x1="356" y1="280" x2="376" y2="280" class="pt"/><line x1="364.7" y1="294.9" x2="374.5" y2="296.7" class="pt"/><line x1="360.8" y1="309.4" x2="370.2" y2="312.8" class="pt"/><line x1="345.8" y1="318" x2="363.1" y2="328" class="pt"/><line x1="345.9" y1="335.3" x2="353.5" y2="341.7" class="pt"/><line x1="335.3" y1="345.9" x2="341.7" y2="353.5" class="pt"/><line x1="318" y1="345.8" x2="328" y2="363.1" class="pt"/><line x1="309.4" y1="360.8" x2="312.8" y2="370.2" class="pt"/><line x1="294.9" y1="364.7" x2="296.7" y2="374.5" class="pt"/><line x1="280" y1="356" x2="280" y2="376" class="pt"/><circle cx="280" cy="280" r="7" style="fill:var(--ink)"/></g>
    </svg>
   </div>
  </div>
