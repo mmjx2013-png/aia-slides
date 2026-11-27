@@ -42,6 +42,7 @@
       else if (st < at) el.textContent = '';
     });
     var L = lessonOf(i);
+    if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
     if (pos) pos.textContent = (i + 1) + ' / ' + N;
     if (live) live.textContent = (L ? L.dataset.title + '. ' : '') + 'Slide ' + (i + 1) + ' of ' + N + (STEPS[i] ? ', step ' + st + ' of ' + STEPS[i] : '');
     if (!qs.has('still')) try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
@@ -52,7 +53,23 @@
   function jump(k, b) { i = Math.max(0, Math.min(N - 1, k | 0)); st = Math.max(0, Math.min(b | 0, STEPS[i])); show('jump'); }
 
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
-  stage.addEventListener('click', function (e) { if (busy(e.target)) return; (e.clientX < innerWidth * 0.2) ? prev() : next(); });
+  /* Only a real mouse click on the slide advances. Touch and stylus taps never do, so a student working at the board
+     cannot reveal an answer by accident; on touch screens use swipe or the ‹ › buttons. */
+  var lastPointer = 'mouse';
+  addEventListener('pointerdown', function (e) { lastPointer = e.pointerType || 'mouse'; if (lastPointer !== 'mouse') root.classList.add('touchy'); }, true);
+  stage.addEventListener('click', function (e) {
+    if (menuEl && menuEl.classList.contains('open')) { closeMenu(); return; }
+    if (lastPointer !== 'mouse' || busy(e.target)) return;
+    (e.clientX < innerWidth * 0.2) ? prev() : next();
+  });
+  addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
+    if (!nav) return;
+    e.preventDefault(); e.stopPropagation();
+    if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+    (k === 'PageDown' || k === 'ArrowRight') ? next() : prev();
+  }, true);
   addEventListener('keydown', function (e) {
     var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     var k = e.key;
@@ -69,7 +86,7 @@
   stage.addEventListener('touchstart', function (e) { if (busy(e.target)) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
   stage.addEventListener('touchend', function (e) {
     if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { e.preventDefault(); dx < 0 ? next() : prev(); } x0 = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { if (e.cancelable) e.preventDefault(); dx < 0 ? next() : prev(); } x0 = null;
   });
 
   /* control bar: shows on pointer move, hides after 2.5 s */
@@ -84,7 +101,7 @@
     slides.forEach(function (s, k) {
       if (!s.dataset.lesson) return;
       var b = document.createElement('button'); b.type = 'button';
-      b.innerHTML = s.dataset.title + '<small>Slide ' + (k + 1) + '</small>';
+      b.innerHTML = s.dataset.title + '<small>Slide ' + (k + 1) + '</small>'; b._slide = s;
       b.addEventListener('click', function () { closeMenu(); jump(k); });
       menuEl.appendChild(b);
     });
@@ -94,6 +111,7 @@
   on('pen', function () { document.dispatchEvent(new CustomEvent('deck:pen')); });
   document.addEventListener('pen:state', function (e) { var b = document.getElementById('pen'); if (b) b.setAttribute('aria-pressed', e.detail.on ? 'true' : 'false'); });
 
+  addEventListener('hashchange', function () { var n = parseInt((location.hash || '').slice(1), 10); if (n && n - 1 !== i) jump(n - 1); });
   window.__deck = { next: next, prev: prev, jump: jump, state: function () { return { i: i, st: st, steps: STEPS[i], n: N, id: slides[i].id }; } };
   var h = parseInt((location.hash || '').slice(1), 10);
   jump(qs.has('s') ? +qs.get('s') : (h ? h - 1 : 0), +(qs.get('b') || 0));

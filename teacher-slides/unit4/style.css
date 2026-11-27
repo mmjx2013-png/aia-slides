@@ -43,7 +43,8 @@ html,body{height:100%;background:#0B0E16;overflow:hidden;font-family:Inter,syste
 .kicker{font:700 24px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
 h1.t{font:800 140px/.98 Display;letter-spacing:-.04em}
 h2{font:800 76px/1.05 Display;letter-spacing:-.035em;margin:10px 0 30px}
-h2 em,h1 em,.grad{font-style:normal;background:linear-gradient(100deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2 em,h1 em{font-style:normal;color:var(--blue)}
+.grad{background:linear-gradient(100deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
 h3{font:700 40px/1.15 Display;letter-spacing:-.02em}
 .lede{font:500 34px/1.42 Inter;color:var(--mute)}
 .body{font:500 32px/1.45 Inter}
@@ -69,11 +70,11 @@ mark{background:linear-gradient(transparent 55%,rgba(255,197,61,.55) 55%);color:
 .card.t-blue{background:var(--lblue)} .card.t-coral{background:var(--lcoral)} .card.t-mint{background:var(--lmint)} .card.t-sun{background:var(--lsun)} .card.t-violet{background:var(--lviolet)}
 .card.hl{outline:3px solid var(--blue)}
 .chip{display:inline-block;font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;border-radius:10px;background:var(--lblue);color:var(--blue)}
-.chip.coral{background:var(--lcoral);color:var(--coral)} .chip.mint{background:var(--lmint);color:var(--okc)} .chip.violet{background:var(--lviolet);color:var(--violet)} .chip.sun{background:var(--lsun);color:#A86F00}
+.chip.coral{background:var(--lcoral);color:#B8321F} .chip.mint{background:var(--lmint);color:#0A6E5B} .chip.violet{background:var(--lviolet);color:var(--violet)} .chip.sun{background:var(--lsun);color:#A86F00}
 .pill{display:inline-block;padding:12px 22px;border-radius:999px;background:#fff;box-shadow:0 8px 24px rgba(15,27,51,.08);font:600 24px Inter;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
 .badge{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:600 26px Inter}
 .badge svg{width:28px;height:28px}
-.badge.yes{background:var(--lmint);color:var(--okc)} .badge.no{background:var(--lcoral);color:var(--noc)} .badge.info{background:var(--lblue);color:var(--blue)}
+.badge.yes{background:var(--lmint);color:#0A6E5B} .badge.no{background:var(--lcoral);color:var(--noc)} .badge.info{background:var(--lblue);color:var(--blue)}
 .idea{display:flex;align-items:center;gap:18px;padding:20px 28px;border-radius:22px;background:var(--ink);color:#fff;font:500 30px/1.4 Inter}
 .idea svg{width:42px;height:42px;color:var(--sun);flex:none} .idea b{color:var(--sun)}
 .note{padding:20px 26px;border-radius:20px;background:var(--lsun);border:2px solid #F4D27A;font:500 28px/1.45 Inter}
@@ -198,8 +199,11 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 .opener .goals li svg{width:34px;height:34px;padding:5px;border-radius:10px;background:var(--lblue);color:var(--blue);flex:none}
 
 /* ---------- control bar + menu (engine) ---------- */
-#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;transition:opacity .3s;font:600 14px Inter}
-#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1}
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;font:600 14px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.8;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#menu button[aria-current="true"]{background:rgba(255,197,61,.18);box-shadow:inset 3px 0 0 var(--sun)}
 #ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:9px 12px;cursor:pointer;min-width:40px}
 #ctl button:hover{background:rgba(255,255,255,.12)}
 #ctl button[aria-pressed="true"]{background:#fff;color:var(--ink)}
