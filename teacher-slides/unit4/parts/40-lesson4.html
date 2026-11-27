@@ -14,7 +14,11 @@
 #l4-open .fc{position:absolute;z-index:3;display:flex;align-items:center;gap:16px;padding:22px 24px}
 #l4-open .fc .tile{flex:none;width:66px;height:66px;border-radius:18px;display:grid;place-items:center}
 #l4-open .fc .k{font:700 24px Inter;color:var(--mute)}
-#l4-open .fc .v{font:800 32px/1.15 Display;letter-spacing:-.02em}
+#l4-open .fc .v{font:800 32px/1.15 Display;letter-spacing:-.02em;margin-top:12px}
+#l4-open .gl4{list-style:none;display:flex;flex-direction:column;gap:16px;margin-top:34px}
+#l4-open .gl4 li{display:flex;align-items:center;gap:18px;width:max-content;padding:14px 24px 14px 14px;border-radius:20px;background:#fff;box-shadow:0 10px 26px rgba(15,27,51,.07);font:600 30px Inter}
+#l4-open .gl4 li span{flex:none;width:52px;height:52px;border-radius:15px;display:grid;place-items:center}
+#l4-open .gl4 li svg{width:32px;height:32px}
 
 /* ---------- l4-uses : four places ---------- */
 #l4-uses .uc{display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 28px 30px;height:690px}
@@ -22,10 +26,12 @@
 #l4-uses .ic svg{width:136px;height:136px;overflow:visible}
 #l4-uses h3{margin:24px 0 18px;font-size:38px}
 #l4-uses .lab{display:block;font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
-#l4-uses .dat{font:500 29px/1.35 Inter;min-height:80px}
+#l4-uses .dat{font:500 29px/1.35 Inter;min-height:68px}
 #l4-uses .dat .lab{color:var(--mute)}
 #l4-uses .arr{width:40px;height:46px;margin:12px 0 10px;color:var(--ink)}
-#l4-uses .dc{width:100%;padding:16px 16px 18px;border-radius:22px;background:var(--lmint);font:700 29px/1.32 Inter;color:var(--ink)}
+#l4-uses .dw{position:relative;width:100%;height:150px}
+#l4-uses .dc{width:100%;height:150px;padding:16px 16px 18px;border-radius:22px;background:var(--lmint);font:700 29px/1.32 Inter;color:var(--ink)}
+#l4-uses .qd{position:absolute;inset:0;display:grid;place-items:center;border-radius:22px;border:3px dashed #C5CEE0;font:800 64px Display;color:#AAB4CC}
 #l4-uses .dc .lab{color:var(--okc)}
 #l4-uses .hand{transform-origin:70px 82px;transform:rotate(var(--a))}
 #l4-uses.on .hand{animation:spin 1.8s cubic-bezier(.25,.6,.2,1) both .7s}
@@ -155,15 +161,16 @@
   <div>
    <div style="display:flex;align-items:flex-end;gap:44px">
     <div class="num in" style="--d:100">4</div>
-    <div style="padding-bottom:6px">
+    <div style="padding-bottom:4px">
      <div class="kicker in" style="--d:200">Lesson 4</div>
      <h2 class="in" style="--d:280;margin:14px 0 0">Statistics in<br><em>real life</em></h2>
     </div>
    </div>
-   <ul class="goals" style="margin-top:60px;gap:20px">
-    <li class="in" style="--d:450"><svg><use href="#check"/></svg>See how data helps people make choices</li>
-    <li class="in" style="--d:540"><svg><use href="#check"/></svg>Follow the data cycle, from question to decision</li>
-    <li class="in" style="--d:630"><svg><use href="#check"/></svg>Spot a chart that can trick you</li>
+   <p class="lede in" style="--d:380;margin-top:44px;max-width:860px">Weather apps, canteen votes, sleep trackers: data is everywhere. It helps us choose well.</p>
+   <ul class="gl4">
+    <li class="in" style="--d:480"><span style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 24 24"><use href="#target"/></svg></span>See how data helps people decide</li>
+    <li class="in" style="--d:570"><span style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-cyc"/></svg></span>Use the data cycle, from question to decision</li>
+    <li class="in" style="--d:660"><span style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 48 48"><use href="#l4-bars"/></svg></span>Spot a chart that can trick you</li>
    </ul>
   </div>
   <div class="vis">
@@ -191,7 +198,7 @@
      <div class="dec in" style="--d:1500"><svg><use href="#l4-umb"/></svg><div><b>Wednesday: 80%</b><span>Bring an umbrella!</span></div></div>
     </div>
    </div>
-   <div class="card fc float" style="left:0;top:150px;--r:-4deg;--d:700">
+   <div class="card fc float" style="left:0;top:150px;--r:-3deg;--d:700">
     <span class="tile" style="background:var(--lcoral)"><svg class="cup" viewBox="0 0 64 96" style="width:36px;height:54px;--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg></span>
     <div><div class="k">Canteen vote</div><div class="v">Thai tea: 42</div></div>
    </div>
@@ -226,7 +233,7 @@
    <h3>Canteen menu</h3>
    <div class="dat"><span class="lab">Data</span>What sells each day</div>
    <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
-   <div class="dc g1" style="--d:150"><span class="lab">Decision</span>Cook more favourites, waste less</div>
+   <div class="dw"><div class="qd h1">?</div><div class="dc g1" style="--d:150"><span class="lab">Decision</span>Cook more favourites, waste less</div></div>
   </div>
   <div class="card uc in" style="--d:300">
    <div class="ic" style="background:var(--lcoral)">
@@ -244,7 +251,7 @@
    <h3>Sports-day teams</h3>
    <div class="dat"><span class="lab">Data</span>Everyone's 50 m times</div>
    <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true" style="--d:120"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
-   <div class="dc g1" style="--d:270"><span class="lab">Decision</span>Make fair teams with fast and slow runners</div>
+   <div class="dw"><div class="qd h1">?</div><div class="dc g1" style="--d:270"><span class="lab">Decision</span>Make fair teams with fast and slow runners</div></div>
   </div>
   <div class="card uc in" style="--d:400">
    <div class="ic" style="background:var(--lblue)">
@@ -257,7 +264,7 @@
    <h3>Weather and rain</h3>
    <div class="dat"><span class="lab">Data</span>Rainfall in past years</div>
    <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true" style="--d:240"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
-   <div class="dc g1" style="--d:390"><span class="lab">Decision</span>Hold sports day in a dry month</div>
+   <div class="dw"><div class="qd h1">?</div><div class="dc g1" style="--d:390"><span class="lab">Decision</span>Hold sports day in a dry month</div></div>
   </div>
   <div class="card uc in" style="--d:500">
    <div class="ic" style="background:var(--lviolet)">
@@ -270,9 +277,9 @@
     </svg>
    </div>
    <h3>Sleep and health</h3>
-   <div class="dat"><span class="lab">Data</span>Hours of sleep each night</div>
+   <div class="dat"><span class="lab">Data</span>Hours of sleep at night</div>
    <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true" style="--d:360"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
-   <div class="dc g1" style="--d:510"><span class="lab">Decision</span>Go to bed earlier on school nights</div>
+   <div class="dw"><div class="qd h1">?</div><div class="dc g1" style="--d:510"><span class="lab">Decision</span>Go to bed earlier on school nights</div></div>
   </div>
  </div>
  <aside class="notes">Four places where data helps us decide. First show only the data in each card and ask: "What would you decide with this data?" Take two or three ideas for each card. Beat 1 shows one possible decision for each card. Canteen: if we know what sells each day, the cook makes more of the favourites and throws away less food. Sports day: with everyone's 50 m running time we can make teams that are fair, with fast and slow runners in every team. Weather: rainfall records from past years show which months are dry, so sports day goes in a dry month. Sleep: if many students sleep too little, they can choose an earlier bedtime on school nights. Key message: data turns a guess into a better decision.</aside>
