@@ -19,3 +19,10 @@ graphify-out/.graphify_extract.json
 graphify-out/.graphify_semantic*.json
 graphify-out/.graphify_analysis.json
 graphify-out/.graphify_partial.txt
+
+# answer keys for tests: plaintext never goes in this public repo (only the encrypted build)
+teacher-slides/unit4/keys/parts/
+teacher-slides/unit4/keys/*.html
+!teacher-slides/unit4/keys/index.html
+teacher-slides/unit4/keys/qa-*/
+teacher-slides/unit4/keys/*.pdf
