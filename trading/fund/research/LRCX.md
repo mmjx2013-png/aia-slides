@@ -91,6 +91,6 @@ The excerpt cut off at 14,000 characters, so supply chain, customer concentratio
 - Deferred revenue (customer down payments) below $2.0B (now $2.43B), signalling weaker order intake.
 
 ## Headlines (last 30 days)
-Coverage on 2025-11-25 and 2026-11-26 is mostly positive in tone: titles stress strong AI demand, memory makers spending again, advanced packaging growth, and a stock "oversold" and "cheaper, not cheap". Several items are only options listings with no information. One neutral piece asks what is driving attention after the drop. The fall of 23% in a month with mostly positive headlines suggests a market-wide or sector rotation, not Lam-specific bad news, but the file does not say, so this is inference. The fast-model labels are not reliable for investment decisions.
+Coverage on 2026-11-25 and 2026-11-26 is mostly positive in tone: titles stress strong AI demand, memory makers spending again, advanced packaging growth, and a stock "oversold" and "cheaper, not cheap". Several items are only options listings with no information. One neutral piece asks what is driving attention after the drop. The fall of 23% in a month with mostly positive headlines suggests a market-wide or sector rotation, not Lam-specific bad news, but the file does not say, so this is inference. The fast-model labels are not reliable for investment decisions.
 
 Note on dates: headline dates in the file are 2026-11-25 and 2026-11-26.
