@@ -1,2 +1,2 @@
-Fund: finalists v2 after a debt-data fix (finalists.md): JBL MU LRCX NVDA ROST ADBE AAPL BBY MA LMT MCK FLEX; memos being redrafted.
-No orders yet; portfolio.md and the first orders.md by Fri 4 Dec (core SPYM in 3 weekly tranches).
+Fund launch decided: SPYM 96% (core 60% + unfilled satellite 36%), ADBE 4%, the only BUY-candidate of 12 memos. First orders in orders.md for the week of 30 Nov.
+The satellite is mostly unfilled on purpose: 11 finalists are WATCH (fully priced or peak-cycle). Opus tokens for the launch: 89k.

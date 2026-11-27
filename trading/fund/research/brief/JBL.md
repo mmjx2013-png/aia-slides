@@ -45,5 +45,11 @@ FCF yield 5.85% reported, 4.98% normalized (about $1.17B FCF). If payables unwin
 4. Operating margin back below 4.0%.
 5. Inventory days above 90 with write-downs, or the loss of a top-customer program.
 
+## If AI data-centre capex falls 30% next year
+- Exposure: Intelligent Infrastructure is 50% of revenue, 0.50 x $35,954M = about $17,977M (10-K, Item 7). Cloud/data-centre alone is not sized in the excerpt, but it drove 33 of the segment's 45 points of growth. Is more than 30% of revenue tied to data-centre/cloud/AI? Probably yes, but not provable from the excerpt; 50% is the upper bound. Customer percentages: not in the filing excerpt.
+- Revenue (upper bound): -0.30 x $17,977M = -$5,393M, -15.0% of total, leaving about $30.6B.
+- Margin: 9.2% gross margin gives -$496M; an assumed 15% decremental margin gives -$809M. Operating income falls from $1,704M to about $1,208M-$895M; margin 3.9%-2.9%.
+- FCF: roughly $0.7-1.0B before working capital, so positive on earnings alone. A payables unwind not offset by lower receivables and inventory could push one year negative.
+
 ## Headlines (30 days)
 Baird cut its target to $270 from $440 (negative). Valuation screens from Yahoo and GuruFocus call it undervalued, and a MarketBeat piece cites a stale $418 average target. An India AI MoU has no financial detail. The 2026-11-26 JBL Charge speaker item is unrelated. No fundamental shock; the drop looks like a sentiment unwind.
