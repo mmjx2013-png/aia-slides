@@ -4486,6 +4486,32 @@ Next lesson: we will collect data to answer these questions.</aside>
     return { ink: ink, set: set, on: function () { return on; }, store: store, bar: bar, layer: layer };
   }
 
+  /* ================= tap guard =================
+     After a quick finger drag (a flick), Chrome can swallow the click of the next tap ("tap stops the fling").
+     On a classroom touch screen that means a dead Check button. If a finger or stylus goes down and up on a
+     button without moving and no click follows, send the click ourselves. */
+  (function () {
+    var down = null, lastClick = -1, synthAt = -1e9, synthT = null;
+    addEventListener('pointerdown', function (e) { down = e.pointerType === 'mouse' ? null : { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.target }; }, true);
+    addEventListener('click', function (e) {
+      if (!e.isTrusted) return;
+      if (e.target === synthT && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
+      lastClick = performance.now();
+    }, true);
+    addEventListener('pointerup', function (e) {
+      var d = down; down = null;
+      if (!d || d.id !== e.pointerId || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12) return;
+      var t = d.t && d.t.closest ? d.t.closest('button,input,[role="button"]') : null;
+      if (!t || t.disabled || !(stage.contains(t) || t.closest('#ctl'))) return;
+      var at = performance.now();
+      setTimeout(function () {
+        if (lastClick >= at || !t.isConnected || t.disabled) return;
+        synthAt = performance.now(); synthT = t;
+        if (t.tagName === 'INPUT') t.focus(); else t.click();
+      }, 90);
+    }, true);
+  })();
+
   /* ================= start ================= */
   var kinds = [['.ch[data-mcq]', mcq], ['.w-input', input], ['.w-write', write], ['.w-sort', sort], ['.w-bars', bars], ['.w-line', line], ['.w-pie', pie], ['.w-picto', picto], ['.w-dots', dots]];
   kinds.forEach(function (k) {
