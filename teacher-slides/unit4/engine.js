@@ -49,7 +49,7 @@
     });
     var L = lessonOf(i);
     if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
-    if (pos) pos.textContent = (i + 1) + ' / ' + N;
+    if (pos) pos.textContent = (i + 1) + ' / ' + N + (STEPS[i] ? '  ·  step ' + st + ' of ' + STEPS[i] : '');
     if (live) live.textContent = (L ? L.dataset.title + '. ' : '') + 'Slide ' + (i + 1) + ' of ' + N + (STEPS[i] ? ', step ' + st + ' of ' + STEPS[i] : '');
     if (!qs.has('still')) try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
     document.dispatchEvent(new CustomEvent('deck:change', { detail: { i: i, st: st, slide: s } }));
@@ -61,6 +61,7 @@
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
   /* The slide changes ONLY with the arrow keys (or a clicker's PageUp/PageDown) and the ‹ › buttons (owner, 27 Nov).
      Clicking, tapping or swiping on the slide never changes it, so a wrong click at the board cannot skip ahead. */
+  if (matchMedia('(pointer: coarse)').matches) root.classList.add('touchy');   /* touch screens: the bar is visible from the start */
   addEventListener('pointerdown', function (e) { if ((e.pointerType || 'mouse') !== 'mouse') root.classList.add('touchy'); }, true);
   stage.addEventListener('click', function () { if (menuOpen()) closeMenu(); });
   addEventListener('keydown', function (e) {

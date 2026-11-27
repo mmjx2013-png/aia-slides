@@ -212,6 +212,7 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 #pos{color:#fff;min-width:120px;text-align:center;font-variant-numeric:tabular-nums}
 #menu{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:51;display:none;min-width:min(420px,calc(100vw - 16px));max-width:calc(100vw - 16px);box-sizing:border-box;max-height:70vh;overflow:auto;padding:10px;border-radius:16px;background:rgba(15,27,51,.95);box-shadow:0 20px 60px rgba(0,0,0,.45)}
 #menu.open{display:block}
+@media (min-width:760px){#menu.open{display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;min-width:min(760px,calc(100vw - 16px))}}
 #menu button{display:block;width:100%;text-align:left;font:600 16px Inter;color:#fff;background:transparent;border:0;border-radius:10px;padding:12px 14px;cursor:pointer}
 #menu button:hover,#menu button:focus-visible{background:rgba(255,255,255,.12);outline:none}
 #menu button small{display:block;font:500 13px Inter;color:#AAB4CC;margin-top:2px}

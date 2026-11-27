@@ -445,7 +445,7 @@
       reveal: function () { inp.value = answer; inp.readOnly = true; mark('ok'); },
       restore: function (s) { inp.value = s.v; inp.readOnly = false; mark(''); }
     });
-    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); } });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); inp.blur(); } });   /* blur: the arrows go back to the deck */
     inp.addEventListener('input', function () { ac.hide(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
     return register(w, { type: 'input', show: ac.show, hide: ac.hide, reset: reset, check: check, input: inp, tries: function () { return tries; } });
   }
@@ -864,7 +864,7 @@
       inp.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
         e.preventDefault(); e.stopPropagation();
-        if (i < n - 1) inputs[i + 1].focus(); else check();
+        if (i < n - 1) inputs[i + 1].focus(); else { check(); inp.blur(); }
       });
       return inp;
     });

@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Ox9uZeVNVbAC0AOVwkWOV2vk2n1OVpqeTy36Nn2DNp8='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-ZfxsBcrMw1RIOKbd5WKTBgFcyYCjDGnTVo4QAVjuQyM='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Unit 4 · Statistics (1) · Mathayomsuksa 1</title>
 <style>/* Unit 4 Statistics (1) · Style A "modern clean" · stage 1920x1080 */
@@ -219,6 +219,7 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 #pos{color:#fff;min-width:120px;text-align:center;font-variant-numeric:tabular-nums}
 #menu{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:51;display:none;min-width:min(420px,calc(100vw - 16px));max-width:calc(100vw - 16px);box-sizing:border-box;max-height:70vh;overflow:auto;padding:10px;border-radius:16px;background:rgba(15,27,51,.95);box-shadow:0 20px 60px rgba(0,0,0,.45)}
 #menu.open{display:block}
+@media (min-width:760px){#menu.open{display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;min-width:min(760px,calc(100vw - 16px))}}
 #menu button{display:block;width:100%;text-align:left;font:600 16px Inter;color:#fff;background:transparent;border:0;border-radius:10px;padding:12px 14px;cursor:pointer}
 #menu button:hover,#menu button:focus-visible{background:rgba(255,255,255,.12);outline:none}
 #menu button small{display:block;font:500 13px Inter;color:#AAB4CC;margin-top:2px}
@@ -3780,7 +3781,7 @@ Beat 4 · ANSWER: book-style answer: the Northern region, primary school level (
     });
     var L = lessonOf(i);
     if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
-    if (pos) pos.textContent = (i + 1) + ' / ' + N;
+    if (pos) pos.textContent = (i + 1) + ' / ' + N + (STEPS[i] ? '  ·  step ' + st + ' of ' + STEPS[i] : '');
     if (live) live.textContent = (L ? L.dataset.title + '. ' : '') + 'Slide ' + (i + 1) + ' of ' + N + (STEPS[i] ? ', step ' + st + ' of ' + STEPS[i] : '');
     if (!qs.has('still')) try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
     document.dispatchEvent(new CustomEvent('deck:change', { detail: { i: i, st: st, slide: s } }));
@@ -3792,6 +3793,7 @@ Beat 4 · ANSWER: book-style answer: the Northern region, primary school level (
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
   /* The slide changes ONLY with the arrow keys (or a clicker's PageUp/PageDown) and the ‹ › buttons (owner, 27 Nov).
      Clicking, tapping or swiping on the slide never changes it, so a wrong click at the board cannot skip ahead. */
+  if (matchMedia('(pointer: coarse)').matches) root.classList.add('touchy');   /* touch screens: the bar is visible from the start */
   addEventListener('pointerdown', function (e) { if ((e.pointerType || 'mouse') !== 'mouse') root.classList.add('touchy'); }, true);
   stage.addEventListener('click', function () { if (menuOpen()) closeMenu(); });
   addEventListener('keydown', function (e) {
@@ -4306,7 +4308,7 @@ Beat 4 · ANSWER: book-style answer: the Northern region, primary school level (
       reveal: function () { inp.value = answer; inp.readOnly = true; mark('ok'); },
       restore: function (s) { inp.value = s.v; inp.readOnly = false; mark(''); }
     });
-    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); } });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); inp.blur(); } });   /* blur: the arrows go back to the deck */
     inp.addEventListener('input', function () { ac.hide(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
     return register(w, { type: 'input', show: ac.show, hide: ac.hide, reset: reset, check: check, input: inp, tries: function () { return tries; } });
   }
@@ -4725,7 +4727,7 @@ Beat 4 · ANSWER: book-style answer: the Northern region, primary school level (
       inp.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
         e.preventDefault(); e.stopPropagation();
-        if (i < n - 1) inputs[i + 1].focus(); else check();
+        if (i < n - 1) inputs[i + 1].focus(); else { check(); inp.blur(); }
       });
       return inp;
     });
