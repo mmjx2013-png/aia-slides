@@ -48,7 +48,8 @@ html,body{height:100%;background:#0B0E16;overflow:hidden;font-family:Inter,syste
 .kicker{font:700 24px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
 h1.t{font:800 140px/.98 Display;letter-spacing:-.04em}
 h2{font:800 76px/1.05 Display;letter-spacing:-.035em;margin:10px 0 30px}
-h2 em,h1 em,.grad{font-style:normal;background:linear-gradient(100deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2 em,h1 em{font-style:normal;color:var(--blue)}
+.grad{background:linear-gradient(100deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
 h3{font:700 40px/1.15 Display;letter-spacing:-.02em}
 .lede{font:500 34px/1.42 Inter;color:var(--mute)}
 .body{font:500 32px/1.45 Inter}
@@ -74,11 +75,11 @@ mark{background:linear-gradient(transparent 55%,rgba(255,197,61,.55) 55%);color:
 .card.t-blue{background:var(--lblue)} .card.t-coral{background:var(--lcoral)} .card.t-mint{background:var(--lmint)} .card.t-sun{background:var(--lsun)} .card.t-violet{background:var(--lviolet)}
 .card.hl{outline:3px solid var(--blue)}
 .chip{display:inline-block;font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;border-radius:10px;background:var(--lblue);color:var(--blue)}
-.chip.coral{background:var(--lcoral);color:var(--coral)} .chip.mint{background:var(--lmint);color:var(--okc)} .chip.violet{background:var(--lviolet);color:var(--violet)} .chip.sun{background:var(--lsun);color:#A86F00}
+.chip.coral{background:var(--lcoral);color:#B8321F} .chip.mint{background:var(--lmint);color:#0A6E5B} .chip.violet{background:var(--lviolet);color:var(--violet)} .chip.sun{background:var(--lsun);color:#A86F00}
 .pill{display:inline-block;padding:12px 22px;border-radius:999px;background:#fff;box-shadow:0 8px 24px rgba(15,27,51,.08);font:600 24px Inter;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
 .badge{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:600 26px Inter}
 .badge svg{width:28px;height:28px}
-.badge.yes{background:var(--lmint);color:var(--okc)} .badge.no{background:var(--lcoral);color:var(--noc)} .badge.info{background:var(--lblue);color:var(--blue)}
+.badge.yes{background:var(--lmint);color:#0A6E5B} .badge.no{background:var(--lcoral);color:var(--noc)} .badge.info{background:var(--lblue);color:var(--blue)}
 .idea{display:flex;align-items:center;gap:18px;padding:20px 28px;border-radius:22px;background:var(--ink);color:#fff;font:500 30px/1.4 Inter}
 .idea svg{width:42px;height:42px;color:var(--sun);flex:none} .idea b{color:var(--sun)}
 .note{padding:20px 26px;border-radius:20px;background:var(--lsun);border:2px solid #F4D27A;font:500 28px/1.45 Inter}
@@ -203,8 +204,11 @@ svg.chart{display:block;overflow:visible;font-family:Inter}
 .opener .goals li svg{width:34px;height:34px;padding:5px;border-radius:10px;background:var(--lblue);color:var(--blue);flex:none}
 
 /* ---------- control bar + menu (engine) ---------- */
-#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;transition:opacity .3s;font:600 14px Inter}
-#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1}
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:7px;border-radius:14px;background:rgba(15,27,51,.86);box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;font:600 14px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.8;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#menu button[aria-current="true"]{background:rgba(255,197,61,.18);box-shadow:inset 3px 0 0 var(--sun)}
 #ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:9px 12px;cursor:pointer;min-width:40px}
 #ctl button:hover{background:rgba(255,255,255,.12)}
 #ctl button[aria-pressed="true"]{background:#fff;color:var(--ink)}
@@ -609,9 +613,9 @@ Say: "When one question gets many different answers, we need statistics. That is
 </section>
 
 <!-- 2 · hook: one answer vs many -->
-<section class="slide" id="l1-hook" data-steps="3">
+<section class="slide" id="l1-hook" data-steps="2">
  <i class="mesh"></i>
- <div class="kicker in">Lesson 1 · Warm-up</div>
+ <div class="kicker in">Lesson 1 · Statistical questions</div>
  <h2 class="in" style="--d:120">One answer or <em>many</em>?</h2>
  <div style="display:grid;grid-template-columns:500px 1fr;gap:34px;height:622px">
   <div class="card in" style="--d:240;display:flex;flex-direction:column">
@@ -621,7 +625,7 @@ Say: "When one question gets many different answers, we need statistics. That is
     <svg class="clock" viewBox="0 0 120 132" aria-hidden="true"><circle cx="27" cy="27" r="16" class="bell"/><circle cx="93" cy="27" r="16" class="bell"/><path d="M34 114 L24 128 M86 114 L96 128" class="leg"/><circle cx="60" cy="72" r="47" class="body"/><circle cx="60" cy="72" r="37" class="face"/><line x1="60" y1="72" x2="60" y2="54" class="hh" style="--a:187.5deg"/><line x1="60" y1="72" x2="60" y2="45" class="mh" style="--a:90deg"/><circle cx="60" cy="72" r="4.5" class="pin"/></svg>
     <div class="big">6:15</div>
    </div>
-   <div class="badge no g3" style="align-self:flex-start"><svg><use href="#cross"/></svg>Only <b>1</b> answer</div>
+   <div class="badge no g2" style="align-self:flex-start"><svg><use href="#cross"/></svg>Only <b>1</b> answer</div>
   </div>
   <div class="card in" style="--d:360;display:flex;flex-direction:column">
    <span class="chip" style="align-self:flex-start">Question B</span>
@@ -648,7 +652,7 @@ Say: "When one question gets many different answers, we need statistics. That is
      <g class="s-ink" style="stroke-width:3"><line x1="85" y1="306" x2="85" y2="315"/><line x1="195" y1="306" x2="195" y2="315"/><line x1="305" y1="306" x2="305" y2="315"/><line x1="415" y1="306" x2="415" y2="315"/><line x1="525" y1="306" x2="525" y2="315"/><line x1="635" y1="306" x2="635" y2="315"/><line x1="745" y1="306" x2="745" y2="315"/><line x1="855" y1="306" x2="855" y2="315"/><line x1="965" y1="306" x2="965" y2="315"/></g>
      <g text-anchor="middle"><text x="85" y="344" class="tick">5:30</text><text x="195" y="344" class="tick">5:45</text><text x="305" y="344" class="tick">6:00</text><text x="415" y="344" class="tick">6:15</text><text x="525" y="344" class="tick">6:30</text><text x="635" y="344" class="tick">6:45</text><text x="745" y="344" class="tick">7:00</text><text x="855" y="344" class="tick">7:15</text><text x="965" y="344" class="tick">7:30</text></g>
     </g>
-    <g class="g2">
+    <g class="g1" style="--d:650">
      <g class="f-coral">
       <circle cx="195" cy="286" r="14" class="drop" style="--n:0"/><circle cx="305" cy="286" r="14" class="drop" style="--n:1"/><circle cx="415" cy="286" r="14" class="drop" style="--n:2"/><circle cx="525" cy="286" r="14" class="drop" style="--n:3"/><circle cx="635" cy="286" r="14" class="drop" style="--n:4"/><circle cx="855" cy="286" r="14" class="drop" style="--n:5"/>
      </g>
@@ -663,24 +667,23 @@ Say: "When one question gets many different answers, we need statistics. That is
      </g>
     </g>
    </svg>
-   <div class="cap g2" style="--d:500;margin-top:8px"><span class="cdot"></span>our 6 friends<span class="bdot" style="margin-left:18px"></span>the rest of the class<span style="margin-left:18px">· 1 dot = 1 student · <b data-count="17" data-at="2">17</b> students</span></div>
-   <div class="badge yes g3" style="position:absolute;right:34px;top:28px"><svg><use href="#check"/></svg>Answers <b>vary</b></div>
+   <div class="cap g1" style="--d:900;margin-top:8px"><span class="cdot"></span>our 6 friends<span class="bdot" style="margin-left:18px"></span>the rest of the class<span style="margin-left:18px">· 1 dot = 1 student · <b data-count="17" data-at="1">17</b> students</span></div>
+   <div class="badge yes g2" style="position:absolute;right:34px;top:28px"><svg><use href="#check"/></svg>Answers <b>vary</b></div>
   </div>
  </div>
- <div class="idea g3" style="--d:300;margin-top:22px"><svg><use href="#bulb"/></svg><div>To answer B, we must <b>collect data</b> from the whole class.</div></div>
+ <div class="idea g2" style="--d:300;margin-top:22px"><svg><use href="#bulb"/></svg><div>To answer B, we must <b>collect data</b> from the whole class.</div></div>
  <aside class="notes">Beat 0: read both questions. Ask: "How many answers does each question have?"
 Question A is about one person ("I"), so it has one answer: 6:15.
-Beat 1: six friends answer question B: 5:45, 6:00, 6:15, 6:30, 6:45, 7:15. All different!
-Beat 2: everyone in the class answers. Each dot is one student (coral = our 6 friends, blue = the other 11).
+Beat 1: six friends answer question B: 5:45, 6:00, 6:15, 6:30, 6:45, 7:15. All different! Then everyone in the class answers and the dots drop: each dot is one student (coral = our 6 friends, blue = the other 11).
 Count per time: 5:30 1, 5:45 2, 6:00 3, 6:15 4, 6:30 3, 6:45 2, 7:00 1, 7:15 1, 7:30 0. Check: 1+2+3+4+3+2+1+1+0 = 17 students (6 coral + 11 blue = 17).
 Ask: "What is the most common wake-up time?" 6:15 (4 students).
-Beat 3: A has one answer. B has many answers that vary, so we must collect data to answer it.</aside>
+Beat 2: A has one answer. B has many answers that vary, so we must collect data to answer it.</aside>
 </section>
 
 <!-- 3 · definition: one question -> many answers -> data -->
 <section class="slide" id="l1-def" data-steps="3">
  <i class="mesh m3"></i>
- <div class="kicker in">Lesson 1 · Key idea</div>
+ <div class="kicker in">Lesson 1 · Statistical questions</div>
  <h2 class="in" style="--d:120">What is a <em>statistical question</em>?</h2>
  <div class="flow">
   <div class="card in" style="--d:240">
@@ -735,7 +738,7 @@ Beat 3: read the definition together. New term: statistical question. Ask: "Whic
 <!-- 4 · the three checks -->
 <section class="slide" id="l1-checks" data-steps="3">
  <i class="mesh m4"></i>
- <div class="kicker in">Lesson 1 · Key idea</div>
+ <div class="kicker in">Lesson 1 · Statistical questions</div>
  <h2 class="in" style="--d:120">Three <em>checks</em> for every question</h2>
  <div class="card flat strip in" style="--d:240">
   <span class="chip violet">Test it</span>
@@ -796,7 +799,7 @@ Tip: a group does not have to be people. It can be days, classes or trees in the
 <!-- 5 · examples vs non-examples -->
 <section class="slide" id="l1-pairs" data-steps="4">
  <i class="mesh m2"></i>
- <div class="kicker in">Lesson 1 · Examples</div>
+ <div class="kicker in">Lesson 1 · Statistical questions</div>
  <h2 class="in" style="--d:120">Same topic, <em>different</em> question</h2>
  <div class="tb">
   <div class="badge no in" style="--d:220;justify-self:start"><svg><use href="#cross"/></svg>Not statistical · one answer</div>
@@ -856,7 +859,7 @@ Remind them of the 3 checks: about a group? answers vary? needs data?</aside>
 <!-- 7 · sorting activity -->
 <section class="slide" id="l1-sort" data-steps="1">
  <i class="mesh m2"></i>
- <div class="kicker in">Exercise 1 · Sort</div>
+ <div class="kicker in">Exercise 1 · Task 1 · Sort the questions</div>
  <h2 class="in" style="--d:120;width:fit-content">Statistical or <em>not</em>?</h2>
  <div class="tips">
   <span class="tip pop" style="--n:0;--d:300"><i style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 40 56"><use href="#person"/></svg></i>About a group?</span>
@@ -888,7 +891,7 @@ Check: 4 + 4 = 8 cards.</aside>
 <!-- 8 · make it statistical -->
 <section class="slide" id="l1-make" data-steps="4">
  <i class="mesh m4"></i>
- <div class="kicker in">Exercise 1 · Rewrite</div>
+ <div class="kicker in">Exercise 1 · Task 2 · Rewrite</div>
  <h2 class="in" style="--d:120">Make it <em>statistical</em></h2>
  <div class="cols">
   <div>
@@ -929,7 +932,7 @@ Your turn: "How many pencils are in my pencil case?" One person, one answer. Bea
 <!-- 9 · quick check: two multiple choice -->
 <section class="slide" id="l1-check" data-steps="2">
  <i class="mesh m3"></i>
- <div class="kicker in">Exercise 1 · Quick check</div>
+ <div class="kicker in">Exercise 1 · Task 3 · Quick check</div>
  <h2 class="in" style="--d:120">Tap the <em>best</em> answer</h2>
  <div style="display:grid;grid-template-columns:900px 1fr;gap:34px">
   <div class="card qq in" style="--d:240">
@@ -967,7 +970,7 @@ Q2 (beat 2): B. The canteen opens at one fixed time (for example 7:00), so there
 <!-- 10 · exit ticket -->
 <section class="slide" id="l1-exit" data-steps="1">
  <i class="mesh"></i>
- <div class="kicker in">Exercise 1 · Exit ticket</div>
+ <div class="kicker in">Exercise 1 · Task 4 · Exit ticket</div>
  <h2 class="in" style="--d:120">Ask <em>our class</em> a question</h2>
  <div style="display:grid;grid-template-columns:1080px 1fr;gap:40px">
   <div class="ticket in" style="--d:240">
@@ -3328,6 +3331,7 @@ Next lesson: we will collect data to answer these questions.</aside>
       else if (st < at) el.textContent = '';
     });
     var L = lessonOf(i);
+    if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
     if (pos) pos.textContent = (i + 1) + ' / ' + N;
     if (live) live.textContent = (L ? L.dataset.title + '. ' : '') + 'Slide ' + (i + 1) + ' of ' + N + (STEPS[i] ? ', step ' + st + ' of ' + STEPS[i] : '');
     if (!qs.has('still')) try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
@@ -3338,7 +3342,23 @@ Next lesson: we will collect data to answer these questions.</aside>
   function jump(k, b) { i = Math.max(0, Math.min(N - 1, k | 0)); st = Math.max(0, Math.min(b | 0, STEPS[i])); show('jump'); }
 
   function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
-  stage.addEventListener('click', function (e) { if (busy(e.target)) return; (e.clientX < innerWidth * 0.2) ? prev() : next(); });
+  /* Only a real mouse click on the slide advances. Touch and stylus taps never do, so a student working at the board
+     cannot reveal an answer by accident; on touch screens use swipe or the ‹ › buttons. */
+  var lastPointer = 'mouse';
+  addEventListener('pointerdown', function (e) { lastPointer = e.pointerType || 'mouse'; if (lastPointer !== 'mouse') root.classList.add('touchy'); }, true);
+  stage.addEventListener('click', function (e) {
+    if (menuEl && menuEl.classList.contains('open')) { closeMenu(); return; }
+    if (lastPointer !== 'mouse' || busy(e.target)) return;
+    (e.clientX < innerWidth * 0.2) ? prev() : next();
+  });
+  addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
+    if (!nav) return;
+    e.preventDefault(); e.stopPropagation();
+    if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+    (k === 'PageDown' || k === 'ArrowRight') ? next() : prev();
+  }, true);
   addEventListener('keydown', function (e) {
     var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     var k = e.key;
@@ -3355,7 +3375,7 @@ Next lesson: we will collect data to answer these questions.</aside>
   stage.addEventListener('touchstart', function (e) { if (busy(e.target)) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
   stage.addEventListener('touchend', function (e) {
     if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { e.preventDefault(); dx < 0 ? next() : prev(); } x0 = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { if (e.cancelable) e.preventDefault(); dx < 0 ? next() : prev(); } x0 = null;
   });
 
   /* control bar: shows on pointer move, hides after 2.5 s */
@@ -3370,7 +3390,7 @@ Next lesson: we will collect data to answer these questions.</aside>
     slides.forEach(function (s, k) {
       if (!s.dataset.lesson) return;
       var b = document.createElement('button'); b.type = 'button';
-      b.innerHTML = s.dataset.title + '<small>Slide ' + (k + 1) + '</small>';
+      b.innerHTML = s.dataset.title + '<small>Slide ' + (k + 1) + '</small>'; b._slide = s;
       b.addEventListener('click', function () { closeMenu(); jump(k); });
       menuEl.appendChild(b);
     });
@@ -3380,6 +3400,7 @@ Next lesson: we will collect data to answer these questions.</aside>
   on('pen', function () { document.dispatchEvent(new CustomEvent('deck:pen')); });
   document.addEventListener('pen:state', function (e) { var b = document.getElementById('pen'); if (b) b.setAttribute('aria-pressed', e.detail.on ? 'true' : 'false'); });
 
+  addEventListener('hashchange', function () { var n = parseInt((location.hash || '').slice(1), 10); if (n && n - 1 !== i) jump(n - 1); });
   window.__deck = { next: next, prev: prev, jump: jump, state: function () { return { i: i, st: st, steps: STEPS[i], n: N, id: slides[i].id }; } };
   var h = parseInt((location.hash || '').slice(1), 10);
   jump(qs.has('s') ? +qs.get('s') : (h ? h - 1 : 0), +(qs.get('b') || 0));

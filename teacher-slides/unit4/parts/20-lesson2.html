@@ -59,17 +59,17 @@
 #l2-census .tray .tt{margin-left:auto;font:700 28px Inter;color:var(--noc)}
 #l2-census .pl{font:600 28px Inter}
 /* when to use each */
-#l2-when .fac{display:flex;flex-direction:column;gap:16px;padding:28px 32px}
-#l2-when .fh{display:flex;align-items:center;gap:16px;font:700 32px Inter}
-#l2-when .fi{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;flex:none}
+#l2-when .fac{display:flex;flex-direction:column;gap:18px;padding:30px 32px}
+#l2-when .fh{display:flex;align-items:center;gap:16px;font:700 34px Inter}
+#l2-when .fi{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;flex:none}
 #l2-when .fi svg{width:34px;height:34px}
-#l2-when .br{display:grid;grid-template-columns:118px 1fr;align-items:center;gap:12px;font:600 26px Inter}
+#l2-when .br{display:grid;grid-template-columns:124px 1fr;align-items:center;gap:12px;font:600 28px Inter}
 #l2-when .trk{display:flex;align-items:center;gap:12px}
-#l2-when .bar{display:block;height:34px;border-radius:10px}
-#l2-when .trk span{font:700 26px Inter}
-#l2-when .exm{display:grid;grid-template-columns:300px 1fr;gap:34px;align-items:center;padding:40px 40px}
-#l2-when .exm>svg{width:300px;height:180px}
-#l2-when .exm .body{font-size:30px}
+#l2-when .bar{display:block;height:42px;border-radius:11px}
+#l2-when .trk span{font:700 28px Inter}
+#l2-when .exm{display:grid;grid-template-columns:330px 1fr;gap:36px;align-items:center;padding:44px 42px}
+#l2-when .exm>svg{width:330px;height:198px}
+#l2-when .exm .body{font-size:31px}
 /* numbers or words */
 #l2-kind .kd{display:flex;align-items:center;gap:24px;padding:32px 32px}
 #l2-kind .kt{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;flex:none;color:#fff;font:800 32px Display;letter-spacing:-.02em}
@@ -106,10 +106,10 @@
 #l2-e2 .ch{margin-top:auto;gap:14px}
 #l2-e2 .c{gap:14px;padding:12px 16px;font-size:30px}
 #l2-e2 .c b{width:44px;height:44px;font-size:24px}
-#l2-e2 .why{display:flex;align-items:center;gap:12px;min-height:88px;padding:10px 16px;border-radius:18px;background:var(--lmint);font:600 26px/1.3 Inter;color:var(--okc)}
+#l2-e2 .why{display:flex;align-items:center;gap:12px;min-height:88px;padding:10px 16px;border-radius:18px;background:var(--lmint);font:600 26px/1.3 Inter;color:#0A6E5B}
 #l2-e2 .why svg{width:32px;height:32px;flex:none}
 /* exercise: sort */
-#l2-e3 .hand{width:100%;height:168px}
+#l2-e3 .hand{width:100%;height:140px}
 /* exercise: class survey */
 #l2-e4 .steps>li{font-size:30px}
 </style>
@@ -170,7 +170,7 @@
 
 <section class="slide" id="l2-what" data-steps="1">
  <i class="mesh m4"></i>
- <div class="kicker in">Lesson 2 · Data collection</div>
+ <div class="kicker in">Lesson 2 · What is data</div>
  <h2 class="in" style="--d:120">What is <em>data</em>?</h2>
  <div style="display:grid;grid-template-columns:580px 1fr;gap:56px;height:680px">
   <div class="stack" style="justify-content:center;gap:30px">
@@ -343,21 +343,21 @@
  <div class="grid3">
   <div class="card flat fac in" style="--d:220">
    <div class="fh"><i class="fi" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-clock"/></svg></i>Time needed</div>
-   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:250px;background:var(--blue);--d:600"></i><span>a lot</span></div></div>
-   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:90px;background:var(--coral);--d:600;--n:1"></i><span>less</span></div></div>
+   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:230px;background:var(--blue);--d:600"></i><span>a lot</span></div></div>
+   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:85px;background:var(--coral);--d:600;--n:1"></i><span>less</span></div></div>
   </div>
   <div class="card flat fac in" style="--d:320">
    <div class="fh"><i class="fi" style="background:var(--lsun);color:#B7791F"><svg viewBox="0 0 48 48"><use href="#l2-coin"/></svg></i>Cost</div>
-   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:250px;background:var(--blue);--d:800"></i><span>high</span></div></div>
-   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:90px;background:var(--coral);--d:800;--n:1"></i><span>low</span></div></div>
+   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:230px;background:var(--blue);--d:800"></i><span>high</span></div></div>
+   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:85px;background:var(--coral);--d:800;--n:1"></i><span>low</span></div></div>
   </div>
   <div class="card flat fac in" style="--d:420">
    <div class="fh"><i class="fi" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 24 24"><use href="#target"/></svg></i>How exact</div>
-   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:250px;background:var(--blue);--d:1000"></i><span>exact</span></div></div>
-   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:185px;background:var(--coral);--d:1000;--n:1"></i><span>close</span></div></div>
+   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:230px;background:var(--blue);--d:1000"></i><span>exact</span></div></div>
+   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:170px;background:var(--coral);--d:1000;--n:1"></i><span>close</span></div></div>
   </div>
  </div>
- <div class="grid2" style="margin-top:36px">
+ <div class="grid2" style="margin-top:40px">
   <div class="card exm in" style="--d:1150">
    <svg viewBox="0 0 250 150" aria-hidden="true">
     <g style="color:var(--blue)"><svg x="6" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg><svg x="66" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg><svg x="126" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg><svg x="186" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg></g>
@@ -378,7 +378,7 @@
    <div><span class="chip coral">Survey</span><div class="body" style="margin-top:12px">Before a new menu, the canteen asks <b>100</b> of the 2,400 students.</div></div>
   </div>
  </div>
- <div class="idea g1" style="margin-top:36px"><svg><use href="#bulb"/></svg><div>Small group, or must be exact → <b>census</b>. Big group, little time or money → <b>survey</b>.</div></div>
+ <div class="idea g1" style="margin-top:40px"><svg><use href="#bulb"/></svg><div>Small group, or must be exact → <b>census</b>. Big group, little time or money → <b>survey</b>.</div></div>
  <aside class="notes">Compare the bars. A census asks everyone, so it takes more time and costs more, but the result is exact. A survey asks only a sample: quicker and cheaper, and the result is close (an estimate) if the sample is chosen fairly.
  Then the two real examples. Census: Thailand's National Statistical Office runs a population and housing census about every 10 years and tries to count every person. Survey: the canteen asks 100 of 2,400 students; 100 ÷ 2,400 = 1/24, about 4% of the school. Asking all 2,400 would take far too long.
  Beat 1: the rule of thumb. Ask: "Which would you use to find the favourite fruit of everyone in Thailand?" (Survey.)</aside>
@@ -413,9 +413,9 @@
 
 <section class="slide" id="l2-ex" data-steps="0" data-lesson="2" data-title="Exercise 2 · Data collection">
  <i class="mesh m2"></i>
- <div class="pill in" style="--d:80">Exercise 2</div>
- <h2 class="in" style="--d:180;margin-top:26px">Your turn: <em>collect and sort</em></h2>
- <div class="grid4" style="margin-top:10px">
+ <div class="kicker in" style="--d:80">Exercise 2</div>
+ <h2 class="in" style="--d:180;font-size:96px;margin:14px 0 34px">Your turn: <em>collect and sort</em></h2>
+ <div class="grid4">
   <div class="card xc in" style="--d:300">
    <div class="xa" style="background:var(--lblue)"><span class="xn" style="background:var(--blue)">1</span>
     <svg viewBox="0 0 250 160" aria-hidden="true"><use href="#kid" x="6" y="38" width="80" height="100" style="--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--blue)"/><g transform="rotate(8 96 98)"><rect x="76" y="74" width="40" height="52" rx="7" style="fill:#fff;stroke:var(--ink);stroke-width:3.5"/><rect x="88" y="69" width="16" height="9" rx="3" style="fill:var(--ink)"/><path d="M84 102l6 6 12-13" style="fill:none;stroke:var(--mint);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></g><text x="140" y="104" text-anchor="middle" style="fill:var(--mute);font:700 26px Inter">or</text><g transform="rotate(-6 196 96)"><rect x="166" y="56" width="60" height="78" rx="7" style="fill:var(--coral)"/><rect x="166" y="56" width="11" height="78" rx="3" style="fill:#E25A49"/><rect x="184" y="74" width="32" height="7" rx="3.5" style="fill:#fff;opacity:.85"/><rect x="184" y="88" width="22" height="7" rx="3.5" style="fill:#fff;opacity:.6"/></g></svg></div>
@@ -443,7 +443,7 @@
 
 <section class="slide" id="l2-e1" data-steps="3">
  <i class="mesh m3"></i>
- <div class="kicker in">Exercise 2 · Task 1</div>
+ <div class="kicker in">Exercise 2 · Task 1 · Primary or secondary</div>
  <h2 class="in" style="--d:120">Primary or <em>secondary</em>?</h2>
  <div class="rws">
   <div class="rw in" style="--d:200"><span class="ri" style="background:var(--lsun);color:#B7791F"><svg viewBox="0 0 48 48"><use href="#l2-mango"/></svg></span><div class="rt">1 · You count who buys mango sticky rice at the canteen.</div><div class="ch ia r1" data-mcq><div class="c ok"><b>P</b>Primary</div><div class="c"><b>S</b>Secondary</div></div></div>
@@ -461,7 +461,7 @@
 
 <section class="slide" id="l2-e2" data-steps="3">
  <i class="mesh m4"></i>
- <div class="kicker in">Exercise 2 · Task 2</div>
+ <div class="kicker in">Exercise 2 · Task 2 · Census or survey</div>
  <h2 class="in" style="--d:120">Census or <em>survey</em>?</h2>
  <div class="grid3" style="height:700px">
   <div class="card sc in" style="--d:220">
@@ -509,9 +509,9 @@
 
 <section class="slide" id="l2-e3" data-steps="2">
  <i class="mesh m2"></i>
- <div class="kicker in">Exercise 2 · Task 3</div>
+ <div class="kicker in">Exercise 2 · Task 3 · Types of data</div>
  <h2 class="in" style="--d:120">Sort the <em>data</em></h2>
- <div style="display:grid;grid-template-columns:500px 1fr;gap:44px">
+ <div style="display:grid;grid-template-columns:600px 1fr;gap:44px">
   <div class="stack" style="gap:22px">
    <div class="card in" style="--d:220;padding:26px 30px">
     <svg class="hand" viewBox="0 0 440 210" aria-hidden="true">
@@ -525,9 +525,9 @@
     <div class="body" style="margin-top:14px">Drag each card into the right box. Then press <b>Check</b>.</div>
    </div>
    <div class="note g1" style="--d:0"><div class="nt">Hint</div>Count or measure → numbers. A name or a group → words.</div>
-   <div class="ans g2" style="--d:0;font-size:30px"><svg><use href="#check"/></svg><div><b>Numbers:</b> pets, height, minutes, rainfall.</div></div>
+   <div class="ans g2" style="--d:0;font-size:28px;align-items:flex-start"><svg><use href="#check"/></svg><div><div><b>Numbers:</b> pets, height, minutes, rainfall.</div><div style="margin-top:8px"><b>Words:</b> LINE sticker, way to school, sport, bag colour.</div></div></div>
   </div>
-  <div class="w-sort ia in" data-bins="Quantitative (numbers)|Qualitative (words)" style="--d:300;width:1116px;height:700px">
+  <div class="w-sort ia in" data-bins="Quantitative (numbers)|Qualitative (words)" style="--d:300;width:1016px;height:700px">
    <div class="item" data-bin="0">Number of pets you have</div>
    <div class="item" data-bin="1">Favourite LINE sticker</div>
    <div class="item" data-bin="0">Height in cm</div>
