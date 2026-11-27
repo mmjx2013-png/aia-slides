@@ -1,0 +1,177 @@
+<!-- TOOLS DEMO (not in the deck): one slide per widget. Preview: python3 build.py --only _tools-demo -->
+<style>
+#td-input .td-side,#td-bars .td-side,#td-line .td-side,#td-picto .td-side,#td-dots .td-side{display:flex;flex-direction:column;gap:22px}
+#td-dots .td-data{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+#td-dots .td-data span{display:grid;place-items:center;height:58px;border-radius:14px;background:var(--lblue);font:700 28px Inter;color:var(--blue)}
+</style>
+
+<!-- 1 · MCQ -->
+<section class="slide" id="td-mcq" data-steps="1" data-lesson="1" data-title="Tools demo">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Tools demo · Tap a choice</div>
+ <h2 class="in" style="--d:120">Which day sold the <em>most</em>?</h2>
+ <div class="g46" style="align-items:start">
+  <table class="tbl in" style="--d:200;width:100%">
+   <caption>Bubble tea sold at the canteen</caption>
+   <thead><tr><th>Day</th><th class="n">Cups</th></tr></thead>
+   <tbody><tr><td>Monday</td><td class="n">30</td></tr><tr><td>Tuesday</td><td class="n">25</td></tr><tr><td>Wednesday</td><td class="n">40</td></tr><tr><td>Thursday</td><td class="n">15</td></tr></tbody>
+   <tfoot><tr><td>Total</td><td class="n">110</td></tr></tfoot>
+  </table>
+  <div class="stack">
+   <div class="q in" style="--d:300">Tap the day with the most cups.</div>
+   <div class="ch r1 ia" data-mcq id="td-mcq-ch">
+    <div class="c in" style="--d:400"><b>A</b>Monday</div><div class="c in" style="--d:460"><b>B</b>Tuesday</div>
+    <div class="c ok in" style="--d:520"><b>C</b>Wednesday</div><div class="c in" style="--d:580"><b>D</b>Thursday</div>
+   </div>
+   <div class="ans g1"><svg><use href="#check"/></svg><div>Wednesday: <b>40 cups</b> is the largest number.</div></div>
+  </div>
+ </div>
+ <aside class="notes">Answer: C, Wednesday (40 &gt; 30 &gt; 25 &gt; 15). Total 30 + 25 + 40 + 15 = 110.</aside>
+</section>
+
+<!-- 2 · typed answers + handwriting -->
+<section class="slide" id="td-input" data-steps="0">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Tools demo · Type and write</div>
+ <h2 class="in" style="--d:120">Add up the cups</h2>
+ <div class="g46" style="align-items:start">
+  <table class="tbl in" style="--d:200;width:100%">
+   <caption>Bubble tea sold at the canteen</caption>
+   <thead><tr><th>Day</th><th class="n">Cups</th></tr></thead>
+   <tbody><tr><td>Monday</td><td class="n">30</td></tr><tr><td>Tuesday</td><td class="n">25</td></tr><tr><td>Wednesday</td><td class="n">40</td></tr><tr><td>Thursday</td><td class="n">15</td></tr></tbody>
+  </table>
+  <div class="td-side">
+   <div class="w-input ia in" id="td-in-num" style="--d:300" data-label="How many cups in total?" data-answer="110" data-accept="110;110 cups" data-unit="cups" data-tol="0"></div>
+   <div class="w-input ia in" id="td-in-text" style="--d:380" data-label="Which day sold the fewest cups?" data-answer="Thursday" data-accept="Thursday;Thu;Thurs"></div>
+   <div class="w-write ia in" id="td-write" style="--d:460;width:100%;height:270px" data-label="Show how you added" data-lines="3"></div>
+  </div>
+ </div>
+ <aside class="notes">Total: 30 + 25 + 40 + 15 = 110 cups. Fewest: Thursday (15).</aside>
+</section>
+
+<!-- 3 · sorting -->
+<section class="slide" id="td-sort" data-steps="0">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Tools demo · Sort the cards</div>
+ <h2 class="in" style="--d:120">Statistical or not?</h2>
+ <div class="w-sort ia in" id="td-sort-w" style="--d:220;width:1660px;height:690px" data-bins="Statistical question|Not a statistical question">
+  <div class="item" data-bin="0">How tall are the students in 1/2?</div>
+  <div class="item" data-bin="1">How tall is our teacher?</div>
+  <div class="item" data-bin="0">How do students come to school?</div>
+  <div class="item" data-bin="1">What day is Sports Day?</div>
+  <div class="item" data-bin="0">How many LINE stickers do my friends own?</div>
+  <div class="item" data-bin="1">How many players are in a football team?</div>
+ </div>
+ <aside class="notes">Statistical (answers vary, needs data): heights in 1/2; how students come to school; LINE stickers friends own. Not statistical (one answer): teacher's height; date of Sports Day; players in a football team (11).</aside>
+</section>
+
+<!-- 4 · bar chart builder -->
+<section class="slide" id="td-bars" data-steps="0">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Tools demo · Fix the bar chart</div>
+ <h2 class="in" style="--d:120">Books borrowed this week</h2>
+ <div style="display:grid;grid-template-columns:430px 1fr;gap:44px;align-items:start">
+  <div class="td-side">
+   <table class="tbl in" style="--d:200;width:100%">
+    <thead><tr><th>Day</th><th class="n">Books</th></tr></thead>
+    <tbody><tr><td>Mon</td><td class="n">15</td></tr><tr><td>Tue</td><td class="n">20</td></tr><tr><td>Wed</td><td class="n">35</td></tr><tr><td>Thu</td><td class="n">25</td></tr><tr><td>Fri</td><td class="n">30</td></tr></tbody>
+   </table>
+   <div class="note in" style="--d:300"><div class="nt">Your turn</div>Drag each bar to match the table.</div>
+  </div>
+  <div class="w-bars ia in" id="td-bars-w" style="--d:260;width:1186px;height:690px" data-title="Books borrowed from the library" data-labels="Mon,Tue,Wed,Thu,Fri" data-max="40" data-step="5" data-answer="15,20,35,25,30" data-ylabel="Books"></div>
+ </div>
+ <aside class="notes">Answer: Mon 15, Tue 20, Wed 35, Thu 25, Fri 30. No data-start, so every bar starts at 20 (half of 40).</aside>
+</section>
+
+<!-- 5 · line graph builder -->
+<section class="slide" id="td-line" data-steps="0">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Tools demo · Fix the line graph</div>
+ <h2 class="in" style="--d:120">How hot was it at noon?</h2>
+ <div style="display:grid;grid-template-columns:1fr 430px;gap:44px;align-items:start">
+  <div class="w-line ia in" id="td-line-w" style="--d:200;width:1186px;height:690px" data-title="Temperature at noon, Bangkok" data-labels="Mon,Tue,Wed,Thu,Fri" data-min="30" data-max="38" data-step="1" data-answer="32,34,33,36,35" data-start="34,34,35,33,34" data-ylabel="Temperature (°C)"></div>
+  <div class="td-side">
+   <table class="tbl in" style="--d:260;width:100%">
+    <thead><tr><th>Day</th><th class="n">°C</th></tr></thead>
+    <tbody><tr><td>Mon</td><td class="n">32</td></tr><tr><td>Tue</td><td class="n">34</td></tr><tr><td>Wed</td><td class="n">33</td></tr><tr><td>Thu</td><td class="n">36</td></tr><tr><td>Fri</td><td class="n">35</td></tr></tbody>
+   </table>
+   <div class="note in" style="--d:340"><div class="nt">Your turn</div>Some points are wrong. Move them.</div>
+  </div>
+ </div>
+ <aside class="notes">Answer: 32, 34, 33, 36, 35 °C. Start: 34, 34, 35, 33, 34 (Tue is already right).</aside>
+</section>
+
+<!-- 6 · pie chart, angles -->
+<section class="slide" id="td-pie" data-steps="0">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Tools demo · Build the pie chart</div>
+ <h2 class="in" style="--d:120">Favourite sport of 36 students</h2>
+ <div class="w-pie ia in" id="td-pie-w" style="--d:220;width:1400px;height:680px;margin:0 auto" data-title="Favourite sport in class 1/2" data-head="Sport,Students" data-labels="Football,Badminton,Volleyball,Swimming" data-values="12,9,9,6" data-mode="angles"></div>
+ <aside class="notes">Angle = students ÷ 36 × 360°. Football 12/36 × 360 = 120°. Badminton 9/36 × 360 = 90°. Volleyball 90°. Swimming 6/36 × 360 = 60°. Check: 120 + 90 + 90 + 60 = 360°.</aside>
+</section>
+
+<!-- 7 · pie chart, percent -->
+<section class="slide" id="td-pie2" data-steps="0">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Tools demo · Pie chart in percent</div>
+ <h2 class="in" style="--d:120">How do we come to school?</h2>
+ <div class="g64" style="align-items:start">
+  <div class="w-pie ia in" id="td-pie2-w" style="--d:220;width:100%;height:660px" data-title="Class 1/2 (40 students)" data-head="Way,Students" data-labels="Car,Bus,BTS,Walk" data-values="16,10,8,6" data-mode="percent"></div>
+  <div class="stack">
+   <div class="def in" style="--d:300"><div class="dt">Percent</div>part ÷ total × 100</div>
+   <div class="note in" style="--d:380"><div class="nt">Check</div>All the slices must add up to 100%.</div>
+  </div>
+ </div>
+ <aside class="notes">Car 16/40 = 40%. Bus 10/40 = 25%. BTS 8/40 = 20%. Walk 6/40 = 15%. Check: 40 + 25 + 20 + 15 = 100%.</aside>
+</section>
+
+<!-- 8 · pictogram -->
+<section class="slide" id="td-picto" data-steps="0">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Tools demo · Fix the pictogram</div>
+ <h2 class="in" style="--d:120">Bubble tea in pictures</h2>
+ <div style="display:grid;grid-template-columns:430px 1fr;gap:44px;align-items:start">
+  <div class="td-side">
+   <table class="tbl in" style="--d:200;width:100%">
+    <thead><tr><th>Day</th><th class="n">Cups</th></tr></thead>
+    <tbody><tr><td>Mon</td><td class="n">30</td></tr><tr><td>Tue</td><td class="n">25</td></tr><tr><td>Wed</td><td class="n">40</td></tr><tr><td>Thu</td><td class="n">15</td></tr></tbody>
+   </table>
+   <div class="note in" style="--d:300"><div class="nt">Hint</div>Half a picture means 5 cups.</div>
+  </div>
+  <div class="w-picto ia in" id="td-picto-w" style="--d:260;width:1186px;height:660px" data-title="Cups of bubble tea sold" data-labels="Mon,Tue,Wed,Thu" data-answer="3,2.5,4,1.5" data-key="10" data-icon="cup" data-unit="cups"></div>
+ </div>
+ <aside class="notes">1 cup picture = 10 cups. Mon 30 ÷ 10 = 3. Tue 25 ÷ 10 = 2.5. Wed 40 ÷ 10 = 4. Thu 15 ÷ 10 = 1.5. No data-start, so every row starts with 2 pictures.</aside>
+</section>
+
+<!-- 9 · dot plots: with an answer, and a free class survey -->
+<section class="slide" id="td-dots" data-steps="0">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Tools demo · Dot plot</div>
+ <h2 class="in" style="--d:120">Hours of sleep last night</h2>
+ <div class="grid2" style="align-items:start">
+  <div class="td-side">
+   <div class="card flat in" style="--d:200;padding:22px 26px">
+    <div class="small" style="font-weight:700;margin-bottom:12px;color:var(--ink)">15 students said (hours):</div>
+    <div class="td-data"><span>8</span><span>7</span><span>9</span><span>8</span><span>6</span><span>7</span><span>8</span><span>10</span><span>9</span><span>7</span><span>8</span><span>6</span><span>9</span><span>7</span><span>8</span></div>
+   </div>
+   <div class="w-dots ia in" id="td-dots-w" style="--d:280;width:100%;height:470px" data-title="Hours of sleep (15 students)" data-labels="6,7,8,9,10" data-answer="2,4,5,3,1"></div>
+  </div>
+  <div class="w-dots ia in" id="td-dots-free" style="--d:340;width:100%;height:690px" data-title="Our class: how many hours did YOU sleep?" data-labels="5 or less,6,7,8,9,10 or more"></div>
+ </div>
+ <aside class="notes">Tally: 6 → 2, 7 → 4, 8 → 5, 9 → 3, 10 → 1. Check: 2 + 4 + 5 + 3 + 1 = 15. The right plot is a free class survey (no answer).</aside>
+</section>
+
+<!-- 10 · three tools together (the layout from _snippets) -->
+<section class="slide" id="td-mix" data-steps="0">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Tools demo · Together</div>
+ <h2 class="in" style="--d:120">Build, count, explain</h2>
+ <div class="g64">
+  <div class="w-bars ia" id="td-mix-bars" data-title="Mango sticky rice sold (boxes)" data-labels="Mon,Tue,Wed,Thu,Fri" data-max="60" data-step="10" data-answer="30,25,40,20,50" data-start="20,25,30,30,40" data-ylabel="Boxes" style="width:1000px;height:640px"></div>
+  <div class="stack">
+   <div class="w-input ia" id="td-mix-in" data-label="How many boxes in total?" data-answer="165" data-accept="165;165 boxes" data-unit="boxes"></div>
+   <div class="w-write ia" id="td-mix-write" data-label="Explain how you know" data-lines="3" style="width:560px;height:260px"></div>
+  </div>
+ </div>
+ <aside class="notes">Mon 30, Tue 25, Wed 40, Thu 20, Fri 50. Total 30 + 25 + 40 + 20 + 50 = 165 boxes.</aside>
+</section>

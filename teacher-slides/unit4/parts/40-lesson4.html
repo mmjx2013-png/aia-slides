@@ -1,0 +1,802 @@
+<style>
+/* ---------- l4-open : phone with real-life data ---------- */
+#l4-open .vis{position:relative;height:896px}
+#l4-open .ph{position:absolute;right:0;top:62px;width:420px;height:772px;border-radius:66px;background:var(--ink);padding:14px;box-shadow:0 40px 90px rgba(15,27,51,.20)}
+#l4-open .scr{position:relative;height:100%;border-radius:52px;background:#fff;overflow:hidden;padding:70px 30px 28px}
+#l4-open .notch{position:absolute;left:50%;top:18px;width:112px;height:30px;margin-left:-56px;border-radius:16px;background:var(--ink)}
+#l4-open .city{font:800 38px/1.1 Display;letter-spacing:-.02em}
+#l4-open .sub{font:600 24px Inter;color:var(--mute);margin-top:4px}
+#l4-open .rainlab{font:700 24px Inter;color:var(--ink);margin:6px 0 10px}
+#l4-open .dec{display:flex;align-items:center;gap:14px;margin-top:14px;padding:16px 18px;border-radius:22px;background:var(--lblue)}
+#l4-open .dec svg{flex:none;width:50px;height:50px}
+#l4-open .dec b{display:block;font:800 26px/1.2 Inter;color:var(--blue)}
+#l4-open .dec span{display:block;font:600 26px/1.25 Inter}
+#l4-open .fc{position:absolute;z-index:3;display:flex;align-items:center;gap:16px;padding:22px 24px}
+#l4-open .fc .tile{flex:none;width:66px;height:66px;border-radius:18px;display:grid;place-items:center}
+#l4-open .fc .k{font:700 24px Inter;color:var(--mute)}
+#l4-open .fc .v{font:800 32px/1.15 Display;letter-spacing:-.02em}
+
+/* ---------- l4-uses : four places ---------- */
+#l4-uses .uc{display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 28px 30px;height:690px}
+#l4-uses .ic{width:184px;height:184px;border-radius:50%;display:grid;place-items:center;flex:none}
+#l4-uses .ic svg{width:136px;height:136px;overflow:visible}
+#l4-uses h3{margin:24px 0 18px;font-size:38px}
+#l4-uses .lab{display:block;font:700 22px Inter;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+#l4-uses .dat{font:500 29px/1.35 Inter;min-height:80px}
+#l4-uses .dat .lab{color:var(--mute)}
+#l4-uses .arr{width:40px;height:46px;margin:12px 0 10px;color:var(--ink)}
+#l4-uses .dc{width:100%;padding:16px 16px 18px;border-radius:22px;background:var(--lmint);font:700 29px/1.32 Inter;color:var(--ink)}
+#l4-uses .dc .lab{color:var(--okc)}
+#l4-uses .hand{transform-origin:70px 82px;transform:rotate(var(--a))}
+#l4-uses.on .hand{animation:spin 1.8s cubic-bezier(.25,.6,.2,1) both .7s}
+
+/* ---------- l4-case : canteen case study ---------- */
+#l4-case .trk{position:absolute;right:130px;top:140px;display:flex;gap:12px}
+#l4-case .trk span{display:flex;align-items:center;gap:10px;padding:12px 20px 12px 12px;border-radius:999px;background:#fff;box-shadow:0 8px 22px rgba(15,27,51,.08);font:700 26px Inter;color:var(--mute);transition:background .5s,color .5s}
+#l4-case .trk i{font-style:normal;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--lblue);color:var(--blue);font:800 22px Inter;transition:background .5s,color .5s}
+#l4-case .trk .t1{background:var(--blue);color:#fff}
+#l4-case.b1 .trk .t2{background:var(--coral);color:#fff}
+#l4-case.b2 .trk .t3{background:var(--mint);color:#fff}
+#l4-case.b3 .trk .t4{background:var(--violet);color:#fff}
+#l4-case .trk .t1 i,#l4-case.b1 .trk .t2 i,#l4-case.b2 .trk .t3 i,#l4-case.b3 .trk .t4 i{background:#fff;color:var(--ink)}
+#l4-case .dk{display:flex;align-items:center;gap:16px}
+#l4-case .dk svg{width:34px;height:51px;flex:none}
+#l4-case .tbl td{padding:9px 26px}
+#l4-case .tbl th{padding:14px 26px}
+#l4-case .tbl tfoot td{padding:14px 26px}
+#l4-case .stall{position:absolute;inset:0}
+#l4-case .q2{font:700 40px/1.22 Display;letter-spacing:-.02em;margin-top:16px}
+
+/* ---------- l4-cycle : the data cycle ---------- */
+#l4-cycle .cyc{position:relative;height:742px}
+#l4-cycle .cyc>svg{position:absolute;left:480px;top:20px;width:700px;height:700px}
+#l4-cycle .lb{position:absolute;width:540px;display:flex;flex-direction:column;gap:10px}
+#l4-cycle .lb.l{left:0;align-items:flex-end;text-align:right}
+#l4-cycle .lb.r{left:1120px;align-items:flex-start}
+#l4-cycle .lb .hd{display:flex;align-items:center;gap:16px}
+#l4-cycle .lb .nb{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;color:#fff;font:800 26px Inter}
+#l4-cycle .lb p{font:500 30px/1.35 Inter}
+#l4-cycle .lb .ex{display:inline-flex;align-items:center;gap:12px;padding:10px 18px;border-radius:16px;background:#fff;box-shadow:0 8px 22px rgba(15,27,51,.07);font:600 27px Inter;color:var(--ink)}
+#l4-cycle .lb .ex svg{width:24px;height:36px;flex:none}
+#l4-cycle .ctr{position:absolute;left:680px;top:224px;width:300px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+#l4-cycle .ctr .k{font:700 24px Inter;color:var(--mute)}
+#l4-cycle .ctr .nq{font:700 28px/1.3 Inter;color:var(--violet)}
+
+/* ---------- l4-ex : exercise divider ---------- */
+#l4-ex .big{font:800 128px/1 Display;letter-spacing:-.045em}
+#l4-ex .task{display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:center;padding:30px 36px}
+#l4-ex .task .pic{height:190px;border-radius:24px;display:grid;place-items:center}
+#l4-ex .task h3{margin:12px 0 8px}
+
+/* ---------- l4-trick : misleading chart ---------- */
+#l4-trick .cc{width:520px;height:742px;display:flex;flex-direction:column;padding:28px 30px}
+#l4-trick .claim{font:800 36px/1.15 Display;letter-spacing:-.02em;color:var(--coral);margin:14px 0 8px}
+#l4-trick .cap{font:600 26px Inter;color:var(--mute);margin:14px 0 8px}
+#l4-trick .ph{position:absolute;inset:28px 30px;border:3px dashed #C5CEE0;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:30px}
+#l4-trick .ph svg{width:110px;height:110px}
+#l4-trick .ph div{font:600 30px/1.35 Inter;color:var(--mute)}
+#l4-trick .c{font-size:32px;padding:14px 22px}
+#l4-trick .ans{font-size:30px}
+
+/* ---------- l4-plan : mini project ---------- */
+#l4-plan .side{position:relative;width:430px;height:742px}
+#l4-plan .side>.card{position:absolute;inset:0;padding:32px 34px}
+#l4-plan .idea-l{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:20px}
+#l4-plan .idea-l li{display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:20px;background:var(--bg);font:600 28px/1.25 Inter}
+#l4-plan .idea-l li span.t{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center}
+#l4-plan .idea-l li svg{width:36px;height:36px}
+#l4-plan .ex-l{list-style:none;display:flex;flex-direction:column;gap:16px;margin-top:20px}
+#l4-plan .ex-l li{display:flex;gap:16px;align-items:flex-start;font:500 28px/1.32 Inter}
+#l4-plan .ex-l li b{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;color:#fff;font:800 22px Inter}
+#l4-plan .pc{padding:24px 28px;height:356px;display:flex;flex-direction:column;gap:14px}
+#l4-plan .pc .hd{display:flex;align-items:center;gap:14px;font:700 32px Display;letter-spacing:-.01em}
+#l4-plan .pc .hd b{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;font:800 24px Inter}
+
+/* ---------- l4-sum : unit summary ---------- */
+#l4-sum .rows{position:relative;display:flex;flex-direction:column;gap:22px;padding-left:110px}
+#l4-sum .rail{position:absolute;left:0;top:0;width:90px;height:100%}
+#l4-sum .sr4{display:grid;grid-template-columns:96px 400px 1fr 1fr;gap:30px;align-items:center;height:156px;padding:22px 34px}
+#l4-sum .sr4 .ti{width:96px;height:96px;border-radius:26px;display:grid;place-items:center}
+#l4-sum .sr4 .ti svg{width:62px;height:62px}
+#l4-sum .sr4 h3{font-size:36px}
+#l4-sum .sr4 .lk{font:700 22px Inter;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+#l4-sum .sr4 p{font:500 28px/1.35 Inter;padding-left:20px;border-left:4px solid var(--line)}
+
+/* ---------- l4-voc1 / l4-voc2 : glossary ---------- */
+#l4-voc1 .gl,#l4-voc2 .gl{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;align-items:start}
+#l4-voc1 .col,#l4-voc2 .col{display:flex;flex-direction:column;gap:16px}
+#l4-voc1 .gi,#l4-voc2 .gi{display:grid;grid-template-columns:80px 1fr;gap:24px;align-items:center;height:114px;padding:0 28px 0 18px;border-radius:24px;background:#fff;box-shadow:0 10px 28px rgba(15,27,51,.07)}
+#l4-voc2 .gi{height:146px}
+#l4-voc1 .gt,#l4-voc2 .gt{width:80px;height:80px;border-radius:22px;display:grid;place-items:center}
+#l4-voc1 .gt svg,#l4-voc2 .gt svg{width:52px;height:52px;overflow:visible}
+#l4-voc1 .en,#l4-voc2 .en{display:block;font:700 34px/1.15 Display;letter-spacing:-.015em}
+#l4-voc1 .th,#l4-voc2 .th{display:block;font:600 30px/1.45 Inter;color:var(--blue);margin-top:2px}
+#l4-voc1 .th small,#l4-voc2 .th small{font:500 25px Inter;color:var(--mute)}
+#l4-voc1 .tip{height:114px;display:flex;align-items:center;gap:22px;padding:0 24px;border-radius:24px;border:3px dashed #C5CEE0}
+#l4-voc1 .tip div{font:600 26px/1.3 Inter;color:var(--mute)}
+
+/* ---------- l4-rev1 : review quiz ---------- */
+#l4-rev1 .qc{display:flex;flex-direction:column;gap:16px;height:742px;padding:28px 30px}
+#l4-rev1 .qc .pic{height:118px;border-radius:22px;display:grid;place-items:center}
+#l4-rev1 .qc .q{font:600 32px/1.3 Inter;min-height:126px}
+#l4-rev1 .ch{grid-template-columns:1fr;gap:12px}
+#l4-rev1 .c{font:700 29px/1.25 Display;padding:13px 18px;gap:14px;min-height:78px}
+#l4-rev1 .c b{width:46px;height:46px;font-size:22px}
+#l4-rev1 .ans{font:600 28px/1.3 Inter;padding:16px 20px;gap:14px;margin-top:auto}
+#l4-rev1 .ans svg{width:36px;height:36px}
+
+/* ---------- l4-rev2 : calculations ---------- */
+#l4-rev2 .sw{display:inline-block;width:22px;height:22px;border-radius:6px;margin-right:14px;vertical-align:-2px}
+#l4-rev2 .tbl td{padding:12px 26px}
+#l4-rev2 .qk{padding:26px 34px}
+#l4-rev2 .qk .q{font:600 34px/1.3 Inter;margin:12px 0 18px}
+#l4-rev2 .ans{font-size:32px}
+
+/* ---------- l4-end : closing ---------- */
+#l4-end .lessons li{font-size:27px}
+#l4-end .lessons b svg{width:30px;height:30px;color:#fff}
+#l4-end .nx{display:flex;align-items:center;gap:26px;padding:26px 32px}
+#l4-end .nx .ar{flex:none;width:84px;height:84px;border-radius:24px;display:grid;place-items:center;background:var(--lblue)}
+</style>
+
+<!-- ======================= 1 · Lesson 4 opener ======================= -->
+<section class="slide opener" id="l4-open" data-steps="0" data-lesson="4" data-title="Lesson 4 · Statistics in real life">
+ <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="l4-moon" viewBox="0 0 48 48"><path d="M30 6 A19 19 0 1 0 43 32 A15 15 0 0 1 30 6 Z" style="fill:currentColor"/></symbol>
+  <symbol id="l4-umb" viewBox="0 0 48 48"><path d="M4 24 A20 20 0 0 1 44 24 Q38 20 32 24 Q28 20 24 24 Q20 20 16 24 Q10 20 4 24 Z" style="fill:var(--blue)"/><path d="M24 24 V39 Q24 44 19.5 44 Q15 44 15 39" style="fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round"/><path d="M24 4 V7" style="stroke:var(--ink);stroke-width:3.5;stroke-linecap:round"/></symbol>
+  <symbol id="l4-cyc" viewBox="0 0 48 48"><path d="M38 17 A16 16 0 0 0 9 18 M10 31 A16 16 0 0 0 39 30" style="fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round"/><path d="M39 8 V18 H29 M9 40 V30 H19" style="fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+  <symbol id="l4-bars" viewBox="0 0 48 48"><path d="M6 42 H43" style="stroke:currentColor;stroke-width:4;stroke-linecap:round"/><rect x="9" y="24" width="8" height="15" rx="2" style="fill:currentColor"/><rect x="20" y="10" width="8" height="29" rx="2" style="fill:currentColor"/><rect x="31" y="18" width="8" height="21" rx="2" style="fill:currentColor"/></symbol>
+  <symbol id="l4-qb" viewBox="0 0 48 48"><path d="M8 7 H40 A4 4 0 0 1 44 11 V31 A4 4 0 0 1 40 35 H22 L13 43 V35 H8 A4 4 0 0 1 4 31 V11 A4 4 0 0 1 8 7 Z" style="fill:none;stroke:currentColor;stroke-width:3.5;stroke-linejoin:round"/><path d="M19 16 Q19 11.5 24 11.5 Q29 11.5 29 16 Q29 19.5 24.5 21 V24" style="fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round"/><circle cx="24.5" cy="29.5" r="2.3" style="fill:currentColor"/></symbol>
+  <symbol id="l4-crowd" viewBox="0 0 48 48"><g style="fill:currentColor"><circle cx="10" cy="10" r="4.5"/><path d="M3 22 Q3 15 10 15 Q17 15 17 22 Z"/><circle cx="24" cy="10" r="4.5"/><path d="M17 22 Q17 15 24 15 Q31 15 31 22 Z"/><circle cx="38" cy="10" r="4.5"/><path d="M31 22 Q31 15 38 15 Q45 15 45 22 Z"/><circle cx="10" cy="31" r="4.5"/><path d="M3 43 Q3 36 10 36 Q17 36 17 43 Z"/><circle cx="24" cy="31" r="4.5"/><path d="M17 43 Q17 36 24 36 Q31 36 31 43 Z"/><circle cx="38" cy="31" r="4.5"/><path d="M31 43 Q31 36 38 36 Q45 36 45 43 Z"/></g></symbol>
+  <symbol id="l4-arrow" viewBox="0 0 48 48"><path d="M8 24 H38 M27 12 L39 24 L27 36" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+ </defs></svg>
+ <i class="mesh m3"></i>
+ <div style="display:grid;grid-template-columns:1fr 700px;gap:40px;align-items:center;height:100%">
+  <div>
+   <div style="display:flex;align-items:flex-end;gap:44px">
+    <div class="num in" style="--d:100">4</div>
+    <div style="padding-bottom:6px">
+     <div class="kicker in" style="--d:200">Lesson 4</div>
+     <h2 class="in" style="--d:280;margin:14px 0 0">Statistics in<br><em>real life</em></h2>
+    </div>
+   </div>
+   <ul class="goals" style="margin-top:60px;gap:20px">
+    <li class="in" style="--d:450"><svg><use href="#check"/></svg>See how data helps people make choices</li>
+    <li class="in" style="--d:540"><svg><use href="#check"/></svg>Follow the data cycle, from question to decision</li>
+    <li class="in" style="--d:630"><svg><use href="#check"/></svg>Spot a chart that can trick you</li>
+   </ul>
+  </div>
+  <div class="vis">
+   <div class="ph in" style="--d:250">
+    <div class="scr">
+     <span class="notch"></span>
+     <div class="city">Bangkok</div>
+     <div class="sub">Weather this week</div>
+     <svg viewBox="0 0 332 120" style="display:block;width:332px;height:120px;margin-top:8px" aria-hidden="true">
+      <circle cx="214" cy="40" r="28" class="pop f-sun" style="--d:700"/>
+      <path d="M116 96 H222 A22 22 0 0 0 218 52 A32 32 0 0 0 158 46 A26 26 0 0 0 116 96 Z" class="pop f-blue" style="--d:850"/>
+      <g class="f-blue" style="opacity:.75"><path d="M140 104 l-6 12" class="drop s-blue" style="--n:0;--d:1300;stroke-width:5;stroke-linecap:round"/><path d="M170 104 l-6 12" class="drop s-blue" style="--n:2;--d:1300;stroke-width:5;stroke-linecap:round"/><path d="M200 104 l-6 12" class="drop s-blue" style="--n:4;--d:1300;stroke-width:5;stroke-linecap:round"/></g>
+     </svg>
+     <div class="rainlab">Chance of rain</div>
+     <svg class="chart" viewBox="0 0 332 250" style="width:332px;height:250px" aria-label="Chance of rain: Mon 10%, Tue 30%, Wed 80%, Thu 60%, Fri 20%">
+      <line x1="0" y1="200" x2="332" y2="200" class="grid"/>
+      <rect x="12" y="183" width="42" height="17" rx="6" class="grow" style="--n:0;--d:900;fill:#B7C8FF"/>
+      <rect x="78" y="149" width="42" height="51" rx="6" class="grow" style="--n:1;--d:900;fill:#B7C8FF"/>
+      <rect x="144" y="64" width="42" height="136" rx="6" class="grow f-blue" style="--n:2;--d:900"/>
+      <rect x="210" y="98" width="42" height="102" rx="6" class="grow f-blue" style="--n:3;--d:900"/>
+      <rect x="276" y="166" width="42" height="34" rx="6" class="grow" style="--n:4;--d:900;fill:#B7C8FF"/>
+      <g text-anchor="middle" class="val" style="font-size:22px"><text x="33" y="173" class="val">10%</text><text x="99" y="139" class="val">30%</text><text x="165" y="54" class="val">80%</text><text x="231" y="88" class="val">60%</text><text x="297" y="156" class="val">20%</text></g>
+      <g text-anchor="middle"><text x="33" y="236" class="lab">Mon</text><text x="99" y="236" class="lab">Tue</text><text x="165" y="236" class="lab">Wed</text><text x="231" y="236" class="lab">Thu</text><text x="297" y="236" class="lab">Fri</text></g>
+     </svg>
+     <div class="dec in" style="--d:1500"><svg><use href="#l4-umb"/></svg><div><b>Wednesday: 80%</b><span>Bring an umbrella!</span></div></div>
+    </div>
+   </div>
+   <div class="card fc float" style="left:0;top:150px;--r:-4deg;--d:700">
+    <span class="tile" style="background:var(--lcoral)"><svg class="cup" viewBox="0 0 64 96" style="width:36px;height:54px;--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg></span>
+    <div><div class="k">Canteen vote</div><div class="v">Thai tea: 42</div></div>
+   </div>
+   <div class="card fc float" style="left:24px;top:600px;--r:3deg;--d:900">
+    <span class="tile" style="background:var(--lviolet);color:var(--violet)"><svg style="width:40px;height:40px"><use href="#l4-moon"/></svg></span>
+    <div><div class="k">Sleep tracker</div><div class="v">8 h 30 min</div></div>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Opener, about 1 minute. Ask: "Where did you see numbers or charts today?" (weather app, game scores, a canteen vote, a sleep or step tracker). The phone shows a rain forecast: Wednesday has an 80% chance of rain, so we decide to bring an umbrella. That is statistics in real life: data, then a decision. Read the three goals. Today we learn how data helps people decide, follow the data cycle with a canteen story, and then in Exercise 4 we catch a chart that tries to trick us and plan our own mini project.</aside>
+</section>
+
+<!-- ======================= 2 · Where statistics helps us decide ======================= -->
+<section class="slide" id="l4-uses" data-steps="1">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Lesson 4 · Statistics in real life</div>
+ <h2 class="in" style="--d:120">Where statistics helps us <em>decide</em></h2>
+ <div class="grid4" style="gap:28px">
+  <div class="card uc in" style="--d:200">
+   <div class="ic" style="background:var(--lsun)">
+    <svg viewBox="0 0 140 140" aria-hidden="true">
+     <path d="M48 50 C40 40 56 34 48 22" pathLength="1" class="draw" style="--d:700;fill:none;stroke:#8C97B2;stroke-width:6;stroke-linecap:round"/>
+     <path d="M68 50 C60 40 76 34 68 22" pathLength="1" class="draw" style="--d:800;fill:none;stroke:#8C97B2;stroke-width:6;stroke-linecap:round"/>
+     <path d="M88 50 C80 40 96 34 88 22" pathLength="1" class="draw" style="--d:900;fill:none;stroke:#8C97B2;stroke-width:6;stroke-linecap:round"/>
+     <path d="M96 62 L130 26 M104 66 L136 36" style="fill:none;stroke:var(--ink);stroke-width:6;stroke-linecap:round"/>
+     <ellipse cx="68" cy="68" rx="50" ry="13" style="fill:#FFF8E6"/>
+     <path d="M16 68 H120 Q118 114 68 118 Q18 114 16 68 Z" class="f-coral"/>
+     <path d="M30 80 Q40 104 64 108" style="fill:none;stroke:#fff;stroke-opacity:.5;stroke-width:6;stroke-linecap:round"/>
+     <path d="M48 128 H88" style="stroke:var(--ink);stroke-width:8;stroke-linecap:round"/>
+    </svg>
+   </div>
+   <h3>Canteen menu</h3>
+   <div class="dat"><span class="lab">Data</span>What sells each day</div>
+   <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
+   <div class="dc g1" style="--d:150"><span class="lab">Decision</span>Cook more favourites, waste less</div>
+  </div>
+  <div class="card uc in" style="--d:300">
+   <div class="ic" style="background:var(--lcoral)">
+    <svg viewBox="0 0 140 140" aria-hidden="true">
+     <rect x="58" y="8" width="24" height="14" rx="5" class="f-ink"/><rect x="65" y="20" width="10" height="12" class="f-ink"/>
+     <path d="M108 40 L118 30" style="stroke:var(--ink);stroke-width:7;stroke-linecap:round"/>
+     <circle cx="70" cy="82" r="52" class="f-coral"/>
+     <circle cx="70" cy="82" r="40" style="fill:#fff"/>
+     <path d="M70 44 A38 38 0 0 1 104 99" pathLength="1" class="draw" style="--d:700;fill:none;stroke:var(--mint);stroke-width:8;stroke-linecap:round;opacity:.9"/>
+     <g style="stroke:var(--ink);stroke-width:4;stroke-linecap:round"><path d="M70 48 V55"/><path d="M104 82 H97"/><path d="M70 116 V109"/><path d="M36 82 H43"/></g>
+     <line x1="70" y1="82" x2="70" y2="52" class="hand" style="--a:118deg;stroke:var(--ink);stroke-width:6;stroke-linecap:round"/>
+     <circle cx="70" cy="82" r="7" class="f-ink"/>
+    </svg>
+   </div>
+   <h3>Sports-day teams</h3>
+   <div class="dat"><span class="lab">Data</span>Everyone's 50 m times</div>
+   <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true" style="--d:120"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
+   <div class="dc g1" style="--d:270"><span class="lab">Decision</span>Make fair teams with fast and slow runners</div>
+  </div>
+  <div class="card uc in" style="--d:400">
+   <div class="ic" style="background:var(--lblue)">
+    <svg viewBox="0 0 140 140" aria-hidden="true">
+     <circle cx="96" cy="40" r="22" class="pop f-sun" style="--d:600"/>
+     <path d="M32 92 H106 A22 22 0 0 0 102 48 A30 30 0 0 0 46 44 A24 24 0 0 0 32 92 Z" class="f-blue"/>
+     <g style="stroke:#6E93FF;stroke-width:7;stroke-linecap:round"><path d="M46 104 l-6 14" class="drop" style="--n:0;--d:900"/><path d="M70 104 l-6 14" class="drop" style="--n:3;--d:900"/><path d="M94 104 l-6 14" class="drop" style="--n:6;--d:900"/><path d="M58 122 l-4 10" class="drop" style="--n:9;--d:900"/><path d="M82 122 l-4 10" class="drop" style="--n:12;--d:900"/></g>
+    </svg>
+   </div>
+   <h3>Weather and rain</h3>
+   <div class="dat"><span class="lab">Data</span>Rainfall in past years</div>
+   <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true" style="--d:240"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
+   <div class="dc g1" style="--d:390"><span class="lab">Decision</span>Hold sports day in a dry month</div>
+  </div>
+  <div class="card uc in" style="--d:500">
+   <div class="ic" style="background:var(--lviolet)">
+    <svg viewBox="0 0 140 140" aria-hidden="true">
+     <path d="M78 22 A48 48 0 1 0 122 92 A38 38 0 0 1 78 22 Z" class="f-violet"/>
+     <path d="M108 22 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 Z" class="pop f-sun" style="--d:800"/>
+     <path d="M124 56 l3 6 6 3 -6 3 -3 6 -3 -6 -6 -3 6 -3 Z" class="pop f-sun" style="--d:950"/>
+     <text x="34" y="44" class="pop" style="--d:1100;font:800 30px Display;fill:var(--violet)">z</text>
+     <text x="16" y="70" class="pop" style="--d:1250;font:800 24px Display;fill:var(--violet)">z</text>
+    </svg>
+   </div>
+   <h3>Sleep and health</h3>
+   <div class="dat"><span class="lab">Data</span>Hours of sleep each night</div>
+   <svg class="arr g1" viewBox="0 0 40 46" aria-hidden="true" style="--d:360"><path d="M20 4 V38 M8 27 L20 40 L32 27" style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></svg>
+   <div class="dc g1" style="--d:510"><span class="lab">Decision</span>Go to bed earlier on school nights</div>
+  </div>
+ </div>
+ <aside class="notes">Four places where data helps us decide. First show only the data in each card and ask: "What would you decide with this data?" Take two or three ideas for each card. Beat 1 shows one possible decision for each card. Canteen: if we know what sells each day, the cook makes more of the favourites and throws away less food. Sports day: with everyone's 50 m running time we can make teams that are fair, with fast and slow runners in every team. Weather: rainfall records from past years show which months are dry, so sports day goes in a dry month. Sleep: if many students sleep too little, they can choose an earlier bedtime on school nights. Key message: data turns a guess into a better decision.</aside>
+</section>
+
+<!-- ======================= 3 · Case study: a new drink ======================= -->
+<section class="slide" id="l4-case" data-steps="3">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Lesson 4 · Case study</div>
+ <h2 class="in" style="--d:120">The canteen's <em>new drink</em></h2>
+ <div class="trk in" style="--d:250"><span class="t1"><i>1</i>Ask</span><span class="t2"><i>2</i>Collect</span><span class="t3"><i>3</i>Present</span><span class="t4"><i>4</i>Decide</span></div>
+ <div style="display:grid;grid-template-columns:600px 1fr;gap:30px">
+  <div class="stack" style="gap:24px">
+   <div class="card in" style="--d:250;padding:28px 34px">
+    <span class="chip">1 · Ask</span>
+    <div class="body" style="margin-top:14px;color:var(--mute)">The canteen can add <b style="color:var(--ink)">one</b> new drink.</div>
+    <div class="q2">Which new drink would students buy most?</div>
+   </div>
+   <table class="tbl g1" style="width:600px">
+    <caption>2 · Survey of 120 students (20 from each grade, M1 to M6)</caption>
+    <thead><tr><th>Drink</th><th class="n">Votes</th></tr></thead>
+    <tbody>
+     <tr><td><span class="dk"><svg viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>Thai tea</span></td><td class="n" data-count="42" data-at="1"></td></tr>
+     <tr><td><span class="dk"><svg viewBox="0 0 64 96" style="--tea:#FFD45C;--pearl:transparent"><use href="#cup"/></svg>Mango smoothie</span></td><td class="n" data-count="36" data-at="1"></td></tr>
+     <tr><td><span class="dk"><svg viewBox="0 0 64 96" style="--tea:#DDF0D2;--pearl:transparent"><use href="#cup"/></svg>Coconut water</span></td><td class="n" data-count="24" data-at="1"></td></tr>
+     <tr><td><span class="dk"><svg viewBox="0 0 64 96" style="--tea:#7B7BE8;--pearl:transparent"><use href="#cup"/></svg>Butterfly pea juice</span></td><td class="n" data-count="18" data-at="1"></td></tr>
+    </tbody>
+    <tfoot><tr><td>Total</td><td class="n" data-count="120" data-at="1"></td></tr></tfoot>
+   </table>
+  </div>
+  <div class="stack" style="gap:24px">
+   <div style="position:relative;height:556px">
+    <div class="card stall h2" style="--d:350;padding:0;overflow:hidden">
+     <svg viewBox="0 0 1030 556" style="display:block;width:100%;height:556px" aria-label="Four drinks on the canteen counter, each with a question mark">
+      <rect x="0" y="0" width="1030" height="556" style="fill:#fff"/>
+      <g><rect x="0" y="0" width="1030" height="70" class="f-coral"/>
+       <g style="fill:#fff"><rect x="86" y="0" width="86" height="70"/><rect x="258" y="0" width="86" height="70"/><rect x="430" y="0" width="86" height="70"/><rect x="602" y="0" width="86" height="70"/><rect x="774" y="0" width="86" height="70"/><rect x="946" y="0" width="86" height="70"/></g>
+       <g class="f-coral"><circle cx="43" cy="70" r="43"/><circle cx="215" cy="70" r="43"/><circle cx="387" cy="70" r="43"/><circle cx="559" cy="70" r="43"/><circle cx="731" cy="70" r="43"/><circle cx="903" cy="70" r="43"/></g>
+       <g style="fill:#fff;stroke:#F1D3CF;stroke-width:2"><circle cx="129" cy="70" r="43"/><circle cx="301" cy="70" r="43"/><circle cx="473" cy="70" r="43"/><circle cx="645" cy="70" r="43"/><circle cx="817" cy="70" r="43"/><circle cx="989" cy="70" r="43"/></g></g>
+      <rect x="0" y="390" width="1030" height="20" style="fill:#D3DAE8"/><rect x="0" y="410" width="1030" height="146" style="fill:#EEF2FF"/>
+      <g class="pop" style="--n:0;--d:700"><svg x="118" y="205" width="124" height="186" viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg></g>
+      <g class="pop" style="--n:1;--d:700"><svg x="352" y="205" width="124" height="186" viewBox="0 0 64 96" style="--tea:#FFD45C;--pearl:transparent"><use href="#cup"/></svg></g>
+      <g class="pop" style="--n:2;--d:700"><svg x="586" y="205" width="124" height="186" viewBox="0 0 64 96" style="--tea:#DDF0D2;--pearl:transparent"><use href="#cup"/></svg></g>
+      <g class="pop" style="--n:3;--d:700"><svg x="820" y="205" width="124" height="186" viewBox="0 0 64 96" style="--tea:#7B7BE8;--pearl:transparent"><use href="#cup"/></svg></g>
+      <g class="pop" style="--n:4;--d:900"><circle cx="234" cy="176" r="30" class="f-ink"/><text x="234" y="188" text-anchor="middle" style="font:800 36px Display;fill:#fff">?</text></g>
+      <g class="pop" style="--n:5;--d:900"><circle cx="468" cy="176" r="30" class="f-ink"/><text x="468" y="188" text-anchor="middle" style="font:800 36px Display;fill:#fff">?</text></g>
+      <g class="pop" style="--n:6;--d:900"><circle cx="702" cy="176" r="30" class="f-ink"/><text x="702" y="188" text-anchor="middle" style="font:800 36px Display;fill:#fff">?</text></g>
+      <g class="pop" style="--n:7;--d:900"><circle cx="936" cy="176" r="30" class="f-ink"/><text x="936" y="188" text-anchor="middle" style="font:800 36px Display;fill:#fff">?</text></g>
+      <g text-anchor="middle" style="font:600 26px Inter;fill:var(--ink)"><text x="180" y="458">Thai tea</text><text x="414" y="458">Mango</text><text x="414" y="492">smoothie</text><text x="648" y="458">Coconut</text><text x="648" y="492">water</text><text x="882" y="458">Butterfly</text><text x="882" y="492">pea juice</text></g>
+     </svg>
+    </div>
+    <div class="card g2" style="height:556px;padding:26px 34px">
+     <svg class="chart" viewBox="0 0 960 500" style="width:960px;height:500px" aria-label="Bar chart of votes: Thai tea 42, Mango smoothie 36, Coconut water 24, Butterfly pea juice 18">
+      <text x="0" y="26" class="ttl">3 · Votes for a new drink</text>
+      <g><line x1="90" y1="400" x2="950" y2="400" class="grid"/><line x1="90" y1="337" x2="950" y2="337" class="grid"/><line x1="90" y1="274" x2="950" y2="274" class="grid"/><line x1="90" y1="211" x2="950" y2="211" class="grid"/><line x1="90" y1="148" x2="950" y2="148" class="grid"/><line x1="90" y1="85" x2="950" y2="85" class="grid"/></g>
+      <g text-anchor="end"><text x="74" y="408" class="tick">0</text><text x="74" y="345" class="tick">10</text><text x="74" y="282" class="tick">20</text><text x="74" y="219" class="tick">30</text><text x="74" y="156" class="tick">40</text><text x="74" y="93" class="tick">50</text></g>
+      <text x="-250" y="22" transform="rotate(-90)" text-anchor="middle" class="tick" style="font-weight:600">Votes</text>
+      <rect x="140" y="135.4" width="120" height="264.6" rx="8" class="grow f-coral" style="--n:0"/>
+      <rect x="355" y="173.2" width="120" height="226.8" rx="8" class="grow f-sun" style="--n:1"/>
+      <rect x="570" y="248.8" width="120" height="151.2" rx="8" class="grow f-mint" style="--n:2"/>
+      <rect x="785" y="286.6" width="120" height="113.4" rx="8" class="grow f-violet" style="--n:3"/>
+      <line x1="90" y1="400" x2="950" y2="400" class="axis"/><line x1="90" y1="70" x2="90" y2="400" class="axis"/>
+      <g text-anchor="middle"><text x="200" y="123" class="val">42</text><text x="415" y="161" class="val">36</text><text x="630" y="237" class="val">24</text><text x="845" y="275" class="val">18</text></g>
+      <g text-anchor="middle"><text x="200" y="440" class="lab">Thai tea</text><text x="415" y="440" class="lab">Mango</text><text x="415" y="470" class="lab">smoothie</text><text x="630" y="440" class="lab">Coconut</text><text x="630" y="470" class="lab">water</text><text x="845" y="440" class="lab">Butterfly</text><text x="845" y="470" class="lab">pea juice</text></g>
+     </svg>
+    </div>
+   </div>
+   <div class="ans g3"><svg><use href="#check"/></svg><div>4 · Add <b>Thai tea</b>. It has the most votes: 42 of 120, which is 35%.</div></div>
+  </div>
+ </div>
+ <aside class="notes">A case study that follows the four steps (the tracker at the top lights up). Step 1 Ask: the canteen can add only one new drink. Question: "Which new drink would students buy most?" This is a statistical question because the answers vary. Beat 1, Collect: we asked 120 students, 20 from each grade M1 to M6 (6 × 20 = 120), so every grade has a voice. Votes: Thai tea 42, Mango smoothie 36, Coconut water 24, Butterfly pea juice 18. Check the total: 42 + 36 + 24 + 18 = 120. Beat 2, Present: a bar chart makes the biggest group easy to see (scale: each grid line is 10 votes). Beat 3, Decide: Thai tea has the tallest bar, so add Thai tea. 42 ÷ 120 = 0.35 = 35%. Check: 35% of 120 = 0.35 × 120 = 42. Ask: "Mango smoothie is close (36). What could the canteen do next term?" (try it later, or ask again).</aside>
+</section>
+
+<!-- ======================= 4 · The data cycle ======================= -->
+<section class="slide" id="l4-cycle" data-steps="4">
+ <i class="mesh"></i>
+ <div class="kicker in">Lesson 4 · How we use data</div>
+ <h2 class="in" style="--d:120">The <em>data cycle</em></h2>
+ <div class="cyc" style="margin-top:-150px;height:892px;padding-top:150px">
+  <svg viewBox="0 0 700 700" style="top:170px" aria-label="A cycle: Ask, then Collect, then Present, then Interpret and decide, then Ask again">
+   <circle cx="350" cy="350" r="255" style="fill:none;stroke:#DCE2EE;stroke-width:8;stroke-dasharray:2 18;stroke-linecap:round"/>
+   <g class="g1"><path d="M250.4 115.3 A255 255 0 0 1 441.4 111.9" pathLength="1" class="draw" style="fill:none;stroke:var(--blue);stroke-width:12;stroke-linecap:round"/><path d="M430.0 91.5 L447.0 114.1 L419.2 119.5" class="pop" style="--d:900;fill:none;stroke:var(--blue);stroke-width:12;stroke-linecap:round;stroke-linejoin:round"/></g>
+   <g class="g2"><path d="M584.7 250.4 A255 255 0 0 1 588.1 441.4" pathLength="1" class="draw" style="fill:none;stroke:var(--coral);stroke-width:12;stroke-linecap:round"/><path d="M608.5 430.0 L585.9 447.0 L580.5 419.2" class="pop" style="--d:900;fill:none;stroke:var(--coral);stroke-width:12;stroke-linecap:round;stroke-linejoin:round"/></g>
+   <g class="g3"><path d="M449.6 584.7 A255 255 0 0 1 258.6 588.1" pathLength="1" class="draw" style="fill:none;stroke:var(--mint);stroke-width:12;stroke-linecap:round"/><path d="M270.0 608.5 L253.0 585.9 L280.8 580.5" class="pop" style="--d:900;fill:none;stroke:var(--mint);stroke-width:12;stroke-linecap:round;stroke-linejoin:round"/></g>
+   <g class="g4"><path d="M115.3 449.6 A255 255 0 0 1 111.9 258.6" pathLength="1" class="draw" style="fill:none;stroke:var(--violet);stroke-width:12;stroke-linecap:round"/><path d="M91.5 270.0 L114.1 253.0 L119.5 280.8" class="pop" style="--d:900;fill:none;stroke:var(--violet);stroke-width:12;stroke-linecap:round;stroke-linejoin:round"/></g>
+   <g class="pop" style="--d:300"><circle cx="169.7" cy="169.7" r="86" style="fill:var(--lblue)"/><circle cx="169.7" cy="169.7" r="70" class="f-blue"/><text x="169.7" y="196" text-anchor="middle" style="font:800 76px Display;fill:#fff">?</text></g>
+   <g class="g1"><g class="pop" style="--d:700"><circle cx="530.3" cy="169.7" r="86" style="fill:var(--lcoral)"/><circle cx="530.3" cy="169.7" r="70" class="f-coral"/><use href="#clipboard" x="498.3" y="137.7" width="64" height="64" style="color:#fff"/></g></g>
+   <g class="g2"><g class="pop" style="--d:700"><circle cx="530.3" cy="530.3" r="86" style="fill:var(--lmint)"/><circle cx="530.3" cy="530.3" r="70" class="f-mint"/><use href="#l4-bars" x="496.3" y="496.3" width="68" height="68" style="color:#fff"/></g></g>
+   <g class="g3"><g class="pop" style="--d:700"><circle cx="169.7" cy="530.3" r="86" style="fill:var(--lviolet)"/><circle cx="169.7" cy="530.3" r="70" class="f-violet"/><use href="#bulb" x="135.7" y="496.3" width="68" height="68" style="color:#fff"/></g></g>
+  </svg>
+  <div class="lb l in" style="--d:350;top:270px">
+   <div class="hd"><h3>Ask</h3><b class="nb n1">1</b></div>
+   <p>Write a <b>statistical question</b>.</p>
+   <span class="ex"><svg viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>Which new drink?</span>
+  </div>
+  <div class="lb r g1" style="--d:500;top:270px">
+   <div class="hd"><b class="nb n2">2</b><h3>Collect</h3></div>
+   <p>Survey, count or measure.</p>
+   <span class="ex"><svg viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>Ask 120 students</span>
+  </div>
+  <div class="lb r g2" style="--d:500;top:630px">
+   <div class="hd"><b class="nb n3">3</b><h3>Present</h3></div>
+   <p>Show the data in a table or chart.</p>
+   <span class="ex"><svg viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>Draw a bar chart</span>
+  </div>
+  <div class="lb l g3" style="--d:500;top:630px">
+   <div class="hd"><h3>Interpret and decide</h3><b class="nb n4">4</b></div>
+   <p>Read the chart, then act.</p>
+   <span class="ex"><svg viewBox="0 0 64 96" style="--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>Add Thai tea</span>
+  </div>
+  <div class="ctr">
+   <div class="k in" style="--d:500">Canteen story</div>
+   <svg class="pop" viewBox="0 0 64 96" style="--d:600;width:76px;height:114px;--tea:#F0A35E;--pearl:transparent"><use href="#cup"/></svg>
+   <div class="nq g4" style="--d:700">New question: did sales go up?</div>
+  </div>
+ </div>
+ <aside class="notes">The data cycle: how people use statistics. Reveal one step per click and link each to the canteen story. 1 Ask: write a statistical question ("Which new drink would students buy most?"). Beat 1, 2 Collect: get the data by a survey, by counting or by measuring (we asked 120 students). Beat 2, 3 Present: organise the data in a table or chart (the bar chart). Beat 3, 4 Interpret and decide: read the chart and act (Thai tea had the most votes, 42 of 120, so the canteen adds it). Beat 4: the arrow goes back to Ask. A decision gives a new question, for example "Did drink sales go up?" and the cycle starts again. Ask: "Which step uses a bar chart?" (Present.) "Which step is a survey?" (Collect.)</aside>
+</section>
+
+<!-- ======================= 5 · Exercise 4 divider ======================= -->
+<section class="slide" id="l4-ex" data-steps="0" data-lesson="4" data-title="Exercise 4 · Statistics in real life">
+ <i class="mesh m4"></i>
+ <div style="display:grid;grid-template-columns:1fr 860px;gap:70px;align-items:center;height:100%">
+  <div>
+   <div class="kicker in" style="--d:100">Exercise 4</div>
+   <div class="big in" style="--d:200;margin-top:22px">Your <em class="grad">turn</em></div>
+   <p class="lede in" style="--d:350;margin-top:30px;max-width:620px">Work with a partner. Then come to the board and show the class.</p>
+   <div class="kids in" style="--d:500;justify-content:flex-start;margin-top:50px;gap:26px">
+    <div class="k pop" style="--n:0;--d:700"><svg class="kid" viewBox="0 0 80 100" style="width:96px;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"><use href="#kid"/></svg></div>
+    <div class="k pop" style="--n:1;--d:700"><svg class="kid" viewBox="0 0 80 100" style="width:96px;--skin:#C68B62;--hair:#1E1A17;--shirt:var(--k3)"><use href="#kid"/></svg></div>
+    <div class="k pop" style="--n:2;--d:700"><svg class="kid" viewBox="0 0 80 100" style="width:96px;--skin:#D9A77E;--hair:#3B2A1E;--shirt:var(--k2)"><use href="#kid"/></svg></div>
+    <svg class="pop" viewBox="0 0 24 24" style="--n:3;--d:700;width:76px;height:76px;padding:14px;border-radius:22px;background:#fff;color:var(--blue);box-shadow:0 10px 26px rgba(15,27,51,.08);align-self:center"><use href="#pencil"/></svg>
+   </div>
+  </div>
+  <div class="stack" style="gap:30px">
+   <div class="card task in" style="--d:350">
+    <div class="pic" style="background:var(--lcoral)">
+     <svg viewBox="0 0 200 160" style="width:190px;height:152px" aria-hidden="true">
+      <path d="M30 20 V130 H186" style="fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/>
+      <rect x="58" y="86" width="44" height="44" rx="6" class="grow f-mute" style="--d:700"/>
+      <rect x="124" y="30" width="44" height="100" rx="6" class="grow f-coral" style="--d:800"/>
+      <path d="M22 122 l8 -5 -8 -5 8 -5" style="fill:none;stroke:var(--coral);stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/>
+      <circle cx="30" cy="132" r="18" pathLength="1" class="draw" style="--d:1200;fill:none;stroke:var(--coral);stroke-width:5"/>
+     </svg>
+    </div>
+    <div>
+     <span class="chip coral">Task 1</span>
+     <h3>Spot the chart trick</h3>
+     <div class="small" style="font-size:28px">Does the chart tell the truth?</div>
+    </div>
+   </div>
+   <div class="card task in" style="--d:500">
+    <div class="pic" style="background:var(--lblue)">
+     <svg viewBox="0 0 24 24" style="width:120px;height:120px;color:var(--blue)" aria-hidden="true"><use href="#clipboard"/></svg>
+    </div>
+    <div>
+     <span class="chip">Task 2</span>
+     <h3>Plan a mini project</h3>
+     <div class="small" style="font-size:28px">Ask, collect, present, decide.</div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Exercise 4 has two tasks. Task 1: a shop's poster uses a chart that tricks the reader. Students find the trick and the real difference. Task 2: in pairs or small groups, students plan their own mini data project with the four steps of the data cycle. For each task, give students time, then invite pairs to the board to present before you click to reveal the answer.</aside>
+</section>
+
+<!-- ======================= 6 · Exercise: misleading chart ======================= -->
+<section class="slide" id="l4-trick" data-steps="3">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Exercise 4 · Task 1</div>
+ <h2 class="in" style="--d:120">Be careful with <em>charts</em></h2>
+ <div style="display:grid;grid-template-columns:520px 520px 1fr;gap:30px;margin-top:-6px">
+  <div class="card cc in" style="--d:200">
+   <span class="chip coral" style="align-self:flex-start">Shop B's poster</span>
+   <div class="claim">"We sell twice as much as Shop A!"</div>
+   <svg class="chart" viewBox="0 0 460 420" style="width:460px;height:420px;margin-top:auto" aria-label="Bar chart with the y axis from 90 to 100: Shop A 94 boxes, Shop B 98 boxes">
+    <text x="0" y="20" class="tick" style="font-weight:600">Boxes of mango sticky rice sold</text>
+    <g><line x1="70" y1="370" x2="450" y2="370" class="grid"/><line x1="70" y1="306" x2="450" y2="306" class="grid"/><line x1="70" y1="242" x2="450" y2="242" class="grid"/><line x1="70" y1="178" x2="450" y2="178" class="grid"/><line x1="70" y1="114" x2="450" y2="114" class="grid"/><line x1="70" y1="50" x2="450" y2="50" class="grid"/></g>
+    <g text-anchor="end"><text x="56" y="378" class="tick">90</text><text x="56" y="314" class="tick">92</text><text x="56" y="250" class="tick">94</text><text x="56" y="186" class="tick">96</text><text x="56" y="122" class="tick">98</text><text x="56" y="58" class="tick">100</text></g>
+    <rect x="110" y="242" width="110" height="128" rx="8" class="grow f-mute" style="--n:0"/>
+    <rect x="300" y="114" width="110" height="256" rx="8" class="grow f-coral" style="--n:1"/>
+    <line x1="70" y1="370" x2="450" y2="370" class="axis"/><line x1="70" y1="40" x2="70" y2="370" class="axis"/>
+    <g text-anchor="middle"><text x="165" y="230" class="val">94</text><text x="355" y="102" class="val">98</text><text x="165" y="408" class="lab">Shop A</text><text x="355" y="408" class="lab">Shop B</text></g>
+    <g class="g1"><circle cx="38" cy="371" r="28" pathLength="1" class="draw" style="fill:none;stroke:var(--coral);stroke-width:5"/></g>
+   </svg>
+   <div class="badge no g1" style="align-self:flex-start;margin-top:12px"><svg><use href="#cross"/></svg>The axis starts at 90, not 0</div>
+  </div>
+  <div class="card cc in" style="--d:300;position:relative">
+   <div class="ph h2" style="--d:500">
+    <svg viewBox="0 0 24 24" style="color:var(--mute)" aria-hidden="true"><use href="#pencil"/></svg>
+    <div>What would an honest chart look like?<br>Sketch it with the pen.</div>
+   </div>
+   <span class="chip mint g2" style="align-self:flex-start">Honest chart</span>
+   <div class="claim g2" style="color:var(--okc)">The axis starts at 0</div>
+   <svg class="chart g2" viewBox="0 0 460 420" style="width:460px;height:420px;margin-top:auto" aria-label="Bar chart with the y axis from 0 to 100: Shop A 94 boxes, Shop B 98 boxes">
+    <text x="0" y="20" class="tick" style="font-weight:600">Boxes of mango sticky rice sold</text>
+    <g><line x1="70" y1="370" x2="450" y2="370" class="grid"/><line x1="70" y1="306" x2="450" y2="306" class="grid"/><line x1="70" y1="242" x2="450" y2="242" class="grid"/><line x1="70" y1="178" x2="450" y2="178" class="grid"/><line x1="70" y1="114" x2="450" y2="114" class="grid"/><line x1="70" y1="50" x2="450" y2="50" class="grid"/></g>
+    <g text-anchor="end"><text x="56" y="378" class="tick">0</text><text x="56" y="314" class="tick">20</text><text x="56" y="250" class="tick">40</text><text x="56" y="186" class="tick">60</text><text x="56" y="122" class="tick">80</text><text x="56" y="58" class="tick">100</text></g>
+    <rect x="110" y="69.2" width="110" height="300.8" rx="8" class="grow f-mute" style="--n:0"/>
+    <rect x="300" y="56.4" width="110" height="313.6" rx="8" class="grow f-mint" style="--n:1"/>
+    <line x1="70" y1="370" x2="450" y2="370" class="axis"/><line x1="70" y1="40" x2="70" y2="370" class="axis"/>
+    <g text-anchor="middle"><text x="165" y="104" class="val" style="fill:#fff">94</text><text x="355" y="92" class="val" style="fill:#fff">98</text><text x="165" y="408" class="lab">Shop A</text><text x="355" y="408" class="lab">Shop B</text></g>
+   </svg>
+   <div class="badge yes g2" style="align-self:flex-start;margin-top:12px;--d:400"><svg><use href="#check"/></svg>Almost the same height</div>
+  </div>
+  <div class="stack" style="gap:18px">
+   <div class="q in" style="--d:400;font-size:34px">How many more boxes did Shop B <b>really</b> sell?</div>
+   <div class="ch r3 ia" data-mcq style="grid-template-columns:1fr;gap:14px">
+    <div class="c in" style="--d:500"><b>A</b>Twice as many</div>
+    <div class="c ok in" style="--d:560"><b>B</b>4 more boxes</div>
+    <div class="c in" style="--d:620"><b>C</b>8 more boxes</div>
+    <div class="c in" style="--d:680"><b>D</b>10 more boxes</div>
+   </div>
+   <div class="ans g3"><svg><use href="#check"/></svg><div>98 − 94 = <b>4 boxes</b>. That is only about 4% more, not twice!</div></div>
+  </div>
+ </div>
+ <aside class="notes">Task 1. Shop B's poster says "We sell twice as much as Shop A!" and its bar for Shop B looks twice as tall. Let pairs answer the question (tap a choice) and come to the board before you reveal anything. Beat 1 (hint): look at the y axis. It starts at 90, not 0, so the bars only show the part above 90: Shop A 94 − 90 = 4, Shop B 98 − 90 = 8. That is why B looks twice as tall. Beat 2: the honest chart starts at 0. The bars are 94 and 98, almost the same height. Students can first sketch it with the pen on the dashed card. Beat 3, answer B: 98 − 94 = 4 more boxes. 4 ÷ 94 ≈ 0.043, about 4% more, not 100% more (twice as many would be 2 × 94 = 188 boxes). Choice C (8) comes from reading the bar heights above 90. Rule: always read the axis before you believe a chart.</aside>
+</section>
+
+<!-- ======================= 7 · Exercise: mini project planner ======================= -->
+<section class="slide" id="l4-plan" data-steps="1">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Exercise 4 · Task 2</div>
+ <h2 class="in" style="--d:120">Plan your own <em>mini project</em></h2>
+ <div style="display:grid;grid-template-columns:430px 1fr;gap:34px;margin-top:-6px">
+  <div class="side">
+   <div class="card h1" style="--d:200">
+    <span class="chip sun">Topic ideas</span>
+    <ul class="idea-l">
+     <li class="in" style="--d:300"><span class="t" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><rect x="6" y="8" width="36" height="28" rx="6" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M6 24 H42" style="stroke:currentColor;stroke-width:4"/><circle cx="15" cy="40" r="4" style="fill:currentColor"/><circle cx="33" cy="40" r="4" style="fill:currentColor"/></svg></span>How we get to school</li>
+     <li class="in" style="--d:380"><span class="t" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l4-moon"/></svg></span>Hours of sleep</li>
+     <li class="in" style="--d:460"><span class="t" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 24 24"><use href="#phone"/></svg></span>Favourite LINE sticker</li>
+     <li class="in" style="--d:540"><span class="t" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M24 15 V33 M29 18.5 Q24 16 20 18.5 Q17 22 24 24 Q31 26 28 30 Q24 32.5 19 30" style="fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round"/></svg></span>Pocket money per day</li>
+    </ul>
+   </div>
+   <div class="card g1">
+    <span class="chip mint">Example plan</span>
+    <ol class="ex-l">
+     <li><b class="n1">1</b>How do students in 1/2 get to school?</li>
+     <li><b class="n2">2</b>Ask all 40 students in the class.</li>
+     <li><b class="n3">3</b>A bar chart of the five ways.</li>
+     <li><b class="n4">4</b>Most come by school bus: 14 of 40.</li>
+    </ol>
+   </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px">
+   <div class="card pc t-blue in" style="--d:250"><div class="hd"><b class="n1">1</b>Our question</div><div class="w-write ia" data-label="Will the answers vary?" data-lines="2" style="width:540px;height:240px"></div></div>
+   <div class="card pc t-coral in" style="--d:350"><div class="hd"><b class="n2">2</b>How we collect</div><div class="w-write ia" data-label="Survey, count or measure? Who?" data-lines="2" style="width:540px;height:240px"></div></div>
+   <div class="card pc t-mint in" style="--d:450"><div class="hd"><b class="n3">3</b>Which chart</div><div class="w-write ia" data-label="Table, pictogram, bar, line or pie?" data-lines="2" style="width:540px;height:240px"></div></div>
+   <div class="card pc t-violet in" style="--d:550"><div class="hd"><b class="n4">4</b>What we found</div><div class="w-write ia" data-label="What does the data tell us?" data-lines="2" style="width:540px;height:240px"></div></div>
+  </div>
+ </div>
+ <aside class="notes">Task 2, in pairs. Pick a topic (ideas on the left, or your own). Fill the four boxes, one for each step of the data cycle. 1 Our question: it must be a statistical question (the answers vary). 2 How we collect: survey, count or measure, and who you ask (the whole class is a census; some students is a sample). 3 Which chart: choose the chart that fits (categories: pictogram, bar chart or pie chart; change over time: line graph). 4 What we found: one sentence that answers the question (students can write a guess now and finish after they collect real data). Invite two pairs to the board to present their plans, then click to show the example. Example: "How do students in 1/2 get to school?" Ask all 40 students (a census of the class). Bar chart of the five ways. Finding: school bus 14, car 10, walk 8, BTS 6, bicycle 2 (14 + 10 + 8 + 6 + 2 = 40), so most come by school bus, 14 of 40 = 35%.</aside>
+</section>
+
+<!-- ======================= 8 · Unit summary ======================= -->
+<section class="slide" id="l4-sum" data-steps="3" data-lesson="5" data-title="Summary · Vocabulary · Review">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Unit 4 · Summary</div>
+ <h2 class="in" style="--d:120">What we <em>learned</em></h2>
+ <div class="rows">
+  <svg class="rail" viewBox="0 0 90 690" preserveAspectRatio="none" aria-hidden="true">
+   <path d="M45 78 V256" pathLength="1" class="g1 draw" style="fill:none;stroke:#C5CEE0;stroke-width:6;stroke-linecap:round"/>
+   <path d="M45 256 V434" pathLength="1" class="g2 draw" style="fill:none;stroke:#C5CEE0;stroke-width:6;stroke-linecap:round"/>
+   <path d="M45 434 V612" pathLength="1" class="g3 draw" style="fill:none;stroke:#C5CEE0;stroke-width:6;stroke-linecap:round"/>
+  </svg>
+  <div class="card sr4 in" style="--d:250">
+   <span class="ti" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l4-qb"/></svg></span>
+   <div><div class="lk blue">Lesson 1</div><h3>Statistical questions</h3></div>
+   <p>Answers vary, so we need data.</p>
+   <p>"How long do 1/2 students sleep?"</p>
+  </div>
+  <div class="card sr4 g1">
+   <span class="ti" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#clipboard"/></svg></span>
+   <div><div class="lk coral">Lesson 2</div><h3>Data collection</h3></div>
+   <p>Primary: we collect it. Secondary: someone else did.</p>
+   <p>Census: everyone. Survey: a sample.</p>
+  </div>
+  <div class="card sr4 g2">
+   <span class="ti" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-bars"/></svg></span>
+   <div><div class="lk mint">Lesson 3</div><h3>Presenting &amp; reading data</h3></div>
+   <p>Table, pictogram, bar chart, line graph, pie chart.</p>
+   <p>Pick the chart that fits the data.</p>
+  </div>
+  <div class="card sr4 g3">
+   <span class="ti" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l4-cyc"/></svg></span>
+   <div><div class="lk violet">Lesson 4</div><h3>Statistics in real life</h3></div>
+   <p>Ask, collect, present, decide.</p>
+   <p>Check the axis before you trust a chart.</p>
+  </div>
+ </div>
+ <aside class="notes">Unit summary, one lesson per click. Ask the class to say each idea before you click. Lesson 1: a statistical question expects answers that vary, so we collect data (example: "How long do 1/2 students sleep?"). Lesson 2: primary data we collect ourselves; secondary data was collected by someone else (books, websites). A census collects data from everyone in the population; a survey collects data from a sample. Lesson 3: we present data in a table, pictogram, bar chart, line graph or pie chart, and choose the one that fits (line graph for change over time, pie chart for parts of a whole). Lesson 4: the data cycle (ask, collect, present, interpret and decide), and always check the axis before you trust a chart.</aside>
+</section>
+
+<!-- ======================= 9 · Vocabulary 1 ======================= -->
+<section class="slide" id="l4-voc1" data-steps="1">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Vocabulary · 1 of 2</div>
+ <h2 class="in" style="--d:120">Words for <em>asking and collecting</em></h2>
+ <div class="gl">
+  <div class="col">
+   <div class="gi in" style="--d:200"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l4-qb"/></svg></span><div><b class="en">statistical question</b><span class="th g1" lang="th">คำถามทางสถิติ</span></div></div>
+   <div class="gi in" style="--d:260"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><g style="fill:currentColor"><circle cx="9" cy="12" r="4"/><circle cx="9" cy="24" r="4"/><circle cx="9" cy="36" r="4"/></g><path d="M19 12 H41 M19 24 H35 M19 36 H39" style="stroke:currentColor;stroke-width:4;stroke-linecap:round"/></svg></span><div><b class="en">data</b><span class="th g1" lang="th" style="--d:60">ข้อมูล</span></div></div>
+   <div class="gi in" style="--d:320"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#clipboard"/></svg></span><div><b class="en">data collection</b><span class="th g1" lang="th" style="--d:120">การเก็บรวบรวมข้อมูล</span></div></div>
+   <div class="gi in" style="--d:380"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#pencil"/></svg></span><div><b class="en">primary data</b><span class="th g1" lang="th" style="--d:180">ข้อมูลปฐมภูมิ</span></div></div>
+   <div class="gi in" style="--d:440"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#book"/></svg></span><div><b class="en">secondary data</b><span class="th g1" lang="th" style="--d:240">ข้อมูลทุติยภูมิ</span></div></div>
+  </div>
+  <div class="col">
+   <div class="gi in" style="--d:500"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/></svg></span><div><b class="en">population</b><span class="th g1" lang="th" style="--d:300">ประชากร</span></div></div>
+   <div class="gi in" style="--d:560"><span class="gt" style="background:var(--lmint);color:#AAB4CC"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/><g style="fill:var(--okc)"><circle cx="24" cy="10" r="4.5"/><path d="M17 22 Q17 15 24 15 Q31 15 31 22 Z"/><circle cx="10" cy="31" r="4.5"/><path d="M3 43 Q3 36 10 36 Q17 36 17 43 Z"/></g></svg></span><div><b class="en">sample</b><span class="th g1" lang="th" style="--d:360">กลุ่มตัวอย่าง</span></div></div>
+   <div class="gi in" style="--d:620"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/><circle cx="40" cy="40" r="9" style="fill:var(--okc);stroke:#fff;stroke-width:2.5"/><path d="M35.5 40 L39 43.5 L45 37" style="fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></svg></span><div><b class="en">census</b><span class="th g1" lang="th" style="--d:420">สำมะโน <small>(เก็บข้อมูลจากทุกหน่วย)</small></span></div></div>
+   <div class="gi in" style="--d:680"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="14" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M30 30 L42 42" style="stroke:currentColor;stroke-width:5;stroke-linecap:round"/><circle cx="20" cy="16" r="4" style="fill:currentColor"/><path d="M13 27 Q13 21 20 21 Q27 21 27 27 Z" style="fill:currentColor"/></svg></span><div><b class="en">survey</b><span class="th g1" lang="th" style="--d:480">การสำรวจ <small>(เก็บจากกลุ่มตัวอย่าง)</small></span></div></div>
+   <div class="tip in" style="--d:740">
+    <svg viewBox="0 0 120 60" style="width:150px;height:75px;flex:none" aria-hidden="true">
+     <g style="fill:#AAB4CC"><circle cx="12" cy="14" r="7"/><circle cx="34" cy="14" r="7"/><circle cx="56" cy="14" r="7"/><circle cx="78" cy="14" r="7"/><circle cx="100" cy="14" r="7"/><circle cx="12" cy="44" r="7"/><circle cx="34" cy="44" r="7"/><circle cx="56" cy="44" r="7"/><circle cx="78" cy="44" r="7"/><circle cx="100" cy="44" r="7"/></g>
+     <g class="f-mint"><circle cx="56" cy="14" r="7"/><circle cx="78" cy="14" r="7"/><circle cx="56" cy="44" r="7"/><circle cx="78" cy="44" r="7"/></g>
+     <rect x="44" y="3" width="46" height="54" rx="14" pathLength="1" class="draw" style="--d:1300;fill:none;stroke:var(--okc);stroke-width:3.5"/>
+    </svg>
+    <div>A <b class="mint">sample</b> is a part of the <b style="color:var(--ink)">population</b>.</div>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Vocabulary 1. Point to each English word and ask: "What is it in Thai?" Click to show the Thai meanings. statistical question = คำถามทางสถิติ · data = ข้อมูล · data collection = การเก็บรวบรวมข้อมูล · primary data = ข้อมูลปฐมภูมิ (we collect it ourselves) · secondary data = ข้อมูลทุติยภูมิ (someone else collected it) · population = ประชากร (the whole group we want to know about) · sample = กลุ่มตัวอย่าง (a part of the population) · census = สำมะโน, collecting data from every member · survey = การสำรวจ, collecting data from a sample. The small picture: the population is all 10 dots; the 4 green dots in the box are a sample.</aside>
+</section>
+
+<!-- ======================= 10 · Vocabulary 2 ======================= -->
+<section class="slide" id="l4-voc2" data-steps="1">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Vocabulary · 2 of 2</div>
+ <h2 class="in" style="--d:120">Words for <em>data and charts</em></h2>
+ <div class="gl">
+  <div class="col">
+   <div class="gi in" style="--d:200"><span class="gt" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><text x="24" y="32" text-anchor="middle" style="font:800 22px Display;fill:currentColor">123</text></svg></span><div><b class="en">quantitative data</b><span class="th g1" lang="th">ข้อมูลเชิงปริมาณ</span></div></div>
+   <div class="gi in" style="--d:260"><span class="gt" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><circle cx="13" cy="24" r="8" class="f-coral"/><circle cx="35" cy="24" r="8" class="f-blue"/><circle cx="24" cy="10" r="8" class="f-mint"/><circle cx="24" cy="38" r="8" class="f-violet"/></svg></span><div><b class="en">qualitative data</b><span class="th g1" lang="th" style="--d:60">ข้อมูลเชิงคุณภาพ</span></div></div>
+   <div class="gi in" style="--d:320"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><rect x="5" y="7" width="38" height="34" rx="5" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M5 18 H43 M5 29 H43 M20 7 V41" style="stroke:currentColor;stroke-width:3.5"/></svg></span><div><b class="en">data table</b><span class="th g1" lang="th" style="--d:120">ตารางข้อมูล</span></div></div>
+   <div class="gi in" style="--d:380"><span class="gt" style="background:var(--lblue)"><svg viewBox="0 0 48 48"><svg x="0" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="16" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="32" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="0" y="24" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="16" y="24" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg></svg></span><div><b class="en">pictogram</b><span class="th g1" lang="th" style="--d:180">แผนภูมิรูปภาพ</span></div></div>
+  </div>
+  <div class="col">
+   <div class="gi in" style="--d:440"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-bars"/></svg></span><div><b class="en">bar chart</b><span class="th g1" lang="th" style="--d:240">แผนภูมิแท่ง</span></div></div>
+   <div class="gi in" style="--d:500"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><path d="M5 42 H44 M5 42 V5" style="fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round"/><path d="M10 34 L20 22 L29 27 L41 11" pathLength="1" class="draw" style="--d:900;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/><g style="fill:currentColor"><circle cx="10" cy="34" r="3.5"/><circle cx="20" cy="22" r="3.5"/><circle cx="29" cy="27" r="3.5"/><circle cx="41" cy="11" r="3.5"/></g></svg></span><div><b class="en">line graph</b><span class="th g1" lang="th" style="--d:300">กราฟเส้น</span></div></div>
+   <div class="gi in" style="--d:560"><span class="gt" style="background:var(--lmint)"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" class="f-mint"/><path d="M24 24 V5 A19 19 0 0 1 42.1 29.9 Z" class="f-sun"/><path d="M24 24 L42.1 29.9 A19 19 0 0 1 14.5 40.5 Z" class="f-coral"/></svg></span><div><b class="en">pie chart</b><span class="th g1" lang="th" style="--d:360">แผนภูมิรูปวงกลม</span></div></div>
+   <div class="gi in" style="--d:620"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 24 24"><use href="#bulb"/></svg></span><div><b class="en">interpret</b><span class="th g1" lang="th" style="--d:420">ตีความ / แปลความหมาย</span></div></div>
+  </div>
+ </div>
+ <aside class="notes">Vocabulary 2. Ask for the Thai word first, then click. quantitative data = ข้อมูลเชิงปริมาณ (numbers, e.g. height, hours of sleep) · qualitative data = ข้อมูลเชิงคุณภาพ (words or categories, e.g. favourite colour) · data table = ตารางข้อมูล · pictogram = แผนภูมิรูปภาพ · bar chart = แผนภูมิแท่ง · line graph = กราฟเส้น · pie chart = แผนภูมิรูปวงกลม · interpret = ตีความ / แปลความหมาย (say what the data or chart tells us). Quick check: "Is favourite fruit quantitative or qualitative?" (qualitative) "Is your height?" (quantitative).</aside>
+</section>
+
+<!-- ======================= 11 · Unit review: quiz ======================= -->
+<section class="slide" id="l4-rev1" data-steps="3">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Unit review</div>
+ <h2 class="in" style="--d:120">Quick quiz: <em>tap your answer</em></h2>
+ <div class="grid3" style="margin-top:-6px">
+  <div class="card qc in" style="--d:200">
+   <div class="pic" style="background:var(--lblue)">
+    <div class="kids" style="gap:18px;align-items:flex-end">
+     <svg class="kid pop" viewBox="0 0 80 100" style="--n:0;--d:600;width:72px;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"><use href="#kid"/></svg>
+     <svg class="pop" viewBox="0 0 48 48" style="--n:1;--d:600;width:56px;height:56px;color:var(--blue);align-self:flex-start"><use href="#l4-qb"/></svg>
+     <svg class="kid pop" viewBox="0 0 80 100" style="--n:2;--d:600;width:72px;--skin:#C68B62;--hair:#1E1A17;--shirt:var(--k3)"><use href="#kid"/></svg>
+    </div>
+   </div>
+   <div class="row" style="gap:14px"><span class="chip">Q1</span><span class="small">Lesson 1</span></div>
+   <div class="q">Which question is statistical?</div>
+   <div class="ch r1 ia" data-mcq>
+    <div class="c"><b>A</b>How old am I?</div>
+    <div class="c"><b>B</b>How old is our school?</div>
+    <div class="c ok"><b>C</b>How old are the teachers at our school?</div>
+   </div>
+   <div class="ans g1"><svg><use href="#check"/></svg><div>Many teachers, many <b>different</b> ages.</div></div>
+  </div>
+  <div class="card qc in" style="--d:300">
+   <div class="pic" style="background:var(--lcoral)">
+    <svg viewBox="0 0 300 110" style="width:300px;height:110px" aria-hidden="true">
+     <path d="M30 50 L80 20 L130 50 Z" class="f-coral"/><rect x="38" y="50" width="84" height="52" class="f-ink"/><rect x="70" y="72" width="20" height="30" style="fill:#FFC53D"/><path d="M80 20 V4 L98 10 L80 16" style="fill:var(--blue);stroke:var(--ink);stroke-width:2"/>
+     <g style="color:var(--coral)"><use href="#person" x="150" y="28" width="26" height="36" class="pop" style="--n:0;--d:600"/><use href="#person" x="182" y="28" width="26" height="36" class="pop" style="--n:1;--d:600"/><use href="#person" x="214" y="28" width="26" height="36" class="pop" style="--n:2;--d:600"/><use href="#person" x="246" y="28" width="26" height="36" class="pop" style="--n:3;--d:600"/><use href="#person" x="150" y="68" width="26" height="36" class="pop" style="--n:4;--d:600"/><use href="#person" x="182" y="68" width="26" height="36" class="pop" style="--n:5;--d:600"/><use href="#person" x="214" y="68" width="26" height="36" class="pop" style="--n:6;--d:600"/><use href="#person" x="246" y="68" width="26" height="36" class="pop" style="--n:7;--d:600"/></g>
+    </svg>
+   </div>
+   <div class="row" style="gap:14px"><span class="chip coral">Q2</span><span class="small">Lesson 2</span></div>
+   <div class="q">We ask <b>all</b> 640 students in our school. This is a …</div>
+   <div class="ch r2 ia" data-mcq>
+    <div class="c ok"><b>A</b>census</div>
+    <div class="c"><b>B</b>sample</div>
+    <div class="c"><b>C</b>pictogram</div>
+   </div>
+   <div class="ans g2"><svg><use href="#check"/></svg><div>Everyone in the group: a <b>census</b>.</div></div>
+  </div>
+  <div class="card qc in" style="--d:400">
+   <div class="pic" style="background:var(--lmint)">
+    <svg viewBox="0 0 300 110" style="width:300px;height:110px" aria-hidden="true">
+     <path d="M30 70 H106 A16 16 0 0 0 103 39 A22 22 0 0 0 61 35 A18 18 0 0 0 30 70 Z" class="f-blue"/>
+     <g style="stroke:#6E93FF;stroke-width:5;stroke-linecap:round"><path d="M48 80 l-4 10" class="drop" style="--n:0;--d:700"/><path d="M68 80 l-4 10" class="drop" style="--n:2;--d:700"/><path d="M88 80 l-4 10" class="drop" style="--n:4;--d:700"/></g>
+     <path d="M150 100 H284 M150 100 V14" style="fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round"/>
+     <path d="M160 88 L184 80 L208 58 L232 30 L256 44 L278 74" pathLength="1" class="draw" style="--d:800;fill:none;stroke:var(--okc);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/>
+    </svg>
+   </div>
+   <div class="row" style="gap:14px"><span class="chip mint">Q3</span><span class="small">Lesson 3</span></div>
+   <div class="q">Which chart best shows Bangkok's rainfall month by month?</div>
+   <div class="ch r3 ia" data-mcq>
+    <div class="c"><b>A</b>Pie chart</div>
+    <div class="c ok"><b>B</b>Line graph</div>
+    <div class="c"><b>C</b>Pictogram</div>
+   </div>
+   <div class="ans g3"><svg><use href="#check"/></svg><div>A line graph shows <b>change over time</b>.</div></div>
+  </div>
+ </div>
+ <aside class="notes">Unit review, three questions. Students tap or show their answer (A, B or C with fingers). Invite students to the board to explain, then click once per question. Q1 answer C: the teachers have different ages, so the answers vary and we need data. A has one answer (my age) and B has one answer (the school's age). Q2 answer A: asking every member of the population (all 640 students) is a census. A sample would be only some students. A pictogram is a chart, not a way to collect data. Q3 answer B: rainfall month by month is change over time, so a line graph fits best. A pie chart shows parts of a whole, and a pictogram is for counts of categories.</aside>
+</section>
+
+<!-- ======================= 12 · Unit review: calculate ======================= -->
+<section class="slide" id="l4-rev2" data-steps="2">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Unit review</div>
+ <h2 class="in" style="--d:120">Work it <em>out</em></h2>
+ <div style="display:grid;grid-template-columns:520px 1fr;gap:34px;margin-top:-6px">
+  <div class="stack" style="gap:26px">
+   <table class="tbl in" style="--d:200;width:520px">
+    <caption>How students in 1/2 get to school</caption>
+    <thead><tr><th>Way</th><th class="n">Students</th></tr></thead>
+    <tbody>
+     <tr><td><span class="sw" style="background:var(--coral)"></span>School bus</td><td class="n">14</td></tr>
+     <tr><td><span class="sw" style="background:var(--blue)"></span>Car</td><td class="n">10</td></tr>
+     <tr><td><span class="sw" style="background:var(--mint)"></span>Walk</td><td class="n">8</td></tr>
+     <tr><td><span class="sw" style="background:var(--violet)"></span>BTS</td><td class="n">6</td></tr>
+     <tr><td><span class="sw" style="background:var(--sun)"></span>Bicycle</td><td class="n">2</td></tr>
+    </tbody>
+    <tfoot><tr><td>Total</td><td class="n">40</td></tr></tfoot>
+   </table>
+   <svg class="in" viewBox="0 0 520 170" style="--d:400;width:520px;height:170px" aria-hidden="true">
+    <rect x="40" y="20" width="420" height="110" rx="26" class="f-sun"/>
+    <rect x="40" y="96" width="420" height="10" style="fill:#F2A900"/>
+    <g style="fill:#fff"><rect x="66" y="38" width="62" height="44" rx="8"/><rect x="144" y="38" width="62" height="44" rx="8"/><rect x="222" y="38" width="62" height="44" rx="8"/><rect x="300" y="38" width="62" height="44" rx="8"/></g>
+    <rect x="380" y="38" width="58" height="78" rx="8" style="fill:#fff"/><rect x="398" y="50" width="22" height="54" rx="4" style="fill:#FFF4D6"/>
+    <rect x="454" y="96" width="14" height="22" rx="4" class="f-coral"/>
+    <circle cx="120" cy="134" r="24" class="f-ink"/><circle cx="120" cy="134" r="9" style="fill:#AAB4CC"/>
+    <circle cx="370" cy="134" r="24" class="f-ink"/><circle cx="370" cy="134" r="9" style="fill:#AAB4CC"/>
+    <path d="M20 160 H500" style="stroke:#D3DAE8;stroke-width:4;stroke-linecap:round"/>
+   </svg>
+  </div>
+  <div class="stack" style="gap:26px">
+   <div class="card qk in" style="--d:300">
+    <span class="chip">Q1 · Percent</span>
+    <div class="q">What percent of the class comes by school bus?</div>
+    <div class="row" style="gap:30px;align-items:center">
+     <div class="w-input ia" data-label="Percent" data-answer="35" data-accept="35;35%;35 %" data-unit="%" data-tol="0" style="width:420px;height:110px"></div>
+     <div class="ans g1"><svg><use href="#check"/></svg><div>14 ÷ 40 × 100 = <b>35%</b></div></div>
+    </div>
+   </div>
+   <div class="card qk in" style="--d:400;display:grid;grid-template-columns:1fr 300px;gap:30px;align-items:center">
+    <div>
+     <span class="chip coral">Q2 · Pie chart</span>
+     <div class="q">We draw a pie chart of this data. What is the angle for the school bus?</div>
+     <div class="w-input ia" data-label="Angle" data-answer="126" data-accept="126;126°;126 °;126 degrees" data-unit="°" data-tol="0" style="width:420px;height:110px"></div>
+     <div class="ans g2" style="margin-top:18px;align-self:flex-start;display:inline-flex"><svg><use href="#check"/></svg><div>14 ÷ 40 × 360° = <b>126°</b></div></div>
+    </div>
+    <svg class="chart g2" viewBox="0 0 300 300" style="width:300px;height:300px" aria-label="Pie chart: school bus 126 degrees, car 90, walk 72, BTS 54, bicycle 18">
+     <g transform="rotate(-90 150 150)">
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--coral);--len:131.95;--C:376.99;stroke-dashoffset:0;--n:0"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#BFD0FF;--len:94.25;--C:376.99;stroke-dashoffset:-131.95;--n:1"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#BDEFE3;--len:75.40;--C:376.99;stroke-dashoffset:-226.19;--n:2"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#D8CEFF;--len:56.55;--C:376.99;stroke-dashoffset:-301.59;--n:3"/>
+      <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#FFE6A6;--len:18.85;--C:376.99;stroke-dashoffset:-358.14;--n:4"/>
+     </g>
+     <path d="M150 150 V30 M150 150 L247.1 220.5" style="stroke:#fff;stroke-width:4;stroke-linecap:round"/>
+     <path d="M150 104 A46 46 0 0 1 187.2 177.0" pathLength="1" class="draw" style="--d:1400;fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round"/>
+     <text x="214" y="118" text-anchor="middle" class="pop" style="--d:1600;font:800 30px Display;fill:#fff">126°</text>
+    </svg>
+   </div>
+  </div>
+ </div>
+ <aside class="notes">Unit review, calculations. Data: how the 40 students of 1/2 get to school. Check the total: 14 + 10 + 8 + 6 + 2 = 40. Give time to work, then invite two students to the board before you click. Q1 (beat 1): percent = part ÷ total × 100 = 14 ÷ 40 × 100 = 0.35 × 100 = 35%. Check: 35% of 40 = 0.35 × 40 = 14. Q2 (beat 2): angle = part ÷ total × 360° = 14 ÷ 40 × 360° = 0.35 × 360° = 126°. Check: 126 ÷ 360 = 0.35. The other angles: car 10 ÷ 40 × 360 = 90°, walk 8 ÷ 40 × 360 = 72°, BTS 6 ÷ 40 × 360 = 54°, bicycle 2 ÷ 40 × 360 = 18°. Sum: 126 + 90 + 72 + 54 + 18 = 360°.</aside>
+</section>
+
+<!-- ======================= 13 · Closing ======================= -->
+<section class="slide" id="l4-end" data-steps="1">
+ <i class="mesh"></i>
+ <div style="display:grid;grid-template-columns:1fr 640px;gap:60px;align-items:center;height:100%">
+  <div>
+   <div class="pill in" style="--d:100">Unit 4 · Statistics (1) · complete</div>
+   <h1 class="t in" style="--d:200;margin-top:40px;white-space:nowrap">Well <em>done!</em></h1>
+   <p class="lede in" style="--d:350;margin-top:26px;max-width:820px">You can now ask good questions, collect data, show it in charts and read what it tells us.</p>
+   <ol class="lessons" style="margin-top:40px;max-width:880px">
+    <li class="in" style="--d:500"><b class="n1"><svg viewBox="0 0 24 24" class="pop" style="--d:1000"><use href="#check"/></svg></b>Statistical questions</li>
+    <li class="in" style="--d:580"><b class="n2"><svg viewBox="0 0 24 24" class="pop" style="--d:1150"><use href="#check"/></svg></b>Data collection</li>
+    <li class="in" style="--d:660"><b class="n3"><svg viewBox="0 0 24 24" class="pop" style="--d:1300"><use href="#check"/></svg></b>Presenting &amp; reading data</li>
+    <li class="in" style="--d:740"><b class="n4"><svg viewBox="0 0 24 24" class="pop" style="--d:1450"><use href="#check"/></svg></b>Statistics in real life</li>
+   </ol>
+   <div class="card nx g1" style="margin-top:36px;max-width:880px">
+    <span class="ar" style="color:var(--blue)"><svg viewBox="0 0 48 48" style="width:48px;height:48px"><use href="#l4-arrow"/></svg></span>
+    <div><span class="chip">Coming next</span><div style="font:800 44px/1.1 Display;letter-spacing:-.02em;margin-top:10px">Statistics (2)</div><div class="small" style="font-size:28px;margin-top:4px">More ways to show and describe data</div></div>
+   </div>
+  </div>
+  <svg viewBox="0 0 640 760" style="width:640px;height:760px" aria-label="A gold trophy with confetti">
+   <g>
+    <rect x="70" y="80" width="18" height="30" rx="4" class="drop f-blue" style="--n:0;--d:500"/>
+    <rect x="520" y="60" width="18" height="30" rx="4" class="drop f-coral" style="--n:1;--d:500"/>
+    <circle cx="150" cy="40" r="10" class="drop f-mint" style="--n:2;--d:500"/>
+    <circle cx="470" cy="150" r="11" class="drop f-violet" style="--n:3;--d:500"/>
+    <rect x="590" y="250" width="16" height="28" rx="4" class="drop f-sun" style="--n:4;--d:500"/>
+    <circle cx="40" cy="250" r="10" class="drop f-coral" style="--n:5;--d:500"/>
+    <rect x="330" y="20" width="16" height="28" rx="4" class="drop f-violet" style="--n:6;--d:500"/>
+    <circle cx="600" cy="420" r="9" class="drop f-blue" style="--n:7;--d:500"/>
+    <rect x="22" y="420" width="16" height="28" rx="4" class="drop f-mint" style="--n:8;--d:500"/>
+    <circle cx="250" cy="70" r="8" class="drop f-sun" style="--n:9;--d:500"/>
+   </g>
+   <g class="pop" style="--d:250">
+    <path d="M196 150 H130 Q104 150 106 194 Q110 262 204 292" style="fill:none;stroke:#F2B21B;stroke-width:24;stroke-linecap:round"/>
+    <path d="M444 150 H510 Q536 150 534 194 Q530 262 436 292" style="fill:none;stroke:#F2B21B;stroke-width:24;stroke-linecap:round"/>
+    <path d="M190 120 H450 V230 Q450 380 320 404 Q190 380 190 230 Z" class="f-sun"/>
+    <path d="M222 150 V232 Q222 330 286 366" style="fill:none;stroke:#fff;stroke-opacity:.45;stroke-width:16;stroke-linecap:round"/>
+    <rect x="292" y="400" width="56" height="84" class="f-sun" style="fill:#F2B21B"/>
+    <rect x="232" y="478" width="176" height="50" rx="12" class="f-ink"/>
+    <rect x="196" y="524" width="248" height="70" rx="16" class="f-blue"/>
+    <text x="320" y="571" text-anchor="middle" style="font:800 30px Display;fill:#fff;letter-spacing:.06em">UNIT 4</text>
+   </g>
+   <path d="M320 186 L337 222 L376 226 L347 252 L355 291 L320 271 L285 291 L293 252 L264 226 L303 222 Z" class="pop" style="--d:800;fill:#fff"/>
+   <g style="fill:var(--sun)">
+    <path d="M86 330 l7 15 15 7 -15 7 -7 15 -7 -15 -15 -7 15 -7 Z" class="pop" style="--n:0;--d:1100"/>
+    <path d="M560 330 l6 12 12 6 -12 6 -6 12 -6 -12 -12 -6 12 -6 Z" class="pop" style="--n:2;--d:1100"/>
+    <path d="M420 40 l5 10 10 5 -10 5 -5 10 -5 -10 -10 -5 10 -5 Z" class="pop" style="--n:4;--d:1100"/>
+   </g>
+   <svg x="84" y="560" width="128" height="160" viewBox="0 0 80 100" class="pop" style="--n:0;--d:1300;--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--k1)"><use href="#kid"/></svg>
+   <svg x="428" y="560" width="128" height="160" viewBox="0 0 80 100" class="pop" style="--n:2;--d:1300;--skin:#C68B62;--hair:#1E1A17;--shirt:var(--k3)"><use href="#kid"/></svg>
+   <path d="M60 724 H580" style="stroke:#D3DAE8;stroke-width:5;stroke-linecap:round"/>
+  </svg>
+ </div>
+ <aside class="notes">Closing. Celebrate: the class finished Unit 4, Statistics (1). Ask each student to say one thing they learned (a word from the vocabulary, a chart type, or the data cycle). Click once to show what comes next: Statistics (2), with more ways to show and describe data. Remind students to keep their mini project plan from Exercise 4.</aside>
+</section>

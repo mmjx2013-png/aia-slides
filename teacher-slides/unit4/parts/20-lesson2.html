@@ -1,0 +1,565 @@
+<!-- 20 · Lesson 2 · Data collection (prefix l2-). Teaching slides, then the Exercise 2 divider and exercise slides. -->
+<style>
+/* opener collage */
+#l2-open .fc{display:flex;align-items:center;gap:12px;margin-bottom:10px;font:700 26px/1.25 Inter}
+#l2-open .fc svg{width:40px;height:40px;padding:6px;border-radius:11px;background:var(--lblue);color:var(--blue);flex:none}
+#l2-open .tly{display:grid;grid-template-columns:78px 1fr 36px;align-items:center;gap:10px;padding:8px 0;border-bottom:1.5px solid #EEF1F7;font:600 26px Inter}
+#l2-open .tly:last-child{border-bottom:0}
+#l2-open .tly svg{width:150px;height:40px}
+#l2-open .tly b{font:800 28px Inter;color:var(--blue);text-align:right}
+#l2-open .opt{display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1.5px solid #EEF1F7;font:600 26px Inter}
+#l2-open .opt:last-child{border-bottom:0}
+#l2-open .bx{width:34px;height:34px;border-radius:9px;border:3px solid #B9C3D9;flex:none;display:grid;place-items:center}
+#l2-open .bx.ck{border-color:var(--mint);background:var(--lmint)}
+#l2-open .bx svg{width:24px;height:24px}
+#l2-open .mini{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 14px;margin:6px 0 12px}
+#l2-open .mini svg{width:100%;height:auto;color:#C3CCDD}
+#l2-open .mini svg.s{color:var(--coral)}
+/* what is data */
+#l2-what .dt6{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:26px;height:100%}
+#l2-what .dtile{position:relative;background:#fff;border-radius:30px;padding:30px 32px;box-shadow:0 20px 50px rgba(15,27,51,.09);display:flex;flex-direction:column}
+#l2-what .dic{width:100px;height:100px;border-radius:28px;display:grid;place-items:center}
+#l2-what .dic svg{width:60px;height:60px}
+#l2-what .dval{margin-top:auto;font:800 54px/1 Display;letter-spacing:-.025em}
+#l2-what .dlab{margin-top:10px;font:500 26px/1.3 Inter;color:var(--mute)}
+#l2-what .dtag{position:absolute;top:28px;right:28px;padding:8px 14px;border-radius:12px;font:800 26px Inter}
+#l2-what .nu{background:var(--lblue);color:var(--blue)}
+#l2-what .wo{background:var(--lcoral);color:var(--noc)}
+#l2-what .leg{display:flex;flex-direction:column;gap:18px;padding:28px 32px}
+#l2-what .lrow{display:flex;align-items:center;gap:18px;font:700 30px/1.25 Inter}
+#l2-what .lrow .dtag{position:static;flex:none;min-width:78px;text-align:center}
+#l2-what .lrow small{display:block;font:500 26px Inter;color:var(--mute)}
+/* primary vs secondary */
+#l2-src .sh{display:flex;align-items:center;gap:28px}
+#l2-src .si{width:164px;height:164px;flex:none}
+#l2-src .sh h3{margin-top:12px}
+#l2-src .sl{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:26px}
+#l2-src .sl li{display:flex;align-items:center;gap:18px;padding:8px 16px;border-radius:18px;background:#F5F7FB;font:500 28px Inter}
+#l2-src .sl i{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;flex:none}
+#l2-src .sl i svg{width:32px;height:32px}
+/* four ways */
+#l2-ways .wy{display:flex;flex-direction:column;padding:24px 24px 26px}
+#l2-ways .wa{position:relative;height:262px;border-radius:24px;display:grid;place-items:center}
+#l2-ways .wa>svg{width:320px;height:233px}
+#l2-ways .wn{position:absolute;left:16px;top:16px;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;font:800 24px Inter}
+#l2-ways h3{margin:22px 6px 4px}
+#l2-ways .ws{margin:0 6px;font:600 24px Inter;color:var(--mute)}
+#l2-ways .we{margin-top:auto;padding:18px 20px;border-radius:20px;font:500 28px/1.4 Inter}
+/* census vs survey */
+#l2-census .def{font-size:32px;padding:24px 30px}
+#l2-census .pgrid{display:grid;grid-template-columns:repeat(10,70px);gap:16px 22px;justify-content:center;padding:24px 0;border:3px dashed #B9C3D9;border-radius:26px;transition:border-color .5s,background-color .5s}
+#l2-census .pp{width:70px;height:98px;color:#8E9AB8;transition:color .45s ease,scale .45s var(--ease),translate .45s var(--ease);transition-delay:calc(var(--n)*40ms)}
+#l2-census.b1 .pgrid{border-color:var(--blue);border-style:solid;background-color:rgba(59,108,255,.05)}
+#l2-census.b1 .pp{color:var(--blue)}
+#l2-census.b2 .pgrid{border-color:#B9C3D9;border-style:dashed;background-color:transparent}
+#l2-census.b2 .pp{color:#D3DAE8}
+#l2-census.b2 .pp.s{color:var(--coral);scale:1.12;translate:0 -6px}
+#l2-census .tray{display:flex;align-items:center;gap:22px;padding:16px 26px;border-radius:24px;background:var(--lcoral);border:3px solid rgba(255,107,91,.35)}
+#l2-census .tray svg{width:52px;height:73px;color:var(--coral)}
+#l2-census .tray .tt{margin-left:auto;font:700 28px Inter;color:var(--noc)}
+#l2-census .pl{font:600 28px Inter}
+/* when to use each */
+#l2-when .fac{display:flex;flex-direction:column;gap:16px;padding:28px 32px}
+#l2-when .fh{display:flex;align-items:center;gap:16px;font:700 32px Inter}
+#l2-when .fi{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;flex:none}
+#l2-when .fi svg{width:34px;height:34px}
+#l2-when .br{display:grid;grid-template-columns:118px 1fr;align-items:center;gap:12px;font:600 26px Inter}
+#l2-when .trk{display:flex;align-items:center;gap:12px}
+#l2-when .bar{display:block;height:34px;border-radius:10px}
+#l2-when .trk span{font:700 26px Inter}
+#l2-when .exm{display:grid;grid-template-columns:300px 1fr;gap:34px;align-items:center;padding:40px 40px}
+#l2-when .exm>svg{width:300px;height:180px}
+#l2-when .exm .body{font-size:30px}
+/* numbers or words */
+#l2-kind .kd{display:flex;align-items:center;gap:24px;padding:32px 32px}
+#l2-kind .kt{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;flex:none;color:#fff;font:800 32px Display;letter-spacing:-.02em}
+#l2-kind .kd h3{margin-bottom:4px}
+#l2-kind .kd .body{font-size:30px;line-height:1.35}
+#l2-kind .tbl{width:100%}
+#l2-kind .tbl th{padding:18px 24px}
+#l2-kind .tbl td{padding:19px 24px;font-size:30px}
+#l2-kind .tbl td.dv{font:800 32px Display;color:var(--ink)}
+#l2-kind .ty{display:inline-block;padding:6px 14px;border-radius:12px;font:700 24px Inter}
+#l2-kind .ty.qn{background:var(--lblue);color:var(--blue)}
+#l2-kind .ty.ql{background:var(--lcoral);color:var(--noc)}
+/* exercise divider */
+#l2-ex .xc{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:26px 28px}
+#l2-ex .xa{position:relative;width:100%;height:290px;border-radius:22px;display:grid;place-items:center}
+#l2-ex .xa>svg{width:330px;height:211px}
+#l2-ex .xn{position:absolute;left:14px;top:14px;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;font:800 24px Inter}
+#l2-ex .xc h3{font-size:36px}
+/* exercise: primary or secondary */
+#l2-e1 .rws{display:flex;flex-direction:column;gap:14px}
+#l2-e1 .rw{display:grid;grid-template-columns:62px 1fr 470px;gap:22px;align-items:center;padding:13px 14px 13px 16px;border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(15,27,51,.07)}
+#l2-e1 .ri{width:62px;height:62px;border-radius:18px;display:grid;place-items:center}
+#l2-e1 .ri svg{width:38px;height:38px}
+#l2-e1 .rt{font:600 30px/1.3 Inter}
+#l2-e1 .ch{gap:12px}
+#l2-e1 .c{gap:12px;padding:8px 14px;font-size:28px;box-shadow:none;background:#F2F4F9}
+#l2-e1 .c b{width:42px;height:42px;font-size:24px}
+/* exercise: census or survey */
+#l2-e2 .sc{display:flex;flex-direction:column;gap:18px;padding:24px 26px 26px}
+#l2-e2 .sa{position:relative;height:236px;border-radius:22px;display:grid;place-items:center}
+#l2-e2 .sa>svg{width:350px;height:198px}
+#l2-e2 .sa .chip{position:absolute;left:14px;top:14px;background:#fff}
+#l2-e2 .scq{font:600 30px/1.36 Inter}
+#l2-e2 .ch{margin-top:auto;gap:14px}
+#l2-e2 .c{gap:14px;padding:12px 16px;font-size:30px}
+#l2-e2 .c b{width:44px;height:44px;font-size:24px}
+#l2-e2 .why{display:flex;align-items:center;gap:12px;min-height:88px;padding:10px 16px;border-radius:18px;background:var(--lmint);font:600 26px/1.3 Inter;color:var(--okc)}
+#l2-e2 .why svg{width:32px;height:32px;flex:none}
+/* exercise: sort */
+#l2-e3 .hand{width:100%;height:168px}
+/* exercise: class survey */
+#l2-e4 .steps>li{font-size:30px}
+</style>
+
+<section class="slide opener" id="l2-open" data-steps="0" data-lesson="2" data-title="Lesson 2 · Data collection">
+ <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="l2-bus" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><rect x="9" y="5" width="30" height="33" rx="6"/><path d="M9 24h30M16 11h16M15 38v5M33 38v5"/></g><circle cx="16" cy="31" r="2.6" style="fill:currentColor"/><circle cx="32" cy="31" r="2.6" style="fill:currentColor"/></symbol>
+  <symbol id="l2-thermo" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M19 29V10a5 5 0 0 1 10 0v19a8.5 8.5 0 1 1-10 0z"/><path d="M34 12h5M34 18h5M34 24h5"/><path d="M24 34V18" style="stroke-width:4"/></g><circle cx="24" cy="35" r="4.6" style="fill:currentColor"/></symbol>
+  <symbol id="l2-mango" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M12 30c-3-10 4-19 14-19 9 0 14 8 12 17-2 9-9 14-16 13-5-1-9-5-10-11z"/><path d="M26 11c1-4 5-7 11-6-1 5-5 7-11 6z"/><path d="M25 11c0-2-1-4-3-6"/></g></symbol>
+  <symbol id="l2-palette" viewBox="0 0 48 48"><path d="M24 6C13 6 6 14 6 23c0 10 8 19 18 19 3 0 4-2 3-4-1-3 1-5 4-5h4c4 0 7-3 7-8C42 14 34 6 24 6z" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linejoin:round"/><circle cx="15" cy="23" r="3" style="fill:currentColor"/><circle cx="20" cy="14" r="3" style="fill:currentColor"/><circle cx="29" cy="13" r="3" style="fill:currentColor"/><circle cx="35" cy="21" r="3" style="fill:currentColor"/></symbol>
+  <symbol id="l2-web" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><rect x="5" y="8" width="38" height="32" rx="5"/><path d="M5 16h38M15 34v-6M24 34v-11M33 34v-8"/></g></symbol>
+  <symbol id="l2-news" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M8 9h26v29a3 3 0 0 0 3 3H11a3 3 0 0 1-3-3z"/><path d="M34 17h6v21a3 3 0 0 1-6 0"/><path d="M14 16h14M14 23h14M14 30h9"/></g></symbol>
+  <symbol id="l2-folder" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M5 13a3 3 0 0 1 3-3h10l4 5h18a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z"/><path d="M5 21h38"/></g></symbol>
+  <symbol id="l2-clock" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><circle cx="24" cy="25" r="17"/><path d="M24 15v10l7 5"/></g></symbol>
+  <symbol id="l2-coin" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><ellipse cx="24" cy="12" rx="14" ry="5"/><path d="M10 12v8c0 3 6 5 14 5s14-2 14-5v-8M10 20v8c0 3 6 5 14 5s14-2 14-5v-8M10 28v8c0 3 6 5 14 5s14-2 14-5v-8"/></g></symbol>
+  <symbol id="l2-school" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M5 42h38M9 42V22l15-9 15 9v20M24 13V4l8 3-8 3M20 42v-9h8v9M14 27h4M30 27h4"/></g></symbol>
+  <symbol id="l2-sticker" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M8 9h32a3 3 0 0 1 3 3v19a3 3 0 0 1-3 3H22l-9 7v-7H8a3 3 0 0 1-3-3V12a3 3 0 0 1 3-3z"/><path d="M18 25c3 3 9 3 12 0"/></g><circle cx="18" cy="18" r="2.2" style="fill:currentColor"/><circle cx="30" cy="18" r="2.2" style="fill:currentColor"/></symbol>
+  <symbol id="l2-car" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M6 33v-8l5-10h26l5 10v8z"/><path d="M6 25h36"/><circle cx="15" cy="35" r="4"/><circle cx="33" cy="35" r="4"/></g></symbol>
+  <symbol id="l2-watch" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><circle cx="24" cy="27" r="16"/><path d="M19 5h10M24 5v6M24 27l6-7M37 12l3-3"/></g></symbol>
+  <symbol id="l2-plant" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M13 30h22l-3 13H16zM24 30V17"/><path d="M24 23c-7 0-11-4-11-10 7 0 11 4 11 10zM24 19c0-7 4-11 11-11 0 7-4 11-11 11z"/></g></symbol>
+  <symbol id="l2-house" viewBox="0 0 48 48"><g style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M6 22L24 7l18 15M11 18v23h26V18M20 41V30h8v11"/></g></symbol>
+ </defs></svg>
+ <i class="mesh m2"></i>
+ <div style="display:grid;grid-template-columns:200px 720px;gap:40px;align-items:center;height:100%">
+  <div class="num in" style="--d:100">2</div>
+  <div class="stack">
+   <div class="kicker in" style="--d:200">Lesson 2</div>
+   <h2 class="in" style="--d:280;margin:0">Data <em>collection</em></h2>
+   <ul class="goals">
+    <li class="in" style="--d:450"><svg><use href="#check"/></svg>Tell primary data from secondary data</li>
+    <li class="in" style="--d:540"><svg><use href="#check"/></svg>Choose a census or a survey, and say why</li>
+    <li class="in" style="--d:630"><svg><use href="#check"/></svg>Sort data into numbers and words</li>
+   </ul>
+  </div>
+ </div>
+ <div data-qa-ok style="position:absolute;right:110px;top:170px;width:740px;height:760px">
+  <div class="card float" style="position:absolute;left:10px;top:0;width:430px;--r:-4deg;--d:500;padding:24px 30px">
+   <div class="fc"><svg><use href="#pencil"/></svg>Tally · way to school</div>
+   <div class="tly"><span>Walk</span><svg viewBox="0 0 150 40"><path class="draw" pathLength="1" d="M10 4v32M22 4v32M34 4v32M46 4v32" style="fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;--d:1300"/></svg><b>4</b></div>
+   <div class="tly"><span>Bus</span><svg viewBox="0 0 150 40"><path class="draw" pathLength="1" d="M10 4v32M22 4v32M34 4v32M46 4v32M3 31L53 9M72 4v32M84 4v32" style="fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;--d:1500"/></svg><b>7</b></div>
+   <div class="tly"><span>BTS</span><svg viewBox="0 0 150 40"><path class="draw" pathLength="1" d="M10 4v32M22 4v32M34 4v32" style="fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;--d:1700"/></svg><b>3</b></div>
+  </div>
+  <div class="card float" style="position:absolute;left:480px;top:60px;width:260px;--r:5deg;--d:700;padding:24px 26px">
+   <div class="fc" style="margin-bottom:4px">Who do we ask?</div>
+   <div class="mini"><svg class="pop" viewBox="0 0 40 56" style="--n:0;--d:1400"><use href="#person"/></svg><svg class="pop s" viewBox="0 0 40 56" style="--n:1;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:2;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:3;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:4;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:5;--d:1400"><use href="#person"/></svg><svg class="pop s" viewBox="0 0 40 56" style="--n:6;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:7;--d:1400"><use href="#person"/></svg><svg class="pop s" viewBox="0 0 40 56" style="--n:8;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:9;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:10;--d:1400"><use href="#person"/></svg><svg class="pop" viewBox="0 0 40 56" style="--n:11;--d:1400"><use href="#person"/></svg></div>
+   <div style="font:600 24px Inter;color:var(--noc)">3 of 12 · a sample</div>
+  </div>
+  <div class="card float" style="position:absolute;left:170px;top:360px;width:440px;--r:2deg;--d:900;padding:24px 30px">
+   <div class="fc"><svg style="background:var(--lmint);color:var(--okc)"><use href="#clipboard"/></svg>How do you come to school?</div>
+   <div class="opt"><i class="bx"></i>Walk</div>
+   <div class="opt"><i class="bx ck"><svg viewBox="0 0 24 24"><path class="draw" pathLength="1" d="M5 12.5 L10 17.5 L19 7" style="fill:none;stroke:var(--okc);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;--d:1900"/></svg></i>Bus</div>
+   <div class="opt"><i class="bx"></i>Car</div>
+   <div class="opt"><i class="bx"></i>BTS / MRT</div>
+  </div>
+ </div>
+ <aside class="notes">Opener, about 1 minute. Say: "In Lesson 1 we wrote statistical questions. Today we learn how to collect the data that answers them." Point at the cards: a tally (counting as we go), a sample of people, and a questionnaire. Tally check: Walk 4, Bus 5 + 2 = 7, BTS 3, total 14. Read the three goals together.</aside>
+</section>
+
+<section class="slide" id="l2-what" data-steps="1">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Lesson 2 · Data collection</div>
+ <h2 class="in" style="--d:120">What is <em>data</em>?</h2>
+ <div style="display:grid;grid-template-columns:580px 1fr;gap:56px;height:680px">
+  <div class="stack" style="justify-content:center;gap:30px">
+   <div class="def in" style="--d:250"><div class="dt">Data</div><b>Data</b> are facts, numbers or words that we collect to answer a question.</div>
+   <div class="card leg g1" style="--d:300">
+    <div class="lrow"><span class="dtag nu">123</span><div>Numbers<small>152 cm · 34 °C · 24 pages</small></div></div>
+    <div class="lrow"><span class="dtag wo">Abc</span><div>Words<small>mango · bus · blue</small></div></div>
+   </div>
+  </div>
+  <div class="dt6">
+   <div class="dtile pop" style="--d:450;--n:0"><div class="dic" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 24 24"><use href="#ruler"/></svg></div><div class="dval">152 cm</div><div class="dlab">A student's height</div><span class="dtag nu g1" style="--d:0">123</span></div>
+   <div class="dtile pop" style="--d:450;--n:2"><div class="dic" style="background:var(--lsun);color:#B7791F"><svg viewBox="0 0 48 48"><use href="#l2-mango"/></svg></div><div class="dval">Mango</div><div class="dlab">Favourite fruit</div><span class="dtag wo g1" style="--d:100">Abc</span></div>
+   <div class="dtile pop" style="--d:450;--n:4"><div class="dic" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 48 48"><use href="#l2-thermo"/></svg></div><div class="dval">34 °C</div><div class="dlab">Noon in Bangkok</div><span class="dtag nu g1" style="--d:200">123</span></div>
+   <div class="dtile pop" style="--d:450;--n:6"><div class="dic" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l2-bus"/></svg></div><div class="dval">Bus</div><div class="dlab">Way to school</div><span class="dtag wo g1" style="--d:300">Abc</span></div>
+   <div class="dtile pop" style="--d:450;--n:8"><div class="dic" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 24 24"><use href="#book"/></svg></div><div class="dval">24 pages</div><div class="dlab">Read today</div><span class="dtag nu g1" style="--d:400">123</span></div>
+   <div class="dtile pop" style="--d:450;--n:10"><div class="dic" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-palette"/></svg></div><div class="dval">Blue</div><div class="dlab">Favourite colour</div><span class="dtag wo g1" style="--d:500">Abc</span></div>
+  </div>
+ </div>
+ <aside class="notes">Read the definition. Point at each card: "What question could this piece of data answer?" (How tall is Nida? What fruit do you like best? How hot is Bangkok at noon? How do you come to school? How many pages did you read? What is your favourite colour?)
+ Click (beat 1): the tags show that data can be numbers (123) or words (Abc). We give these two kinds their proper names later in the lesson (quantitative and qualitative).</aside>
+</section>
+
+<section class="slide" id="l2-src" data-steps="1">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Lesson 2 · Primary and secondary data</div>
+ <h2 class="in" style="--d:120">Who <em>collected</em> the data?</h2>
+ <div class="grid2">
+  <div class="card in" style="--d:220;border-top:8px solid var(--blue)">
+   <div class="sh">
+    <svg class="si" viewBox="0 0 170 170" aria-hidden="true">
+     <defs><clipPath id="l2-cp1"><circle cx="85" cy="85" r="85"/></clipPath></defs>
+     <circle cx="85" cy="85" r="85" style="fill:var(--lblue)"/>
+     <g clip-path="url(#l2-cp1)"><use href="#kid" x="14" y="46" width="96" height="120" style="--skin:#D9A77E;--hair:#3B2A1E;--shirt:var(--blue)"/></g>
+     <g transform="rotate(8 126 112)"><rect x="98" y="74" width="56" height="74" rx="9" style="fill:#fff;stroke:var(--ink);stroke-width:4"/><rect x="114" y="67" width="24" height="13" rx="4" style="fill:var(--ink)"/><path d="M109 95h34M109 108h34" style="stroke:#C3CCDD;stroke-width:5;stroke-linecap:round"/><path class="draw" pathLength="1" d="M112 126l7 7 15-16" style="fill:none;stroke:var(--mint);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;--d:900"/></g>
+    </svg>
+    <div><span class="chip">Primary data</span><h3>You collect it <span class="blue">yourself</span></h3></div>
+   </div>
+   <ul class="sl">
+    <li class="in" style="--d:700"><i style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-sticker"/></svg></i>Ask friends their favourite snack</li>
+    <li class="in" style="--d:820"><i style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-plant"/></svg></i>Measure your bean plant each day</li>
+    <li class="in" style="--d:940"><i style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-car"/></svg></i>Count cars at the school gate</li>
+   </ul>
+  </div>
+  <div class="card in" style="--d:340;border-top:8px solid var(--coral)">
+   <div class="sh">
+    <svg class="si" viewBox="0 0 170 170" aria-hidden="true">
+     <circle cx="85" cy="85" r="85" style="fill:var(--lcoral)"/>
+     <rect x="34" y="26" width="104" height="78" rx="10" style="fill:#fff;stroke:var(--blue);stroke-width:4"/><path d="M34 44h104" style="stroke:var(--blue);stroke-width:4"/>
+     <circle cx="46" cy="35" r="3" style="fill:var(--blue)"/><circle cx="56" cy="35" r="3" style="fill:var(--blue)"/><circle cx="66" cy="35" r="3" style="fill:var(--blue)"/>
+     <rect x="52" y="72" width="14" height="24" rx="3" class="grow f-blue" style="--d:800;--n:0"/><rect x="74" y="58" width="14" height="38" rx="3" class="grow f-coral" style="--d:800;--n:1"/><rect x="96" y="66" width="14" height="30" rx="3" class="grow f-mint" style="--d:800;--n:2"/>
+     <g transform="rotate(-8 50 126)"><rect x="18" y="102" width="62" height="50" rx="6" style="fill:var(--violet)"/><rect x="18" y="102" width="10" height="50" rx="3" style="fill:#5A3FD6"/><rect x="36" y="116" width="34" height="7" rx="3.5" style="fill:#fff;opacity:.85"/></g>
+     <g transform="rotate(7 122 128)"><rect x="90" y="102" width="64" height="52" rx="6" style="fill:#fff;stroke:var(--ink);stroke-width:3.5"/><rect x="98" y="110" width="22" height="18" rx="3" style="fill:var(--sun)"/><path d="M126 112h20M126 121h20M98 136h48M98 145h34" style="stroke:var(--ink);stroke-width:3;stroke-linecap:round"/></g>
+    </svg>
+    <div><span class="chip coral">Secondary data</span><h3>Someone <span class="coral">else</span> already collected it</h3></div>
+   </div>
+   <ul class="sl">
+    <li class="in" style="--d:1100"><i style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 48 48"><use href="#l2-folder"/></svg></i>School records: who was absent</li>
+    <li class="in" style="--d:1220"><i style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 48 48"><use href="#l2-web"/></svg></i>A weather website: Bangkok rain</li>
+    <li class="in" style="--d:1340"><i style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#book"/></svg></i>A library book about Thailand</li>
+    <li class="in" style="--d:1460"><i style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 48 48"><use href="#l2-news"/></svg></i>The news: BTS passengers</li>
+   </ul>
+  </div>
+ </div>
+ <div class="idea g1" style="margin-top:26px"><svg><use href="#bulb"/></svg><div>Ask: <b>who</b> collected it? You did → <b>primary</b>. Someone else did → <b>secondary</b>.</div></div>
+ <aside class="notes">Start with the two headings. Primary data: you collect it yourself, first-hand, for your own question. Secondary data: someone else collected it before, and you use it.
+ Read the primary examples (asking friends, measuring a plant, counting cars), then the secondary ones (school records, a website, a book, the news). Ask students for one more example of each. Ask: "Which kind is faster to get? Which kind fits your question better?" (Secondary is faster; primary fits your own question exactly.)
+ Beat 1: the test question: who collected it?</aside>
+</section>
+
+<section class="slide" id="l2-ways" data-steps="1">
+ <i class="mesh"></i>
+ <div class="kicker in">Lesson 2 · Collecting primary data</div>
+ <h2 class="in" style="--d:120">Four ways to <em>collect</em> data</h2>
+ <div class="grid4" style="height:648px">
+  <div class="card in wy" style="--d:220">
+   <div class="wa" style="background:var(--lblue)"><span class="wn" style="background:var(--blue)">1</span>
+    <svg viewBox="0 0 220 160" aria-hidden="true">
+     <g class="pop" style="--d:800"><rect x="18" y="6" width="88" height="52" rx="20" style="fill:var(--blue)"/><path d="M40 56L34 74L60 56Z" style="fill:var(--blue)"/><path d="M54 24c0-9 17-9 17 0 0 6-8 6-8 12" style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"/><circle cx="63" cy="45" r="3.4" style="fill:#fff"/></g>
+     <g class="pop" style="--d:1100"><rect x="114" y="14" width="88" height="48" rx="20" style="fill:var(--coral)"/><path d="M168 60L176 80L188 60Z" style="fill:var(--coral)"/><circle cx="138" cy="38" r="5" style="fill:#fff"/><circle cx="158" cy="38" r="5" style="fill:#fff"/><circle cx="178" cy="38" r="5" style="fill:#fff"/></g>
+     <use href="#kid" x="20" y="72" width="70" height="88" style="--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--blue)"/>
+     <use href="#kid" x="132" y="72" width="70" height="88" style="--skin:#C68B62;--hair:#1E1A17;--shirt:var(--coral)"/>
+    </svg></div>
+   <h3>Interview</h3>
+   <div class="ws">Ask face to face</div>
+   <div class="we g1" style="--d:0;background:var(--lblue)"><b>e.g.</b> Ask the canteen cook which dish sells best.</div>
+  </div>
+  <div class="card in wy" style="--d:320">
+   <div class="wa" style="background:var(--lviolet)"><span class="wn" style="background:var(--violet)">2</span>
+    <svg viewBox="0 0 220 160" aria-hidden="true">
+     <rect x="30" y="16" width="106" height="138" rx="14" style="fill:#fff;stroke:var(--violet);stroke-width:5"/><rect x="61" y="6" width="44" height="20" rx="7" style="fill:var(--violet)"/>
+     <rect x="46" y="44" width="22" height="22" rx="6" style="fill:none;stroke:#B9C3D9;stroke-width:3.5"/><path d="M80 55h40" style="stroke:#D3DAE8;stroke-width:7;stroke-linecap:round"/>
+     <rect x="46" y="78" width="22" height="22" rx="6" style="fill:var(--lmint);stroke:var(--mint);stroke-width:3.5"/><path d="M80 89h40" style="stroke:#D3DAE8;stroke-width:7;stroke-linecap:round"/>
+     <rect x="46" y="112" width="22" height="22" rx="6" style="fill:none;stroke:#B9C3D9;stroke-width:3.5"/><path d="M80 123h30" style="stroke:#D3DAE8;stroke-width:7;stroke-linecap:round"/>
+     <path class="draw" pathLength="1" d="M50 89l6 6 12-14" style="fill:none;stroke:var(--okc);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;--d:1000"/>
+     <g transform="rotate(8 176 102)"><rect x="150" y="54" width="52" height="96" rx="12" style="fill:var(--ink)"/><rect x="156" y="64" width="40" height="72" rx="5" style="fill:#fff"/><rect x="161" y="72" width="30" height="11" rx="4" style="fill:var(--lviolet)"/><rect x="161" y="89" width="30" height="11" rx="4" class="pop" style="fill:var(--violet);--d:1300"/><rect x="161" y="106" width="30" height="11" rx="4" style="fill:var(--lviolet)"/><rect x="161" y="123" width="30" height="7" rx="3.5" style="fill:var(--lviolet)"/></g>
+    </svg></div>
+   <h3>Questionnaire</h3>
+   <div class="ws">Paper or online form</div>
+   <div class="we g1" style="--d:120;background:var(--lviolet)"><b>e.g.</b> Class 1/2 fill in an online form about sleep.</div>
+  </div>
+  <div class="card in wy" style="--d:420">
+   <div class="wa" style="background:var(--lcoral)"><span class="wn" style="background:var(--coral)">3</span>
+    <svg viewBox="0 0 220 160" aria-hidden="true">
+     <rect x="18" y="118" width="184" height="36" rx="7" style="fill:var(--sun)"/>
+     <path class="draw" pathLength="1" d="M32 118v18M45 118v10M58 118v18M71 118v10M84 118v18M97 118v10M110 118v18M123 118v10M136 118v18M149 118v10M162 118v18M175 118v10M188 118v18" style="fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;--d:900"/>
+     <path d="M124 82L150 106" style="stroke:var(--coral);stroke-width:13;stroke-linecap:round"/>
+     <circle cx="98" cy="56" r="36" style="fill:#fff;stroke:var(--coral);stroke-width:9"/>
+     <path d="M72 56q26-22 52 0q-26 22-52 0z" style="fill:#fff;stroke:var(--ink);stroke-width:4;stroke-linejoin:round"/>
+     <circle cx="98" cy="56" r="9" style="fill:var(--ink)"/><circle cx="101" cy="53" r="2.6" style="fill:#fff"/>
+    </svg></div>
+   <h3>Observe or measure</h3>
+   <div class="ws">Watch, count or measure</div>
+   <div class="we g1" style="--d:240;background:var(--lcoral)"><b>e.g.</b> Count the cars at the school gate at 7 a.m.</div>
+  </div>
+  <div class="card in wy" style="--d:520">
+   <div class="wa" style="background:var(--lmint)"><span class="wn" style="background:var(--okc)">4</span>
+    <svg viewBox="0 0 220 160" aria-hidden="true">
+     <circle cx="30" cy="28" r="13" style="fill:var(--sun)"/><path d="M30 6v4M30 46v4M8 28h4M48 28h4M14 12l3 3M43 41l3 3M14 44l3-3M43 15l3-3" style="stroke:var(--sun);stroke-width:4;stroke-linecap:round"/>
+     <path d="M152 44a13 13 0 0 1 24-7 11 11 0 0 1 19 9 9 9 0 0 1-2 18h-40a10 10 0 0 1-1-20z" style="fill:#C3CCDD"/>
+     <rect x="32" y="112" width="68" height="12" rx="4" style="fill:#E25A49"/><path d="M36 124h60l-7 30H43z" style="fill:var(--coral)"/>
+     <path class="draw" pathLength="1" d="M66 112V46" style="fill:none;stroke:var(--okc);stroke-width:6;stroke-linecap:round;--d:900"/>
+     <g class="pop" style="--d:1500"><ellipse cx="52" cy="78" rx="15" ry="7" transform="rotate(-28 52 78)" style="fill:var(--mint)"/><ellipse cx="80" cy="66" rx="15" ry="7" transform="rotate(28 80 66)" style="fill:var(--mint)"/><ellipse cx="58" cy="48" rx="12" ry="6" transform="rotate(-38 58 48)" style="fill:var(--mint)"/></g>
+     <rect x="126" y="112" width="68" height="12" rx="4" style="fill:#E25A49"/><path d="M130 124h60l-7 30h-46z" style="fill:var(--coral)"/>
+     <path class="draw" pathLength="1" d="M160 112V90" style="fill:none;stroke:var(--okc);stroke-width:6;stroke-linecap:round;--d:900"/>
+     <g class="pop" style="--d:1500"><ellipse cx="150" cy="97" rx="10" ry="5" transform="rotate(-28 150 97)" style="fill:var(--mint)"/><ellipse cx="170" cy="94" rx="10" ry="5" transform="rotate(28 170 94)" style="fill:var(--mint)"/></g>
+    </svg></div>
+   <h3>Experiment</h3>
+   <div class="ws">Change one thing, compare</div>
+   <div class="we g1" style="--d:360;background:var(--lmint)"><b>e.g.</b> Grow one bean plant in sun, one in shade.</div>
+  </div>
+ </div>
+ <aside class="notes">Four ways to collect primary data. Name each card, then click (beat 1) for the examples.
+ 1 Interview: you talk and ask questions, face to face. 2 Questionnaire: everyone answers the same written questions, on paper or in an online form. 3 Observation or measurement: you watch, count or measure (tally of cars, height with a ruler). 4 Experiment: you change one thing and compare the results (sun vs shade, measure both plants each day).
+ Ask: "To find how long students in 1/2 sleep, which way is best?" (A questionnaire: fast for a whole class.)</aside>
+</section>
+
+<section class="slide" id="l2-census" data-steps="2">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Lesson 2 · Population and sample</div>
+ <h2 class="in" style="--d:120"><em>Census</em> or survey?</h2>
+ <div style="display:grid;grid-template-columns:1010px 1fr;gap:44px">
+  <div class="card in" style="--d:200;display:flex;flex-direction:column;gap:20px;padding:28px 36px">
+   <div class="row" style="justify-content:space-between;gap:20px">
+    <div class="row" style="gap:16px"><span class="chip">Population</span><span class="pl">all 30 students in class 1/2</span></div>
+    <span class="badge info g1" style="--d:600">Census · ask <b data-count="30" data-at="1">30</b> of 30</span>
+   </div>
+   <div class="pgrid"><svg class="pp pop" viewBox="0 0 40 56" style="--n:0"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:0.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:1"><use href="#person"/></svg><svg class="pp pop s" viewBox="0 0 40 56" style="--n:1.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:2"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:2.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:3"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:3.5"><use href="#person"/></svg><svg class="pp pop s" viewBox="0 0 40 56" style="--n:4"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:4.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:5.5"><use href="#person"/></svg><svg class="pp pop s" viewBox="0 0 40 56" style="--n:6"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:6.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:7"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:7.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:8"><use href="#person"/></svg><svg class="pp pop s" viewBox="0 0 40 56" style="--n:8.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:9"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:9.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:10"><use href="#person"/></svg><svg class="pp pop s" viewBox="0 0 40 56" style="--n:10.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:11"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:11.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:12"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:12.5"><use href="#person"/></svg><svg class="pp pop s" viewBox="0 0 40 56" style="--n:13"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:13.5"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:14"><use href="#person"/></svg><svg class="pp pop" viewBox="0 0 40 56" style="--n:14.5"><use href="#person"/></svg></div>
+   <div class="tray g2" style="--d:500">
+    <span class="chip coral" style="background:#fff">Sample</span>
+    <svg class="drop" viewBox="0 0 40 56" style="--n:0;--d:700"><use href="#person"/></svg><svg class="drop" viewBox="0 0 40 56" style="--n:1;--d:700"><use href="#person"/></svg><svg class="drop" viewBox="0 0 40 56" style="--n:2;--d:700"><use href="#person"/></svg><svg class="drop" viewBox="0 0 40 56" style="--n:3;--d:700"><use href="#person"/></svg><svg class="drop" viewBox="0 0 40 56" style="--n:4;--d:700"><use href="#person"/></svg><svg class="drop" viewBox="0 0 40 56" style="--n:5;--d:700"><use href="#person"/></svg>
+    <span class="tt">Survey · ask 6 of 30</span>
+   </div>
+  </div>
+  <div class="stack" style="gap:22px">
+   <div class="def in" style="--d:350"><div class="dt">Population</div>The <b>whole group</b> we want to learn about.</div>
+   <div class="def g1" style="--d:200"><div class="dt">Census</div>Collect data from <b>every</b> member of the population.</div>
+   <div class="def g2" style="--d:200;border-left-color:var(--coral)"><div class="dt" style="color:var(--coral)">Sample · Survey</div>A <b>sample</b> is a part of the population. A <b>survey</b> collects data from a sample only.</div>
+  </div>
+ </div>
+ <aside class="notes">Our question: "What snack do students in 1/2 like best?" The population is the whole group we want to know about: all 30 students in 1/2.
+ Beat 1, census: we ask every one of the 30 students (all icons turn blue).
+ Beat 2, survey: we ask only a sample, 6 of the 30 (the coral icons move down into the sample box). 6 out of 30 = 6/30 = 1/5 = 20% of the class.
+ Say: "Pick the sample fairly, for example by drawing names from a box, so every student has the same chance."</aside>
+</section>
+
+<section class="slide" id="l2-when" data-steps="1">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Lesson 2 · Census or survey</div>
+ <h2 class="in" style="--d:120">When do we use <em>each</em>?</h2>
+ <div class="grid3">
+  <div class="card flat fac in" style="--d:220">
+   <div class="fh"><i class="fi" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-clock"/></svg></i>Time needed</div>
+   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:250px;background:var(--blue);--d:600"></i><span>a lot</span></div></div>
+   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:90px;background:var(--coral);--d:600;--n:1"></i><span>less</span></div></div>
+  </div>
+  <div class="card flat fac in" style="--d:320">
+   <div class="fh"><i class="fi" style="background:var(--lsun);color:#B7791F"><svg viewBox="0 0 48 48"><use href="#l2-coin"/></svg></i>Cost</div>
+   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:250px;background:var(--blue);--d:800"></i><span>high</span></div></div>
+   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:90px;background:var(--coral);--d:800;--n:1"></i><span>low</span></div></div>
+  </div>
+  <div class="card flat fac in" style="--d:420">
+   <div class="fh"><i class="fi" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 24 24"><use href="#target"/></svg></i>How exact</div>
+   <div class="br"><span>Census</span><div class="trk"><i class="bar growx" style="width:250px;background:var(--blue);--d:1000"></i><span>exact</span></div></div>
+   <div class="br"><span>Survey</span><div class="trk"><i class="bar growx" style="width:185px;background:var(--coral);--d:1000;--n:1"></i><span>close</span></div></div>
+  </div>
+ </div>
+ <div class="grid2" style="margin-top:36px">
+  <div class="card exm in" style="--d:1150">
+   <svg viewBox="0 0 250 150" aria-hidden="true">
+    <g style="color:var(--blue)"><svg x="6" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg><svg x="66" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg><svg x="126" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg><svg x="186" y="62" width="56" height="56" viewBox="0 0 48 48"><use href="#l2-house"/></svg></g>
+    <g class="pop" style="--n:0;--d:1700"><circle cx="34" cy="38" r="17" style="fill:var(--lmint)"/><path d="M26 38l6 6 10-11" style="fill:none;stroke:var(--okc);stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/></g>
+    <g class="pop" style="--n:2;--d:1700"><circle cx="94" cy="38" r="17" style="fill:var(--lmint)"/><path d="M86 38l6 6 10-11" style="fill:none;stroke:var(--okc);stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/></g>
+    <g class="pop" style="--n:4;--d:1700"><circle cx="154" cy="38" r="17" style="fill:var(--lmint)"/><path d="M146 38l6 6 10-11" style="fill:none;stroke:var(--okc);stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/></g>
+    <g class="pop" style="--n:6;--d:1700"><circle cx="214" cy="38" r="17" style="fill:var(--lmint)"/><path d="M206 38l6 6 10-11" style="fill:none;stroke:var(--okc);stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/></g>
+    <path d="M6 132h238" style="stroke:#D3DAE8;stroke-width:4;stroke-linecap:round"/>
+   </svg>
+   <div><span class="chip">Census</span><div class="body" style="margin-top:12px">Thailand's national census tries to count <b>every</b> person, about once every 10 years.</div></div>
+  </div>
+  <div class="card exm in" style="--d:1300">
+   <svg viewBox="0 0 250 150" aria-hidden="true">
+    <g style="color:#C3CCDD"><use href="#person" x="4" y="14" width="30" height="42"/><use href="#person" x="44" y="14" width="30" height="42" style="color:var(--coral)"/><use href="#person" x="84" y="14" width="30" height="42"/><use href="#person" x="124" y="14" width="30" height="42"/><use href="#person" x="164" y="14" width="30" height="42" style="color:var(--coral)"/><use href="#person" x="204" y="14" width="30" height="42"/>
+    <use href="#person" x="24" y="70" width="30" height="42"/><use href="#person" x="64" y="70" width="30" height="42"/><use href="#person" x="104" y="70" width="30" height="42" style="color:var(--coral)"/><use href="#person" x="144" y="70" width="30" height="42"/><use href="#person" x="184" y="70" width="30" height="42"/></g>
+    <path d="M6 132h238" style="stroke:#D3DAE8;stroke-width:4;stroke-linecap:round"/>
+   </svg>
+   <div><span class="chip coral">Survey</span><div class="body" style="margin-top:12px">Before a new menu, the canteen asks <b>100</b> of its 2,400 students.</div></div>
+  </div>
+ </div>
+ <div class="idea g1" style="margin-top:36px"><svg><use href="#bulb"/></svg><div>Small group, or must be exact → <b>census</b>. Big group, little time or money → <b>survey</b>.</div></div>
+ <aside class="notes">Compare the bars. A census asks everyone, so it takes more time and costs more, but the result is exact. A survey asks only a sample: quicker and cheaper, and the result is close (an estimate) if the sample is chosen fairly.
+ Then the two real examples. Census: Thailand's National Statistical Office runs a population and housing census about every 10 years and tries to count every person. Survey: the canteen asks 100 of 2,400 students; 100 ÷ 2,400 = 1/24, about 4% of the school. Asking all 2,400 would take far too long.
+ Beat 1: the rule of thumb. Ask: "Which would you use to find the favourite fruit of everyone in Thailand?" (Survey.)</aside>
+</section>
+
+<section class="slide" id="l2-kind" data-steps="2">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Lesson 2 · Types of data</div>
+ <h2 class="in" style="--d:120">Numbers or <em>words</em>?</h2>
+ <div style="display:grid;grid-template-columns:600px 1fr;gap:44px">
+  <div class="stack" style="gap:22px">
+   <div class="card kd in" style="--d:220"><span class="kt" style="background:var(--blue)">123</span><div><h3>Quantitative</h3><div class="body">Numbers you can <b>count</b> or <b>measure</b></div></div></div>
+   <div class="card kd in" style="--d:320"><span class="kt" style="background:var(--coral)">Abc</span><div><h3>Qualitative</h3><div class="body">Words or <b>categories</b></div></div></div>
+   <div class="note g2" style="--d:0"><div class="nt">Quick test</div>Can you add the values or find an average? Then the data are <b>quantitative</b>.</div>
+  </div>
+  <table class="tbl in" style="--d:420">
+   <thead><tr><th>Question</th><th>Data</th><th style="width:250px">Type</th></tr></thead>
+   <tbody>
+    <tr><td>How many pets do you have?</td><td class="dv">2</td><td><span class="ty qn g1" style="--d:0">Quantitative</span></td></tr>
+    <tr><td>What is your favourite sport?</td><td class="dv">Football</td><td><span class="ty ql g1" style="--d:120">Qualitative</span></td></tr>
+    <tr><td>How long is your walk to school?</td><td class="dv">15 min</td><td><span class="ty qn g1" style="--d:240">Quantitative</span></td></tr>
+    <tr><td>How do you come to school?</td><td class="dv">BTS</td><td><span class="ty ql g1" style="--d:360">Qualitative</span></td></tr>
+    <tr><td>How much rain fell today?</td><td class="dv">12 mm</td><td><span class="ty qn g1" style="--d:480">Quantitative</span></td></tr>
+    <tr><td>What size is your sports-day shirt?</td><td class="dv">M</td><td><span class="ty ql g1" style="--d:600">Qualitative</span></td></tr>
+   </tbody>
+  </table>
+ </div>
+ <aside class="notes">Quantitative data are numbers that come from counting (pets) or measuring (minutes, millimetres of rain). Qualitative data are words or categories (sport, way to school, shirt size).
+ Before beat 1, ask the class to call out the type for each row. Beat 1 shows the types. Watch the last row: shirt size M is a category (S, M, L), so it is qualitative, even though sizes have an order.
+ Beat 2, quick test: you can find the average number of pets (quantitative), but not the "average sport" (qualitative).</aside>
+</section>
+
+<section class="slide" id="l2-ex" data-steps="0" data-lesson="2" data-title="Exercise 2 · Data collection">
+ <i class="mesh m2"></i>
+ <div class="pill in" style="--d:80">Exercise 2</div>
+ <h2 class="in" style="--d:180;margin-top:26px">Your turn: <em>collect and sort</em></h2>
+ <div class="grid4" style="margin-top:10px">
+  <div class="card xc in" style="--d:300">
+   <div class="xa" style="background:var(--lblue)"><span class="xn" style="background:var(--blue)">1</span>
+    <svg viewBox="0 0 250 160" aria-hidden="true"><use href="#kid" x="6" y="38" width="80" height="100" style="--skin:#F2C6A0;--hair:#2B2118;--shirt:var(--blue)"/><g transform="rotate(8 96 98)"><rect x="76" y="74" width="40" height="52" rx="7" style="fill:#fff;stroke:var(--ink);stroke-width:3.5"/><rect x="88" y="69" width="16" height="9" rx="3" style="fill:var(--ink)"/><path d="M84 102l6 6 12-13" style="fill:none;stroke:var(--mint);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/></g><text x="140" y="104" text-anchor="middle" style="fill:var(--mute);font:700 26px Inter">or</text><g transform="rotate(-6 196 96)"><rect x="166" y="56" width="60" height="78" rx="7" style="fill:var(--coral)"/><rect x="166" y="56" width="11" height="78" rx="3" style="fill:#E25A49"/><rect x="184" y="74" width="32" height="7" rx="3.5" style="fill:#fff;opacity:.85"/><rect x="184" y="88" width="22" height="7" rx="3.5" style="fill:#fff;opacity:.6"/></g></svg></div>
+   <h3>Primary or secondary?</h3>
+  </div>
+  <div class="card xc in" style="--d:400">
+   <div class="xa" style="background:var(--lcoral)"><span class="xn" style="background:var(--coral)">2</span>
+    <svg viewBox="0 0 250 160" aria-hidden="true"><g style="color:#C3CCDD"><use href="#person" x="40" y="22" width="34" height="48"/><use href="#person" x="86" y="22" width="34" height="48" style="color:var(--coral)"/><use href="#person" x="132" y="22" width="34" height="48"/><use href="#person" x="178" y="22" width="34" height="48"/><use href="#person" x="40" y="88" width="34" height="48"/><use href="#person" x="86" y="88" width="34" height="48"/><use href="#person" x="132" y="88" width="34" height="48"/><use href="#person" x="178" y="88" width="34" height="48" style="color:var(--coral)"/></g></svg></div>
+   <h3>Census or survey?</h3>
+  </div>
+  <div class="card xc in" style="--d:500">
+   <div class="xa" style="background:var(--lviolet)"><span class="xn" style="background:var(--violet)">3</span>
+    <svg viewBox="0 0 250 160" aria-hidden="true"><rect x="22" y="44" width="96" height="72" rx="18" style="fill:var(--blue)"/><rect x="132" y="44" width="96" height="72" rx="18" style="fill:var(--coral)"/><text x="70" y="92" text-anchor="middle" style="fill:#fff;font:800 34px Display">123</text><text x="180" y="92" text-anchor="middle" style="fill:#fff;font:800 34px Display">Abc</text></svg></div>
+   <h3>Numbers or words?</h3>
+  </div>
+  <div class="card xc in" style="--d:600">
+   <div class="xa" style="background:var(--lmint)"><span class="xn" style="background:var(--okc)">4</span>
+    <svg viewBox="0 0 250 160" aria-hidden="true"><path d="M24 132h202" style="stroke:var(--ink);stroke-width:4;stroke-linecap:round"/><g class="f-mint"><circle cx="50" cy="118" r="10"/><circle cx="50" cy="96" r="10"/><circle cx="100" cy="118" r="10"/><circle cx="100" cy="96" r="10"/><circle cx="100" cy="74" r="10"/><circle cx="100" cy="52" r="10"/><circle cx="150" cy="118" r="10"/><circle cx="150" cy="96" r="10"/><circle cx="150" cy="74" r="10"/><circle cx="200" cy="118" r="10"/></g></svg></div>
+   <h3>Our class survey</h3>
+  </div>
+ </div>
+ <div class="note in" style="--d:800;margin-top:30px;display:flex;align-items:center;gap:20px"><svg style="width:44px;height:44px;color:#B7791F;flex:none" viewBox="0 0 24 24"><use href="#pencil"/></svg><div>Come to the board, show your answer and explain <b>why</b>. Then we check together.</div></div>
+ <aside class="notes">Exercise 2 has four tasks: 1 primary or secondary data, 2 census or survey, 3 quantitative or qualitative, 4 a live class survey. On every slide, invite students to the board first (tap a choice, drag a card or write with the pen) and ask them to explain why. Only then click to reveal the answer.</aside>
+</section>
+
+<section class="slide" id="l2-e1" data-steps="3">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Exercise 2 · Task 1</div>
+ <h2 class="in" style="--d:120">Primary or <em>secondary</em>?</h2>
+ <div class="rws">
+  <div class="rw in" style="--d:200"><span class="ri" style="background:var(--lsun);color:#B7791F"><svg viewBox="0 0 48 48"><use href="#l2-mango"/></svg></span><div class="rt">1 · You count who buys mango sticky rice at the canteen.</div><div class="ch ia r1" data-mcq><div class="c ok"><b>P</b>Primary</div><div class="c"><b>S</b>Secondary</div></div></div>
+  <div class="rw in" style="--d:280"><span class="ri" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-web"/></svg></span><div class="rt">2 · You find last year's Bangkok rainfall on a weather website.</div><div class="ch ia r1" data-mcq><div class="c"><b>P</b>Primary</div><div class="c ok"><b>S</b>Secondary</div></div></div>
+  <div class="rw in" style="--d:360"><span class="ri" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l2-folder"/></svg></span><div class="rt">3 · You use school records of absent students each month.</div><div class="ch ia r2" data-mcq><div class="c"><b>P</b>Primary</div><div class="c ok"><b>S</b>Secondary</div></div></div>
+  <div class="rw in" style="--d:440"><span class="ri" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l2-watch"/></svg></span><div class="rt">4 · Your group times classmates running 50 m on sports day.</div><div class="ch ia r2" data-mcq><div class="c ok"><b>P</b>Primary</div><div class="c"><b>S</b>Secondary</div></div></div>
+  <div class="rw in" style="--d:520"><span class="ri" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 48 48"><use href="#l2-news"/></svg></span><div class="rt">5 · You copy BTS passenger numbers from a news report.</div><div class="ch ia r3" data-mcq><div class="c"><b>P</b>Primary</div><div class="c ok"><b>S</b>Secondary</div></div></div>
+  <div class="rw in" style="--d:600"><span class="ri" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l2-sticker"/></svg></span><div class="rt">6 · You ask 1/2 to vote for their favourite LINE sticker.</div><div class="ch ia r3" data-mcq><div class="c ok"><b>P</b>Primary</div><div class="c"><b>S</b>Secondary</div></div></div>
+ </div>
+ <div class="ans g3" style="--d:400;margin-top:22px"><svg><use href="#check"/></svg><div><b>You</b> collected it → primary. <b>Someone else</b> did → secondary.</div></div>
+ <aside class="notes">Students come to the board and tap an answer for each situation, and say who collected the data. Beat 1 reveals 1 and 2, beat 2 reveals 3 and 4, beat 3 reveals 5 and 6 and the rule.
+ Answers: 1 primary (you count it yourself, by observation). 2 secondary (the weather service collected it). 3 secondary (the school office collected it). 4 primary (your group measures the times). 5 secondary (the BTS company or a news team collected it). 6 primary (your own vote, a questionnaire).
+ Count: 3 primary (1, 4, 6) and 3 secondary (2, 3, 5).</aside>
+</section>
+
+<section class="slide" id="l2-e2" data-steps="3">
+ <i class="mesh m4"></i>
+ <div class="kicker in">Exercise 2 · Task 2</div>
+ <h2 class="in" style="--d:120">Census or <em>survey</em>?</h2>
+ <div class="grid3" style="height:700px">
+  <div class="card sc in" style="--d:220">
+   <div class="sa" style="background:var(--lblue)"><span class="chip">Case 1</span>
+    <svg viewBox="0 0 300 170" aria-hidden="true">
+     <g style="color:var(--blue)"><svg x="104" y="6" width="92" height="92" viewBox="0 0 48 48"><use href="#l2-school"/></svg></g>
+     <g style="color:#8E9AB8"><use href="#person" x="18" y="108" width="26" height="36"/><use href="#person" x="50" y="108" width="26" height="36"/><use href="#person" x="82" y="108" width="26" height="36"/><use href="#person" x="114" y="108" width="26" height="36"/><use href="#person" x="146" y="108" width="26" height="36"/><use href="#person" x="178" y="108" width="26" height="36"/><use href="#person" x="210" y="108" width="26" height="36"/><use href="#person" x="242" y="108" width="26" height="36"/>
+     <use href="#person" x="34" y="132" width="26" height="36"/><use href="#person" x="66" y="132" width="26" height="36"/><use href="#person" x="98" y="132" width="26" height="36"/><use href="#person" x="130" y="132" width="26" height="36"/><use href="#person" x="162" y="132" width="26" height="36"/><use href="#person" x="194" y="132" width="26" height="36"/><use href="#person" x="226" y="132" width="26" height="36"/></g>
+    </svg></div>
+   <div class="scq">Find the favourite drink of all <b>2,400</b> students in our school by Friday.</div>
+   <div class="ch ia r1" data-mcq><div class="c"><b>A</b>Census</div><div class="c ok"><b>B</b>Survey</div></div>
+   <div class="why g1" style="--d:300"><svg><use href="#check"/></svg>Too many people, too little time.</div>
+  </div>
+  <div class="card sc in" style="--d:320">
+   <div class="sa" style="background:var(--lviolet)"><span class="chip violet">Case 2</span>
+    <svg viewBox="0 0 300 170" aria-hidden="true">
+     <path d="M52 62l-20 11 9 17 9-5v45h44V85l9 5 9-17-20-11c-3 6-8 9-15 9s-12-3-15-9z" style="fill:var(--blue)"/>
+     <path d="M136 46l-25 13 11 21 11-6v56h54V74l11 6 11-21-25-13c-3 8-10 12-19 12s-16-4-19-12z" style="fill:var(--violet)"/>
+     <path d="M228 32l-29 15 13 25 13-7v66h62V65l13 7 13-25-29-15c-4 9-11 14-21 14s-17-5-21-14z" style="fill:var(--coral)"/>
+     <text x="74" y="118" text-anchor="middle" style="fill:#fff;font:800 26px Inter">S</text><text x="163" y="116" text-anchor="middle" style="fill:#fff;font:800 30px Inter">M</text><text x="259" y="114" text-anchor="middle" style="fill:#fff;font:800 34px Inter">L</text>
+    </svg></div>
+   <div class="scq">Order a sports-day T-shirt that fits <b>each</b> of the 32 students in 1/2.</div>
+   <div class="ch ia r2" data-mcq><div class="c ok"><b>A</b>Census</div><div class="c"><b>B</b>Survey</div></div>
+   <div class="why g2" style="--d:300"><svg><use href="#check"/></svg>Every student needs the right size.</div>
+  </div>
+  <div class="card sc in" style="--d:420">
+   <div class="sa" style="background:var(--lsun)"><span class="chip sun">Case 3</span>
+    <svg viewBox="0 0 300 170" aria-hidden="true">
+     <g><path d="M22 40h52l-5 12 8 92H19l8-92z" style="fill:var(--sun)"/><path d="M27 52h42" style="stroke:#E0A400;stroke-width:4"/><circle cx="48" cy="96" r="14" style="fill:#fff"/><path d="M40 98c4-10 14-10 17-2" style="fill:none;stroke:#E0A400;stroke-width:5;stroke-linecap:round"/></g>
+     <g><path d="M96 40h52l-5 12 8 92H93l8-92z" style="fill:var(--sun)"/><path d="M101 52h42" style="stroke:#E0A400;stroke-width:4"/><circle cx="122" cy="96" r="14" style="fill:#fff"/><path d="M114 98c4-10 14-10 17-2" style="fill:none;stroke:#E0A400;stroke-width:5;stroke-linecap:round"/></g>
+     <g><path d="M170 40h52l-5 12 8 92h-58l8-92z" style="fill:var(--sun)"/><path d="M175 52h42" style="stroke:#E0A400;stroke-width:4"/><circle cx="196" cy="96" r="14" style="fill:#fff"/><path d="M188 98c4-10 14-10 17-2" style="fill:none;stroke:#E0A400;stroke-width:5;stroke-linecap:round"/></g>
+     <g transform="rotate(14 262 100)"><path d="M240 52h44l-4 10 7 80h-50l7-80z" style="fill:#F5D27A"/><path d="M244 52l6-10 8 8 8-8 8 8 8-8 2 10" style="fill:#F5D27A"/></g>
+     <circle cx="262" cy="24" r="16" style="fill:#fff;stroke:var(--coral);stroke-width:4"/><path d="M262 16v10M262 31v1" style="stroke:var(--coral);stroke-width:4;stroke-linecap:round"/>
+    </svg></div>
+   <div class="scq">A factory checks that its <b>5,000</b> bags of dried mango taste good.</div>
+   <div class="ch ia r3" data-mcq><div class="c"><b>A</b>Census</div><div class="c ok"><b>B</b>Survey</div></div>
+   <div class="why g3" style="--d:300"><svg><use href="#check"/></svg>Taste every bag? None left to sell!</div>
+  </div>
+ </div>
+ <aside class="notes">One student per case comes to the board, taps Census or Survey, and explains why (think about time, cost and how exact). Then click to reveal, one case per beat.
+ Case 1: survey. 2,400 students is a big population and there is only a few days; a fair sample (for example 120 students, 5 from each class) gives a good estimate.
+ Case 2: census. Each of the 32 students needs a shirt that fits, so we must ask every student; an estimate is not good enough, and 32 people is a small group.
+ Case 3: survey. Tasting a bag opens it, so testing all 5,000 bags would leave nothing to sell. The factory tests a sample.</aside>
+</section>
+
+<section class="slide" id="l2-e3" data-steps="2">
+ <i class="mesh m2"></i>
+ <div class="kicker in">Exercise 2 · Task 3</div>
+ <h2 class="in" style="--d:120">Sort the <em>data</em></h2>
+ <div style="display:grid;grid-template-columns:500px 1fr;gap:44px">
+  <div class="stack" style="gap:22px">
+   <div class="card in" style="--d:220;padding:26px 30px">
+    <svg class="hand" viewBox="0 0 440 210" aria-hidden="true">
+     <rect x="20" y="20" width="180" height="70" rx="16" style="fill:#fff;stroke:#D3DAE8;stroke-width:3"/><path d="M44 55h132" style="stroke:#C3CCDD;stroke-width:8;stroke-linecap:round"/>
+     <path class="draw" pathLength="1" d="M200 70C260 80 290 110 300 140" style="fill:none;stroke:var(--violet);stroke-width:5;stroke-dasharray:1;stroke-linecap:round;--d:900"/>
+     <path d="M288 134l12 12 8-16" class="pop" style="fill:none;stroke:var(--violet);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;--d:1700"/>
+     <rect x="246" y="150" width="84" height="50" rx="12" style="fill:var(--blue)"/><text x="288" y="184" text-anchor="middle" style="fill:#fff;font:800 24px Display">123</text>
+     <rect x="344" y="150" width="84" height="50" rx="12" style="fill:var(--coral)"/><text x="386" y="184" text-anchor="middle" style="fill:#fff;font:800 24px Display">Abc</text>
+     <rect x="20" y="120" width="180" height="70" rx="16" style="fill:#fff;stroke:#D3DAE8;stroke-width:3"/><path d="M44 155h100" style="stroke:#C3CCDD;stroke-width:8;stroke-linecap:round"/>
+    </svg>
+    <div class="body" style="margin-top:14px">Drag each card into the right box. Then press <b>Check</b>.</div>
+   </div>
+   <div class="note g1" style="--d:0"><div class="nt">Hint</div>Count or measure → numbers. A name or a group → words.</div>
+   <div class="ans g2" style="--d:0;font-size:30px"><svg><use href="#check"/></svg><div><b>Numbers:</b> pets, height, minutes, rainfall.</div></div>
+  </div>
+  <div class="w-sort ia in" data-bins="Quantitative (numbers)|Qualitative (words)" style="--d:300;width:1116px;height:700px">
+   <div class="item" data-bin="0">Number of pets you have</div>
+   <div class="item" data-bin="1">Favourite LINE sticker</div>
+   <div class="item" data-bin="0">Height in cm</div>
+   <div class="item" data-bin="1">Way you come to school</div>
+   <div class="item" data-bin="1">Favourite sport</div>
+   <div class="item" data-bin="0">Minutes to walk to school</div>
+   <div class="item" data-bin="1">Colour of your school bag</div>
+   <div class="item" data-bin="0">Rainfall in Bangkok (mm)</div>
+  </div>
+ </div>
+ <aside class="notes">Students take turns at the board: drag one card into a box and say "count, measure, or a name?". Press Check when all 8 are sorted (or Show answer).
+ Beat 1: the hint. Beat 2: the answer.
+ Quantitative (4): number of pets (count), height in cm (measure), minutes to walk (measure), rainfall in mm (measure).
+ Qualitative (4): favourite LINE sticker, way to school, favourite sport, colour of school bag (all names or groups).</aside>
+</section>
+
+<section class="slide" id="l2-e4" data-steps="1">
+ <i class="mesh m3"></i>
+ <div class="kicker in">Exercise 2 · Task 4 · Live class survey</div>
+ <h2 class="in" style="--d:120">How do <em>you</em> come to school?</h2>
+ <div style="display:grid;grid-template-columns:1010px 1fr;gap:44px">
+  <div class="w-dots ia in" data-title="How our class comes to school" data-labels="Walk,Bike,Bus,Car,BTS/MRT,Motorbike" style="--d:220;width:1010px;height:690px"></div>
+  <div class="stack" style="gap:22px">
+   <ol class="steps in" style="--d:320">
+    <li><span>Come up and tap above <b>your</b> way.</span></li>
+    <li><span>One dot for each student.</span></li>
+   </ol>
+   <div class="w-write ia in" data-label="Census or survey of our class? Why?" data-lines="3" style="--d:420;width:606px;height:360px"></div>
+   <div class="ans g1" style="--d:0;font-size:30px"><svg><use href="#check"/></svg><div>Everyone in our class answers, so it is a <b>census</b> of our class.</div></div>
+  </div>
+ </div>
+ <aside class="notes">Live survey. Each student comes to the board and taps one dot above their usual way to school (use the main way if they use two). Count the dots together: the total should equal the number of students here today.
+ Then ask the question in the box; a student writes an answer with the pen. Beat 1 shows the answer: every student in our class answers, so it is a census of our class (population = our class). If someone is absent, we did not ask everyone, so strictly it is a survey of the class.
+ Extension: "If we use these dots to describe the whole school, what is our class?" (A sample, so for the school it is a survey; ask whether one class is a fair sample of the whole school.)</aside>
+</section>
