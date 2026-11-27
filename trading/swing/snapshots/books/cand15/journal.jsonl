@@ -5,3 +5,7 @@
 {"kind": "EXIT", "t": "2026-11-26 03:30:00", "event": "20261125-2230-cand15", "reason": "flat by 03:30 Bangkok", "px": 3581.11, "pnl": 317.63, "equity": 10256.34, "minutes": 300}
 {"kind": "FILL", "t": "2026-11-26 21:45:00", "event": "20261126-2145-cand15", "side": "SELL", "qty": 5.754, "px": 3573.47, "stop": 3590.59, "target": null, "lev": 2.01, "risk_pct": 1.0, "lev_capped": false, "lev_chosen": null, "lev_requested": null, "lev_why": "", "why": "15m donchian20 vol>1.5x faded, 2.5 ATR15 stop, ATR trail"}
 {"kind": "EXIT", "t": "2026-11-27 03:30:00", "event": "20261126-2145-cand15", "reason": "flat by 03:30 Bangkok", "px": 3565.45, "pnl": 46.15, "equity": 10302.49, "minutes": 345}
+{"kind": "REJECT", "t": "2026-11-27 08:30:00", "event": "20261127-0830-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
+{"kind": "REJECT", "t": "2026-11-27 09:00:00", "event": "20261127-0900-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
+{"kind": "REJECT", "t": "2026-11-27 09:15:00", "event": "20261127-0915-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
+{"kind": "REJECT", "t": "2026-11-27 09:45:00", "event": "20261127-0945-cand15", "reason": "outside entry hours (flat 03:30-14:00 Bangkok)"}
