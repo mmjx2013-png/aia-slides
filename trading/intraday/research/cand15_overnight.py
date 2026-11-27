@@ -56,7 +56,19 @@ def sim(m1, m15, mode, swap=(0.0, 0.0)):
     wd1, hr1, mi1 = clock(t + 60_000)
     NE, NE1 = _no_entry(wd, hr, mi), _no_entry(wd1, hr1, mi1)
     at0330 = (hr == 3) & (mi == 30)
-    FX = at0330 if mode == "A" else ((wd == 5) & (hr * 60 + mi >= 210))
+    sat0330 = (wd == 5) & (hr * 60 + mi >= 210)
+    FX = {"A": at0330, "B": sat0330, "D": sat0330, "C": np.zeros(len(t), bool)}[mode]
+    # CFD market closed Sat 04:00 - Mon 05:00 Bangkok: C cannot be stopped then; the Monday open fills any gap
+    CLOSED = ((wd == 5) & (hr >= 4)) | (wd == 6) | ((wd == 0) & (hr < 5))
+    # swap rollovers: 05:00 Bangkok Tue..Sat (Mon..Fri 22:00 UTC), triple on the Wednesday night (Thu 05:00 Bangkok)
+    ROLL = (hr == 5) & (mi == 0) & np.isin(wd, [1, 2, 3, 4, 5])
+    if mode == "D":
+        h1 = indicators(resample(m1, 60))
+        ema = h1["c"].ewm(span=20, adjust=False).mean()
+        endms = (pd.DatetimeIndex(h1["end"]).tz_localize(None) if pd.DatetimeIndex(h1["end"]).tz is not None else pd.DatetimeIndex(h1["end"])).asi8 // 10**6
+        e_end = pd.Series(ema.values, index=endms)
+        c_end = pd.Series(h1["c"].values, index=endms)
+        slope = e_end.diff()
     BRK = (hr >= 4) & (hr < 6)
     ends_ms = {int(x.value // 10**6) for x in ends15}
     end_idx = {e: k for k, e in enumerate(m15["end"])}
@@ -65,20 +77,33 @@ def sim(m1, m15, mode, swap=(0.0, 0.0)):
         ti = int(t[i])
         if pos:
             d = pos["dir"]
-            if mode == "B" and ti % 86_400_000 == 22 * 3_600_000:            # rollover 22:00 UTC (05:00 Bangkok)
+            if mode != "A" and ROLL[i]:
                 mult = 3 if wd[i] == 3 else 1                                 # Wednesday night -> charged Thu 05:00 Bkk
                 fee = pos["qty"] * (swap[0] if d > 0 else swap[1]) * mult
                 eq += fee
                 pos["swap"] += fee
                 pos["nights"] += mult
             exit_px, why = None, None
-            if FX[i]:
+            if mode == "C" and CLOSED[i]:
+                curve.append(eq)
+                continue                                                      # no trading: stop checked at the Monday open
+            if mode == "D" and at0330[i] and not FX[i]:
+                one_r = pos["dist"] + 2 * (HALF + SLIP)
+                prof = d * (o[i] - pos["entry"])
+                k = int(np.searchsorted(e_end.index.values, ti, side="right")) - 1
+                trend_ok = k >= 1 and d * slope.iloc[k] > 0 and d * (c_end.iloc[k] - e_end.iloc[k]) > 0
+                if prof >= 0.5 * one_r and trend_ok:
+                    pos["stop"] = max(pos["stop"], pos["entry"]) if d > 0 else min(pos["stop"], pos["entry"])
+                    pos["kept"] = True
+                else:
+                    exit_px, why = o[i], "03:30 not kept"
+            if exit_px is None and FX[i]:
                 exit_px, why = o[i], "forced flat"
             elif (l[i] <= pos["stop"]) if d > 0 else (h[i] >= pos["stop"]):
                 exit_px = min(o[i], pos["stop"]) if d > 0 else max(o[i], pos["stop"])
                 why = "stop" if not pos["trailed"] else "trail"
             if exit_px is not None:
-                half = HALF * (3 if mode == "B" and BRK[i] else 1)
+                half = HALF * (3 if mode != "A" and BRK[i] else 1)
                 px = exit_px - d * (half + SLIP)
                 pnl = d * pos["qty"] * (px - pos["entry"])
                 eq += pnl
@@ -139,11 +164,16 @@ def main():
     span = f"{bk(m1['t'].iloc[0]).date()} .. {bk(m1['t'].iloc[-1]).date()} ({len(m1):,} 1m bars)"
     A, ca = sim(m1, m15, "A")
     rows = [("A: flat by 03:30 (live rule)", summary(A, ca))]
-    res = {}
-    for lab, sw in SWAPS.items():
-        B, cb = sim(m1, m15, "B", sw)
-        res[lab] = B
-        rows.append((f"B: hold overnight, {lab}", summary(B, cb)))
+    res, stats = {}, {"A": summary(A, ca)}
+    names = {"B": "hold overnight, flat before the weekend", "C": "no clock rules (weekend gap at the Monday open)",
+             "D": "keep at 03:30 only if >= 0.5R and the 1h trend agrees (stop to breakeven), flat before the weekend"}
+    for v in ("B", "C", "D"):
+        for lab, sw in SWAPS.items():
+            X, cx = sim(m1, m15, v, sw)
+            if v == "B":
+                res[lab] = X
+            stats[(v, lab)] = summary(X, cx)
+            rows.append((f"{v}: {names[v]}; {lab.split(' (')[0]} swap", stats[(v, lab)]))
     L = ["# cand15: flat by 03:30 (A) vs hold overnight (B), code-only replay", "", f"Data: PAXG/USDT 1m, {span}. " + __doc__.split("\n\n")[1].replace("\n", " "), "",
          "| Variant | Trades | Win | Net P&L (10k start) | Return | Max DD | Avg hold (h) | Swap paid | Held past 03:30 |", "|---|---|---|---|---|---|---|---|---|"]
     for lab, s in rows:
@@ -162,9 +192,24 @@ def main():
         L.append(f"| {lab} | {len(m)} | {m.a_pnl.sum():+,.2f} | {m.pnl.sum():+,.2f} | {m.pnl.sum() - m.a_pnl.sum():+,.2f} | {m.swap.sum():+,.2f} |")
     L += ["", "Bootstrap of the extra-hours P&L (5,000 resamples of the matched trades): " + "; ".join(
         f"{k.split(' (')[0]}: 90% interval [{a:+,.0f}, {b:+,.0f}], P(> 0) {p:.0%}, {w:.0%} of trades gained" for k, (a, b, p, w) in ci.items())]
+    # pre-agreed decision rule, applied under the conservative (boss) swap figure; the typical figure shown alongside
+    a = stats["A"]
+    dd = lambda s_: float(s_["max_dd"].rstrip("%"))
+    out_rule = []
+    for lab in SWAPS:
+        cands = [("A", a)] + [(v, stats[(v, lab)]) for v in ("B", "C", "D")]
+        ok = [(v, s_) for v, s_ in cands if s_["trades"] >= 30 and abs(dd(s_)) <= 1.25 * abs(dd(a))]
+        win = max(ok, key=lambda x: x[1]["net_pnl"])
+        out_rule.append((lab, win[0], [(v, s_["net_pnl"], s_["max_dd"], s_["trades"]) for v, s_ in cands],
+                         [v for v, s_ in cands if (v, s_) not in ok]))
+    L += ["", "## Pre-agreed decision rule (highest net P&L; max DD no more than 25% deeper than A's; >= 30 trades)"]
+    for lab, w, c_, failed in out_rule:
+        L.append(f"- {lab}: winner **{w}**; " + ", ".join(f"{v} {p_:+,.0f} (DD {d_}, n {n_})" for v, p_, d_, n_ in c_)
+                 + (f"; failed the DD/trades test: {', '.join(failed)}" if failed else ""))
     L += ["", "Note: B also changes which later signals are taken (one position at a time), so the totals differ by more than the extra hours.",
           "The boss's swap figure (-6 USD per 0.01 lot per night) is about 10x what retail brokers typically charge on XAUUSD (about -0.4 to",
           "-0.8 USD per oz long); both are shown."]
+    (HERE.parent / "reports" / "cand15_decision.json").write_text(__import__("json").dumps({lab: w for lab, w, _, _ in out_rule}))
     out = HERE.parent / "reports" / "cand15_overnight.md"
     out.write_text("\n".join(L) + "\n")
     print("\n".join(L))

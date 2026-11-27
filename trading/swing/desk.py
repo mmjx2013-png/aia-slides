@@ -48,7 +48,11 @@ def books(root=BOOKS):
     ai.one = Broker(root / "ai_1pct", shadows=(), profile=R.ONE_PCT)   # 1%-risk shadow, same decisions, old halts
     ai.mirrors = [ai.one, Broker(root / "flat2", shadows=()), Broker(root / "kelly_cal", shadows=())]
     ai.followers = [Follower(root / n, n) for n in FSPECS] + [Daily2100(root / "real70_follow_2100")]
-    return ai, Broker(root / "every4h", shadows=(), profile=R.ONE_PCT), ipb.Broker(c15)
+    cb = ipb.Broker(c15)
+    # from 2026-11-27 (boss's pre-agreed rule, trading/intraday/reports/cand15_overnight.md): variant B = no 03:30 flat,
+    # flat by Sat 03:30, MT5 XAUUSD swap (typical retail -0.60 / +0.20 USD per oz per night, triple Wed), 3x spread 04-06 Bkk
+    cb.overnight = dict(swap_long=-0.60, swap_short=0.20, break_spread_x=3)
+    return ai, Broker(root / "every4h", shadows=(), profile=R.ONE_PCT, ), cb
 
 
 def signal4h(h4, close_ms):

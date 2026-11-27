@@ -78,7 +78,11 @@ class Broker:
 
     def _close(self, b, raw_px, reason):
         p = self.s["pos"]
-        px = raw_px - p["dir"] * risk.COST
+        cost = risk.COST
+        on = getattr(self, "overnight", None)
+        if on and 4 <= bkk(b["t"]).hour < 6:                 # CFD daily break: 3x the half spread
+            cost = risk.HALF_SPREAD * on.get("break_spread_x", 3) + risk.SLIPPAGE
+        px = raw_px - p["dir"] * cost
         pnl = p["dir"] * p["qty"] * (px - p["entry"])
         self.s["equity"] += pnl
         for sh in self.s["shadows"].values():
@@ -113,7 +117,16 @@ class Broker:
         day = risk.bkk_day(b["t"])
         if day != s["day"]:
             s["day"], s["day_start"] = day, self.mtm(b["o"])
-        if s["pos"] and risk.in_flat_window(b["t"]):
+        on = getattr(self, "overnight", None)
+        bb = bkk(b["t"])
+        if s["pos"] and on and bb.hour == 5 and bb.minute == 0 and bb.weekday() in (1, 2, 3, 4, 5):
+            mult = 3 if bb.weekday() == 3 else 1                 # MT5 XAUUSD swap; triple on the Wednesday night
+            fee = s["pos"]["qty"] * (on["swap_long"] if s["pos"]["dir"] > 0 else on["swap_short"]) * mult
+            s["equity"] += fee
+            self.log("SWAP", b["t"], event=s["pos"]["event"], usd=round(fee, 2), nights=mult)
+        if s["pos"] and on and bb.weekday() == 5 and (bb.hour, bb.minute) >= (3, 30):
+            self._close(b, b["o"], "flat before the weekend (Sat 03:30 Bangkok)")
+        elif s["pos"] and not on and risk.in_flat_window(b["t"]):
             self._close(b, b["o"], "flat by 03:30 Bangkok")
         fomc = risk.calendar_guard.fomc_close(b["t"]) if risk.CALENDAR_GUARD else None
         if s["pos"] and fomc:
