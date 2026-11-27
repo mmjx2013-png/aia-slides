@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+"""Mock-ups for the teacher trial (Math M1, Unit 4 Statistics (1)): 3 styles x 3 slides.
+All questions and charts are written fresh (not copied from the textbook).
+Run: python3 make.py  -> mockups.html ; then node shoot.cjs -> PNGs."""
+from pathlib import Path
+
+HERE = Path(__file__).parent
+
+CUP = '''<svg viewBox="0 0 60 84" class="cup" aria-hidden="true">
+<path d="M40 2 L33 22" class="straw"/>
+<rect x="6" y="18" width="48" height="9" rx="4" class="lid"/>
+<path d="M9 27 H51 L46 80 Q45 82 43 82 H17 Q15 82 14 80 Z" class="body"/>
+<circle cx="21" cy="70" r="4" class="pearl"/><circle cx="31" cy="73" r="4" class="pearl"/>
+<circle cx="40" cy="69" r="4" class="pearl"/><circle cx="26" cy="62" r="4" class="pearl"/>
+<circle cx="36" cy="61" r="4" class="pearl"/></svg>'''
+
+DAYS = [("Mon", 3), ("Tue", 2.5), ("Wed", 4), ("Thu", 2), ("Fri", 5)]
+
+def cups(n):
+    full = int(n)
+    out = CUP * full
+    if n - full:
+        out += f'<span class="half">{CUP}</span>'
+    return out
+
+# wake-up times (minutes after 5:00) for a dot plot: many different answers
+WAKE = [45, 60, 60, 75, 75, 75, 90, 90, 90, 90, 105, 105, 105, 120, 120, 135, 150]
+
+def dotplot():
+    from collections import Counter
+    c = Counter(WAKE); dots = []
+    for m, k in c.items():
+        x = 40 + (m - 30) * 3.2
+        for i in range(k):
+            dots.append(f'<circle cx="{x:.0f}" cy="{150 - i*26}" r="10" class="dot"/>')
+    ticks = ''.join(f'<text x="{40 + (m-30)*3.2:.0f}" y="190" class="tick">{5 + m//60}:{m%60:02d}</text>' for m in (30, 60, 90, 120, 150))
+    return f'<svg viewBox="0 0 480 200" class="plot"><line x1="20" y1="166" x2="460" y2="166" class="axis"/>{"".join(dots)}{ticks}</svg>'
+
+def slides(s):
+    title = f'''<section class="slide {s} s-title">
+  <div class="kicker">Mathayomsuksa 1 · Mathematics</div>
+  <h1>Unit 4<br><span>Statistics (1)</span></h1>
+  <ul class="chips"><li>Statistical questions</li><li>Data collection</li><li>Presenting &amp; reading data</li><li>Statistics in real life</li></ul>
+  <div class="deco">{dotplot()}</div>
+  <div class="tag">Style {s}</div>
+</section>'''
+    concept = f'''<section class="slide {s} s-concept">
+  <div class="kicker">Lesson 1 · Statistical questions</div>
+  <h2>Is it a <mark>statistical</mark> question?</h2>
+  <div class="cols">
+    <div class="card no"><div class="q">“What time did <b>I</b> wake up today?”</div>
+      <div class="one">6:15</div>
+      <div class="verdict">One answer → <b>not</b> statistical</div></div>
+    <div class="card yes"><div class="q">“What time did the students in <b>our class</b> wake up today?”</div>
+      {dotplot()}
+      <div class="verdict">Many different answers → <b>statistical</b> ✓</div></div>
+  </div>
+  <p class="rule">A statistical question expects answers that <b>vary</b>, so we must collect data to answer it.</p>
+  <div class="tag">Style {s}</div>
+</section>'''
+    rows = ''.join(f'<div class="row"><div class="day">{d}</div><div class="icons">{cups(n)}</div></div>' for d, n in DAYS)
+    practice = f'''<section class="slide {s} s-practice">
+  <div class="kicker">Practice · Pictograms</div>
+  <h2>Bubble tea sold at the school canteen</h2>
+  <div class="split">
+    <div class="picto">{rows}<div class="key">{CUP} = 10 cups</div></div>
+    <div class="ask"><div class="q">How many cups were sold this week?</div>
+      <ol class="choices"><li>A&nbsp; 150</li><li>B&nbsp; 160</li><li class="right">C&nbsp; 165</li><li>D&nbsp; 170</li></ol>
+      <div class="answer">16.5 cups × 10 = <b>165 cups</b><small>appears on click</small></div></div>
+  </div>
+  <div class="tag">Style {s}</div>
+</section>'''
+    return title + concept + practice
+
+CSS = r'''
+@font-face{font-family:Outfit;src:url(fonts/Outfit-Regular.ttf);font-weight:400}
+@font-face{font-family:Outfit;src:url(fonts/Outfit-Bold.ttf);font-weight:700}
+@font-face{font-family:Hand;src:url(fonts/NothingYouCouldDo-Regular.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#888}
+.slide{width:1920px;height:1080px;position:relative;overflow:hidden;padding:110px 140px;display:flex;flex-direction:column}
+.kicker{font-size:30px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+h1{font-size:150px;line-height:1.02;margin-top:40px;font-weight:800}
+h1 span{display:inline-block}
+h2{font-size:80px;line-height:1.1;margin:20px 0 40px;font-weight:800}
+.chips{list-style:none;display:flex;gap:22px;margin-top:70px;flex-wrap:wrap;max-width:980px}
+.chips li{font-size:34px;padding:16px 30px;border-radius:999px}
+.s-title .deco{position:absolute;right:120px;bottom:150px;width:720px}
+.tag{position:absolute;right:40px;top:30px;font:600 26px Inter;opacity:.55}
+.cols{display:grid;grid-template-columns:1fr 1.25fr;gap:60px;flex:1}
+.card{border-radius:28px;padding:48px 52px;display:flex;flex-direction:column;justify-content:space-between}
+.card .q{font-size:46px;line-height:1.3}
+.card .one{font-size:130px;font-weight:800;text-align:center}
+.card .verdict{font-size:38px}
+.plot{width:100%}
+.plot .tick{font:500 22px Inter;text-anchor:middle}
+.rule{font-size:38px;margin-top:34px}
+.split{display:grid;grid-template-columns:1.35fr 1fr;gap:70px;flex:1}
+.picto{border-radius:28px;padding:30px 44px;align-self:start}
+.row{display:flex;align-items:center;height:104px;border-bottom:2px solid rgba(0,0,0,.08)}
+.day{width:130px;font-size:40px;font-weight:700}
+.icons{display:flex;gap:10px;align-items:flex-end}
+.cup{width:62px;height:86px}
+.half{display:inline-block;width:31px;overflow:hidden}
+.key{display:flex;align-items:center;gap:16px;font-size:34px;margin-top:22px}
+.key .cup{width:44px;height:62px}
+.ask .q{font-size:50px;line-height:1.25;font-weight:700}
+.choices{list-style:none;margin:36px 0;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.choices li{font-size:46px;padding:22px 30px;border-radius:20px}
+.answer{font-size:44px;padding:26px 32px;border-radius:20px}
+.answer small{display:block;font-size:24px;opacity:.6;margin-top:6px}
+
+/* ---------- Style A: clean classroom (PowerPoint) ---------- */
+.A{background:#fff;color:#14213D;font-family:Inter}
+.A .kicker{color:#2F6FE4}
+.A h1 span,.A h2 mark{color:#2F6FE4;background:none}
+.A .chips li{background:#EAF2FF;color:#1D4FB8}
+.A.s-title{background:linear-gradient(90deg,#fff 62%,#EAF2FF 62%)}
+.A .card{background:#F4F7FC;border:3px solid #DCE6F7}
+.A .card.yes{border-color:#2F6FE4;background:#EEF4FF}
+.A .verdict b{color:#2F6FE4}.A .no .verdict b{color:#C0392B}
+.A .dot{fill:#2F6FE4}.A .axis{stroke:#14213D;stroke-width:3}.A .tick{fill:#14213D}
+.A .rule{border-left:10px solid #FFC83D;padding-left:28px}
+.A .picto{background:#F4F7FC}
+.A .cup .body{fill:#F3D9B1;stroke:#8B5E34;stroke-width:3}.A .cup .lid{fill:#2F6FE4}.A .cup .straw{stroke:#FF6B6B;stroke-width:6;stroke-linecap:round}.A .cup .pearl{fill:#3B2A20}
+.A .choices li{background:#F4F7FC;border:3px solid #DCE6F7}
+.A .choices li.right{border-color:#2FAE66;background:#E9F8EF}
+.A .answer{background:#FFF4D6;border:3px dashed #FFC83D}
+
+/* ---------- Style B: notebook (friendly, hand-drawn) ---------- */
+.B{background-color:#FBF8F1;background-image:linear-gradient(#DCE7F3 1.5px,transparent 1.5px),linear-gradient(90deg,#DCE7F3 1.5px,transparent 1.5px);background-size:48px 48px;color:#262626;font-family:Outfit}
+.B .kicker{font-family:Hand;font-size:44px;text-transform:none;letter-spacing:0;color:#E4572E}
+.B h1,.B h2{font-weight:700}
+.B h1 span{color:#1B998B}
+.B h2 mark,.B h1 span{background:linear-gradient(transparent 58%,#FFE36E 58%)}
+.B .chips li{background:#fff;border:3px solid #262626;border-radius:14px;box-shadow:6px 6px 0 #262626}
+.B .card{background:#FFF3B0;box-shadow:8px 10px 0 rgba(0,0,0,.12);border-radius:6px;transform:rotate(-1.2deg)}
+.B .card.yes{background:#CFF5E7;transform:rotate(1deg)}
+.B .verdict{font-family:Hand;font-size:38px;white-space:nowrap}
+.B .dot{fill:#1B998B;stroke:#262626;stroke-width:3}.B .axis{stroke:#262626;stroke-width:4;stroke-linecap:round}.B .tick{fill:#262626;font-family:Outfit}
+.B .rule{font-size:38px}.B .rule b{background:linear-gradient(transparent 58%,#FFE36E 58%)}
+.B .picto{background:#fff;border:3px solid #262626;border-radius:10px;box-shadow:8px 8px 0 #262626}
+.B .cup .body{fill:#FFD6A5;stroke:#262626;stroke-width:3.5}.B .cup .lid{fill:#E4572E;stroke:#262626;stroke-width:3}.B .cup .straw{stroke:#262626;stroke-width:6;stroke-linecap:round}.B .cup .pearl{fill:#262626}
+.B .choices li{background:#fff;border:3px solid #262626;border-radius:12px}
+.B .choices li.right{background:#CFF5E7}
+.B .answer{background:#FFE36E;border-radius:6px;font-family:Hand;font-size:52px;transform:rotate(-1deg)}
+.B .answer small{font-family:Outfit}
+
+/* ---------- Style C: cinematic web slides (type 1) ---------- */
+.C{background:radial-gradient(1200px 700px at 78% 30%,#1B2C5A 0%,#0B1020 60%);color:#EAF0FF;font-family:'Inter Display',Inter}
+.C .kicker{color:#4FD1FF}
+.C h1{font-weight:800;letter-spacing:-.02em}
+.C h1 span{background:linear-gradient(90deg,#4FD1FF,#FFB547);-webkit-background-clip:text;color:transparent}
+.C h2 mark{background:none;color:#FFB547}
+.C .chips li{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.18)}
+.C .card{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+.C .card.yes{border-color:rgba(79,209,255,.6);box-shadow:0 0 60px rgba(79,209,255,.18)}
+.C .one{color:#7E8AA8}
+.C .verdict b{color:#4FD1FF}
+.C .dot{fill:#4FD1FF;filter:drop-shadow(0 0 8px #4FD1FF)}.C .axis{stroke:rgba(255,255,255,.5);stroke-width:2}.C .tick{fill:#AFC0E6}
+.C .rule{color:#AFC0E6}.C .rule b{color:#FFB547}
+.C .picto{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12)}
+.C .row{border-color:rgba(255,255,255,.08)}
+.C .cup .body{fill:rgba(255,181,71,.18);stroke:#FFB547;stroke-width:3}.C .cup .lid{fill:#4FD1FF}.C .cup .straw{stroke:#4FD1FF;stroke-width:5;stroke-linecap:round}.C .cup .pearl{fill:#FFB547}
+.C .cup{filter:drop-shadow(0 0 6px rgba(255,181,71,.35))}
+.C .choices li{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14)}
+.C .choices li.right{border-color:#4FD1FF;box-shadow:0 0 30px rgba(79,209,255,.25)}
+.C .answer{background:linear-gradient(90deg,rgba(255,181,71,.18),rgba(79,209,255,.12));border:1.5px solid rgba(255,181,71,.5)}
+'''
+
+html = f'<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Mock-ups</title><style>{CSS}</style></head><body>' \
+       + ''.join(slides(s) for s in 'ABC') + '</body></html>'
+(HERE / 'mockups.html').write_text(html, encoding='utf-8')
+print('wrote', HERE / 'mockups.html')
