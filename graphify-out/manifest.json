@@ -144,9 +144,9 @@
     "semantic_hash": ""
   },
   "trading/intraday/paperbroker.py": {
-    "mtime": 1795617101.8384185,
-    "seen": 1795657008.4895544,
-    "ast_hash": "e34cbb74dcdadcbe19e22fa9a534ae1c",
+    "mtime": 1795753259.834985,
+    "seen": 1795810372.7931862,
+    "ast_hash": "2b6c548772a7948ab14cb280eedd7553",
     "semantic_hash": ""
   },
   "trading/intraday/report.py": {
@@ -252,9 +252,9 @@
     "semantic_hash": ""
   },
   "trading/swing/desk.py": {
-    "mtime": 1795676451.9221563,
-    "seen": 1795676545.9213104,
-    "ast_hash": "e0d1508eb0fc51af7d073d823939824a",
+    "mtime": 1795759892.3148818,
+    "seen": 1795810372.7932403,
+    "ast_hash": "a4c5c14a372ef917c79e8eaefea37b5a",
     "semantic_hash": ""
   },
   "trading/swing/env.py": {
@@ -276,9 +276,9 @@
     "semantic_hash": ""
   },
   "trading/swing/report.py": {
-    "mtime": 1795676527.3861985,
-    "seen": 1795676545.921337,
-    "ast_hash": "ec1667d9c4eb8253443c3d2a31fcf929",
+    "mtime": 1795759936.95861,
+    "seen": 1795810372.7932746,
+    "ast_hash": "afb8c612849b6867919c8704c8d67eea",
     "semantic_hash": ""
   },
   "trading/swing/rules.py": {
@@ -288,15 +288,15 @@
     "semantic_hash": ""
   },
   "trading/swing/test_replay.py": {
-    "mtime": 1795673747.2473257,
-    "seen": 1795673768.5407622,
-    "ast_hash": "8b01b317c550a306de7ff14d8c67aa4b",
+    "mtime": 1795759892.315618,
+    "seen": 1795810372.7932935,
+    "ast_hash": "31b9cdc6ecaaba56f15336b10ad01a68",
     "semantic_hash": ""
   },
   "trading/swing/test_swing.py": {
-    "mtime": 1795676527.3864326,
-    "seen": 1795676545.9213474,
-    "ast_hash": "a196215a5017d9acdf37e96c6e549a8b",
+    "mtime": 1795759912.1136057,
+    "seen": 1795810372.793295,
+    "ast_hash": "ce431e6b0ba434db852c40aa3e9f0f74",
     "semantic_hash": ""
   },
   "trading/tools_save_dec.py": {
@@ -654,9 +654,9 @@
     "semantic_hash": ""
   },
   "trading/swing/README.md": {
-    "mtime": 1795676544.5509555,
-    "seen": 1795676545.9214103,
-    "ast_hash": "400408eeb1fdaa644afcb8445d64b50b",
+    "mtime": 1795759936.9590514,
+    "seen": 1795810372.7934337,
+    "ast_hash": "35641ca9810875f95c79935266b67e7f",
     "semantic_hash": ""
   },
   "trading/swing/prompts/pm.md": {
@@ -672,27 +672,27 @@
     "semantic_hash": ""
   },
   "trading/swing/snapshots/books/ai/state.json": {
-    "mtime": 1795666275.3838508,
-    "seen": 1795673486.5523777,
-    "ast_hash": "5033debed7ec4de87ee61af839bbd6e8",
+    "mtime": 1795810258.8705218,
+    "seen": 1795810372.793281,
+    "ast_hash": "fc4c632a28dcf431288a393004422737",
     "semantic_hash": ""
   },
   "trading/swing/snapshots/books/ai_1pct/state.json": {
-    "mtime": 1795666275.3839066,
-    "seen": 1795673486.5523787,
-    "ast_hash": "2b3679ad3cf63046c07bc05fd8b3d65f",
+    "mtime": 1795810258.870625,
+    "seen": 1795810372.793282,
+    "ast_hash": "3b0be8b0718b8d997e2059a575a8d1ad",
     "semantic_hash": ""
   },
   "trading/swing/snapshots/books/cand15/state.json": {
-    "mtime": 1795666275.3838248,
-    "seen": 1795673486.5523794,
-    "ast_hash": "b329a03d7d73c43b5517868918b0b5e8",
+    "mtime": 1795810258.7239802,
+    "seen": 1795810372.7932837,
+    "ast_hash": "3ac7e6c4f1976a653ff64fecae85940d",
     "semantic_hash": ""
   },
   "trading/swing/snapshots/books/every4h/state.json": {
-    "mtime": 1795666275.383932,
-    "seen": 1795673486.55238,
-    "ast_hash": "2b3679ad3cf63046c07bc05fd8b3d65f",
+    "mtime": 1795810258.8706932,
+    "seen": 1795810372.7932847,
+    "ast_hash": "1c00288b1de33188bccfb5a237214785",
     "semantic_hash": ""
   },
   "trading/swing/news/20261125-2030/event.json": {
@@ -810,21 +810,717 @@
     "semantic_hash": ""
   },
   "trading/swing/shocks.py": {
-    "mtime": 1795676527.3858848,
-    "seen": 1795676545.9213388,
-    "ast_hash": "6f6234b6a9cc4f20cef9f46dc862508a",
+    "mtime": 1795677099.4098277,
+    "seen": 1795810372.7932773,
+    "ast_hash": "a22d28cb594fd0e73189b2537d0ee255",
     "semantic_hash": ""
   },
   "trading/swing/statements.py": {
-    "mtime": 1795676392.3467054,
-    "seen": 1795676545.9213445,
-    "ast_hash": "08da06bf31e55abdacd8b2738efa1f41",
+    "mtime": 1795677099.410022,
+    "seen": 1795810372.7932918,
+    "ast_hash": "5495e6ce9cf07e029e7e2e24e010cb76",
     "semantic_hash": ""
   },
   "trading/swing/reports/shock_scan_30d.md": {
     "mtime": 1795676512.1850114,
     "seen": 1795676545.9214137,
     "ast_hash": "f6b9f0be04ef77f4010862f48fa0282b",
+    "semantic_hash": ""
+  },
+  "trading/fund/dca.py": {
+    "mtime": 1795753707.7706823,
+    "seen": 1795810372.7931569,
+    "ast_hash": "1af69a11f61bbb732b2d664045265815",
+    "semantic_hash": ""
+  },
+  "trading/fund/edgar.py": {
+    "mtime": 1795746419.051839,
+    "seen": 1795810372.7931588,
+    "ast_hash": "daa6b8b4eb62208ac65e4ca1b97aebfd",
+    "semantic_hash": ""
+  },
+  "trading/fund/portfolio.py": {
+    "mtime": 1795747756.0213053,
+    "seen": 1795810372.7931602,
+    "ast_hash": "b381be7712ccc030c7758e561cc2d60a",
+    "semantic_hash": ""
+  },
+  "trading/fund/prices.py": {
+    "mtime": 1795747951.3724983,
+    "seen": 1795810372.7931614,
+    "ast_hash": "0c82194883763a844cc5915beca1d7db",
+    "semantic_hash": ""
+  },
+  "trading/fund/research_inputs.py": {
+    "mtime": 1795747642.4116814,
+    "seen": 1795810372.7931628,
+    "ast_hash": "9e0d148cb5e09c2c1258bdf01f16c79f",
+    "semantic_hash": ""
+  },
+  "trading/fund/screen.py": {
+    "mtime": 1795747579.6314147,
+    "seen": 1795810372.7931647,
+    "ast_hash": "145ed5de1db098e2d6020addb5cacfec",
+    "semantic_hash": ""
+  },
+  "trading/fund/shadow.py": {
+    "mtime": 1795753753.3826296,
+    "seen": 1795810372.793166,
+    "ast_hash": "aa90b50bcacada007b84731e3841c576",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/cand15_decision.json": {
+    "mtime": 1795759733.2901096,
+    "seen": 1795810372.7931912,
+    "ast_hash": "fb75b9d3ead3bb5976af23d88365e449",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/cand15_overnight.py": {
+    "mtime": 1795759792.200643,
+    "seen": 1795810372.7931921,
+    "ast_hash": "c71bf1768bc222860c0309fc24ffddbb",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/cand15_regime.py": {
+    "mtime": 1795759974.1885335,
+    "seen": 1795810372.7931938,
+    "ast_hash": "c4b05461d9b5ba3be35ffd87372a353c",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/confidence_tests.py": {
+    "mtime": 1795759719.6925476,
+    "seen": 1795810372.7931948,
+    "ast_hash": "e5be3f8072c30da93b79e58af836f439",
+    "semantic_hash": ""
+  },
+  "trading/intraday/research/indicator_scorecard.py": {
+    "mtime": 1795810367.254128,
+    "seen": 1795810372.793197,
+    "ast_hash": "f6bcc5d8e21ef71faa2eb78a0401b91b",
+    "semantic_hash": ""
+  },
+  "trading/swing/learn.py": {
+    "mtime": 1795810359.226466,
+    "seen": 1795810372.7932458,
+    "ast_hash": "f09c5bd4d0103ebef81011a901f2525e",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/aggr30/state.json": {
+    "mtime": 1795810258.8711152,
+    "seen": 1795810372.7932782,
+    "ast_hash": "3965eba5435aaf0c82982d8b6aaaa315",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/ai/ideas_scored.json": {
+    "mtime": 1795810258.87051,
+    "seen": 1795810372.7932792,
+    "ast_hash": "e6b84d028d5cd5fb2b76b46e26d02afc",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/flat2/state.json": {
+    "mtime": 1795810258.8710332,
+    "seen": 1795810372.7932856,
+    "ast_hash": "6bbc7a9d66ec6116a06b12dec80c8018",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/kelly_cal/state.json": {
+    "mtime": 1795810258.8709517,
+    "seen": 1795810372.7932866,
+    "ast_hash": "6bbc7a9d66ec6116a06b12dec80c8018",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/real70_follow_2100/state.json": {
+    "mtime": 1795810258.8711479,
+    "seen": 1795810372.793288,
+    "ast_hash": "28abc0dbb26327e1002a26828696fe66",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/real70_paxg/state.json": {
+    "mtime": 1795810258.8710618,
+    "seen": 1795810372.7932892,
+    "ast_hash": "3965eba5435aaf0c82982d8b6aaaa315",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/real70_xau_minlot/state.json": {
+    "mtime": 1795810258.8710794,
+    "seen": 1795810372.7932901,
+    "ast_hash": "dd653f17694a65d842681c0340d4ea30",
+    "semantic_hash": ""
+  },
+  "trading/swing/snapshots/books/shocks_state.json": {
+    "mtime": 1795810258.8707845,
+    "seen": 1795810372.7932909,
+    "ast_hash": "18fb184cad0cf0d9e675b3f30689a7cd",
+    "semantic_hash": ""
+  },
+  "trading/us/bt.py": {
+    "mtime": 1795676977.1727455,
+    "seen": 1795810372.7932994,
+    "ast_hash": "e165b812754e1614a06fc237499a9ab4",
+    "semantic_hash": ""
+  },
+  "trading/us/data.py": {
+    "mtime": 1795676772.4797845,
+    "seen": 1795810372.7933002,
+    "ast_hash": "cfe731a424bf0f5cdc19b49ad1e78d01",
+    "semantic_hash": ""
+  },
+  "trading/us/events.py": {
+    "mtime": 1795745568.763706,
+    "seen": 1795810372.7933013,
+    "ast_hash": "2aa073c387538a4c8dd0de40cd621a40",
+    "semantic_hash": ""
+  },
+  "trading/us/run.py": {
+    "mtime": 1795745579.3769398,
+    "seen": 1795810372.7933028,
+    "ast_hash": "e6f0aa062cbcbed2d9f61074abadb95c",
+    "semantic_hash": ""
+  },
+  "trading/us/strategies.py": {
+    "mtime": 1795677170.6048303,
+    "seen": 1795810372.7933037,
+    "ast_hash": "fefc2a1da2c0d5eaba0d26673c6041d0",
+    "semantic_hash": ""
+  },
+  "trading/us/test_bt.py": {
+    "mtime": 1795677022.4111683,
+    "seen": 1795810372.7933047,
+    "ast_hash": "ec192e9af8ac554749c3753deaec7a20",
+    "semantic_hash": ""
+  },
+  "trading/fund/MANDATE.md": {
+    "mtime": 1795753721.269561,
+    "seen": 1795810372.793313,
+    "ast_hash": "f2bfd64df4bd4cfb0c599e7763674d22",
+    "semantic_hash": ""
+  },
+  "trading/fund/finalists.md": {
+    "mtime": 1795747703.1551392,
+    "seen": 1795810372.793314,
+    "ast_hash": "b5f68a5db58f9e44637e31107da05c81",
+    "semantic_hash": ""
+  },
+  "trading/fund/orders.md": {
+    "mtime": 1795753687.0028112,
+    "seen": 1795810372.7933145,
+    "ast_hash": "4e971f211d538d4e1768bbd36b71d99f",
+    "semantic_hash": ""
+  },
+  "trading/fund/portfolio.md": {
+    "mtime": 1795753730.857442,
+    "seen": 1795810372.7933156,
+    "ast_hash": "5d76e1303108753d62a751c745bed0e1",
+    "semantic_hash": ""
+  },
+  "trading/fund/prompts_memo.md": {
+    "mtime": 1795747454.201365,
+    "seen": 1795810372.7933164,
+    "ast_hash": "a7740b689eac868e2cf9d8d2065bcb49",
+    "semantic_hash": ""
+  },
+  "trading/fund/reports/shadow.md": {
+    "mtime": 1795753754.1958754,
+    "seen": 1795810372.793317,
+    "ast_hash": "57fc3408b3db39c721ba7b191430a6fc",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/AAPL.md": {
+    "mtime": 1795747729.4765797,
+    "seen": 1795810372.7933233,
+    "ast_hash": "6c866aa8ec81dc62184842087e4a0890",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/ADBE.md": {
+    "mtime": 1795747736.75258,
+    "seen": 1795810372.793324,
+    "ast_hash": "80b0cc56db0d48874718336b0dcecec5",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/BBY.md": {
+    "mtime": 1795747726.2485795,
+    "seen": 1795810372.7933247,
+    "ast_hash": "c6cd5fa586a8f1b6fbe6fdfa6556f232",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/FLEX.md": {
+    "mtime": 1795747780.4365814,
+    "seen": 1795810372.793326,
+    "ast_hash": "f26adead7979928e83250a70eb3d5069",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/JBL.md": {
+    "mtime": 1795747786.3485816,
+    "seen": 1795810372.7933266,
+    "ast_hash": "6b0ef98c551dd98cbfea5fd8f6cca633",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/LMT.md": {
+    "mtime": 1795747730.8245797,
+    "seen": 1795810372.7933273,
+    "ast_hash": "4eccc0f5d4ed3167237e5f6054b32154",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/LRCX.md": {
+    "mtime": 1795747782.0885816,
+    "seen": 1795810372.793328,
+    "ast_hash": "69c945893b6261e7aa7cc728606762b8",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/MA.md": {
+    "mtime": 1795747738.7965798,
+    "seen": 1795810372.793329,
+    "ast_hash": "ff3bef741459419c58be49b6699fcf24",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/MCK.md": {
+    "mtime": 1795747744.1365802,
+    "seen": 1795810372.7933295,
+    "ast_hash": "cc4a51c656193fec1081f80d997e8cc6",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/MU.md": {
+    "mtime": 1795747782.2085814,
+    "seen": 1795810372.7933302,
+    "ast_hash": "ab77f0fd376933fb8971a6335e0801ee",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/NVDA.md": {
+    "mtime": 1795747779.4005814,
+    "seen": 1795810372.793331,
+    "ast_hash": "d2eb0fb1b7e963c728adb08b61d22af3",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/ROST.md": {
+    "mtime": 1795747732.7125797,
+    "seen": 1795810372.7933316,
+    "ast_hash": "9df7d41effd0299a0bfe6258cad535d7",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/ADBE.md": {
+    "mtime": 1795747517.472572,
+    "seen": 1795810372.7933323,
+    "ast_hash": "0d0a9b728c0844d1637d92e8e9533c6c",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/ADBE_brief.md": {
+    "mtime": 1795747525.5005722,
+    "seen": 1795810372.793333,
+    "ast_hash": "ff16264eec37e032282903ad690478e3",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/BBY.md": {
+    "mtime": 1795747516.448572,
+    "seen": 1795810372.7933338,
+    "ast_hash": "39d8db27f195c43537ea544068939a5f",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/BBY_brief.md": {
+    "mtime": 1795747527.2805724,
+    "seen": 1795810372.7933345,
+    "ast_hash": "f96ef06b3e7bc7400d85d814b47f8a76",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/JBL.md": {
+    "mtime": 1795747522.6845722,
+    "seen": 1795810372.7933352,
+    "ast_hash": "dcfc4e51997e8a274a82fb6574ea98c8",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/JBL_brief.md": {
+    "mtime": 1795747532.8565726,
+    "seen": 1795810372.793336,
+    "ast_hash": "66cfa87d72b8a00a99fd40476163e0d2",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/LEA.md": {
+    "mtime": 1795747522.6845722,
+    "seen": 1795810372.7933366,
+    "ast_hash": "e1b1705171668e1d2bd7434ef2244163",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/LEA_brief.md": {
+    "mtime": 1795747533.9765725,
+    "seen": 1795810372.793337,
+    "ast_hash": "f1678654e1ee39a449704960021bc4e3",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/LRCX.md": {
+    "mtime": 1795747534.5466173,
+    "seen": 1795810372.7933378,
+    "ast_hash": "da01aa42e1004214faea49571643e720",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/LRCX_brief.md": {
+    "mtime": 1795747534.5565727,
+    "seen": 1795810372.7933385,
+    "ast_hash": "cbef128f1f83367c0ea1ec1f819ac21a",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/MAR.md": {
+    "mtime": 1795747517.916572,
+    "seen": 1795810372.7933397,
+    "ast_hash": "638f3fb575a514603aad3adfc70faba1",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/MAR_brief.md": {
+    "mtime": 1795747526.9365723,
+    "seen": 1795810372.7933402,
+    "ast_hash": "4f56b4d84514980fed6c2e0f94e485dc",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/MPC.md": {
+    "mtime": 1795747527.0285723,
+    "seen": 1795810372.793341,
+    "ast_hash": "4c951e0c6b87d079507c3ecf3824a681",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/MPC_brief.md": {
+    "mtime": 1795747538.7005727,
+    "seen": 1795810372.7933416,
+    "ast_hash": "f856ef25cf83bc7a3650039b6e56a8ea",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/MU.md": {
+    "mtime": 1795747519.508572,
+    "seen": 1795810372.7933424,
+    "ast_hash": "361e66061d9275d355ba5443e6759736",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/MU_brief.md": {
+    "mtime": 1795747527.9405725,
+    "seen": 1795810372.793343,
+    "ast_hash": "4fa1321a30d3d1d20c67a7a9746e90e3",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/NVDA.md": {
+    "mtime": 1795747527.1085722,
+    "seen": 1795810372.7933438,
+    "ast_hash": "e3fe05feee44c3668faf996d649af4d2",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/NVDA_brief.md": {
+    "mtime": 1795747536.5725727,
+    "seen": 1795810372.7933445,
+    "ast_hash": "ecc6e36f3f30017c57438ece1016cb1f",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/PAA.md": {
+    "mtime": 1795747525.1045723,
+    "seen": 1795810372.7933452,
+    "ast_hash": "6dba329fcfe35987bf7ca47438a070bc",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/PAA_brief.md": {
+    "mtime": 1795747535.5725727,
+    "seen": 1795810372.7933457,
+    "ast_hash": "394d9a43a04b37d2bf483bd982e4df74",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/PSX.md": {
+    "mtime": 1795747517.800572,
+    "seen": 1795810372.7933466,
+    "ast_hash": "9867fa2e4ccbb92644809f639fdbdc24",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/PSX_brief.md": {
+    "mtime": 1795747527.1445723,
+    "seen": 1795810372.7933474,
+    "ast_hash": "83ac23b58ceb48ccfd7b2981e1d2d571",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/README.md": {
+    "mtime": 1795747664.4110255,
+    "seen": 1795810372.7933478,
+    "ast_hash": "2fd0d4307e57dc42fc3c3e57a0fabae5",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/ROST.md": {
+    "mtime": 1795747524.1405723,
+    "seen": 1795810372.7933486,
+    "ast_hash": "a2090d40517830de7f07aa3507cc80f5",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/archive_v1/ROST_brief.md": {
+    "mtime": 1795747534.4845726,
+    "seen": 1795810372.793349,
+    "ast_hash": "210f33f6a0652ea79efa7a3f49eee2a2",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/AAPL.md": {
+    "mtime": 1795747737.4285798,
+    "seen": 1795810372.7933502,
+    "ast_hash": "5a1e24403b6e79ec8add1c82a7391691",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/ADBE.md": {
+    "mtime": 1795747748.1525803,
+    "seen": 1795810372.793351,
+    "ast_hash": "80dc9c5ac465d57a9a1e41078554d6ad",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/BBY.md": {
+    "mtime": 1795747732.4725797,
+    "seen": 1795810372.793352,
+    "ast_hash": "03a9d8a56f6312a04455cea386ebf695",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/FLEX.md": {
+    "mtime": 1795747782.4445815,
+    "seen": 1795810372.7933524,
+    "ast_hash": "e6b7b21dd5cc7c38f2cefd9d28662cff",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/JBL.md": {
+    "mtime": 1795747788.6485817,
+    "seen": 1795810372.7933533,
+    "ast_hash": "4766d2d166bb996d3feb6249d740ea46",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/LMT.md": {
+    "mtime": 1795747741.72858,
+    "seen": 1795810372.7933538,
+    "ast_hash": "e22bf6405d219afedf66bfdc842328c7",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/LRCX.md": {
+    "mtime": 1795747784.2965815,
+    "seen": 1795810372.7933545,
+    "ast_hash": "f56727582a93b9dc0ed4606b83779b77",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/MA.md": {
+    "mtime": 1795747749.0645802,
+    "seen": 1795810372.7933552,
+    "ast_hash": "313cb2a672051c82be0f87b583efbd9a",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/MCK.md": {
+    "mtime": 1795747756.1445806,
+    "seen": 1795810372.793356,
+    "ast_hash": "73a57aaf7802ba8140d0a4bd62bb19d8",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/MU.md": {
+    "mtime": 1795747784.3325815,
+    "seen": 1795810372.7933567,
+    "ast_hash": "cc5009c243ec3a4a33880ab8f9441747",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/NVDA.md": {
+    "mtime": 1795747781.4325814,
+    "seen": 1795810372.7933574,
+    "ast_hash": "600420bea6c38f20eb40a07b0e2cfcde",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/brief/ROST.md": {
+    "mtime": 1795747741.23258,
+    "seen": 1795810372.793358,
+    "ast_hash": "5632b19ba67ed55e0048043f51ed2b37",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/AAPL.md": {
+    "mtime": 1795747648.2627285,
+    "seen": 1795810372.7933586,
+    "ast_hash": "9774b0daadeebe01c11e4e8daa2995df",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/ADBE.md": {
+    "mtime": 1795747647.1324816,
+    "seen": 1795810372.7933593,
+    "ast_hash": "f3f1a6807e8a338b605546050ac909d5",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/BBY.md": {
+    "mtime": 1795747649.2142735,
+    "seen": 1795810372.7933602,
+    "ast_hash": "f529cb2b08f2ce0354b25871a6907a83",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/FLEX.md": {
+    "mtime": 1795747654.6384838,
+    "seen": 1795810372.793361,
+    "ast_hash": "539a3e09508b076121f71fc3bf9db286",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/JBL.md": {
+    "mtime": 1795747643.5265832,
+    "seen": 1795810372.793362,
+    "ast_hash": "f507814d9d7849d234b5a172b4b182d4",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/LEA.md": {
+    "mtime": 1795747438.9519298,
+    "seen": 1795810372.7933629,
+    "ast_hash": "848eebd80a0e276b77835c636981172c",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/LMT.md": {
+    "mtime": 1795747651.7685769,
+    "seen": 1795810372.7933638,
+    "ast_hash": "d4eccbadf543e3ad82850186ef8b8503",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/LRCX.md": {
+    "mtime": 1795747644.933042,
+    "seen": 1795810372.7933645,
+    "ast_hash": "24d229cb1b60158c7367943076598c93",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/MA.md": {
+    "mtime": 1795747650.4672089,
+    "seen": 1795810372.7933652,
+    "ast_hash": "f3cb03eed97510f9a0a856b8923afa47",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/MAR.md": {
+    "mtime": 1795747424.8649075,
+    "seen": 1795810372.793366,
+    "ast_hash": "cbed72bf6835a55fe4bd364cbe0278cd",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/MCK.md": {
+    "mtime": 1795747653.1758215,
+    "seen": 1795810372.7933667,
+    "ast_hash": "161e1b007cd60b48056e4f5f7bcdc84a",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/MPC.md": {
+    "mtime": 1795747422.3719127,
+    "seen": 1795810372.7933674,
+    "ast_hash": "d3a75fc9f4d356ca2a5b1b653622e653",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/MU.md": {
+    "mtime": 1795747644.0405886,
+    "seen": 1795810372.793368,
+    "ast_hash": "0759d38c6e7bba497dc10ea0e226822b",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/NVDA.md": {
+    "mtime": 1795747645.8360877,
+    "seen": 1795810372.7933688,
+    "ast_hash": "4e3f606cf6a364474d5c390be89e5622",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/PAA.md": {
+    "mtime": 1795747416.8921812,
+    "seen": 1795810372.7933693,
+    "ast_hash": "6f66379882e866317e3b44efbc83d5ec",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/PSX.md": {
+    "mtime": 1795747419.5808918,
+    "seen": 1795810372.79337,
+    "ast_hash": "5f7efae0f7b65910c1e37acc2bde6fd5",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/inputs/ROST.md": {
+    "mtime": 1795747646.6633153,
+    "seen": 1795810372.793371,
+    "ast_hash": "6a4cf047e9bbad27575085ed63c16099",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/pm_brief.md": {
+    "mtime": 1795747796.6952088,
+    "seen": 1795810372.7933717,
+    "ast_hash": "8880a11adffc40b65b4675045221ae54",
+    "semantic_hash": ""
+  },
+  "trading/fund/research/token_log.md": {
+    "mtime": 1795747839.0042005,
+    "seen": 1795810372.7933722,
+    "ast_hash": "be844811dea93fdd0bc3736d74cf8eab",
+    "semantic_hash": ""
+  },
+  "trading/fund/shadow_status.txt": {
+    "mtime": 1795788242.7702007,
+    "seen": 1795810372.7933729,
+    "ast_hash": "e308d508d6675d40a3a8be2982e21c54",
+    "semantic_hash": ""
+  },
+  "trading/fund/status.txt": {
+    "mtime": 1795753731.1643398,
+    "seen": 1795810372.7933736,
+    "ast_hash": "dea2efd9741ee2720b2e846ea8f55627",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/cand15_overnight.md": {
+    "mtime": 1795759733.290514,
+    "seen": 1795810372.7934124,
+    "ast_hash": "0f7401aa76421f14dc746162be76ddb2",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/cand15_overnight_verdict.txt": {
+    "mtime": 1795759989.2742546,
+    "seen": 1795810372.7934132,
+    "ast_hash": "949db6d7b28372b0038e400045e78b54",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/cand15_regime.md": {
+    "mtime": 1795759977.037006,
+    "seen": 1795810372.7934139,
+    "ast_hash": "5e1ed961c8f05f30c778d7342720fada",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/confidence_tests.md": {
+    "mtime": 1795759736.203625,
+    "seen": 1795810372.7934146,
+    "ast_hash": "8cd8e25867985c893fa4d2d48c615679",
+    "semantic_hash": ""
+  },
+  "trading/intraday/reports/confidence_verdict.txt": {
+    "mtime": 1795759989.2740755,
+    "seen": 1795810372.7934153,
+    "ast_hash": "f23f97b3441df7af88489b226201e39f",
+    "semantic_hash": ""
+  },
+  "trading/swing/learn/indicator_scorecard.md": {
+    "mtime": 1795810368.514314,
+    "seen": 1795810372.7934344,
+    "ast_hash": "201ec2c7d3c44bbfd768b3657fa137f8",
+    "semantic_hash": ""
+  },
+  "trading/swing/learn/indicator_summary.txt": {
+    "mtime": 1795810368.5115564,
+    "seen": 1795810372.7934353,
+    "ast_hash": "f41230a0fc3d7167521f954d8cd9771a",
+    "semantic_hash": ""
+  },
+  "trading/swing/reports/2026-11-26.md": {
+    "mtime": 1795701825.9904175,
+    "seen": 1795810372.7934396,
+    "ast_hash": "056c392f217d8ca7fa69d971a726459c",
+    "semantic_hash": ""
+  },
+  "trading/swing/reports/2026-11-27.md": {
+    "mtime": 1795788249.732294,
+    "seen": 1795810372.7934408,
+    "ast_hash": "f3c4bc2d58006577814d65bb32055653",
+    "semantic_hash": ""
+  },
+  "trading/us/README.md": {
+    "mtime": 1795677248.1892765,
+    "seen": 1795810372.7934422,
+    "ast_hash": "1280c18aeb1a99cf88841371df9b2b42",
+    "semantic_hash": ""
+  },
+  "trading/us/REPORT.md": {
+    "mtime": 1795745610.9503863,
+    "seen": 1795810372.7934434,
+    "ast_hash": "70507d1c106a8258d957fd1cadcdbe98",
+    "semantic_hash": ""
+  },
+  "trading/us/events.md": {
+    "mtime": 1795745610.949828,
+    "seen": 1795810372.7934442,
+    "ast_hash": "842afe60453ca4a2268c18605771788b",
+    "semantic_hash": ""
+  },
+  "trading/us/summary.txt": {
+    "mtime": 1795745610.9505515,
+    "seen": 1795810372.7934449,
+    "ast_hash": "b57534e2e6ea3141e31983e0b3ef8a9f",
     "semantic_hash": ""
   }
 }

@@ -1,0 +1,1 @@
+Indicator scorecard (PAXG 1m 2026-02-25..2026-11-27, 306 tests, BH-corrected): nothing passes TRUST. 42 of 288 WEAK (positive both halves, not significant; random entry alone gets 1 of 18). No 15m signal is positive in both halves after the 0.70 round-trip cost. Treat RSI/VWAP/ADX/EMA/MACD readings as context, not as edges.

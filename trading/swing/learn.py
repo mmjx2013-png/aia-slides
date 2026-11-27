@@ -23,6 +23,7 @@ HERE = env.HERE
 LEARN = HERE / "learn"
 IDEAS = LEARN / "ideas.csv"
 LESSONS = LEARN / "lessons.json"
+INDICATORS = LEARN / "indicator_summary.txt"   # written by trading/intraday/research/indicator_scorecard.py
 JOURNAL = HERE / "data" / "books" / "ai" / "journal.jsonl"
 BRIEFS = HERE / "data" / "books" / "ai" / "briefs"
 COST = 0.35
@@ -168,8 +169,9 @@ def lessons(df=None):
 def block(df=None):
     """Track-record block for the Opus brief (<= 350 tokens)."""
     df = pd.read_csv(IDEAS) if df is None and IDEAS.exists() else df
+    ind = INDICATORS.read_text().strip() if INDICATORS.exists() else ""
     if df is None or not len(df):
-        return "## Your track record\n- No resolved ideas yet."
+        return "## Your track record\n- No resolved ideas yet." + (f"\n- {ind}" if ind else "")
     r = _resolved(df)
     hit = (r["outcome"] == "target")
     L = [f"## Your track record (best_idea of every answer, resolved on 1m bars; {len(r)} resolved, {int((df['outcome'] == 'open').sum())} open)",
@@ -186,6 +188,8 @@ def block(df=None):
     les = lessons(df)
     if les:
         L += ["Lessons (each checked on >= 5 cases):", *[f"- {s}" for s in les]]
+    if ind:
+        L.append(f"- {ind}")
     return "\n".join(L)
 
 
@@ -197,7 +201,8 @@ def status_lines(df=None):
     hit = (r["outcome"] == "target").mean()
     return (f"Learning: {len(r)} Opus best ideas resolved: stated p {r['p'].mean():.2f}, realised target-first {hit:.2f}, avg R {r['r'].mean():+.2f}; "
             f"calibration rule now: {p_cal(0.6, df)[1]} -> p 0.60 counts as {p_cal(0.6, df)[0]:.2f}.\n"
-            f"Gate and sizing use p_cal; at today's numbers an entry needs p_cal >= 0.55, so the desk stays flat until Opus's ideas start hitting.")
+            f"Gate and sizing use p_cal; at today's numbers an entry needs p_cal >= 0.55, so the desk stays flat until Opus's ideas start hitting."
+            + (f"\n{INDICATORS.read_text().strip()} (table: learn/indicator_scorecard.md)" if INDICATORS.exists() else ""))
 
 
 if __name__ == "__main__":
