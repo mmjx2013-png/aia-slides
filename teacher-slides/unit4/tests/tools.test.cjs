@@ -50,13 +50,12 @@ async function run(cfg) {
   const sleep = ms => page.waitForTimeout(ms);
 
   /* ---- input helpers: mouse or real touch points ---- */
-  async function tap(x, y) { if (cfg.touch) await page.touchscreen.tap(x, y); else await page.mouse.click(x, y); }
+  async function tap(x, y) { if (cfg.touch) { await page.touchscreen.tap(x, y); await sleep(130); } else await page.mouse.click(x, y); }   // 130 ms: lets the tap guard act when Chrome swallows the click of a tap right after a flick
   async function drag(pts) {
     if (cfg.touch) {
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: pts[0][0], y: pts[0][1] }] });
       for (let i = 1; i < pts.length; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: pts[i][0], y: pts[i][1] }] });
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-      await sleep(400);   // a real finger cannot tap 0 ms after a drag; Chrome drops such a tap
     } else {
       await page.mouse.move(pts[0][0], pts[0][1]); await page.mouse.down();
       for (let i = 1; i < pts.length; i++) await page.mouse.move(pts[i][0], pts[i][1]);
