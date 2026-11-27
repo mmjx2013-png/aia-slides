@@ -16,3 +16,6 @@ Caveat: the large-cap list is today's winners, so a stock-picking backtest on it
 ## Fund price pack (fetched 2026-11-27)
 `fund-prices-2026-11-27.tgz` -> yahoo-fund/: 5y daily chart JSON (dividends and splits) for the 200 tickers in trading/fund/screen.csv (claude/paper-trading @4de9c05), plus XOM, VOO, IVV, SPYM, SPY and THB=X. SPLG was renamed SPYM (SPDR Portfolio S&P 500 ETF); the SPLG symbol on Yahoo is now empty.
 File names: dots and "=" become "_" (BRK.B -> BRK_B.json, THB=X -> THB_X.json); Yahoo was queried with "-" for dots.
+
+## Weekly fund prices
+`fund-latest.tgz` -> fund-latest/: 1y daily for the fund's holdings, watch list, SPYM VOO IVV SPY and THB=X. Rebuilt by `tools/fetch_fund_prices.sh` (boss session) every Friday; the newest commit wins.
