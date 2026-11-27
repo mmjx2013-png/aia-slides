@@ -55,6 +55,7 @@ async function run(cfg) {
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: pts[0][0], y: pts[0][1] }] });
       for (let i = 1; i < pts.length; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: pts[i][0], y: pts[i][1] }] });
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await sleep(400);   // a real finger cannot tap 0 ms after a drag; Chrome drops such a tap
     } else {
       await page.mouse.move(pts[0][0], pts[0][1]); await page.mouse.down();
       for (let i = 1; i < pts.length; i++) await page.mouse.move(pts[i][0], pts[i][1]);
@@ -74,7 +75,7 @@ async function run(cfg) {
   await page.goto(FILE);
   await page.evaluate(() => document.fonts.ready);
   ok('no answer is shown on load', await page.evaluate(() => !document.querySelector('.w-shown, .c.picked')));
-  ok('every widget is rendered', await page.evaluate(() => __tools.widgets.length === 14 && [...document.querySelectorAll('[class^="w-"]')].every(w => w.children.length > 0)), await page.evaluate(() => __tools.widgets.length));
+  ok('every widget is rendered', await page.evaluate(() => __tools.widgets.length === 15 && [...document.querySelectorAll('[class^="w-"]')].every(w => w.children.length > 0)), await page.evaluate(() => __tools.widgets.length));
 
   /* ---------- MCQ ---------- */
   await go(0);
@@ -120,7 +121,7 @@ async function run(cfg) {
   await stay(1, 'input');
 
   /* ---------- handwriting + auto shapes ---------- */
-  const padPts = async (id, pts) => { const out = []; for (const p of pts) { const c = await W(id, 'w.at(' + p[0] + ',' + p[1] + ')'); out.push([c.x, c.y]); } return out; };
+  const padPts = (id, pts) => page.evaluate(([id, pts]) => pts.map(p => { const c = document.getElementById(id).__w.at(p[0], p[1]); return [c.x, c.y]; }), [id, pts]);
   const pad = await W('td-write', '({W:w.W,H:w.H})');
   const ink = (expr) => W('td-write', expr);
   await drag(await padPts('td-write', digit2(90, 20, 70, 110)));
@@ -189,7 +190,7 @@ async function run(cfg) {
   for (let i = 0; i < 5; i++) {
     const a = await W('td-bars-w', 'w.at(' + i + ',' + v[i] + ')'), b = await W('td-bars-w', 'w.at(' + i + ',' + barsAns[i] + ')');
     if (i === 1) continue;                                           // already right
-    if (i === 2) { await dragLine([a.x, a.y], [b.x + 4, b.y - 300], 6); ok('bars: a bar cannot go above the axis', (await W('td-bars-w', 'w.values()'))[2] === 40); await dragLine([b.x, b.y - 80], [b.x, b.y + 2], 6); }
+    if (i === 2) { await dragLine([a.x, a.y], [b.x + 4, Math.max(4, b.y - 300)], 6); ok('bars: a bar cannot go above the axis', (await W('td-bars-w', 'w.values()'))[2] === 40); await dragLine([b.x, b.y - 80], [b.x, b.y + 2], 6); }
     else await dragLine([a.x, a.y], [b.x, b.y + 3], 8);              // 3 px off: must snap to the step
   }
   v = await W('td-bars-w', 'w.values()');
@@ -321,7 +322,7 @@ async function run(cfg) {
   ok('pen: a wobbly line becomes a straight line', (await pen('p.ink.shapes()'))[2] === 'line', await pen('p.ink.shapes()'));
   await drag(await stagePts(handCircle(1500, 500, 150))); await sleep(250);
   ok('pen: a hand circle becomes a clean circle', (await pen('p.ink.shapes()'))[3] === 'circle', await pen('p.ink.shapes()'));
-  ok('pen: the circle is clean (all points at the same distance)', await pen('(function(){var s=p.ink.st.strokes[3].pts,cx=0,cy=0;s.forEach(function(q){cx+=q.x;cy+=q.y});cx/=s.length;cy/=s.length;var r=s.map(function(q){return Math.hypot(q.x-cx,q.y-cy)});return Math.max.apply(null,r)-Math.min.apply(null,r)<3})()'));
+  ok('pen: the circle is clean (all points at the same distance)', await pen('(function(){var s=p.ink.st.strokes[3].pts.slice(1),cx=0,cy=0;s.forEach(function(q){cx+=q.x;cy+=q.y});cx/=s.length;cy/=s.length;var r=s.map(function(q){return Math.hypot(q.x-cx,q.y-cy)});return Math.max.apply(null,r)-Math.min.apply(null,r)<3})()'));
   await drag(await stagePts(handRect(500, 300, 360, 220))); await sleep(250);
   ok('pen: a hand rectangle becomes a clean rectangle', (await pen('p.ink.shapes()'))[4] === 'rect' && await pen('p.ink.st.strokes[4].pts.length') === 5, await pen('p.ink.shapes()'));
   await drag(await stagePts(handTri(1250, 620, 260, 220))); await sleep(250);

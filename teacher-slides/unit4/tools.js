@@ -313,7 +313,8 @@
       }
     }
     host.addEventListener('pointerdown', function (e) {
-      if (!self.enabled || pid !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      if (!self.enabled || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      if (pid !== null) finish();
       endMorph();
       pid = e.pointerId; try { host.setPointerCapture(pid); } catch (er) {}
       e.preventDefault();
@@ -504,7 +505,8 @@
       pool.appendChild(it);
       var st = null, dragged = false;
       it.addEventListener('pointerdown', function (e) {
-        if (st || (e.pointerType === 'mouse' && e.button !== 0)) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        if (st) { it.style.transform = ''; it.classList.remove('drag'); }
         st = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
         try { it.setPointerCapture(e.pointerId); } catch (er) {}
       });
@@ -650,7 +652,7 @@
     g.drag = function (set, cols) {
       var act = null;
       g.svg.addEventListener('pointerdown', function (e) {
-        if (act || (e.pointerType === 'mouse' && e.button !== 0)) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
         var p = g.pt(e), i = g.ax.col(p.x); if (i < 0) return;
         act = { id: e.pointerId, i: i }; try { g.svg.setPointerCapture(e.pointerId); } catch (er) {}
         e.preventDefault(); cols[i].focus({ preventScroll: true }); w.classList.add('dragging');
