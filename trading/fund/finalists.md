@@ -1,29 +1,26 @@
-# Finalists (first screen, 2026-11-27; code only, before any research)
+# Finalists v2 (2026-11-27, after the debt and risk-factor fixes; code only, before research)
 
-Selection: the top composite among scored names with a valuation score; at most 3 per industry group (energy = oil & gas,
-refining, pipelines and oilfield equipment together; semis/memory together), at least 5 groups.
-Composite: 80% fundamentals (quality, growth, balance, dilution, valuation, equal weights) + 20% 12-1 month momentum.
-Cyclicals (semis/memory, energy, auto parts, or a >2x FCF-margin swing) are scored on normalized margins (multi-year average x current revenue).
+Selection as before: top composite among scored names with a valuation; at most 3 per industry group (energy and
+semis/memory each one group); at least 5 groups. Composite = 80% fundamentals + 20% 12-1 momentum; cyclicals normalized.
 
-| # | Ticker | Name | Group | Composite | Quality | Valuation | Momentum (12-1) | FCF yield used | Cyclical |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | PAA | PLAINS ALL AMERICAN PIPELINE LP | energy (Pipe Lines (No Natural Gas)) | 0.689 | 0.66 | 0.91 | +63% | 13.8% | no |
-| 2 | MU | Micron Technology, Inc. | semis/memory (Semiconductors & Related Devices) | 0.679 | 0.54 | 0.47 | +315% | 0.5% | yes |
-| 3 | LRCX | LAM RESEARCH CORPORATION | semis/memory (Special Industry Machinery, NEC) | 0.676 | 0.76 | 0.22 | +61% | 2.7% | yes |
-| 4 | PSX | Phillips 66 | energy (Petroleum Refining) | 0.672 | 0.52 | 0.65 | +106% | 6.4% | yes |
-| 5 | JBL | JABIL INC | SIC 36 (Printed Circuit Boards) | 0.672 | 0.74 | 0.42 | +44% | 5.0% | yes |
-| 6 | NVDA | NVIDIA CORP | semis/memory (Semiconductors & Related Devices) | 0.671 | 0.72 | 0.51 | +20% | 2.2% | yes |
-| 7 | MPC | Marathon Petroleum Corporation | energy (Petroleum Refining) | 0.671 | 0.63 | 0.45 | +132% | 8.5% | yes |
-| 8 | LEA | LEAR CORP | SIC 37 (Motor Vehicle Parts & Accessories) | 0.669 | 0.48 | 0.91 | +14% | 10.6% | yes |
-| 9 | ROST | Ross Stores, Inc. | SIC 56 (Retail-Family Clothing Stores) | 0.661 | 0.73 | 0.32 | +33% | 3.1% | no |
-| 10 | MAR | MARRIOTT INTERNATIONAL INC /MD/ | SIC 70 (Hotels & Motels) | 0.654 | 0.66 | 0.21 | +33% | 2.4% | no |
-| 11 | BBY | BEST BUY CO., INC. | SIC 57 (Retail-Radio, Tv & Consumer Electronics Stores) | 0.638 | 0.74 | 0.43 | +37% | 5.8% | no |
-| 12 | ADBE | ADOBE INC. | SIC 73 (Services-Prepackaged Software) | 0.637 | 0.79 | 0.92 | -22% | 10.9% | no |
+| # | Ticker | Name | Group | Composite | Quality | Balance | Valuation | Momentum (12-1) |
+|---|---|---|---|---|---|---|---|---|
+| 1 | JBL | JABIL INC | SIC 36 | 0.696 | 0.75 | 0.65 | 0.44 | +44% |
+| 2 | MU | Micron Technology, Inc. | semis/memory | 0.692 | 0.54 | 0.93 | 0.48 | +315% |
+| 3 | LRCX | LAM RESEARCH CORPORATION | semis/memory | 0.686 | 0.77 | 0.93 | 0.21 | +61% |
+| 4 | NVDA | NVIDIA CORP | semis/memory | 0.685 | 0.73 | 0.93 | 0.53 | +20% |
+| 5 | ROST | Ross Stores, Inc. | SIC 56 | 0.673 | 0.74 | 0.93 | 0.32 | +33% |
+| 6 | ADBE | ADOBE INC. | SIC 73 | 0.661 | 0.80 | 0.85 | 0.92 | -22% |
+| 7 | AAPL | Apple Inc. | SIC 35 | 0.649 | 0.86 | 0.78 | 0.36 | +26% |
+| 8 | BBY | BEST BUY CO., INC. | SIC 57 | 0.644 | 0.73 | 0.93 | 0.42 | +37% |
+| 9 | MA | Mastercard Incorporated | SIC 73 | 0.641 | 0.81 | 0.72 | 0.40 | +14% |
+| 10 | LMT | LOCKHEED MARTIN CORPORATION | SIC 37 | 0.639 | 0.79 | 0.41 | 0.49 | +42% |
+| 11 | MCK | McKESSON CORPORATION | SIC 51 | 0.636 | 0.71 | 0.70 | 0.51 | +12% |
+| 12 | FLEX | FLEX LTD. | SIC 36 | 0.636 | 0.57 | 0.60 | 0.25 | +46% |
 
-## Notes for the PM before the memos
-- 8 industry groups; energy and semis/memory are at the cap of 3 each, so the portfolio caps (20% each) will bind.
-- Momentum weighs on fallen names: V +23%, BKR +21%, COP +73%, CMCSA -7%, MA +14%, PYPL -7%, BKNG -22% (12-1) are out; ADBE (12-1 -22%) is still in and must explain itself in its memo.
-- PAGP is excluded as a duplicate of PAA (a holding company that consolidates PAA's cash flows). V has no usable share count, so no valuation.
-- MU is up about 315% (12-1) and is flagged for a >2x FCF-margin swing: its memo has to show the normalized case.
-
-Next: one Opus memo per finalist in research/<TICKER>.md (10-K MD&A and risk factors, 30 days of headlines, 'why is it cheap?').
+## What changed from v1
+- Total debt was understated: some filers report it only under tags the screen did not read (MAR $16.2bn, PAA $11.3bn,
+  MPC $33.3bn, PSX $19.7bn under DebtAndCapitalLeaseObligations). Debt is now the largest of the reported total and
+  (long-term + current) measures. With real leverage, PAA, PSX, MPC, LEA and MAR fall out; AAPL, MA, LMT, MCK and FLEX come in.
+- The risk-factor parser sometimes took the table of contents or a cross-reference; it now takes the real Item 1A / Item 7.
+- v1 memos (all 12 WATCH) are kept in research/archive_v1/ and not used.

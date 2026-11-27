@@ -48,13 +48,22 @@ def doc_text(cik, accn, primary):
 
 
 def section(t, start_pats, end_pats, n):
-    """The longest match of a 10-K item (the table of contents gives short false hits), cut to n characters."""
+    """The longest real 10-K item: a start heading that is followed by its own end heading (the table of contents gives
+    short hits, cross-references like 'see Item 1A, Risk Factors' never reach an end heading). Cut to n characters."""
     best = ""
     for sp in start_pats:
         for m in re.finditer(sp, t, re.I):
             rest = t[m.start():]
-            e = min((x.start() for ep in end_pats for x in [re.search(ep, rest[60:], re.I)] if x), default=len(rest) - 60) + 60
-            chunk = rest[:e]
+            ends = [x.start() + 60 for ep in end_pats for x in [re.search(ep, rest[60:], re.I)] if x]
+            if not ends:
+                continue                                   # no closing heading: a cross-reference, not the section
+            chunk = rest[:min(ends)]
+            if re.match(r"Item\s*\d{1,2}[A-C]?\s*,", chunk, re.I):
+                continue                                   # "Item 1A, 'Risk Factors'": a citation, not the heading
+            if re.search(r"\b\d{1,3}\s+(Table of Contents\s+)?(Item|PART)\b", chunk[:250], re.I):
+                continue                                   # table of contents: heading, page number, next heading
+            if re.search(r"(see|in|under|and|our|of|“|\")\W{0,3}$", t[max(0, m.start() - 14):m.start()], re.I):
+                continue                                   # a cross-reference in running text, not the heading
             if len(chunk) > len(best):
                 best = chunk
     return best[:n]

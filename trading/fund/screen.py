@@ -104,6 +104,27 @@ def cagr(a, b, yrs):
     return (b / a) ** (1 / yrs) - 1
 
 
+DEBT_TOTAL = ["DebtAndCapitalLeaseObligations", "DebtLongtermAndShorttermCombinedAmount"]
+DEBT_LT = ["LongTermDebtAndCapitalLeaseObligations", "LongTermDebt", "LongTermDebtNoncurrent", "SeniorLongTermNotes",
+           "DebtInstrumentCarryingAmount"]
+DEBT_CUR = ["LongTermDebtAndCapitalLeaseObligationsCurrent", "LongTermDebtCurrent", "DebtCurrent", "ShortTermBorrowings", "CommercialPaper"]
+
+
+def total_debt(f, asof, end):
+    """Total debt at a fiscal year end = the LARGEST of the reported totals and (largest long-term + largest current)
+    measures, each tag read separately (companies use different tags; one tag can be stale or zero, e.g. MAR's LongTermDebt)."""
+    def one(tag):
+        d = annual(f, [tag], asof, False)
+        near = [k for k in d if abs((pd.Timestamp(k) - pd.Timestamp(end)).days) <= 15]
+        return d[near[-1]] if near else np.nan
+    tot = np.nanmax([one(t) for t in DEBT_TOTAL] + [np.nan])
+    lt = np.nanmax([one(t) for t in DEBT_LT] + [np.nan])
+    cur = np.nanmax([one(t) for t in DEBT_CUR] + [np.nan])
+    parts = np.nansum([lt, cur]) if lt == lt or cur == cur else np.nan
+    best = np.nanmax([tot, parts])
+    return 0.0 if best != best else float(best)
+
+
 def _merge(a, b):
     """Splice companyfacts b (old CIK) under a (new CIK)."""
     for tax, tags in b.get("facts", {}).items():
@@ -147,7 +168,7 @@ def metrics(cik, asof, ticker=None):
         return d[near[0]] if near else np.nan
     fcf = {e: at("ocf", e) - (at("capex", e) if at("capex", e) == at("capex", e) else 0) for e in ends}
     margin = [fcf[e] / at("rev", e) for e in ends if at("rev", e) and fcf[e] == fcf[e]]
-    debt = np.nansum([at("debt"), at("debt_cur")])
+    debt = total_debt(f, asof, last)
     eq, cash, opinc = at("equity"), at("cash"), at("opinc")
     cash = 0 if cash != cash else cash
     ic = eq + debt - cash if eq == eq else np.nan
@@ -183,7 +204,7 @@ def metrics(cik, asof, ticker=None):
     hist = []
     for e in ends[:-1]:
         pe, se, oe = (P.price_at(ticker, e) if ticker else None), at("shares", e), at("opinc", e)
-        nd = np.nansum([at("debt", e), at("debt_cur", e)]) - (at("cash", e) if at("cash", e) == at("cash", e) else 0)
+        nd = total_debt(f, asof, e) - (at("cash", e) if at("cash", e) == at("cash", e) else 0)
         if pe and se == se and oe == oe and oe > 0:
             hist.append(min((pe * se + nd) / oe, 60.0))       # cap: a near-zero-EBIT year would dominate
     return dict(

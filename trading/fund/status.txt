@@ -1,2 +1,2 @@
-Fund: 12 finalists (finalists.md): PAA MU LRCX PSX JBL NVDA MPC LEA ROST MAR BBY ADBE; energy and semis each capped at 3 names.
-No orders yet; memos and the first orders.md by Fri 4 Dec (core SPYM/VOO/IVV in 3 weekly tranches).
+Fund: finalists v2 after a debt-data fix (finalists.md): JBL MU LRCX NVDA ROST ADBE AAPL BBY MA LMT MCK FLEX; memos being redrafted.
+No orders yet; portfolio.md and the first orders.md by Fri 4 Dec (core SPYM in 3 weekly tranches).

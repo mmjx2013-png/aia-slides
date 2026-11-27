@@ -6,12 +6,12 @@ Prepared by code on 2026-11-27. Sources: SEC EDGAR (XBRL companyfacts, the filin
 - Latest 10-Q: accession 0001628280-26-046138, filed 2026-06-30, period 2026-05-31
 
 ## Screen numbers (XBRL, fiscal year ending 2026-08-31; ratios as fractions)
-- composite: 0.6716
-- s_quality: 0.7436
+- composite: 0.6957
+- s_quality: 0.753
 - s_growth: 0.5301
-- s_balance: 0.515
+- s_balance: 0.645
 - s_dilution: 0.9729
-- s_valuation: 0.4245
+- s_valuation: 0.4358
 - s_momentum: 0.809
 - mom_12_1: 0.438
 - roic: 0.3588
@@ -52,11 +52,11 @@ Item 1A. Risk Factors Business and Operational Risks Our ability to schedule pro
 - 2026-11-25: Wall Street Analysts Are in Rare Agreement: These 4 Stocks Are Unanimous Buys - MarketBeat [analyst, positive 0.5]
 - 2026-11-24: Here's Why Jabil (JBL) Fell More Than Broader Market - Yahoo Finance [other, negative 0.5]
 - 2026-11-24: Jabil stock: Baird cuts price target to USD 270 from USD 440 - ad-hoc-news.de [analyst, negative 0.8]
-- 2026-11-24: Jabil Inc. stock outperforms competitors despite losses on the day - MarketWatch [other, neutral 0.4]
-- 2026-11-24: JBL 261127 250.00P (JBL261127P250000) Stock Options Chain | Quotes & News - Moomoo [other, neutral 0.5]
+- 2026-11-24: Jabil Inc. stock outperforms competitors despite losses on the day - MarketWatch [other, neutral 0.5]
+- 2026-11-24: JBL 261127 250.00P (JBL261127P250000) Stock Options Chain | Quotes & News - Moomoo [other, neutral 0.6]
 - 2026-11-24: Jabil, Inc. (NYSE:JBL) Stock Has Average Target Price of $418.33 - MarketBeat [analyst, positive 0.6]
 - 2026-11-24: Is It Too Late to Buy Jabil Inc (JBL) After 7.3% Rally? GF Value Says Undervalued - GuruFocus [analyst, positive 0.5]
-- 2026-11-23: Jabil Inc. stock underperforms Monday when compared to competitors despite daily gains - MarketWatch [other, neutral 0.4]
+- 2026-11-23: Jabil Inc. stock underperforms Monday when compared to competitors despite daily gains - MarketWatch [other, neutral 0.5]
 - 2026-11-23: Jabil (NYSE:JBL) Stock Gets Price Target Trim from Robert W. Baird - MarketBeat [analyst, negative 0.8]
 - 2026-11-23: JBL Maintained by Baird -- Price Target Lowered to $270 - GuruFocus [analyst, negative 0.8]
 - 2026-11-23: What Are Wall Street Analysts' Target Price for Jabil Stock? - Yahoo Finance [analyst, neutral 0.5]

@@ -6,10 +6,10 @@ Prepared by code on 2026-11-27. Sources: SEC EDGAR (XBRL companyfacts, the filin
 - Latest 10-Q: accession 0000796343-26-000156, filed 2026-09-22, period 2026-08-28
 
 ## Screen numbers (XBRL, fiscal year ending 2025-11-28; ratios as fractions)
-- composite: 0.6373
-- s_quality: 0.7921
+- composite: 0.6609
+- s_quality: 0.7995
 - s_growth: 0.677
-- s_balance: 0.71
+- s_balance: 0.85
 - s_dilution: 0.7804
 - s_valuation: 0.9231
 - s_momentum: 0.0804
@@ -28,7 +28,7 @@ Prepared by code on 2026-11-27. Sources: SEC EDGAR (XBRL companyfacts, the filin
 - fcf_yield_norm: 0.1022
 - ev_ebit: 10.5
 - ev_ebit_norm: 11.24
-- ev_ebit_vs_hist: 0.3076
+- ev_ebit_vs_hist: 0.3056
 - revenue: 23769000000
 - fcf: 9852000000
 - mkt_cap: 9.062e+10

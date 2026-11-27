@@ -6,23 +6,23 @@ Prepared by code on 2026-11-27. Sources: SEC EDGAR (XBRL companyfacts, the filin
 - Latest 10-Q: accession 0000707549-26-000054, filed 2026-10-22, period 2026-09-27
 
 ## Screen numbers (XBRL, fiscal year ending 2026-06-28; ratios as fractions)
-- composite: 0.676
-- s_quality: 0.7591
+- composite: 0.6864
+- s_quality: 0.7663
 - s_growth: 0.5595
-- s_balance: 0.8625
+- s_balance: 0.9275
 - s_dilution: 0.7109
-- s_valuation: 0.2214
+- s_valuation: 0.2138
 - s_momentum: 0.8894
 - mom_12_1: 0.609
-- roic: 0.6103
+- roic: 0.6085
 - roe: 0.5826
 - fcf_margin: 0.2105
 - fcf_margin_avg: 0.2645
 - fcf_margin_std: 0.03248
 - rev_cagr: 0.1002
 - fcf_cagr: 0.01497
-- net_debt_fcf: -0.3796
-- net_debt_ebitda: -0.2149
+- net_debt_fcf: -0.3731
+- net_debt_ebitda: -0.2112
 - dilution: -0.07158
 - fcf_yield: 0.02116
 - fcf_yield_norm: 0.02659
@@ -47,17 +47,17 @@ Item 1A. Risk Factors In addition to the other information in this Annual Report
 
 ## Headlines, last 30 days (Google News; labels by a fast model)
 - 2026-11-26: Is Lam Research Corporation (LRCX) Oversold as Strong AI Demand Supports Recovery? - Yahoo Finance [other, positive 0.6]
-- 2026-11-26: LRCX Nov 2026 180.000 put (LRCX261127P00180000) interactive stock chart - Yahoo Finance UK [other, neutral 0.8]
-- 2026-11-26: LRCX Nov 2026 182.500 call (LRCX261127C00182500) stock price, news, quote and history - Yahoo Finance UK [other, neutral 0.8]
 - 2026-11-26: Lam Research: Cheaper, Not Cheap (NASDAQ:LRCX) - Seeking Alpha [analyst, positive 0.5]
 - 2026-11-26: Advanced Packaging Drives Lam Research's Growth: Can It Gain More Share? - TradingView [product, positive 0.6]
-- 2026-11-26: LRCX Nov 2026 170.000 put (LRCX261127P00170000) stock price, news, quote and history - Yahoo Finance UK [other, neutral 0.8]
-- 2026-11-26: Lam Research: Equipment Demand Is Surging, But The Stock Is Down 52% (NASDAQ:LRCX) - Seeking Alpha [other, positive 0.5]
-- 2026-11-26: Lam Research: The Price Has Caught Down The Story - Seeking Alpha [analyst, positive 0.5]
-- 2026-11-26: LRCX Dec 2026 200.000 call (LRCX261231C00200000) Stock Price, News, Quote & History - Yahoo! Finance Canada [other, neutral 0.8]
+- 2026-11-26: Lam Research: Equipment Demand Is Surging, But The Stock Is Down 52% (NASDAQ:LRCX) - Seeking Alpha [other, positive 0.6]
+- 2026-11-26: Lam Research: The Price Has Caught Down The Story - Seeking Alpha [analyst, neutral 0.5]
 - 2026-11-26: Lam Research: One Of The Best Black Friday Deals You'll See (NASDAQ:LRCX) - Seeking Alpha [analyst, positive 0.6]
-- 2026-11-26: LRCX Dec 2026 135.000 put (LRCX261211P00135000) Stock Price, News, Quote & History - Yahoo! Finance Canada [other, neutral 0.8]
-- 2026-11-26: LRCX Nov 2026 152.500 put (LRCX261127P00152500) Stock Price, News, Quote & History - Yahoo! Finance Canada [other, neutral 0.8]
 - 2026-11-26: Memory Makers Are Spending Again. Will Lam Research (LRCX) Cash In? - Yahoo Finance [macro, positive 0.6]
-- 2026-11-25: LRCX Dec 2027 220.000 call (LRCX271217C00220000) Stock Price, News, Quote & History - Yahoo! Finance Canada [other, neutral 0.8]
-- 2026-11-25: Lam Research (LRCX) Stock Dropped, So What Is Driving Attention Now? - Yahoo Finance [other, neutral 0.5]
+- 2026-11-25: Lam Research (LRCX) Stock Dropped, So What Is Driving Attention Now? - Yahoo Finance [other, neutral 0.4]
+- 2026-11-25: Lam Research (LRCX) Stock Slides 6.71% in Afternoon Trading on AI Selloff, China Curb Fears - JournalArta [macro, negative 0.7]
+- 2026-11-25: Lam Research: Expecting Street Cuts, But Shares Have Priced It In (NASDAQ:LRCX) - Seeking Alpha [analyst, neutral 0.5]
+- 2026-11-25: Lam Research Corp Stock (LRCX) Moved Down by 9.97% on Nov 25: What Investors Need To Know - TradingKey [macro, negative 0.7]
+- 2026-11-25: Lam Research stock plunges after Tuesday’s chip equipment selloff - JournalArta [macro, negative 0.8]
+- 2026-11-25: Lam Research (LRCX) Shares Drop Over 10% Amid Tech Selloff on No - GuruFocus [macro, negative 0.8]
+- 2026-11-25: Lam Research (LRCX) Stock Is Down 10.6% Today: AI-Led Chip Sello - GuruFocus [macro, negative 0.8]
+- 2026-11-25: Lam Research retreats 10% amid heavy selling across technology shares (LRCX:NASDAQ) - Seeking Alpha [macro, negative 0.8]
