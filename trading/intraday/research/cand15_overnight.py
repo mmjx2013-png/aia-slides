@@ -65,7 +65,7 @@ def sim(m1, m15, mode, swap=(0.0, 0.0)):
     if mode == "D":
         h1 = indicators(resample(m1, 60))
         ema = h1["c"].ewm(span=20, adjust=False).mean()
-        endms = (pd.DatetimeIndex(h1["end"]).tz_localize(None) if pd.DatetimeIndex(h1["end"]).tz is not None else pd.DatetimeIndex(h1["end"])).asi8 // 10**6
+        endms = np.asarray((pd.DatetimeIndex(h1["end"]) - pd.Timestamp(0, tz="UTC")) // pd.Timedelta(milliseconds=1))
         e_end = pd.Series(ema.values, index=endms)
         c_end = pd.Series(h1["c"].values, index=endms)
         slope = e_end.diff()

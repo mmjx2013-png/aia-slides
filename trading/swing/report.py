@@ -190,6 +190,9 @@ def main(root, out):
         run_line = (f"Running extra-hours P&L (live cand15, rule B since 2026-11-27): {sum(e['extra_hours_pnl'] for e in ex):+,.2f} USD over "
                     f"{len(ex)} trades held past 03:30 ({sum(e['extra_hours_pnl'] > 0 for e in ex)} gained); swap paid {sw:+,.2f}.")
         lines += ["## cand15: flat by 03:30 (A) vs hold overnight (B; live since 2026-11-27)", *cv.read_text().strip().splitlines(), run_line, ""]
+    cf = env.HERE.parent / "intraday" / "reports" / "confidence_verdict.txt"
+    if cf.exists():
+        lines += ["## Confidence tests (is there a 'trade only when confident' edge?)", *cf.read_text().strip().splitlines(), ""]
     us = env.HERE.parent / "us" / "summary.txt"
     if us.exists():
         lines += ["## US stocks side study (paper)", *us.read_text().strip().splitlines(), ""]
