@@ -66,6 +66,7 @@
 #l3a-bar .steps>li:nth-child(2)::before{background:var(--coral)}
 #l3a-bar .steps>li:nth-child(3)::before{background:var(--mint)}
 #l3a-bar .steps>li:nth-child(4)::before{background:#E0A21B}
+#l3a-ex .xn{font:800 230px/.8 Display;letter-spacing:-.06em;background:linear-gradient(160deg,var(--coral),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:6px}
 #l3a-ex .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:28px}
 #l3a-ex .tile{display:flex;flex-direction:column;align-items:center;gap:18px;padding:30px 20px 26px;height:330px}
 #l3a-ex .tile .chip{align-self:flex-start}
@@ -96,7 +97,7 @@
 #l3a-make.b1 .bl{background:var(--lviolet);border-color:transparent}
 #l3a-make .kn{display:flex;align-items:center;gap:16px;font:600 30px/1.35 Inter}
 #l3a-build .hz{border-collapse:separate;border-spacing:0;font:600 30px Inter;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px #E6EAF3}
-#l3a-build .hz th,#l3a-build .hz td{width:132px;height:56px;text-align:center;border-left:1.5px solid #E6EAF3}
+#l3a-build .hz th,#l3a-build .hz td{width:150px;height:56px;text-align:center;border-left:1.5px solid #E6EAF3}
 #l3a-build .hz th{background:var(--blue);color:#fff;font:700 26px Inter}
 #l3a-build .hz th:first-child,#l3a-build .hz td:first-child{width:170px;text-align:left;padding-left:22px;border-left:0}
 #l3a-build .hz td:last-child{background:var(--lblue);font-weight:800}
@@ -223,7 +224,7 @@
    <div class="kr"><svg class="cup" viewBox="0 0 64 96" style="width:40px;height:60px"><use href="#cup"/></svg>= 10 cups</div>
   </div>
   <svg viewBox="0 0 1660 740" style="position:absolute;left:0;top:0;width:1660px;height:740px;overflow:visible;pointer-events:none" aria-hidden="true"><g class="g1"><path d="M498 17 H1162 Q1198 17 1198 53 V77 Q1198 113 1162 113 H498 Q462 113 462 77 V53 Q462 17 498 17 Z" pathLength="1" class="draw" style="fill:none;stroke:var(--blue);stroke-width:4"/><path d="M400 82 L462 65" pathLength="1" class="draw" style="--d:700;fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round"/><circle cx="462" cy="65" r="8" class="pop" style="--d:600;fill:var(--blue)"/></g><g class="g2"><path d="M516 115 H592 Q610 115 610 133 V577 Q610 595 592 595 H516 Q498 595 498 577 V133 Q498 115 516 115 Z" pathLength="1" class="draw" style="fill:none;stroke:var(--violet);stroke-width:4"/><path d="M400 370 L498 355" pathLength="1" class="draw" style="--d:700;fill:none;stroke:var(--violet);stroke-width:4;stroke-linecap:round"/><circle cx="498" cy="355" r="8" class="pop" style="--d:600;fill:var(--violet)"/></g><g class="g3"><path d="M516 607 H770 Q788 607 788 625 V671 Q788 689 770 689 H516 Q498 689 498 671 V625 Q498 607 516 607 Z" pathLength="1" class="draw" style="fill:none;stroke:var(--mint);stroke-width:4"/><path d="M1260 632 L788 648" pathLength="1" class="draw" style="--d:700;fill:none;stroke:var(--mint);stroke-width:4;stroke-linecap:round"/><circle cx="788" cy="648" r="8" class="pop" style="--d:600;fill:var(--mint)"/></g><g class="g4"><path d="M938 210 H982 Q998 210 998 226 V298 Q998 314 982 314 H938 Q922 314 922 298 V226 Q922 210 938 210 Z" pathLength="1" class="draw" style="fill:none;stroke:var(--coral);stroke-width:4"/><path d="M1260 262 L998 262" pathLength="1" class="draw" style="--d:700;fill:none;stroke:var(--coral);stroke-width:4;stroke-linecap:round"/><circle cx="998" cy="262" r="8" class="pop" style="--d:600;fill:var(--coral)"/></g></svg>
-  <div class="lb g1" style="left:0px;top:7px;width:400px;height:150px;--d:900"><i style="background:var(--blue)">1</i><div><h3>Title</h3><p>What the pictogram shows.</p></div></div><div class="lb g2" style="left:0px;top:295px;width:400px;height:150px;--d:900"><i style="background:var(--violet)">2</i><div><h3>Labels</h3><p>One row per day.</p></div></div><div class="lb g3" style="left:1260px;top:557px;width:400px;height:150px;--d:900"><i style="background:var(--mint)">3</i><div><h3>Key</h3><p>1 cup means 10 cups.</p></div></div><div class="lb g4" style="left:1260px;top:187px;width:400px;height:150px;--d:900"><i style="background:var(--coral)">4</i><div><h3>Half icon</h3><p>Half a cup = 5 cups.</p></div></div>
+  <div class="lb g1" style="left:0px;top:7px;width:400px;height:150px;--d:900"><i style="background:var(--blue)">1</i><div><h3>Title</h3><p>What the pictogram shows.</p></div></div><div class="lb g2" style="left:0px;top:295px;width:400px;height:150px;--d:900"><i style="background:var(--violet)">2</i><div><h3>Labels</h3><p>One row per day.</p></div></div><div class="lb g3" style="left:1260px;top:557px;width:400px;height:150px;--d:900"><i style="background:var(--mint)">3</i><div><h3>Key</h3><p>1 cup = 10 cups.</p></div></div><div class="lb g4" style="left:1260px;top:187px;width:400px;height:150px;--d:900"><i style="background:var(--coral)">4</i><div><h3>Half icon</h3><p>Half a cup = 5 cups.</p></div></div>
  </div>
  <aside class="notes">A <b>pictogram</b> uses pictures to show data. Beat 1: the <b>title</b> tells us what it shows. Beat 2: the <b>labels</b>: one row for each day. Beat 3: the <b>key</b>: one cup stands for 10 cups. Every icon is the same size and lined up, so rows are easy to compare. Beat 4: a <b>half icon</b> means half of 10 = 5 cups. Read each row: Mon 3 × 10 = 30 · Tue 4½ × 10 = 45 · Wed 4 × 10 = 40 · Thu 2½ × 10 = 25 · Fri 6 × 10 = 60. Total 30 + 45 + 40 + 25 + 60 = 200 cups (20 icons × 10 = 200 ✓). Ask: "Why not draw 200 little cups?" (too many; the key makes it short).</aside>
 </section>
@@ -250,8 +251,9 @@
 <section class="slide" id="l3a-ex" data-steps="0" data-lesson="3" data-title="Exercise 3A · Tables, pictograms &amp; bar charts">
  <i class="mesh m4"></i>
  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:56px">
-  <div class="row" style="gap:56px;align-items:flex-end">
-   <div class="stack" style="gap:16px">
+  <div class="row" style="gap:48px;align-items:flex-end">
+   <div class="xn in" style="--d:80">3A</div>
+   <div class="stack" style="gap:16px;padding-bottom:10px">
     <div class="kicker in" style="--d:100">Exercise 3A</div>
     <h2 class="in" style="--d:180;margin:0;font-size:96px">Your turn: read and build</h2>
    </div>
@@ -340,10 +342,10 @@
   <div class="w-picto ia in" style="--d:250;width:1050px;height:720px" data-title="Iced cocoa sold at the school fair" data-labels="1/1,1/2,1/3,1/4" data-answer="3,4.5,2,5" data-start="2,5,3,3.5" data-key="4" data-icon="cup" data-unit="cups"></div>
   <div class="stack" style="gap:22px">
    <div class="card in" style="--d:300;padding:28px 32px">
-    <div style="font:700 30px/1.25 Display;margin-bottom:16px">Iced cocoa sold at the school fair</div>
+    <div class="kicker" style="color:var(--coral)">Data</div><div style="font:700 30px/1.25 Display;margin:6px 0 16px">Cups sold at each class stall</div>
     <table class="tbl"><thead><tr><th>Stall</th><th class="n">Cups</th><th class="n tc">Icons</th></tr></thead><tbody><tr><td>1/1</td><td class="n">12</td><td class="n"><span class="bl" data-count="3" data-at="1"></span></td></tr><tr><td>1/2</td><td class="n">18</td><td class="n"><span class="bl" data-count="4.5" data-at="1"></span></td></tr><tr><td>1/3</td><td class="n">8</td><td class="n"><span class="bl" data-count="2" data-at="1"></span></td></tr><tr><td>1/4</td><td class="n">20</td><td class="n"><span class="bl" data-count="5" data-at="1"></span></td></tr></tbody></table>
    </div>
-   <div class="note in" style="--d:420"><div class="nt">Key</div><div class="kn"><svg class="cup" viewBox="0 0 64 96" style="width:40px;height:60px"><use href="#cup"/></svg><span>= 4 cups, so half a cup = 2 cups</span></div></div>
+   <div class="note in" style="--d:420"><div class="nt">Key</div><div class="kn"><svg class="cup" viewBox="0 0 64 96" style="width:40px;height:60px"><use href="#cup"/></svg><span><b>= 4 cups</b></span></div><div style="margin-top:6px">So half a cup = 2 cups.</div></div>
    <div class="ans g1"><svg><use href="#check"/></svg><div>Icons = cups ÷ 4. So 18 ÷ 4 = <b>4½</b></div></div>
   </div>
  </div>

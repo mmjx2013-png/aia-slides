@@ -100,44 +100,54 @@
 #l4-plan .pc .hd b{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;font:800 24px Inter}
 
 /* ---------- l4-sum : unit summary ---------- */
-#l4-sum .rows{position:relative;display:flex;flex-direction:column;gap:22px;padding-left:110px}
-#l4-sum .rail{position:absolute;left:0;top:0;width:90px;height:100%}
-#l4-sum .sr4{display:grid;grid-template-columns:96px 400px 1fr 1fr;gap:30px;align-items:center;height:156px;padding:22px 34px}
-#l4-sum .sr4 .ti{width:96px;height:96px;border-radius:26px;display:grid;place-items:center}
-#l4-sum .sr4 .ti svg{width:62px;height:62px}
-#l4-sum .sr4 h3{font-size:36px}
-#l4-sum .sr4 .lk{font:700 22px Inter;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-#l4-sum .sr4 p{font:500 28px/1.35 Inter;padding-left:20px;border-left:4px solid var(--line)}
+#l4-sum .rows{display:flex;flex-direction:column;gap:22px;padding-left:112px}
+#l4-sum .sr4{display:grid;grid-template-columns:110px 380px 1fr 1fr;gap:30px;align-items:center;height:158px;padding:22px 34px 22px 24px}
+#l4-sum .sr4 .ti{width:110px;height:110px;border-radius:28px;display:grid;place-items:center}
+#l4-sum .sr4 .ti svg{width:66px;height:66px}
+#l4-sum .sr4 h3{font-size:38px}
+#l4-sum .sr4 .lk{font:700 22px Inter;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+#l4-sum .sr4 p{display:flex;gap:14px;align-items:flex-start;font:500 28px/1.35 Inter}
+#l4-sum .sr4 p svg{flex:none;width:30px;height:30px;margin-top:3px;padding:4px;border-radius:9px}
+#l4-sum .nd{position:absolute;left:-112px;top:47px;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:#fff;font:800 30px Display;box-shadow:0 0 0 8px var(--bg)}
+#l4-sum .seg{position:absolute;left:-83px;top:-66px;width:6px;height:110px;border-radius:3px;background:#C5CEE0;transform-origin:top}
 
 /* ---------- l4-voc1 / l4-voc2 : glossary ---------- */
 #l4-voc1 .gl,#l4-voc2 .gl{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;align-items:start}
 #l4-voc1 .col,#l4-voc2 .col{display:flex;flex-direction:column;gap:16px}
-#l4-voc1 .gi,#l4-voc2 .gi{display:grid;grid-template-columns:80px 1fr;gap:24px;align-items:center;height:114px;padding:0 28px 0 18px;border-radius:24px;background:#fff;box-shadow:0 10px 28px rgba(15,27,51,.07)}
-#l4-voc2 .gi{height:146px}
+#l4-voc1 .gi,#l4-voc2 .gi{display:grid;grid-template-columns:80px auto 1fr auto;gap:22px;align-items:center;height:118px;padding:0 30px 0 18px;border-radius:24px;background:#fff;box-shadow:0 10px 28px rgba(15,27,51,.07)}
+#l4-voc2 .gi{height:124px}
 #l4-voc1 .gt,#l4-voc2 .gt{width:80px;height:80px;border-radius:22px;display:grid;place-items:center}
 #l4-voc1 .gt svg,#l4-voc2 .gt svg{width:52px;height:52px;overflow:visible}
-#l4-voc1 .en,#l4-voc2 .en{display:block;font:700 34px/1.15 Display;letter-spacing:-.015em}
-#l4-voc1 .th,#l4-voc2 .th{display:block;font:600 30px/1.45 Inter;color:var(--blue);margin-top:2px}
+#l4-voc1 .en,#l4-voc2 .en{font:700 34px/1.15 Display;letter-spacing:-.015em;white-space:nowrap}
+#l4-voc1 .ldw,#l4-voc2 .ldw{display:block;min-width:24px}
+#l4-voc1 .ldw i,#l4-voc2 .ldw i{display:block;border-top:4px dotted #B8C3DA}
+#l4-voc1 .th,#l4-voc2 .th{font:600 32px/1.5 Inter;color:var(--blue);text-align:right;white-space:nowrap}
 #l4-voc1 .th small,#l4-voc2 .th small{font:500 25px Inter;color:var(--mute)}
-#l4-voc1 .tip{height:114px;display:flex;align-items:center;gap:22px;padding:0 24px;border-radius:24px;border:3px dashed #C5CEE0}
-#l4-voc1 .tip div{font:600 26px/1.3 Inter;color:var(--mute)}
+#l4-voc1 .tip,#l4-voc2 .tip{display:flex;align-items:center;gap:22px;padding:0 26px;border-radius:24px;border:3px dashed #C5CEE0}
+#l4-voc1 .tip{height:118px}
+#l4-voc2 .tip{height:104px;margin-top:22px;justify-content:center}
+#l4-voc1 .tip div,#l4-voc2 .tip div{font:600 28px/1.3 Inter;color:var(--mute)}
 
 /* ---------- l4-rev1 : review quiz ---------- */
 #l4-rev1 .qc{display:flex;flex-direction:column;gap:16px;height:742px;padding:28px 30px}
+#l4-rev1 .qc>*{flex:none}
 #l4-rev1 .qc .pic{height:118px;border-radius:22px;display:grid;place-items:center}
-#l4-rev1 .qc .q{font:600 32px/1.3 Inter;min-height:126px}
+#l4-rev1 .qc .q{font:600 32px/1.3 Inter;height:126px}
 #l4-rev1 .ch{grid-template-columns:1fr;gap:12px}
 #l4-rev1 .c{font:700 29px/1.25 Display;padding:13px 18px;gap:14px;min-height:78px}
-#l4-rev1 .c b{width:46px;height:46px;font-size:22px}
+#l4-rev1 .c b{width:46px;height:46px;font-size:24px}
 #l4-rev1 .ans{font:600 28px/1.3 Inter;padding:16px 20px;gap:14px;margin-top:auto}
 #l4-rev1 .ans svg{width:36px;height:36px}
 
 /* ---------- l4-rev2 : calculations ---------- */
 #l4-rev2 .sw{display:inline-block;width:22px;height:22px;border-radius:6px;margin-right:14px;vertical-align:-2px}
-#l4-rev2 .tbl td{padding:12px 26px}
-#l4-rev2 .qk{padding:26px 34px}
-#l4-rev2 .qk .q{font:600 34px/1.3 Inter;margin:12px 0 18px}
-#l4-rev2 .ans{font-size:32px}
+#l4-rev2 .tbl td{padding:11px 26px}
+#l4-rev2 .vis{position:relative;height:262px}
+#l4-rev2 .vis>*{position:absolute;left:0;top:0}
+#l4-rev2 .qk{display:grid;grid-template-columns:540px 1fr;gap:12px 30px;align-items:center;padding:24px 34px 28px}
+#l4-rev2 .qk .hd{grid-column:1/-1}
+#l4-rev2 .qk .q{font:600 34px/1.3 Inter;margin-top:12px}
+#l4-rev2 .ans{font:600 32px/1.35 Inter;align-self:end;margin-bottom:6px}
 
 /* ---------- l4-end : closing ---------- */
 #l4-end .lessons li{font-size:27px}
@@ -553,34 +563,33 @@
  <div class="kicker in">Unit 4 · Summary</div>
  <h2 class="in" style="--d:120">What we <em>learned</em></h2>
  <div class="rows">
-  <svg class="rail" viewBox="0 0 90 690" preserveAspectRatio="none" aria-hidden="true">
-   <path d="M45 78 V256" pathLength="1" class="g1 draw" style="fill:none;stroke:#C5CEE0;stroke-width:6;stroke-linecap:round"/>
-   <path d="M45 256 V434" pathLength="1" class="g2 draw" style="fill:none;stroke:#C5CEE0;stroke-width:6;stroke-linecap:round"/>
-   <path d="M45 434 V612" pathLength="1" class="g3 draw" style="fill:none;stroke:#C5CEE0;stroke-width:6;stroke-linecap:round"/>
-  </svg>
   <div class="card sr4 in" style="--d:250">
+   <b class="nd n1">1</b>
    <span class="ti" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l4-qb"/></svg></span>
-   <div><div class="lk blue">Lesson 1</div><h3>Statistical questions</h3></div>
-   <p>Answers vary, so we need data.</p>
-   <p>"How long do 1/2 students sleep?"</p>
+   <div><div class="lk" style="color:var(--blue)">Lesson 1</div><h3>Statistical questions</h3></div>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lblue);color:var(--blue)"><use href="#check"/></svg>Answers vary, so we need data.</p>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lblue);color:var(--blue)"><use href="#check"/></svg>"How long do 1/2 students sleep?"</p>
   </div>
   <div class="card sr4 g1">
+   <i class="seg grow" style="--d:0"></i><b class="nd n2">2</b>
    <span class="ti" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#clipboard"/></svg></span>
-   <div><div class="lk coral">Lesson 2</div><h3>Data collection</h3></div>
-   <p>Primary: we collect it. Secondary: someone else did.</p>
-   <p>Census: everyone. Survey: a sample.</p>
+   <div><div class="lk" style="color:var(--coral)">Lesson 2</div><h3>Data collection</h3></div>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lcoral);color:var(--coral)"><use href="#check"/></svg>Primary: we collect it. Secondary: someone else did.</p>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lcoral);color:var(--coral)"><use href="#check"/></svg>Census: everyone. Survey: a sample.</p>
   </div>
   <div class="card sr4 g2">
+   <i class="seg grow" style="--d:0"></i><b class="nd n3">3</b>
    <span class="ti" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-bars"/></svg></span>
-   <div><div class="lk mint">Lesson 3</div><h3>Presenting &amp; reading data</h3></div>
-   <p>Table, pictogram, bar chart, line graph, pie chart.</p>
-   <p>Pick the chart that fits the data.</p>
+   <div><div class="lk" style="color:var(--okc)">Lesson 3</div><h3>Presenting &amp; reading data</h3></div>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lmint);color:var(--okc)"><use href="#check"/></svg>Table, pictogram, bar chart, line graph, pie chart.</p>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lmint);color:var(--okc)"><use href="#check"/></svg>Pick the chart that fits the data.</p>
   </div>
   <div class="card sr4 g3">
+   <i class="seg grow" style="--d:0"></i><b class="nd n4">4</b>
    <span class="ti" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l4-cyc"/></svg></span>
-   <div><div class="lk violet">Lesson 4</div><h3>Statistics in real life</h3></div>
-   <p>Ask, collect, present, decide.</p>
-   <p>Check the axis before you trust a chart.</p>
+   <div><div class="lk" style="color:var(--violet)">Lesson 4</div><h3>Statistics in real life</h3></div>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lviolet);color:var(--violet)"><use href="#check"/></svg>Ask, collect, present, decide.</p>
+   <p><svg viewBox="0 0 24 24" style="background:var(--lviolet);color:var(--violet)"><use href="#check"/></svg>Check the axis before you trust a chart.</p>
   </div>
  </div>
  <aside class="notes">Unit summary, one lesson per click. Ask the class to say each idea before you click. Lesson 1: a statistical question expects answers that vary, so we collect data (example: "How long do 1/2 students sleep?"). Lesson 2: primary data we collect ourselves; secondary data was collected by someone else (books, websites). A census collects data from everyone in the population; a survey collects data from a sample. Lesson 3: we present data in a table, pictogram, bar chart, line graph or pie chart, and choose the one that fits (line graph for change over time, pie chart for parts of a whole). Lesson 4: the data cycle (ask, collect, present, interpret and decide), and always check the axis before you trust a chart.</aside>
@@ -593,17 +602,17 @@
  <h2 class="in" style="--d:120">Words for <em>asking and collecting</em></h2>
  <div class="gl">
   <div class="col">
-   <div class="gi in" style="--d:200"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l4-qb"/></svg></span><div><b class="en">statistical question</b><span class="th g1" lang="th">คำถามทางสถิติ</span></div></div>
-   <div class="gi in" style="--d:260"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><g style="fill:currentColor"><circle cx="9" cy="12" r="4"/><circle cx="9" cy="24" r="4"/><circle cx="9" cy="36" r="4"/></g><path d="M19 12 H41 M19 24 H35 M19 36 H39" style="stroke:currentColor;stroke-width:4;stroke-linecap:round"/></svg></span><div><b class="en">data</b><span class="th g1" lang="th" style="--d:60">ข้อมูล</span></div></div>
-   <div class="gi in" style="--d:320"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#clipboard"/></svg></span><div><b class="en">data collection</b><span class="th g1" lang="th" style="--d:120">การเก็บรวบรวมข้อมูล</span></div></div>
-   <div class="gi in" style="--d:380"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#pencil"/></svg></span><div><b class="en">primary data</b><span class="th g1" lang="th" style="--d:180">ข้อมูลปฐมภูมิ</span></div></div>
-   <div class="gi in" style="--d:440"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#book"/></svg></span><div><b class="en">secondary data</b><span class="th g1" lang="th" style="--d:240">ข้อมูลทุติยภูมิ</span></div></div>
+   <div class="gi in" style="--d:200"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><use href="#l4-qb"/></svg></span><b class="en">statistical question</b><span class="ldw g1" style="--d:0"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:250">คำถามทางสถิติ</span></div>
+   <div class="gi in" style="--d:260"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><g style="fill:currentColor"><circle cx="9" cy="12" r="4"/><circle cx="9" cy="24" r="4"/><circle cx="9" cy="36" r="4"/></g><path d="M19 12 H41 M19 24 H35 M19 36 H39" style="stroke:currentColor;stroke-width:4;stroke-linecap:round"/></svg></span><b class="en">data</b><span class="ldw g1" style="--d:60"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:310">ข้อมูล</span></div>
+   <div class="gi in" style="--d:320"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#clipboard"/></svg></span><b class="en">data collection</b><span class="ldw g1" style="--d:120"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:370">การเก็บรวบรวมข้อมูล</span></div>
+   <div class="gi in" style="--d:380"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#pencil"/></svg></span><b class="en">primary data</b><span class="ldw g1" style="--d:180"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:430">ข้อมูลปฐมภูมิ</span></div>
+   <div class="gi in" style="--d:440"><span class="gt" style="background:var(--lcoral);color:var(--coral)"><svg viewBox="0 0 24 24"><use href="#book"/></svg></span><b class="en">secondary data</b><span class="ldw g1" style="--d:240"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:490">ข้อมูลทุติยภูมิ</span></div>
   </div>
   <div class="col">
-   <div class="gi in" style="--d:500"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/></svg></span><div><b class="en">population</b><span class="th g1" lang="th" style="--d:300">ประชากร</span></div></div>
-   <div class="gi in" style="--d:560"><span class="gt" style="background:var(--lmint);color:#AAB4CC"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/><g style="fill:var(--okc)"><circle cx="24" cy="10" r="4.5"/><path d="M17 22 Q17 15 24 15 Q31 15 31 22 Z"/><circle cx="10" cy="31" r="4.5"/><path d="M3 43 Q3 36 10 36 Q17 36 17 43 Z"/></g></svg></span><div><b class="en">sample</b><span class="th g1" lang="th" style="--d:360">กลุ่มตัวอย่าง</span></div></div>
-   <div class="gi in" style="--d:620"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/><circle cx="40" cy="40" r="9" style="fill:var(--okc);stroke:#fff;stroke-width:2.5"/><path d="M35.5 40 L39 43.5 L45 37" style="fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></svg></span><div><b class="en">census</b><span class="th g1" lang="th" style="--d:420">สำมะโน <small>(เก็บข้อมูลจากทุกหน่วย)</small></span></div></div>
-   <div class="gi in" style="--d:680"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="14" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M30 30 L42 42" style="stroke:currentColor;stroke-width:5;stroke-linecap:round"/><circle cx="20" cy="16" r="4" style="fill:currentColor"/><path d="M13 27 Q13 21 20 21 Q27 21 27 27 Z" style="fill:currentColor"/></svg></span><div><b class="en">survey</b><span class="th g1" lang="th" style="--d:480">การสำรวจ <small>(เก็บจากกลุ่มตัวอย่าง)</small></span></div></div>
+   <div class="gi in" style="--d:500"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/></svg></span><b class="en">population</b><span class="ldw g1" style="--d:300"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:550">ประชากร</span></div>
+   <div class="gi in" style="--d:560"><span class="gt" style="background:var(--lmint);color:#AAB4CC"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/><g style="fill:var(--okc)"><circle cx="24" cy="10" r="4.5"/><path d="M17 22 Q17 15 24 15 Q31 15 31 22 Z"/><circle cx="10" cy="31" r="4.5"/><path d="M3 43 Q3 36 10 36 Q17 36 17 43 Z"/></g></svg></span><b class="en">sample</b><span class="ldw g1" style="--d:360"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:610">กลุ่มตัวอย่าง</span></div>
+   <div class="gi in" style="--d:620"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><use href="#l4-crowd"/><circle cx="40" cy="40" r="9" style="fill:var(--okc);stroke:#fff;stroke-width:2.5"/><path d="M35.5 40 L39 43.5 L45 37" style="fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></svg></span><b class="en">census</b><span class="ldw g1" style="--d:420"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:670">สำมะโน <small>(เก็บข้อมูลจากทุกหน่วย)</small></span></div>
+   <div class="gi in" style="--d:680"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="14" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M30 30 L42 42" style="stroke:currentColor;stroke-width:5;stroke-linecap:round"/><circle cx="20" cy="16" r="4" style="fill:currentColor"/><path d="M13 27 Q13 21 20 21 Q27 21 27 27 Z" style="fill:currentColor"/></svg></span><b class="en">survey</b><span class="ldw g1" style="--d:480"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:730">การสำรวจ <small>(เก็บจากกลุ่มตัวอย่าง)</small></span></div>
    <div class="tip in" style="--d:740">
     <svg viewBox="0 0 120 60" style="width:150px;height:75px;flex:none" aria-hidden="true">
      <g style="fill:#AAB4CC"><circle cx="12" cy="14" r="7"/><circle cx="34" cy="14" r="7"/><circle cx="56" cy="14" r="7"/><circle cx="78" cy="14" r="7"/><circle cx="100" cy="14" r="7"/><circle cx="12" cy="44" r="7"/><circle cx="34" cy="44" r="7"/><circle cx="56" cy="44" r="7"/><circle cx="78" cy="44" r="7"/><circle cx="100" cy="44" r="7"/></g>
@@ -624,17 +633,21 @@
  <h2 class="in" style="--d:120">Words for <em>data and charts</em></h2>
  <div class="gl">
   <div class="col">
-   <div class="gi in" style="--d:200"><span class="gt" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><text x="24" y="32" text-anchor="middle" style="font:800 22px Display;fill:currentColor">123</text></svg></span><div><b class="en">quantitative data</b><span class="th g1" lang="th">ข้อมูลเชิงปริมาณ</span></div></div>
-   <div class="gi in" style="--d:260"><span class="gt" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><circle cx="13" cy="24" r="8" class="f-coral"/><circle cx="35" cy="24" r="8" class="f-blue"/><circle cx="24" cy="10" r="8" class="f-mint"/><circle cx="24" cy="38" r="8" class="f-violet"/></svg></span><div><b class="en">qualitative data</b><span class="th g1" lang="th" style="--d:60">ข้อมูลเชิงคุณภาพ</span></div></div>
-   <div class="gi in" style="--d:320"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><rect x="5" y="7" width="38" height="34" rx="5" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M5 18 H43 M5 29 H43 M20 7 V41" style="stroke:currentColor;stroke-width:3.5"/></svg></span><div><b class="en">data table</b><span class="th g1" lang="th" style="--d:120">ตารางข้อมูล</span></div></div>
-   <div class="gi in" style="--d:380"><span class="gt" style="background:var(--lblue)"><svg viewBox="0 0 48 48"><svg x="0" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="16" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="32" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="0" y="24" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="16" y="24" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg></svg></span><div><b class="en">pictogram</b><span class="th g1" lang="th" style="--d:180">แผนภูมิรูปภาพ</span></div></div>
+   <div class="gi in" style="--d:200"><span class="gt" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><text x="24" y="32" text-anchor="middle" style="font:800 22px Display;fill:currentColor">123</text></svg></span><b class="en">quantitative data</b><span class="ldw g1" style="--d:0"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:250">ข้อมูลเชิงปริมาณ</span></div>
+   <div class="gi in" style="--d:260"><span class="gt" style="background:var(--lsun);color:#A86F00"><svg viewBox="0 0 48 48"><circle cx="13" cy="24" r="8" class="f-coral"/><circle cx="35" cy="24" r="8" class="f-blue"/><circle cx="24" cy="10" r="8" class="f-mint"/><circle cx="24" cy="38" r="8" class="f-violet"/></svg></span><b class="en">qualitative data</b><span class="ldw g1" style="--d:60"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:310">ข้อมูลเชิงคุณภาพ</span></div>
+   <div class="gi in" style="--d:320"><span class="gt" style="background:var(--lblue);color:var(--blue)"><svg viewBox="0 0 48 48"><rect x="5" y="7" width="38" height="34" rx="5" style="fill:none;stroke:currentColor;stroke-width:4"/><path d="M5 18 H43 M5 29 H43 M20 7 V41" style="stroke:currentColor;stroke-width:3.5"/></svg></span><b class="en">data table</b><span class="ldw g1" style="--d:120"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:370">ตารางข้อมูล</span></div>
+   <div class="gi in" style="--d:380"><span class="gt" style="background:var(--lblue)"><svg viewBox="0 0 48 48"><svg x="0" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="16" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="32" y="6" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="0" y="24" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg><svg x="16" y="24" width="16" height="24" viewBox="0 0 64 96"><use href="#cup"/></svg></svg></span><b class="en">pictogram</b><span class="ldw g1" style="--d:180"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:430">แผนภูมิรูปภาพ</span></div>
   </div>
   <div class="col">
-   <div class="gi in" style="--d:440"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-bars"/></svg></span><div><b class="en">bar chart</b><span class="th g1" lang="th" style="--d:240">แผนภูมิแท่ง</span></div></div>
-   <div class="gi in" style="--d:500"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><path d="M5 42 H44 M5 42 V5" style="fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round"/><path d="M10 34 L20 22 L29 27 L41 11" pathLength="1" class="draw" style="--d:900;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/><g style="fill:currentColor"><circle cx="10" cy="34" r="3.5"/><circle cx="20" cy="22" r="3.5"/><circle cx="29" cy="27" r="3.5"/><circle cx="41" cy="11" r="3.5"/></g></svg></span><div><b class="en">line graph</b><span class="th g1" lang="th" style="--d:300">กราฟเส้น</span></div></div>
-   <div class="gi in" style="--d:560"><span class="gt" style="background:var(--lmint)"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" class="f-mint"/><path d="M24 24 V5 A19 19 0 0 1 42.1 29.9 Z" class="f-sun"/><path d="M24 24 L42.1 29.9 A19 19 0 0 1 14.5 40.5 Z" class="f-coral"/></svg></span><div><b class="en">pie chart</b><span class="th g1" lang="th" style="--d:360">แผนภูมิรูปวงกลม</span></div></div>
-   <div class="gi in" style="--d:620"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 24 24"><use href="#bulb"/></svg></span><div><b class="en">interpret</b><span class="th g1" lang="th" style="--d:420">ตีความ / แปลความหมาย</span></div></div>
+   <div class="gi in" style="--d:440"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><use href="#l4-bars"/></svg></span><b class="en">bar chart</b><span class="ldw g1" style="--d:240"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:490">แผนภูมิแท่ง</span></div>
+   <div class="gi in" style="--d:500"><span class="gt" style="background:var(--lmint);color:var(--okc)"><svg viewBox="0 0 48 48"><path d="M5 42 H44 M5 42 V5" style="fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round"/><path d="M10 34 L20 22 L29 27 L41 11" pathLength="1" class="draw" style="--d:900;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/><g style="fill:currentColor"><circle cx="10" cy="34" r="3.5"/><circle cx="20" cy="22" r="3.5"/><circle cx="29" cy="27" r="3.5"/><circle cx="41" cy="11" r="3.5"/></g></svg></span><b class="en">line graph</b><span class="ldw g1" style="--d:300"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:550">กราฟเส้น</span></div>
+   <div class="gi in" style="--d:560"><span class="gt" style="background:var(--lmint)"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" class="f-mint"/><path d="M24 24 V5 A19 19 0 0 1 42.1 29.9 Z" class="f-sun"/><path d="M24 24 L42.1 29.9 A19 19 0 0 1 14.5 40.5 Z" class="f-coral"/></svg></span><b class="en">pie chart</b><span class="ldw g1" style="--d:360"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:610">แผนภูมิรูปวงกลม</span></div>
+   <div class="gi in" style="--d:620"><span class="gt" style="background:var(--lviolet);color:var(--violet)"><svg viewBox="0 0 24 24"><use href="#bulb"/></svg></span><b class="en">interpret</b><span class="ldw g1" style="--d:420"><i class="growx"></i></span><span class="th g1" lang="th" style="--d:670">ตีความ / แปลความหมาย</span></div>
   </div>
+ </div>
+ <div class="tip in" style="--d:800">
+  <svg viewBox="0 0 48 48" style="width:44px;height:44px;flex:none;color:#A86F00" aria-hidden="true"><use href="#bulb"/></svg>
+  <div><b style="color:var(--ink)">152 cm</b> is quantitative (a number). <b style="color:var(--ink)">Mango</b> is qualitative (a word or group).</div>
  </div>
  <aside class="notes">Vocabulary 2. Ask for the Thai word first, then click. quantitative data = ข้อมูลเชิงปริมาณ (numbers, e.g. height, hours of sleep) · qualitative data = ข้อมูลเชิงคุณภาพ (words or categories, e.g. favourite colour) · data table = ตารางข้อมูล · pictogram = แผนภูมิรูปภาพ · bar chart = แผนภูมิแท่ง · line graph = กราฟเส้น · pie chart = แผนภูมิรูปวงกลม · interpret = ตีความ / แปลความหมาย (say what the data or chart tells us). Quick check: "Is favourite fruit quantitative or qualitative?" (qualitative) "Is your height?" (quantitative).</aside>
 </section>
@@ -706,47 +719,31 @@
  <div class="kicker in">Unit review</div>
  <h2 class="in" style="--d:120">Work it <em>out</em></h2>
  <div style="display:grid;grid-template-columns:520px 1fr;gap:34px;margin-top:-6px">
-  <div class="stack" style="gap:26px">
+  <div class="stack" style="gap:24px">
    <table class="tbl in" style="--d:200;width:520px">
     <caption>How students in 1/2 get to school</caption>
     <thead><tr><th>Way</th><th class="n">Students</th></tr></thead>
     <tbody>
      <tr><td><span class="sw" style="background:var(--coral)"></span>School bus</td><td class="n">14</td></tr>
-     <tr><td><span class="sw" style="background:var(--blue)"></span>Car</td><td class="n">10</td></tr>
-     <tr><td><span class="sw" style="background:var(--mint)"></span>Walk</td><td class="n">8</td></tr>
-     <tr><td><span class="sw" style="background:var(--violet)"></span>BTS</td><td class="n">6</td></tr>
-     <tr><td><span class="sw" style="background:var(--sun)"></span>Bicycle</td><td class="n">2</td></tr>
+     <tr><td><span class="sw" style="background:#BFD0FF"></span>Car</td><td class="n">10</td></tr>
+     <tr><td><span class="sw" style="background:#BDEFE3"></span>Walk</td><td class="n">8</td></tr>
+     <tr><td><span class="sw" style="background:#D8CEFF"></span>BTS</td><td class="n">6</td></tr>
+     <tr><td><span class="sw" style="background:#FFE6A6"></span>Bicycle</td><td class="n">2</td></tr>
     </tbody>
     <tfoot><tr><td>Total</td><td class="n">40</td></tr></tfoot>
    </table>
-   <svg class="in" viewBox="0 0 520 170" style="--d:400;width:520px;height:170px" aria-hidden="true">
-    <rect x="40" y="20" width="420" height="110" rx="26" class="f-sun"/>
-    <rect x="40" y="96" width="420" height="10" style="fill:#F2A900"/>
-    <g style="fill:#fff"><rect x="66" y="38" width="62" height="44" rx="8"/><rect x="144" y="38" width="62" height="44" rx="8"/><rect x="222" y="38" width="62" height="44" rx="8"/><rect x="300" y="38" width="62" height="44" rx="8"/></g>
-    <rect x="380" y="38" width="58" height="78" rx="8" style="fill:#fff"/><rect x="398" y="50" width="22" height="54" rx="4" style="fill:#FFF4D6"/>
-    <rect x="454" y="96" width="14" height="22" rx="4" class="f-coral"/>
-    <circle cx="120" cy="134" r="24" class="f-ink"/><circle cx="120" cy="134" r="9" style="fill:#AAB4CC"/>
-    <circle cx="370" cy="134" r="24" class="f-ink"/><circle cx="370" cy="134" r="9" style="fill:#AAB4CC"/>
-    <path d="M20 160 H500" style="stroke:#D3DAE8;stroke-width:4;stroke-linecap:round"/>
-   </svg>
-  </div>
-  <div class="stack" style="gap:26px">
-   <div class="card qk in" style="--d:300">
-    <span class="chip">Q1 · Percent</span>
-    <div class="q">What percent of the class comes by school bus?</div>
-    <div class="row" style="gap:30px;align-items:center">
-     <div class="w-input ia" data-label="Percent" data-answer="35" data-accept="35;35%;35 %" data-unit="%" data-tol="0" style="width:420px;height:110px"></div>
-     <div class="ans g1"><svg><use href="#check"/></svg><div>14 ÷ 40 × 100 = <b>35%</b></div></div>
-    </div>
-   </div>
-   <div class="card qk in" style="--d:400;display:grid;grid-template-columns:1fr 300px;gap:30px;align-items:center">
-    <div>
-     <span class="chip coral">Q2 · Pie chart</span>
-     <div class="q">We draw a pie chart of this data. What is the angle for the school bus?</div>
-     <div class="w-input ia" data-label="Angle" data-answer="126" data-accept="126;126°;126 °;126 degrees" data-unit="°" data-tol="0" style="width:420px;height:110px"></div>
-     <div class="ans g2" style="margin-top:18px;align-self:flex-start;display:inline-flex"><svg><use href="#check"/></svg><div>14 ÷ 40 × 360° = <b>126°</b></div></div>
-    </div>
-    <svg class="chart g2" viewBox="0 0 300 300" style="width:300px;height:300px" aria-label="Pie chart: school bus 126 degrees, car 90, walk 72, BTS 54, bicycle 18">
+   <div class="vis">
+    <svg class="h2" viewBox="0 0 520 190" style="--d:400;width:520px;height:190px;top:36px" aria-hidden="true">
+     <rect x="40" y="20" width="420" height="110" rx="26" class="f-sun"/>
+     <rect x="40" y="96" width="420" height="10" style="fill:#F2A900"/>
+     <g style="fill:#fff"><rect x="66" y="38" width="62" height="44" rx="8"/><rect x="144" y="38" width="62" height="44" rx="8"/><rect x="222" y="38" width="62" height="44" rx="8"/><rect x="300" y="38" width="62" height="44" rx="8"/></g>
+     <rect x="380" y="38" width="58" height="78" rx="8" style="fill:#fff"/><rect x="398" y="50" width="22" height="54" rx="4" style="fill:#FFF4D6"/>
+     <rect x="454" y="96" width="14" height="22" rx="4" class="f-coral"/>
+     <circle cx="120" cy="134" r="24" class="f-ink"/><circle cx="120" cy="134" r="9" style="fill:#AAB4CC"/>
+     <circle cx="370" cy="134" r="24" class="f-ink"/><circle cx="370" cy="134" r="9" style="fill:#AAB4CC"/>
+     <path d="M20 168 H500" style="stroke:#D3DAE8;stroke-width:4;stroke-linecap:round"/>
+    </svg>
+    <svg class="chart g2" viewBox="0 0 300 300" style="width:262px;height:262px;left:129px" aria-label="Pie chart: school bus 126 degrees, car 90, walk 72, BTS 54, bicycle 18">
      <g transform="rotate(-90 150 150)">
       <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:var(--coral);--len:131.95;--C:376.99;stroke-dashoffset:0;--n:0"/>
       <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#BFD0FF;--len:94.25;--C:376.99;stroke-dashoffset:-131.95;--n:1"/>
@@ -754,10 +751,22 @@
       <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#D8CEFF;--len:56.55;--C:376.99;stroke-dashoffset:-301.59;--n:3"/>
       <circle cx="150" cy="150" r="60" class="segd" style="fill:none;stroke-width:120;stroke:#FFE6A6;--len:18.85;--C:376.99;stroke-dashoffset:-358.14;--n:4"/>
      </g>
-     <path d="M150 150 V30 M150 150 L247.1 220.5" style="stroke:#fff;stroke-width:4;stroke-linecap:round"/>
+     <path d="M150 150 V30 M150 150 L247.1 220.5" class="pop" style="--d:1300;stroke:#fff;stroke-width:4;stroke-linecap:round"/>
      <path d="M150 104 A46 46 0 0 1 187.2 177.0" pathLength="1" class="draw" style="--d:1400;fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round"/>
-     <text x="214" y="118" text-anchor="middle" class="pop" style="--d:1600;font:800 30px Display;fill:#fff">126°</text>
+     <text x="214" y="122" text-anchor="middle" class="pop" style="--d:1600;font:800 32px Display;fill:#fff">126°</text>
     </svg>
+   </div>
+  </div>
+  <div class="stack" style="gap:24px">
+   <div class="card qk in" style="--d:300">
+    <div class="hd"><span class="chip">Q1 · Percent</span><div class="q">What percent of the class comes by school bus?</div></div>
+    <div class="w-input ia" data-label="Your answer" data-answer="35" data-accept="35;35%;35 %" data-unit="%" data-tol="0" style="width:540px;height:180px"></div>
+    <div class="ans g1"><svg><use href="#check"/></svg><div>14 ÷ 40 × 100<br>= <b>35%</b></div></div>
+   </div>
+   <div class="card qk in" style="--d:400">
+    <div class="hd"><span class="chip coral">Q2 · Pie chart</span><div class="q">In a pie chart of this data, what is the angle for the school bus?</div></div>
+    <div class="w-input ia" data-label="Your answer" data-answer="126" data-accept="126;126°;126 °;126 degrees" data-unit="°" data-tol="0" style="width:540px;height:180px"></div>
+    <div class="ans g2"><svg><use href="#check"/></svg><div>14 ÷ 40 × 360°<br>= <b>126°</b></div></div>
    </div>
   </div>
  </div>
