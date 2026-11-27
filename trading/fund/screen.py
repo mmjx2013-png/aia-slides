@@ -57,7 +57,9 @@ def universe(n):
 
 
 def annual(facts, tags, asof, flow):
-    """{fiscal-year end: value} from 10-K FY data filed <= asof; the first tag with data wins per year."""
+    """{fiscal-year end: value} from 10-K FY data filed <= asof. All tags are merged (companies switch tags,
+    e.g. Revenues -> RevenueFromContract...); per year the most recently filed value wins, so later 10-Ks'
+    restated (split-adjusted) comparatives replace the originals."""
     g = facts.get("facts", {}).get("us-gaap", {})
     out = {}
     for t in tags:
@@ -73,10 +75,8 @@ def annual(facts, tags, asof, flow):
                 if not 330 <= days <= 400:
                     continue
             end = v["end"]
-            if end not in out or v["filed"] > out[end][1]:        # latest restatement filed by asof
+            if end not in out or v["filed"] > out[end][1]:        # latest restatement filed by asof, across tags
                 out[end] = (v["val"], v["filed"])
-        if len(out) >= 2:
-            break
     return {k: v[0] for k, v in sorted(out.items())}
 
 

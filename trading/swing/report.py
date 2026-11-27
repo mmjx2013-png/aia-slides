@@ -178,6 +178,9 @@ def main(root, out):
     import shocks as SH
     shk = jlines(root / "shocks.jsonl")
     per = [x for x in shk if start <= pd.Timestamp(x["t_ms"], unit="ms", tz="UTC").tz_convert(BKK) < end]
+    fs = env.HERE.parent / "fund" / "status.txt"
+    if fs.exists():
+        lines += ["## The fund (long-term US stocks)", *fs.read_text().strip().splitlines(), ""]
     us = env.HERE.parent / "us" / "summary.txt"
     if us.exists():
         lines += ["## US stocks side study (paper)", *us.read_text().strip().splitlines(), ""]
