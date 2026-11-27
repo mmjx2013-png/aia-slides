@@ -183,6 +183,9 @@ def main(root, out):
         ss = env.HERE.parent / "fund" / "shadow_status.txt"
         lines += ["## The fund (long-term US stocks)", *fs.read_text().strip().splitlines(),
                   *(ss.read_text().strip().splitlines() if ss.exists() else []), ""]
+    cv = env.HERE.parent / "intraday" / "reports" / "cand15_overnight_verdict.txt"
+    if cv.exists():
+        lines += ["## cand15: flat by 03:30 vs hold overnight (test, live rule unchanged)", *cv.read_text().strip().splitlines(), ""]
     us = env.HERE.parent / "us" / "summary.txt"
     if us.exists():
         lines += ["## US stocks side study (paper)", *us.read_text().strip().splitlines(), ""]

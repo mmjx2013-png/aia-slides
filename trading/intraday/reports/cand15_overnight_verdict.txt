@@ -1,0 +1,3 @@
+cand15 overnight test (Feb-Nov 2026, 1m replay): B (hold overnight, flat before the weekend) beat A (flat 03:30): +26.4% vs +11.2% with typical swap (-0.60/oz long), +17.4% with the boss figure (-6/oz), but max DD worse (-18.4%/-20.9% vs -15.3%).
+The extra hours alone: +1,404 USD (typical swap; 90% CI -103..+3,077, P>0 93%) or +376 (boss swap; CI -1,161..+2,056, P>0 63%), from 90 trades of which only 31-39% gained: a few big trend nights carry it.
+Verdict: promising but not proven on 9 months of one trending market; keep A live, run B as a shadow book from now, and decide on out-of-sample evidence. Full table: trading/intraday/reports/cand15_overnight.md.
