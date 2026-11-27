@@ -47,7 +47,9 @@ async function run(cfg) {
   page.on('request', r => { if (!r.url().startsWith('file:') && !r.url().startsWith('data:')) errors.push('external request: ' + r.url()); });
   const cdp = cfg.touch ? await ctx.newCDPSession(page) : null;
   const ok = (name, cond, extra) => { total++; if (!cond) failed++; console.log((cond ? 'PASS' : 'FAIL') + '  [' + cfg.name + '] ' + name + (cond || extra === undefined ? '' : '  -> ' + JSON.stringify(extra))); };
-  const sleep = ms => page.waitForTimeout(ms);
+  /* waits on the page's own clock: every page timer that was due earlier (tap guard 90 ms, tween safety timers, the 0.8 s
+     MCQ timer) has then run, however busy the machine is. A wait on the test's clock made one check flaky under load. */
+  const sleep = ms => page.evaluate(ms => new Promise(r => setTimeout(r, ms)), ms);
 
   /* ---- input helpers: mouse or real touch points ---- */
   async function tap(x, y) { if (cfg.touch) { await page.touchscreen.tap(x, y); await sleep(130); } else await page.mouse.click(x, y); }   // 130 ms: lets the tap guard act when Chrome swallows the click of a tap right after a flick
@@ -75,7 +77,7 @@ async function run(cfg) {
   await page.goto(FILE);
   await page.evaluate(() => document.fonts.ready);
   ok('no answer is shown on load', await page.evaluate(() => !document.querySelector('.w-shown, .c.picked')));
-  ok('every widget is rendered', await page.evaluate(() => __tools.widgets.length === 17 && [...document.querySelectorAll('[class^="w-"]')].every(w => w.children.length > 0)), await page.evaluate(() => __tools.widgets.length));
+  ok('every widget is rendered', await page.evaluate(() => __tools.widgets.length === 20 && [...document.querySelectorAll('[class^="w-"]')].every(w => w.children.length > 0)), await page.evaluate(() => __tools.widgets.length));
 
   /* ---------- MCQ ---------- */
   await go(0);
@@ -106,8 +108,9 @@ async function run(cfg) {
   await type('td-in-num', ' 110 Cups '); await act('td-in-num', 'check');
   f = await fb('td-in-num');
   ok('input: "110 Cups" with spaces is accepted', / ok/.test(f.cls), f);
-  await type('td-in-num', '1,10'); await page.keyboard.press('Enter');
-  ok('input: thousands commas and spaces are ignored', / ok/.test((await fb('td-in-num')).cls));
+  for (const bad of ['1,10', '11,0', '1 10', '1 1 0']) { await type('td-in-num', bad); await page.keyboard.press('Enter'); ok('numbers: "' + bad + '" is not read as 110', / no/.test((await fb('td-in-num')).cls), await fb('td-in-num')); }
+  await type('td-in-num', '110cups'); await page.keyboard.press('Enter');
+  ok('input: "110cups" without a space is accepted', / ok/.test((await fb('td-in-num')).cls));
   await type('td-in-text', '  thursday'); await page.keyboard.press('Enter');
   ok('input: text answers ignore case and spaces', / ok/.test((await fb('td-in-text')).cls));
   await type('td-in-text', 'Friday'); await act('td-in-text', 'check');
@@ -116,6 +119,9 @@ async function run(cfg) {
   ok('input: Show answer gives a clear answer state', await page.evaluate(() => document.getElementById('td-in-text').classList.contains('w-shown') && document.querySelector('#td-in-text .tw-in').value === 'Thursday'));
   await act('td-in-text', 'show');
   ok('input: Hide answer brings back the student\'s text', await page.evaluate(() => !document.getElementById('td-in-text').classList.contains('w-shown') && document.querySelector('#td-in-text .tw-in').value === 'Friday'));
+  await act('td-in-text', 'show'); await act('td-in-text', 'check');
+  f = await fb('td-in-text');
+  ok('show+check input: Check grades the student\'s text, not the shown answer', / no/.test(f.cls) && await page.evaluate(() => { const w = document.getElementById('td-in-text'), i = w.querySelector('.tw-in'); return !w.classList.contains('w-shown') && i.value === 'Friday' && !i.readOnly && w.querySelector('[data-act="show"]').textContent === 'Show answer'; }), f);
   await act('td-in-text', 'reset');
   ok('input: Reset clears', await page.evaluate(() => document.querySelector('#td-in-text .tw-in').value === ''));
   await page.evaluate(() => document.activeElement.blur());
@@ -180,6 +186,14 @@ async function run(cfg) {
   f = await fb('td-sort-w');
   ok('sort: all cards sorted, Check says correct', / ok/.test(f.cls) && await page.evaluate(() => document.querySelectorAll('#td-sort-w .item.ok').length === 6), f);
   await act('td-sort-w', 'reset'); await sleep(100);
+  { const c = await itemC(0); await tap(c[0], c[1]); const b = await binC(1); await tap(b[0], b[1]); await sleep(350); }
+  await act('td-sort-w', 'show'); await sleep(350); await act('td-sort-w', 'check'); await sleep(100);
+  f = await fb('td-sort-w');
+  ok('show+check sort: Check grades the student\'s cards, not the shown answer', / no/.test(f.cls) && JSON.stringify(await W('td-sort-w', 'w.state()')) === '[1,-1,-1,-1,-1,-1]' && await page.evaluate(() => !document.getElementById('td-sort-w').classList.contains('w-shown')), [f, await W('td-sort-w', 'w.state()')]);
+  await act('td-sort-w', 'show'); await sleep(350);
+  { const c = await itemC(1); await tap(c[0], c[1]); const b = await binC(0); await tap(b[0], b[1]); await sleep(350); }
+  ok('show+edit sort: moving a card while the answer is shown returns to the student\'s work first', JSON.stringify(await W('td-sort-w', 'w.state()')) === '[1,0,-1,-1,-1,-1]', await W('td-sort-w', 'w.state()'));
+  await act('td-sort-w', 'reset'); await sleep(100);
   ok('sort: Reset puts every card back', (await W('td-sort-w', 'w.state()')).every(v => v === -1));
   await act('td-sort-w', 'show'); await sleep(350);
   ok('sort: Show answer moves all cards', JSON.stringify(await W('td-sort-w', 'w.state()')) === '[0,1,0,1,0,1]' && await page.evaluate(() => document.getElementById('td-sort-w').classList.contains('w-shown')));
@@ -222,6 +236,12 @@ async function run(cfg) {
   ok('bars: the drawn bar heights match the answer', await page.evaluate(() => { const hs = [...document.querySelectorAll('#td-bars-w .tw-bar')].map(b => +b.getAttribute('height')); return hs.every((h, i) => Math.abs(h / hs[1] - [15, 20, 35, 25, 30][i] / 20) < 0.01); }));
   await act('td-bars-w', 'show'); await sleep(900);
   ok('bars: Hide answer returns the student\'s bars', (await W('td-bars-w', 'w.values()'))[0] === 20 && !(await page.evaluate(() => document.getElementById('td-bars-w').classList.contains('w-shown'))));
+  await act('td-bars-w', 'show'); await sleep(900); await act('td-bars-w', 'check'); await sleep(900);
+  f = await fb('td-bars-w');
+  ok('show+check bars: Check grades the student\'s bars, not the shown answer', / no/.test(f.cls) && (await W('td-bars-w', 'w.values()'))[0] === 20 && await page.evaluate(() => !document.getElementById('td-bars-w').classList.contains('w-shown') && document.querySelectorAll('#td-bars-w .tw-col.no').length === 1), [f, await W('td-bars-w', 'w.values()')]);
+  await act('td-bars-w', 'show'); await sleep(900);
+  await page.evaluate(() => document.getElementById('td-bars-w').__w.cols[0].focus()); await page.keyboard.press('ArrowUp'); await sleep(100);
+  ok('show+edit bars: a change while the answer is shown starts from the student\'s bars', JSON.stringify(await W('td-bars-w', 'w.values()')) === '[25,20,35,25,30]' && await page.evaluate(() => !document.getElementById('td-bars-w').classList.contains('w-shown')), await W('td-bars-w', 'w.values()'));
   await act('td-bars-w', 'reset'); await sleep(900);
   ok('bars: Reset returns to the start', (await W('td-bars-w', 'w.values()')).every(x => x === 20));
   await page.evaluate(() => document.activeElement.blur());
@@ -246,7 +266,9 @@ async function run(cfg) {
   ok('line: Check highlights wrong points', await page.evaluate(() => document.querySelectorAll('#td-line-w .tw-col.no').length === 4));
   await act('td-line-w', 'show'); await sleep(1100);
   ok('line: Show answer sets the answer', JSON.stringify(await W('td-line-w', 'w.values()')) === JSON.stringify(lineAns));
-  await act('td-line-w', 'show'); await sleep(800);
+  await act('td-line-w', 'check'); await sleep(800);
+  f = await fb('td-line-w');
+  ok('show+check line: Check grades the student\'s points, not the shown answer', / no/.test(f.cls) && JSON.stringify(await W('td-line-w', 'w.values()')) === '[34,34,35,33,34]' && await page.evaluate(() => !document.getElementById('td-line-w').classList.contains('w-shown')), [f, await W('td-line-w', 'w.values()')]);
   await stay(4, 'line');
 
   /* ---------- pie ---------- */
@@ -262,6 +284,15 @@ async function run(cfg) {
   ok('pie: right angles, Check says correct', / ok/.test(f.cls), f);
   ok('pie: total reaches 360° and 4 labelled slices', await page.evaluate(() => /^360° of 360°/.test(document.querySelector('#td-pie-w .tw-sum').textContent) && document.querySelector('#td-pie-w .tw-sum').classList.contains('ok') && document.querySelectorAll('#td-pie-w .tw-slice').length === 4 && document.querySelectorAll('#td-pie-w .tw-slab').length === 4));
   await act('td-pie-w', 'reset');
+  await act('td-pie-w', 'check');
+  f = await fb('td-pie-w');
+  ok('pie: Check with every box empty asks to type first and marks nothing red', f.text === 'Type the angles first' && / info/.test(f.cls) && await page.evaluate(() => !document.querySelector('#td-pie-w .tw-in.no')), f);
+  await pieType(0, '1,20');
+  ok('numbers: "1,20" is not read as 120\u00B0 in the pie', await page.evaluate(() => document.querySelectorAll('#td-pie-w .tw-slice').length === 0 && /^0\u00B0/.test(document.querySelector('#td-pie-w .tw-sum').textContent)));
+  await pieType(0, '100'); await act('td-pie-w', 'show'); await act('td-pie-w', 'check');
+  f = await fb('td-pie-w');
+  ok('show+check pie: Check grades the student\'s angles, not the shown answer', / no/.test(f.cls) && await page.evaluate(() => { const w = document.getElementById('td-pie-w'), v = [...w.querySelectorAll('.tw-in')].map(i => i.value).join('|'); return !w.classList.contains('w-shown') && v === '100|||' && ![...w.querySelectorAll('.tw-in')].some(i => i.readOnly); }), f);
+  await act('td-pie-w', 'reset');
   ok('pie: Reset empties the pie', await page.evaluate(() => document.querySelectorAll('#td-pie-w .tw-slice').length === 0));
   await page.evaluate(() => document.activeElement.blur());
   await stay(5, 'pie');
@@ -272,6 +303,8 @@ async function run(cfg) {
   await act('td-pie2-w', 'show');
   ok('pie percent: Show answer fills 40, 25, 20, 15', await page.evaluate(() => [...document.querySelectorAll('#td-pie2-w .tw-in')].map(i => i.value).join() === '40,25,20,15'));
   await act('td-pie2-w', 'show');
+  await act('td-pie2-w', 'reset'); await act('td-pie2-w', 'check');
+  ok('pie percent: empty Check says "Type the percents first"', (await fb('td-pie2-w')).text === 'Type the percents first', await fb('td-pie2-w'));
   await page.evaluate(() => document.activeElement.blur());
   await stay(6, 'pie percent');
 
@@ -288,6 +321,11 @@ async function run(cfg) {
   ok('picto: Check says correct', / ok/.test((await fb('td-picto-w')).cls), await fb('td-picto-w'));
   await pb(0, 'minus'); await act('td-picto-w', 'check');
   ok('picto: a wrong row gets a cross', await page.evaluate(() => document.querySelectorAll('#td-picto-w .tw-mark.no').length === 1));
+  await act('td-picto-w', 'show'); await act('td-picto-w', 'check');
+  f = await fb('td-picto-w');
+  ok('show+check picto: Check grades the student\'s rows, not the shown answer', / no/.test(f.cls) && JSON.stringify(await W('td-picto-w', 'w.values()')) === '[2,2.5,4,1.5]' && await page.evaluate(() => !document.getElementById('td-picto-w').classList.contains('w-shown')), [f, await W('td-picto-w', 'w.values()')]);
+  await act('td-picto-w', 'show'); await pb(0, 'plus');
+  ok('show+edit picto: + while the answer is shown starts from the student\'s row', JSON.stringify(await W('td-picto-w', 'w.values()')) === '[3,2.5,4,1.5]', await W('td-picto-w', 'w.values()'));
   await act('td-picto-w', 'reset');
   ok('picto: Reset returns to the start', (await W('td-picto-w', 'w.values()')).every(x => x === 2));
   await stay(7, 'picto');
@@ -309,6 +347,9 @@ async function run(cfg) {
   ok('dots: keyboard Up adds a dot', (await W('td-dots-w', 'w.values()'))[0] === 3);
   await act('td-dots-w', 'check');
   ok('dots: a wrong stack is highlighted', await page.evaluate(() => document.querySelectorAll('#td-dots-w .tw-col.no').length === 1));
+  await act('td-dots-w', 'show'); await act('td-dots-w', 'check');
+  f = await fb('td-dots-w');
+  ok('show+check dots: Check grades the student\'s dots, not the shown answer', / no/.test(f.cls) && JSON.stringify(await W('td-dots-w', 'w.values()')) === '[3,4,5,3,1]' && await page.evaluate(() => !document.getElementById('td-dots-w').classList.contains('w-shown')), [f, await W('td-dots-w', 'w.values()')]);
   for (const k of [0, 3, 3, 5]) { const p = await W('td-dots-free', 'w.at(' + k + ',' + (k === 3 ? 0.4 : 0) + ')'); await tap(p.x, p.y - (k === 3 ? 60 : 0)); }
   v = await W('td-dots-free', 'w.values()');
   ok('dots free survey: counts taps and has no Check', JSON.stringify(v) === '[1,0,0,2,0,1]' && await page.evaluate(() => !document.querySelector('#td-dots-free [data-act="check"]') && /Total: 4/.test(document.querySelector('#td-dots-free .tw-fb').textContent)), v);
@@ -349,6 +390,49 @@ async function run(cfg) {
   ok('answer tab: a typed answer inside a .card shows no tab and no frame', await page.evaluate(() => { const w = document.getElementById('td-in-card'), c = getComputedStyle(w); return w.classList.contains('w-shown') && getComputedStyle(w, '::after').display === 'none' && c.outlineStyle === 'none' && c.boxShadow === 'none' && w.querySelector('.tw-in').classList.contains('ok'); }));
   await act('td-in-card', 'show');
   await stay(10, 'crowded sort');
+
+  /* ---------- numbers, "N more", a writing box whose label wraps ---------- */
+  await go(11);
+  const typed = async (id, text) => { await type(id, text); await page.keyboard.press('Enter'); return fb(id); };
+  for (const good of ['1250', '1,250', '1 250', '1,250 baht', '1250.0']) { f = await typed('td-in-big', good); ok('numbers: "' + good + '" is accepted for 1250', / ok/.test(f.cls), f); }
+  for (const bad of ['12,50', '125,0', '1,2,5,0', '1 2 5 0', '12 50', '1,25']) { f = await typed('td-in-big', bad); ok('numbers: "' + bad + '" is not accepted for 1250', / no/.test(f.cls), f); }
+  await act('td-in-more', 'reset');
+  for (const good of ['6', '6 more', '6 more girls', '6 girls', '6 more girls than boys', ' 6  More ']) { f = await typed('td-in-more', good); ok('more: "' + good + '" is accepted for 6 girls', / ok/.test(f.cls), f); }
+  for (const bad of ['16 more', '6 fewer', 'more', '60 more girls']) { f = await typed('td-in-more', bad); ok('more: "' + bad + '" is not accepted', / no/.test(f.cls), f); }
+  await page.evaluate(() => document.activeElement.blur());
+  const padOK = () => page.evaluate(() => { const w = document.getElementById('td-write-wrap'), a = w.__w, p = a.pad, c = p.querySelector('canvas'); const lh = parseFloat(p.style.getPropertyValue('--lh'));
+    return { ok: a.W === p.clientWidth && a.H === p.clientHeight && Math.abs(c.width / c.height - p.clientWidth / p.clientHeight) < 0.01 && Math.abs(lh * 3 - p.clientHeight) < 0.5, W: a.W, H: a.H, cw: p.clientWidth, ch: p.clientHeight, lh, lab: w.querySelector('.tw-lab').offsetHeight }; });
+  let po = await padOK();
+  ok('write: with a label that wraps, the canvas matches the pad and all 3 lines show', po.ok && po.lab > 50, po);
+  await drag(await padPts('td-write-wrap', handCircle(po.W / 2, po.H / 2, Math.min(70, po.H / 2 - 8)))); await sleep(250);
+  await page.evaluate(() => { document.getElementById('td-write-wrap').style.height = '360px'; }); await sleep(200);
+  const po2 = await padOK();
+  ok('write: when the box changes size the canvas is measured again and the ink is kept', po2.ok && po2.H > po.H + 40 && await W('td-write-wrap', 'w.ink.count()') === 1
+    && await W('td-write-wrap', '(function(){var s=w.ink.st.strokes[0].pts,xs=s.map(function(q){return q.x}),ys=s.map(function(q){return q.y});return Math.abs((Math.max.apply(null,xs)-Math.min.apply(null,xs))-(Math.max.apply(null,ys)-Math.min.apply(null,ys)))<2})()')
+    && await page.evaluate(() => { const c = document.querySelector('#td-write-wrap canvas'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 40) n++; return n > 200; }), po2);
+  await page.evaluate(() => { document.getElementById('td-write-wrap').style.height = '300px'; }); await sleep(200);
+  /* tap guard: a late real click on the icon inside an icon-only button must not toggle it a second time */
+  let twin = null;
+  for (let tries = 0; tries < 6 && !twin; tries++) {
+    const c = await centre('#td-write-wrap [data-act="auto"] svg');
+    const before = await page.evaluate(() => document.querySelector('#td-write-wrap [data-act="auto"]').getAttribute('aria-pressed'));
+    await page.evaluate(([x, y]) => new Promise(done => {
+      const b = document.querySelector('#td-write-wrap [data-act="auto"]'), s = b.querySelector('svg');
+      window.__twin = { synth: 0, click: 0 };
+      new MutationObserver((m, o) => { o.disconnect(); window.__twin.synth = performance.now(); done(); }).observe(b, { attributes: true });
+      addEventListener('click', function h(e) { if (e.isTrusted) { window.__twin.click = performance.now(); removeEventListener('click', h, true); } }, true);
+      const init = { bubbles: true, pointerId: 77, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y };
+      s.dispatchEvent(new PointerEvent('pointerdown', init)); s.dispatchEvent(new PointerEvent('pointerup', init));   // a finger tap whose click Chrome swallowed
+    }), c);
+    await page.mouse.click(c[0], c[1]);                                                                              // the late real click, on the inner <svg>
+    const r = await page.evaluate(() => ({ dt: window.__twin.click - window.__twin.synth, now: document.querySelector('#td-write-wrap [data-act="auto"]').getAttribute('aria-pressed') }));
+    if (r.dt > 0 && r.dt < 240) twin = { before, now: r.now, dt: r.dt };                                              // only a click inside the 250 ms window is the case under test
+    else { await sleep(300); if (r.now === before) { /* toggled twice by a click that came too late: put it back in a known state */ } }
+  }
+  ok('tap guard: a late twin click on the icon inside a button does not toggle it twice', !!twin && twin.before !== twin.now, twin);
+  await sleep(300);
+  if (await page.evaluate(() => document.querySelector('#td-write-wrap [data-act="auto"]').getAttribute('aria-pressed')) !== 'true') await page.evaluate(() => document.querySelector('#td-write-wrap [data-act="auto"]').click());
+  await stay(11, 'numbers and words');
 
   /* ---------- global pen ---------- */
   await go(3);

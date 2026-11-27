@@ -85,6 +85,8 @@
         ft.bShow.textContent = 'Hide answer'; ft.bShow.setAttribute('aria-pressed', 'true');
         o.reveal(); ft.say('ok', 'Answer shown');
       },
+      /* back to the student's own work. Check and every edit call this first, so the revealed key is never graded
+         and never becomes the student's work. Only Reset drops the saved work (off). */
       hide: function () { if (!c.shown) return; c.off(); o.restore(saved); ft.say(''); },
       toggle: function () { if (c.shown) c.hide(); else c.show(); },
       off: function () {
@@ -351,6 +353,8 @@
     self.count = function () { return self.st.strokes.length; };
     self.shapes = function () { return self.st.strokes.map(function (s) { return s.shape || 'free'; }); };
     self.fit = fit;
+    /* the drawing area changed size (web font loaded, label wrapped...): same pixels, new canvas, ink kept as drawn */
+    self.resize = function (w2, h2) { finish(); endMorph(); W = w2; H = h2; ratio = 0; fit(); };
     var rt = null; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fit, 120); });
     fit();
     return self;
@@ -385,11 +389,17 @@
 
   /* ================= w-input ================= */
   function clean(s) { return String(s).trim().toLowerCase().replace(/\s+/g, ' '); }
+  /* A typed number, or null. Commas (or spaces) count only as proper groups of three: "1,250" is 1250, but
+     "3,5", "1,00" or "1 2" are not numbers. A typed unit, "%", the degree sign, and the words "more" / "than ..." are
+     ignored: "6 more girls" is 6 when the unit is girls. */
   function parseNum(s, unit) {
-    var t = clean(s), u = unit ? clean(unit) : '';
-    if (u && t.length > u.length && t.slice(-u.length) === u) t = t.slice(0, -u.length);
-    t = t.replace(/[\s,]/g, '').replace(/−/g, '-').replace(/^\+/, '').replace(/[%°]$/, '');
-    return /^-?(\d+\.?\d*|\.\d+)$/.test(t) ? parseFloat(t) : null;
+    var t = clean(s).replace(/−/g, '-'), u = unit ? clean(unit) : '';
+    t = t.replace(/\s+than\b.*$/, '').replace(/(\d)\s*\bmore\b/g, '$1 ').replace(/\s+/g, ' ').trim();
+    if (u && t.length > u.length && t.slice(-u.length) === u) t = t.slice(0, -u.length).trim();
+    t = t.replace(/\s*[%°]$/, '').replace(/^\+/, '');
+    var m = /^(-?)(\d{1,3}(?:,\d{3})+|\d{1,3}(?: \d{3})+|\d+)?(\.\d*)?$/.exec(t);
+    if (!m || (!m[2] && !(m[3] && m[3].length > 1))) return null;
+    return parseFloat(m[1] + (m[2] || '0').replace(/[, ]/g, '') + (m[3] || ''));
   }
   function input(w) {
     var d = w.dataset, answer = (d.answer || '').trim(), unit = d.unit || '', tol = num(d.tol, 0), tries = 0;
@@ -412,14 +422,16 @@
       var a = clean(v), an = parseNum(v, unit);
       return acc.some(function (x) {
         var b = clean(x);
-        if (a === b || a.replace(/[\s,]/g, '') === b.replace(/[\s,]/g, '')) return true;
+        if (a === b) return true;
+        /* spaces may differ ("110cups"), but never inside or between numbers: "1 2" is not "12" */
+        if (!/\d[\s,]+\d/.test(a) && a.replace(/\s/g, '') === b.replace(/\s/g, '')) return true;
         var bn = parseNum(x, unit);
         return an !== null && bn !== null && Math.abs(an - bn) <= tol + 1e-9;
       });
     }
     function mark(k) { inp.classList.remove('ok', 'no'); if (k) inp.classList.add(k); }
     function check() {
-      ac.off();
+      ac.hide();
       if (!inp.value.trim()) { mark(''); ft.say('info', 'Type your answer first'); return; }
       if (match(inp.value)) { mark('ok'); ft.say('ok', 'Correct!'); return; }
       tries++; mark('no');
@@ -427,14 +439,14 @@
       ft.say('no', tries >= 2 ? 'Check your working' : 'Not yet. Try again');
       if (tries >= 2) ft.bShow.classList.add('nudge');
     }
-    function reset() { ac.off(); inp.value = ''; tries = 0; mark(''); ft.bShow.classList.remove('nudge'); ft.say(''); }
+    function reset() { ac.off(); inp.readOnly = false; inp.value = ''; tries = 0; mark(''); ft.bShow.classList.remove('nudge'); ft.say(''); }
     var ac = answerCtl(w, ft, {
       snap: function () { return { v: inp.value, cls: inp.className }; },
-      reveal: function () { inp.value = answer; mark('ok'); },
-      restore: function (s) { inp.value = s.v; mark(''); }
+      reveal: function () { inp.value = answer; inp.readOnly = true; mark('ok'); },
+      restore: function (s) { inp.value = s.v; inp.readOnly = false; mark(''); }
     });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); } });
-    inp.addEventListener('input', function () { ac.off(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
+    inp.addEventListener('input', function () { ac.hide(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
     return register(w, { type: 'input', show: ac.show, hide: ac.hide, reset: reset, check: check, input: inp, tries: function () { return tries; } });
   }
 
@@ -460,8 +472,20 @@
     tools.appendChild(bAuto); tools.appendChild(bUndo); tools.appendChild(bClear);
     function sync() { var none = !ink.st.strokes.length; bClear.disabled = none; bUndo.disabled = !ink.st.hist.length; w.classList.toggle('has-ink', !none); }
     ink.onchange = sync; sync();
-    return register(w, { type: 'write', ink: ink, pad: pad, W: W, H: H, reset: function () { ink.clear(); },
+    var api = register(w, { type: 'write', ink: ink, pad: pad, W: W, H: H, reset: function () { ink.clear(); },
       at: function (x, y) { return toClient(pad, x, y, W, H); } });
+    /* measured before the web font loads: when the label wraps later the pad gets shorter. Measure again, or ink is squashed. */
+    function measure() {
+      var w2 = pad.clientWidth, h2 = pad.clientHeight;
+      if (!w2 || !h2 || (w2 === W && h2 === H)) return;
+      W = api.W = w2; H = api.H = h2;
+      pad.style.setProperty('--lh', (H / lines) + 'px');
+      ink.resize(W, H);
+    }
+    api.measure = measure;
+    if (window.ResizeObserver) new ResizeObserver(measure).observe(pad);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    return api;
   }
 
   /* ================= w-sort ================= */
@@ -510,7 +534,7 @@
       w.classList.add('tight');
       binEls.forEach(function (b) { if (b._slot.scrollHeight > b._slot.clientHeight + 2) b._slot.classList.add('scroll'); });
     }
-    function place(it, target) { ac.off(); move(it, target); if (sel === it) select(it); ft.say(''); }
+    function place(it, target) { ac.hide(); move(it, target); if (sel === it) select(it); ft.say(''); }
     items.forEach(function (it, k) {
       it._k = k; it.tabIndex = 0; it.setAttribute('role', 'button'); it.setAttribute('aria-pressed', 'false');
       pool.appendChild(it);
@@ -556,7 +580,7 @@
       b.addEventListener('keydown', function (e) { if (e.target === b && key(e, ['Enter', ' '])) drop(); });
     });
     function check() {
-      ac.off();
+      ac.hide();
       var placed = items.filter(function (it) { return where(it) >= 0; }), right = 0;
       if (!placed.length) { ft.say('info', 'Put the cards in the boxes first'); return; }
       placed.forEach(function (it) { var ok = where(it) === +it.dataset.bin; if (ok) right++; mark(it, ok); });
@@ -679,6 +703,8 @@
     };
     g.keys = function (col, i, get, set, cols) {
       col.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+        if (g.pre) g.pre();   /* leave the shown answer before reading the value */
         var v = get(i);
         if (key(e, ['ArrowUp'])) set(i, g.snapV(v + snap));
         else if (key(e, ['ArrowDown'])) set(i, g.snapV(v - snap));
@@ -727,7 +753,7 @@
     function all() { for (var k = 0; k < n; k++) draw(k); }
     function stop() { if (tw) { tw.cancel(); tw = null; shown = vals.slice(); } }
     function set(i, v) {
-      stop(); ac.off();
+      ac.hide(); stop();
       if (near(v, vals[i]) && !state[i]) return;
       vals[i] = shown[i] = v; state[i] = ''; draw(i);
       if (g.ft.fb.className !== 'tw-fb') g.ft.say('');
@@ -737,7 +763,7 @@
       tw = tween(650, function (t) { for (var k = 0; k < n; k++) shown[k] = from[k] + (to[k] - from[k]) * t; all(); }, function () { tw = null; shown = vals.slice(); all(); if (done) done(); });
     }
     function check() {
-      stop(); ac.off(); var bad = 0;
+      ac.hide(); stop(); var bad = 0;
       vals.forEach(function (v, k) { var ok = near(v, g.ans[k]); state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       all();
       g.ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 bar is not right yet' : bad + ' bars are not right yet') : 'Correct! Well done');
@@ -748,6 +774,7 @@
       reveal: function () { glide(g.ans, g.ans.map(function () { return 'ok'; })); },
       restore: function (s) { glide(s, []); }
     });
+    g.pre = function () { ac.hide(); stop(); };
     g.drag(set, cols);
     all();
     return register(w, { type: 'bars', show: g.ans ? ac.show : null, hide: ac.hide, reset: reset, check: g.ans ? check : null,
@@ -784,7 +811,7 @@
     }
     function stop() { if (tw) { tw.cancel(); tw = null; shown = vals.slice(); } }
     function set(i, v) {
-      stop(); ac.off();
+      ac.hide(); stop();
       if (near(v, vals[i]) && !state[i]) return;
       vals[i] = shown[i] = v; state[i] = ''; draw();
       if (g.ft.fb.className !== 'tw-fb') g.ft.say('');
@@ -795,7 +822,7 @@
       if (drawLine) anim(path, [{ strokeDasharray: '1 1', strokeDashoffset: 1 }, { strokeDasharray: '1 1', strokeDashoffset: 0 }], { duration: 900, easing: 'ease' });
     }
     function check() {
-      stop(); ac.off(); var bad = 0;
+      ac.hide(); stop(); var bad = 0;
       vals.forEach(function (v, k) { var ok = near(v, g.ans[k]); state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       draw();
       g.ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 point is not right yet' : bad + ' points are not right yet') : 'Correct! Well done');
@@ -806,6 +833,7 @@
       reveal: function () { glide(g.ans, g.ans.map(function () { return 'ok'; }), true); },
       restore: function (s) { glide(s, []); }
     });
+    g.pre = function () { ac.hide(); stop(); };
     g.drag(set, cols);
     draw();
     return register(w, { type: 'line', show: g.ans ? ac.show : null, hide: ac.hide, reset: reset, check: g.ans ? check : null,
@@ -832,7 +860,7 @@
       var cell = el('td', 'n tw-incell'), inp = el('input', 'tw-in');
       inp.type = 'text'; inp.inputMode = 'decimal'; inp.autocomplete = 'off'; inp.setAttribute('aria-label', (pct ? 'Percent for ' : 'Angle for ') + name);
       cell.appendChild(inp); cell.appendChild(el('span', 'tw-unit', suf)); tr.appendChild(cell); tbody.appendChild(tr);
-      inp.addEventListener('input', function () { ac.off(); inp.classList.remove('ok', 'no'); draw(); if (ft.fb.className !== 'tw-fb') ft.say(''); });
+      inp.addEventListener('input', function () { ac.hide(); inp.classList.remove('ok', 'no'); draw(); if (ft.fb.className !== 'tw-fb') ft.say(''); });
       inp.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
         e.preventDefault(); e.stopPropagation();
@@ -888,15 +916,16 @@
       sumCell.className = 'n tw-sum' + (Math.abs(sum - full) <= tol ? ' ok' : sum > full + tol ? ' no' : '');
     }
     function check() {
-      ac.off(); var right = 0;
+      ac.hide(); var right = 0;
+      if (inputs.every(function (inp) { return !inp.value.trim(); })) { inputs.forEach(function (inp) { inp.classList.remove('ok', 'no'); }); ft.say('info', pct ? 'Type the percents first' : 'Type the angles first'); return; }
       inputs.forEach(function (inp, i) { var v = parseNum(inp.value), ok = v !== null && Math.abs(v - ans[i]) <= tol + 1e-9; inp.classList.remove('ok', 'no'); inp.classList.add(ok ? 'ok' : 'no'); if (ok) right++; });
       if (right === n) ft.say('ok', 'Correct! Total ' + full + suf); else ft.say('no', right + ' of ' + n + ' correct');
     }
-    function reset() { ac.off(); inputs.forEach(function (inp) { inp.value = ''; inp.classList.remove('ok', 'no'); }); draw(); ft.say(''); }
+    function reset() { ac.off(); inputs.forEach(function (inp) { inp.value = ''; inp.readOnly = false; inp.classList.remove('ok', 'no'); }); draw(); ft.say(''); }
     var ac = answerCtl(w, ft, {
       snap: function () { return inputs.map(function (inp) { return inp.value; }); },
-      reveal: function () { inputs.forEach(function (inp, i) { inp.value = String(Math.round(ans[i] * 10) / 10); inp.classList.remove('no'); inp.classList.add('ok'); }); draw(); },
-      restore: function (s) { inputs.forEach(function (inp, i) { inp.value = s[i]; inp.classList.remove('ok', 'no'); }); draw(); }
+      reveal: function () { inputs.forEach(function (inp, i) { inp.value = String(Math.round(ans[i] * 10) / 10); inp.readOnly = true; inp.classList.remove('no'); inp.classList.add('ok'); }); draw(); },
+      restore: function (s) { inputs.forEach(function (inp, i) { inp.value = s[i]; inp.readOnly = false; inp.classList.remove('ok', 'no'); }); draw(); }
     });
     layout(); draw();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { layout(); draw(); });
@@ -928,9 +957,9 @@
     var rows = labels.map(function (name, i) {
       var lab = el('div', 'tw-pl', name), area = el('div', 'tw-pa'), ctl = el('div', 'tw-pc'), mark = el('span', 'tw-mark');
       area.setAttribute('role', 'img');
-      var minus = btn('−', 'round', 'minus', function () { set(i, vals[i] - (vals[i] % 1 ? 0.5 : 1)); });
-      var half = btn('½', 'round', 'half', function () { set(i, vals[i] + 0.5); });
-      var plus = btn('+', 'round', 'plus', function () { set(i, vals[i] + 1); });
+      var minus = btn('−', 'round', 'minus', function () { ac.hide(); set(i, vals[i] - (vals[i] % 1 ? 0.5 : 1)); });
+      var half = btn('½', 'round', 'half', function () { ac.hide(); set(i, vals[i] + 0.5); });
+      var plus = btn('+', 'round', 'plus', function () { ac.hide(); set(i, vals[i] + 1); });
       minus.setAttribute('aria-label', 'Remove one from ' + name); half.setAttribute('aria-label', 'Add half an icon to ' + name); plus.setAttribute('aria-label', 'Add one icon to ' + name);
       ctl.appendChild(minus); ctl.appendChild(half); ctl.appendChild(plus); ctl.appendChild(mark);
       grid.appendChild(lab); grid.appendChild(area); grid.appendChild(ctl);
@@ -960,12 +989,12 @@
     }
     function all() { for (var k = 0; k < n; k++) draw(k); }
     function set(i, v) {
-      ac.off(); v = clamp(Math.round(v * 2) / 2, 0, cap);
+      ac.hide(); v = clamp(Math.round(v * 2) / 2, 0, cap);
       var more = v > vals[i]; vals[i] = v; state[i] = ''; draw(i, more);
       if (ft.fb.className !== 'tw-fb') ft.say('');
     }
     function check() {
-      ac.off(); var bad = 0;
+      ac.hide(); var bad = 0;
       vals.forEach(function (v, k) { var ok = near(v, ans[k]); state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       all();
       ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 row is not right yet' : bad + ' rows are not right yet') : 'Correct! Well done');
@@ -1009,6 +1038,7 @@
       sv('rect', { x: cx(i) - Math.min(cw - 6, 110) / 2, y: y1 - 30, width: Math.min(cw - 6, 110), height: y0 - y1 + 26, rx: 14, 'class': 'tw-track' }, c);
       layers.push(sv('g', {}, c)); cols.push(c);
       c.addEventListener('keydown', function (e) {
+        if (['ArrowUp', '+', '=', 'Enter', ' ', 'ArrowDown', '-', 'Delete'].indexOf(e.key) >= 0) ac.hide();
         if (key(e, ['ArrowUp', '+', '=', 'Enter', ' '])) set(i, vals[i] + 1);
         else if (key(e, ['ArrowDown', '-', 'Delete'])) set(i, vals[i] - 1);
       });
@@ -1035,7 +1065,7 @@
       if (!ans) { var t = vals.reduce(function (a, b) { return a + b; }, 0); ft.say(t ? 'info' : '', t ? 'Total: ' + t : ''); }
     }
     function set(i, v) {
-      ac.off(); v = clamp(v, 0, capN); if (v === vals[i]) return;
+      ac.hide(); v = clamp(v, 0, capN); if (v === vals[i]) return;
       vals[i] = v; state = []; draw();
       if (ans && ft.fb.className !== 'tw-fb') ft.say('');
     }
@@ -1044,10 +1074,11 @@
       var p = local(box, e, W, H); if (p.x < x0 || p.x > x1) return;
       var k = clamp(Math.floor((p.x - x0) / cw), 0, n - 1);
       if (e.cancelable) e.preventDefault();
+      ac.hide();
       if (vals[k] > 0 && p.y >= y0 - vals[k] * dia && p.y <= y0) set(k, vals[k] - 1); else set(k, vals[k] + 1);
     });
     function check() {
-      ac.off(); var bad = 0;
+      ac.hide(); var bad = 0;
       vals.forEach(function (v, k) { var ok = v === ans[k]; state[k] = ok ? 'ok' : 'no'; if (!ok) bad++; });
       draw();
       ft.say(bad ? 'no' : 'ok', bad ? (bad === 1 ? '1 stack is not right yet' : bad + ' stacks are not right yet') : 'Correct! Well done');
@@ -1142,7 +1173,7 @@
     addEventListener('pointerdown', function (e) { down = e.pointerType === 'mouse' ? null : { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.target }; }, true);
     addEventListener('click', function (e) {
       if (!e.isTrusted) return;
-      if (e.target === synthT && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
+      if (synthT && synthT.contains(e.target) && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
       lastClick = performance.now();
     }, true);
     /* A tap must never leave keyboard focus on a tool: the next Space / Enter / arrow from the clicker belongs to the deck.
