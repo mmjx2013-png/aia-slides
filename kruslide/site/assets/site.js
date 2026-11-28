@@ -217,12 +217,17 @@
     var close = function () {
       if (!V.open || closing) return;
       closing = true;
-      zoom(true, function () {
+      vIf.removeAttribute('src');   /* stop the sample first: a heavy page (a WebGL globe) must not hold the close back */
+      var finished = false;
+      var done = function () {
+        if (finished) return; finished = true;
         V.close(); closing = false;
-        vIf.removeAttribute('src'); vIf.hidden = true; vG.hidden = true;
+        vIf.hidden = true; vG.hidden = true;
         root.classList.remove('viewer-open');
         if (cur && cur.el) cur.el.focus();
-      });
+      };
+      setTimeout(done, 450);
+      zoom(true, done);
     };
     vX.addEventListener('click', close);
     V.addEventListener('cancel', function (e) { e.preventDefault(); close(); });

@@ -1,0 +1,41 @@
+<!-- 2 · Word builder: drag (or tap) a consonant, a vowel and a tone mark into the slots; the word assembles,
+     the reading and spelling appear, and a picture word fills the picture book. Built by spell.js. -->
+<section class="slide" id="ts-build" data-steps="0" data-title="ลองประสมคำ">
+ <svg class="ab hills" viewBox="0 0 1920 120" style="left:0;top:960px;width:1920px;height:120px" aria-hidden="true">
+  <path d="M0 40 Q320 0 700 30 T1400 22 T1920 30 V120 H0Z" fill="#B8D98F" filter="url(#ps)"/>
+  <path d="M0 70 Q480 46 980 64 T1920 60 V120 H0Z" fill="#EEF4DA" filter="url(#ps)"/>
+ </svg>
+ <div class="chip c in" style="left:130px;top:58px"><b>ลองทำ</b>ประสมคำ</div>
+ <h2 class="in" style="left:128px;top:112px;--d:100">แตะหรือลากตัวอักษร มาประสมเป็นคำ</h2>
+ <div class="ab b2-btns in ia" id="b2-btns" style="--d:200"></div>
+
+ <!-- trays -->
+ <div class="sheet in" style="left:96px;top:256px;width:520px;height:690px;background:var(--coral);rotate:-1.6deg;--d:120"></div>
+ <div class="pp b2-tray in" id="b2-tray" style="--d:150">
+  <div class="b2-sec"><div class="b2-lab k-c">พยัญชนะ</div><div class="b2-row" data-kind="c"></div></div>
+  <div class="b2-sec"><div class="b2-lab k-v">สระ</div><div class="b2-row" data-kind="v"></div></div>
+  <div class="b2-sec"><div class="b2-lab k-t">วรรณยุกต์</div><div class="b2-row" data-kind="t"></div></div>
+ </div>
+
+ <!-- slots and the word -->
+ <div class="ab b2-slots in" style="--d:250">
+  <div class="b2-slot ia" data-kind="c"><span class="b2-sl k-c">พยัญชนะ</span></div><i class="b2-plus">+</i>
+  <div class="b2-slot ia" data-kind="v"><span class="b2-sl k-v">สระ</span></div><i class="b2-plus">+</i>
+  <div class="b2-slot ia" data-kind="t"><span class="b2-sl k-t">วรรณยุกต์</span></div>
+ </div>
+ <svg class="ab b2-arrow in" viewBox="0 0 60 70" style="--d:300" aria-hidden="true"><path d="M30 4 V52 M12 36 L30 56 L48 36" fill="none" stroke="#C9B48F" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="sheet in" style="left:688px;top:592px;width:590px;height:230px;background:var(--mustard);rotate:1.4deg;--d:280"></div>
+ <div class="pp b2-word in" id="b2-word" style="--d:300" aria-live="polite"><span class="b2-w" id="b2-w"></span><span class="b2-ph" id="b2-ph">?</span></div>
+ <div class="ab b2-chant" id="b2-chant" aria-hidden="true"></div>
+ <div class="ab b2-msg" id="b2-msg">เลือกพยัญชนะ สระ และวรรณยุกต์ อย่างละ 1 ตัว</div>
+
+ <!-- picture + picture book -->
+ <div class="sheet in" style="left:1372px;top:250px;width:440px;height:360px;background:var(--teal);rotate:-2.4deg;--d:320"></div>
+ <div class="pp b2-frame in tilt-r" id="b2-frame" style="--d:350"><div class="b2-pic" id="b2-pic"><span class="b2-q">?</span></div><div class="b2-cap" id="b2-cap">ภาพของคำ</div></div>
+ <div class="pp b2-book in" style="--d:400">
+  <div class="b2-bt">สมุดภาพของฉัน <b id="b2-n">0</b> / 8</div>
+  <div class="b2-grid" id="b2-grid"></div>
+ </div>
+ {{FOOT}}
+ <aside class="notes">ให้นักเรียนออกมาแตะหรือลาก พยัญชนะ สระ วรรณยุกต์ อย่างละตัว คำจะประกอบตัวเอง แสดงวิธีสะกดและคำอ่าน ถ้าเป็นคำที่มีภาพ ภาพจะไปอยู่ในสมุดภาพ ภารกิจคือหาให้ครบ 8 ภาพ (ปู ม้า เต่า งู ตา ตู้ เป้า ยา) แตะตัวอักษรในช่องเพื่อเอาออก ปุ่มดูเฉลยแสดงคำทั้ง 8 คำ</aside>
+</section>

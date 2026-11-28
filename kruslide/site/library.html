@@ -36,6 +36,7 @@
  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5M12 14.5v2"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4.2-1L19 8.2 15.8 5 5 15.8z"/><path d="M13.8 7l3.2 3.2"/></symbol>
  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M9 11.5V5.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v1.5m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.8a6 6 0 0 1-4.9-2.6L4.2 15a1.6 1.6 0 0 1 2.6-1.8L9 15.5"/></symbol>
  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c1.4-3.9 4.2-5.9 7.5-5.9s6.1 2 7.5 5.9"/></symbol>
@@ -81,7 +82,7 @@
 <header class="top" id="top">
  <div class="top-in">
   <a class="brand" href="#top" aria-label="ครูสไลด์ KruSlide หน้าแรก" data-en-aria-label="KruSlide home">
-   <svg class="brand-mark" aria-hidden="true"><use href="index.html#logo"/></svg>
+   <svg class="brand-mark" aria-hidden="true"><use href="#logo"/></svg>
    <span class="brand-txt"><b>Kru<span>Slide</span></b><small>ครูสไลด์</small></span>
   </a>
   <nav class="nav" id="nav" aria-label="เมนูหลัก" data-en-aria-label="Main menu">
@@ -93,8 +94,8 @@
    <a href="library.html"><span class="th">คลังตัวอย่าง</span><span class="en">Library</span></a>
    <a href="index.html#faq"><span class="th">คำถาม</span><span class="en">FAQ</span></a>
    <div class="nav-m">
-    <a class="btn btn-ghost" href="/app/"><svg class="ic" aria-hidden="true"><use href="index.html#i-user"/></svg><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
-    <a class="btn btn-line" href="https://line.me/R/ti/p/@368lkkze"><svg class="ic" aria-hidden="true"><use href="index.html#i-chat"/></svg><span class="th">คุยกับเราทาง LINE</span><span class="en">Chat with us on LINE</span></a>
+    <a class="btn btn-ghost" href="/app/"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
+    <a class="btn btn-line" href="https://line.me/R/ti/p/@368lkkze"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span class="th">คุยกับเราทาง LINE</span><span class="en">Chat with us on LINE</span></a>
    </div>
   </nav>
   <div class="top-act">
@@ -102,8 +103,8 @@
     <button type="button" data-lang="th" aria-pressed="true">TH</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
    </div>
    <a class="btn btn-ghost btn-sm hide-m" href="/app/"><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
-   <a class="btn btn-ink btn-sm hide-m" href="https://line.me/R/ti/p/@368lkkze"><svg class="ic" aria-hidden="true"><use href="index.html#i-chat"/></svg><span class="th">คุยทาง LINE</span><span class="en">LINE us</span></a>
-   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="เปิดเมนู" data-en-aria-label="Open menu"><svg class="ic" aria-hidden="true"><use href="index.html#i-menu"/></svg></button>
+   <a class="btn btn-ink btn-sm hide-m" href="https://line.me/R/ti/p/@368lkkze"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span class="th">คุยทาง LINE</span><span class="en">LINE us</span></a>
+   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="เปิดเมนู" data-en-aria-label="Open menu"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
   </div>
  </div>
 </header>
@@ -122,7 +123,7 @@
    <label class="lib-search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span class="sr"><span class="th">ค้นหา</span><span class="en">Search</span></span><input type="search" id="lib-q" placeholder="ค้นหา เช่น เศษส่วน วงจร กลอน" data-ph-th="ค้นหา เช่น เศษส่วน วงจร กลอน" data-ph-en="Search, e.g. fractions, circuit, poem" autocomplete="off"></label>
    <div class="lib-f" role="group" aria-label="วิชา" data-en-aria-label="Subject"><span class="lib-fl"><span class="th">วิชา</span><span class="en">Subject</span></span><button type="button" data-f="subject" data-v="" aria-pressed="true"><span class="th">ทั้งหมด</span><span class="en">All</span> <small>4</small></button><button type="button" data-f="subject" data-v="math" aria-pressed="false"><span class="th">คณิตศาสตร์</span><span class="en">Maths</span> <small>3</small></button><button type="button" data-f="subject" data-v="social" aria-pressed="false"><span class="th">สังคมศึกษา</span><span class="en">Social studies</span> <small>1</small></button></div>
    <div class="lib-f" role="group" aria-label="ระดับชั้น" data-en-aria-label="Level"><span class="lib-fl"><span class="th">ระดับชั้น</span><span class="en">Level</span></span><button type="button" data-f="level" data-v="" aria-pressed="true"><span class="th">ทั้งหมด</span><span class="en">All</span> <small>4</small></button><button type="button" data-f="level" data-v="ม.1-3" aria-pressed="false"><span class="th">ม.1-3</span><span class="en">M1–3</span> <small>3</small></button><button type="button" data-f="level" data-v="ม.4-6" aria-pressed="false"><span class="th">ม.4-6</span><span class="en">M4–6</span> <small>1</small></button></div>
-   <div class="lib-f" role="group" aria-label="วิธีโต้ตอบ" data-en-aria-label="Interaction"><span class="lib-fl"><span class="th">วิธีโต้ตอบ</span><span class="en">Interaction</span></span><button type="button" data-f="mech" data-v="" aria-pressed="true"><span class="th">ทั้งหมด</span><span class="en">All</span> <small>4</small></button><button type="button" data-f="mech" data-v="tap" aria-pressed="false"><span class="th">แตะ</span><span class="en">Tap</span> <small>4</small></button><button type="button" data-f="mech" data-v="type" aria-pressed="false"><span class="th">พิมพ์</span><span class="en">Type</span> <small>3</small></button><button type="button" data-f="mech" data-v="draw" aria-pressed="false"><span class="th">วาด</span><span class="en">Draw</span> <small>3</small></button><button type="button" data-f="mech" data-v="pie" aria-pressed="false"><span class="th">แผนภูมิวงกลม</span><span class="en">Pie chart</span> <small>2</small></button><button type="button" data-f="mech" data-v="drag" aria-pressed="false"><span class="th">ลาก</span><span class="en">Drag</span> <small>2</small></button><button type="button" data-f="mech" data-v="chart" aria-pressed="false"><span class="th">สร้างกราฟ</span><span class="en">Build a chart</span> <small>2</small></button><button type="button" data-f="mech" data-v="write" aria-pressed="false"><span class="th">เขียนมือ</span><span class="en">Write</span> <small>1</small></button><button type="button" data-f="mech" data-v="map" aria-pressed="false"><span class="th">แผนที่</span><span class="en">Map</span> <small>1</small></button><button type="button" data-f="mech" data-v="sort" aria-pressed="false"><span class="th">จัดกลุ่ม</span><span class="en">Sort</span> <small>1</small></button><button type="button" data-f="mech" data-v="slider" aria-pressed="false"><span class="th">แถบเลื่อน</span><span class="en">Slider</span> <small>1</small></button><button type="button" data-f="mech" data-v="reveal" aria-pressed="false"><span class="th">เฉลยทีละขั้น</span><span class="en">Step reveal</span> <small>1</small></button><button type="button" data-f="mech" data-v="sim" aria-pressed="false"><span class="th">จำลอง</span><span class="en">Simulation</span> <small>1</small></button><button type="button" data-f="mech" data-v="zoom" aria-pressed="false"><span class="th">ซูม</span><span class="en">Zoom</span> <small>1</small></button></div>
+   <div class="lib-f" role="group" aria-label="วิธีโต้ตอบ" data-en-aria-label="Interaction"><span class="lib-fl"><span class="th">วิธีโต้ตอบ</span><span class="en">Interaction</span></span><button type="button" data-f="mech" data-v="" aria-pressed="true"><span class="th">ทั้งหมด</span><span class="en">All</span> <small>4</small></button><button type="button" data-f="mech" data-v="tap" aria-pressed="false"><span class="th">แตะ</span><span class="en">Tap</span> <small>4</small></button><button type="button" data-f="mech" data-v="draw" aria-pressed="false"><span class="th">วาด</span><span class="en">Draw</span> <small>3</small></button><button type="button" data-f="mech" data-v="type" aria-pressed="false"><span class="th">พิมพ์</span><span class="en">Type</span> <small>3</small></button><button type="button" data-f="mech" data-v="drag" aria-pressed="false"><span class="th">ลาก</span><span class="en">Drag</span> <small>2</small></button><button type="button" data-f="mech" data-v="chart" aria-pressed="false"><span class="th">สร้างกราฟ</span><span class="en">Build a chart</span> <small>2</small></button><button type="button" data-f="mech" data-v="pie" aria-pressed="false"><span class="th">แผนภูมิวงกลม</span><span class="en">Pie chart</span> <small>2</small></button><button type="button" data-f="mech" data-v="slider" aria-pressed="false"><span class="th">แถบเลื่อน</span><span class="en">Slider</span> <small>1</small></button><button type="button" data-f="mech" data-v="zoom" aria-pressed="false"><span class="th">ซูม</span><span class="en">Zoom</span> <small>1</small></button><button type="button" data-f="mech" data-v="sort" aria-pressed="false"><span class="th">จัดกลุ่ม</span><span class="en">Sort</span> <small>1</small></button><button type="button" data-f="mech" data-v="write" aria-pressed="false"><span class="th">เขียนมือ</span><span class="en">Write</span> <small>1</small></button><button type="button" data-f="mech" data-v="sim" aria-pressed="false"><span class="th">จำลอง</span><span class="en">Simulation</span> <small>1</small></button><button type="button" data-f="mech" data-v="reveal" aria-pressed="false"><span class="th">เฉลยทีละขั้น</span><span class="en">Step reveal</span> <small>1</small></button><button type="button" data-f="mech" data-v="map" aria-pressed="false"><span class="th">แผนที่</span><span class="en">Map</span> <small>1</small></button></div>
   </div>
   <p class="lib-count" id="lib-count" aria-live="polite"><b id="lib-shown">4</b> <span class="th">จาก</span><span class="en">of</span> 4 <span class="th">ตัวอย่าง</span><span class="en">samples</span></p>
   <div class="lib-grid" id="lib-grid">
@@ -139,9 +140,9 @@
 <footer class="foot">
  <div class="wrap foot-in">
   <div class="foot-brand">
-   <a class="brand" href="#top" aria-label="ครูสไลด์ KruSlide กลับขึ้นด้านบน" data-en-aria-label="KruSlide, back to top"><svg class="brand-mark" aria-hidden="true"><use href="index.html#logo"/></svg><span class="brand-txt"><b>Kru<span>Slide</span></b><small>ครูสไลด์</small></span></a>
+   <a class="brand" href="#top" aria-label="ครูสไลด์ KruSlide กลับขึ้นด้านบน" data-en-aria-label="KruSlide, back to top"><svg class="brand-mark" aria-hidden="true"><use href="#logo"/></svg><span class="brand-txt"><b>Kru<span>Slide</span></b><small>ครูสไลด์</small></span></a>
    <p><span class="th">สไลด์สอนแบบโต้ตอบ เฉลยทีละขั้น วิดีโอสอน และเว็บไซต์โรงเรียน สำหรับคุณครูไทยและครู EP</span><span class="en">Interactive lesson slides, worked answers, teaching videos and school websites for Thai and EP teachers.</span></p>
-   <a class="btn btn-line btn-sm" href="https://line.me/R/ti/p/@368lkkze"><svg class="ic" aria-hidden="true"><use href="index.html#i-chat"/></svg>KruSlide · @368lkkze</a>
+   <a class="btn btn-line btn-sm" href="https://line.me/R/ti/p/@368lkkze"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>KruSlide · @368lkkze</a>
   </div>
   <nav class="foot-nav" aria-label="ลิงก์ท้ายหน้า" data-en-aria-label="Footer links">
    <a href="index.html#services"><span class="th">บริการ</span><span class="en">Services</span></a>
@@ -155,14 +156,14 @@
    <a href="/app/"><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
   </nav>
   <div class="privacy" id="privacy">
-   <p class="foot-h"><svg class="ic" aria-hidden="true"><use href="index.html#i-shield"/></svg><span class="th">ความเป็นส่วนตัว</span><span class="en">Privacy</span></p>
+   <p class="foot-h"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg><span class="th">ความเป็นส่วนตัว</span><span class="en">Privacy</span></p>
    <p><span class="th">เว็บไซต์นี้ไม่ใช้คุกกี้ ไม่มีโฆษณา และไม่มีตัวติดตาม เราจำเพียงภาษาที่คุณเลือกไว้ในเบราว์เซอร์ของคุณเอง ข้อมูลที่ส่งมาทาง LINE ใช้เพื่อตอบคำถามและทำงานให้คุณเท่านั้น ไม่ขายหรือส่งต่อให้ใคร</span><span class="en">This site uses no cookies, ads or trackers. It only remembers your language choice, in your own browser. What you send us on LINE is used only to answer you and do your work; we never sell or pass it on.</span></p>
   </div>
  </div>
  <div class="wrap"><div class="foot-copy"><p>© 2026 KruSlide (ครูสไลด์)</p><a href="#top" class="totop"><span class="th">กลับขึ้นด้านบน</span><span class="en">Back to top</span> ↑</a></div></div>
 </footer>
 
-<a class="fab" id="fab" href="https://line.me/R/ti/p/@368lkkze" aria-label="คุยกับเราทาง LINE" data-en-aria-label="Chat with us on LINE"><svg class="ic" aria-hidden="true"><use href="index.html#i-chat"/></svg><span>LINE</span></a>
+<a class="fab" id="fab" href="https://line.me/R/ti/p/@368lkkze" aria-label="คุยกับเราทาง LINE" data-en-aria-label="Chat with us on LINE"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span>LINE</span></a>
 
 
 <!-- in-page viewer for our own samples and the slide styles (no pop-ups needed) -->

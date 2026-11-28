@@ -68,6 +68,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 /* language switch */
 html[lang="th"] .en,html[lang="en"] .th{display:none!important}
+[hidden]{display:none!important}
 
 /* ---------- small parts ---------- */
 .t-sky{background:var(--lblue);color:var(--blue-t)} .t-mint{background:var(--lmint);color:var(--mint-t)}
@@ -687,6 +688,8 @@ html.js .rv.in{opacity:1;transform:none}
  .wrap{padding:0 24px}
  .lang button{min-width:34px;padding:0 7px}
  .brand-txt small{display:none}
+ .saver{grid-template-columns:1fr}
+ .st-l{min-height:0}
 }
 
 /* ---------- reduced motion: no animation, no transitions; final states shown ---------- */

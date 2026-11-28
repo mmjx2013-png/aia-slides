@@ -237,7 +237,8 @@ def library_page(index, samples):
     head = re.sub(r'<title>.*?</title>', '<title>คลังตัวอย่าง · ครูสไลด์ KruSlide</title>', head, flags=re.S)
     head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="คลังตัวอย่างสไลด์โต้ตอบของครูสไลด์ ทุกวิชา ทุกระดับชั้น เลือกดูตามวิชา ระดับ และวิธีโต้ตอบ แล้วลองเล่นได้ทันที">', head)
     head = head.replace('<link rel="preload" href="fonts/InterDisplay-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>\n', '')
-    fix = lambda h: re.sub(r'href="#(?!top"|main")([a-z][\w-]*)"', r'href="index.html#\1"', h)
+    # in-page links of the shared header and footer point back to the home page (never touch <use href="#icon">)
+    fix = lambda h: re.sub(r'(<a\b[^>]*?\shref=")#(?!top"|main")([a-z][\w-]*)"', r'\1index.html#\2"', h)
     count = lambda key, val: sum(1 for s in samples if (val in s['mechanics'] if key == 'mech' else s[key] == val))
     def chips(key, items):
         out = [f'<button type="button" data-f="{key}" data-v="" aria-pressed="true">{bi("ทั้งหมด", "All")} <small>{len(samples)}</small></button>']
