@@ -31,7 +31,12 @@
     {"code": "P-05", "tab": "web", "th": "เว็บขาย KruSlide", "en": "KruSlide sales site",
      "desc_th": "เว็บขายแบบตลาดงานที่เป็นมิตร การ์ดหมวดหมู่ การ์ดราคา คลังตัวอย่าง ไทย/อังกฤษ (ยังไม่ขึ้นโดเมนจริง)",
      "desc_en": "A friendly marketplace-style sales site: category cards, price cards, sample library, TH/EN (not on its own domain yet).",
-     "preview": "kruslide/backoffice/data/img/site.webp", "open": "site", "price": ["web10"]},
+     "preview": "kruslide/backoffice/data/img/site.webp", "price": ["web10"],
+     "gallery": [
+       {"src": "kruslide/backoffice/data/img/site-desktop.webp", "th": "ทั้งหน้า บนคอมพิวเตอร์ (เลื่อนดูได้)", "en": "Whole page on a computer (scroll it)"},
+       {"src": "kruslide/backoffice/data/img/site-mobile.webp", "th": "ทั้งหน้า บนมือถือ (เลื่อนดูได้)", "en": "Whole page on a phone (scroll it)"},
+       {"src": "kruslide/backoffice/data/img/site.webp", "th": "ส่วนหัวของหน้าแรก", "en": "Home page header"}
+     ]},
     {"code": "P-06", "tab": "web", "th": "เว็บโรงเรียนสาธิต มรภ.เพชรบุรี", "en": "Satit PBRU school website",
      "desc_th": "เว็บโรงเรียน 15 หน้า ไทย/อังกฤษ ภาพใหญ่ กระจกฝ้าสีขาว สำหรับผู้ปกครอง",
      "desc_en": "A 15-page TH/EN school website with big photos and white frosted glass, for parents.",
@@ -53,7 +58,7 @@
      "gallery": [
        {"src": "kruslide/brand/kruslide-logo-light.png", "th": "โลโก้บนพื้นสว่าง", "en": "Logo on light"},
        {"src": "kruslide/brand/kruslide-logo-dark.png", "th": "โลโก้บนพื้นเข้ม", "en": "Logo on dark"},
-       {"src": "kruslide/brand/kruslide-icon-1024.png", "th": "ไอคอนแอป", "en": "App icon"},
+       {"src": "kruslide/brand/kruslide-icon.svg", "th": "ไอคอนแอป (SVG)", "en": "App icon (SVG)"},
        {"src": "kruslide/brand/kruslide-line-profile-640.png", "th": "รูปโปรไฟล์ LINE", "en": "LINE profile picture"},
        {"src": "kruslide/brand/logo-options.png", "th": "โลโก้ 4 แบบที่เคยเสนอ (เลือก C)", "en": "The 4 logo options (C chosen)"}
      ],

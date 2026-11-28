@@ -1,0 +1,189 @@
+{
+ "samples": {
+  "calculus": {
+   "code": "S-01",
+   "added": "2026-11-28"
+  },
+  "geo-thailand": {
+   "code": "S-02",
+   "added": "2026-11-28"
+  },
+  "history": {
+   "code": "S-03",
+   "added": "2026-11-28"
+  },
+  "thai-spelling": {
+   "code": "S-04",
+   "added": "2026-11-28"
+  },
+  "social-timeline": {
+   "code": "S-05",
+   "added": "2026-11-28"
+  },
+  "coding-robot": {
+   "code": "S-06",
+   "added": "2026-11-28"
+  },
+  "english-vocab": {
+   "code": "S-07",
+   "added": "2026-11-28"
+  },
+  "music-keys": {
+   "code": "S-08",
+   "added": "2026-11-28"
+  },
+  "english-grammar": {
+   "code": "S-09",
+   "added": "2026-11-28"
+  },
+  "art-colour": {
+   "code": "S-10",
+   "added": "2026-11-28"
+  },
+  "kinder-count": {
+   "code": "S-11",
+   "added": "2026-11-28"
+  },
+  "health-food": {
+   "code": "S-12",
+   "added": "2026-11-28"
+  },
+  "primary-clock-money": {
+   "code": "S-13",
+   "added": "2026-11-28"
+  },
+  "thai-poem": {
+   "code": "S-14",
+   "added": "2026-11-28"
+  },
+  "chem-periodic": {
+   "code": "S-15",
+   "added": "2026-11-28"
+  },
+  "chem-balance": {
+   "code": "S-16",
+   "added": "2026-11-28"
+  },
+  "phys-projectile": {
+   "code": "S-17",
+   "added": "2026-11-28"
+  },
+  "phys-circuit": {
+   "code": "S-18",
+   "added": "2026-11-28"
+  },
+  "bio-cell": {
+   "code": "S-19",
+   "added": "2026-11-28"
+  },
+  "bio-body": {
+   "code": "S-20",
+   "added": "2026-11-28"
+  },
+  "math-base10": {
+   "code": "S-21",
+   "added": "2026-11-28"
+  },
+  "math-fractions": {
+   "code": "S-22",
+   "added": "2026-11-28"
+  },
+  "math-geometry": {
+   "code": "S-23",
+   "added": "2026-11-28"
+  },
+  "math-equation-balance": {
+   "code": "S-24",
+   "added": "2026-11-28"
+  },
+  "math-linear": {
+   "code": "S-25",
+   "added": "2026-11-28"
+  },
+  "math-probability": {
+   "code": "S-26",
+   "added": "2026-11-28"
+  }
+ },
+ "styles": {
+  "bright graph paper": {
+   "code": "ST-08"
+  },
+  "topographic map": {
+   "code": "ST-09"
+  },
+  "cinematic globe to map": {
+   "code": "ST-10"
+  },
+  "paper cut out": {
+   "code": "ST-11"
+  },
+  "museum exhibit": {
+   "code": "ST-12"
+  },
+  "pixel game": {
+   "code": "ST-13"
+  },
+  "bright comic sticker": {
+   "code": "ST-14"
+  },
+  "music sheet": {
+   "code": "ST-15"
+  },
+  "minimal swiss editorial": {
+   "code": "ST-16"
+  },
+  "watercolour": {
+   "code": "ST-17"
+  },
+  "crayon kids": {
+   "code": "ST-18"
+  },
+  "fresh market illustration": {
+   "code": "ST-19"
+  },
+  "soft clay toy": {
+   "code": "ST-20"
+  },
+  "thai traditional pattern": {
+   "code": "ST-21"
+  },
+  "clean lab white": {
+   "code": "ST-22"
+  },
+  "dark slate chalkboard": {
+   "code": "ST-23"
+  },
+  "sports field": {
+   "code": "ST-24"
+  },
+  "blueprint maker": {
+   "code": "ST-25"
+  },
+  "microscope view": {
+   "code": "ST-26"
+  },
+  "anatomical illustration": {
+   "code": "ST-27"
+  },
+  "wooden toy blocks": {
+   "code": "ST-28"
+  },
+  "food and kitchen": {
+   "code": "ST-29"
+  },
+  "architect drafting": {
+   "code": "ST-30"
+  },
+  "playful balance scale bold flat colours": {
+   "code": "ST-31"
+  },
+  "graphing calculator": {
+   "code": "ST-32"
+  },
+  "family game night": {
+   "code": "ST-33"
+  }
+ },
+ "mechanics": {}
+}

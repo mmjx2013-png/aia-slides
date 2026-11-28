@@ -3,7 +3,8 @@
 Teachers log in with LINE, subscribe to a textbook's slide decks, pay by PromptPay, and open the decks only
 through our link. A teacher can also **ask us to make a book** ("ขอทำหนังสือ"): a short form, then a 10-question
 **style quiz** (two sample slides per question, tap the one you prefer, or "ได้ทั้งคู่"). The owner manages members,
-payments, books, units and book requests on an admin page.
+payments, books, units and book requests on an admin page, and **chooses which decks each teacher may open**:
+per-unit grants (with or without an expiry) next to paid book subscriptions, and approval of new members.
 
 Status: built and tested **locally only**. Nothing has been deployed. The deploy steps are at the end.
 
@@ -29,6 +30,7 @@ subscription in one transaction. `src/payments/` is the seam for Stripe Thailand
 wrangler.toml            Worker config: D1 + R2 bindings (placeholder IDs), vars, daily cron
 migrations/0001_init.sql D1 schema
 migrations/0002_book_requests.sql  book requests + style-quiz answers
+migrations/0003_unit_grants.sql    per-unit grants + approval of new members (teachers.approved_at)
 src/index.ts             entry: router, session lookup, errors, security headers, cron handler
 src/router.ts            tiny path router
 src/env.ts               Env (bindings, secrets) and row types
@@ -52,6 +54,9 @@ src/routes/member.ts     /app/ (my books + catalogue), /app/books/:id, subscribe
 src/routes/deck.ts       /app/deck/:unit/ (+ assets): access check, R2 stream, watermark, deck CSP
 src/routes/admin.ts      /app/admin/…: dashboard, book requests, payments, members, subscriptions, books/units, upload, CSV, audit
 src/routes/requests.ts   /app/requests…: "ขอทำหนังสือ" form, style quiz, the teacher's own requests
+src/routes/access.ts     the owner's access control: member access panel, approve, "ใครเข้าถึงได้บ้าง", the access matrix
+src/routes/adminkit.ts   shared admin parts (admin check, POST guard, page frame, filter tabs)
+src/lib/access.ts        who may open what (subscription OR grant), the teacher's library, grant expiry parsing
 src/lib/quiz.ts          the 10 quiz questions, summary ("Style A modern clean · vivid colours · …"), the brief for Claude
 src/routes/privacy.ts    /app/privacy (PDPA notice, Thai)
 src/routes/static.ts     /app/static/: app.css, app.js, favicon (logo C), fonts and quiz images (from R2)
@@ -77,10 +82,14 @@ e2e/smoke.mjs            Playwright smoke test against wrangler dev; writes scre
 | `GET/POST /app/profile` | member | display name + school (the school is needed for the watermark) |
 | `GET /app/books/:id`, `POST …/subscribe` | member | price, units, subscribe/renew for 1/3/6/12 months |
 | `GET /app/payments/:id`, `POST …/notify` | owner of the payment | PromptPay QR + steps, "I have paid" |
-| `GET /app/deck/:unit/` | active subscriber or admin | the deck, streamed from R2, watermarked |
+| `GET /app/deck/:unit/` | approved member with an active subscription to the book OR an active grant for the unit; admin | the deck, streamed from R2, watermarked (assets: same check) |
 | `GET /app/requests`, `GET /app/requests/new`, `POST /app/requests` | member | own book requests; the request form (subject, grade, textbook/publisher, units, start date, note) |
 | `GET/POST /app/requests/:id/quiz/:n` | the request's teacher | style quiz question n (1–10): a / b / both; the last answer sends the request |
 | `GET /app/requests/:id` | the request's teacher | "ขอบคุณ ทีมงานจะติดต่อกลับทาง LINE", status, chosen samples (never the owner note) |
+| `POST /app/admin/members/:id/access` | admins only | "สิทธิ์เข้าถึงสไลด์": every book and unit with a checkbox, "ทั้งเล่ม", expiry none / 1 / 3 / 12 months / a date; one Save |
+| `POST /app/admin/members/:id/approve` | admins only | approve a waiting member, optionally with whole books |
+| `GET /app/admin/books/:id/access`, `POST …/grant`, `POST …/revoke`, `POST /app/admin/grants/:id/revoke` | admins only | "ใครเข้าถึงได้บ้าง": who can open a book or unit and from where (paid / grant / both); revoke; search a member and add |
+| `GET/POST /app/admin/access` | admins only | "สิทธิ์ทั้งหมด": teachers × books/units, tap a cell to toggle, filter and search, bulk: a whole book to selected teachers |
 | `GET /app/admin/requests`, `/app/admin/requests/:id`, `POST …/:id` | admins only | every request with its form data, summary, chosen thumbnails; status new / quoted / building / done / declined; private owner note; "copy brief" |
 | `GET /app/admin/…` | admins only | dashboard (with the count of new requests), payments (confirm/reject), members (block, grant, PDPA erase), subscriptions (extend/expire), books/units CRUD, HTML upload to R2, CSV export, audit log |
 | `GET /app/privacy` | anyone | PDPA notice |
@@ -141,7 +150,8 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
    **PromptPay warning:** the QR code carries the PromptPay ID in plain text, so every member who scans or
    decodes it can read the whole number (the page itself shows only the last 4 digits). Use a business mobile
    number, a company tax ID or an e-wallet ID. Do **not** use a personal national ID card number.
-7. **Edit `wrangler.toml` [vars]**: set `APP_ORIGIN = "https://kruslide.example"`. Check `LINE_OA_ID` is the
+7. **Edit `wrangler.toml` [vars]**: set `APP_ORIGIN = "https://kruslide.example"`. `NEW_MEMBER_APPROVAL = "on"` makes
+   new LINE sign-ups wait for approval on the members page; set it to "off" for open sign-up. Check `LINE_OA_ID` is the
    LINE Official Account ID (already `@368lkkze`). Uncomment `routes` and set your domain.
 8. **Deploy**: `npx wrangler deploy`.
 9. **LINE Login channel** (LINE Developers console):
@@ -207,6 +217,13 @@ The seam is ready: `src/payments/stripe.ts` lists the steps. In short, add the s
   A deck must be self-contained like `build.py` output: inline script only, no `on…=` handlers, no external URLs.
 - Input validation on every field. SQL only with bound parameters. Every output is escaped by the html``
   template. CSV export defuses spreadsheet formulas.
+- Deck access: a unit opens for an active, approved member with an active subscription to its book (not a draft
+  book) OR an active grant for the unit (`unit_grants`, expiry optional); admins preview everything. It is checked on
+  every deck and asset request, so a revoke, an expiry or a block works at once, also in an open session. New members
+  wait as "รออนุมัติ" (`NEW_MEMBER_APPROVAL`, default "on"; the admins' own LINE ids never wait) and see only a waiting
+  page and their profile. Grant, revoke, bulk, toggle and approve are audit-logged; PDPA erasure and deleting a unit or
+  book remove grants; `/app/admin/export/grants.csv` exports them. Only the access matrix page may send a background
+  request, and only to its own URL (`connect-src https://<origin>/app/admin/access`).
 - Book requests: a teacher sees only their own (another teacher's id answers 404); only admins see all of them.
   Answers can change only while the request is a draft; once sent it is locked. The owner note never reaches the
   teacher's pages. The brief for Claude holds the school but no teacher name or LINE id. PDPA erasure deletes the

@@ -1,18 +1,18 @@
 # Graph Report - aia-slides  (2026-11-28)
 
 ## Corpus Check
-- 250 files · ~536,179 words
+- 356 files · ~798,134 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 232 file(s) not represented in the graph (top: .woff2 166, .css 32, .ttf 19)
-- WARNING: 232 of 530 files seen (44%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
+- Unclassified: 304 file(s) not represented in the graph (top: .woff2 166, .css 103, .ttf 19)
+- WARNING: 304 of 720 files seen (42%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 5213 nodes · 12390 edges · 298 communities (251 shown, 47 thin omitted)
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 1033 edges (avg confidence: 0.85)
+- 8143 nodes · 19114 edges · 446 communities (389 shown, 57 thin omitted)
+- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 1648 edges (avg confidence: 0.85)
 - Token cost: 936,744 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `725bcd43`
+- Built from commit: `ca99aabc`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,7 +24,7 @@
 - admin.ts
 - Platform PDPA and CRUD
 - Kimono exhibition v3 claims ledger (kimono-sources.md)
-- Narration TTS tooling
+- json
 - Platform config and auth
 - SIL Open Font License 1.1
 - Platform DB writes
@@ -35,15 +35,15 @@
 - 3D scene camera
 - 3D garment materials
 - Video compositing
-- Asset fetching
+- body.js
 - subprocess
 - deck.ts
-- photos.py
+- qa.py
 - trailer/render.py
 - periodic.js
 - 3D animation easing
-- Dressform modelling
-- Mesh geometry helpers
+- numpy
+- cell.js
 - Sort and MCQ widgets
 - pathlib
 - Kimono site builder
@@ -63,22 +63,22 @@
 - app.js
 - Ink / add
 - scriptsqacjs / args
-- Wholeslide pen  button / on
+- el
 - csv / statistics
 - ref / ref_child_process
 - geo-thailand/src/kit.js
 - Unit 4 SVG Symbol Libr / Book icon book
-- _bisect / _first_hit
+- Scale
 - Interactive slide mech / Pen with autoshapes ne
-- PromptPay transfers co / Manual PromptPay payme
+- math-geometry/src/app.js
 - tsconfigjson / compilerOptions
-- toolsjs / area2
-- _capsule / _ell
-- _edge_x / _Panel
+- math-linear/src/app.js
+- circuit.js
+- balance.js
 - sort
 - _K / bump
 - apply_shot / _changed
-- math
+- lookdev.py
 - bars / all
 - _Canvas / circle
 - mocklinemjs / b64url
@@ -87,12 +87,12 @@
 - map.js
 - promptpayts / crc16
 - _Mirror / circle
-- sys
+- coding-robot/src/deck.js
 - slides.mjs
 - sort
-- dots
+- unit4/tools.js
 - previewclipcjs / chromium
-- anchors / _camera
+- social-timeline/src/deck.js
 - calc.js
 - KruSlide App Icon SVG / Blue Diagonal Stroke 3
 - sort
@@ -103,7 +103,7 @@
 - pod_runsh / DEBIAN_FRONTEND
 - geopy / laea
 - requests.ts
-- _Sleeve
+- projectile.js
 - chem-periodic/src/tools.js
 - makepy / cups
 - lockjs / attempt
@@ -126,26 +126,26 @@
 - sort
 - english-grammar/src/kit.js
 - static.ts
-- sv
+- math-fractions/src/app.js
 - dots
 - ref_fs
-- Book answer walkthrough slides (same items and numbers, own words, redrawn in Style A)
+- chem-balance/src/tools.js
 - Ink
 - gen35.py
 - english-vocab/src/kit.js
-- line
+- kinder.js
 - bars
 - MEMORY.md shared memory
 - scripts
 - input
-- math-equation-balance/src/tools.js
+- g
 - math-linear/src/tools.js
 - P
 - cards.js
 - self
 - sort
 - sort
-- g
+- coding-robot/src/kit.js
 - kinder-count/src/kit.js
 - แคลคูลัส ม.6: ตัวอย่างบทเรียน KruSlide (8 สไลด์)
 - sort
@@ -165,7 +165,7 @@
 - Ink
 - Ink
 - Ink
-- dots
+- math-fractions/src/tools.js
 - el
 - Ink
 - Ink
@@ -181,9 +181,9 @@
 - el
 - math-base10/src/tools.js
 - el
-- math-fractions/src/tools.js
+- health-food/src/kit.js
 - el
-- math-probability/src/tools.js
+- el
 - bars
 - english-grammar/src/engine.js
 - Ink
@@ -194,18 +194,18 @@
 - chem-periodic/src/engine.js
 - Ink
 - english-grammar/src/tools.js
-- english-vocab/src/tools.js
+- music-keys/src/kit.js
 - geo-thailand/src/engine.js
 - Ink
 - kinder-count/src/engine.js
 - math-equation-balance/src/engine.js
 - math-fractions/src/engine.js
-- sv
+- el
 - math-geometry/src/engine.js
 - math-geometry/src/tools.js
 - math-linear/src/engine.js
 - math-probability/src/engine.js
-- sv
+- S
 - primary-clock-money/src/engine.js
 - thai-poem/src/engine.js
 - thai-spelling/src/engine.js
@@ -240,7 +240,7 @@
 - bars
 - Ink
 - spell.js
-- sv
+- social-timeline/src/kit.js
 - bars
 - Ink
 - bars
@@ -248,10 +248,10 @@
 - line
 - line
 - line
+- art-colour/src/kit.js
 - line
 - line
-- line
-- line
+- bars
 - line
 - line
 - line
@@ -262,7 +262,7 @@
 - el
 - bars
 - bars
-- bars
+- poem.js
 - bars
 - bars
 - picto
@@ -270,10 +270,10 @@
 - picto
 - el
 - picto
+- dots
 - el
-- el
-- el
-- input
+- english-vocab/src/tools.js
+- vocab.js
 - input
 - input
 - picto
@@ -283,12 +283,12 @@
 - input
 - input
 - self
-- g
-- self
-- line
-- g
+- music-keys/src/deck.js
 - self
 - line
+- g
+- self
+- clock.js
 - self
 - อยุธยา · ราชธานีบนเกาะกลางแม่น้ำ (ตัวอย่างสไลด์ประวัติศาสตร์ "แบบที่หนึ่ง" ของ KruSlide)
 - self
@@ -301,34 +301,183 @@
 - self
 - self
 - self
-- g
+- sort
+- dots
 - g
 - g
 - เครดิตและแหล่งข้อมูล · Credits and sources (อยุธยา · KruSlide sample deck)
-- _obi_level
+- dots
+- dots
+- dots
+- dots
+- art-colour/src/tools.js
+- bars
+- el
+- Ink
+- bars
+- sort
+- sort
+- dots
+- el
+- sort
+- sort
+- Ink
+- sort
+- music-keys/src/tools.js
+- sort
+- el
+- sort
+- dots
+- health-food/src/deck.js
+- sort
+- dots
+- glass/src/tools.js
+- mechanics/src/tools.js
+- photo/src/tools.js
+- bars
+- bars
+- el
+- bars
+- bars
+- Ink
+- Ink
+- math-probability/src/app.js
+- Ink
+- Ink
+- Ink
+- sort
+- sort
+- sort
+- art-colour/src/engine.js
+- bio-body/src/engine.js
+- bio-body/src/tools.js
+- bio-cell/src/engine.js
+- chem-balance/src/engine.js
+- sort
+- coding-robot/src/engine.js
+- Ink
+- health-food/src/engine.js
+- Ink
+- math-probability/src/tools.js
+- music-keys/src/engine.js
+- bars
+- phys-circuit/src/engine.js
+- phys-projectile/src/engine.js
+- phys-projectile/src/tools.js
+- social-timeline/src/engine.js
+- Ink
+- glass/src/engine.js
+- mechanics/src/engine.js
+- photo/src/engine.js
+- pie
+- dots
+- pie
+- el
+- pie
+- el
+- pie
+- el
+- pie
+- dots
+- pie
+- el
+- pie
+- el
+- pie
+- bio-cell/src/tools.js
+- coding-robot/src/tools.js
+- health-food/src/tools.js
+- math-equation-balance/src/tools.js
+- phys-circuit/src/tools.js
+- social-timeline/src/tools.js
+- sv
+- sv
+- sv
+- el
+- Ink
+- el
+- Ink
+- el
+- Ink
+- bars
+- sv
+- bars
+- kick
+- picto
+- picto
+- picto
+- picto
+- picto
+- draw
+- picto
+- line
+- input
+- picto
+- picto
+- input
+- picto
+- input
+- render
+- tween
+- input
+- input
+- bars
+- pie
+- picto
+- ภารกิจกลับไปดวงจันทร์ (Return to the Moon): scene list and narration draft
+- clamp
+- KruSlide (ครูสไลด์) brand
+- self
+- self
+- self
+- line
+- self
+- self
+- line
+- self
+- g
+- g
+- self
+- self
+- line
+- self
+- self
+- self
+- self
+- self
+- g
+- unit4/qa.cjs
+- grammar.js
+- Credits: geo-thailand
+- announce
+- tween
+- announce
+- tween
+- announce
+- tween
 
 ## God Nodes (most connected - your core abstractions)
-1. `HttpError` - 67 edges
-2. `H()` - 60 edges
-3. `html()` - 54 edges
-4. `redirect()` - 35 edges
-5. `audit()` - 32 edges
-6. `idParam()` - 31 edges
-7. `icon()` - 29 edges
-8. `page()` - 26 edges
-9. `home()` - 23 edges
-10. `Security and bug audit report: Satit prototype website` - 23 edges
+1. `HttpError` - 79 edges
+2. `html()` - 67 edges
+3. `redirect()` - 42 edges
+4. `icon()` - 40 edges
+5. `H()` - 40 edges
+6. `audit()` - 39 edges
+7. `idParam()` - 38 edges
+8. `adminPost()` - 28 edges
+9. `page()` - 27 edges
+10. `Scale()` - 25 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Pen with auto-shapes (near-straight line snaps straight, loops become circles/rectangles)` --semantically_similar_to--> `Auto shapes for all ink (near-straight strokes snap to lines, loops to circles or rectangles)`  [INFERRED] [semantically similar]
-  kruslide/BRIEF.md → teacher-slides/unit4/CONTRACT.md
 - `Source number table (4-43, Met)` --semantically_similar_to--> `Ledger sources table (4-43)`  [INFERRED] [semantically similar]
   content/BRIEF.md → kimono-sources.md
+- `Pen with auto-shapes (near-straight line snaps straight, loops become circles/rectangles)` --semantically_similar_to--> `Auto shapes for all ink (near-straight strokes snap to lines, loops to circles or rectangles)`  [INFERRED] [semantically similar]
+  kruslide/BRIEF.md → teacher-slides/unit4/CONTRACT.md
 - `LINE Official Account contact (@kruslide placeholder, TODO-LINE-ID)` --references--> `lineOa()`  [INFERRED]
   kruslide/BRIEF.md → kruslide/platform/src/lib/config.ts
-- `Tap-a-choice MCQ widget (.ch.ia[data-mcq], .ok on the right choice)` --references--> `mcq()`  [INFERRED]
+- `Whole-slide pen (✎ button or P key)` --references--> `pen()`  [INFERRED]
   teacher-slides/unit4/CONTRACT.md → teacher-slides/unit4/tools.js
-- `w-bars bar-chart builder (data-answer, data-start)` --references--> `bars()`  [INFERRED]
+- `w-input typed-answer widget (data-answer, data-accept, data-unit, data-tol)` --references--> `input()`  [INFERRED]
   teacher-slides/unit4/CONTRACT.md → teacher-slides/unit4/tools.js
 
 ## Import Cycles
@@ -356,67 +505,67 @@
 - **Students present first, then step-by-step reveal of the method and answer** — kruslide_brief_step_by_step_reveal, teacher_slides_unit4_contract_students_present_first, teacher_slides_unit4_book_answers_students_present_first, teacher_slides_unit4_book_answers_look_think_why_watch_out, teacher_slides_unit4_contract_graph_builders_start_ready [INFERRED 0.85]
 - **Outdated Server to Parent Risk Chain** — satit_site_pitch_script_server_header_disclosure, satit_site_pitch_script_php_7_3, satit_site_pitch_script_openssl_1_1_1, satit_site_pitch_script_apache_2_4_52, satit_site_pitch_script_hsts, satit_site_pitch_script_risk_swapped_fee_qr, satit_site_pitch_script_risk_page_tampering, satit_site_pitch_script_risk_plugin_version_scanning [INFERRED 0.85]
 
-## Communities (298 total, 47 thin omitted)
+## Communities (446 total, 57 thin omitted)
 
 ### Community 0 - "Platform package dependencies"
-Cohesion: 0.09
-Nodes (39): b64url(), addMonths(), bangkokDate(), startDate(), requestPayment(), startLogin(), PROFILE, Cloudflare (+31 more)
+Cohesion: 0.10
+Nodes (35): b64(), b64url(), sha256(), sha256hex(), countSlides(), inlineScriptHashes(), addMonths(), requestPayment() (+27 more)
 
 ### Community 1 - "Satit pitch script and security"
 Cohesion: 0.06
 Nodes (68): Pitch script: why the Satit school needs a new website, Apache 2.4.52 (latest 2.4.71), ASVS V12.2.1 (no unencrypted http access), ASVS V12.2.1: No Unencrypted HTTP, ASVS V15.2.1 (supported software components), ASVS V15.2.1: Supported Software Components, ASVS V3.4.1 (HSTS at least 1 year), ASVS V3.4.1: Enforce HTTPS via HSTS (>=1 year) (+60 more)
 
 ### Community 2 - "Kimono 3D weaving utilities"
-Cohesion: 0.11
-Nodes (28): hex_rgb(), setup_cycles(), build_bench(), S(), build_room(), P(), build_scene(), build_shoji() (+20 more)
+Cohesion: 0.07
+Nodes (40): hex_rgb(), setup_cycles(), arc(), build_bench(), build_bolt(), build_loom(), R(), S() (+32 more)
 
 ### Community 3 - "Satit evidence pack standards"
 Cohesion: 0.06
 Nodes (60): Evidence Pack: Is the new Satit website really faster than the old one?, ASVS V12.2.1 TLS always, no unencrypted access, ASVS V13.4.6 Do not disclose server software versions, ASVS V15.2.1 Components within support period, ASVS V3.4.1 HSTS for at least 1 year (IETF RFC 6797), ASVS V3.4.3 Content-Security-Policy against injected scripts, ASVS V3.4.4 X-Content-Type-Options: nosniff, axe-core 4.14 (+52 more)
 
 ### Community 4 - "admin.ts"
-Cohesion: 0.08
-Nodes (86): Server-side price = slide_count × rate (3–5 baht), never taken from the form, effectiveStatus(), getAnswers(), listBooks(), listMyRequests(), listPayments(), listPaymentsForTeacher(), listRequests() (+78 more)
+Cohesion: 0.09
+Nodes (89): counts(), effectiveStatus(), listBooks(), listMyRequests(), listPayments(), listPaymentsForTeacher(), listRequests(), listSubscriptions() (+81 more)
 
 ### Community 5 - "Platform PDPA and CRUD"
-Cohesion: 0.14
-Nodes (55): createUnit(), deleteBook(), getBook(), getRequest(), getSubscriptionById(), getTeacher(), getUnit(), updateUnit() (+47 more)
+Cohesion: 0.10
+Nodes (76): createUnit(), deleteBook(), getBook(), getRequest(), getTeacher(), getUnit(), grantUnits(), listUnits() (+68 more)
 
 ### Community 6 - "Kimono exhibition v3 claims ledger (kimono-sources.md)"
 Cohesion: 0.19
 Nodes (19): Kimono exhibition v3 claims ledger (kimono-sources.md), Source 4: Becke 2022 thesis (furisode, coming-of-age day), Claims dropped for lack of source, Source 6: Druet 2024 (seasons with kimono), Source 5: Fukai, Japonism in Fashion, Source 10: Koide 2012 (kosode design styles), Source 7: Maruyama, Tauchi, Kubo 2017 (form and making-over), Source 39: Nishimura 1980 (Edo clothing laws) (+11 more)
 
-### Community 7 - "Narration TTS tooling"
-Cohesion: 0.09
-Nodes (15): AI narration via Venice API text-to-speech, duration(), norm(), score(), speak(), transcribe(), sc(), load_dims() (+7 more)
+### Community 7 - "json"
+Cohesion: 0.05
+Nodes (36): NODE_PATH, build.sh script, AI narration via Venice API text-to-speech, build(), prepare_voice(), clean(), get(), main() (+28 more)
 
 ### Community 8 - "Platform config and auth"
-Cohesion: 0.06
-Nodes (70): LINE Login for teachers, CSRF protection: session-bound token plus same-origin Origin/Sec-Fetch-Site, D1 (SQLite) state: teachers, books, units, subscriptions, payments, sessions, login attempts, rate limits, audit log, D1 Time Travel restore (30 days) and SQL export backups, Daily cron at 03:17 UTC (expire subscriptions, purge sessions, login attempts, rate counters), LINE Login v2.1 (state, nonce, PKCE S256; ID token HS256 or ES256 via JWKS), Mock LINE local dev (three fictional test users, throwaway random secrets), __Host-ks_session signed HttpOnly session cookie (D1 stores only SHA-256 of the id) (+62 more)
+Cohesion: 0.05
+Nodes (74): LINE Login for teachers, CSRF protection: session-bound token plus same-origin Origin/Sec-Fetch-Site, D1 (SQLite) state: teachers, books, units, subscriptions, payments, sessions, login attempts, rate limits, audit log, D1 Time Travel restore (30 days) and SQL export backups, Daily cron at 03:17 UTC (expire subscriptions, purge sessions, login attempts, rate counters), LINE Login v2.1 (state, nonce, PKCE S256; ID token HS256 or ES256 via JWKS), Mock LINE local dev (three fictional test users, throwaway random secrets), __Host-ks_session signed HttpOnly session cookie (D1 stores only SHA-256 of the id) (+66 more)
 
 ### Community 9 - "SIL Open Font License 1.1"
-Cohesion: 0.14
-Nodes (20): Thai text rule (self-hosted font, line-height 1.45), Anuphan font licence, KruSlide brand copy (SIL OFL 1.1, fontsource 5.3.0), Inter font licence, KruSlide brand copy (OFL-1.1 and Apache-2.0), Cloudflare hosting (Pages site, Workers back end, D1 database, private R2 decks), Self-hosted Anuphan (Thai) and Inter fonts from teacher-slides/unit4/fonts, Trailer fonts: Anuphan and Inter (SIL Open Font License), Satit PBRU school website redesign project, Anuphan font licence (SIL OFL 1.1) (+12 more)
+Cohesion: 0.13
+Nodes (22): Thai text rule (self-hosted font, line-height 1.45), Anuphan font licence, KruSlide brand copy (SIL OFL 1.1, fontsource 5.3.0), Inter font licence, KruSlide brand copy (OFL-1.1 and Apache-2.0), Cloudflare hosting (Pages site, Workers back end, D1 database, private R2 decks), Satit PBRU school site and pitch deck (live work), School websites and presentation decks, Self-hosted Anuphan (Thai) and Inter fonts from teacher-slides/unit4/fonts, Trailer fonts: Anuphan and Inter (SIL Open Font License) (+14 more)
 
 ### Community 10 - "Platform DB writes"
-Cohesion: 0.06
-Nodes (44): AdminRequestRow, answersFor(), AuditRow, BookInput, confirmPayment(), counts(), createBook(), createRequest() (+36 more)
+Cohesion: 0.04
+Nodes (72): Server-side price = slide_count × rate (3–5 baht), never taken from the form, accessForBook(), activeSubsOf(), AdminRequestRow, allBooksWithUnits(), answersFor(), approveTeacher(), AuditRow (+64 more)
 
 ### Community 11 - "Unit 4 teacher guide"
 Cohesion: 0.09
 Nodes (38): Unit 4 Statistics (1) Teacher Guide: How to use the slides, M1 answer-key site (m1-answer-key, password-protected, teacher only), Answer tools (interactive exercise widgets), Auto shapes (neaten hand-drawn strokes), Bottom control bar (menu, back, slide number, next, pen, full screen), Build a pictogram (+, half, - icons), Cheat sheet: keys and buttons, Check, Show answer / Hide answer and Reset buttons (+30 more)
 
 ### Community 12 - "Unit 4 slide generators"
-Cohesion: 0.13
+Cohesion: 0.14
 Nodes (18): books(), cups(), f(), rr(), s_bar(), s_double(), mk(), val() (+10 more)
 
 ### Community 13 - "Wikimedia Commons (source of every trailer image)"
 Cohesion: 0.08
-Nodes (21): Answer keys with worked steps + password-locked answer site, Ayutthaya cinematic history trailer (45–60 s, 4K, kruslide/trailer/), Custom school theme (logo and colours on any style), KruSlide explainer video (60–120 s, replaced by the deck), Interactive lesson slides by textbook (main product), KruSlide (ครูสไลด์) brand, LINE Official Account contact (@kruslide placeholder, TODO-LINE-ID), Narrated teaching videos (2D animated or 3D/cinematic) (+13 more)
+Nodes (22): Ayutthaya cinematic history trailer (45–60 s, 4K, kruslide/trailer/), KruSlide explainer video (60–120 s, replaced by the deck), Narrated teaching videos (2D animated or 3D/cinematic), Slide style A: modern clean, Unit 4 live deck (m1-statistics) and teacher guide, Pa Sak River in Ayutthaya photograph (CC BY-SA 4.0), Map of the island city 'Judia', François Valentijn 1726 (public domain), View of Iudea (Ayutthaya) painting, Johannes Vingboons c. 1662, Rijksmuseum (CC0) (+14 more)
 
 ### Community 14 - "mech.js"
-Cohesion: 0.06
-Nodes (63): angAt(), arrowD(), bez(), blockSVG(), callouts(), camSVG(), clamp(), coverSVG() (+55 more)
+Cohesion: 0.11
+Nodes (29): bez(), blockSVG(), callouts(), camSVG(), coverSVG(), crankPin(), crankSVG(), Engine() (+21 more)
 
 ### Community 15 - "3D scene camera"
 Cohesion: 0.11
@@ -424,27 +573,27 @@ Nodes (19): clamp01(), _camera_base(), camera_matrix(), _camera_segments(), came
 
 ### Community 16 - "3D garment materials"
 Cohesion: 0.06
-Nodes (40): asset_map(), _band(), _branch(), _bud(), _c(), _catmull(), _col(), collar_uv() (+32 more)
+Nodes (42): asset_map(), _band(), _branch(), _bud(), _c(), _catmull(), _col(), collar_uv() (+34 more)
 
 ### Community 17 - "Video compositing"
-Cohesion: 0.11
-Nodes (26): air(), blur(), box(), comp(), _frame(), guided(), lens(), _low() (+18 more)
+Cohesion: 0.06
+Nodes (41): found_frames(), lens(), main(), project(), selftest(), fetch(), files(), main() (+33 more)
 
-### Community 18 - "Asset fetching"
-Cohesion: 0.07
-Nodes (17): NODE_PATH, build.sh script, build(), prepare_voice(), ff(), mux(), poster(), web() (+9 more)
+### Community 18 - "body.js"
+Cohesion: 0.05
+Nodes (52): back(), blob(), blobD(), check(), fill(), got(), home(), mix() (+44 more)
 
 ### Community 19 - "subprocess"
-Cohesion: 0.14
-Nodes (26): cards(), contact_sheet(), frames_at(), log(), loudness(), probe(), smoothness(), streams() (+18 more)
+Cohesion: 0.12
+Nodes (19): decode(), fade(), loudnorm(), main(), t_of_frame(), measure(), ts(), write_wav24() (+11 more)
 
 ### Community 20 - "deck.ts"
-Cohesion: 0.11
-Nodes (22): 'Licensed to <teacher · school>' deck mark, Licence watermark injected by HTMLRewriter while streaming the deck, html`` templates escape every value; input validation and bound SQL parameters, Unit, b64(), sha256(), sha256hex(), countSlides() (+14 more)
+Cohesion: 0.15
+Nodes (16): 'Licensed to <teacher · school>' deck mark, Licence watermark injected by HTMLRewriter while streaming the deck, html`` templates escape every value; input validation and bound SQL parameters, esc(), MAP, part(), injectWatermark(), WATERMARK_CSS (+8 more)
 
-### Community 21 - "photos.py"
-Cohesion: 0.11
-Nodes (5): lum(), cutout(), main(), lum(), parse()
+### Community 21 - "qa.py"
+Cohesion: 0.17
+Nodes (8): cards(), contact_sheet(), frames_at(), log(), loudness(), probe(), smoothness(), streams()
 
 ### Community 22 - "trailer/render.py"
 Cohesion: 0.09
@@ -458,29 +607,29 @@ Nodes (57): Anim(), f(), atomG(), attach(), blocked(), Bohr(), gone(), pop() (+4
 Cohesion: 0.11
 Nodes (19): ramp(), smoothstep(), _acc_hung(), _acc_wait(), anchors_world(), hm(), _bolt_pose(), cloth_frame() (+11 more)
 
-### Community 25 - "Dressform modelling"
-Cohesion: 0.17
-Nodes (18): build(), _build_mannequin(), _c_table(), _circle(), _collar_setup(), _grad(), _grid_faces(), _mat() (+10 more)
+### Community 25 - "numpy"
+Cohesion: 0.05
+Nodes (63): _anchor_points(), anchors(), _bisect(), build(), _build_mannequin(), _c_table(), _camera(), _capsule() (+55 more)
 
-### Community 26 - "Mesh geometry helpers"
-Cohesion: 0.25
-Nodes (20): _close_prof(), _face_normals(), _flip(), _frames(), _panel_uv(), _ramp(), _resample(), _ridge() (+12 more)
+### Community 26 - "cell.js"
+Cohesion: 0.07
+Nodes (52): anchor(), Anim(), blob(), box(), cheekCell(), chips(), clamp(), drag() (+44 more)
 
 ### Community 27 - "Sort and MCQ widgets"
 Cohesion: 0.22
 Nodes (16): w-sort card-sorting widget (data-bins), scaleOf(), sort(), check(), drop(), fitBins(), mark(), move() (+8 more)
 
 ### Community 28 - "pathlib"
-Cohesion: 0.05
-Nodes (17): sha(), sha(), sha(), sha(), sha(), sha(), sha(), sha() (+9 more)
+Cohesion: 0.03
+Nodes (32): sha(), sha(), sha(), sha(), sha(), sha(), sha(), sha() (+24 more)
 
 ### Community 29 - "Kimono site builder"
-Cohesion: 0.19
-Nodes (18): card_html(), check_room(), cites(), rep(), err(), esc(), guide_button(), head_html() (+10 more)
+Cohesion: 0.10
+Nodes (20): card_html(), check_room(), cites(), rep(), err(), esc(), guide_button(), head_html() (+12 more)
 
 ### Community 30 - "3D room builders"
-Cohesion: 0.15
-Nodes (7): build_byobu(), build_garden(), build_iko(), MB, _obj(), _shrub(), _stone()
+Cohesion: 0.11
+Nodes (11): box(), build_byobu(), build_furniture(), build_garden(), build_iko(), build_robe(), MB, _obj() (+3 more)
 
 ### Community 31 - "Platform smoke tests"
 Cohesion: 0.13
@@ -503,12 +652,12 @@ Cohesion: 0.16
 Nodes (17): fetch_fund_prices.sh script, Market data for the paper-trading worker (README), Boss session, Ticker file naming: dots and '=' become '_' (BRK.B -> BRK_B.json, THB=X -> THB_X.json), fund-latest.tgz (weekly 1y daily prices for fund holdings and watch list), fund-prices-2026-11-27.tgz (yahoo-fund/: 5y daily for 200 screened tickers plus benchmarks), trading/fund/screen.csv (200 tickers, claude/paper-trading @4de9c05), INDEX_SET50.json and INDEX_SET.json (^SET50.BK, ^SET.BK) (+9 more)
 
 ### Community 36 - "Deck engine"
-Cohesion: 0.18
-Nodes (13): Meaningful animation system (.in stagger, beats data-steps/.g1–.g4, .grow, .draw, .segd, .pop/.drop, data-count), closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen() (+5 more)
+Cohesion: 0.14
+Nodes (16): Meaningful animation system (.in stagger, beats data-steps/.g1–.g4, .grow, .draw, .segd, .pop/.drop, data-count), closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen() (+8 more)
 
 ### Community 37 - "3D scene assembly"
-Cohesion: 0.14
-Nodes (12): apply_clay(), box(), build(), build_camera(), build_daylight(), build_dressform(), build_furniture(), build_props() (+4 more)
+Cohesion: 0.20
+Nodes (8): apply_clay(), build(), build_camera(), build_daylight(), build_dressform(), build_props(), _coll(), cylinder()
 
 ### Community 38 - "3D hall and floor"
 Cohesion: 0.14
@@ -519,8 +668,8 @@ Cohesion: 0.08
 Nodes (21): HERE, only, OUT, tmp, PAIRS, bulk(), DECK, dir (+13 more)
 
 ### Community 40 - "playwright"
-Cohesion: 0.09
-Nodes (16): playwright, { chromium }, fs, out, path, { chromium }, path, { chromium } (+8 more)
+Cohesion: 0.10
+Nodes (12): playwright, { chromium }, path, { chromium }, path, { chromium }, path, {chromium} (+4 more)
 
 ### Community 41 - "make2py / bars"
 Cohesion: 0.32
@@ -528,23 +677,23 @@ Nodes (15): bars(), bell_dots(), choices(), clock(), cup(), cups(), donut(), dot
 
 ### Community 42 - "wdots dotplot builder / axes"
 Cohesion: 0.18
-Nodes (12): w-pie pie builder (type angles or percent), axes(), drawLabels(), fitLabels(), fmt(), pie(), draw(), pt() (+4 more)
+Nodes (12): w-dots dot-plot builder, axes(), dots(), check(), cx(), draw(), reset(), set() (+4 more)
 
 ### Community 43 - "app.js"
 Cohesion: 0.11
 Nodes (51): A_o(), A_t(), add(), B_o(), B_t(), blk(), bump(), bundle() (+43 more)
 
 ### Community 44 - "Ink / add"
-Cohesion: 0.37
-Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
+Cohesion: 0.19
+Nodes (20): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+12 more)
 
 ### Community 45 - "scriptsqacjs / args"
 Cohesion: 0.12
 Nodes (11): args, BROWSER, { execFileSync }, fs, http, OUT, path, pw (+3 more)
 
-### Community 46 - "Wholeslide pen  button / on"
-Cohesion: 0.18
-Nodes (13): Auto shapes for all ink (near-straight strokes snap to lines, loops to circles or rectangles), Whole-slide pen (✎ button or P key), w-write handwriting box (data-lines), btn(), el(), foot(), api, pen() (+5 more)
+### Community 46 - "el"
+Cohesion: 0.17
+Nodes (18): w-picto pictogram builder (data-key, data-icon, half icons), btn(), clamp(), el(), foot(), api, ico(), pen() (+10 more)
 
 ### Community 47 - "csv / statistics"
 Cohesion: 0.16
@@ -556,39 +705,39 @@ Nodes (9): B, { chromium }, { execFileSync }, fs, path, vdir, { chromium }, fs (
 
 ### Community 49 - "geo-thailand/src/kit.js"
 Cohesion: 0.11
-Nodes (21): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+13 more)
+Nodes (20): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+12 more)
 
 ### Community 50 - "Unit 4 SVG Symbol Libr / Book icon book"
 Cohesion: 0.26
 Nodes (13): Unit 4 SVG Symbol Library, Book icon (#book), Light bulb icon (#bulb), Check mark icon (#check), Clipboard icon (#clipboard), Cross icon (#cross), Bubble tea cup symbol (#cup), Kid character symbol (#kid) (+5 more)
 
-### Community 51 - "_bisect / _first_hit"
-Cohesion: 0.16
-Nodes (4): _bisect(), _first_hit(), _Hull, t_of_frame()
+### Community 51 - "Scale"
+Cohesion: 0.07
+Nodes (51): v(), clamp(), el(), eo(), eqHTML(), Paper(), line(), penOn() (+43 more)
 
 ### Community 52 - "Interactive slide mech / Pen with autoshapes ne"
-Cohesion: 0.15
-Nodes (12): Tap-a-choice MCQ widget (.ch.ia[data-mcq], .ok on the right choice), w-bars bar-chart builder (data-answer, data-start), w-input typed-answer widget (data-answer, data-accept, data-unit, data-tol), w-line line-graph builder (data-answer, data-start), clean(), input(), check(), mark() (+4 more)
+Cohesion: 0.14
+Nodes (9): Interactive slide mechanics demo (tools.js + parts/_tools-demo.html), Pen with auto-shapes (near-straight line snaps straight, loops become circles/rectangles), Auto shapes for all ink (near-straight strokes snap to lines, loops to circles or rectangles), Tap-a-choice MCQ widget (.ch.ia[data-mcq], .ok on the right choice), Whole-slide pen (✎ button or P key), w-bars bar-chart builder (data-answer, data-start), w-input typed-answer widget (data-answer, data-accept, data-unit, data-tol), w-line line-graph builder (data-answer, data-start) (+1 more)
 
-### Community 53 - "PromptPay transfers co / Manual PromptPay payme"
-Cohesion: 0.29
-Nodes (8): PaymentProvider seam (manual.ts live, stripe.ts stub), Stripe Thailand integration (planned: Checkout Session, webhook signature, PAYMENT_PROVIDER=stripe), PaymentRow, Payment, PaymentProvider, paymentProvider(), PaymentStart, stripeProvider
+### Community 53 - "math-geometry/src/app.js"
+Cohesion: 0.11
+Nodes (42): add(), Anim(), arc(), at(), between(), build(), clamp(), compass() (+34 more)
 
 ### Community 54 - "tsconfigjson / compilerOptions"
 Cohesion: 0.14
 Nodes (13): compilerOptions, forceConsistentCasingInFileNames, isolatedModules, lib, module, moduleResolution, noEmit, noUnusedLocals (+5 more)
 
-### Community 55 - "toolsjs / area2"
-Cohesion: 0.21
-Nodes (11): Interactive slide mechanics demo (tools.js + parts/_tools-demo.html), Pen with auto-shapes (near-straight line snaps straight, loops become circles/rectangles), area2(), dist(), ico(), pathLen(), rdp(), recog() (+3 more)
+### Community 55 - "math-linear/src/app.js"
+Cohesion: 0.09
+Nodes (33): Anim(), beats(), check(), clamp(), eio(), el(), eq(), explain() (+25 more)
 
-### Community 56 - "_capsule / _ell"
-Cohesion: 0.22
-Nodes (10): _capsule(), _ell(), _ellcyl(), _ellipsoid(), hull_sdf(), mannequin_sdf(), _mirror(), _smax() (+2 more)
+### Community 56 - "circuit.js"
+Cohesion: 0.08
+Nodes (24): Anim(), Board(), api, drawEdge(), float(), kind(), labelEdge(), meter() (+16 more)
 
-### Community 57 - "_edge_x / _Panel"
-Cohesion: 0.24
-Nodes (3): _edge_x(), _Panel, _ss()
+### Community 57 - "balance.js"
+Cohesion: 0.10
+Nodes (35): Anim(), clamp(), clear(), count(), drag(), eio(), Eq(), api (+27 more)
 
 ### Community 58 - "sort"
 Cohesion: 0.15
@@ -598,13 +747,13 @@ Nodes (23): on(), announce(), answerCtl(), foot(), api, pick(), set(), scaleOf()
 Cohesion: 0.16
 Nodes (10): apply_frame(), apply_shot(), _changed(), _members(), _paper_nodes(), place_props(), set_groups(), set_light() (+2 more)
 
-### Community 61 - "math"
-Cohesion: 0.09
-Nodes (17): apply(), _bounce(), _haze(), _washi(), orbit(), arc(), build_bolt(), build_loom() (+9 more)
+### Community 61 - "lookdev.py"
+Cohesion: 0.27
+Nodes (4): apply(), _bounce(), _haze(), _washi()
 
 ### Community 62 - "bars / all"
-Cohesion: 0.27
-Nodes (13): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+5 more)
+Cohesion: 0.36
+Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
 
 ### Community 64 - "mocklinemjs / b64url"
 Cohesion: 0.21
@@ -615,20 +764,20 @@ Cohesion: 0.22
 Nodes (7): children, MOCK_PORT, PORT, run(), stop(), varArgs, vars
 
 ### Community 66 - "smootherstep / shotspy"
-Cohesion: 0.38
-Nodes (7): smootherstep(), _clip_hall_dusk(), _clip_hall_morning(), _clip_kosode_iko(), lerp(), _sway(), _u()
+Cohesion: 0.29
+Nodes (8): smootherstep(), _clip_hall_dusk(), _clip_hall_morning(), _clip_kosode_iko(), lerp(), orbit(), _sway(), _u()
 
 ### Community 67 - "map.js"
 Cohesion: 0.14
 Nodes (30): cam(), catmull(), chedi(), clone(), draw(), fallbackGlobe(), getV(), inView() (+22 more)
 
 ### Community 68 - "promptpayts / crc16"
-Cohesion: 0.23
-Nodes (11): PromptPay transfers confirmed by owner on admin page (Stripe Thailand later), Manual PromptPay payment (EMVCo QR, 'I have paid', owner confirms in admin), Wrangler secrets (LINE_CHANNEL_ID, LINE_CHANNEL_SECRET, SESSION_SECRET, ADMIN_LINE_IDS, PROMPTPAY_ID), crc16(), f(), maskTarget(), promptPayPayload(), promptPaySvg() (+3 more)
+Cohesion: 0.14
+Nodes (19): PromptPay transfers confirmed by owner on admin page (Stripe Thailand later), Manual PromptPay payment (EMVCo QR, 'I have paid', owner confirms in admin), PaymentProvider seam (manual.ts live, stripe.ts stub), Stripe Thailand integration (planned: Checkout Session, webhook signature, PAYMENT_PROVIDER=stripe), Wrangler secrets (LINE_CHANNEL_ID, LINE_CHANNEL_SECRET, SESSION_SECRET, ADMIN_LINE_IDS, PROMPTPAY_ID), PaymentRow, Payment, crc16() (+11 more)
 
-### Community 70 - "sys"
+### Community 70 - "coding-robot/src/deck.js"
 Cohesion: 0.10
-Nodes (19): clean(), get(), main(), write_credits(), IMG(), H, apply_quality(), frame_list() (+11 more)
+Nodes (34): add(), block(), count(), draw(), drawTile(), drop(), flatten(), flip() (+26 more)
 
 ### Community 71 - "slides.mjs"
 Cohesion: 0.14
@@ -638,21 +787,21 @@ Nodes (33): animStrip(), barChart(), baseCss(), burst(), chart(), chartq(), chec
 Cohesion: 0.15
 Nodes (23): on(), announce(), answerCtl(), foot(), api, pick(), set(), scaleOf() (+15 more)
 
-### Community 73 - "dots"
-Cohesion: 0.12
-Nodes (22): w-dots dot-plot builder, w-picto pictogram builder (data-key, data-icon, half icons), answerCtl(), clamp(), dots(), check(), cx(), draw() (+14 more)
+### Community 73 - "unit4/tools.js"
+Cohesion: 0.15
+Nodes (12): Answer keys with worked steps + password-locked answer site, graph(), g, key(), local(), mcq(), num(), rawIcon() (+4 more)
 
 ### Community 74 - "previewclipcjs / chromium"
 Cohesion: 0.22
 Nodes (8): { chromium }, dir, { execFileSync }, file, fs, out, path, plan
 
-### Community 75 - "anchors / _camera"
-Cohesion: 0.22
-Nodes (5): anchors(), _camera(), _main(), shoot(), _test_hall()
+### Community 75 - "social-timeline/src/deck.js"
+Cohesion: 0.09
+Nodes (36): check(), clampV(), defs(), drop(), fly(), fromTrack(), goHome(), goTo() (+28 more)
 
 ### Community 76 - "calc.js"
-Cohesion: 0.09
-Nodes (27): Anim(), f(), arc(), clamp(), drag(), draw(), drawTrail(), eio() (+19 more)
+Cohesion: 0.08
+Nodes (31): Anim(), f(), arc(), clamp(), dial(), drag(), draw(), drawTrail() (+23 more)
 
 ### Community 77 - "KruSlide App Icon SVG / Blue Diagonal Stroke 3"
 Cohesion: 0.32
@@ -667,12 +816,12 @@ Cohesion: 0.10
 Nodes (25): dependencies, uqr@^0.1.3, description, devDependencies, @cloudflare/vitest-plugin@^1.10.0, @cloudflare/workers-types@^5.20261128.1, @fontsource/mali@^5.3.0, @fontsource/sriracha@^5.3.0 (+17 more)
 
 ### Community 80 - "sort"
-Cohesion: 0.15
-Nodes (23): on(), announce(), answerCtl(), foot(), api, pick(), set(), scaleOf() (+15 more)
+Cohesion: 0.18
+Nodes (21): anim(), announce(), answerCtl(), pick(), set(), scaleOf(), sort(), check() (+13 more)
 
 ### Community 82 - "line"
-Cohesion: 0.20
-Nodes (16): on(), anim(), announce(), line(), check(), draw(), glide(), reset() (+8 more)
+Cohesion: 0.27
+Nodes (13): anim(), line(), check(), draw(), glide(), reset(), set(), stop() (+5 more)
 
 ### Community 83 - "pod_runsh / DEBIAN_FRONTEND"
 Cohesion: 0.38
@@ -683,12 +832,16 @@ Cohesion: 0.53
 Nodes (4): laea(), P(), path(), rings()
 
 ### Community 85 - "requests.ts"
-Cohesion: 0.13
-Nodes (25): scriptCsp(), answerEn(), Answers, answerTh(), BriefInput, buildBrief(), buildSummary(), Choice (+17 more)
+Cohesion: 0.09
+Nodes (35): BookRequest, scriptCsp(), answerEn(), Answers, answerTh(), BriefInput, buildBrief(), buildSummary() (+27 more)
+
+### Community 86 - "projectile.js"
+Cohesion: 0.09
+Nodes (28): arrow(), ballArrows(), Board(), clamp(), Controls(), api, block(), drag() (+20 more)
 
 ### Community 87 - "chem-periodic/src/tools.js"
-Cohesion: 0.15
-Nodes (17): area2(), dist(), graph(), key(), mcq(), num(), pathLen(), rawIcon() (+9 more)
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
 
 ### Community 88 - "makepy / cups"
 Cohesion: 0.60
@@ -699,12 +852,12 @@ Cohesion: 0.60
 Nodes (3): attempt(), open(), unlock()
 
 ### Community 90 - "src/tools.js"
-Cohesion: 0.17
-Nodes (13): area2(), dist(), graph(), num(), pathLen(), rawIcon(), rdp(), recog() (+5 more)
+Cohesion: 0.13
+Nodes (17): area2(), dist(), graph(), g, key(), mcq(), num(), pathLen() (+9 more)
 
 ### Community 91 - "geo-thailand/src/tools.js"
-Cohesion: 0.15
-Nodes (17): area2(), dist(), graph(), key(), mcq(), num(), pathLen(), rawIcon() (+9 more)
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
 
 ### Community 93 - "pod_bootsh / log"
 Cohesion: 1.00
@@ -723,52 +876,52 @@ Cohesion: 0.19
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 110 - "sort"
-Cohesion: 0.24
-Nodes (15): scaleOf(), sort(), check(), drop(), fitBins(), mark(), move(), place() (+7 more)
+Cohesion: 0.17
+Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
 
 ### Community 111 - "english-grammar/src/kit.js"
-Cohesion: 0.11
-Nodes (12): Anim(), box(), drag(), up(), flip(), hit(), pt(), S() (+4 more)
+Cohesion: 0.12
+Nodes (11): Anim(), box(), drag(), up(), flip(), hit(), pt(), start() (+3 more)
 
 ### Community 112 - "static.ts"
 Cohesion: 0.16
 Nodes (8): QUIZ_FILES, font(), quizImage(), APPLE_ICON_B64, ICON_INNER, ICON_SVG, APP_CSS, APP_JS
 
-### Community 113 - "sv"
-Cohesion: 0.18
-Nodes (14): dial(), S(), axes(), drawLabels(), fmt(), pie(), draw(), layout() (+6 more)
+### Community 113 - "math-fractions/src/app.js"
+Cohesion: 0.10
+Nodes (31): ang(), Anim(), build(), clamp(), cmp(), compare(), count(), cutRow() (+23 more)
 
 ### Community 114 - "dots"
-Cohesion: 0.17
-Nodes (14): on(), announce(), dots(), check(), cx(), draw(), reset(), set() (+6 more)
+Cohesion: 0.22
+Nodes (10): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+2 more)
 
 ### Community 115 - "ref_fs"
-Cohesion: 0.12
-Nodes (9): { chromium }, file, fs, out, path, {chromium}, fs, { chromium, webkit } (+1 more)
+Cohesion: 0.14
+Nodes (8): { chromium }, fs, out, path, {chromium}, fs, { chromium, webkit }, fs
 
-### Community 116 - "Book answer walkthrough slides (same items and numbers, own words, redrawn in Style A)"
-Cohesion: 0.19
-Nodes (9): Slide style A: modern clean, Unit 4 live deck (m1-statistics) and teacher guide, Kindly flag ambiguous or wrong book answers ('Book answer: … · Note: …'), Source chip naming the book item (e.g. 'Book p.200 · Unit 4 Test · Part 1 · Q7–8'), Math Solution M1 Book 2, Unit 4 Statistics (1) textbook, Quality bar: title slide parts/00-title.html and mockups/style-A.png, Speaker notes in <aside class="notes"> on every slide, Style A 'modern clean' (style.css, .mesh light background, white cards, blue/violet/coral/sun/mint/ink palette) (+1 more)
+### Community 116 - "chem-balance/src/tools.js"
+Cohesion: 0.11
+Nodes (29): on(), anim(), announce(), btn(), clamp(), el(), foot(), api (+21 more)
 
 ### Community 117 - "Ink"
-Cohesion: 0.37
-Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
 
 ### Community 118 - "gen35.py"
-Cohesion: 0.23
+Cohesion: 0.21
 Nodes (7): f(), fr_icon(), lab2(), polar(), seg(), spoke(), trseg()
 
 ### Community 119 - "english-vocab/src/kit.js"
-Cohesion: 0.11
-Nodes (12): Anim(), box(), drag(), up(), flip(), hit(), pt(), S() (+4 more)
+Cohesion: 0.12
+Nodes (11): Anim(), box(), drag(), up(), flip(), hit(), pt(), start() (+3 more)
 
-### Community 120 - "line"
-Cohesion: 0.30
-Nodes (12): anim(), line(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
+### Community 120 - "kinder.js"
+Cohesion: 0.14
+Nodes (24): apple(), bbox(), bounce(), cat(), cloudish(), count(), crayon(), ell() (+16 more)
 
 ### Community 121 - "bars"
-Cohesion: 0.36
-Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
+Cohesion: 0.23
+Nodes (17): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+9 more)
 
 ### Community 122 - "MEMORY.md shared memory"
 Cohesion: 0.12
@@ -779,16 +932,16 @@ Cohesion: 0.22
 Nodes (9): scripts, deploy, dev, migrate:local, migrate:remote, seed, smoke, test (+1 more)
 
 ### Community 124 - "input"
-Cohesion: 0.36
-Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), parseNum() (+1 more)
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
 
-### Community 125 - "math-equation-balance/src/tools.js"
-Cohesion: 0.15
-Nodes (14): graph(), g, key(), local(), mcq(), num(), rawIcon(), rdp() (+6 more)
+### Community 125 - "g"
+Cohesion: 0.36
+Nodes (3): g, key(), toClient()
 
 ### Community 126 - "math-linear/src/tools.js"
-Cohesion: 0.15
-Nodes (14): graph(), g, key(), local(), mcq(), num(), rawIcon(), rdp() (+6 more)
+Cohesion: 0.21
+Nodes (12): area2(), dist(), ico(), key(), mcq(), pathLen(), rdp(), recog() (+4 more)
 
 ### Community 128 - "cards.js"
 Cohesion: 0.25
@@ -800,7 +953,11 @@ Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() 
 
 ### Community 131 - "sort"
 Cohesion: 0.17
-Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+Nodes (21): anim(), announce(), mcq(), pick(), set(), register(), scaleOf(), sort() (+13 more)
+
+### Community 132 - "coding-robot/src/kit.js"
+Cohesion: 0.11
+Nodes (21): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+13 more)
 
 ### Community 133 - "kinder-count/src/kit.js"
 Cohesion: 0.12
@@ -812,7 +969,7 @@ Nodes (4): Files, QA done, The slides (what to say, what to do), แคลคู
 
 ### Community 135 - "sort"
 Cohesion: 0.17
-Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+Nodes (21): anim(), announce(), mcq(), pick(), set(), register(), scaleOf(), sort() (+13 more)
 
 ### Community 137 - "sort"
 Cohesion: 0.17
@@ -820,15 +977,15 @@ Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() 
 
 ### Community 140 - "sort"
 Cohesion: 0.17
-Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+Nodes (21): anim(), announce(), mcq(), pick(), set(), register(), scaleOf(), sort() (+13 more)
 
 ### Community 141 - "sort"
-Cohesion: 0.17
-Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+Cohesion: 0.19
+Nodes (19): anim(), announce(), pick(), set(), scaleOf(), sort(), check(), drop() (+11 more)
 
 ### Community 142 - "sort"
-Cohesion: 0.17
-Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+Cohesion: 0.19
+Nodes (19): anim(), announce(), pick(), set(), scaleOf(), sort(), check(), drop() (+11 more)
 
 ### Community 143 - "primary-clock-money/src/kit.js"
 Cohesion: 0.12
@@ -839,16 +996,16 @@ Cohesion: 0.12
 Nodes (11): Anim(), box(), drag(), up(), flip(), hit(), pt(), start() (+3 more)
 
 ### Community 145 - "thai-spelling/src/kit.js"
-Cohesion: 0.12
-Nodes (11): Anim(), box(), drag(), up(), flip(), hit(), pt(), start() (+3 more)
+Cohesion: 0.11
+Nodes (12): Anim(), box(), drag(), up(), flip(), hit(), pt(), S() (+4 more)
 
 ### Community 146 - "sort"
-Cohesion: 0.19
-Nodes (19): anim(), announce(), pick(), set(), scaleOf(), sort(), check(), drop() (+11 more)
+Cohesion: 0.15
+Nodes (23): on(), announce(), answerCtl(), foot(), api, pick(), set(), scaleOf() (+15 more)
 
 ### Community 147 - "sort"
-Cohesion: 0.19
-Nodes (19): anim(), announce(), pick(), set(), scaleOf(), sort(), check(), drop() (+11 more)
+Cohesion: 0.24
+Nodes (15): scaleOf(), sort(), check(), drop(), fitBins(), mark(), move(), place() (+7 more)
 
 ### Community 148 - "sort"
 Cohesion: 0.19
@@ -867,32 +1024,32 @@ Cohesion: 0.22
 Nodes (18): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+10 more)
 
 ### Community 152 - "Ink"
-Cohesion: 0.22
-Nodes (18): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+10 more)
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
 
 ### Community 153 - "Ink"
-Cohesion: 0.22
-Nodes (18): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+10 more)
+Cohesion: 0.19
+Nodes (20): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+12 more)
 
-### Community 154 - "dots"
+### Community 154 - "math-fractions/src/tools.js"
 Cohesion: 0.15
-Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
+Nodes (14): graph(), g, ico(), key(), local(), mcq(), num(), rawIcon() (+6 more)
 
 ### Community 155 - "el"
-Cohesion: 0.17
-Nodes (17): btn(), clamp(), el(), foot(), api, pen(), sep(), sync() (+9 more)
+Cohesion: 0.23
+Nodes (10): btn(), el(), foot(), api, pen(), sep(), sync(), tb() (+2 more)
 
 ### Community 156 - "Ink"
-Cohesion: 0.22
-Nodes (18): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+10 more)
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
 
 ### Community 157 - "Ink"
-Cohesion: 0.22
-Nodes (18): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+10 more)
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
 
 ### Community 158 - "dots"
-Cohesion: 0.15
-Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
+Cohesion: 0.20
+Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
 
 ### Community 159 - "dots"
 Cohesion: 0.15
@@ -903,28 +1060,28 @@ Cohesion: 0.15
 Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
 
 ### Community 161 - "dots"
-Cohesion: 0.15
-Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
+Cohesion: 0.18
+Nodes (12): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+4 more)
 
 ### Community 162 - "H"
-Cohesion: 0.22
-Nodes (19): H(), measure(), measure(), measure(), Ink(), add(), changed(), clearLive() (+11 more)
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
 
 ### Community 163 - "el"
-Cohesion: 0.18
-Nodes (17): btn(), clamp(), el(), foot(), api, ico(), pen(), sep() (+9 more)
+Cohesion: 0.16
+Nodes (18): btn(), clamp(), el(), foot(), api, pen(), sep(), sync() (+10 more)
 
 ### Community 164 - "input"
-Cohesion: 0.19
-Nodes (18): answerCtl(), clean(), fmt(), foot(), api, input(), check(), mark() (+10 more)
+Cohesion: 0.43
+Nodes (8): clean(), input(), check(), mark(), match(), reset(), parseNum(), check()
 
 ### Community 165 - "input"
-Cohesion: 0.19
-Nodes (18): answerCtl(), clean(), fmt(), foot(), api, input(), check(), mark() (+10 more)
+Cohesion: 0.22
+Nodes (15): anim(), announce(), answerCtl(), clean(), input(), check(), mark(), match() (+7 more)
 
 ### Community 166 - "el"
-Cohesion: 0.18
-Nodes (17): btn(), clamp(), el(), foot(), api, ico(), pen(), sep() (+9 more)
+Cohesion: 0.23
+Nodes (10): btn(), el(), foot(), api, pen(), sep(), sync(), tb() (+2 more)
 
 ### Community 167 - "el"
 Cohesion: 0.18
@@ -935,44 +1092,44 @@ Cohesion: 0.17
 Nodes (14): graph(), ico(), key(), mcq(), num(), rawIcon(), rdp(), register() (+6 more)
 
 ### Community 169 - "el"
-Cohesion: 0.18
-Nodes (17): btn(), clamp(), el(), foot(), api, ico(), pen(), sep() (+9 more)
+Cohesion: 0.23
+Nodes (10): btn(), el(), foot(), api, pen(), sep(), sync(), tb() (+2 more)
 
-### Community 170 - "math-fractions/src/tools.js"
-Cohesion: 0.20
-Nodes (15): btn(), el(), graph(), ico(), num(), pen(), sep(), sync() (+7 more)
+### Community 170 - "health-food/src/kit.js"
+Cohesion: 0.11
+Nodes (21): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+13 more)
 
 ### Community 171 - "el"
-Cohesion: 0.18
-Nodes (17): btn(), clamp(), el(), foot(), api, ico(), pen(), sep() (+9 more)
+Cohesion: 0.23
+Nodes (10): btn(), el(), foot(), api, pen(), sep(), sync(), tb() (+2 more)
 
-### Community 172 - "math-probability/src/tools.js"
-Cohesion: 0.20
-Nodes (15): btn(), el(), graph(), ico(), num(), pen(), sep(), sync() (+7 more)
+### Community 172 - "el"
+Cohesion: 0.23
+Nodes (10): btn(), el(), foot(), api, pen(), sep(), sync(), tb() (+2 more)
 
 ### Community 173 - "bars"
-Cohesion: 0.22
-Nodes (18): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+10 more)
+Cohesion: 0.19
+Nodes (21): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+13 more)
 
 ### Community 174 - "english-grammar/src/engine.js"
-Cohesion: 0.18
-Nodes (13): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+5 more)
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 175 - "Ink"
-Cohesion: 0.24
-Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
+Cohesion: 0.37
+Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
 
 ### Community 176 - "english-vocab/src/engine.js"
 Cohesion: 0.18
 Nodes (13): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+5 more)
 
 ### Community 177 - "Ink"
-Cohesion: 0.24
-Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
+Cohesion: 0.18
+Nodes (21): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+13 more)
 
 ### Community 178 - "bars"
-Cohesion: 0.22
-Nodes (18): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+10 more)
+Cohesion: 0.30
+Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
 
 ### Community 179 - "math-base10/src/engine.js"
 Cohesion: 0.18
@@ -987,56 +1144,56 @@ Cohesion: 0.26
 Nodes (17): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+9 more)
 
 ### Community 182 - "english-grammar/src/tools.js"
-Cohesion: 0.21
-Nodes (12): area2(), dist(), ico(), key(), mcq(), pathLen(), rdp(), recog() (+4 more)
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
 
-### Community 183 - "english-vocab/src/tools.js"
-Cohesion: 0.21
-Nodes (12): area2(), dist(), ico(), key(), mcq(), pathLen(), rdp(), recog() (+4 more)
+### Community 183 - "music-keys/src/kit.js"
+Cohesion: 0.11
+Nodes (21): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+13 more)
 
 ### Community 184 - "geo-thailand/src/engine.js"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 185 - "Ink"
-Cohesion: 0.26
-Nodes (17): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+9 more)
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
 
 ### Community 186 - "kinder-count/src/engine.js"
 Cohesion: 0.19
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 187 - "math-equation-balance/src/engine.js"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 188 - "math-fractions/src/engine.js"
 Cohesion: 0.19
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
-### Community 189 - "sv"
-Cohesion: 0.18
-Nodes (13): axes(), drawLabels(), fmt(), foot(), api, pie(), draw(), layout() (+5 more)
+### Community 189 - "el"
+Cohesion: 0.16
+Nodes (22): btn(), clean(), el(), fmt(), foot(), api, input(), check() (+14 more)
 
 ### Community 190 - "math-geometry/src/engine.js"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 191 - "math-geometry/src/tools.js"
-Cohesion: 0.21
-Nodes (12): area2(), dist(), ico(), key(), mcq(), pathLen(), rdp(), recog() (+4 more)
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
 
 ### Community 192 - "math-linear/src/engine.js"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 193 - "math-probability/src/engine.js"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
-### Community 194 - "sv"
-Cohesion: 0.18
-Nodes (13): axes(), drawLabels(), fmt(), foot(), api, pie(), draw(), layout() (+5 more)
+### Community 194 - "S"
+Cohesion: 0.48
+Nodes (7): Chart(), axes(), draw(), faceIcon(), S(), T(), layout()
 
 ### Community 195 - "primary-clock-money/src/engine.js"
 Cohesion: 0.19
@@ -1047,8 +1204,8 @@ Cohesion: 0.19
 Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
 
 ### Community 197 - "thai-spelling/src/engine.js"
-Cohesion: 0.19
-Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+Cohesion: 0.18
+Nodes (13): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+5 more)
 
 ### Community 198 - "HANDOFF.md (Kimono v3 handoff)"
 Cohesion: 0.18
@@ -1059,56 +1216,56 @@ Cohesion: 0.17
 Nodes (10): laea(), line_d(), lines_of(), load(), P(), pathd(), poly_d(), rings_of() (+2 more)
 
 ### Community 200 - "dots"
-Cohesion: 0.20
-Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
+Cohesion: 0.15
+Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
 
 ### Community 201 - "dots"
-Cohesion: 0.20
-Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
+Cohesion: 0.18
+Nodes (12): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+4 more)
 
 ### Community 202 - "dots"
 Cohesion: 0.20
 Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
 
 ### Community 203 - "pie"
-Cohesion: 0.22
-Nodes (16): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+8 more)
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
 
 ### Community 204 - "dots"
 Cohesion: 0.20
 Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
 
 ### Community 205 - "pie"
-Cohesion: 0.22
-Nodes (16): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+8 more)
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
 
 ### Community 206 - "dots"
 Cohesion: 0.20
 Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
 
 ### Community 207 - "pie"
-Cohesion: 0.22
-Nodes (16): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+8 more)
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
 
 ### Community 208 - "dots"
 Cohesion: 0.20
 Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
 
 ### Community 209 - "pie"
-Cohesion: 0.24
-Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+Cohesion: 0.36
+Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), parseNum() (+1 more)
 
 ### Community 210 - "dots"
-Cohesion: 0.22
-Nodes (10): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+2 more)
+Cohesion: 0.15
+Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
 
 ### Community 211 - "pie"
 Cohesion: 0.24
 Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
 
 ### Community 212 - "dots"
-Cohesion: 0.22
-Nodes (10): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+2 more)
+Cohesion: 0.20
+Nodes (11): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+3 more)
 
 ### Community 213 - "pie"
 Cohesion: 0.24
@@ -1127,8 +1284,8 @@ Cohesion: 0.26
 Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
 
 ### Community 217 - "thai-spelling/src/tools.js"
-Cohesion: 0.26
-Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+Cohesion: 0.17
+Nodes (17): area2(), btn(), dist(), graph(), key(), mcq(), num(), pathLen() (+9 more)
 
 ### Community 218 - "sv"
 Cohesion: 0.26
@@ -1143,8 +1300,8 @@ Cohesion: 0.37
 Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
 
 ### Community 221 - "bars"
-Cohesion: 0.27
-Nodes (13): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+5 more)
+Cohesion: 0.30
+Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
 
 ### Community 222 - "sv"
 Cohesion: 0.26
@@ -1174,25 +1331,25 @@ Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(),
 Cohesion: 0.33
 Nodes (12): clearWord(), compose(), flyIn(), glyph(), makeTile(), place(), remove(), reset() (+4 more)
 
-### Community 229 - "sv"
-Cohesion: 0.26
-Nodes (10): axes(), drawLabels(), fmt(), pie(), draw(), pt(), reset(), typed() (+2 more)
+### Community 229 - "social-timeline/src/kit.js"
+Cohesion: 0.11
+Nodes (21): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+13 more)
 
 ### Community 230 - "bars"
+Cohesion: 0.22
+Nodes (18): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+10 more)
+
+### Community 231 - "Ink"
+Cohesion: 0.23
+Nodes (19): H(), Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish() (+11 more)
+
+### Community 232 - "bars"
 Cohesion: 0.27
 Nodes (13): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+5 more)
 
-### Community 231 - "Ink"
-Cohesion: 0.37
-Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
-
-### Community 232 - "bars"
-Cohesion: 0.30
-Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
-
 ### Community 233 - "bars"
-Cohesion: 0.30
-Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
+Cohesion: 0.18
+Nodes (21): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+13 more)
 
 ### Community 234 - "line"
 Cohesion: 0.30
@@ -1206,33 +1363,33 @@ Nodes (12): anim(), line(), check(), draw(), glide(), reset(), set(), stop() (+4
 Cohesion: 0.30
 Nodes (12): anim(), line(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
 
-### Community 237 - "line"
-Cohesion: 0.30
-Nodes (12): anim(), line(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
+### Community 237 - "art-colour/src/kit.js"
+Cohesion: 0.11
+Nodes (20): Anim(), announce(), btn(), drag(), up(), el(), eo(), foot() (+12 more)
 
 ### Community 238 - "line"
 Cohesion: 0.33
 Nodes (11): line(), check(), draw(), glide(), reset(), set(), stop(), still() (+3 more)
 
 ### Community 239 - "line"
-Cohesion: 0.33
-Nodes (11): line(), check(), draw(), glide(), reset(), set(), stop(), still() (+3 more)
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
 
-### Community 240 - "line"
-Cohesion: 0.33
-Nodes (11): line(), check(), draw(), glide(), reset(), set(), stop(), still() (+3 more)
+### Community 240 - "bars"
+Cohesion: 0.16
+Nodes (23): answerCtl(), bars(), all(), check(), draw(), glide(), reset(), set() (+15 more)
 
 ### Community 241 - "line"
-Cohesion: 0.33
-Nodes (11): line(), check(), draw(), glide(), reset(), set(), stop(), still() (+3 more)
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
 
 ### Community 242 - "line"
-Cohesion: 0.33
-Nodes (11): line(), check(), draw(), glide(), reset(), set(), stop(), still() (+3 more)
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
 
 ### Community 243 - "line"
-Cohesion: 0.33
-Nodes (11): line(), check(), draw(), glide(), reset(), set(), stop(), still() (+3 more)
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
 
 ### Community 244 - "Writers' brief: Kimono, a garment or a set of rules? (BRIEF.md)"
 Cohesion: 0.22
@@ -1240,11 +1397,11 @@ Nodes (10): Writers' brief: Kimono, a garment or a set of rules? (BRIEF.md), Onl
 
 ### Community 245 - "picto"
 Cohesion: 0.31
-Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+Nodes (9): S(), clamp(), picto(), all(), draw(), measure(), mk(), set() (+1 more)
 
 ### Community 246 - "picto"
-Cohesion: 0.31
-Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+Cohesion: 0.43
+Nodes (7): clamp(), picto(), all(), draw(), measure(), mk(), set()
 
 ### Community 247 - "picto"
 Cohesion: 0.31
@@ -1259,20 +1416,20 @@ Cohesion: 0.36
 Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
 
 ### Community 250 - "bars"
-Cohesion: 0.36
-Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
+Cohesion: 0.30
+Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
 
-### Community 251 - "bars"
-Cohesion: 0.36
-Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
+### Community 251 - "poem.js"
+Cohesion: 0.14
+Nodes (24): addLink(), anchor(), check(), clear(), clearAll(), countAll(), curve(), fit() (+16 more)
 
 ### Community 252 - "bars"
-Cohesion: 0.36
-Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
+Cohesion: 0.27
+Nodes (13): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+5 more)
 
 ### Community 253 - "bars"
-Cohesion: 0.36
-Nodes (10): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+2 more)
+Cohesion: 0.27
+Nodes (13): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+5 more)
 
 ### Community 254 - "picto"
 Cohesion: 0.31
@@ -1291,40 +1448,40 @@ Cohesion: 0.31
 Nodes (9): btn(), el(), pen(), sep(), sync(), tb(), rawIcon(), write() (+1 more)
 
 ### Community 258 - "picto"
-Cohesion: 0.31
-Nodes (9): S(), clamp(), picto(), all(), draw(), measure(), mk(), set() (+1 more)
+Cohesion: 0.23
+Nodes (14): clamp(), el(), ico(), pen(), sep(), sync(), tb(), picto() (+6 more)
 
-### Community 259 - "el"
+### Community 259 - "dots"
+Cohesion: 0.13
+Nodes (16): axes(), clamp(), dots(), check(), cx(), draw(), reset(), set() (+8 more)
+
+### Community 260 - "el"
 Cohesion: 0.31
 Nodes (9): btn(), el(), pen(), sep(), sync(), tb(), rawIcon(), write() (+1 more)
 
-### Community 260 - "el"
-Cohesion: 0.36
-Nodes (8): btn(), el(), pen(), sep(), sync(), tb(), rawIcon(), write()
+### Community 261 - "english-vocab/src/tools.js"
+Cohesion: 0.18
+Nodes (18): btn(), el(), graph(), ico(), key(), mcq(), num(), pen() (+10 more)
 
-### Community 261 - "el"
-Cohesion: 0.36
-Nodes (8): btn(), el(), pen(), sep(), sync(), tb(), rawIcon(), write()
-
-### Community 262 - "input"
-Cohesion: 0.36
-Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), parseNum() (+1 more)
+### Community 262 - "vocab.js"
+Cohesion: 0.18
+Nodes (23): back(), boxes(), Builder(), arrange(), check(), inside(), move(), over() (+15 more)
 
 ### Community 263 - "input"
-Cohesion: 0.36
-Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), parseNum() (+1 more)
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
 
 ### Community 264 - "input"
 Cohesion: 0.43
 Nodes (8): clean(), input(), check(), mark(), match(), reset(), parseNum(), check()
 
 ### Community 265 - "picto"
-Cohesion: 0.43
-Nodes (7): clamp(), picto(), all(), draw(), measure(), mk(), set()
+Cohesion: 0.36
+Nodes (8): clamp(), picto(), all(), draw(), measure(), mk(), set(), layout()
 
 ### Community 266 - "g"
 Cohesion: 0.36
-Nodes (3): g, local(), toClient()
+Nodes (3): g, key(), toClient()
 
 ### Community 267 - "picto"
 Cohesion: 0.43
@@ -1339,48 +1496,592 @@ Cohesion: 0.43
 Nodes (8): clean(), input(), check(), mark(), match(), reset(), parseNum(), check()
 
 ### Community 270 - "input"
-Cohesion: 0.43
-Nodes (8): clean(), input(), check(), mark(), match(), reset(), parseNum(), check()
+Cohesion: 0.23
+Nodes (15): clean(), fmt(), input(), check(), mark(), match(), reset(), parseNum() (+7 more)
+
+### Community 272 - "music-keys/src/deck.js"
+Cohesion: 0.13
+Nodes (22): add(), answer(), audio(), draw(), drawN(), Keyboard(), down(), play() (+14 more)
 
 ### Community 274 - "line"
-Cohesion: 0.62
-Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
+Cohesion: 0.30
+Nodes (12): anim(), line(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
 
-### Community 277 - "line"
-Cohesion: 0.62
-Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
+### Community 277 - "clock.js"
+Cohesion: 0.14
+Nodes (20): add(), bump(), check(), clear(), fmt(), grad(), makeClock(), api (+12 more)
 
 ### Community 279 - "อยุธยา · ราชธานีบนเกาะกลางแม่น้ำ (ตัวอย่างสไลด์ประวัติศาสตร์ "แบบที่หนึ่ง" ของ KruSlide)"
 Cohesion: 0.29
 Nodes (6): ความถูกต้อง, ปุ่ม, ลำดับและสิ่งที่ควรพูด (ราว 8–10 นาที), อยุธยา · ราชธานีบนเกาะกลางแม่น้ำ (ตัวอย่างสไลด์ประวัติศาสตร์ "แบบที่หนึ่ง" ของ KruSlide), เปิดอย่างไร, ไฟล์
 
+### Community 290 - "sort"
+Cohesion: 0.16
+Nodes (22): on(), anim(), announce(), key(), mcq(), pick(), set(), scaleOf() (+14 more)
+
+### Community 291 - "dots"
+Cohesion: 0.13
+Nodes (14): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+6 more)
+
+### Community 292 - "g"
+Cohesion: 0.36
+Nodes (3): g, key(), toClient()
+
 ### Community 294 - "เครดิตและแหล่งข้อมูล · Credits and sources (อยุธยา · KruSlide sample deck)"
 Cohesion: 0.40
 Nodes (4): Fonts, Map, Sources for the facts, เครดิตและแหล่งข้อมูล · Credits and sources (อยุธยา · KruSlide sample deck)
 
-### Community 295 - "_obi_level"
+### Community 295 - "dots"
+Cohesion: 0.13
+Nodes (14): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+6 more)
+
+### Community 298 - "dots"
+Cohesion: 0.13
+Nodes (14): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+6 more)
+
+### Community 299 - "dots"
+Cohesion: 0.13
+Nodes (14): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+6 more)
+
+### Community 300 - "dots"
+Cohesion: 0.13
+Nodes (14): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+6 more)
+
+### Community 301 - "art-colour/src/tools.js"
+Cohesion: 0.15
+Nodes (13): graph(), g, ico(), key(), local(), mcq(), num(), rawIcon() (+5 more)
+
+### Community 302 - "bars"
+Cohesion: 0.16
+Nodes (23): answerCtl(), bars(), all(), check(), draw(), glide(), reset(), set() (+15 more)
+
+### Community 303 - "el"
+Cohesion: 0.16
+Nodes (22): btn(), clean(), el(), fmt(), foot(), api, input(), check() (+14 more)
+
+### Community 304 - "Ink"
+Cohesion: 0.19
+Nodes (21): H(), area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph() (+13 more)
+
+### Community 305 - "bars"
+Cohesion: 0.17
+Nodes (23): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+15 more)
+
+### Community 306 - "sort"
+Cohesion: 0.17
+Nodes (21): anim(), announce(), key(), mcq(), pick(), register(), scaleOf(), sort() (+13 more)
+
+### Community 307 - "sort"
+Cohesion: 0.17
+Nodes (21): anim(), announce(), key(), mcq(), pick(), register(), scaleOf(), sort() (+13 more)
+
+### Community 308 - "dots"
+Cohesion: 0.14
+Nodes (13): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+5 more)
+
+### Community 309 - "el"
+Cohesion: 0.14
+Nodes (20): btn(), clamp(), el(), foot(), api, pen(), sep(), sync() (+12 more)
+
+### Community 310 - "sort"
+Cohesion: 0.17
+Nodes (21): anim(), announce(), key(), mcq(), pick(), register(), scaleOf(), sort() (+13 more)
+
+### Community 311 - "sort"
+Cohesion: 0.17
+Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+
+### Community 312 - "Ink"
+Cohesion: 0.19
+Nodes (20): area2(), dist(), Ink(), add(), changed(), clearLive(), endMorph(), erase() (+12 more)
+
+### Community 313 - "sort"
+Cohesion: 0.17
+Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+
+### Community 314 - "music-keys/src/tools.js"
+Cohesion: 0.17
+Nodes (15): area2(), dist(), graph(), key(), mcq(), num(), pathLen(), rawIcon() (+7 more)
+
+### Community 315 - "sort"
+Cohesion: 0.17
+Nodes (20): on(), anim(), announce(), pick(), set(), scaleOf(), sort(), check() (+12 more)
+
+### Community 316 - "el"
+Cohesion: 0.17
+Nodes (17): btn(), el(), foot(), api, pen(), sep(), sync(), tb() (+9 more)
+
+### Community 317 - "sort"
+Cohesion: 0.20
+Nodes (18): anim(), announce(), pick(), scaleOf(), sort(), check(), drop(), fitBins() (+10 more)
+
+### Community 318 - "dots"
+Cohesion: 0.15
+Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
+
+### Community 319 - "health-food/src/deck.js"
+Cohesion: 0.21
+Nodes (17): check(), dropAt(), icon(), layout(), place(), poly(), put(), reset() (+9 more)
+
+### Community 320 - "sort"
+Cohesion: 0.20
+Nodes (18): anim(), announce(), pick(), scaleOf(), sort(), check(), drop(), fitBins() (+10 more)
+
+### Community 321 - "dots"
+Cohesion: 0.15
+Nodes (13): dots(), check(), cx(), draw(), reset(), set(), fitLabels(), g (+5 more)
+
+### Community 322 - "glass/src/tools.js"
+Cohesion: 0.17
+Nodes (12): area2(), clamp(), dist(), key(), local(), mcq(), pathLen(), rdp() (+4 more)
+
+### Community 323 - "mechanics/src/tools.js"
+Cohesion: 0.17
+Nodes (12): area2(), clamp(), dist(), key(), local(), mcq(), pathLen(), rdp() (+4 more)
+
+### Community 324 - "photo/src/tools.js"
+Cohesion: 0.17
+Nodes (12): area2(), clamp(), dist(), key(), local(), mcq(), pathLen(), rdp() (+4 more)
+
+### Community 325 - "bars"
+Cohesion: 0.21
+Nodes (19): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+11 more)
+
+### Community 326 - "bars"
+Cohesion: 0.21
+Nodes (19): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+11 more)
+
+### Community 327 - "el"
+Cohesion: 0.18
+Nodes (17): btn(), clamp(), el(), foot(), api, ico(), pen(), sep() (+9 more)
+
+### Community 328 - "bars"
+Cohesion: 0.21
+Nodes (19): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+11 more)
+
+### Community 329 - "bars"
+Cohesion: 0.21
+Nodes (19): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+11 more)
+
+### Community 330 - "Ink"
+Cohesion: 0.25
+Nodes (18): H(), Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish() (+10 more)
+
+### Community 331 - "Ink"
+Cohesion: 0.25
+Nodes (18): H(), Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish() (+10 more)
+
+### Community 332 - "math-probability/src/app.js"
+Cohesion: 0.25
+Nodes (15): batch(), f(), Coin(), die(), show(), draw(), el(), flip() (+7 more)
+
+### Community 333 - "Ink"
+Cohesion: 0.24
+Nodes (18): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+10 more)
+
+### Community 334 - "Ink"
+Cohesion: 0.25
+Nodes (18): H(), Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish() (+10 more)
+
+### Community 335 - "Ink"
+Cohesion: 0.25
+Nodes (18): H(), Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish() (+10 more)
+
+### Community 336 - "sort"
+Cohesion: 0.23
+Nodes (16): anim(), scaleOf(), sort(), check(), drop(), fitBins(), mark(), move() (+8 more)
+
+### Community 337 - "sort"
+Cohesion: 0.23
+Nodes (16): anim(), scaleOf(), sort(), check(), drop(), fitBins(), mark(), move() (+8 more)
+
+### Community 338 - "sort"
+Cohesion: 0.23
+Nodes (16): anim(), scaleOf(), sort(), check(), drop(), fitBins(), mark(), move() (+8 more)
+
+### Community 339 - "art-colour/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 340 - "bio-body/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 341 - "bio-body/src/tools.js"
+Cohesion: 0.22
+Nodes (12): area2(), dist(), graph(), ico(), num(), pathLen(), rdp(), recog() (+4 more)
+
+### Community 342 - "bio-cell/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 343 - "chem-balance/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 344 - "sort"
+Cohesion: 0.24
+Nodes (15): scaleOf(), sort(), check(), drop(), fitBins(), mark(), move(), place() (+7 more)
+
+### Community 345 - "coding-robot/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 346 - "Ink"
+Cohesion: 0.26
+Nodes (17): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+9 more)
+
+### Community 347 - "health-food/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 348 - "Ink"
+Cohesion: 0.26
+Nodes (17): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+9 more)
+
+### Community 349 - "math-probability/src/tools.js"
+Cohesion: 0.21
+Nodes (12): area2(), dist(), ico(), key(), mcq(), pathLen(), rdp(), recog() (+4 more)
+
+### Community 350 - "music-keys/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 351 - "bars"
+Cohesion: 0.23
+Nodes (17): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+9 more)
+
+### Community 352 - "phys-circuit/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 353 - "phys-projectile/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 354 - "phys-projectile/src/tools.js"
+Cohesion: 0.21
+Nodes (12): area2(), dist(), ico(), key(), mcq(), pathLen(), rdp(), recog() (+4 more)
+
+### Community 355 - "social-timeline/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 356 - "Ink"
+Cohesion: 0.26
+Nodes (17): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+9 more)
+
+### Community 357 - "glass/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 358 - "mechanics/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 359 - "photo/src/engine.js"
+Cohesion: 0.19
+Nodes (12): closeMenu(), count(), fit(), jump(), lessonOf(), menu(), menuOpen(), next() (+4 more)
+
+### Community 360 - "pie"
+Cohesion: 0.22
+Nodes (16): w-pie pie builder (type angles or percent), answerCtl(), clean(), fmt(), input(), check(), mark(), match() (+8 more)
+
+### Community 361 - "dots"
+Cohesion: 0.22
+Nodes (10): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+2 more)
+
+### Community 362 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 363 - "el"
+Cohesion: 0.19
+Nodes (13): on(), btn(), el(), foot(), api, pen(), sep(), set() (+5 more)
+
+### Community 364 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 365 - "el"
+Cohesion: 0.19
+Nodes (12): on(), btn(), el(), foot(), api, pen(), sep(), set() (+4 more)
+
+### Community 366 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 367 - "el"
+Cohesion: 0.19
+Nodes (12): on(), btn(), el(), foot(), api, pen(), sep(), set() (+4 more)
+
+### Community 368 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 369 - "dots"
+Cohesion: 0.22
+Nodes (10): axes(), dots(), check(), cx(), draw(), reset(), set(), drawLabels() (+2 more)
+
+### Community 370 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 371 - "el"
+Cohesion: 0.19
+Nodes (13): on(), btn(), el(), foot(), api, pen(), sep(), set() (+5 more)
+
+### Community 372 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 373 - "el"
+Cohesion: 0.19
+Nodes (12): on(), btn(), el(), foot(), api, pen(), sep(), set() (+4 more)
+
+### Community 374 - "pie"
+Cohesion: 0.24
+Nodes (15): answerCtl(), clean(), fmt(), input(), check(), mark(), match(), reset() (+7 more)
+
+### Community 375 - "bio-cell/src/tools.js"
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+
+### Community 376 - "coding-robot/src/tools.js"
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+
+### Community 377 - "health-food/src/tools.js"
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+
+### Community 378 - "math-equation-balance/src/tools.js"
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+
+### Community 379 - "phys-circuit/src/tools.js"
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+
+### Community 380 - "social-timeline/src/tools.js"
+Cohesion: 0.26
+Nodes (9): area2(), dist(), ico(), pathLen(), rdp(), recog(), resample(), say() (+1 more)
+
+### Community 381 - "sv"
+Cohesion: 0.26
+Nodes (10): axes(), drawLabels(), fmt(), pie(), draw(), pt(), reset(), typed() (+2 more)
+
+### Community 382 - "sv"
+Cohesion: 0.26
+Nodes (10): axes(), drawLabels(), fmt(), pie(), draw(), pt(), reset(), typed() (+2 more)
+
+### Community 383 - "sv"
+Cohesion: 0.26
+Nodes (10): axes(), drawLabels(), fmt(), pie(), draw(), pt(), reset(), typed() (+2 more)
+
+### Community 384 - "el"
+Cohesion: 0.23
+Nodes (12): btn(), el(), foot(), api, ico(), pen(), sep(), sync() (+4 more)
+
+### Community 385 - "Ink"
+Cohesion: 0.37
+Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
+
+### Community 386 - "el"
+Cohesion: 0.23
+Nodes (12): btn(), el(), foot(), api, ico(), pen(), sep(), sync() (+4 more)
+
+### Community 387 - "Ink"
+Cohesion: 0.37
+Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
+
+### Community 388 - "el"
+Cohesion: 0.23
+Nodes (12): btn(), el(), foot(), api, ico(), pen(), sep(), sync() (+4 more)
+
+### Community 389 - "Ink"
+Cohesion: 0.37
+Nodes (13): Ink(), add(), changed(), clearLive(), endMorph(), erase(), finish(), fit() (+5 more)
+
+### Community 390 - "bars"
+Cohesion: 0.30
+Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
+
+### Community 391 - "sv"
+Cohesion: 0.29
+Nodes (9): axes(), drawLabels(), fmt(), pie(), draw(), pt(), reset(), typed() (+1 more)
+
+### Community 392 - "bars"
+Cohesion: 0.30
+Nodes (12): bars(), all(), check(), draw(), glide(), reset(), set(), stop() (+4 more)
+
+### Community 393 - "kick"
+Cohesion: 0.38
+Nodes (12): Anim(), f(), Kicker(), at(), ghost(), kick(), dot(), frame() (+4 more)
+
+### Community 394 - "picto"
+Cohesion: 0.31
+Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+
+### Community 395 - "picto"
+Cohesion: 0.31
+Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+
+### Community 396 - "picto"
+Cohesion: 0.31
+Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+
+### Community 397 - "picto"
+Cohesion: 0.31
+Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+
+### Community 398 - "picto"
+Cohesion: 0.31
+Nodes (9): clamp(), picto(), all(), check(), draw(), measure(), mk(), set() (+1 more)
+
+### Community 399 - "draw"
+Cohesion: 0.20
+Nodes (10): draw(), f1(), f2(), gcd(), gearBody(), gearPath(), inv(), place() (+2 more)
+
+### Community 400 - "picto"
+Cohesion: 0.36
+Nodes (8): clamp(), picto(), all(), draw(), measure(), mk(), set(), layout()
+
+### Community 401 - "line"
+Cohesion: 0.44
+Nodes (9): line(), check(), draw(), glide(), reset(), set(), stop(), near() (+1 more)
+
+### Community 402 - "input"
+Cohesion: 0.36
+Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), parseNum() (+1 more)
+
+### Community 403 - "picto"
+Cohesion: 0.36
+Nodes (8): clamp(), picto(), all(), check(), draw(), measure(), mk(), set()
+
+### Community 404 - "picto"
+Cohesion: 0.36
+Nodes (8): clamp(), picto(), all(), check(), draw(), measure(), mk(), set()
+
+### Community 405 - "input"
+Cohesion: 0.36
+Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), parseNum() (+1 more)
+
+### Community 406 - "picto"
+Cohesion: 0.36
+Nodes (8): clamp(), picto(), all(), check(), draw(), measure(), mk(), set()
+
+### Community 407 - "input"
+Cohesion: 0.36
+Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), num() (+1 more)
+
+### Community 408 - "render"
+Cohesion: 0.31
+Nodes (9): arrowD(), liftAt(), liftE(), liftI(), m720(), render(), rot(), setAng() (+1 more)
+
+### Community 409 - "tween"
+Cohesion: 0.25
+Nodes (9): counts(), ease(), explode(), setVB(), still(), thai(), tween(), end() (+1 more)
+
+### Community 410 - "input"
+Cohesion: 0.36
+Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), num() (+1 more)
+
+### Community 411 - "input"
+Cohesion: 0.36
+Nodes (9): answerCtl(), clean(), input(), check(), mark(), match(), reset(), num() (+1 more)
+
+### Community 412 - "bars"
+Cohesion: 0.46
+Nodes (8): bars(), all(), check(), draw(), glide(), reset(), set(), stop()
+
+### Community 413 - "pie"
+Cohesion: 0.39
+Nodes (8): S(), fmt(), pie(), draw(), layout(), pt(), reset(), typed()
+
+### Community 414 - "picto"
+Cohesion: 0.43
+Nodes (7): clamp(), picto(), all(), draw(), measure(), mk(), set()
+
+### Community 415 - "ภารกิจกลับไปดวงจันทร์ (Return to the Moon): scene list and narration draft"
+Cohesion: 0.25
+Nodes (7): Facts and sources (checked 28 Nov 2026), Look (proposal for phase 2; the mock-ups are deliberately grey), Narration draft (Thai, voice "eve"; [bN] = the cue that fires beat N), Scenes, The driving question and the two objects, Voice, ภารกิจกลับไปดวงจันทร์ (Return to the Moon): scene list and narration draft
+
+### Community 416 - "clamp"
+Cohesion: 0.29
+Nodes (7): angAt(), clamp(), drag(), posDrag(), rotDrag(), ang(), svgPt()
+
+### Community 417 - "KruSlide (ครูสไลด์) brand"
+Cohesion: 0.29
+Nodes (5): Custom school theme (logo and colours on any style), Interactive lesson slides by textbook (main product), KruSlide (ครูสไลด์) brand, LINE Official Account contact (@kruslide placeholder, TODO-LINE-ID), KruSlide price list (THB, owner-approved)
+
+### Community 421 - "line"
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
+
+### Community 424 - "line"
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
+
+### Community 430 - "line"
+Cohesion: 0.62
+Nodes (7): line(), check(), draw(), glide(), reset(), set(), stop()
+
+### Community 437 - "unit4/qa.cjs"
+Cohesion: 0.29
+Nodes (5): { chromium }, file, fs, out, path
+
+### Community 438 - "grammar.js"
+Cohesion: 0.53
+Nodes (4): check(), mark(), norm(), reset()
+
+### Community 439 - "Credits: geo-thailand"
 Cohesion: 0.40
-Nodes (3): _anchor_points(), _obi_face(), _obi_level()
+Nodes (4): Climate figures (slide 3), Credits: geo-thailand, Everything else, Map data
+
+### Community 440 - "announce"
+Cohesion: 0.50
+Nodes (4): on(), announce(), pick(), set()
+
+### Community 441 - "tween"
+Cohesion: 0.67
+Nodes (4): still(), tween(), end(), f()
+
+### Community 442 - "announce"
+Cohesion: 0.50
+Nodes (4): on(), announce(), pick(), set()
+
+### Community 443 - "tween"
+Cohesion: 0.67
+Nodes (4): still(), tween(), end(), f()
+
+### Community 444 - "announce"
+Cohesion: 0.50
+Nodes (4): on(), announce(), pick(), set()
+
+### Community 445 - "tween"
+Cohesion: 0.67
+Nodes (4): still(), tween(), end(), f()
 
 ## Knowledge Gaps
-- **84 isolated node(s):** `DEBIAN_FRONTEND`, `PATH`, `VFX_MAX_PENDING`, `NODE_PATH`, `Apache 2.4.52 (latest 2.4.71)` (+79 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1110 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **47 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **84 isolated node(s):** `NODE_PATH`, `DEBIAN_FRONTEND`, `PATH`, `VFX_MAX_PENDING`, `Apache 2.4.52 (latest 2.4.71)` (+79 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1601 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `H()` connect `H` to `el`, `el`, `periodic.js`, `Ink`, `Ink`, `Ink`, `Ink`, `Ink`, `math-base10/src/tools.js`, `Ink`, `Ink`, `Ink`, `Ink`, `chem-periodic/src/tools.js`, `geo-thailand/src/tools.js`, `Ink`, `Ink`, `Ink`, `Ink`, `el`, `math-equation-balance/src/tools.js`, `math-linear/src/tools.js`, `el`?**
-  _High betweenness centrality (0.248) - this node is a cross-community bridge._
-- **Are the 56 inferred relationships involving `H()` (e.g. with `clearLive()` and `pos()`) actually correct?**
-  _`H()` has 56 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `DEBIAN_FRONTEND`, `PATH`, `VFX_MAX_PENDING` to the rest of the system?**
+- **Why does `path()` connect `body.js` to `bars`, `line`, `bars`, `line`, `bars`, `bars`, `bars`, `line`, `line`, `line`, `bars`, `line`, `line`, `line`, `bars`?**
+  _High betweenness centrality (0.596) - this node is a cross-community bridge._
+- **What connects `NODE_PATH`, `DEBIAN_FRONTEND`, `PATH` to the rest of the system?**
   _84 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Platform package dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.08778424114225278 - nodes in this community are weakly interconnected._
-- **Why does `S()` connect `sv` to `ref / ref_child_process`, `calc.js`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+  _Cohesion score 0.1037037037037037 - nodes in this community are weakly interconnected._
+- **Why does `glide()` connect `line` to `Ink`, `body.js`, `sort`?**
+  _High betweenness centrality (0.355) - this node is a cross-community bridge._
 - **Should `Satit pitch script and security` be split into smaller, more focused modules?**
   _Cohesion score 0.05754527162977867 - nodes in this community are weakly interconnected._
-- **Why does `playwright` connect `playwright` to `cards.js`, `Tools test suite`, `Platform seed script`, `previewclipcjs / chromium`, `scriptsqacjs / args`, `package.json`, `ref / ref_child_process`, `ref_fs`, `Platform smoke tests`?**
-  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+- **Why does `S()` connect `Scale` to `picto`?**
+  _High betweenness centrality (0.342) - this node is a cross-community bridge._
+- **Should `Kimono 3D weaving utilities` be split into smaller, more focused modules?**
+  _Cohesion score 0.0697980684811238 - nodes in this community are weakly interconnected._

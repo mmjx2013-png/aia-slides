@@ -199,7 +199,7 @@ export async function bookAccess(ctx: Ctx): Promise<Response> {
   const found = q ? (await db.listTeachers(ctx.env, q, ctx.now, 20)).filter((t) => !t.line_user_id.startsWith(db.ERASED_PREFIX)) : [];
   const base = `/app/admin/books/${book.id}/access`;
   const unitTabs = tabs(base, 'unit', unit ? String(unit.id) : '', [['', 'ทุกหน่วย'] as const, ...units.map((x) => [String(x.id), `หน่วย ${x.position}`] as const)]);
-  const table = rows.length ? html`<div class="table"><table class="who"><thead><tr><th>สมาชิก</th><th>ที่มา</th><th>${unit ? `หน่วย ${unit.position}` : 'หน่วยที่ให้สิทธิ์'}</th><th></th></tr></thead><tbody>
+  const table = rows.length ? html`<div class="table"><table class="whohas"><thead><tr><th>สมาชิก</th><th>ที่มา</th><th>${unit ? `หน่วย ${unit.position}` : 'หน่วยที่ให้สิทธิ์'}</th><th></th></tr></thead><tbody>
     ${rows.map((h) => {
       const gs = unit ? h.grants.filter((g) => g.unit_id === unit.id) : h.grants;
       const liveN = h.grants.filter((g) => db.isLive(g, ctx.now)).length;
@@ -345,11 +345,11 @@ export async function matrix(ctx: Ctx): Promise<Response> {
     <span class="small muted">วันหมดอายุนี้ใช้กับช่องที่แตะด้วย</span>
   </div>
   <div class="mx" tabindex="0" role="region" aria-label="ตารางสิทธิ์ เลื่อนซ้ายขวาได้"><table>
-    <thead><tr><th class="who" rowspan="2" scope="col">สมาชิก <small>${rows.length} คน</small></th>${head1}</tr><tr>${head2}</tr></thead>
+    <thead><tr><th class="pcol" rowspan="2" scope="col">สมาชิก <small>${rows.length} คน</small></th>${head1}</tr><tr>${head2}</tr></thead>
     <tbody>${rows.map((t) => html`<tr id="t${t.id}" class="${t.status !== 'active' ? 'blocked' : t.approved_at === null ? 'waiting' : ''}">
-      <th class="who" scope="row"><label><input type="checkbox" name="sel" value="${t.id}"><span class="ava">${initial(t.display_name)}</span>
+      <th class="pcol" scope="row"><div class="whoin"><label><input type="checkbox" name="sel" value="${t.id}"><span class="ava">${initial(t.display_name)}</span>
         <span class="nm"><b>${t.display_name}</b><small>${t.status !== 'active' ? 'ระงับ' : t.approved_at === null ? 'รออนุมัติ' : t.school || '–'}</small></span></label>
-        <a class="go" href="/app/admin/members/${t.id}#access" title="สิทธิ์ของ ${t.display_name}">${icon('right')}</a></th>
+        <a class="go" href="/app/admin/members/${t.id}#access" title="สิทธิ์ของ ${t.display_name}">${icon('right')}</a></div></th>
       ${shown.map(({ book: b, units }) => isOpen(b) && units.length ? units.map((u) => unitCell(t, b, u)) : bookCell(t, b, units))}</tr>`)}</tbody>
   </table></div>
 </form>` : html`<div class="empty box">${emptyArt()}<h3>ไม่พบสมาชิก</h3><p>ลองเปลี่ยนคำค้นหรือตัวกรอง</p></div>`;

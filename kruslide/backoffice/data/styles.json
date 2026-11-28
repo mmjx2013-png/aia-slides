@@ -28,7 +28,7 @@
     {"code": "ST-07", "letter": "", "th": "ธีมโรงเรียน", "en": "School theme",
      "desc_th": "ใส่โลโก้และสีของโรงเรียนบนสไตล์ไหนก็ได้ ราคา 990 บาทครั้งเดียว",
      "desc_en": "The school's logo and colours on any style; 990 baht one-off.",
-     "preview": ["kruslide/site/img/theme-navy-gold-sm.webp", "kruslide/site/img/theme-green-white-sm.webp", "kruslide/site/img/theme-maroon-cream-sm.webp"], "status": "live", "price": "theme"}
+     "preview": ["kruslide/site/img/theme-navy-gold-sm.webp", "kruslide/site/img/theme-green-white-sm.webp", "kruslide/site/img/theme-maroon-cream-sm.webp"], "status": "live", "price": "theme", "preview_mode": "all"}
   ],
   "notes": {
     "bright graph paper": {"th": "กระดาษกราฟพื้นสว่าง สติกเกอร์ขอบหมึก บล็อกสีแบน หนึ่งสีมีความหมายเดียว", "en": "Bright graph paper, ink-outlined stickers, flat colour blocks; one colour, one meaning."},

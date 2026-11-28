@@ -57,6 +57,7 @@ const shotView = async (page, file) => { await decoded(page); return shot(page, 
 const shot = async (page, file, full = true) => {
   const vp = page.viewportSize();
   if (full) {
+    await page.waitForTimeout(500); // let a page-to-page view transition finish before the viewport changes
     await page.evaluate(() => window.scrollTo(0, 0));
     const h = await page.evaluate(() => document.documentElement.scrollHeight);
     if (h > vp.height) { await page.setViewportSize({ width: vp.width, height: h }); await page.waitForTimeout(150); }
@@ -100,6 +101,36 @@ async function main() {
   await t.fill('#school', 'โรงเรียนสาธิตทดสอบ (ตัวอย่าง)');
   await t.click('button[type=submit]:has-text("บันทึก")');
   await t.waitForURL(/\/app\/(\?|$)/);
+  // --- new members wait for the owner's approval (NEW_MEMBER_APPROVAL on)
+  check(await t.getByText('ทีมงานกำลังตรวจสอบบัญชีของคุณครู').isVisible(), 'a new member sees the waiting-for-approval page');
+  check(await t.locator('a.btn.line[href="https://line.me/R/ti/p/%40368lkkze"]').isVisible(), 'the waiting page offers LINE @368lkkze');
+  check(await fitsWidth(t), 'waiting page fits the phone width');
+  await shot(t, '05a-waiting-approval-mobile.png');
+  expectRefusal = true;
+  const early = await t.goto(`${BASE}/app/books/1`);
+  check(early.status() === 403 && (await t.content()).includes('รออนุมัติ'), 'a waiting member cannot open books yet');
+  expectRefusal = false;
+
+  // --- admin (desktop) logs in and approves her from the members page
+  const actx = await browser.newContext(desktop);
+  const a = await actx.newPage(); watch(a, 'admin');
+  await lineLogin(a, 'เจ้าของครูสไลด์ (ทดสอบ)');
+  if (a.url().includes('/app/profile')) {
+    await a.fill('#school', 'KruSlide');
+    await a.click('button[type=submit]:has-text("บันทึก")');
+    await a.waitForURL(/\/app\/(\?|$)/);
+  }
+  check(!(await a.content()).includes('ทีมงานกำลังตรวจสอบบัญชี'), 'the owner\'s own LINE account never waits');
+  await a.goto(`${BASE}/app/admin/`);
+  check(await a.locator('a.stat.sun b').innerText() === '1', 'admin dashboard counts 1 member waiting');
+  await a.goto(`${BASE}/app/admin/members`);
+  const card1 = a.locator('.wcard', { hasText: 'ครูสมศรี (ทดสอบ)' });
+  check(await card1.isVisible(), 'the members page lists the waiting teacher with an approve form');
+  await card1.locator('form.approve button[type=submit]').click();
+  await a.waitForURL(/m=approved/);
+  check(await a.getByText('อนุมัติสมาชิกแล้ว').isVisible(), 'admin approves the teacher');
+
+  await t.goto(`${BASE}/app/`);
   await shot(t, '05-member-home-mobile.png');
   check(await fitsWidth(t), 'member home (onboarding, bento) fits the phone width');
 
@@ -205,15 +236,7 @@ async function main() {
   await t.waitForURL(/m=notified/);
   await shot(t, '09-payment-notified-mobile.png');
 
-  // --- admin (desktop)
-  const actx = await browser.newContext(desktop);
-  const a = await actx.newPage(); watch(a, 'admin');
-  await lineLogin(a, 'เจ้าของครูสไลด์ (ทดสอบ)');
-  if (a.url().includes('/app/profile')) {
-    await a.fill('#school', 'KruSlide');
-    await a.click('button[type=submit]:has-text("บันทึก")');
-    await a.waitForURL(/\/app\/(\?|$)/);
-  }
+  // --- admin (desktop): payments, requests, books
   await a.goto(`${BASE}/app/admin/`);
   check(await a.getByText('ครูสมศรี (ทดสอบ)').first().isVisible(), 'admin dashboard lists the pending payment');
   check(await a.locator('a.stat.hot b').innerText() === '1', 'admin dashboard counts 1 new book request');
@@ -255,10 +278,19 @@ async function main() {
   await a.selectOption('#status', 'published');
   await a.click('button:has-text("เพิ่มหนังสือ")');
   await a.waitForURL(/\/app\/admin\/books\/\d+\?m=saved/);
-  await a.fill('#nt', 'หน่วยที่ 1 เซลล์ (ตัวอย่าง)');
-  await a.fill('#ns', '45');
-  await a.click('button:has-text("เพิ่มหน่วย")');
-  await a.waitForURL(/m=saved/);
+  const book2 = Number(/books\/(\d+)/.exec(a.url())[1]);
+  for (const [title, n] of [['หน่วยที่ 1 เซลล์ (ตัวอย่าง)', '45'], ['หน่วยที่ 2 ระบบร่างกาย (ตัวอย่าง)', '38'], ['หน่วยที่ 3 พลังงาน (ตัวอย่าง)', '30']]) {
+    await a.fill('#nt', title);
+    await a.fill('#ns', n);
+    await a.click('button:has-text("เพิ่มหน่วย")');
+    await a.waitForURL(/m=saved/);
+  }
+  const b2units = await a.locator('form[action$="/upload"]').evaluateAll((fs) => fs.map((f) => Number(/units\/(\d+)\//.exec(f.getAttribute('action'))[1])));
+  for (const u of b2units.slice(0, 2)) { // units 1 and 2 get a deck; unit 3 stays "coming soon"
+    await a.setInputFiles(`#f${u}`, UNIT4);
+    await a.click(`form[action="/app/admin/units/${u}/upload"] button`);
+    await a.waitForURL(/m=uploaded/);
+  }
   await a.goto(`${BASE}/app/admin/books/1`);
   await a.setInputFiles('#f1', UNIT4);
   await a.click('form[action="/app/admin/units/1/upload"] button');
@@ -320,12 +352,133 @@ async function main() {
   await tm.waitForTimeout(1200);
   await shot(tm, '20-deck-watermark-mobile.png', false);
 
-  // the second test teacher never paid: still refused
-  const t2ctx = await browser.newContext(desktop);
-  const t2 = await t2ctx.newPage();
+  // --- access control: a second teacher, approved with a whole book, then given single decks
+  const t2ctx = await browser.newContext(phone);
+  const t2 = await t2ctx.newPage(); watch(t2, 'teacher2');
   await lineLogin(t2, 'ครูวิชัย (ทดสอบ)');
+  if (t2.url().includes('/app/profile')) {
+    await t2.fill('#school', 'โรงเรียนบ้านทดสอบ (ตัวอย่าง)');
+    await t2.click('button[type=submit]:has-text("บันทึก")');
+    await t2.waitForURL(/\/app\/(\?|$)/);
+  }
+  const t2desk = await browser.newContext({ ...desktop, storageState: await t2ctx.storageState() });
+  const t2d = await t2desk.newPage(); watch(t2d, 'teacher2-desktop');
+  await t2d.goto(`${BASE}/app/`);
+  await shot(t2d, '33-waiting-approval-desktop.png');
+  expectRefusal = true;
   const t2deck = await t2.goto(`${BASE}/app/deck/1/`);
-  check(t2deck.status() === 302 || t2deck.status() === 403 || t2.url().includes('/app/profile'), 'another (non-paying) teacher cannot open the deck');
+  check(t2deck.status() === 403, 'a waiting teacher cannot open a deck');
+  expectRefusal = false;
+  await a.goto(`${BASE}/app/admin/members?filter=waiting`);
+  const card2 = a.locator('.wcard', { hasText: 'ครูวิชัย (ทดสอบ)' });
+  const t2Id = Number(/members\/(\d+)\/approve/.exec(await card2.locator('form.approve').getAttribute('action'))[1]);
+  await card2.locator('label.cchip', { hasText: 'คณิตศาสตร์ ม.1 เล่ม 1' }).click();
+  await card2.locator('select[name="expiry"]').selectOption('12');
+  await shot(a, '34-admin-approve-with-book-desktop.png');
+  const amctx2 = await browser.newContext({ ...phone, storageState: await actx.storageState() });
+  const am2 = await amctx2.newPage(); watch(am2, 'admin-mobile-2');
+  await am2.goto(`${BASE}/app/admin/members?filter=waiting`);
+  check(await fitsWidth(am2), 'the approve card fits the phone width');
+  await shot(am2, '34b-admin-approve-mobile.png');
+  await card2.locator('form.approve button[type=submit]').click();
+  await a.waitForURL(/m=approved/);
+  check(await a.getByText('อนุมัติสมาชิกแล้ว').isVisible(), 'admin approves the second teacher with a whole book');
+
+  // the member's access panel: tick one unit of book 2, until a date
+  await a.goto(`${BASE}/app/admin/members/${t2Id}#access`);
+  const panel = a.locator('form[data-access]');
+  const b2 = panel.locator('.accbook', { hasText: 'วิทยาศาสตร์ ม.2 เล่ม 1' });
+  await b2.locator('summary').click();
+  await b2.locator(`input[name="unit"][value="${b2units[0]}"]`).check();
+  check(await b2.locator('input[data-book]').evaluate((el) => el.indeterminate), 'ticking one unit marks the book box as partly ticked (script)');
+  const until = new Date(Date.now() + 90 * 86400000 + 7 * 3600000).toISOString().slice(0, 10);
+  check(!(await panel.locator('input[name="expiry_date"]').isVisible()), 'the date field stays hidden until "ถึงวันที่…" is chosen');
+  await panel.locator('.expf label:has(input[value="date"])').click();
+  await panel.locator('input[name="expiry_date"]').fill(until);
+  check(await panel.locator('input[name="expiry"][value="date"]').isChecked(), 'expiry "ถึงวันที่…" with a date');
+  await shot(a, '35-admin-member-access-desktop.png');
+  const amp = await amctx2.newPage(); watch(amp, 'admin-mobile-panel');
+  await amp.goto(`${BASE}/app/admin/members/${t2Id}#access`);
+  await amp.locator('.accbook', { hasText: 'คณิตศาสตร์ ม.1 เล่ม 1' }).locator('summary').click();
+  check(await fitsWidth(amp), 'the access panel fits the phone width');
+  await shot(amp, '35b-admin-member-access-mobile.png');
+  await panel.locator('button:has-text("บันทึกสิทธิ์")').click();
+  await a.waitForURL(/m=access/);
+  check(await a.getByText('บันทึกสิทธิ์เข้าถึงสไลด์แล้ว').isVisible(), 'one Save stores the deck access');
+
+  // the teacher's home: only the decks they can open, with expiry; "เปิดได้ 1 จาก 3 หน่วย"
+  await t2.goto(`${BASE}/app/`);
+  check(await t2.getByText('เปิดได้ 1 จาก 3 หน่วย').first().isVisible(), 'teacher home shows partial access "เปิดได้ 1 จาก 3 หน่วย"');
+  check(await t2.getByText('เปิดได้ทั้งเล่ม').first().isVisible(), 'teacher home shows the whole book given at approval');
+  check(!(await t2.content()).includes('หน่วยที่ 2 ระบบร่างกาย'), 'decks the teacher cannot open are not listed on the home page');
+  check(await fitsWidth(t2), 'teacher home with partial access fits the phone width');
+  await shot(t2, '36-teacher-partial-access-mobile.png');
+  await t2d.goto(`${BASE}/app/`);
+  await shot(t2d, '36b-teacher-partial-access-desktop.png');
+  const hrefs = await t2.locator('a[href^="/app/"]').evaluateAll((as) => [...new Set(as.map((x) => x.getAttribute('href').split('#')[0]))]);
+  let dead = [];
+  for (const h of hrefs) { const r = await t2ctx.request.get(`${BASE}${h}`, { maxRedirects: 0 }); if (r.status() >= 400) dead.push(`${h} ${r.status()}`); }
+  check(dead.length === 0, `no dead links on the teacher home (${hrefs.length} checked${dead.length ? ': ' + dead.join(', ') : ''})`);
+  const ok1 = await t2.goto(`${BASE}/app/deck/${b2units[0]}/`);
+  check(ok1.status() === 200, 'the granted deck opens');
+  expectRefusal = true;
+  const no2 = await t2.goto(`${BASE}/app/deck/${b2units[1]}/`);
+  check(no2.status() === 403, 'a deck of the same book without a grant is refused');
+  expectRefusal = false;
+
+  // "ใครเข้าถึงได้บ้าง" for book 2: revoke while the teacher's session is open, search and add a member
+  await a.goto(`${BASE}/app/admin/books/${book2}/access`);
+  check(await a.getByText('ครูวิชัย (ทดสอบ)').first().isVisible(), '"ใครเข้าถึงได้บ้าง" lists the teacher with a grant');
+  await a.fill('input[name="q"]', 'สมศรี');
+  await a.click('button:has-text("ค้นหา")');
+  await a.waitForURL(/q=/);
+  await shot(a, '37-admin-who-has-access-desktop.png');
+  const amw = await amctx2.newPage(); watch(amw, 'admin-mobile-who');
+  await amw.goto(`${BASE}/app/admin/books/${book2}/access?q=${encodeURIComponent('สมศรี')}`);
+  check(await fitsWidth(amw), '"ใครเข้าถึงได้บ้าง" fits the phone width');
+  await shot(amw, '37b-admin-who-has-access-mobile.png');
+  const addRow = a.locator('.found li', { hasText: 'ครูสมศรี (ทดสอบ)' });
+  await addRow.locator('select[name="unit"]').selectOption(String(b2units[1]));
+  await addRow.locator('button:has-text("ให้สิทธิ์")').click();
+  await a.waitForURL(/m=granted/);
+  check(await a.getByText('ให้สิทธิ์แล้ว').isVisible(), 'admin adds a member from the search');
+  await a.locator(`tr#t${t2Id} .gchip button`).first().click();
+  await a.waitForURL(/m=revoked/);
+  expectRefusal = true;
+  const after = await t2.goto(`${BASE}/app/deck/${b2units[0]}/`);
+  check(after.status() === 403, 'a revoke takes effect at once, while the teacher\'s session is open');
+  expectRefusal = false;
+
+  // "สิทธิ์ทั้งหมด": the matrix, a tap with script, a bulk grant
+  await a.goto(`${BASE}/app/admin/access?open=${book2}`);
+  const cell = a.locator(`button[name="cell"][value="u:${t2Id}:${b2units[2]}"]`);
+  const before = await cell.getAttribute('class');
+  const navs = [];
+  a.on('framenavigated', (f) => { if (f === a.mainFrame()) navs.push(f.url()); });
+  await cell.click();
+  await a.waitForFunction((v) => document.querySelector(`button[value="${v}"]`).classList.contains('g'), `u:${t2Id}:${b2units[2]}`);
+  check(navs.length === 0 && !before.includes(' g'), 'a matrix tap grants in the background, without reloading');
+  await a.reload();
+  check((await a.locator(`button[name="cell"][value="u:${t2Id}:${b2units[2]}"]`).getAttribute('class')).includes(' g'), 'the tapped grant is stored');
+  await a.locator('.mx tbody tr').first().scrollIntoViewIfNeeded();
+  await shot(a, '38-admin-access-matrix-desktop.png');
+  for (const name of ['ครูสมศรี (ทดสอบ)', 'ครูวิชัย (ทดสอบ)']) await a.locator('.mx tbody tr', { hasText: name }).locator('input[name="sel"]').check();
+  await a.selectOption('#bulk_book', String(book2));
+  await a.click('button[name="bulk"]');
+  await a.waitForURL(/m=bulk/);
+  check(await a.getByText('ให้สิทธิ์ทั้งเล่มกับสมาชิกที่เลือกแล้ว').isVisible(), 'bulk: a whole book to the selected teachers');
+  await a.goto(`${BASE}/app/admin/access`);
+  await shot(a, '38b-admin-access-matrix-collapsed-desktop.png');
+  const amm = await amctx2.newPage(); watch(amm, 'admin-mobile-matrix');
+  await amm.goto(`${BASE}/app/admin/access?open=${book2}`);
+  check(await fitsWidth(amm), 'the matrix fits the phone width (the table scrolls inside its box)');
+  await shot(amm, '38c-admin-access-matrix-mobile.png');
+  await amctx2.close();
+  const gcsv = await actx.request.get(`${BASE}/app/admin/export/grants.csv`);
+  check(gcsv.ok() && (await gcsv.text()).includes('ครูวิชัย'), 'CSV export of grants works');
+  await t2.goto(`${BASE}/app/`);
+  await shot(t2, '36c-teacher-after-bulk-mobile.png');
+  await t2desk.close();
 
   // logout
   await t.goto(`${BASE}/app/`);

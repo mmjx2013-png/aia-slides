@@ -3,7 +3,8 @@
  * every page works without it (plain forms). Pages that load it send a CSP that allows exactly this URL.
  *  - style quiz: a tap shows the pick (tick, the other card fades) before the form is sent; keys ← → ↓ / 1 2 3;
  *    the next question's images are fetched early.
- *  - admin: "copy brief" buttons copy the request brief to the clipboard.
+ *  - admin: "copy brief" buttons copy the request brief to the clipboard; the access panel's "ทั้งเล่ม" box ticks a
+ *    book's units; the access matrix sends a tapped cell in the background (its page allows connect-src to that URL).
  */
 export const APP_JS = `(() => {
   'use strict';
@@ -48,6 +49,74 @@ export const APP_JS = `(() => {
       im.decoding = 'async';
       im.src = src;
     }
+  }
+
+  // Access panel: "ทั้งเล่ม" ticks every unit of the book; unit boxes show the book box as all / some / none.
+  for (const f of document.querySelectorAll('form[data-access]')) {
+    const sync = (id) => {
+      const book = f.querySelector('input[data-book="' + id + '"]');
+      const units = [...f.querySelectorAll('input[data-of="' + id + '"]')];
+      if (!book || !units.length) return;
+      const n = units.filter((u) => u.checked).length;
+      book.checked = n === units.length;
+      book.indeterminate = n > 0 && n < units.length;
+    };
+    f.addEventListener('change', (e) => {
+      const el = e.target;
+      if (el.dataset.book) {
+        for (const u of f.querySelectorAll('input[data-of="' + el.dataset.book + '"]')) u.checked = el.checked;
+        el.indeterminate = false;
+      } else if (el.dataset.of) sync(el.dataset.of);
+    });
+    for (const b of f.querySelectorAll('input[data-book]')) sync(b.dataset.book);
+  }
+
+  // Picking a date selects "ถึงวันที่…" in the same expiry control.
+  document.addEventListener('change', (e) => {
+    const el = e.target;
+    if (!(el instanceof HTMLInputElement) || el.type !== 'date' || !/expiry_date$/.test(el.name) || !el.value) return;
+    const prefix = el.name.slice(0, -'expiry_date'.length);
+    const scope = el.closest('form') || document;
+    const radio = scope.querySelector('input[type="radio"][name="' + prefix + 'expiry"][value="date"]');
+    if (radio) radio.checked = true;
+    const sel = scope.querySelector('select[name="' + prefix + 'expiry"]');
+    if (sel) sel.value = 'date';
+  });
+
+  // Access matrix: a tap sends that one cell in the background and flips it; without script it is a normal form post.
+  const mx = document.querySelector('form[data-matrix]');
+  if (mx) {
+    const paint = (b) => {
+      const g = Number(b.dataset.g), s = b.dataset.s === '1';
+      if (b.classList.contains('u')) {
+        b.className = 'cell u ' + (g && s ? 'gs' : g ? 'g' : s ? 's' : '');
+      } else {
+        const m = Number(b.dataset.m);
+        b.className = 'cell b ' + (s ? 's' : g === m ? 'full' : g ? 'part' : '');
+        const em = b.querySelector('em');
+        if (em) em.textContent = s ? '฿' : g && g < m ? g + '/' + m : '';
+      }
+    };
+    mx.addEventListener('click', async (e) => {
+      const b = e.target.closest('button[name="cell"]');
+      if (!b || b.disabled) return;
+      e.preventDefault();
+      b.classList.add('busy');
+      const body = new URLSearchParams();
+      for (const [k, v] of new FormData(mx)) if (typeof v === 'string' && k !== 'sel') body.append(k, v);
+      body.set('cell', b.value);
+      try {
+        const res = await fetch(mx.action, { method: 'POST', body, redirect: 'manual', credentials: 'same-origin' });
+        if (res.type !== 'opaqueredirect' && !res.ok) throw new Error('HTTP ' + res.status);
+        if (b.classList.contains('u')) b.dataset.g = b.dataset.g === '1' ? '0' : '1';
+        else b.dataset.g = Number(b.dataset.g) === Number(b.dataset.m) ? '0' : b.dataset.m;
+        paint(b);
+      } catch (_) {
+        location.reload();
+        return;
+      }
+      b.classList.remove('busy');
+    });
   }
 
   const copyText = async (text) => {

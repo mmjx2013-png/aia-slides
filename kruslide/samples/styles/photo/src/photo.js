@@ -79,6 +79,7 @@
   if (fs) (function () {
     var frames = $$('#e3-strip .fr'), img = $('img', fs), ring = $('#e3-ring'), miss = $('#e3-miss'), q = $('#e3-q'), cnt = $('#e3-n'), fb = $('#e3-fb'), lab = $('#e3-lab');
     var cur = 0, found = frames.map(function () { return false; }), answers = false, swapT = null;
+    fs.setAttribute('role', 'button'); fs.setAttribute('aria-label', 'ภาพ: แตะจุดที่โจทย์ถาม');
     function data(i) { var f = frames[i].dataset; return { src: $('img', frames[i]).getAttribute('src'), x: +f.x, y: +f.y, r: +f.r, q: f.q, lab: f.lab, cap: f.cap, credit: f.credit, op: f.op || '50% 50%' }; }
     function show(i, quiet) {
       cur = i; var d = data(i);
@@ -87,12 +88,14 @@
       if (!quiet && !still() && img.animate) img.animate([{ opacity: 0, transform: 'scale(1.04)' }, { opacity: 1, transform: 'none' }], { duration: 520, easing: 'cubic-bezier(.22,.7,.2,1)' });
       img.src = d.src; img.style.objectPosition = d.op;
       q.textContent = d.q; fb.textContent = ''; fb.className = '';
+      var cp = $('#e3-cap'); if (cp) cp.textContent = 'ภาพ ' + (i + 1) + ': ' + d.cap + ' · ' + d.credit.replace(/^ภาพ: /, '') + ' · แตะภาพในแถบฟิล์มเพื่อเปลี่ยนภาพ';
       mark(found[i] || answers);
       if (!quiet && !still() && q.animate) q.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.22,.7,.2,1)' });
     }
     function mark(on) {
       var d = data(cur);
-      ring.style.left = d.x + '%'; ring.style.top = d.y + '%'; ring.style.width = ring.style.height = (d.r * 2) + '%';
+      var rp = d.r * 2 * fs.offsetWidth / 100;   /* r is a share of the width, so the ring stays round */
+      ring.style.left = d.x + '%'; ring.style.top = d.y + '%'; ring.style.width = ring.style.height = rp + 'px';
       ring.classList.toggle('on', !!on); lab.textContent = d.lab;
       lab.style.left = d.x + '%'; lab.style.top = 'calc(' + d.y + '% + ' + (d.r * fs.offsetWidth / 100 + 18) + 'px)';
       lab.classList.toggle('on', !!on);

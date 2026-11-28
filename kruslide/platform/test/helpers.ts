@@ -17,14 +17,14 @@ export function lineId(): string {
 
 export interface Who { id: number; cookie: string; csrf: string; }
 
-export async function call(path: string, init: RequestInit & { cookie?: string; ip?: string } = {}): Promise<Response> {
+export async function call(path: string, init: RequestInit & { cookie?: string; ip?: string; vars?: Record<string, string> } = {}): Promise<Response> {
   const headers = new Headers(init.headers);
   if (init.cookie) headers.set('Cookie', init.cookie);
   if (!headers.has('CF-Connecting-IP')) headers.set('CF-Connecting-IP', init.ip ?? '203.0.113.7');
-  const { cookie: _c, ip: _i, ...rest } = init;
+  const { cookie: _c, ip: _i, vars, ...rest } = init;
   const req = new Request(ORIGIN + path, { ...rest, headers, redirect: 'manual' });
   const ctx = createExecutionContext();
-  const res = await worker.fetch(req, env, ctx);
+  const res = await worker.fetch(req, vars ? { ...env, ...vars } : env, ctx);
   await waitOnExecutionContext(ctx);
   return res;
 }
@@ -80,12 +80,12 @@ export const SAMPLE_DECK = `<!DOCTYPE html>
 </body></html>`;
 
 /** A unit with its deck in the (local) private bucket, like an admin upload would leave it. */
-export async function makeUnit(bookId: number, o: { slides?: number; html?: string | null; position?: number } = {}): Promise<number> {
+export async function makeUnit(bookId: number, o: { slides?: number; html?: string | null; position?: number; title?: string } = {}): Promise<number> {
   const t = nowSec();
   const htmlText = o.html === undefined ? SAMPLE_DECK : o.html;
   const row = await env.DB.prepare(
     `INSERT INTO units (book_id, position, title, slide_count, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?5) RETURNING id`,
-  ).bind(bookId, o.position ?? 4, 'หน่วยที่ 4 สถิติ (1)', o.slides ?? 67, t).first<{ id: number }>();
+  ).bind(bookId, o.position ?? 4, o.title ?? 'หน่วยที่ 4 สถิติ (1)', o.slides ?? 67, t).first<{ id: number }>();
   const id = row!.id;
   if (htmlText !== null) {
     const key = `units/${id}/index.html`;

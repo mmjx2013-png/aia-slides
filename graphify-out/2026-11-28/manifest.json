@@ -684,21 +684,21 @@
     "semantic_hash": ""
   },
   "kruslide/platform/src/db.ts": {
-    "mtime": 1795851366.280781,
-    "seen": 1795853060.7785466,
-    "ast_hash": "3cd0ac12af0f377ecac3d7ac079bbac9",
+    "mtime": 1795858457.284244,
+    "seen": 1795858719.51242,
+    "ast_hash": "8c9cf20dc0e0612c4a58df87571674e1",
     "semantic_hash": ""
   },
   "kruslide/platform/src/env.ts": {
-    "mtime": 1795851143.141358,
-    "seen": 1795851253.2342644,
-    "ast_hash": "7f8dce478381ca07373ca7055e3701df",
-    "semantic_hash": "7f8dce478381ca07373ca7055e3701df"
+    "mtime": 1795858204.781549,
+    "seen": 1795858719.5124233,
+    "ast_hash": "33fdb1d0fd9bb00a3882b5b2f2a1cd49",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/index.ts": {
-    "mtime": 1795851406.1212964,
-    "seen": 1795853060.778573,
-    "ast_hash": "a6cd3af3715820134d37744934acb14d",
+    "mtime": 1795858661.7292733,
+    "seen": 1795858719.5124261,
+    "ast_hash": "d1a1ef069e43517af86e2cd37841abce",
     "semantic_hash": ""
   },
   "kruslide/platform/src/lib/audit.ts": {
@@ -708,9 +708,9 @@
     "semantic_hash": "79009dab375a6d7b290681449f618da7"
   },
   "kruslide/platform/src/lib/config.ts": {
-    "mtime": 1795853371.5550125,
-    "seen": 1795855029.6651075,
-    "ast_hash": "26481a46fc89f02c00abb91425262747",
+    "mtime": 1795858204.7818596,
+    "seen": 1795858719.5124729,
+    "ast_hash": "74ac9f3ec972c30409574b2e90837e85",
     "semantic_hash": ""
   },
   "kruslide/platform/src/lib/cookies.ts": {
@@ -744,9 +744,9 @@
     "semantic_hash": "d9008154552336810d6a5dabbc9ff6b1"
   },
   "kruslide/platform/src/lib/http.ts": {
-    "mtime": 1795853173.175655,
-    "seen": 1795855029.665209,
-    "ast_hash": "82a687d2a4eac3e782aff88b3436be4d",
+    "mtime": 1795858325.762099,
+    "seen": 1795858719.512713,
+    "ast_hash": "9ee772936fd717c4f08272d01bdec451",
     "semantic_hash": ""
   },
   "kruslide/platform/src/lib/line.ts": {
@@ -816,27 +816,27 @@
     "semantic_hash": "cd65781caf08ab55c4e76be5559f3e6f"
   },
   "kruslide/platform/src/routes/admin.ts": {
-    "mtime": 1795851396.2111464,
-    "seen": 1795853060.779016,
-    "ast_hash": "2a810ebb59e5c78aaf75592d15de16d1",
+    "mtime": 1795858653.1643267,
+    "seen": 1795858719.5131617,
+    "ast_hash": "bab066fcf3e979c73bbad6686ba71cfb",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/auth.ts": {
-    "mtime": 1795847545.558275,
-    "seen": 1795851253.2342927,
-    "ast_hash": "e140d48a9485906e3994e10a9e8e6655",
-    "semantic_hash": "e140d48a9485906e3994e10a9e8e6655"
+    "mtime": 1795858457.2835393,
+    "seen": 1795858719.5131671,
+    "ast_hash": "57d9636226c70eb47b88f1b3c5b50c6e",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/routes/deck.ts": {
-    "mtime": 1795851441.9314103,
-    "seen": 1795853060.7790482,
-    "ast_hash": "d9b010f633cdbfe80e549c10713e82f2",
+    "mtime": 1795858447.5119739,
+    "seen": 1795858719.5131707,
+    "ast_hash": "6763687a5d1bf43cdb9614a6ad62433f",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/member.ts": {
-    "mtime": 1795852911.767639,
-    "seen": 1795853060.7790496,
-    "ast_hash": "ff30a601a60356ba71e3aa0895fefdaa",
+    "mtime": 1795858425.0896137,
+    "seen": 1795858719.513173,
+    "ast_hash": "e4a82f955d8e48d0e0f541d2d5b64530",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/privacy.ts": {
@@ -864,9 +864,9 @@
     "semantic_hash": ""
   },
   "kruslide/platform/src/views/layout.ts": {
-    "mtime": 1795852979.3676713,
-    "seen": 1795853060.7790864,
-    "ast_hash": "eac40afb10184bf10991e809652c6a76",
+    "mtime": 1795858363.038413,
+    "seen": 1795858719.5134273,
+    "ast_hash": "ca6bf17bce075c9f7b8ee75d0605dd49",
     "semantic_hash": ""
   },
   "kruslide/platform/test/admin.test.ts": {
@@ -876,10 +876,10 @@
     "semantic_hash": "78703822ac5317e60bc4fe640d69e80c"
   },
   "kruslide/platform/test/auth.test.ts": {
-    "mtime": 1795847916.7989445,
-    "seen": 1795851253.2343037,
-    "ast_hash": "ccd94f9bc7857ed16e98db443b0d03d5",
-    "semantic_hash": "ccd94f9bc7857ed16e98db443b0d03d5"
+    "mtime": 1795858705.3421857,
+    "seen": 1795858719.5134635,
+    "ast_hash": "e3242a6015aa8d201eae9e8095d4bb7b",
+    "semantic_hash": ""
   },
   "kruslide/platform/test/csrf.test.ts": {
     "mtime": 1795849431.5179813,
@@ -906,10 +906,10 @@
     "semantic_hash": "0703afcc2e78192b0667674bbc7f1e25"
   },
   "kruslide/platform/test/helpers.ts": {
-    "mtime": 1795847985.8189075,
-    "seen": 1795851253.2343094,
-    "ast_hash": "469e20163f562db6bd655cf457c4330f",
-    "semantic_hash": "469e20163f562db6bd655cf457c4330f"
+    "mtime": 1795858679.3354723,
+    "seen": 1795858719.5136032,
+    "ast_hash": "5234b911ae8385827abe26cdcfddcce3",
+    "semantic_hash": ""
   },
   "kruslide/platform/test/pricing.test.ts": {
     "mtime": 1795848087.282278,
@@ -1056,8 +1056,8 @@
     "semantic_hash": "0d63e4003388c97921e7e765e8b921a2"
   },
   "kruslide/trailer/credits.md": {
-    "mtime": 1795854691.7484226,
-    "seen": 1795855029.670866,
+    "mtime": 1795856206.9325912,
+    "seen": 1795858719.5203803,
     "ast_hash": "c42dfd83442d6ab6aadc4fd3e8f631bc",
     "semantic_hash": ""
   },
@@ -1362,9 +1362,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/geo-thailand/src/deck.js": {
-    "mtime": 1795854979.3396585,
-    "seen": 1795855029.6661057,
-    "ast_hash": "7473e8fcf469ab5f55e862fead164933",
+    "mtime": 1795855084.1436608,
+    "seen": 1795858719.5148003,
+    "ast_hash": "3fbcb7c9ba15867fd61567b2af03e57b",
     "semantic_hash": ""
   },
   "kruslide/samples/geo-thailand/src/engine.js": {
@@ -1380,9 +1380,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/geo-thailand/src/tools.js": {
-    "mtime": 1795854167.775105,
-    "seen": 1795855029.6661084,
-    "ast_hash": "053ee1394ddc61efaa8cee636483d44e",
+    "mtime": 1795857229.1897144,
+    "seen": 1795858719.514872,
+    "ast_hash": "d7f538861a503db3cd8b66cf3c7a04c9",
     "semantic_hash": ""
   },
   "kruslide/samples/history/sample.json": {
@@ -1458,9 +1458,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/math-equation-balance/src/tools.js": {
-    "mtime": 1795854113.4013278,
-    "seen": 1795855029.666144,
-    "ast_hash": "1be130c8a08b00a0148f513e6344213a",
+    "mtime": 1795856327.5002222,
+    "seen": 1795858719.5153968,
+    "ast_hash": "cf64d009fdac9122cb02b7afc357d99f",
     "semantic_hash": ""
   },
   "kruslide/samples/math-fractions/build.py": {
@@ -1494,9 +1494,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/math-geometry/src/tools.js": {
-    "mtime": 1795854113.4010193,
-    "seen": 1795855029.6661494,
-    "ast_hash": "cc3aed1d7cc6dad7c144b193f976c9ed",
+    "mtime": 1795855635.9584854,
+    "seen": 1795858719.5158453,
+    "ast_hash": "c7d269908eb34201c3e47a4daecc011a",
     "semantic_hash": ""
   },
   "kruslide/samples/math-linear/build.py": {
@@ -1512,9 +1512,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/math-linear/src/tools.js": {
-    "mtime": 1795854113.4016528,
-    "seen": 1795855029.6661527,
-    "ast_hash": "e3162854f5ac17d1dcec1866edf75df0",
+    "mtime": 1795857100.0662684,
+    "seen": 1795858719.5159326,
+    "ast_hash": "27c16ca64f464bf35d6d61face4a3898",
     "semantic_hash": ""
   },
   "kruslide/samples/math-probability/build.py": {
@@ -1530,9 +1530,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/math-probability/src/tools.js": {
-    "mtime": 1795854113.4019997,
-    "seen": 1795855029.6661556,
-    "ast_hash": "e8448195f8e330e702e7520a673c73f2",
+    "mtime": 1795857642.3296654,
+    "seen": 1795858719.516008,
+    "ast_hash": "80697c12a80e93b2370db6b3163573ed",
     "semantic_hash": ""
   },
   "kruslide/samples/primary-clock-money/build.py": {
@@ -1560,9 +1560,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/styles/mechanics/src/mech.js": {
-    "mtime": 1795854958.037105,
-    "seen": 1795855029.6661825,
-    "ast_hash": "b24ffdf8a3aa8cff36b3cbb75fd510e6",
+    "mtime": 1795856724.0118523,
+    "seen": 1795858719.5162516,
+    "ast_hash": "3c91c6ede6ac0b43d0eae256a8e1fd49",
     "semantic_hash": ""
   },
   "kruslide/samples/thai-poem/build.py": {
@@ -1704,9 +1704,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/english-vocab/src/symbols.svg": {
-    "mtime": 1795854331.4132984,
-    "seen": 1795855029.6715717,
-    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "mtime": 1795855650.498351,
+    "seen": 1795858719.5212522,
+    "ast_hash": "14b472efdbe97758c185af4d06ac1713",
     "semantic_hash": ""
   },
   "kruslide/samples/geo-thailand/src/symbols.svg": {
@@ -1716,9 +1716,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/kinder-count/src/symbols.svg": {
-    "mtime": 1795854331.4223015,
-    "seen": 1795855029.671627,
-    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "mtime": 1795856334.9063919,
+    "seen": 1795858719.5213099,
+    "ast_hash": "9af96f1d621289b806b3eecda5b9ecdb",
     "semantic_hash": ""
   },
   "kruslide/samples/math-base10/src/symbols.svg": {
@@ -1740,9 +1740,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/math-geometry/src/symbols.svg": {
-    "mtime": 1795854247.2242475,
-    "seen": 1795855029.6716356,
-    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "mtime": 1795855635.9337633,
+    "seen": 1795858719.5214293,
+    "ast_hash": "11192b3ea2ea82953e3c1cf88e30377c",
     "semantic_hash": ""
   },
   "kruslide/samples/math-linear/src/symbols.svg": {
@@ -1752,9 +1752,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/math-probability/src/symbols.svg": {
-    "mtime": 1795854247.2288055,
-    "seen": 1795855029.6716392,
-    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "mtime": 1795857680.5258782,
+    "seen": 1795858719.5214696,
+    "ast_hash": "e61b5256728e607b800bd20ad8d6e719",
     "semantic_hash": ""
   },
   "kruslide/samples/primary-clock-money/src/symbols.svg": {
@@ -1779,6 +1779,708 @@
     "mtime": 1795854377.5382755,
     "seen": 1795855029.6716485,
     "ast_hash": "880c6af157eec0352d905f0053b2bab1",
+    "semantic_hash": ""
+  },
+  "kruslide/backoffice/data/mechanics.json": {
+    "mtime": 1795858615.5465274,
+    "seen": 1795858719.5121539,
+    "ast_hash": "d2dd6c8617ed732815698f2ce89a8431",
+    "semantic_hash": ""
+  },
+  "kruslide/backoffice/data/prices.json": {
+    "mtime": 1795858506.6345208,
+    "seen": 1795858719.5121577,
+    "ast_hash": "ed42f9bd4b28c94f4cc9bf64fe33fb07",
+    "semantic_hash": ""
+  },
+  "kruslide/backoffice/data/products.json": {
+    "mtime": 1795858651.5505295,
+    "seen": 1795858719.512161,
+    "ast_hash": "49ab6a865214f812733dee10046db64b",
+    "semantic_hash": ""
+  },
+  "kruslide/backoffice/data/status.json": {
+    "mtime": 1795858506.6332161,
+    "seen": 1795858719.5121639,
+    "ast_hash": "f161a89ff5c180e2b49ba87aed3d1000",
+    "semantic_hash": ""
+  },
+  "kruslide/backoffice/data/styles.json": {
+    "mtime": 1795858547.2467637,
+    "seen": 1795858719.5121665,
+    "ast_hash": "9091bde94fc47532dff90fb812872dce",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/lib/access.ts": {
+    "mtime": 1795858348.7665114,
+    "seen": 1795858719.5124288,
+    "ast_hash": "c1adf0fbdbfe9ec0b74152670d89e51c",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/routes/access.ts": {
+    "mtime": 1795858617.065688,
+    "seen": 1795858719.5131578,
+    "ast_hash": "694858c06dc7d5636dd3a7c8f0352959",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/routes/adminkit.ts": {
+    "mtime": 1795858318.1927915,
+    "seen": 1795858719.5131643,
+    "ast_hash": "5e734a4cba5863097a22cc9eb346c436",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/build.py": {
+    "mtime": 1795855147.0807848,
+    "seen": 1795858719.513939,
+    "ast_hash": "69f963b4a6b7c9d8f4cf70b09a3c4a59",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/sample.json": {
+    "mtime": 1795856574.02087,
+    "seen": 1795858719.513942,
+    "ast_hash": "a6bca3c263646b8a381a537ff159b02e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/src/deck.js": {
+    "mtime": 1795856791.3807275,
+    "seen": 1795858719.513944,
+    "ast_hash": "e70c96724c675a276ac073ef09b4112e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/src/engine.js": {
+    "mtime": 1795855147.088807,
+    "seen": 1795858719.513946,
+    "ast_hash": "850b56bb615c39ca91eaab6efe477563",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/src/kit.js": {
+    "mtime": 1795855147.0889165,
+    "seen": 1795858719.513949,
+    "ast_hash": "791a962f9f3ca0658f8e1046eec301d1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/src/tools.js": {
+    "mtime": 1795857229.2669287,
+    "seen": 1795858719.513951,
+    "ast_hash": "d7f538861a503db3cd8b66cf3c7a04c9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-body/build.py": {
+    "mtime": 1795857168.9763455,
+    "seen": 1795858719.5139534,
+    "ast_hash": "1436edf5bab9388590264c25d7ed6eb6",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-body/sample.json": {
+    "mtime": 1795857882.9950504,
+    "seen": 1795858719.5139556,
+    "ast_hash": "3c5bf94be5117adf9a575e9e64cc588f",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-body/src/body.js": {
+    "mtime": 1795857925.767709,
+    "seen": 1795858719.5139582,
+    "ast_hash": "5f252979ec9072466c7e8cdc19706883",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-body/src/engine.js": {
+    "mtime": 1795857168.975962,
+    "seen": 1795858719.5139606,
+    "ast_hash": "4dc91ecdfd0514d07d1b2005ac1d111a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-body/src/tools.js": {
+    "mtime": 1795857168.9760592,
+    "seen": 1795858719.5139627,
+    "ast_hash": "5b469ecca4359e470f35eaec03312c85",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-cell/build.py": {
+    "mtime": 1795856674.2280223,
+    "seen": 1795858719.5139654,
+    "ast_hash": "83abf246ca579bef1bc1da32655893aa",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-cell/sample.json": {
+    "mtime": 1795857882.9949877,
+    "seen": 1795858719.5139675,
+    "ast_hash": "ea5079bf7bd1ed122a6fb020c536f3da",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-cell/src/cell.js": {
+    "mtime": 1795857168.8730047,
+    "seen": 1795858719.5139694,
+    "ast_hash": "885be47f0fcae1d1eaa13d34962a100a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-cell/src/engine.js": {
+    "mtime": 1795856674.2276373,
+    "seen": 1795858719.5139716,
+    "ast_hash": "4dc91ecdfd0514d07d1b2005ac1d111a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-cell/src/tools.js": {
+    "mtime": 1795856674.2277637,
+    "seen": 1795858719.5139737,
+    "ast_hash": "5b469ecca4359e470f35eaec03312c85",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-balance/build.py": {
+    "mtime": 1795855047.982951,
+    "seen": 1795858719.5141551,
+    "ast_hash": "7b86052c3da249456ae19c138a5b0da5",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-balance/sample.json": {
+    "mtime": 1795857882.9947317,
+    "seen": 1795858719.5141575,
+    "ast_hash": "e3bf1e930d01ae6e3adc0cf33bec250e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-balance/src/balance.js": {
+    "mtime": 1795855443.5750413,
+    "seen": 1795858719.5141604,
+    "ast_hash": "782a42c6139deb600b85b7a70b79e6b8",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-balance/src/engine.js": {
+    "mtime": 1795855047.9825332,
+    "seen": 1795858719.514162,
+    "ast_hash": "4dc91ecdfd0514d07d1b2005ac1d111a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-balance/src/tools.js": {
+    "mtime": 1795855047.9826207,
+    "seen": 1795858719.5141642,
+    "ast_hash": "5b469ecca4359e470f35eaec03312c85",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-periodic/sample.json": {
+    "mtime": 1795857882.99458,
+    "seen": 1795858719.5142014,
+    "ast_hash": "43aa5a6e4a023e8c7cd8f47ac63b7067",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/build.py": {
+    "mtime": 1795855147.056774,
+    "seen": 1795858719.5143101,
+    "ast_hash": "69f963b4a6b7c9d8f4cf70b09a3c4a59",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/sample.json": {
+    "mtime": 1795855646.1087232,
+    "seen": 1795858719.5143125,
+    "ast_hash": "72f6b65abea41ebeb2deefef54dcb1bd",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/src/deck.js": {
+    "mtime": 1795857578.53499,
+    "seen": 1795858719.5143147,
+    "ast_hash": "fd23fe2dae67be3c815588145e52772f",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/src/engine.js": {
+    "mtime": 1795855147.0607564,
+    "seen": 1795858719.514317,
+    "ast_hash": "850b56bb615c39ca91eaab6efe477563",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/src/kit.js": {
+    "mtime": 1795855147.0608714,
+    "seen": 1795858719.5143194,
+    "ast_hash": "791a962f9f3ca0658f8e1046eec301d1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/src/tools.js": {
+    "mtime": 1795857229.229601,
+    "seen": 1795858719.5143213,
+    "ast_hash": "d7f538861a503db3cd8b66cf3c7a04c9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/sample.json": {
+    "mtime": 1795856256.6383872,
+    "seen": 1795858719.514358,
+    "ast_hash": "2580a6a717e2832debf75d2da497479e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/src/deck.json": {
+    "mtime": 1795856046.3353007,
+    "seen": 1795858719.51436,
+    "ast_hash": "7eec511b1b3bd0d805e53e8a145302f3",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/src/grammar.js": {
+    "mtime": 1795856162.5103815,
+    "seen": 1795858719.514398,
+    "ast_hash": "6891db7c0216776f986edb1cf6877240",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/sample.json": {
+    "mtime": 1795855975.3255284,
+    "seen": 1795858719.5145102,
+    "ast_hash": "0a789106a214c0345d153ab003a9c58b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/src/deck.json": {
+    "mtime": 1795855668.3527546,
+    "seen": 1795858719.5145128,
+    "ast_hash": "de8d7a69c5bec60645a705157a5ab8ae",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/src/vocab.js": {
+    "mtime": 1795855808.6818142,
+    "seen": 1795858719.514651,
+    "ast_hash": "5332353d93f1a0f6ff5067d8d9712e9d",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/build.py": {
+    "mtime": 1795855147.0949535,
+    "seen": 1795858719.514875,
+    "ast_hash": "69f963b4a6b7c9d8f4cf70b09a3c4a59",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/sample.json": {
+    "mtime": 1795856898.5992112,
+    "seen": 1795858719.5148776,
+    "ast_hash": "708ca5fbd19d1ff16d4190e896196258",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/src/deck.js": {
+    "mtime": 1795857818.8076,
+    "seen": 1795858719.5148797,
+    "ast_hash": "f2714e71281e7851803596fb78960183",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/src/engine.js": {
+    "mtime": 1795855147.100997,
+    "seen": 1795858719.5148978,
+    "ast_hash": "850b56bb615c39ca91eaab6efe477563",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/src/kit.js": {
+    "mtime": 1795855147.1011078,
+    "seen": 1795858719.5148997,
+    "ast_hash": "791a962f9f3ca0658f8e1046eec301d1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/src/tools.js": {
+    "mtime": 1795857229.2889416,
+    "seen": 1795858719.514902,
+    "ast_hash": "d7f538861a503db3cd8b66cf3c7a04c9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/sample.json": {
+    "mtime": 1795856626.6095572,
+    "seen": 1795858719.515075,
+    "ast_hash": "747d27f2901563c0f98e38c9e375d580",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/src/deck.json": {
+    "mtime": 1795856334.9063406,
+    "seen": 1795858719.5150776,
+    "ast_hash": "997a9bfed19be67d5481d3085be1e4c5",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/src/kinder.js": {
+    "mtime": 1795857238.540217,
+    "seen": 1795858719.5151155,
+    "ast_hash": "e25676db2b9aa7c330b56c75f7ba8fa2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-base10/sample.json": {
+    "mtime": 1795858504.7050846,
+    "seen": 1795858719.5152178,
+    "ast_hash": "5f68143eb4d583aad2d9625d842ccae6",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-equation-balance/sample.json": {
+    "mtime": 1795858504.705247,
+    "seen": 1795858719.515356,
+    "ast_hash": "df9f026abe69b50eb897fbb0176e9008",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-equation-balance/src/app.js": {
+    "mtime": 1795856753.2770529,
+    "seen": 1795858719.5153587,
+    "ast_hash": "8e5bcae04e8e1d691068bb936b4ed582",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-fractions/sample.json": {
+    "mtime": 1795858504.7051532,
+    "seen": 1795858719.5154314,
+    "ast_hash": "52330fed65cc441b1477bbee7a3900b1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-fractions/src/app.js": {
+    "mtime": 1795855340.175709,
+    "seen": 1795858719.5154338,
+    "ast_hash": "a4f0052b48f207c606ecb2e4c86ec0db",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-geometry/sample.json": {
+    "mtime": 1795858504.7052073,
+    "seen": 1795858719.51554,
+    "ast_hash": "38ffcc33b9f382eeef42ce7c51b74725",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-geometry/src/app.js": {
+    "mtime": 1795856123.1331775,
+    "seen": 1795858719.5155423,
+    "ast_hash": "b1eba46a2811748312fb7d0bdbff829a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-linear/sample.json": {
+    "mtime": 1795858504.7052834,
+    "seen": 1795858719.515889,
+    "ast_hash": "5eec4ac4a9100de7af61648ce3cb61e7",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-linear/src/app.js": {
+    "mtime": 1795857468.6118808,
+    "seen": 1795858719.5158916,
+    "ast_hash": "92de57d30a4414021930c5372d11e7e2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-probability/sample.json": {
+    "mtime": 1795858504.705318,
+    "seen": 1795858719.515968,
+    "ast_hash": "11acdf95306bb4a942fb8156db6d869e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-probability/src/app.js": {
+    "mtime": 1795858392.7274957,
+    "seen": 1795858719.5159702,
+    "ast_hash": "c1d8fd2d159116c696a5d52747a99e41",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/build.py": {
+    "mtime": 1795855147.0689564,
+    "seen": 1795858719.5160103,
+    "ast_hash": "69f963b4a6b7c9d8f4cf70b09a3c4a59",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/sample.json": {
+    "mtime": 1795856223.061745,
+    "seen": 1795858719.5160124,
+    "ast_hash": "d92214a539f547f57afb752f7f2220e8",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/src/deck.js": {
+    "mtime": 1795857278.398581,
+    "seen": 1795858719.5160146,
+    "ast_hash": "ffe9857b0544cc763b66609b0c9da9a5",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/src/engine.js": {
+    "mtime": 1795855147.0729868,
+    "seen": 1795858719.516017,
+    "ast_hash": "850b56bb615c39ca91eaab6efe477563",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/src/kit.js": {
+    "mtime": 1795855147.0730877,
+    "seen": 1795858719.5160189,
+    "ast_hash": "791a962f9f3ca0658f8e1046eec301d1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/src/tools.js": {
+    "mtime": 1795857229.250445,
+    "seen": 1795858719.5160213,
+    "ast_hash": "d7f538861a503db3cd8b66cf3c7a04c9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-circuit/build.py": {
+    "mtime": 1795856126.3701491,
+    "seen": 1795858719.516024,
+    "ast_hash": "20e8e46e1efc06136bf3618c0326973f",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-circuit/sample.json": {
+    "mtime": 1795857882.994909,
+    "seen": 1795858719.516026,
+    "ast_hash": "d002476524c6498737560226c4dd77fc",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-circuit/src/circuit.js": {
+    "mtime": 1795856579.0974486,
+    "seen": 1795858719.516028,
+    "ast_hash": "a52b4ddf1cadb73db212ad2b4677ef82",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-circuit/src/engine.js": {
+    "mtime": 1795856126.3695147,
+    "seen": 1795858719.5160303,
+    "ast_hash": "4dc91ecdfd0514d07d1b2005ac1d111a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-circuit/src/tools.js": {
+    "mtime": 1795856126.3696535,
+    "seen": 1795858719.5160325,
+    "ast_hash": "5b469ecca4359e470f35eaec03312c85",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-projectile/build.py": {
+    "mtime": 1795855629.8650186,
+    "seen": 1795858719.5160344,
+    "ast_hash": "1f57b4975d5e58db3cc6c825a84930ac",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-projectile/sample.json": {
+    "mtime": 1795857882.99484,
+    "seen": 1795858719.516036,
+    "ast_hash": "b8aac53ead7dce5b2539b8fb33ac509f",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-projectile/src/engine.js": {
+    "mtime": 1795855629.8646479,
+    "seen": 1795858719.5160384,
+    "ast_hash": "4dc91ecdfd0514d07d1b2005ac1d111a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-projectile/src/projectile.js": {
+    "mtime": 1795856037.2898176,
+    "seen": 1795858719.516041,
+    "ast_hash": "e67663307993ef0a8cc03e9a95254fd1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-projectile/src/tools.js": {
+    "mtime": 1795855629.864759,
+    "seen": 1795858719.516043,
+    "ast_hash": "5b469ecca4359e470f35eaec03312c85",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/sample.json": {
+    "mtime": 1795856979.0345163,
+    "seen": 1795858719.51608,
+    "ast_hash": "1ac36a787bc5483f3852b861d1b58547",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/src/clock.js": {
+    "mtime": 1795856884.8559656,
+    "seen": 1795858719.5160823,
+    "ast_hash": "37c1801d3754792f6a24a2caa119696b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/src/deck.json": {
+    "mtime": 1795856710.6068795,
+    "seen": 1795858719.516084,
+    "ast_hash": "7d7fce26388747e94dd8b85a43ba3edd",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/build.py": {
+    "mtime": 1795855147.0448792,
+    "seen": 1795858719.5162256,
+    "ast_hash": "69f963b4a6b7c9d8f4cf70b09a3c4a59",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/sample.json": {
+    "mtime": 1795855193.5196967,
+    "seen": 1795858719.5162277,
+    "ast_hash": "f9364f2d929ba76b949c7a3b1e119235",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/src/deck.js": {
+    "mtime": 1795855542.183669,
+    "seen": 1795858719.5162296,
+    "ast_hash": "b92b8cca3030bda40fb72903a83795da",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/src/engine.js": {
+    "mtime": 1795855147.0479212,
+    "seen": 1795858719.5162315,
+    "ast_hash": "850b56bb615c39ca91eaab6efe477563",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/src/kit.js": {
+    "mtime": 1795855147.0479994,
+    "seen": 1795858719.5162334,
+    "ast_hash": "791a962f9f3ca0658f8e1046eec301d1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/src/tools.js": {
+    "mtime": 1795857229.212399,
+    "seen": 1795858719.5162356,
+    "ast_hash": "d7f538861a503db3cd8b66cf3c7a04c9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/build.py": {
+    "mtime": 1795857180.3363688,
+    "seen": 1795858719.5162373,
+    "ast_hash": "5bfa19894796c84b8181ad113eb12d17",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/src/engine.js": {
+    "mtime": 1795855199.776896,
+    "seen": 1795858719.5162394,
+    "ast_hash": "4c47fe26195ad18aae893f161375a8f9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/src/glass.js": {
+    "mtime": 1795858471.932731,
+    "seen": 1795858719.5162413,
+    "ast_hash": "ea3768626d64dc87096a41462a43817a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/src/space.js": {
+    "mtime": 1795857660.1343038,
+    "seen": 1795858719.5162435,
+    "ast_hash": "5c3d2accbc111b099feaea718bf0dbed",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/src/tools.js": {
+    "mtime": 1795857180.3175724,
+    "seen": 1795858719.5162454,
+    "ast_hash": "0db3ae58a01ae0968f67489183eb7858",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/build.py": {
+    "mtime": 1795855212.266325,
+    "seen": 1795858719.516247,
+    "ast_hash": "51e59cbf3c29c951141ed1de6ee4985a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/src/engine.js": {
+    "mtime": 1795855199.7848434,
+    "seen": 1795858719.516249,
+    "ast_hash": "4c47fe26195ad18aae893f161375a8f9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/src/tools.js": {
+    "mtime": 1795855199.8029435,
+    "seen": 1795858719.516254,
+    "ast_hash": "621322bfddc1efc2c2ba048bfd689b87",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/build.py": {
+    "mtime": 1795858001.9879818,
+    "seen": 1795858719.516256,
+    "ast_hash": "59f84e4d60dac99f6b44052a5c786f69",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/src/engine.js": {
+    "mtime": 1795855199.7809424,
+    "seen": 1795858719.5162578,
+    "ast_hash": "4c47fe26195ad18aae893f161375a8f9",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/src/photo.js": {
+    "mtime": 1795857965.6958907,
+    "seen": 1795858719.5162601,
+    "ast_hash": "d51db6b0f116a654242c39a4847579d3",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/src/tools.js": {
+    "mtime": 1795855199.8031092,
+    "seen": 1795858719.516262,
+    "ast_hash": "c6c239a816c9b748f7c4316c6f9fd700",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/sample.json": {
+    "mtime": 1795857506.7334733,
+    "seen": 1795858719.516297,
+    "ast_hash": "427dbd0cd2adedba9cbb130b33c0eb56",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/src/deck.json": {
+    "mtime": 1795855063.3943162,
+    "seen": 1795858719.5162992,
+    "ast_hash": "a649c25001450314b9ed3a4774138432",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/src/poem.js": {
+    "mtime": 1795855497.8476722,
+    "seen": 1795858719.5163696,
+    "ast_hash": "ec35fc885c1d4443fdf22377ae15c75d",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/voice/tts-gemini-3-1-flash__Charon__calm/check.json": {
+    "mtime": 1795850563.6724024,
+    "seen": 1795858719.517019,
+    "ast_hash": "55a15ccbcca3ba09923e3fd1e4622063",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/CREDITS.md": {
+    "mtime": 1795857965.1264887,
+    "seen": 1795858719.5198457,
+    "ast_hash": "1d184b22a229dde4d475e1d407957c94",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/moon/script.md": {
+    "mtime": 1795856742.314416,
+    "seen": 1795858719.519993,
+    "ast_hash": "85f87021c1185f72927209f23585001c",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/art-colour/src/symbols.svg": {
+    "mtime": 1795856574.0008564,
+    "seen": 1795858719.521117,
+    "ast_hash": "334f6743e92ddd96d8f5faa45f4316e0",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-body/src/symbols.svg": {
+    "mtime": 1795857168.9762394,
+    "seen": 1795858719.5211203,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/bio-cell/src/symbols.svg": {
+    "mtime": 1795856674.2279236,
+    "seen": 1795858719.5211232,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-balance/src/symbols.svg": {
+    "mtime": 1795855054.5183156,
+    "seen": 1795858719.5211687,
+    "ast_hash": "b1fe9e37fceaca1cb8081c411f31a2ce",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/coding-robot/src/symbols.svg": {
+    "mtime": 1795855147.060937,
+    "seen": 1795858719.5212102,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/health-food/src/symbols.svg": {
+    "mtime": 1795855147.1011791,
+    "seen": 1795858719.521307,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/music-keys/src/symbols.svg": {
+    "mtime": 1795855147.0731518,
+    "seen": 1795858719.5214722,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-circuit/src/symbols.svg": {
+    "mtime": 1795856126.3699834,
+    "seen": 1795858719.5214746,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/phys-projectile/src/symbols.svg": {
+    "mtime": 1795855629.8649206,
+    "seen": 1795858719.5214767,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/social-timeline/src/symbols.svg": {
+    "mtime": 1795855147.048054,
+    "seen": 1795858719.521525,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/src/symbols.svg": {
+    "mtime": 1795857180.322215,
+    "seen": 1795858719.521527,
+    "ast_hash": "2a24f5309945f2b5b68e8bcc04b12abb",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/src/symbols.svg": {
+    "mtime": 1795858001.976224,
+    "seen": 1795858719.521573,
+    "ast_hash": "2a24f5309945f2b5b68e8bcc04b12abb",
     "semantic_hash": ""
   },
   "kruslide/platform/package-lock.json": {
