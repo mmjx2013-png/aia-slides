@@ -85,6 +85,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-28: owner's school homework (social studies, group clip 20-30 min, due 30 Nov): 21-min Thai-narrated Africa geography film (10 topics, globe intro, Natural Earth maps, captions), Venice TTS tts-xai-v1 voice "eve" (owner picked D); ~150-200k tokens. Source school/africa/ (script.py, build.py, record.cjs, mux.py); video sent as a file, not published.
 - 2026-11-27: Unit 4 deck published after bug + security review (CSP, no innerHTML, review fixes; tools 700/700, engine 9/9); arrow-only navigation; book answers, English guide and a password-locked answer-key site added. teacher-slides/unit4/, gh-pages m1-statistics + m1-answer-key.
 - 2026-11-27: Unit 4 Statistics deck built with agents (59 slides, QA clean, tools 460/460 tests); two review agents running (content/maths, usability/design). teacher-slides/unit4/.
 - 2026-11-27: 4 slide-style samples for the teacher trial (Unit 4 Statistics) built and sent as images; branch claude/fervent-ramanujan-qp1d26, teacher-slides/mockups/.
