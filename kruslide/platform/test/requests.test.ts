@@ -3,6 +3,7 @@ import { call, env, makeTeacher, loginAs, newAdmin, newMember, nowSec, post, typ
 import { QUIZ, QUIZ_LENGTH, buildBrief, buildSummary, firstUnanswered, answerEn, type Answers } from '../src/lib/quiz';
 import { bangkokDate, startDate } from '../src/routes/requests';
 import type { BookRequest } from '../src/env';
+import { scriptCsp } from '../src/lib/http';
 
 const inDays = (d: number) => bangkokDate(nowSec() + d * 86400);
 const FORM = () => ({
@@ -392,6 +393,12 @@ describe('quiz images and the app script', () => {
     expect((await call('/app/static/quiz/secret.webp')).status).toBe(404);     // not a quiz file name
     expect((await call('/app/static/quiz/style-b.webp')).status).toBe(404);    // known name, not uploaded
     expect((await call('/app/static/quiz/..%2Ffonts%2FInter-Bold.woff2')).status).toBe(404);
+  });
+
+  it('the script policy names one exact URL, and a malformed origin allows no script at all', () => {
+    expect(scriptCsp('https://kruslide.example')).toMatch(/; script-src https:\/\/kruslide\.example\/app\/static\/app\.js$/);
+    expect(scriptCsp('http://127.0.0.1:8787')).toContain('script-src http://127.0.0.1:8787/app/static/app.js');
+    expect(scriptCsp('https://a.example; script-src *')).toMatch(/script-src 'none'$/);
   });
 
   it('serves the script and the logo; the logo is the official mark C', async () => {

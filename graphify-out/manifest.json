@@ -858,9 +858,9 @@
     "semantic_hash": "b11e6e75dfd24154af1b1a6a336a43ab"
   },
   "kruslide/platform/src/views/css.ts": {
-    "mtime": 1795852979.37164,
-    "seen": 1795853060.779083,
-    "ast_hash": "4d603284eb1cd10e0d15dce99bfe54e0",
+    "mtime": 1795853114.4836535,
+    "seen": 1795853161.4352827,
+    "ast_hash": "d57634b27a6330cdb7dcfca8c792c8c1",
     "semantic_hash": ""
   },
   "kruslide/platform/src/views/layout.ts": {
@@ -1032,10 +1032,10 @@
     "semantic_hash": "ffd4f79dfa6dc8363ac03b67a7cdb050"
   },
   "kruslide/platform/README.md": {
-    "mtime": 1795849544.597752,
-    "seen": 1795851253.2344325,
-    "ast_hash": "c700642f4f3c59198b002180f2b425f9",
-    "semantic_hash": "c700642f4f3c59198b002180f2b425f9"
+    "mtime": 1795853137.943655,
+    "seen": 1795853161.4377937,
+    "ast_hash": "a0de56956adf706ee77f31c8d20c5fb9",
+    "semantic_hash": ""
   },
   "kruslide/platform/migrations/0001_init.sql": {
     "mtime": 1795847223.046705,
@@ -1056,8 +1056,8 @@
     "semantic_hash": "0d63e4003388c97921e7e765e8b921a2"
   },
   "kruslide/trailer/credits.md": {
-    "mtime": 1795852985.05815,
-    "seen": 1795853060.7815726,
+    "mtime": 1795853138.523673,
+    "seen": 1795853161.438087,
     "ast_hash": "19735562c9ea816beab23007fe845fad",
     "semantic_hash": ""
   },

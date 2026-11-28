@@ -144,7 +144,7 @@ add(id='history', steps=0, title='ตัวอย่างผลงาน: ป�
 <div class="seats" aria-hidden="true">{seats}</div>
 <p class="r k" style="left:110px;top:150px;color:#FFB59E;--i:0">ตัวอย่าง 2 · ประวัติศาสตร์</p>
 <h1 class="r h2 lt" style="left:106px;top:194px;width:560px;--i:1">อยุธยา<br>แบบภาพยนตร์</h1>
-<div class="r lt" style="left:110px;top:470px;width:560px;--i:3">{feats([('i-map', 'แผนที่ซูมจากโลกถึงเกาะเมือง', None), ('i-video', 'ภาพจริง มีเครดิตทุกภาพ', 'var(--sun)'), ('i-mic', 'เสียงบรรยาย + ซับ', 'var(--mint)')], 'var(--tomato)')}</div>
+<div class="r lt" style="left:110px;top:470px;width:560px;--i:3">{feats([('i-map', 'แผนที่ซูมจากโลกถึงเกาะเมือง', None), ('i-video', 'ภาพจริง มีเครดิตทุกภาพ', 'var(--sun)'), ('i-check', 'ทบทวน 3 ข้อท้ายบท', 'var(--mint)')], 'var(--tomato)')}</div>
 ''',
     css=r'''
 #history .beam{left:900px;top:-60px;width:1000px;height:1000px;background:#FFE3B0;opacity:.08;clip-path:polygon(46% 0,54% 0,100% 82%,0 82%);animation:flick 5s steps(1) infinite}

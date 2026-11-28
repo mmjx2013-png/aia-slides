@@ -16,8 +16,8 @@ workers_dev = false
 ENVIRONMENT = "production"
 # Public origin used for the LINE callback URL and the CSRF Origin check, e.g. "https://kruslide.example".
 APP_ORIGIN = ""
-# LINE Official Account shown as the contact. TODO-LINE-ID: replace with the real ID from the owner.
-LINE_OA_ID = "@kruslide"
+# LINE Official Account shown as the contact (owner-confirmed 28 Nov 2026).
+LINE_OA_ID = "@368lkkze"
 # "manual" = PromptPay confirmed by the owner. "stripe" is reserved for later (src/payments/stripe.ts).
 PAYMENT_PROVIDER = "manual"
 # Optional: "normal" or "aggressive" asks the teacher to add the LINE OA as a friend during login

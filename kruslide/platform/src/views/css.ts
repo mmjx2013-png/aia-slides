@@ -523,7 +523,7 @@ a.stat:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
 .tabsrow a[aria-current=page]{background:var(--navy);color:#fff;box-shadow:none}
 .tabsrow a i{font-style:normal;font-size:12.5px;font-weight:800;padding:1px 7px;border-radius:999px;background:#F1ECE2;color:var(--ink2)}
 .tabsrow a[aria-current=page] i{background:rgba(255,255,255,.18);color:#fff}
-.areq{padding:0;overflow:hidden}
+.card.areq{padding:0;overflow:hidden}
 .areq .hd{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 22px;border-bottom:1px solid var(--line);background:#FFFDF9}
 .areq .hd h3{margin:0;font-size:19px}
 .areq .hd .num{font:800 14px/1 KSD,KS;color:var(--mute)}

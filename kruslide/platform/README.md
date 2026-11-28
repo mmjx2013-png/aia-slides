@@ -1,15 +1,20 @@
 # KruSlide member platform (ครูสไลด์)
 
 Teachers log in with LINE, subscribe to a textbook's slide decks, pay by PromptPay, and open the decks only
-through our link. The owner manages members, payments, books and units on an admin page.
+through our link. A teacher can also **ask us to make a book** ("ขอทำหนังสือ"): a short form, then a 10-question
+**style quiz** (two sample slides per question, tap the one you prefer, or "ได้ทั้งคู่"). The owner manages members,
+payments, books, units and book requests on an admin page.
 
 Status: built and tested **locally only**. Nothing has been deployed. The deploy steps are at the end.
 
 ## Architecture
 
 One Cloudflare Worker serves everything under `/app/*`; the sales site (Cloudflare Pages) keeps every other
-path on the same domain. Pages are rendered on the server as plain HTML forms, with **no JavaScript at all**, so
-the member and admin pages run under a strict CSP (`default-src 'none'`). State lives in **D1** (SQLite):
+path on the same domain. Pages are rendered on the server as plain HTML forms, so the member and admin pages run
+under a strict CSP (`default-src 'none'`) and work without JavaScript. Two kinds of page load one small script,
+`/app/static/app.js`, as progressive enhancement only: the style quiz (tap feedback, arrow keys, prefetching the next
+images) and the admin request pages ("copy brief"). Those pages allow exactly that URL
+(`script-src https://<origin>/app/static/app.js`); every other page has no `script-src` at all. State lives in **D1** (SQLite):
 teachers, books, units, subscriptions, payments, sessions, one-time LINE login attempts, rate-limit counters
 and an audit log. Deck HTML and fonts live in a **private R2 bucket**. The Worker checks the session and the
 subscription, then streams the deck from R2 through `HTMLRewriter`, which adds the "Licensed to <name> · <school>"
@@ -23,6 +28,7 @@ subscription in one transaction. `src/payments/` is the seam for Stripe Thailand
 ```
 wrangler.toml            Worker config: D1 + R2 bindings (placeholder IDs), vars, daily cron
 migrations/0001_init.sql D1 schema
+migrations/0002_book_requests.sql  book requests + style-quiz answers
 src/index.ts             entry: router, session lookup, errors, security headers, cron handler
 src/router.ts            tiny path router
 src/env.ts               Env (bindings, secrets) and row types
@@ -44,12 +50,17 @@ src/payments/            PaymentProvider seam: manual.ts (PromptPay, live), stri
 src/routes/auth.ts       /app/login, /app/auth/callback, /app/logout
 src/routes/member.ts     /app/ (my books + catalogue), /app/books/:id, subscribe, /app/payments/:id, profile
 src/routes/deck.ts       /app/deck/:unit/ (+ assets): access check, R2 stream, watermark, deck CSP
-src/routes/admin.ts      /app/admin/…: dashboard, payments, members, subscriptions, books/units, upload, CSV, audit
+src/routes/admin.ts      /app/admin/…: dashboard, book requests, payments, members, subscriptions, books/units, upload, CSV, audit
+src/routes/requests.ts   /app/requests…: "ขอทำหนังสือ" form, style quiz, the teacher's own requests
+src/lib/quiz.ts          the 10 quiz questions, summary ("Style A modern clean · vivid colours · …"), the brief for Claude
 src/routes/privacy.ts    /app/privacy (PDPA notice, Thai)
-src/routes/static.ts     /app/static/app.css and fonts
+src/routes/static.ts     /app/static/: app.css, app.js, favicon (logo C), fonts and quiz images (from R2)
 src/routes/webhooks.ts   /app/webhooks/stripe placeholder (501 until Stripe is added)
-src/views/               layout, Thai UI helpers, stylesheet
-scripts/seed.mjs         loads teacher-slides/unit4/index.html + fonts into LOCAL D1/R2
+src/views/               layout (icons, cover art, badges), stylesheet, app.js, the logo
+scripts/seed.mjs         loads teacher-slides/unit4/index.html, fonts and quiz images into LOCAL D1/R2
+scripts/quiz/            the 20 sample slides of the style quiz: slides.mjs (HTML templates), render.mjs (Playwright -> WebP),
+                         photos/ (CC BY-SA crops, see photos/CREDITS.md)
+quiz/                    the rendered quiz images: <key>-a|b.webp (1600 x 900) and <key>-a|b-sm.webp (480 x 270)
 scripts/dev.mjs          local dev: mock LINE + wrangler dev (throwaway secrets, nothing written to disk)
 scripts/mock-line.mjs    local stand-in for LINE Login (authorize, token, JWKS); never deployed
 test/                    Vitest suites, run inside workerd with @cloudflare/vitest-plugin
@@ -67,7 +78,11 @@ e2e/smoke.mjs            Playwright smoke test against wrangler dev; writes scre
 | `GET /app/books/:id`, `POST …/subscribe` | member | price, units, subscribe/renew for 1/3/6/12 months |
 | `GET /app/payments/:id`, `POST …/notify` | owner of the payment | PromptPay QR + steps, "I have paid" |
 | `GET /app/deck/:unit/` | active subscriber or admin | the deck, streamed from R2, watermarked |
-| `GET /app/admin/…` | admins only | dashboard, payments (confirm/reject), members (block, grant, PDPA erase), subscriptions (extend/expire), books/units CRUD, HTML upload to R2, CSV export, audit log |
+| `GET /app/requests`, `GET /app/requests/new`, `POST /app/requests` | member | own book requests; the request form (subject, grade, textbook/publisher, units, start date, note) |
+| `GET/POST /app/requests/:id/quiz/:n` | the request's teacher | style quiz question n (1–10): a / b / both; the last answer sends the request |
+| `GET /app/requests/:id` | the request's teacher | "ขอบคุณ ทีมงานจะติดต่อกลับทาง LINE", status, chosen samples (never the owner note) |
+| `GET /app/admin/requests`, `/app/admin/requests/:id`, `POST …/:id` | admins only | every request with its form data, summary, chosen thumbnails; status new / quoted / building / done / declined; private owner note; "copy brief" |
+| `GET /app/admin/…` | admins only | dashboard (with the count of new requests), payments (confirm/reject), members (block, grant, PDPA erase), subscriptions (extend/expire), books/units CRUD, HTML upload to R2, CSV export, audit log |
 | `GET /app/privacy` | anyone | PDPA notice |
 
 ## Local development
@@ -77,11 +92,12 @@ Needs Node 20+ (22 used here).
 ```sh
 cd kruslide/platform
 npm install            # .npmrc sets legacy-peer-deps (works around an npm bug with vitest's peer set)
-npm run seed           # local D1 schema + the Unit 4 deck as book 1 / unit 1 + fonts in local R2
+npm run seed           # local D1 schema + the Unit 4 deck as book 1 / unit 1 + fonts and quiz images in local R2
 npm run dev            # mock LINE on :8790 + wrangler dev on http://127.0.0.1:8787/app/
 npm test               # unit + integration tests (workerd, local D1/R2, mocked LINE)
 npm run typecheck
 npm run smoke          # Playwright against a fresh wrangler dev (ports 8788/8791), screenshots/ updated
+node scripts/quiz/render.mjs   # re-render the quiz images after editing scripts/quiz/slides.mjs (then npm run seed)
 ```
 
 `npm run dev` logs you in through a **mock LINE** page with three fictional test users. "เจ้าของครูสไลด์ (ทดสอบ)"
@@ -100,10 +116,13 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
 3. **Create the private bucket**: `npx wrangler r2 bucket create kruslide-decks`. Do **not** enable public
    access or an `r2.dev` URL. The Worker is the only way in.
 4. **Create the tables**: `npm run migrate:remote`.
-5. **Upload the fonts** (used by the member pages and by every deck):
+5. **Upload the fonts** (used by the member pages and by every deck) **and the quiz images**:
    ```sh
    for f in ../../teacher-slides/unit4/fonts/*.woff2; do
      npx wrangler r2 object put "kruslide-decks/shared/fonts/$(basename "$f")" --remote --file "$f" --content-type font/woff2
+   done
+   for f in quiz/*.webp; do
+     npx wrangler r2 object put "kruslide-decks/shared/quiz/$(basename "$f")" --remote --file "$f" --content-type image/webp
    done
    ```
 6. **Set the secrets** (each command asks for the value; nothing goes into a file):
@@ -122,8 +141,8 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
    **PromptPay warning:** the QR code carries the PromptPay ID in plain text, so every member who scans or
    decodes it can read the whole number (the page itself shows only the last 4 digits). Use a business mobile
    number, a company tax ID or an e-wallet ID. Do **not** use a personal national ID card number.
-7. **Edit `wrangler.toml` [vars]**: set `APP_ORIGIN = "https://kruslide.example"`. Set `LINE_OA_ID` to the
-   real LINE Official Account ID (search the code for `TODO-LINE-ID`). Uncomment `routes` and set your domain.
+7. **Edit `wrangler.toml` [vars]**: set `APP_ORIGIN = "https://kruslide.example"`. Check `LINE_OA_ID` is the
+   LINE Official Account ID (already `@368lkkze`). Uncomment `routes` and set your domain.
 8. **Deploy**: `npx wrangler deploy`.
 9. **LINE Login channel** (LINE Developers console):
    - Create a **LINE Login** channel (not a Messaging API channel) with app type **Web app**.
@@ -162,7 +181,8 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
   `invocation_logs = true` in `wrangler.toml`, deploy, and switch it off again afterwards.
 - PDPA requests: a member who asks to be deleted is erased on their admin page ("ลบข้อมูลสมาชิก"): name, school
   and LINE id are removed, sessions and open subscriptions end, and payment amounts stay as accounting records.
-- Schema changes: add `migrations/0002_….sql` and run `npm run migrate:remote` before deploying the code.
+- Schema changes: add `migrations/000N_….sql` and run `npm run migrate:remote` before deploying the code.
+  (`0002_book_requests.sql` adds the book requests and quiz answers; step 4 applies it on a fresh database.)
 
 ### Adding Stripe Thailand later
 The seam is ready: `src/payments/stripe.ts` lists the steps. In short, add the secrets `STRIPE_SECRET_KEY` and
@@ -187,7 +207,12 @@ The seam is ready: `src/payments/stripe.ts` lists the steps. In short, add the s
   A deck must be self-contained like `build.py` output: inline script only, no `on…=` handlers, no external URLs.
 - Input validation on every field. SQL only with bound parameters. Every output is escaped by the html``
   template. CSV export defuses spreadsheet formulas.
-- Headers: a strict CSP everywhere (no scripts on app pages; hash-pinned script on decks), `frame-ancestors`
+- Book requests: a teacher sees only their own (another teacher's id answers 404); only admins see all of them.
+  Answers can change only while the request is a draft; once sent it is locked. The owner note never reaches the
+  teacher's pages. The brief for Claude holds the school but no teacher name or LINE id. PDPA erasure deletes the
+  member's requests and answers. New requests: 10 per teacher per day; quiz answers: 200 per 10 minutes.
+- Headers: a strict CSP everywhere (no scripts on most app pages; the quiz and admin request pages allow only the
+  exact URL of `/app/static/app.js`; hash-pinned script on decks), `frame-ancestors`
   ('none' for the app, 'self' for decks), `X-Frame-Options`, `nosniff`, HSTS, COOP/CORP, Permissions-Policy,
   `no-store` on all HTML, `X-Robots-Tag: noindex`.
 - Decks: never a raw R2 URL. Access needs an active member with an active subscription (or an admin). Assets are

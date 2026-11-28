@@ -16,7 +16,8 @@ export const APP_CSP = [
  * by its exact URL, not by 'self', so no other file on the origin (e.g. a deck asset) could ever run as a script here.
  */
 export function scriptCsp(origin: string): string {
-  return `${APP_CSP}; script-src ${origin}/app/static/app.js`;
+  const ok = /^https?:\/\/[A-Za-z0-9.-]+(:\d{1,5})?$/.test(origin); // never let a bad APP_ORIGIN widen the policy
+  return `${APP_CSP}; script-src ${ok ? `${origin}/app/static/app.js` : "'none'"}`;
 }
 
 /** Headers every response gets unless the route set its own value. */

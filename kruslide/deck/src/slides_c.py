@@ -192,7 +192,7 @@ add(id='start', steps=2, title='เริ่มยังไง', bg='#18B07F',
 <div class="trav" aria-hidden="true">
   <div class="o chat"><p class="b1">ครูขอบท 5 ค่ะ</p><p class="b2">ได้เลยครับ ✓</p></div>
   <div class="o quiz"><p>ชอบแบบไหน?</p><i class="on">A</i><i>B</i><i>C</i></div>
-  <div class="o room"><div class="scrn"><i></i><i></i><i></i><span>Licensed to ครูผู้สอน · โรงเรียนของคุณ</span></div></div>
+  <div class="o room"><div class="scrn"><svg viewBox="0 0 300 150" aria-hidden="true"><rect x="0" y="0" width="150" height="14" rx="7" fill="#3D7BFF"/><rect x="0" y="26" width="220" height="10" rx="5" fill="#DCE6FF"/><line x1="10" y1="140" x2="190" y2="140" stroke="#1C2A55" stroke-width="3"/><rect x="22" y="96" width="26" height="44" rx="5" fill="#3D7BFF"/><rect x="62" y="70" width="26" height="70" rx="5" fill="#8B6CF6"/><rect x="102" y="84" width="26" height="56" rx="5" fill="#F2553C"/><rect x="142" y="58" width="26" height="82" rx="5" fill="#FFC83D"/><rect x="210" y="60" width="86" height="30" rx="10" fill="#E3F7EF" stroke="#18B07F" stroke-width="2"/><rect x="210" y="100" width="86" height="30" rx="10" fill="#fff" stroke="#D3DAE8" stroke-width="2"/></svg><span>Licensed to ครูผู้สอน · โรงเรียนของคุณ</span></div></div>
 </div>
 ''',
     css=r'''
@@ -218,8 +218,8 @@ add(id='start', steps=2, title='เริ่มยังไง', bg='#18B07F',
 #start .quiz p{grid-column:1/4;margin:0;font:800 34px/1.3 var(--sans);color:var(--navy)}
 #start .quiz i{display:grid;place-items:center;height:96px;border-radius:18px;background:#EEF1F7;font:800 34px/1 var(--sans);font-style:normal;color:var(--navy)}
 #start .quiz i.on{background:var(--navy);color:var(--sun)}
-#start .room .scrn{position:relative;height:230px;border-radius:18px;background:#fff;border:10px solid var(--navy);box-shadow:0 20px 40px rgba(0,60,40,.25);padding:20px}
-#start .scrn i{display:block;height:14px;border-radius:7px;background:#DCE6FF;margin-bottom:12px}#start .scrn i:first-child{width:60%;background:var(--blue)}#start .scrn i+i+i{width:75%}
+#start .room .scrn{position:relative;height:240px;border-radius:18px;background:#fff;border:10px solid var(--navy);box-shadow:0 20px 40px rgba(0,60,40,.25);padding:20px}
+#start .scrn svg{display:block;width:100%;height:150px}
 #start .scrn span{position:absolute;left:14px;right:14px;bottom:12px;font:600 17px/1.3 var(--sans);color:#8A93AE;text-align:center}
 ''')
 

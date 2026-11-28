@@ -33,5 +33,5 @@ export function isProduction(env: Env): boolean {
 }
 
 export function lineOa(env: Env): string {
-  return env.LINE_OA_ID || '@kruslide'; // TODO-LINE-ID: the owner sends the real LINE Official Account ID
+  return env.LINE_OA_ID || '@368lkkze';
 }
