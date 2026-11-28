@@ -40,7 +40,7 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 
 ## Tools that work
 - Hosting: GitHub Pages from branch gh-pages at https://mmjx2013-png.github.io/aia-slides/
-- Voice: Venice API TTS, model tts-elevenlabs-turbo-v2-5, voice "Alice". The key is proxy-injected; ask with request_credential if missing.
+- Voice: Venice API TTS, model tts-elevenlabs-turbo-v2-5, voice "Alice" (English only; for Thai use tts-xai-v1 voice "eve"). The key is proxy-injected; ask with request_credential if missing.
 - GPU: RunPod via the GraphQL API at api.runpod.io (rest.runpod.io returns 502 through the proxy). Launcher: tools/pod_launch.py.
 - 3D: `pip install bpy` (Blender 5.3) for Cycles on CPU; GPU renders on RunPod.
 - Deck to film: tools/film/rec.js records the deck's own film mode (served over http on port 8765) with the page clock slowed 3x, so a headless 4-CPU box still gets ~30 fps; tools/film/mux.py lays in the narration at -16 LUFS and keeps the MP4 under GitHub's 100 MB limit.
@@ -85,6 +85,13 @@ This repository is PUBLIC: never write secrets, keys, e-mail addresses, personal
 - Next: a new type-1 presentation, built by Opus with no 3D models. Topic, audience, length and deadline are not given yet: ask.
 
 ## Log (newest first; one line each; date, what, where)
+- 2026-11-28 (later): KruSlide grew a lot. Done:
+  - sample library: 29 live samples across subjects and levels, each its own style, plus styles D glass / E photo-rich / F mechanism explorer; Sukhothai sample rebuilt after the owner said it was poor; thai-poem rhyme lines fixed;
+  - sales site redesigned (17.9k px → 7.7k, in-page viewer, library page);
+  - owner back office (catalog with codes + order builder), shared as a private claude.ai artifact;
+  - platform: per-deck access grants, access matrix, new-member approval (130 tests), plus a clickable passcode demo on Cloudflare workers.dev (kruslide-demo: Worker + D1 + KV);
+  - Ayutthaya 4K trailer (60 s).
+  Thai TTS: tts-xai-v1 voice "eve" works; ElevenLabs "Alice" cannot speak Thai. Moon type-1 deck mock-ups are waiting for the owner's picks. Branch claude/fervent-ramanujan-qp1d26, kruslide/.
 - 2026-11-28: KruSlide (owner's business): sales site finished (modern redesign, bento, scroll story, live demo, price calculator, TH/EN, LINE @368lkkze, 4-page brochure) and calculus sample deck finished (8 slides, interactive, logo C); private preview published as a claude.ai artifact (owner-only, not GitHub Pages because the owner wants it private); graphify graph rebuilt. Still running: showcase deck, history sample, platform v2 (book request + style quiz), Ayutthaya 4K trailer. Cloudflare deploy waits on domain, R2, LINE Login channel, private repo kruslide-content. Branch claude/fervent-ramanujan-qp1d26, kruslide/.
 - 2026-11-28: owner's school homework (social studies, group clip 20-30 min, due 30 Nov): 21-min Thai-narrated Africa geography film (10 topics, globe intro, Natural Earth maps, captions), Venice TTS tts-xai-v1 voice "eve" (owner picked D); ~150-200k tokens. Source school/africa/ (script.py, build.py, record.cjs, mux.py); video sent as a file, not published.
 - 2026-11-27: Unit 4 deck published after bug + security review (CSP, no innerHTML, review fixes; tools 700/700, engine 9/9); arrow-only navigation; book answers, English guide and a password-locked answer-key site added. teacher-slides/unit4/, gh-pages m1-statistics + m1-answer-key.
