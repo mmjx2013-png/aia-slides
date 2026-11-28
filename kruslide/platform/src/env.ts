@@ -5,6 +5,8 @@ export interface Env {
   DECKS?: R2Bucket;
   /** Demo deck files: Workers Static Assets, reachable only through the Worker (run_worker_first). */
   ASSETS?: Fetcher;
+  /** Demo deck files in Workers KV (read-only; filled by scripts/demo-deploy.mjs). Never served directly. */
+  DEMO_FILES?: KVNamespace;
 
   // Secrets
   LINE_CHANNEL_ID: string;

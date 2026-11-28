@@ -10,7 +10,7 @@ import { HttpError } from './http';
 export interface StoredFile { body: ReadableStream | null; etag?: string; }
 
 export interface DeckStorage {
-  readonly kind: 'r2' | 'assets';
+  readonly kind: 'r2' | 'assets' | 'kv';
   get(key: string): Promise<StoredFile | null>;
   put(key: string, text: string, contentType: string, meta?: Record<string, string>): Promise<void>;
   delete(keys: string | string[]): Promise<void>;
@@ -58,8 +58,25 @@ export function assetStorage(assets: Fetcher): DeckStorage {
   };
 }
 
+/** Read-only demo store in Workers KV: the deploy script uploads the sample files; only the access-checked routes read them. */
+export function kvStorage(ns: KVNamespace): DeckStorage {
+  return {
+    kind: 'kv',
+    async get(key) {
+      if (!safeKey(key)) return null;
+      const body = await ns.get(key, 'stream');
+      return body ? { body } : null;
+    },
+    async put() {
+      throw new HttpError(409, 'เว็บทดลองแก้ไฟล์สไลด์ไม่ได้ (ไฟล์ตัวอย่างติดมากับเว็บ) ใช้หน่วยที่มีอยู่ได้เลย');
+    },
+    async delete() { /* the sample files stay; deleting the unit row is enough */ },
+  };
+}
+
 export function storage(env: Env): DeckStorage {
   if (env.DECKS) return r2Storage(env.DECKS);
+  if (env.DEMO_FILES) return kvStorage(env.DEMO_FILES);
   if (env.ASSETS) return assetStorage(env.ASSETS);
-  throw new HttpError(500, 'ยังไม่ได้ตั้งค่าที่เก็บไฟล์สไลด์ (DECKS หรือ ASSETS)');
+  throw new HttpError(500, 'ยังไม่ได้ตั้งค่าที่เก็บไฟล์สไลด์ (DECKS, DEMO_FILES หรือ ASSETS)');
 }

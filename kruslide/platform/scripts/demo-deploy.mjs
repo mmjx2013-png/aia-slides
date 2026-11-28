@@ -7,8 +7,8 @@
 // missing, id written into wrangler.demo.toml) -> migrations -> deploy -> secrets. Safe to run again.
 import { execFileSync } from 'node:child_process';
 import crypto from 'node:crypto';
-import { chmodSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { chmodSync, existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -22,10 +22,15 @@ const env = { ...process.env, WRANGLER_SEND_METRICS: 'false' };
 /** Cloudflare API through curl (honours the proxy and its CA bundle); the token goes in a header read from stdin. */
 function api(method, path, body) {
   const args = ['-sS', '-X', method, `https://api.cloudflare.com/client/v4${path}`, '-H', '@-', '-H', 'Content-Type: application/json'];
-  if (body) args.push('--data', JSON.stringify(body));
+  if (body) args.push('--data-binary', '@' + writeTmp(JSON.stringify(body)));
   const out = execFileSync('curl', args, { input: `Authorization: Bearer ${process.env.CLOUDFLARE_API_TOKEN}\n`, env, maxBuffer: 1 << 24 }).toString();
   const json = JSON.parse(out);
   return json;
+}
+function writeTmp(text) {
+  const f = join(ROOT, '.demo-upload.json');
+  writeFileSync(f, text, { mode: 0o600 });
+  return f;
 }
 const wrangler = (...a) => execFileSync('npx', ['wrangler', ...a, '-c', CONFIG], { cwd: ROOT, env: { ...env, CLOUDFLARE_ACCOUNT_ID: accountId }, stdio: ['pipe', 'inherit', 'inherit'] });
 const wranglerIn = (input, ...a) => execFileSync('npx', ['wrangler', ...a, '-c', CONFIG], { cwd: ROOT, env: { ...env, CLOUDFLARE_ACCOUNT_ID: accountId }, input, stdio: ['pipe', 'inherit', 'inherit'] });
@@ -57,11 +62,41 @@ if (!db) {
   db = made.result;
   console.log(`Created D1 database ${NAME}`);
 }
-const toml = readFileSync(CONFIG, 'utf8').replace(/database_id = "[^"]*"/, `database_id = "${db.uuid}"`);
+// 3b. the KV namespace for the deck files (Static Assets cannot be uploaded through the session proxy)
+const KV_TITLE = `${NAME}-files`;
+const kvs = api('GET', `/accounts/${accountId}/storage/kv/namespaces?per_page=100`);
+let kv = kvs.success ? kvs.result.find((n) => n.title === KV_TITLE) : null;
+if (!kv) {
+  const made = api('POST', `/accounts/${accountId}/storage/kv/namespaces`, { title: KV_TITLE });
+  if (!made.success) { console.error('Cannot create KV:', JSON.stringify(made.errors)); process.exit(1); }
+  kv = made.result;
+  console.log(`Created KV namespace ${KV_TITLE}`);
+}
+const toml = readFileSync(CONFIG, 'utf8')
+  .replace(/database_id = "[^"]*"/, `database_id = "${db.uuid}"`)
+  .replace(/(binding = "DEMO_FILES"\nid = )"[^"]*"/, `$1"${kv.id}"`);
 writeFileSync(CONFIG, toml);
 
-// 4. build, migrate, deploy
+// 4. build, upload the files to KV, migrate, deploy
 execFileSync(process.execPath, ['scripts/demo-build.mjs'], { cwd: ROOT, stdio: 'inherit' });
+const ASSET_DIR = join(ROOT, 'demo/assets');
+const walk = (d) => readdirSync(d).flatMap((n) => { const p = join(d, n); return statSync(p).isDirectory() ? walk(p) : [p]; });
+let batch = [], size = 0, sent = 0;
+const flush = () => {
+  if (!batch.length) return;
+  const r = api('PUT', `/accounts/${accountId}/storage/kv/namespaces/${kv.id}/bulk`, batch);
+  if (!r.success) { console.error('KV upload failed:', JSON.stringify(r.errors)); process.exit(1); }
+  sent += batch.length; batch = []; size = 0;
+};
+for (const f of walk(ASSET_DIR)) {
+  const value = readFileSync(f).toString('base64');
+  if (size + value.length > 20e6) flush();
+  batch.push({ key: relative(ASSET_DIR, f).split('\\').join('/'), value, base64: true });
+  size += value.length;
+}
+flush();
+console.log(`Uploaded ${sent} deck files to KV`);
+try { execFileSync('rm', ['-f', join(ROOT, '.demo-upload.json')]); } catch { /* ignore */ }
 wrangler('d1', 'migrations', 'apply', 'DB', '--remote');
 wrangler('deploy');
 

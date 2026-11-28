@@ -18,20 +18,17 @@ PAYMENT_PROVIDER = "manual"
 NEW_MEMBER_APPROVAL = "on"
 LINE_BOT_PROMPT = ""
 
-# The demo's deck files (sample decks, fonts, quiz images) ship with the Worker as static assets.
-# run_worker_first: every request reaches the Worker first, so a file is only ever read by the access-checked routes
-# (a direct URL such as /units/1/index.html gets 404). No R2 bucket is needed.
-[assets]
-directory = "./demo/assets"
-binding = "ASSETS"
-run_worker_first = true
-html_handling = "none"
-not_found_handling = "none"
+# The demo's deck files (sample decks, fonts, quiz images) live in Workers KV, uploaded by scripts/demo-deploy.mjs.
+# No route serves KV directly: a file is only ever read by the access-checked routes. No R2 bucket is needed.
+# (Static Assets were tried first, but their upload token cannot pass the session proxy.)
+[[kv_namespaces]]
+binding = "DEMO_FILES"
+id = "dde16778582b468693aa4af12709afd0"   # PLACEHOLDER: scripts/demo-deploy.mjs fills in the real id
 
 [[d1_databases]]
 binding = "DB"
 database_name = "kruslide-demo"
-database_id = "00000000-0000-0000-0000-000000000000"   # PLACEHOLDER: scripts/demo-deploy.mjs fills in the real id
+database_id = "9622a731-940f-4d44-a240-65cba544eeca"   # PLACEHOLDER: scripts/demo-deploy.mjs fills in the real id
 migrations_dir = "migrations"
 
 [observability]

@@ -28,9 +28,9 @@ subscription in one transaction. `src/payments/` is the seam for Stripe Thailand
 
 ```
 wrangler.toml            Worker config: D1 + R2 bindings (placeholder IDs), vars, daily cron
-wrangler.demo.toml       the clickable demo: DEMO_MODE, static assets instead of R2, D1 kruslide-demo, workers.dev
+wrangler.demo.toml       the clickable demo: DEMO_MODE, KV deck files instead of R2, D1 kruslide-demo, workers.dev
 src/demo/                the demo: passcode gate, personas, sample data (seed.ts), generated catalog.ts
-src/lib/storage.ts       deck files: R2 (production) or Workers Static Assets (demo), same keys, safe keys only
+src/lib/storage.ts       deck files: R2 (production) or Workers KV (demo; Static Assets kept as an option), same keys, safe keys only
 migrations/0001_init.sql D1 schema
 migrations/0002_book_requests.sql  book requests + style-quiz answers
 migrations/0003_unit_grants.sql    per-unit grants + approval of new members (teachers.approved_at)
@@ -134,27 +134,31 @@ It is **off by default**; production (`wrangler.toml`) never turns it on. With `
 - **Banner** "เว็บทดลอง · ข้อมูลตัวอย่าง" on every page, `noindex` everywhere, `/robots.txt` disallows all.
 - **PromptPay is fake:** a dummy number (0000000000) with a "ตัวอย่าง ห้ามโอนจริง" stamp; the real `PROMPTPAY_ID`
   is never used.
-- **Decks without R2:** `src/lib/storage.ts` has two backends with the same keys: R2 (`DECKS`, production) and Workers
-  Static Assets (`ASSETS`, the demo). `wrangler.demo.toml` ships `demo/assets/` with `run_worker_first = true`, so a
-  file is only ever read by the access-checked deck routes; a direct URL such as `/units/1/index.html` is 404.
-  `node scripts/demo-build.mjs` makes `demo/assets/` (git-ignored) and `src/demo/catalog.ts` (CSP hashes, slides).
+- **Decks without R2:** `src/lib/storage.ts` has backends with the same keys: R2 (`DECKS`, production), Workers KV
+  (`DEMO_FILES`, the live demo) and Workers Static Assets (`ASSETS`, kept as an option). No route serves KV or the
+  assets directly: a file is only ever read by the access-checked deck routes, so `/units/1/index.html` is 404.
+  Static Assets could not be used for the live demo: their upload uses a short-lived upload token that the session's
+  API proxy replaces, so the upload fails with 401. `node scripts/demo-build.mjs` makes `demo/assets/` (git-ignored)
+  and `src/demo/catalog.ts` (CSP hashes, slides); `demo:deploy` uploads `demo/assets/` into the KV namespace.
 
 ```sh
 DEMO_PASSCODE=pick-something npm run demo:dev          # local demo on http://127.0.0.1:8789/
 npm run demo:smoke                                     # Playwright QA of a fresh local demo -> screenshots/demo/
 DEMO_PASSCODE_FILE=/private/.demo-passcode CLOUDFLARE_API_TOKEN=... npm run demo:deploy
-DEMO_URL=https://kruslide-demo.<sub>.workers.dev DEMO_PASSCODE_FILE=/private/.demo-passcode npm run demo:smoke   # QA live
+NODE_USE_ENV_PROXY=1 DEMO_URL=https://kruslide-demo.<sub>.workers.dev DEMO_PASSCODE_FILE=/private/.demo-passcode npm run demo:smoke   # QA live
 ```
 
 `demo:deploy` (scripts/demo-deploy.mjs) finds the account, creates a workers.dev subdomain if the account has none,
-creates D1 `kruslide-demo` and writes its id into `wrangler.demo.toml`, applies the migrations, deploys Worker
+creates D1 `kruslide-demo` and the KV namespace `kruslide-demo-files` and writes their ids into `wrangler.demo.toml`,
+uploads the deck files to KV, applies the migrations, deploys Worker
 `kruslide-demo`, and sets the secrets `SESSION_SECRET` (random) and `DEMO_PASSCODE` (12 easy characters, written only
 to `DEMO_PASSCODE_FILE`, mode 600, never printed).
 
 **Delete the demo** (from `kruslide/platform`):
 ```sh
-npx wrangler delete -c wrangler.demo.toml          # the Worker kruslide-demo, its static assets and secrets
+npx wrangler delete -c wrangler.demo.toml          # the Worker kruslide-demo and its secrets
 npx wrangler d1 delete kruslide-demo               # the demo database
+npx wrangler kv namespace delete --namespace-id <id from wrangler.demo.toml>   # the demo deck files
 ```
 The workers.dev subdomain belongs to the account and costs nothing; keep it or rename it in the dashboard
 (Workers & Pages > your subdomain).

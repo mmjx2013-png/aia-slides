@@ -1,6 +1,6 @@
 # Credits: photographs in style samples D and E
 
-Every photograph below is in the public domain or released under CC0 (no rights reserved). The licence of each file was
+Every photograph used below is in the public domain or released under CC0 (no rights reserved). The licence of each file was
 checked on its Wikimedia Commons file page (structured licence data and the "Licensing" section). No attribution is
 legally required for these files; we credit the source and licence on the slide anyway, and here in full.
 Sample F (mechanics) uses no photographs: every engine, gear and lever drawing is our own SVG.
@@ -17,12 +17,12 @@ Commons file server was rate-limiting this build machine; the Commons page linke
 | `bg-saturn.webp`, `bg-rings.webp`, `p-saturn.webp` | Saturn, Cassini, 6 Oct 2004 | https://commons.wikimedia.org/wiki/File:Saturn_from_Cassini_Orbiter_(2004-10-06).jpg | Public domain · NASA/JPL/Space Science Institute |
 | `bg-sun.webp`, `p-sunlimb.webp` | The Sun at 304 Å, SDO/AIA, 19 Aug 2010 | https://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg | Public domain · NASA/SDO (AIA) |
 | `bg-earth.webp`, `p-earth.webp` | Earth, Blue Marble, eastern hemisphere (Terra MODIS) | https://commons.wikimedia.org/wiki/File:Earth_Eastern_Hemisphere.jpg | Public domain · NASA |
-| `p-mercury.webp` | Mercury, MESSENGER | https://commons.wikimedia.org/wiki/File:Mercury_in_true_color.jpg | Public domain · NASA/JHUAPL/Carnegie Institution of Washington |
+| `p-mercury.webp` | Mercury, MESSENGER | https://commons.wikimedia.org/wiki/File:Mercury_in_true_color.jpg | Public domain · NASA/Johns Hopkins University Applied Physics Laboratory/Arizona State University/Carnegie Institution of Washington |
 | `p-venus.webp` | Venus | (our own drawing, a temporary stand-in; see the note below) | KruSlide |
 | `p-mars.webp` | Mars, Viking 1 mosaic | https://commons.wikimedia.org/wiki/File:Mars_Valles_Marineris.jpeg | Public domain · NASA/USGS |
 | `p-jupiter.webp` | Jupiter, Cassini | https://commons.wikimedia.org/wiki/File:Jupiter_by_Cassini-Huygens.jpg | Public domain · NASA/JPL/University of Arizona |
 | `p-uranus.webp` | Uranus | (our own drawing, a temporary stand-in; see the note below) | KruSlide |
-| `p-neptune.webp` | Neptune, Voyager 2 | https://commons.wikimedia.org/wiki/File:Neptune_Full.jpg | Public domain · NASA/JPL |
+| `p-neptune.webp` | Neptune, Voyager 2 | https://commons.wikimedia.org/wiki/File:Neptune_Full.jpg | Public domain · NASA (JPL) |
 | `bg-stars.webp` | Star field | (our own drawing, generated with a short Python script; not a photograph) | KruSlide |
 
 **Note on Venus and Uranus.** The Wikimedia file server kept refusing this build machine (HTTP 429 for over an hour), so
