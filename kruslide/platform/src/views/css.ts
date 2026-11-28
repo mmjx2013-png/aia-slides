@@ -712,6 +712,32 @@ tr.dim td{opacity:.6}
  .mxbar select{max-width:100%;flex:1}
 }
 
+/* ---------- the clickable demo (DEMO_MODE) ---------- */
+.demobar{display:flex;align-items:center;justify-content:center;gap:14px;padding:6px 14px;background:var(--navy);color:#fff;font:600 13.5px/1.3 KS;position:relative;z-index:41}
+.demobar .ic{width:15px;height:15px;color:var(--sun)}
+.demobar a{color:var(--sun);font-weight:700}
+.gate{max-width:560px;margin:20px auto 0;text-align:center;padding:36px 30px}
+.gate .lockart{width:110px;height:110px;display:block;margin:0 auto 12px}
+.gate h1{font-size:clamp(24px,3.4vw,32px);margin:12px 0 8px}
+.gateform{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.gateform input{text-align:center;font:700 22px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;padding:14px}
+.personas{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.persona button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:14px;padding:18px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh1);cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .2s}
+.persona button:hover{transform:translateY(-3px);box-shadow:var(--sh2);border-color:var(--sky)}
+.persona button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.persona .ava{width:48px;height:48px;font-size:20px}
+.persona.admin .ava{background:var(--navy);color:var(--sun)}
+.persona .pt{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.persona b{font:700 17px/1.35 KSD,KS;color:var(--navy)}
+.persona small{font-size:14px;color:var(--mute);line-height:1.45}
+.persona button>.ic{color:var(--mute)}
+.qrbox.fake{position:relative;overflow:hidden}
+.qrbox.fake .qr{opacity:.35;filter:grayscale(1)}
+.qrbox .stamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-14deg);padding:10px 18px;border:4px solid var(--tom);border-radius:14px;background:rgba(255,255,255,.92);color:var(--tom-t);font:800 22px/1.2 KSD,KS;white-space:nowrap;box-shadow:0 10px 24px -8px rgba(184,52,31,.45)}
+.demoreset{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:24px;border-color:var(--sun);box-shadow:0 0 0 3px var(--lsun),var(--sh1)}
+.demoreset h2{margin:0 0 4px}
+.demoreset p{margin:0}
+
 /* ---------- motion ---------- */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}

@@ -1,7 +1,10 @@
 /** Bindings, variables and secrets of the Worker. Secrets are set with `wrangler secret put`, never in files. */
 export interface Env {
   DB: D1Database;
-  DECKS: R2Bucket;
+  /** Production deck files: the private R2 bucket. */
+  DECKS?: R2Bucket;
+  /** Demo deck files: Workers Static Assets, reachable only through the Worker (run_worker_first). */
+  ASSETS?: Fetcher;
 
   // Secrets
   LINE_CHANNEL_ID: string;
@@ -18,6 +21,10 @@ export interface Env {
   LINE_OA_ID?: string;
   PAYMENT_PROVIDER?: string;
   LINE_BOT_PROMPT?: string;
+  /** "on": the clickable demo (passcode gate, persona login instead of LINE, sample data). Off by default. */
+  DEMO_MODE?: string;
+  /** Secret: the passcode of the demo gate. */
+  DEMO_PASSCODE?: string;
   /** "on" (default): a teacher's first LINE login waits for the owner's approval ("รออนุมัติ"). "off": open sign-up. */
   NEW_MEMBER_APPROVAL?: string;
 

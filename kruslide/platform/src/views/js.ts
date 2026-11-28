@@ -53,6 +53,9 @@ export const APP_JS = `(() => {
 
   // Access panel: "ทั้งเล่ม" ticks every unit of the book; unit boxes show the book box as all / some / none.
   for (const f of document.querySelectorAll('form[data-access]')) {
+    const js = document.createElement('input');
+    js.type = 'hidden'; js.name = 'js'; js.value = '1'; // tells the server the unit boxes already carry every change
+    f.appendChild(js);
     const sync = (id) => {
       const book = f.querySelector('input[data-book="' + id + '"]');
       const units = [...f.querySelectorAll('input[data-of="' + id + '"]')];

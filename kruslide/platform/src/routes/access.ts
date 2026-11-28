@@ -122,8 +122,10 @@ export async function saveMemberAccess(ctx: Ctx): Promise<Response> {
   const knownBooks = new Set(all.map((b) => b.book.id));
   if (units.some((u) => !known.has(u)) || [...books, ...was].some((b) => !knownBooks.has(b))) throw new HttpError(400, 'มีหน่วยหรือหนังสือที่ไม่รู้จักในฟอร์ม');
   // The unit boxes decide, except where "ทั้งเล่ม" was changed: ticking it gives the whole book, unticking takes it away.
+  // With app.js the book box already ticks and unticks its unit boxes (and follows them), so then only units count.
   const want = new Set(units);
-  for (const { book, units: us } of all) {
+  const scripted = str(form, 'js') === '1';
+  for (const { book, units: us } of scripted ? [] : all) {
     const on = books.includes(book.id), before = was.includes(book.id);
     if (on && !before) us.forEach((u) => want.add(u.id));
     if (!on && before) us.forEach((u) => want.delete(u.id));

@@ -12,7 +12,11 @@
     "smoke": "node e2e/smoke.mjs",
     "migrate:local": "wrangler d1 migrations apply DB --local",
     "migrate:remote": "wrangler d1 migrations apply DB --remote",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "demo:build": "node scripts/demo-build.mjs",
+    "demo:dev": "node scripts/demo-dev.mjs",
+    "demo:smoke": "node e2e/demo-smoke.mjs",
+    "demo:deploy": "node scripts/demo-deploy.mjs"
   },
   "dependencies": {
     "uqr": "^0.1.3"

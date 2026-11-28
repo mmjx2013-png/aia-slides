@@ -1,6 +1,6 @@
 import type { Ctx, Subscription, Payment, Book, BookRequest } from '../env';
 import { html, raw, Safe } from '../lib/html';
-import { lineOa } from '../lib/config';
+import { demoOn, lineOa } from '../lib/config';
 import { ICON_INNER } from './brand';
 
 const TH_DATE = new Intl.DateTimeFormat('th-TH', { dateStyle: 'medium', timeZone: 'Asia/Bangkok' });
@@ -108,6 +108,7 @@ const FLASH: Record<string, [string, 'ok' | 'bad' | 'warn']> = {
   bulk: ['ให้สิทธิ์ทั้งเล่มกับสมาชิกที่เลือกแล้ว', 'ok'],
   bulkoff: ['ยกเลิกสิทธิ์ทั้งเล่มของสมาชิกที่เลือกแล้ว', 'warn'],
   pick: ['กรุณาเลือกสมาชิกอย่างน้อย 1 คน', 'warn'],
+  reset: ['รีเซ็ตข้อมูลทดลองแล้ว เลือกผู้ใช้เพื่อเริ่มใหม่', 'ok'],
 };
 
 export function flash(ctx: Ctx): Safe {
@@ -251,6 +252,7 @@ export function page(ctx: Ctx, o: PageOpts): Safe {
 ${o.script ? html`<script src="/app/static/app.js" defer></script>` : ''}
 </head><body${cls ? html` class="${cls}"` : ''}>
 ${SPRITE}
+${demoOn(ctx.env) ? html`<div class="demobar" role="note"><span>${icon('spark')} เว็บทดลอง · ข้อมูลตัวอย่าง</span><a href="/app/login">สลับผู้ใช้</a></div>` : ''}
 <header class="top"><div class="wrap">
   <a class="brand" href="/app/" aria-label="ครูสไลด์ KruSlide หน้าแรก"><svg class="brand-ic" viewBox="0 0 120 120" aria-hidden="true">${raw(ICON_INNER)}</svg>${o.focus ? '' : html`<span class="brand-txt"><b>Kru<span>Slide</span></b><small>ครูสไลด์</small></span>`}</a>
   ${nav}

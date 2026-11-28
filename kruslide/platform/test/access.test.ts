@@ -227,6 +227,11 @@ describe('the owner\'s "สิทธิ์เข้าถึงสไลด์" 
     // the book box on its own gives the book
     res = await save([['book', String(book)], ['expiry', '12']]);
     expect((await grants(who.id)).map((g) => g.unit_id)).toEqual([u1, u2, u3]);
+    // with app.js the book box follows the unit boxes: unticking one unit of a whole book removes only that unit
+    res = await save([['unit', String(u1)], ['unit', String(u2)], ['book_was', String(book)], ['js', '1'], ['expiry', 'none']]);
+    expect((await grants(who.id)).map((g) => g.unit_id)).toEqual([u1, u2]);
+    res = await save([['unit', String(u1)], ['unit', String(u2)], ['unit', String(u3)], ['book', String(book)], ['js', '1'], ['expiry', 'none']]);
+    expect((await grants(who.id)).map((g) => g.unit_id)).toEqual([u1, u2, u3]);
     // bad input is refused, nothing changes
     expect((await save([['unit', '999999']])).status).toBe(400);
     expect((await save([['unit', 'abc']])).status).toBe(400);
@@ -234,7 +239,7 @@ describe('the owner\'s "สิทธิ์เข้าถึงสไลด์" 
     expect((await save([['unit', String(u1)], ['expiry', 'forever']])).status).toBe(400);
     expect((await grants(who.id)).length).toBe(3);
     const logs = await env.DB.prepare(`SELECT COUNT(*) AS n FROM audit_log WHERE action = 'grant.update' AND target = ?1`).bind(`teacher:${who.id}`).first<{ n: number }>();
-    expect(logs!.n).toBe(5);
+    expect(logs!.n).toBe(7);
   });
 
   it('readExpiry: none, months, a date (end of that day, Bangkok), and bad dates', () => {

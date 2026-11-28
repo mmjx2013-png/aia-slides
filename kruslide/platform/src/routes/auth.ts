@@ -10,6 +10,8 @@ import { upsertTeacherFromLine } from '../db';
 import { audit } from '../lib/audit';
 import { checkCsrf } from '../lib/csrf';
 import { readForm, cleanText } from '../lib/validate';
+import { demoOn } from '../lib/config';
+import { personaPage } from '../demo/routes';
 
 export function callbackUrl(ctx: Ctx): string {
   return `${ctx.origin}/app/auth/callback`;
@@ -17,6 +19,7 @@ export function callbackUrl(ctx: Ctx): string {
 
 /** GET /app/login → store state/nonce/PKCE (bound to this browser by a cookie) and send the teacher to LINE. */
 export async function login(ctx: Ctx): Promise<Response> {
+  if (demoOn(ctx.env)) return personaPage(ctx); // the demo has persona buttons and never talks to LINE
   await rateLimit(ctx.env, `login:${ctx.ip}`, LIMITS.login, ctx.now);
   if (!lineConfigured(ctx.env)) throw new HttpError(503, 'ยังไม่ได้ตั้งค่า LINE Login (LINE_CHANNEL_ID / LINE_CHANNEL_SECRET)');
   const next = safeNext(ctx.url.searchParams.get('next'));
@@ -35,6 +38,7 @@ export async function login(ctx: Ctx): Promise<Response> {
 
 /** GET /app/auth/callback?code&state → check state, swap the code (with the PKCE verifier), verify the ID token. */
 export async function callback(ctx: Ctx): Promise<Response> {
+  if (demoOn(ctx.env)) throw new HttpError(404, 'เว็บทดลองไม่ได้ใช้ LINE Login');
   await rateLimit(ctx.env, `login:${ctx.ip}`, LIMITS.login, ctx.now);
   const q = ctx.url.searchParams;
   if (q.get('error')) {

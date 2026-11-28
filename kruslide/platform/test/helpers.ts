@@ -17,7 +17,7 @@ export function lineId(): string {
 
 export interface Who { id: number; cookie: string; csrf: string; }
 
-export async function call(path: string, init: RequestInit & { cookie?: string; ip?: string; vars?: Record<string, string> } = {}): Promise<Response> {
+export async function call(path: string, init: RequestInit & { cookie?: string; ip?: string; vars?: Record<string, unknown> } = {}): Promise<Response> {
   const headers = new Headers(init.headers);
   if (init.cookie) headers.set('Cookie', init.cookie);
   if (!headers.has('CF-Connecting-IP')) headers.set('CF-Connecting-IP', init.ip ?? '203.0.113.7');

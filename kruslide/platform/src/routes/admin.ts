@@ -6,11 +6,12 @@ import { buildBrief, QUIZ, QUIZ_LENGTH, answerEn, imagePath } from '../lib/quiz'
 import { choiceThumbs, requestFacts } from './requests';
 import * as db from '../db';
 import { cleanMultiline, cleanText, idParam, int, oneOf, str } from '../lib/validate';
-import { MAX_UPLOAD_BYTES } from '../lib/config';
+import { MAX_UPLOAD_BYTES, demoOn } from '../lib/config';
 import { audit } from '../lib/audit';
 import { monthlyPrice, MONTH_OPTIONS, RATE_MAX, RATE_MIN } from '../lib/pricing';
 import { countSlides, inlineScriptHashes, looksLikeHtmlDocument, sha256hex } from '../lib/deckmeta';
 import { destroyAllSessions } from '../lib/session';
+import { storage } from '../lib/storage';
 import { requireAdmin, adminPost, adminPage, tabs, back } from './adminkit';
 import { memberAccessPanel, approveForm } from './access';
 
@@ -58,6 +59,8 @@ ${fresh.map((r) => html`<tr><td>${r.id}</td><td><a href="/app/admin/members/${r.
 <div class="sec-head"><h2>รอยืนยันการชำระเงิน</h2><a href="/app/admin/payments">ดูทั้งหมด →</a></div>
 <p class="muted small">ตรวจยอดในแอปธนาคารให้ตรงกับยอดและเวลา แล้วกด “ยืนยัน” ระบบจะเปิดสิทธิ์ให้สมาชิกทันที</p>
 ${paymentsTable(ctx, pending)}
+${demoOn(ctx.env) ? html`<section class="card demoreset"><div><h2>${icon('spark')} เว็บทดลอง</h2><p class="muted small">ลองกดได้ทุกอย่าง ข้อมูลเป็นตัวอย่าง กดรีเซ็ตเพื่อกลับไปเริ่มต้นใหม่ (ทุกคนจะออกจากระบบ)</p></div>
+<form method="post" action="/app/admin/demo/reset">${csrfField(ctx)}<button class="btn sun" type="submit">รีเซ็ตข้อมูลทดลอง</button></form></section>` : ''}
 <div class="sec-head"><h2>ส่งออกข้อมูล (CSV)</h2></div>
 <div class="row"><a class="btn ghost small" href="/app/admin/export/members.csv">${icon('download')}สมาชิก</a>
 <a class="btn ghost small" href="/app/admin/export/subscriptions.csv">${icon('download')}การสมัคร</a>
@@ -308,9 +311,9 @@ ${units.map((u) => html`<div class="card"><form method="post" action="/app/admin
 ${u.r2_key ? html`<a class="btn ghost small" href="/app/deck/${u.id}/">ดูตัวอย่าง</a>` : ''}
 <a class="btn ghost small" href="/app/admin/books/${b.id}/access?unit=${u.id}">${icon('users')}ใครเข้าถึงได้</a>
 <span class="small muted">${u.r2_key ? html`ไฟล์: ${money(Math.round((u.html_bytes ?? 0) / 1024))} KB · อัปโหลด ${fmtDateTime(u.uploaded_at)} · <span class="mono">${(u.html_sha256 ?? '').slice(0, 12)}</span>` : 'ยังไม่มีไฟล์สไลด์'}</span></div></form>
-<form method="post" action="/app/admin/units/${u.id}/upload" enctype="multipart/form-data" class="row mt-s">${csrfField(ctx)}
+${demoOn(ctx.env) ? html`<p class="small muted mt-s">เว็บทดลอง: ไฟล์สไลด์ตัวอย่างติดมากับเว็บ อัปโหลดไฟล์ใหม่ไม่ได้</p>` : html`<form method="post" action="/app/admin/units/${u.id}/upload" enctype="multipart/form-data" class="row mt-s">${csrfField(ctx)}
 <label class="sr" for="f${u.id}">ไฟล์ HTML</label><input id="f${u.id}" name="file" type="file" accept=".html,text/html" required>
-<button class="btn ghost small" type="submit">อัปโหลด HTML</button><span class="small muted">นับสไลด์และคำนวณ CSP ให้อัตโนมัติ</span></form>
+<button class="btn ghost small" type="submit">อัปโหลด HTML</button><span class="small muted">นับสไลด์และคำนวณ CSP ให้อัตโนมัติ</span></form>`}
 <form method="post" action="/app/admin/units/${u.id}/delete" class="row mt-s">${csrfField(ctx)}<label class="check"><input type="checkbox" name="confirm" value="yes" required> ยืนยันการลบ (ลบไฟล์สไลด์ด้วย)</label><button class="btn danger small" type="submit">ลบหน่วยนี้</button></form>
 </div>`)}
 <div class="card mt"><h3>เพิ่มหน่วย</h3><form method="post" action="/app/admin/books/${b.id}/units">${csrfField(ctx)}
@@ -345,7 +348,7 @@ export async function deleteBook(ctx: Ctx): Promise<Response> {
   const b = await db.getBook(ctx.env, idParam(ctx.params.id));
   if (!b) throw new HttpError(404, 'ไม่พบหนังสือ');
   const keys = await db.deleteBook(ctx.env, b.id);
-  if (keys.length) await ctx.env.DECKS.delete(keys);
+  if (keys.length) await storage(ctx.env).delete(keys);
   await audit(ctx.env, ctx.now, actor, 'book.delete', `book:${b.id}`, { title: b.title });
   return redirect('/app/admin/books?m=deleted');
 }
@@ -387,7 +390,7 @@ export async function deleteUnit(ctx: Ctx): Promise<Response> {
   const u = await db.getUnit(ctx.env, idParam(ctx.params.id));
   if (!u) throw new HttpError(404, 'ไม่พบหน่วย');
   await db.deleteUnit(ctx.env, u, ctx.now);
-  if (u.r2_key) await ctx.env.DECKS.delete(u.r2_key);
+  if (u.r2_key) await storage(ctx.env).delete(u.r2_key);
   await audit(ctx.env, ctx.now, actor, 'unit.delete', `unit:${u.id}`, { book: u.book_id, title: u.title });
   return redirect(`/app/admin/books/${u.book_id}?m=deleted`);
 }
@@ -408,7 +411,7 @@ export async function upload(ctx: Ctx): Promise<Response> {
   const [hashes, sha] = await Promise.all([inlineScriptHashes(text), sha256hex(text)]);
   const slides = countSlides(text);
   const key = `units/${u.id}/index.html`;
-  await ctx.env.DECKS.put(key, text, { httpMetadata: { contentType: 'text/html; charset=utf-8' }, customMetadata: { sha256: sha } });
+  await storage(ctx.env).put(key, text, 'text/html; charset=utf-8', { sha256: sha });
   await db.setUnitUpload(ctx.env, u, { key, hashes, sha, bytes: file.size, slides }, ctx.now);
   await audit(ctx.env, ctx.now, actor, 'unit.upload', `unit:${u.id}`, { bytes: file.size, slides, sha256: sha, scripts: hashes.length });
   return redirect(`/app/admin/books/${u.book_id}?m=uploaded`);

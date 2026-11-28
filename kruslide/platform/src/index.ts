@@ -1,7 +1,8 @@
 import type { Ctx, Env } from './env';
 import { Router } from './router';
 import { HttpError, LOGIN_REQUIRED, clientIp, htmlResponse, redirect, secure, textResponse } from './lib/http';
-import { adminIds, isProduction } from './lib/config';
+import { adminIds, demoOn, isProduction } from './lib/config';
+import * as demo from './demo/routes';
 import { csrfToken, readSession } from './lib/session';
 import { errorPage } from './views/layout';
 import { housekeeping } from './db';
@@ -21,6 +22,9 @@ const router = new Router()
   .get('/app/login', auth.login)
   .get('/app/auth/callback', auth.callback)
   .post('/app/logout', auth.logout)
+  .post('/app/demo/unlock', demo.unlock)
+  .post('/app/demo/login', demo.personaLogin)
+  .post('/app/admin/demo/reset', demo.reset)
   .get('/app/privacy', privacy)
   .get('/app/profile', member.profile)
   .post('/app/profile', member.profile)
@@ -93,8 +97,14 @@ async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<R
   };
   try {
     if (url.pathname === '/app' || url.pathname === '/app/admin') return redirect(url.pathname + '/', 308);
+    if (demoOn(env) && url.pathname === '/robots.txt') return demo.robots();
+    if (demoOn(env) && url.pathname === '/') return redirect('/app/', 302);
     if (!url.pathname.startsWith('/app/')) throw new HttpError(404, 'ไม่พบหน้านี้');
     if (isProduction(env) && url.protocol !== 'https:') return redirect(`https://${url.host}${url.pathname}${url.search}`, 308);
+    if (demoOn(env)) {
+      const gate = await demo.demoGate(ctx); // the passcode page, unless this browser has unlocked the demo
+      if (gate) return gate;
+    }
     const m = router.match(req.method, url.pathname);
     if (m === 'method') return textResponse('Method not allowed', 405, { Allow: 'GET, POST' });
     if (!m) throw new HttpError(404, 'ไม่พบหน้านี้');

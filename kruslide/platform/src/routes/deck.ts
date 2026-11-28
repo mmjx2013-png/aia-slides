@@ -3,6 +3,7 @@ import { HttpError, htmlResponse, needLogin, redirect } from '../lib/http';
 import { html } from '../lib/html';
 import { page, emptyArt, icon, lineAddUrl } from '../views/layout';
 import { lineOa } from '../lib/config';
+import { storage } from '../lib/storage';
 import { idParam } from '../lib/validate';
 import * as db from '../db';
 import { injectWatermark, watermarkText } from '../lib/watermark';
@@ -85,7 +86,7 @@ export async function deck(ctx: Ctx): Promise<Response> {
   }
   const { unit, name, school } = auth;
   if (!school) return redirect(`/app/profile?m=school&next=${encodeURIComponent(`/app/deck/${id}/`)}`, 302);
-  const obj = await ctx.env.DECKS.get(unit.r2_key!);
+  const obj = await storage(ctx.env).get(unit.r2_key!);
   if (!obj) throw new HttpError(404, 'ไม่พบไฟล์สไลด์ กรุณาติดต่อทีมงาน');
   ctx.exec.waitUntil(audit(ctx.env, ctx.now, `${ctx.isAdmin ? 'admin' : 'teacher'}:${ctx.teacher.id}`, 'deck.open', `unit:${unit.id}`).catch(() => {}));
   const res = new Response(obj.body, { status: 200, headers: deckHeaders(unit) });
@@ -113,7 +114,7 @@ export async function deckAsset(ctx: Ctx): Promise<Response> {
   if (!ctx.teacher) throw needLogin();
   const { unit } = await authorise(ctx, id);
   const key = path.startsWith('fonts/') ? `shared/${path}` : `${unit.r2_key!.replace(/[^/]+$/, '')}${path}`;
-  const obj = await ctx.env.DECKS.get(key);
+  const obj = await storage(ctx.env).get(key);
   if (!obj) throw new HttpError(404, 'ไม่พบไฟล์');
   return new Response(obj.body, {
     headers: {

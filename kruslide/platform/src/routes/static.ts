@@ -4,6 +4,7 @@ import { APP_JS } from '../views/js';
 import { APPLE_ICON_B64, ICON_SVG } from '../views/brand';
 import { HttpError } from '../lib/http';
 import { QUIZ_FILES } from '../lib/quiz';
+import { storage } from '../lib/storage';
 
 /** GET /app/static/app.css */
 export function css(): Response {
@@ -31,7 +32,7 @@ export function appleTouchIcon(): Response {
 export async function font(ctx: Ctx): Promise<Response> {
   const file = ctx.params.file;
   if (!/^[A-Za-z0-9-]{1,60}\.woff2$/.test(file)) throw new HttpError(404, 'ไม่พบไฟล์');
-  const obj = await ctx.env.DECKS.get(`shared/fonts/${file}`);
+  const obj = await storage(ctx.env).get(`shared/fonts/${file}`);
   if (!obj) throw new HttpError(404, 'ไม่พบไฟล์');
   return new Response(obj.body, { headers: { 'Content-Type': 'font/woff2', 'Cache-Control': 'public, max-age=2592000, immutable' } });
 }
@@ -40,9 +41,9 @@ export async function font(ctx: Ctx): Promise<Response> {
 export async function quizImage(ctx: Ctx): Promise<Response> {
   const file = ctx.params.file;
   if (!QUIZ_FILES.has(file)) throw new HttpError(404, 'ไม่พบไฟล์');
-  const obj = await ctx.env.DECKS.get(`shared/quiz/${file}`);
+  const obj = await storage(ctx.env).get(`shared/quiz/${file}`);
   if (!obj) throw new HttpError(404, 'ไม่พบไฟล์');
-  return new Response(obj.body, {
-    headers: { 'Content-Type': 'image/webp', 'Cache-Control': 'public, max-age=604800', ETag: obj.httpEtag },
-  });
+  const headers: Record<string, string> = { 'Content-Type': 'image/webp', 'Cache-Control': 'public, max-age=604800' };
+  if (obj.etag) headers.ETag = obj.etag;
+  return new Response(obj.body, { headers });
 }

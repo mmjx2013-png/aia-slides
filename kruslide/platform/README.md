@@ -28,6 +28,9 @@ subscription in one transaction. `src/payments/` is the seam for Stripe Thailand
 
 ```
 wrangler.toml            Worker config: D1 + R2 bindings (placeholder IDs), vars, daily cron
+wrangler.demo.toml       the clickable demo: DEMO_MODE, static assets instead of R2, D1 kruslide-demo, workers.dev
+src/demo/                the demo: passcode gate, personas, sample data (seed.ts), generated catalog.ts
+src/lib/storage.ts       deck files: R2 (production) or Workers Static Assets (demo), same keys, safe keys only
 migrations/0001_init.sql D1 schema
 migrations/0002_book_requests.sql  book requests + style-quiz answers
 migrations/0003_unit_grants.sql    per-unit grants + approval of new members (teachers.approved_at)
@@ -113,6 +116,52 @@ node scripts/quiz/render.mjs   # re-render the quiz images after editing scripts
 is the admin. Dev secrets are random on every start and passed on the command line, so no secret is written to
 disk. Use Chrome or Edge locally: the session cookie is `Secure` with the `__Host-` prefix, which Chromium accepts
 on `http://127.0.0.1` but some browsers do not (Safari).
+
+## Clickable demo (`DEMO_MODE`)
+
+A demo of the same Worker for the owner to click through, on a free `*.workers.dev` URL, with sample data only.
+It is **off by default**; production (`wrangler.toml`) never turns it on. With `DEMO_MODE = "on"`:
+
+- **Passcode gate:** every page first asks for the secret `DEMO_PASSCODE` (compared in constant time, 10 tries per
+  10 minutes per IP). A right passcode sets a signed, HttpOnly cookie for 7 days; changing the passcode locks everyone
+  out. Without a passcode set, the demo answers 500 (nobody gets in).
+- **Personas instead of LINE:** "ครูวิชัย (ได้สิทธิ์บางหน่วย)", "ครูสมศรี (ซื้อทั้งเล่ม)", "ครูใหม่ (รออนุมัติ)",
+  "เจ้าของ (ผู้ดูแล)". They have fake LINE ids; `/app/auth/callback` is 404 and the Worker makes no outbound request.
+  Only the demo owner persona is an admin (`ADMIN_LINE_IDS` is ignored).
+- **Sample data:** three books made from `kruslide/samples/` (คณิตศาสตร์, วิทยาศาสตร์, ภาษาไทย; every unit one sample
+  deck), grants for partial access, a paid book, a waiting member, a pending (fake) payment and a book request. It is
+  loaded on first use; "รีเซ็ตข้อมูลทดลอง" on the admin dashboard loads it again and logs everyone out.
+- **Banner** "เว็บทดลอง · ข้อมูลตัวอย่าง" on every page, `noindex` everywhere, `/robots.txt` disallows all.
+- **PromptPay is fake:** a dummy number (0000000000) with a "ตัวอย่าง ห้ามโอนจริง" stamp; the real `PROMPTPAY_ID`
+  is never used.
+- **Decks without R2:** `src/lib/storage.ts` has two backends with the same keys: R2 (`DECKS`, production) and Workers
+  Static Assets (`ASSETS`, the demo). `wrangler.demo.toml` ships `demo/assets/` with `run_worker_first = true`, so a
+  file is only ever read by the access-checked deck routes; a direct URL such as `/units/1/index.html` is 404.
+  `node scripts/demo-build.mjs` makes `demo/assets/` (git-ignored) and `src/demo/catalog.ts` (CSP hashes, slides).
+
+```sh
+DEMO_PASSCODE=pick-something npm run demo:dev          # local demo on http://127.0.0.1:8789/
+npm run demo:smoke                                     # Playwright QA of a fresh local demo -> screenshots/demo/
+DEMO_PASSCODE_FILE=/private/.demo-passcode CLOUDFLARE_API_TOKEN=... npm run demo:deploy
+DEMO_URL=https://kruslide-demo.<sub>.workers.dev DEMO_PASSCODE_FILE=/private/.demo-passcode npm run demo:smoke   # QA live
+```
+
+`demo:deploy` (scripts/demo-deploy.mjs) finds the account, creates a workers.dev subdomain if the account has none,
+creates D1 `kruslide-demo` and writes its id into `wrangler.demo.toml`, applies the migrations, deploys Worker
+`kruslide-demo`, and sets the secrets `SESSION_SECRET` (random) and `DEMO_PASSCODE` (12 easy characters, written only
+to `DEMO_PASSCODE_FILE`, mode 600, never printed).
+
+**Delete the demo** (from `kruslide/platform`):
+```sh
+npx wrangler delete -c wrangler.demo.toml          # the Worker kruslide-demo, its static assets and secrets
+npx wrangler d1 delete kruslide-demo               # the demo database
+```
+The workers.dev subdomain belongs to the account and costs nothing; keep it or rename it in the dashboard
+(Workers & Pages > your subdomain).
+
+**How production differs:** `wrangler.toml` has no `DEMO_MODE`, real LINE Login, the owner's `ADMIN_LINE_IDS`, the
+real PromptPay number, decks in the private R2 bucket (uploaded on the admin page), a custom domain with
+`workers_dev = false`, and no passcode or sample data.
 
 ## Deploy (later, when the owner provides the Cloudflare account)
 

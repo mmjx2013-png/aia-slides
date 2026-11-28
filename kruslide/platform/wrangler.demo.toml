@@ -1,0 +1,41 @@
+# The clickable DEMO of the KruSlide platform (DEMO_MODE): free workers.dev, a passcode gate, persona login
+# instead of LINE, sample data only. Production uses wrangler.toml and is not touched by this file.
+#   node scripts/demo-build.mjs                      # deck files + src/demo/catalog.ts
+#   node scripts/demo-deploy.mjs                     # create D1, migrate, secrets, deploy (needs a Cloudflare token)
+# Secrets (never in this file): SESSION_SECRET, DEMO_PASSCODE (set by scripts/demo-deploy.mjs).
+name = "kruslide-demo"
+main = "src/index.ts"
+compatibility_date = "2026-11-20"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "production"
+DEMO_MODE = "on"
+APP_ORIGIN = ""
+LINE_OA_ID = "@368lkkze"
+PAYMENT_PROVIDER = "manual"
+NEW_MEMBER_APPROVAL = "on"
+LINE_BOT_PROMPT = ""
+
+# The demo's deck files (sample decks, fonts, quiz images) ship with the Worker as static assets.
+# run_worker_first: every request reaches the Worker first, so a file is only ever read by the access-checked routes
+# (a direct URL such as /units/1/index.html gets 404). No R2 bucket is needed.
+[assets]
+directory = "./demo/assets"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "none"
+not_found_handling = "none"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kruslide-demo"
+database_id = "00000000-0000-0000-0000-000000000000"   # PLACEHOLDER: scripts/demo-deploy.mjs fills in the real id
+migrations_dir = "migrations"
+
+[observability]
+enabled = true
+
+[observability.logs]
+invocation_logs = false

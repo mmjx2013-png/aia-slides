@@ -8,7 +8,7 @@ import { MONTH_OPTIONS, monthlyPrice, perDay, RATE_MAX, RATE_MIN } from '../lib/
 import { checkCsrf } from '../lib/csrf';
 import { cleanText, idParam, int, readForm, str } from '../lib/validate';
 import { rateLimit } from '../lib/ratelimit';
-import { LIMITS, lineOa } from '../lib/config';
+import { DEMO_PROMPTPAY_ID, LIMITS, demoOn, lineOa } from '../lib/config';
 import { audit } from '../lib/audit';
 import { paymentProvider, providerFor } from '../payments';
 
@@ -60,7 +60,9 @@ function landing(ctx: Ctx): Response {
     <span class="pill">${icon('school')}สำหรับคุณครูไทยและครู English Program</span>
     <h1><span class="nw">สไลด์ที่ทั้งห้อง<mark>อยากตอบ</mark></span><br><span class="nw">พร้อมสอนทุกหน่วย</span></h1>
     <p class="lead">สมัครเป็นรายเล่มตามหนังสือเรียน เปิดสอนผ่านลิงก์ของครูสไลด์ได้ทันที หรือขอให้เราทำเล่มที่คุณครูสอน พร้อมเลือกสไตล์ที่ชอบเอง</p>
-    <p class="row mt-s"><a class="btn line big" href="/app/login">${icon('chat')}เข้าสู่ระบบด้วย LINE</a></p>
+    <p class="row mt-s">${demoOn(ctx.env)
+      ? html`<a class="btn big" href="/app/login">${icon('user')}เลือกผู้ใช้ทดลอง</a>`
+      : html`<a class="btn line big" href="/app/login">${icon('chat')}เข้าสู่ระบบด้วย LINE</a>`}</p>
     <ul class="ticks"><li>${icon('check')}ไม่ต้องติดตั้งโปรแกรม</li><li>${icon('check')}${RATE_MIN}–${RATE_MAX} บาท/สไลด์/เดือน</li><li>${icon('check')}จ่ายผ่าน PromptPay</li></ul>
     <p class="small muted mt-s">เราเก็บเฉพาะรหัสผู้ใช้ LINE ชื่อที่แสดง และชื่อโรงเรียน ไม่เก็บอีเมล เบอร์โทร หรือข้อมูลนักเรียน · <a href="/app/privacy">อ่านเพิ่มเติม</a></p>
   </div>
@@ -277,10 +279,12 @@ export async function paymentPage(ctx: Ctx): Promise<Response> {
   if (!p || (p.teacher_id !== t.id && !ctx.isAdmin)) throw new HttpError(404, 'ไม่พบรายการนี้');
   const sub = await db.getSubscriptionById(ctx.env, p.subscription_id);
   const book = sub ? await db.getBook(ctx.env, sub.book_id) : null;
-  const start = await providerFor(p).start(ctx.env, p, ctx.origin);
+  // The demo always shows a QR for a dummy number with a "do not transfer" stamp, never a real account.
+  const demo = demoOn(ctx.env);
+  const start = await providerFor(p).start(demo ? { ...ctx.env, PROMPTPAY_ID: DEMO_PROMPTPAY_ID } : ctx.env, p, ctx.origin);
   const amount = p.amount_satang / 100;
   const qr = start.kind === 'instructions' && start.qrSvg
-    ? html`<div class="qrbox"><div class="pp">PromptPay</div>${new Safe(start.qrSvg)}<div class="small muted">บัญชี ${start.targetMasked}</div></div>`
+    ? html`<div class="qrbox${demo ? ' fake' : ''}"><div class="pp">PromptPay</div>${new Safe(start.qrSvg)}${demo ? html`<span class="stamp" role="note">ตัวอย่าง ห้ามโอนจริง</span>` : ''}<div class="small muted">บัญชี ${start.targetMasked}${demo ? ' (เลขสมมติ)' : ''}</div></div>`
     : html`<div class="qrbox"><p class="muted small">ยังไม่ได้ตั้งค่าบัญชี PromptPay กรุณาติดต่อทีมงานทาง LINE ${lineOa(ctx.env)}</p></div>`;
   return htmlResponse(page(ctx, {
     title: 'ชำระเงิน',
