@@ -12,7 +12,7 @@ import json, os, re, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TL = json.load(open(os.path.join(HERE, 'out', 'timeline.json'), encoding='utf-8'))
-D = TL['duration']
+D = TL['frames'] / TL['fps']          # exactly the picture's length
 M = TL['music']
 A = os.path.join(HERE, 'out', 'work', 'audio')
 SR = 48000
@@ -43,16 +43,19 @@ def reverb(src, dst, ir, wet, dry=1.0):
 # ------------------------------------------------------------------ music
 NOTE = {'D1': 36.71, 'F1': 43.65, 'G1': 49.0, 'A1': 55.0, 'C2': 65.41, 'D2': 73.42, 'E2': 82.41, 'F2': 87.31,
         'G2': 98.0, 'A2': 110.0, 'B2': 123.47, 'C3': 130.81, 'C#3': 138.59, 'D3': 146.83, 'E3': 164.81,
-        'F3': 174.61, 'G3': 196.0, 'A3': 220.0, 'C#4': 277.18, 'E4': 329.63, 'A4': 440.0}
+        'F3': 174.61, 'G3': 196.0, 'A3': 220.0, 'B3': 246.94, 'C4': 261.63, 'C#4': 277.18, 'D4': 293.66,
+        'E4': 329.63, 'F4': 349.23, 'G4': 392.0, 'A4': 440.0, 'C#5': 554.37, 'E5': 659.25}
 
 def chord_expr(notes, L, fi, fo, extra='1'):
+    """Each note: five soft harmonics (so small speakers hear it) plus a slightly detuned twin (slow beating, width)."""
     parts_l, parts_r = [], []
     for i, n in enumerate(notes):
         f = NOTE[n]
-        amp = 0.16 / (1 + 0.35 * i)
-        ph = 0.7 * i
-        parts_l.append(f"{amp:.4f}*(sin(2*PI*{f}*t+{ph})+0.55*sin(2*PI*{f * 1.0035:.4f}*t+{ph + 1.1})+0.22*sin(2*PI*{2 * f:.4f}*t+{ph + 0.4}))")
-        parts_r.append(f"{amp:.4f}*(sin(2*PI*{f}*t+{ph + 0.5})+0.55*sin(2*PI*{f * 0.9965:.4f}*t+{ph + 2.0})+0.22*sin(2*PI*{2 * f:.4f}*t+{ph + 1.4}))")
+        amp = 0.15 / (1 + 0.30 * i)
+        for side, parts, det in (('l', parts_l, 1.0035), ('r', parts_r, 0.9965)):
+            ph = 0.7 * i + (0.5 if side == 'r' else 0)
+            h = '+'.join(f"{1 / k ** 1.7:.3f}*sin(2*PI*{f * k:.3f}*t+{ph + 0.9 * k:.2f})" for k in range(1, 6))
+            parts.append(f"{amp:.4f}*({h}+0.5*sin(2*PI*{f * det:.4f}*t+{ph + 1.1:.2f}))")
     e = f"{env(L, fi, fo)}*(0.86+0.14*sin(2*PI*0.12*t+1))*{extra}"
     return f"({'+'.join(parts_l)})*{e}", f"({'+'.join(parts_r)})*{e}"
 
@@ -60,13 +63,13 @@ def make_pads():
     fall, title, end = M['fall'], M['title'], M['end']
     # (start, end, notes, fade in, fade out, extra envelope)
     chords = [
-        (0.0, M['trade'] + 1.5, ['A1', 'E2', 'A2', 'C3', 'E3'], 2.5, 3.0, '1'),
-        (M['trade'] - 1.5, M['glory'] + 1.5, ['F1', 'C2', 'F2', 'A2', 'C3', 'G3'], 3.0, 3.0, '1'),
-        (M['glory'] - 1.5, fall, ['G1', 'D2', 'G2', 'B2', 'D3'], 3.0, 0.05, None),       # builds into the cut
-        (fall + 0.6, M['heritage'] + 2.0, ['D2', 'A2', 'D3', 'F3'], 3.5, 3.5, '1'),
-        (M['heritage'] - 2.0, title + 0.3, ['A1', 'E2', 'A2', 'C3', 'E3', 'A3'], 3.5, 0.6, '1'),
-        (title - 0.05, D, ['A1', 'E2', 'A2', 'C#3', 'E3', 'A3', 'E4'], 0.08, 4.5, '1'),
-        (title + 0.8, D, ['C#4', 'E4', 'A4'], 2.5, 3.5, '0.55'),                            # high shimmer: hope
+        (0.0, M['trade'] + 1.5, ['A1', 'E2', 'A2', 'E3', 'A3', 'C4', 'E4'], 2.5, 3.0, '1'),
+        (M['trade'] - 1.5, M['glory'] + 1.5, ['F1', 'C2', 'F2', 'C3', 'A3', 'C4', 'G4'], 3.0, 3.0, '1'),
+        (M['glory'] - 1.5, fall, ['G1', 'D2', 'G2', 'D3', 'G3', 'B3', 'D4'], 3.0, 0.05, None),       # builds into the cut
+        (fall + 0.6, M['heritage'] + 2.0, ['D2', 'A2', 'D3', 'F3', 'A3', 'D4'], 3.5, 3.5, '1'),
+        (M['heritage'] - 2.0, title + 0.3, ['A1', 'E2', 'A2', 'E3', 'A3', 'C4', 'E4'], 3.5, 0.6, '1'),
+        (title - 0.05, D, ['A1', 'E2', 'A2', 'E3', 'A3', 'C#4', 'E4'], 0.08, 4.5, '1'),
+        (title + 0.8, D, ['E4', 'A4', 'C#5', 'E5'], 2.5, 3.5, '0.45'),                            # high shimmer: hope
     ]
     ins, labels, k = [], [], 0
     for a, b, notes, fi, fo, extra in chords:
@@ -78,7 +81,7 @@ def make_pads():
         ms = int(round(a * 1000))
         labels.append(f'[{k}:a]adelay={ms}|{ms},apad=whole_dur={D}[c{k}]'); k += 1
     graph = ';'.join(labels) + ';' + ''.join(f'[c{i}]' for i in range(k)) + \
-        f'amix=inputs={k}:normalize=0:duration=longest,lowpass=f=1600,highpass=f=30,atrim=0:{D}[out]'
+        f'amix=inputs={k}:normalize=0:duration=longest,lowpass=f=2400,highpass=f=35,atrim=0:{D}[out]'
     ff(*ins, '-filter_complex', graph, '-map', '[out]', '-c:a', 'pcm_f32le', os.path.join(A, 'pads_dry.wav'))
     reverb(os.path.join(A, 'pads_dry.wav'), os.path.join(A, 'pads.wav'), 'ir_long.wav', wet=0.55, dry=0.8)
 
@@ -128,7 +131,7 @@ def make_fx():
 
 def make_bed():
     ff('-i', os.path.join(A, 'pads.wav'), '-i', os.path.join(A, 'wind.wav'), '-i', os.path.join(A, 'fx.wav'),
-       '-filter_complex', f'[0:a][1:a][2:a]amix=inputs=3:weights=1.0 0.22 1.0:normalize=0,atrim=0:{D}[out]',
+       '-filter_complex', f'[0:a][1:a][2:a]amix=inputs=3:weights=0.32 0.70 0.45:normalize=0,atrim=0:{D}[out]',
        '-map', '[out]', '-c:a', 'pcm_f32le', os.path.join(A, 'bed_raw.wav'))
 
 # ------------------------------------------------------------------ voice
@@ -160,7 +163,7 @@ def loudnorm(src, dst):
 
 def make_mix():
     ff('-i', os.path.join(A, 'bed_raw.wav'), '-i', os.path.join(A, 'voice.wav'), '-filter_complex',
-       '[1:a]asplit[key][v];[0:a][key]sidechaincompress=threshold=0.015:ratio=5:attack=90:release=650:makeup=1[duck];'
+       '[1:a]asplit[key][v];[0:a][key]sidechaincompress=threshold=0.04:ratio=3:attack=120:release=900:makeup=1[duck];'
        f'[duck][v]amix=inputs=2:weights=1.0 1.0:normalize=0,alimiter=limit=0.9:level=false,atrim=0:{D}[out]',
        '-map', '[out]', '-c:a', 'pcm_f32le', os.path.join(A, 'mix_raw.wav'))
     loudnorm(os.path.join(A, 'mix_raw.wav'), os.path.join(A, 'mix.wav'))

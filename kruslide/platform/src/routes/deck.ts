@@ -1,7 +1,7 @@
 import type { Ctx, Unit } from '../env';
 import { HttpError, htmlResponse, needLogin, redirect } from '../lib/http';
 import { html } from '../lib/html';
-import { page } from '../views/layout';
+import { page, emptyArt, icon } from '../views/layout';
 import { idParam } from '../lib/validate';
 import * as db from '../db';
 import { injectWatermark, watermarkText } from '../lib/watermark';
@@ -71,8 +71,8 @@ export async function deck(ctx: Ctx): Promise<Response> {
     if (!book) throw e;
     return htmlResponse(page(ctx, {
       title: 'ยังเปิดสไลด์นี้ไม่ได้',
-      body: html`<div class="card empty"><h1>ยังเปิดสไลด์นี้ไม่ได้</h1><p>${(e as HttpError).message}</p>
-        <p class="row"><a class="btn" href="/app/books/${book}">ดูหนังสือเล่มนี้และสมัคร</a><a class="btn ghost" href="/app/">หนังสือของฉัน</a></p></div>`,
+      body: html`<div class="card empty">${emptyArt()}<h1>ยังเปิดสไลด์นี้ไม่ได้</h1><p>${(e as HttpError).message}</p>
+        <p class="row"><a class="btn" href="/app/books/${book}">ดูหนังสือเล่มนี้และสมัคร ${icon('right')}</a><a class="btn ghost" href="/app/">หนังสือของฉัน</a></p></div>`,
     }), 403);
   }
   const { unit, name, school } = auth;

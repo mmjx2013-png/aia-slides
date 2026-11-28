@@ -52,8 +52,17 @@
 
   /* ================= header: shadow, mobile menu, current section ================= */
   var top = $('.top'), nav = $('#nav'), mbtn = $('.menu-btn');
-  function onScroll() { top.classList.toggle('scrolled', window.scrollY > 8); }
+  /* the floating bar hides while you scroll down and comes back as soon as you scroll up */
+  var lastY = window.scrollY;
+  function onScroll() {
+    var y = window.scrollY;
+    top.classList.toggle('scrolled', y > 8);
+    var away = y > 420 && y > lastY + 2 && !nav.classList.contains('open') && !top.contains(document.activeElement);
+    if (away) top.classList.add('away'); else if (y < lastY - 2 || y <= 420) top.classList.remove('away');
+    lastY = y;
+  }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  top.addEventListener('focusin', function () { top.classList.remove('away'); });
   function menu(open) {
     nav.classList.toggle('open', open);
     mbtn.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -86,7 +95,7 @@
   function count(el) { tweenNum(el, +el.dataset.count, nf, 1400); }
   if (!IO || RM.matches) {
     $$('.rv').forEach(function (el) { el.classList.add('in'); });
-    $$('.steps-row').forEach(function (el) { el.classList.add('lit'); });
+    $$('.steps-col').forEach(function (el) { el.classList.add('lit'); });
   } else {
     var rvIO = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rvIO.unobserve(e.target); } });
@@ -100,12 +109,55 @@
       });
     }, { threshold: 0.4 });
     counters.forEach(function (el) { el.dataset.v = 0; el.textContent = '0'; once.observe(el); });
-    $$('.steps-row').forEach(function (el) { once.observe(el); });
+    $$('.steps-col').forEach(function (el) { once.observe(el); });
   }
 
-  /* hero loop: pause when the classroom is off screen */
-  var stage = $('.stage');
+  /* hero loop: pause when the lesson is off screen */
+  var stage = $('.hero-stage');
   if (stage && IO) new IntersectionObserver(function (es) { stage.classList.toggle('paused', !es[0].isIntersecting); }).observe(stage);
+
+  /* ================= scroll story: the sticky screen shows the step in the middle of the window ================= */
+  var ssts = $$('.sst'), sImgs = $$('.story-scr img'), sDots = $$('.story-rail i');
+  function story(k) {
+    ssts.forEach(function (s, j) { s.classList.toggle('on', j === k); });
+    sImgs.forEach(function (s, j) { s.classList.toggle('on', j === k); });
+    sDots.forEach(function (s, j) { s.classList.toggle('on', j === k); });
+  }
+  if (ssts.length) {
+    story(0);
+    if (IO) {
+      var stIO = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) story(+e.target.dataset.i); });
+      }, { rootMargin: '-48% 0px -48% 0px' });
+      ssts.forEach(function (s) { stIO.observe(s); });
+    }
+  }
+
+  /* ================= parallax: [data-par] elements drift at their own speed; the hero screen lies back, then rises ================= */
+  var pars = $$('[data-par]');
+  if (pars.length && !RM.matches) {
+    var ticking = false;
+    function para() {
+      ticking = false;
+      var vh = window.innerHeight, small = window.innerWidth < 700;
+      pars.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        if (el.dataset.par === 'hero') {
+          var hp = Math.max(0, Math.min(1, (r.top - vh * 0.12) / (vh * 0.6)));
+          el.style.setProperty('--hp', hp.toFixed(3));
+          return;
+        }
+        var d = r.top + r.height / 2 - vh / 2;
+        var f = (+el.dataset.par || 0) * (small ? 0.06 : 0.12);
+        el.style.setProperty('--py', (-d * f).toFixed(1) + 'px');
+      });
+    }
+    function onPar() { if (!ticking) { ticking = true; requestAnimationFrame(para); } }
+    addEventListener('scroll', onPar, { passive: true });
+    addEventListener('resize', onPar);
+    para();
+  }
 
   /* ================= time-back estimator ================= */
   var svOut = $('#sv-out');

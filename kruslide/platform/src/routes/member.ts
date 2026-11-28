@@ -1,7 +1,7 @@
 import type { Book, Ctx, Unit } from '../env';
 import { html, Safe } from '../lib/html';
 import { HttpError, needLogin, htmlResponse, redirect, safeNext } from '../lib/http';
-import { page, flash, csrfField, cover, subBadge, payBadge, fmtDate, fmtDateTime, money } from '../views/layout';
+import { page, flash, csrfField, bookArt, subBadge, payBadge, fmtDate, fmtDateTime, money, icon, emptyArt } from '../views/layout';
 import * as db from '../db';
 import { MONTH_OPTIONS, monthlyPrice, perDay, RATE_MAX, RATE_MIN } from '../lib/pricing';
 import { checkCsrf } from '../lib/csrf';
@@ -23,79 +23,118 @@ function landing(ctx: Ctx): Response {
     body: html`${flash(ctx)}
 <section class="hero">
   <div>
-    <span class="badge info">สำหรับคุณครูไทยและครู EP</span>
-    <h1>สไลด์ที่นักเรียนตอบได้บนจอ พร้อมสอนทุกหน่วย</h1>
-    <p class="lead">สมัครเป็นรายเล่มตามหนังสือเรียน เปิดสอนผ่านลิงก์ของครูสไลด์ได้ทันที มีแอนิเมชันทุกหน้า คู่มือครู และเฉลยพร้อมวิธีทำ</p>
-    <p><a class="btn line" href="/app/login"><span class="chat" aria-hidden="true"></span>เข้าสู่ระบบด้วย LINE</a></p>
-    <p class="small muted">เราเก็บเฉพาะรหัสผู้ใช้ LINE ชื่อที่แสดง และชื่อโรงเรียน ไม่เก็บอีเมล เบอร์โทร หรือข้อมูลนักเรียน · <a href="/app/privacy">อ่านเพิ่มเติม</a></p>
+    <span class="pill">${icon('school')}สำหรับคุณครูไทยและครู English Program</span>
+    <h1>สไลด์ที่ทั้งห้อง<mark>อยากตอบ</mark> พร้อมสอนทุกหน่วย</h1>
+    <p class="lead">สมัครเป็นรายเล่มตามหนังสือเรียน เปิดสอนผ่านลิงก์ของครูสไลด์ได้ทันที หรือขอให้เราทำเล่มที่คุณครูสอน พร้อมเลือกสไตล์ที่ชอบเอง</p>
+    <p class="row mt-s"><a class="btn line big" href="/app/login">${icon('chat')}เข้าสู่ระบบด้วย LINE</a></p>
+    <ul class="ticks"><li>${icon('check')}ไม่ต้องติดตั้งโปรแกรม</li><li>${icon('check')}${RATE_MIN}–${RATE_MAX} บาท/สไลด์/เดือน</li><li>${icon('check')}จ่ายผ่าน PromptPay</li></ul>
+    <p class="small muted mt-s">เราเก็บเฉพาะรหัสผู้ใช้ LINE ชื่อที่แสดง และชื่อโรงเรียน ไม่เก็บอีเมล เบอร์โทร หรือข้อมูลนักเรียน · <a href="/app/privacy">อ่านเพิ่มเติม</a></p>
   </div>
-  <div class="screen" aria-hidden="true"><div class="slide">
-    <div class="q"></div><div class="q s"></div>
-    <div class="bars"><i></i><i></i><i></i><i></i></div>
-    <span class="tap">✓ ถูกต้อง</span>
-  </div></div>
+  <div class="mock" aria-hidden="true">
+    <div class="scr"><div class="q"></div><div class="q s"></div><div class="bars"><i></i><i></i><i></i><i></i></div></div>
+    <span class="float f1">${icon('spark')}แอนิเมชันทุกหน้า</span>
+    <span class="float f2">${icon('check')}ตอบถูก 28/35 คน</span>
+    <span class="float f3">${icon('hand')}แตะ ลาก เขียนบนจอ</span>
+  </div>
 </section>
 <div class="feats">
-  <div class="feat"><b>นักเรียนได้ลงมือ</b><span class="muted small">แตะเลือกคำตอบ ลากกราฟ เขียนบนจอ ทุกหน่วย</span></div>
-  <div class="feat"><b>ราคาตามจำนวนสไลด์</b><span class="muted small">${RATE_MIN}–${RATE_MAX} บาท ต่อสไลด์ ต่อเดือน จ่ายผ่าน PromptPay</span></div>
-  <div class="feat"><b>ใช้ผ่านลิงก์ของเรา</b><span class="muted small">ไม่ต้องติดตั้ง เปิดบนโปรเจกเตอร์หรือแท็บเล็ตได้เลย</span></div>
+  <div class="feat"><span class="ic-tile t-sky">${icon('book')}</span><b>สมัครรายเล่ม</b><span>เลือกหนังสือที่เปิดขาย ราคาตามจำนวนสไลด์ เปิดสอนได้ทันทีหลังชำระเงิน</span></div>
+  <div class="feat"><span class="ic-tile t-sun">${icon('spark')}</span><b>ขอทำเล่มของคุณครู</b><span>บอกหนังสือและหน่วยที่สอน เลือกสไตล์จากภาพตัวอย่าง 10 ข้อ ทีมงานติดต่อกลับทาง LINE</span></div>
+  <div class="feat"><span class="ic-tile t-mint">${icon('play')}</span><b>ใช้ผ่านลิงก์ของเรา</b><span>เปิดบนโปรเจกเตอร์ ทีวี หรือแท็บเล็ต นักเรียนตอบบนจอได้ทุกหน่วย</span></div>
 </div>`,
   }));
+}
+
+function onboarding(t: NonNullable<Ctx['teacher']>, hasChoice: boolean, hasActive: boolean): Safe {
+  const steps = [
+    { done: !!t.school, title: 'กรอกชื่อโรงเรียน', text: html`ใช้แสดงบนสไลด์ว่าเป็นของคุณครู · <a href="/app/profile">กรอกเลย</a>` },
+    { done: hasChoice, title: 'เลือกหนังสือ หรือขอทำเล่มใหม่', text: html`<a href="#catalog">ดูหนังสือที่เปิดขาย</a> หรือ <a href="/app/requests/new">ขอทำหนังสือ</a>` },
+    { done: hasActive, title: 'ชำระเงิน แล้วเปิดสอน', text: html`โอนผ่าน PromptPay ทีมงานยืนยันแล้วเปิดสไลด์ได้ทันที` },
+  ];
+  const n = steps.filter((x) => x.done).length;
+  const now = steps.findIndex((x) => !x.done);
+  return html`<section class="card onb" aria-label="เริ่มต้นใช้งาน">
+    <div><span class="kicker">เริ่มต้นใช้งาน</span><div class="meter"><b>${n}/3</b><span class="muted">ขั้นตอนเสร็จแล้ว</span></div>
+      <div class="bar s${n}"><i></i></div></div>
+    <ol class="steps-h">${steps.map((x, i) => html`<li class="${x.done ? 'done' : i === now ? 'now' : ''}">
+      <span class="dot">${x.done ? icon('check') : i + 1}</span><div><b>${x.title}</b><span>${x.text}</span></div></li>`)}</ol>
+  </section>`;
 }
 
 /** GET /app/ */
 export async function home(ctx: Ctx): Promise<Response> {
   if (!ctx.teacher) return landing(ctx);
   const t = requireTeacher(ctx);
-  const [subs, books, payments] = await Promise.all([
+  const [subs, books, payments, reqs] = await Promise.all([
     db.listMySubscriptions(ctx.env, t.id),
     db.listBooks(ctx.env, true),
     db.listPaymentsForTeacher(ctx.env, t.id),
+    db.listMyRequests(ctx.env, t.id),
   ]);
   const mine = new Set(subs.map((s) => s.book_id));
   const unitsByBook = new Map<number, Unit[]>();
   await Promise.all(subs.map(async (s) => unitsByBook.set(s.book_id, await db.listUnits(ctx.env, s.book_id))));
   const pending = payments.filter((p) => p.status === 'pending');
+  const active = subs.filter((s) => db.effectiveStatus(s, ctx.now) === 'active');
+  const openReqs = reqs.filter((r) => r.status !== 'done' && r.status !== 'declined');
+  const draft = reqs.find((r) => r.status === 'draft');
 
   const mySection = subs.length
-    ? html`<div class="stack">${subs.map((s) => {
+    ? html`${subs.map((s) => {
         const status = db.effectiveStatus(s, ctx.now);
         const units = unitsByBook.get(s.book_id) || [];
-        return html`<article class="card book">
-          <div class="row between"><h3>${s.title}</h3>${subBadge(status)}</div>
-          <p class="muted small">${s.subject} · ${s.grade}${status === 'active' ? html` · ใช้ได้ถึง <b>${fmtDate(s.period_end)}</b>` : ''}</p>
-          ${status === 'active' ? unitList(units, true) : html`<p class="small">${status === 'pending' ? 'รอยืนยันการชำระเงิน เมื่อทีมงานยืนยันแล้วจะเปิดสไลด์ได้ทันที' : 'สิทธิ์หมดอายุแล้ว ต่ออายุเพื่อเปิดสไลด์อีกครั้ง'}</p>`}
-          <div class="row"><a class="btn ${status === 'active' ? 'ghost' : ''} small" href="/app/books/${s.book_id}">${status === 'active' ? 'ต่ออายุ' : status === 'pending' ? 'ดูวิธีชำระเงิน' : 'ต่ออายุ'}</a></div>
+        return html`<article class="bhead">
+          ${bookArt({ id: s.book_id, subject: s.subject, grade: s.grade }, subBadge(status))}
+          <div class="body">
+            <div class="row between"><div><h3>${s.title}</h3>
+            <p class="muted small">${s.subject} · ${s.grade}${status === 'active' ? html` · ใช้ได้ถึง <b>${fmtDate(s.period_end)}</b>` : ''}</p></div>
+            <a class="btn ${status === 'active' ? 'ghost' : 'sun'} small" href="/app/books/${s.book_id}">${status === 'active' ? 'ต่ออายุ' : status === 'pending' ? 'ดูวิธีชำระเงิน' : 'ต่ออายุ'}</a></div>
+            ${status === 'active' ? unitList(units, true) : html`<p class="small">${status === 'pending' ? 'รอยืนยันการชำระเงิน เมื่อทีมงานยืนยันแล้วจะเปิดสไลด์ได้ทันที' : 'สิทธิ์หมดอายุแล้ว ต่ออายุเพื่อเปิดสไลด์อีกครั้ง'}</p>`}
+          </div>
         </article>`;
-      })}</div>`
-    : html`<div class="card empty"><p>ยังไม่มีหนังสือ เลือกหนังสือด้านล่างเพื่อเริ่มสมัคร</p></div>`;
+      })}`
+    : html`<div class="empty box">${emptyArt()}<h3>ชั้นหนังสือของคุณครูยังว่าง</h3>
+        <p>เลือกหนังสือที่เปิดขายด้านล่าง หรือบอกเราว่าสอนเล่มไหน แล้วเราจะทำสไลด์ให้ทั้งเล่มตามสไตล์ที่คุณครูเลือก</p>
+        <p class="row"><a class="btn" href="#catalog">${icon('book')}ดูหนังสือที่เปิดขาย</a><a class="btn sun" href="/app/requests/new">${icon('spark')}ขอทำหนังสือ</a></p></div>`;
 
   const catalog = books.filter((b) => !mine.has(b.id));
+  const showOnb = !active.length && !reqs.some((r) => r.status !== 'draft');
   return htmlResponse(page(ctx, {
     title: 'หนังสือของฉัน',
     nav: 'home',
     body: html`${flash(ctx)}
-<div class="row between"><div><h1>สวัสดี ${t.display_name}</h1>
-<p class="muted">${t.school || html`<a href="/app/profile">เพิ่มชื่อโรงเรียน</a>`}</p></div></div>
+<div class="hello"><div><span class="kicker">พื้นที่สมาชิก</span><h1>สวัสดี ${t.display_name}</h1>
+<p class="muted">${t.school ? html`${icon('school')} ${t.school}` : html`<a href="/app/profile">เพิ่มชื่อโรงเรียน</a>`}</p></div></div>
 ${!t.school ? html`<div class="flash warn">กรุณา<a href="/app/profile">กรอกชื่อโรงเรียน</a>ก่อนเปิดสไลด์ (ชื่อจะแสดงมุมสไลด์ว่าเป็นของคุณครู)</div>` : ''}
-${pending.length ? html`<div class="card"><h2>รอชำระเงิน</h2>${pending.map((p) => html`<div class="row between"><span>${p.title} · ${p.months} เดือน · <b>${money(p.amount_satang / 100)} บาท</b> ${payBadge(p)}</span><a class="btn small" href="/app/payments/${p.id}">ดูวิธีชำระเงิน</a></div>`)}</div>` : ''}
-<h2 class="mt">หนังสือของฉัน</h2>
+${showOnb ? onboarding(t, subs.length > 0 || reqs.length > 0, active.length > 0) : ''}
+<div class="bento">
+  <a class="tile sun span2" href="${draft ? `/app/requests/${draft.id}/quiz/${Math.min(draft.answered + 1, 10)}` : '/app/requests/new'}"><span class="deco"></span>
+    <span class="kicker">ขอทำหนังสือ</span>
+    <h2>${draft ? 'เลือกสไตล์ต่อให้ครบ แล้วส่งคำขอ' : 'ไม่เจอเล่มที่สอน? ให้เราทำให้ทั้งเล่ม'}</h2>
+    <p>${draft ? html`คำขอ ${draft.subject} ${draft.grade} เลือกแล้ว ${draft.answered}/10 ข้อ` : 'บอกหนังสือและหน่วยที่สอน แล้วแตะเลือกสไตล์ที่ชอบ 10 ข้อ ใช้เวลาประมาณ 2 นาที'}</p>
+    <span class="go">${draft ? 'ทำต่อ' : 'เริ่มขอทำหนังสือ'} ${icon('right')}</span></a>
+  <div class="tile"><span class="ic-tile">${icon('book')}</span><b class="num">${active.length}</b><span class="lbl">หนังสือที่เปิดสอนได้</span></div>
+  <a class="tile tomi" href="/app/requests"><span class="ic-tile">${icon('inbox')}</span><b class="num">${openReqs.length}</b><span class="lbl">คำขอทำหนังสือที่กำลังดำเนินการ</span></a>
+</div>
+${pending.length ? html`<div class="sec-head"><h2>รอชำระเงิน</h2></div><div class="card stack">${pending.map((p) => html`<div class="row between"><span><b>${p.title}</b> · ${p.months} เดือน · <b>${money(p.amount_satang / 100)} บาท</b> ${payBadge(p)}</span><a class="btn small" href="/app/payments/${p.id}">${icon('wallet')}ดูวิธีชำระเงิน</a></div>`)}</div>` : ''}
+<div class="sec-head"><h2>หนังสือของฉัน</h2>${subs.length ? html`<span class="muted small">${active.length} เล่มใช้งานได้</span>` : ''}</div>
 ${mySection}
-<h2 class="mt">หนังสือทั้งหมด</h2>
-${catalog.length ? html`<div class="grid">${catalog.map((b) => bookCard(b))}</div>` : html`<p class="muted">คุณครูสมัครครบทุกเล่มที่เปิดขายแล้ว</p>`}`,
+<div class="sec-head" id="catalog"><h2>หนังสือที่เปิดขาย</h2><a href="/app/requests/new">ไม่เจอเล่มที่สอน? ขอทำหนังสือ →</a></div>
+${catalog.length ? html`<div class="grid">${catalog.map((b) => bookCard(b))}</div>` : html`<div class="empty box"><p>คุณครูสมัครครบทุกเล่มที่เปิดขายแล้ว</p></div>`}`,
   }));
 }
 
 function bookCard(b: Book): Safe {
   if (b.slide_count < 1) {
-    return html`<article class="card book">${cover(b)}<div><span class="badge">เร็ว ๆ นี้</span></div>
-      <a class="btn ghost" href="/app/books/${b.id}">ดูรายละเอียด</a></article>`;
+    return html`<article class="bcard">${bookArt(b, html`<span class="badge warn">เร็ว ๆ นี้</span>`)}<div class="body"><h3>${b.title}</h3>
+      <p class="muted small">${b.subject} · ${b.grade}</p><a class="btn ghost" href="/app/books/${b.id}">ดูรายละเอียด</a></div></article>`;
   }
   const monthly = monthlyPrice(b.slide_count, b.rate_baht_per_slide);
-  return html`<article class="card book">${cover(b)}
+  return html`<article class="bcard">${bookArt(b, html`<span class="badge plain">${b.slide_count} สไลด์</span>`)}
+    <div class="body"><h3>${b.title}</h3>
     <div><div class="price">${money(monthly)} <small>บาท/เดือน</small></div>
     <div class="muted small">${b.slide_count} สไลด์ × ${b.rate_baht_per_slide} บาท · ประมาณ ${perDay(monthly)} บาท/วัน</div></div>
-    <a class="btn ghost" href="/app/books/${b.id}">ดูรายละเอียดและสมัคร</a></article>`;
+    <a class="btn" href="/app/books/${b.id}">ดูรายละเอียดและสมัคร ${icon('right')}</a></div></article>`;
 }
 
 function unitList(units: Unit[], canOpen: boolean): Safe {
@@ -103,7 +142,7 @@ function unitList(units: Unit[], canOpen: boolean): Safe {
   return html`<ul class="units">${units.map((u) => html`<li>
     <span class="n">${u.position}</span>
     <span class="t">${u.title}<br><span class="muted small">${u.slide_count} สไลด์</span></span>
-    ${canOpen && u.r2_key ? html`<a class="btn small" href="/app/deck/${u.id}/">เปิดสไลด์</a>` : canOpen ? html`<span class="badge">เร็ว ๆ นี้</span>` : ''}
+    ${canOpen && u.r2_key ? html`<a class="btn small" href="/app/deck/${u.id}/">${icon('play')}เปิดสไลด์</a>` : canOpen ? html`<span class="badge">เร็ว ๆ นี้</span>` : ''}
   </li>`)}</ul>`;
 }
 
@@ -119,21 +158,23 @@ export async function bookPage(ctx: Ctx): Promise<Response> {
   const opts = MONTH_OPTIONS.map((m) => html`<option value="${m}">${m} เดือน · ${money(monthly * m)} บาท</option>`);
   return htmlResponse(page(ctx, {
     title: book.title,
+    nav: 'home',
     body: html`${flash(ctx)}
-<p class="small"><a href="/app/">← หนังสือของฉัน</a></p>
+<a class="back" href="/app/">${icon('left')}หนังสือของฉัน</a>
 <div class="pay">
-  <div class="stack">${cover(book)}<div class="card">
+  <div class="bcard">${bookArt(book, subBadge(status))}<div class="body">
     <div class="price">${money(monthly)} <small>บาท/เดือน</small></div>
     <p class="muted small">${book.slide_count} สไลด์ × ${book.rate_baht_per_slide} บาทต่อสไลด์ต่อเดือน (ประมาณ ${perDay(monthly)} บาท/วัน)</p>
-    <p>${subBadge(status)} ${status === 'active' ? html`<span class="small">ใช้ได้ถึง ${fmtDate(sub!.period_end)}</span>` : ''}</p>
+    ${status === 'active' ? html`<p class="small">${icon('clock')} ใช้ได้ถึง <b>${fmtDate(sub!.period_end)}</b></p>` : ''}
     ${sellable ? html`<form method="post" action="/app/books/${book.id}/subscribe">${csrfField(ctx)}
       <div class="field"><label for="months">${status === 'active' ? 'ต่ออายุ' : 'สมัคร'}กี่เดือน</label>
       <select id="months" name="months">${opts}</select></div>
-      <button class="btn" type="submit">${status === 'active' || status === 'expired' ? 'ต่ออายุ' : 'สมัคร'} และชำระผ่าน PromptPay</button>
+      <button class="btn block" type="submit">${icon('wallet')}${status === 'active' || status === 'expired' ? 'ต่ออายุ' : 'สมัคร'} และชำระผ่าน PromptPay</button>
     </form>` : html`<p class="muted small">เล่มนี้ยังไม่เปิดรับสมัครใหม่</p>`}
   </div></div>
-  <div class="card"><h1>${book.title}</h1><p class="muted">${book.subject} · ${book.grade}</p>
-    <h3>หน่วยการเรียนรู้</h3>${unitList(units, status === 'active')}</div>
+  <div class="card"><span class="kicker">${book.subject} · ${book.grade}</span><h1>${book.title}</h1>
+    <p class="muted">${units.length} หน่วยการเรียนรู้ · ${book.slide_count} สไลด์ · มีแอนิเมชันทุกหน้า นักเรียนตอบบนจอได้ คู่มือครู และเฉลยพร้อมวิธีทำ</p>
+    <h3 class="mt">หน่วยการเรียนรู้</h3>${unitList(units, status === 'active')}</div>
 </div>`,
   }));
 }
@@ -172,7 +213,7 @@ export async function paymentPage(ctx: Ctx): Promise<Response> {
   return htmlResponse(page(ctx, {
     title: 'ชำระเงิน',
     body: html`${flash(ctx)}
-<p class="small"><a href="/app/">← หนังสือของฉัน</a></p>
+<a class="back" href="/app/">${icon('left')}หนังสือของฉัน</a>
 <h1>ชำระเงินผ่าน PromptPay</h1>
 <div class="pay">
   ${p.status === 'pending' ? qr : html`<div class="qrbox"><p>${payBadge(p)}</p></div>`}
@@ -191,7 +232,7 @@ export async function paymentPage(ctx: Ctx): Promise<Response> {
     <form method="post" action="/app/payments/${p.id}/notify">${csrfField(ctx)}
       <div class="field"><label for="note">หมายเหตุถึงทีมงาน (ไม่บังคับ)</label>
       <input id="note" name="note" type="text" maxlength="200" placeholder="เช่น โอนจาก KBank เวลา 14:05"></div>
-      <button class="btn ok" type="submit">แจ้งโอนแล้ว</button>
+      <button class="btn ok" type="submit">${icon('check')}แจ้งโอนแล้ว</button>
     </form>` : ''}` : ''}
   </div>
 </div>`,
@@ -239,9 +280,9 @@ export async function profile(ctx: Ctx): Promise<Response> {
     title: 'ข้อมูลของฉัน',
     nav: 'profile',
     body: html`${flash(ctx)}${error ? html`<div class="flash bad" role="alert">${error}</div>` : ''}
-<div class="card prose">
-  <h1>ข้อมูลของฉัน</h1>
-  <p class="muted">ชื่อและโรงเรียนจะแสดงเป็นตัวอักษรจาง ๆ บนสไลด์ว่า “Licensed to ชื่อ · โรงเรียน” เพื่อยืนยันสิทธิ์การใช้งาน</p>
+<div class="card form-card">
+  <div class="form-head"><span class="ic-tile t-sky">${icon('user')}</span><div><h1>ข้อมูลของฉัน</h1>
+  <p>ชื่อและโรงเรียนจะแสดงจาง ๆ บนสไลด์ว่า “Licensed to ชื่อ · โรงเรียน” เพื่อยืนยันสิทธิ์การใช้งาน</p></div></div>
   <form method="post" action="/app/profile">${csrfField(ctx)}
     <input type="hidden" name="next" value="${next}">
     <div class="field"><label for="display_name">ชื่อที่แสดง</label>
@@ -249,9 +290,9 @@ export async function profile(ctx: Ctx): Promise<Response> {
     <div class="field"><label for="school">ชื่อโรงเรียน</label>
       <input id="school" name="school" type="text" required minlength="2" maxlength="120" value="${school}" placeholder="เช่น โรงเรียนสาธิต…" autocomplete="organization">
       <div class="hint">ใช้ชื่อโรงเรียนที่สอนจริง</div></div>
-    <button class="btn" type="submit">บันทึก</button>
+    <button class="btn" type="submit">${icon('check')}บันทึก</button>
   </form>
-  <p class="small muted">สมาชิกตั้งแต่ ${fmtDate(t.created_at)} · ต้องการลบบัญชีหรือขอดูข้อมูล ติดต่อ LINE ${lineOa(ctx.env)}</p>
+  <p class="small muted mt">สมาชิกตั้งแต่ ${fmtDate(t.created_at)} · ต้องการลบบัญชีหรือขอดูข้อมูล ติดต่อ LINE ${lineOa(ctx.env)}</p>
 </div>`,
   }));
 }

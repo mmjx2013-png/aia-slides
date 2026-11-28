@@ -188,8 +188,9 @@ ENGINE = r'''
 
   /* counting numbers (decimals via data-dec); they count when their beat is on screen */
   function counters(){[].forEach.call(document.querySelectorAll('[data-count]'),function(el){
-    var on=el.closest('.slide')===slides[i]&&st>=(+el.getAttribute('data-at')||0),to=+el.getAttribute('data-count'),dec=+el.getAttribute('data-dec')||0,
+    var on=el.closest('.slide')===slides[i]&&st>=(+el.getAttribute('data-at')||0),to=+el.getAttribute('data-count'),dec=+el.getAttribute('data-dec')||0,seq=el.getAttribute('data-seq'),
         f=function(v){return v.toLocaleString('en',{minimumFractionDigits:dec,maximumFractionDigits:dec});};
+    if(on&&seq&&el.closest('.slide')===slides[i])seq.split(',').forEach(function(p){var q=p.split(':');if(st>=+q[0])to=+q[1];});
     if(!on){el.textContent=f(+el.getAttribute('data-from')||0);el.__run=0;return;}if(el.__run===to)return;
     var from=el.__run?+String(el.textContent).replace(/,/g,''):(+el.getAttribute('data-from')||0);el.__run=to;
     if(doc.classList.contains('rm')){el.textContent=f(to);return;}

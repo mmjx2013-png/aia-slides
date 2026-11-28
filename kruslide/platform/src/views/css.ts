@@ -336,6 +336,7 @@ form.row input[type=search],form.row select{flex:1;width:auto;min-width:170px}
 .form-head .ic-tile .ic{width:30px;height:30px}
 .form-head h1{margin:0}
 .form-head p{margin:2px 0 0;color:var(--mute)}
+.form-head .ic-tile.t-sky{background:var(--lsky);color:var(--sky-t)}
 .stepper{list-style:none;margin:0 0 22px;padding:0;display:flex;gap:8px;flex-wrap:wrap}
 .stepper li{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);font:600 14px/1.2 KS;color:var(--mute)}
 .stepper li b{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#F1ECE2;font:800 13px/1 KSD,KS}
