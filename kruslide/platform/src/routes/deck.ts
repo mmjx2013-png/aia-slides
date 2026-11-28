@@ -1,5 +1,7 @@
 import type { Ctx, Unit } from '../env';
-import { HttpError, needLogin, redirect } from '../lib/http';
+import { HttpError, htmlResponse, needLogin, redirect } from '../lib/http';
+import { html } from '../lib/html';
+import { page } from '../views/layout';
 import { idParam } from '../lib/validate';
 import * as db from '../db';
 import { injectWatermark, watermarkText } from '../lib/watermark';
@@ -61,7 +63,19 @@ export function deckSlash(ctx: Ctx): Response {
 export async function deck(ctx: Ctx): Promise<Response> {
   const id = idParam(ctx.params.id);
   if (!ctx.teacher) return redirect(`/app/login?next=${encodeURIComponent(`/app/deck/${id}/`)}`, 302);
-  const { unit, name, school } = await authorise(ctx, id);
+  let auth: Awaited<ReturnType<typeof authorise>>;
+  try {
+    auth = await authorise(ctx, id);
+  } catch (e) {
+    const book = e instanceof HttpError && e.status === 403 ? /^book:(\d+)$/.exec(e.detail || '')?.[1] : undefined;
+    if (!book) throw e;
+    return htmlResponse(page(ctx, {
+      title: 'ยังเปิดสไลด์นี้ไม่ได้',
+      body: html`<div class="card empty"><h1>ยังเปิดสไลด์นี้ไม่ได้</h1><p>${(e as HttpError).message}</p>
+        <p class="row"><a class="btn" href="/app/books/${book}">ดูหนังสือเล่มนี้และสมัคร</a><a class="btn ghost" href="/app/">หนังสือของฉัน</a></p></div>`,
+    }), 403);
+  }
+  const { unit, name, school } = auth;
   if (!school) return redirect(`/app/profile?m=school&next=${encodeURIComponent(`/app/deck/${id}/`)}`, 302);
   const obj = await ctx.env.DECKS.get(unit.r2_key!);
   if (!obj) throw new HttpError(404, 'ไม่พบไฟล์สไลด์ กรุณาติดต่อทีมงาน');

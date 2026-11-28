@@ -42,6 +42,7 @@ main{padding:28px 0 56px}
 .mt{margin-top:32px}
 .mt-s{margin-top:12px}
 .nowrap{white-space:nowrap}
+form.row input[type=search],form.row select{flex:1;width:auto;min-width:180px}
 label.check{display:inline-flex;gap:8px;align-items:center;font-weight:500;font-size:14px;margin:0}
 label.check input{width:18px;height:18px}
 .wide .wrap{max-width:1280px}
@@ -130,6 +131,7 @@ td .row{gap:6px}
 .foot .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 .prose{max-width:760px}.prose h2{margin-top:1.4em}.prose li{margin-bottom:.35em}
 .empty{text-align:center;padding:34px 20px;color:var(--muted)}
+.empty h1{color:var(--ink)}.empty .row{justify-content:center}
 details summary{cursor:pointer;font-weight:600}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}

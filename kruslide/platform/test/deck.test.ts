@@ -27,7 +27,9 @@ describe('deck serving: members versus non-members', () => {
     for (const who of [noSub, pending, otherBook]) {
       const res = await call(`/app/deck/${unit}/`, { cookie: who.cookie });
       expect(res.status).toBe(403);
-      expect(await res.text()).not.toContain('SECRET-CONTENT');
+      const body = await res.text();
+      expect(body).not.toContain('SECRET-CONTENT');
+      expect(body).toContain(`href="/app/books/${book}"`); // offers the way to subscribe
     }
   });
 

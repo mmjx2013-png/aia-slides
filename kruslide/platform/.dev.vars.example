@@ -1,0 +1,12 @@
+# Only needed if you run `npx wrangler dev` directly instead of `npm run dev`
+# (npm run dev generates throwaway values itself and writes nothing to disk).
+# Copy to .dev.vars (git-ignored) and fill in LOCAL-ONLY values. Never put production secrets here.
+ENVIRONMENT=development
+APP_ORIGIN=http://127.0.0.1:8787
+LINE_CHANNEL_ID=1650000000
+LINE_CHANNEL_SECRET=replace-with-any-local-test-value
+SESSION_SECRET=replace-with-64-random-hex-characters-from-openssl-rand-hex-32
+ADMIN_LINE_IDS=Uadadadadadadadadadadadadadadadad
+PROMPTPAY_ID=0000000000000
+LINE_AUTH_ORIGIN=http://127.0.0.1:8790
+LINE_API_ORIGIN=http://127.0.0.1:8790

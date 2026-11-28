@@ -87,7 +87,11 @@ ${catalog.length ? html`<div class="grid">${catalog.map((b) => bookCard(b))}</di
 }
 
 function bookCard(b: Book): Safe {
-  const monthly = b.slide_count > 0 ? monthlyPrice(b.slide_count, b.rate_baht_per_slide) : 0;
+  if (b.slide_count < 1) {
+    return html`<article class="card book">${cover(b)}<div><span class="badge">เร็ว ๆ นี้</span></div>
+      <a class="btn ghost" href="/app/books/${b.id}">ดูรายละเอียด</a></article>`;
+  }
+  const monthly = monthlyPrice(b.slide_count, b.rate_baht_per_slide);
   return html`<article class="card book">${cover(b)}
     <div><div class="price">${money(monthly)} <small>บาท/เดือน</small></div>
     <div class="muted small">${b.slide_count} สไลด์ × ${b.rate_baht_per_slide} บาท · ประมาณ ${perDay(monthly)} บาท/วัน</div></div>
