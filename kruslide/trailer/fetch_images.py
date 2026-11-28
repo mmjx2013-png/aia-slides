@@ -38,11 +38,12 @@ def main():
         lic = clean(v('LicenseShortName'))
         if not OK.match(lic):
             sys.exit(f'REJECTED licence {lic!r} for {c["title"]}')
-        ext = os.path.splitext(ii['url'])[1].lower()
+        url = ii['url'].split('?')[0]  # Commons now appends utm_* tracking parameters
+        ext = os.path.splitext(urllib.parse.urlparse(url).path)[1].lower()
         path = os.path.join(IMG, c['id'] + ext)
         if not os.path.exists(path) or os.path.getsize(path) != ii['size']:
             print('download', c['id'], ii['width'], 'x', ii['height'], f"{ii['size']/1e6:.1f} MB")
-            open(path, 'wb').write(get(ii['url'])); time.sleep(2)
+            open(path, 'wb').write(get(url)); time.sleep(2)
         meta.append(dict(id=c['id'], file=os.path.basename(path), title=c['title'], subject=c['subject'],
                          width=ii['width'], height=ii['height'], author=clean(v('Artist')) or clean(v('Credit')),
                          source=clean(v('Credit')), licence=lic, licence_url=clean(v('LicenseUrl')),
