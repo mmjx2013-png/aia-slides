@@ -26,3 +26,6 @@ teacher-slides/unit4/keys/*.html
 !teacher-slides/unit4/keys/index.html
 teacher-slides/unit4/keys/qa-*/
 teacher-slides/unit4/keys/*.pdf
+school/africa/data/
+school/africa/audio/
+school/africa/build/
