@@ -46,9 +46,16 @@ on slide 2 magnifies 2.6×; the card stack on slide 3 shows the cards beneath th
 
 ## Photographs
 
-All photographs are public domain or CC0, from Wikimedia Commons or iNaturalist's open-data copies of the same CC0 files,
-and NASA (public domain). Every slide credits its photos, every photo opens full screen with its credit in deck E, and
-`CREDITS.md` lists each file, its page and its licence. No textbook pages or text were copied; all wording is our own.
+All photographs are public domain or CC0: NASA images from Wikimedia Commons (D) and CC0 iNaturalist photographs (E),
+fetched from iNaturalist's open-data copies of the same files listed on Commons. Every slide credits its photos, every
+photo in deck E opens full screen with its caption and credit, and `CREDITS.md` lists each file, its page and its licence.
+No textbook pages or text were copied; all wording is our own.
+
+Still to do: in deck D, Venus and Uranus are temporary drawn discs (labelled as drawings on the slides) because the
+Wikimedia file server refused downloads from the build machine; `CREDITS.md` says how to swap in the NASA photographs.
+Deck E was planned with more animal photos from Commons (mudskipper, fiddler crab, kingfisher, water monitor) and a
+Landsat before/after of mangroves turned into shrimp ponds; without them, slide 5's before/after compares a photograph
+with the same photograph showing the forest's layers.
 
 ## Screenshots for the sales site
 
