@@ -40,4 +40,5 @@ run(process.execPath, ['scripts/mock-line.mjs'], {
   MOCK_LINE_PORT: String(MOCK_PORT), LINE_CHANNEL_ID: vars.LINE_CHANNEL_ID, LINE_CHANNEL_SECRET: vars.LINE_CHANNEL_SECRET, MOCK_ADMIN_SUB: ADMIN_SUB,
 });
 const varArgs = Object.entries(vars).flatMap(([k, v]) => ['--var', `${k}:${v}`]);
-run('npx', ['wrangler', 'dev', '--ip', '127.0.0.1', '--port', String(PORT), '--show-interactive-dev-session=false', ...varArgs], { WRANGLER_SEND_METRICS: 'false' });
+const persist = process.env.PERSIST_TO ? ['--persist-to', process.env.PERSIST_TO] : [];
+run('npx', ['wrangler', 'dev', '--ip', '127.0.0.1', '--port', String(PORT), '--show-interactive-dev-session=false', ...persist, ...varArgs], { WRANGLER_SEND_METRICS: 'false' });

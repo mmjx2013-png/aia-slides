@@ -100,8 +100,8 @@ html.js .rv.in mark{background-size:100% 100%}
 .nav{display:flex;align-items:center;gap:2px;margin-left:auto}
 .nav>a{position:relative;padding:8px 12px;border-radius:10px;font:600 15.5px/1.3 KS;color:var(--ink2);text-decoration:none;transition:color .2s,background-color .2s}
 .nav>a:hover{color:var(--navy);background:rgba(28,42,85,.06)}
-.nav>a.cur{color:var(--navy)}
-.nav>a.cur::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:3px;border-radius:2px;background:var(--sun)}
+.nav>a.is-cur{color:var(--navy)}
+.nav>a.is-cur::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:3px;border-radius:2px;background:var(--sun)}
 .nav-m{display:none}
 .top-act{display:flex;align-items:center;gap:10px}
 .lang{display:inline-flex;padding:3px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line2)}
@@ -141,7 +141,7 @@ html.js .rv.in mark{background-size:100% 100%}
 .b3{left:28cqw;--h:22cqw;background:var(--tom);animation-name:grow3}
 .b3 em{color:var(--tom-t);animation-name:lab3}
 .b3::before{content:"";position:absolute;left:50%;top:-1.4cqw;width:2.8cqw;height:2.8cqw;margin-left:-1.4cqw;border-radius:50%;background:#fff;border:.45cqw solid var(--navy);opacity:0;animation:handle 14s linear infinite}
-.sl-days{position:absolute;left:9cqw;top:45.2cqw;display:grid;grid-template-columns:repeat(4,7.5cqw);column-gap:4.5cqw;text-align:center;font:700 1.9cqw/1.3 KS;color:var(--mute)}
+.sl-days{position:absolute;left:9cqw;top:44.9cqw;display:grid;grid-template-columns:repeat(4,7.5cqw);column-gap:4.5cqw;text-align:center;font:700 2.1cqw/1.3 KS;color:var(--mute)}
 .sl-ch{position:absolute;left:60cqw;top:15cqw;width:35cqw;display:grid;gap:1.4cqw}
 .c{display:flex;align-items:center;gap:1.6cqw;height:6.6cqw;padding:0 1.6cqw;background:#fff;border:.35cqw solid #E3E7F2;border-radius:1.6cqw;font:700 2.3cqw/1 KS}
 .c b{display:grid;place-items:center;width:4cqw;height:4cqw;border-radius:1cqw;background:var(--lsky);color:var(--sky-t);font:800 2cqw/1 KSD;flex:none}
@@ -179,7 +179,7 @@ html.js .rv.in mark{background-size:100% 100%}
 .say{position:absolute;left:11.5cqw;bottom:20cqw;padding:1cqw 1.8cqw;border-radius:2cqw 2cqw 2cqw .4cqw;background:#fff;color:var(--navy);font:800 2.8cqw/1 KSD;box-shadow:0 1cqw 2cqw rgba(28,42,85,.18);transform-origin:0 100%;animation:say 14s var(--spring) infinite;z-index:4}
 .chip{position:absolute;z-index:5;display:flex;align-items:center;gap:.6em;padding:.55em .95em .55em .55em;border-radius:999px;background:#fff;box-shadow:0 2cqw 4cqw -1cqw rgba(28,42,85,.28);font:700 clamp(11px,2.5cqw,15px)/1.25 KS;color:var(--ink);white-space:nowrap;animation:bob 6s ease-in-out infinite alternate}
 .chip .ic{width:2.1em;height:2.1em;padding:.42em;border-radius:50%;stroke-width:2.2}
-.chip-a{left:-1cqw;top:33cqw}.chip-a .ic{background:var(--lmint);color:var(--mint-t)}
+.chip-a{left:19cqw;top:62.6cqw;animation-delay:-1s}.chip-a .ic{background:var(--lmint);color:var(--mint-t)}
 .chip-b{right:-1cqw;top:-2.2cqw;animation-delay:-2s}.chip-b .ic{background:var(--lsun);color:var(--sun-t)}
 .chip-c{right:-1cqw;top:49cqw;animation-delay:-4s}.chip-c .ic{background:var(--ltom);color:var(--tom-t)}
 .cnt{counter-reset:n var(--n);--n:32;animation:cnt 14s linear infinite;font-weight:800;color:var(--mint-t)}
@@ -519,7 +519,7 @@ html.js .hero-vis.rv.in{transform:none}
  .nav{position:fixed;left:0;right:0;top:var(--top);flex-direction:column;align-items:stretch;gap:2px;margin:0;padding:14px 20px 22px;background:var(--paper);box-shadow:0 20px 40px -20px rgba(23,32,54,.3);border-top:1px solid var(--line);transform:translateY(-12px);opacity:0;visibility:hidden;transition:transform .35s var(--ease),opacity .3s,visibility 0s .35s;max-height:calc(100vh - var(--top));overflow:auto}
  .nav.open{transform:none;opacity:1;visibility:visible;transition:transform .35s var(--ease),opacity .3s}
  .nav>a{padding:13px 12px;font-size:17px;border-radius:12px}
- .nav>a.cur::after{display:none}
+ .nav>a.is-cur::after{display:none}
  .nav-m{display:flex;flex-direction:column;gap:10px;margin-top:12px}
  .nav-m .btn{min-height:50px}
  .menu-btn{display:inline-flex}

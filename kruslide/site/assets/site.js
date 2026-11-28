@@ -73,7 +73,7 @@
     var secIO = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         var a = links[e.target.id]; if (!a) return;
-        if (e.isIntersecting) { $$('.nav>a.cur').forEach(function (x) { x.classList.remove('cur'); }); a.classList.add('cur'); }
+        if (e.isIntersecting) { $$('.nav>a.is-cur').forEach(function (x) { x.classList.remove('is-cur'); }); a.classList.add('is-cur'); }
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     Object.keys(links).forEach(function (id) { var s = document.getElementById(id); if (s) secIO.observe(s); });
