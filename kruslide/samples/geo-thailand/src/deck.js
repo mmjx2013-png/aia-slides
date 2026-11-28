@@ -150,6 +150,7 @@
     var M = map(svg, { vb: [-44, 0, 685, 1048], contours: true, grat: true, rivers: true, peaks: false, labels: false, fill: false });
     M.riv.classList.add('static');
     var TAGS = ['ne', 's', 'c', 'w', 'n', 'e'], tags = [];
+    var ANS = { n: [166, 128], ne: [420, 300], c: [210, 395], e: [312, 522], w: [122, 505], s: [150, 820] };   /* where Show answer pins each tag (map units) */
     /* home slots: 3 columns x 2 rows inside the tray (stage px) */
     function home(i) { return { x: 830 + 30 + (i % 2) * 470, y: 420 + 30 + Math.floor(i / 2) * 96 }; }
     TAGS.forEach(function (k, i) {
@@ -203,7 +204,7 @@
     }
     function show() {
       tags.forEach(function (T) {
-        var c = G.regions[T.k].c, q = toStage(svg, c[0], c[1]);
+        var c = ANS[T.k], q = toStage(svg, c[0], c[1]);
         T.at = T.k; T.el.classList.add('pinned'); slideEl.appendChild(T.el);
         place(T, q.x - T.el.offsetWidth / 2, q.y - 27, true); mark(T, true);
       });

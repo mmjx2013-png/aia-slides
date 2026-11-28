@@ -87,6 +87,7 @@ h2 .u{display:block;font-weight:600;font-size:46px;color:var(--mute)}
 .tag.ok{border-color:var(--okc);background:#E6F0E1}
 .tag.no{border-color:var(--noc);background:#F7DED5}
 .tag .tw-mark{width:30px;height:30px}
+.tag.ok>.tw-mark,.tag.no>.tw-mark{display:grid}.tag.no>.tw-mark{background:var(--t-no)}
 .tag.home{visibility:hidden}
 .clue{font:500 23px/1.5 Inter;color:var(--mute)}
 .clue b{color:var(--ink)}

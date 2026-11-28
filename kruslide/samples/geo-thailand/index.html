@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-o6YpWUbuzi8RLveto2erGcRVeVjdAdlf0vmtlgidx8o='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-gFsPMoSXXt2/dUWVwZ+D9hGP6mM2PlmBI6FBss9+GaY='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>ภูมิภาคของประเทศไทย · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · ภูมิภาคของประเทศไทย (ม.1) · style "topographic map"
@@ -173,6 +173,7 @@ h2 .u{display:block;font-weight:600;font-size:46px;color:var(--mute)}
 .tag.ok{border-color:var(--okc);background:#E6F0E1}
 .tag.no{border-color:var(--noc);background:#F7DED5}
 .tag .tw-mark{width:30px;height:30px}
+.tag.ok>.tw-mark,.tag.no>.tw-mark{display:grid}.tag.no>.tw-mark{background:var(--t-no)}
 .tag.home{visibility:hidden}
 .clue{font:500 23px/1.5 Inter;color:var(--mute)}
 .clue b{color:var(--ink)}
@@ -2055,6 +2056,7 @@ window.GEO={"W":584.3,"H":1048,"regions":{"n":{"th":"ภาคเหนือ","
     var M = map(svg, { vb: [-44, 0, 685, 1048], contours: true, grat: true, rivers: true, peaks: false, labels: false, fill: false });
     M.riv.classList.add('static');
     var TAGS = ['ne', 's', 'c', 'w', 'n', 'e'], tags = [];
+    var ANS = { n: [166, 128], ne: [420, 300], c: [210, 395], e: [312, 522], w: [122, 505], s: [150, 820] };   /* where Show answer pins each tag (map units) */
     /* home slots: 3 columns x 2 rows inside the tray (stage px) */
     function home(i) { return { x: 830 + 30 + (i % 2) * 470, y: 420 + 30 + Math.floor(i / 2) * 96 }; }
     TAGS.forEach(function (k, i) {
@@ -2108,7 +2110,7 @@ window.GEO={"W":584.3,"H":1048,"regions":{"n":{"th":"ภาคเหนือ","
     }
     function show() {
       tags.forEach(function (T) {
-        var c = G.regions[T.k].c, q = toStage(svg, c[0], c[1]);
+        var c = ANS[T.k], q = toStage(svg, c[0], c[1]);
         T.at = T.k; T.el.classList.add('pinned'); slideEl.appendChild(T.el);
         place(T, q.x - T.el.offsetWidth / 2, q.y - 27, true); mark(T, true);
       });
