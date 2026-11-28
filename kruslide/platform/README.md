@@ -67,7 +67,7 @@ e2e/smoke.mjs            Playwright smoke test against wrangler dev; writes scre
 | `GET /app/books/:id`, `POST …/subscribe` | member | price, units, subscribe/renew for 1/3/6/12 months |
 | `GET /app/payments/:id`, `POST …/notify` | owner of the payment | PromptPay QR + steps, "I have paid" |
 | `GET /app/deck/:unit/` | active subscriber or admin | the deck, streamed from R2, watermarked |
-| `GET /app/admin/…` | admins only | dashboard, payments, members, subscriptions, books/units, upload, CSV, audit |
+| `GET /app/admin/…` | admins only | dashboard, payments (confirm/reject), members (block, grant, PDPA erase), subscriptions (extend/expire), books/units CRUD, HTML upload to R2, CSV export, audit log |
 | `GET /app/privacy` | anyone | PDPA notice |
 
 ## Local development
@@ -112,16 +112,21 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
    npx wrangler secret put LINE_CHANNEL_SECRET   # same page > Channel secret
    npx wrangler secret put SESSION_SECRET        # paste the output of: openssl rand -hex 32
    npx wrangler secret put ADMIN_LINE_IDS        # admin LINE user IDs, comma-separated, e.g. U1234…(33 chars)
-   npx wrangler secret put PROMPTPAY_ID          # the PromptPay mobile number (10 digits) or national/tax ID (13 digits)
+   npx wrangler secret put PROMPTPAY_ID          # the PromptPay mobile number (10 digits), company tax ID (13) or e-wallet ID (15)
    ```
+   If wrangler asks whether to create the Worker `kruslide-platform` first, answer yes.
    Your own LINE user ID is on the LINE Developers console, channel > Basic settings > "Your user ID".
    To set it later: log in once, then run
    `npx wrangler d1 execute DB --remote --command "SELECT id, display_name, line_user_id FROM teachers"`
    and put that ID into `ADMIN_LINE_IDS`.
+   **PromptPay warning:** the QR code carries the PromptPay ID in plain text, so every member who scans or
+   decodes it can read the whole number (the page itself shows only the last 4 digits). Use a business mobile
+   number, a company tax ID or an e-wallet ID. Do **not** use a personal national ID card number.
 7. **Edit `wrangler.toml` [vars]**: set `APP_ORIGIN = "https://kruslide.example"`. Set `LINE_OA_ID` to the
    real LINE Official Account ID (search the code for `TODO-LINE-ID`). Uncomment `routes` and set your domain.
 8. **Deploy**: `npx wrangler deploy`.
 9. **LINE Login channel** (LINE Developers console):
+   - Create a **LINE Login** channel (not a Messaging API channel) with app type **Web app**.
    - Callback URL: **`https://kruslide.example/app/auth/callback`** (exactly; it must match `APP_ORIGIN`).
    - Scopes: `openid` and `profile` only. Email permission is not needed (and not wanted, for PDPA).
    - Privacy policy URL: `https://kruslide.example/app/privacy`.
@@ -140,7 +145,8 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
   the same host, so the sales site can simply link to `/app/`.
 - Or give the Worker its own host, e.g. `app.kruslide.example`, via Workers > Settings > Domains & Routes. Paths
   stay under `/app/`. Then set `APP_ORIGIN` and the LINE callback URL to that host.
-- SSL/TLS mode "Full (strict)" and "Always Use HTTPS". The Worker also sends HSTS and redirects http to https.
+- SSL/TLS mode "Full (strict)" and "Always Use HTTPS". The Worker also sends HSTS (`includeSubDomains`, one
+  year) and redirects http to https, so every subdomain of the domain must serve HTTPS too.
 - `workers_dev = false` keeps the app off `*.workers.dev`, so there is only one origin (cookies, CSRF, LINE
   callback all depend on it).
 
@@ -151,7 +157,11 @@ Run every command from `kruslide/platform`. Replace `kruslide.example` with the 
 - Backups: D1 Time Travel restores to any minute in the last 30 days:
   `npx wrangler d1 time-travel restore kruslide --timestamp=…`. Export with
   `npx wrangler d1 export kruslide --remote --output backup.sql`.
-- Logs: Workers > Observability (enabled in `wrangler.toml`). No personal data is logged.
+- Logs: Workers > Observability (enabled in `wrangler.toml`). Only our own error lines are kept; the per-request
+  "invocation logs" (URL and request details of every visitor) are switched off for PDPA. To debug, set
+  `invocation_logs = true` in `wrangler.toml`, deploy, and switch it off again afterwards.
+- PDPA requests: a member who asks to be deleted is erased on their admin page ("ลบข้อมูลสมาชิก"): name, school
+  and LINE id are removed, sessions and open subscriptions end, and payment amounts stay as accounting records.
 - Schema changes: add `migrations/0002_….sql` and run `npm run migrate:remote` before deploying the code.
 
 ### Adding Stripe Thailand later
@@ -166,10 +176,15 @@ The seam is ready: `src/payments/stripe.ts` lists the steps. In short, add the s
 - Sessions: `__Host-ks_session` = random 256-bit id + HMAC (HttpOnly, Secure, SameSite=Lax, 30 days). D1 stores
   only SHA-256(id). Logout and blocking a member delete the rows.
 - CSRF: every POST needs the session-bound token, and a same-origin `Origin`/`Sec-Fetch-Site` when the browser
-  sends one. Only form bodies are accepted.
+  sends one. Only form bodies are accepted, at most 64 KB (25 MB for a deck upload), also when no length is sent.
 - Admin: LINE user IDs from the `ADMIN_LINE_IDS` secret; none is in the code.
+- Payments: the price is always computed on the server from the book (never taken from the form). The confirm
+  button carries the amount the admin is looking at; if the member changed the request in the meantime, nothing
+  is confirmed. Confirming is one D1 transaction and is idempotent.
 - Rate limits: login 30 per 10 min per IP (a whole school can share one IP); admin POSTs 120 per minute per
   admin; member POSTs 30 per 10 min per teacher.
+- Uploaded decks: the CSP hash is computed after CRLF -> LF, as browsers do, so decks saved on Windows still run.
+  A deck must be self-contained like `build.py` output: inline script only, no `on…=` handlers, no external URLs.
 - Input validation on every field. SQL only with bound parameters. Every output is escaped by the html``
   template. CSV export defuses spreadsheet formulas.
 - Headers: a strict CSP everywhere (no scripts on app pages; hash-pinned script on decks), `frame-ancestors`

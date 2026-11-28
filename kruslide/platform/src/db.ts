@@ -31,6 +31,28 @@ export async function setTeacherStatus(env: Env, id: number, status: 'active' | 
   await env.DB.prepare('UPDATE teachers SET status = ?1 WHERE id = ?2').bind(status, id).run();
 }
 
+/** LINE ids of erased members are replaced by this prefix + the row id (see eraseTeacher). */
+export const ERASED_PREFIX = 'erased:';
+
+/**
+ * PDPA erasure on request: the name, school and LINE user id are removed, the member is blocked and logged out,
+ * open subscriptions end and unpaid requests are closed. Payment amounts and dates stay (accounting records);
+ * the audit log only ever holds the row id. A later LINE login with the same account starts a fresh, empty member.
+ */
+export async function eraseTeacher(env: Env, id: number, now: number): Promise<void> {
+  await env.DB.batch([
+    env.DB.prepare(`UPDATE teachers SET line_user_id = ?1, display_name = ?2, school = '', status = 'blocked' WHERE id = ?3`)
+      .bind(`${ERASED_PREFIX}${id}`, `ลบข้อมูลแล้ว #${id}`, id),
+    env.DB.prepare(
+      `UPDATE subscriptions SET status = 'expired', period_end = CASE WHEN period_end IS NULL OR period_end > ?1 THEN ?1 ELSE period_end END,
+         updated_at = ?1 WHERE teacher_id = ?2 AND status != 'expired'`,
+    ).bind(now, id),
+    env.DB.prepare(`UPDATE payments SET status = 'rejected', confirmed_by = 'erased', decided_at = ?1, ref = NULL WHERE teacher_id = ?2 AND status = 'pending'`)
+      .bind(now, id),
+    env.DB.prepare('DELETE FROM sessions WHERE teacher_id = ?1').bind(id),
+  ]);
+}
+
 export interface TeacherRow extends Teacher { active_count: number; pending_count: number; }
 export async function listTeachers(env: Env, q: string, now: number, limit = 200): Promise<TeacherRow[]> {
   const like = `%${q.replace(/[\\%_]/g, (c) => '\\' + c)}%`;
@@ -172,7 +194,7 @@ export async function listMySubscriptions(env: Env, teacherId: number): Promise<
 }
 
 export interface SubRow extends Subscription { display_name: string; school: string; line_user_id: string; title: string; }
-export async function listSubscriptions(env: Env, filter: 'all' | 'active' | 'pending' | 'expired', now: number, teacherId?: number): Promise<SubRow[]> {
+export async function listSubscriptions(env: Env, filter: 'all' | 'active' | 'pending' | 'expired', now: number, teacherId?: number, limit = 500): Promise<SubRow[]> {
   const where = {
     all: '1 = 1',
     active: `s.status = 'active' AND s.period_end > ?1`,
@@ -182,8 +204,8 @@ export async function listSubscriptions(env: Env, filter: 'all' | 'active' | 'pe
   const { results } = await env.DB.prepare(
     `SELECT s.*, t.display_name, t.school, t.line_user_id, b.title FROM subscriptions s
      JOIN teachers t ON t.id = s.teacher_id JOIN books b ON b.id = s.book_id
-     WHERE ${where} AND (?2 IS NULL OR s.teacher_id = ?2) ORDER BY s.updated_at DESC LIMIT 500`,
-  ).bind(now, teacherId ?? null).all<SubRow>();
+     WHERE ${where} AND (?2 IS NULL OR s.teacher_id = ?2) ORDER BY s.updated_at DESC LIMIT ?3`,
+  ).bind(now, teacherId ?? null, limit).all<SubRow>();
   return results;
 }
 
@@ -279,18 +301,22 @@ export async function listPaymentsForTeacher(env: Env, teacherId: number): Promi
 /**
  * Confirm a payment and activate (or extend) its subscription, in one D1 batch (a single transaction).
  * Used by the admin page now and by the Stripe webhook later. Confirming twice does nothing the second time.
+ * `expectSatang` is the amount the admin saw (and checked in the bank app): if the member changed the request since,
+ * nothing is confirmed, so a 1-month transfer can never be confirmed as a 12-month subscription.
  */
-export async function confirmPayment(env: Env, paymentId: number, confirmedBy: string, now: number): Promise<{ payment: Payment; subscription: Subscription } | null> {
+export async function confirmPayment(env: Env, paymentId: number, confirmedBy: string, now: number, expectSatang?: number): Promise<{ payment: Payment; subscription: Subscription } | 'changed' | null> {
   const p = await getPayment(env, paymentId);
   if (!p || p.status !== 'pending') return null;
+  if (expectSatang !== undefined && p.amount_satang !== expectSatang) return 'changed';
   const sub = await getSubscriptionById(env, p.subscription_id);
   if (!sub) return null;
   const active = isActive(sub, now);
   const start = active ? sub.period_start! : now;
   const end = addMonths(active ? sub.period_end! : now, p.months);
   const [upd] = await env.DB.batch([
-    env.DB.prepare(`UPDATE payments SET status = 'confirmed', confirmed_by = ?1, decided_at = ?2 WHERE id = ?3 AND status = 'pending'`)
-      .bind(confirmedBy, now, p.id),
+    env.DB.prepare(`UPDATE payments SET status = 'confirmed', confirmed_by = ?1, decided_at = ?2
+       WHERE id = ?3 AND status = 'pending' AND amount_satang = ?4 AND months = ?5`)
+      .bind(confirmedBy, now, p.id, p.amount_satang, p.months),
     env.DB.prepare(
       `UPDATE subscriptions SET status = 'active', period_start = ?1, period_end = ?2, monthly_price = ?3, updated_at = ?4
        WHERE id = ?5 AND EXISTS (SELECT 1 FROM payments WHERE id = ?6 AND status = 'confirmed' AND decided_at = ?4)`,

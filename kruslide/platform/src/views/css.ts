@@ -117,7 +117,8 @@ th{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
 .table table{min-width:640px}
 td form{display:inline}
 td .row{gap:6px}
-.admin{display:grid;gap:24px;grid-template-columns:200px 1fr}
+.admin{display:grid;gap:24px;grid-template-columns:200px minmax(0,1fr)}
+.admin>*{min-width:0}
 .side{display:flex;flex-direction:column;gap:2px;position:sticky;top:84px;align-self:start}
 .side a{padding:9px 12px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:500}
 .side a:hover{background:#fff}
@@ -137,7 +138,7 @@ details summary{cursor:pointer;font-weight:600}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes grow{from{transform:scaleY(.55)}to{transform:scaleY(1)}}
 @keyframes pop{0%,60%{opacity:0;transform:scale(.8)}70%,100%{opacity:1;transform:none}}
-@media (max-width:820px){.hero{grid-template-columns:1fr}.screen{transform:none}.pay{grid-template-columns:1fr}.admin{grid-template-columns:1fr}.side{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}.side a{white-space:nowrap}}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.screen{transform:none}.pay{grid-template-columns:1fr}.admin{grid-template-columns:minmax(0,1fr)}.side{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}.side a{white-space:nowrap}}
 @media (max-width:560px){.top .wrap{padding-top:8px;padding-bottom:8px}.nav{width:100%;justify-content:flex-start}.card{padding:18px}main{padding-top:20px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 `.trim();

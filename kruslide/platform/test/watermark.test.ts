@@ -40,6 +40,12 @@ describe('watermark injection', () => {
     expect(await inlineScriptHashes(big)).toHaveLength(1);
   });
 
+  it('a deck without explicit <head> or <body> tags is still marked', async () => {
+    const out = await run('<!DOCTYPE html><title>x</title><section class="slide">a</section>', 'Licensed to A · B');
+    expect(out.match(/id="ks-wm"/g)).toHaveLength(1);
+    expect(out).toContain('<style id="ks-wm-style">');
+  });
+
   it('slide count ignores scripts and comments, and class names that only contain "slide"', () => {
     const deck = '<section class="slide opener">a</section><section class="slide">b</section><section class="slide-note">x</section>'
       + '<!-- <section class="slide"> --><script>/* <section class="slide" data-steps="N"> */</script>';
@@ -49,5 +55,11 @@ describe('watermark injection', () => {
   it('script hashes ignore external scripts and JSON data blocks', async () => {
     const h = await inlineScriptHashes('<script src="/x.js"></script><script type="application/json">{"a":1}</script><script>go()</script><script type="module">m()</script>');
     expect(h).toHaveLength(2);
+  });
+
+  it('a deck saved with Windows line endings gets the same script hash the browser computes (CRLF -> LF)', async () => {
+    const lf = await inlineScriptHashes('<script>\nvar a = 1;\nboot();\n</script>');
+    expect(await inlineScriptHashes('<script>\r\nvar a = 1;\r\nboot();\r\n</script>')).toEqual(lf);
+    expect(await inlineScriptHashes('<script>\rvar a = 1;\rboot();\r</script>')).toEqual(lf);
   });
 });

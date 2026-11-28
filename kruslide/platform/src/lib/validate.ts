@@ -39,10 +39,29 @@ export async function readForm(req: Request, maxBytes = 64 * 1024): Promise<Form
   if (!type.startsWith('application/x-www-form-urlencoded') && !type.startsWith('multipart/form-data')) {
     throw new HttpError(415, 'รูปแบบข้อมูลไม่ถูกต้อง');
   }
-  const len = Number(req.headers.get('Content-Length') || '0');
-  if (len > maxBytes) throw new HttpError(413, 'ไฟล์หรือข้อมูลใหญ่เกินไป');
+  const tooBig = () => new HttpError(413, 'ไฟล์หรือข้อมูลใหญ่เกินไป');
+  const declared = req.headers.get('Content-Length');
+  if (declared !== null && !(Number(declared) <= maxBytes)) throw tooBig();
+  let source: Request = req;
+  if (declared === null && req.body) {
+    // No length given (chunked upload): read at most maxBytes, so a huge body cannot exhaust the Worker's memory.
+    const reader = req.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let total = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) { await reader.cancel().catch(() => {}); throw tooBig(); }
+      chunks.push(value);
+    }
+    const body = new Uint8Array(total);
+    let at = 0;
+    for (const c of chunks) { body.set(c, at); at += c.byteLength; }
+    source = new Request(req.url, { method: 'POST', headers: { 'Content-Type': req.headers.get('Content-Type')! }, body });
+  }
   try {
-    return await req.formData();
+    return await source.formData();
   } catch {
     throw new HttpError(400, 'อ่านข้อมูลฟอร์มไม่ได้');
   }

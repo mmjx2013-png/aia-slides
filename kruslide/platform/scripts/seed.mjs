@@ -28,7 +28,7 @@ function scriptHashes(html) {
     if (/\bsrc\s*=/i.test(m[1])) continue;
     const type = /\btype\s*=\s*["']?([^"'\s>]+)/i.exec(m[1])?.[1]?.toLowerCase();
     if (type && !['text/javascript', 'module', 'application/javascript'].includes(type)) continue;
-    out.add(`'sha256-${createHash('sha256').update(m[2], 'utf8').digest('base64')}'`);
+    out.add(`'sha256-${createHash('sha256').update(m[2].replace(/\r\n?/g, '\n'), 'utf8').digest('base64')}'`); // CRLF -> LF, as the HTML parser does
   }
   return [...out];
 }

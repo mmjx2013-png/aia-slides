@@ -40,6 +40,7 @@ const router = new Router()
   .post('/app/admin/members/:id/block', (c) => admin.setStatus(c, 'blocked'))
   .post('/app/admin/members/:id/unblock', (c) => admin.setStatus(c, 'active'))
   .post('/app/admin/members/:id/grant', admin.grant)
+  .post('/app/admin/members/:id/erase', admin.erase)
   .get('/app/admin/subscriptions', admin.subscriptions)
   .post('/app/admin/subscriptions/:id/extend', admin.extend)
   .post('/app/admin/subscriptions/:id/expire', admin.expire)
@@ -68,7 +69,7 @@ async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<R
     params: {}, sessionId: null, teacher: null, isAdmin: false, csrf: '',
   };
   try {
-    if (url.pathname === '/app') return redirect('/app/', 308);
+    if (url.pathname === '/app' || url.pathname === '/app/admin') return redirect(url.pathname + '/', 308);
     if (!url.pathname.startsWith('/app/')) throw new HttpError(404, 'ไม่พบหน้านี้');
     if (isProduction(env) && url.protocol !== 'https:') return redirect(`https://${url.host}${url.pathname}${url.search}`, 308);
     const m = router.match(req.method, url.pathname);

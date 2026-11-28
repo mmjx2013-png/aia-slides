@@ -55,7 +55,7 @@ function paymentsTable(ctx: Ctx, rows: db.PaymentRow[]): Safe {
     <td class="small">${p.ref ?? ''}</td>
     <td class="small nowrap">${fmtDateTime(p.notified_at ?? p.created_at)}</td>
     <td>${p.status === 'pending' ? html`<div class="row">
-      <form method="post" action="/app/admin/payments/${p.id}/confirm">${csrfField(ctx)}<button class="btn ok small" type="submit">ยืนยัน</button></form>
+      <form method="post" action="/app/admin/payments/${p.id}/confirm">${csrfField(ctx)}<input type="hidden" name="amount_satang" value="${p.amount_satang}"><button class="btn ok small" type="submit">ยืนยัน</button></form>
       <form method="post" action="/app/admin/payments/${p.id}/reject">${csrfField(ctx)}<button class="btn danger small" type="submit">ปฏิเสธ</button></form>
     </div>` : html`<span class="small muted">${p.confirmed_by ?? ''}</span>`}</td>
   </tr>`)}</tbody></table></div>`;
@@ -94,9 +94,11 @@ export async function payments(ctx: Ctx): Promise<Response> {
 
 /** POST /app/admin/payments/:id/confirm: activates (or extends) the subscription. */
 export async function confirm(ctx: Ctx): Promise<Response> {
-  const { actor } = await adminPost(ctx);
+  const { form, actor } = await adminPost(ctx);
   const id = idParam(ctx.params.id);
-  const result = await db.confirmPayment(ctx.env, id, `teacher:${ctx.teacher!.id}`, ctx.now);
+  const expect = int(str(form, 'amount_satang'), { min: 1, max: 999_999_999, field: 'ยอดเงิน' });
+  const result = await db.confirmPayment(ctx.env, id, `teacher:${ctx.teacher!.id}`, ctx.now, expect);
+  if (result === 'changed') return redirect(back(ctx, '/app/admin/') + 'm=changed');
   if (!result) return redirect('/app/admin/?m=already');
   await audit(ctx.env, ctx.now, actor, 'payment.confirm', `payment:${id}`, {
     amount: result.payment.amount_satang / 100, subscription: result.subscription.id, until: result.subscription.period_end,
@@ -161,7 +163,22 @@ export async function member(ctx: Ctx): Promise<Response> {
 <select name="book_id" aria-label="หนังสือ">${books.map((b) => html`<option value="${b.id}">${b.title}</option>`)}</select>
 <select name="months" aria-label="จำนวนเดือน">${MONTH_OPTIONS.map((m) => html`<option value="${m}">${m} เดือน</option>`)}</select>
 <button class="btn small" type="submit">ให้สิทธิ์</button></form></div>
-<h2 class="mt">การชำระเงิน</h2>${paymentsTable(ctx, pays)}`);
+<h2 class="mt">การชำระเงิน</h2>${paymentsTable(ctx, pays)}
+${t.line_user_id.startsWith(db.ERASED_PREFIX) || t.id === ctx.teacher!.id ? '' : html`<details class="card mt"><summary>ลบข้อมูลส่วนตัวของสมาชิก (ตามคำขอ PDPA)</summary>
+<p class="small muted">ลบชื่อ โรงเรียน และรหัส LINE ระงับบัญชี ออกจากระบบทุกเครื่อง และปิดการสมัครที่ยังเปิดอยู่ ยอดและวันที่ชำระเงินยังเก็บไว้เป็นหลักฐานทางบัญชี ย้อนกลับไม่ได้</p>
+<form method="post" action="/app/admin/members/${t.id}/erase" class="row">${csrfField(ctx)}<label class="check"><input type="checkbox" name="confirm" value="yes" required> ยืนยันการลบข้อมูล</label><button class="btn danger small" type="submit">ลบข้อมูลสมาชิก</button></form></details>`}`);
+}
+
+/** POST /app/admin/members/:id/erase: PDPA erasure (needs the "confirm" box). */
+export async function erase(ctx: Ctx): Promise<Response> {
+  const { form, actor } = await adminPost(ctx);
+  requireConfirm(form);
+  const t = await db.getTeacher(ctx.env, idParam(ctx.params.id));
+  if (!t) throw new HttpError(404, 'ไม่พบสมาชิก');
+  if (t.id === ctx.teacher!.id) throw new HttpError(400, 'ลบข้อมูลบัญชีของตัวเองไม่ได้');
+  await db.eraseTeacher(ctx.env, t.id, ctx.now);
+  await audit(ctx.env, ctx.now, actor, 'member.erase', `teacher:${t.id}`);
+  return redirect(`/app/admin/members/${t.id}?m=erased`);
 }
 
 function subsTable(ctx: Ctx, rows: db.SubRow[]): Safe {
@@ -431,7 +448,7 @@ export async function exportCsv(ctx: Ctx): Promise<Response> {
     body = toCsv(['id', 'line_user_id', 'display_name', 'school', 'status', 'active_subscriptions', 'created_at', 'last_login_at'],
       rows.map((t) => [t.id, t.line_user_id, t.display_name, t.school, t.status, t.active_count, iso(t.created_at), iso(t.last_login_at)]));
   } else if (type === 'subscriptions') {
-    const rows = await db.listSubscriptions(ctx.env, 'all', ctx.now);
+    const rows = await db.listSubscriptions(ctx.env, 'all', ctx.now, undefined, 100000);
     body = toCsv(['id', 'teacher_id', 'display_name', 'school', 'book', 'status', 'period_start', 'period_end', 'monthly_price_baht'],
       rows.map((s) => [s.id, s.teacher_id, s.display_name, s.school, s.title, db.effectiveStatus(s, ctx.now), iso(s.period_start), iso(s.period_end), s.monthly_price]));
   } else {

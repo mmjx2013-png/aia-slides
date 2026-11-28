@@ -57,8 +57,14 @@ describe('admin confirms a payment -> the subscription becomes active', () => {
     expect((await call(`/app/payments/${pid}`, { cookie: other.cookie })).status).toBe(404);
     expect((await post(`/app/payments/${pid}/notify`, {}, other)).status).toBe(404);
 
+    // the admin dashboard lists it with a confirm button that carries the amount the admin is looking at
+    const dash = await (await call('/app/admin/', { cookie: admin.cookie })).text();
+    expect(dash).toContain(`action="/app/admin/payments/${pid}/confirm"`);
+    expect(dash).toContain('name="amount_satang" value="60300"');
+    expect((await post(`/app/admin/payments/${pid}/confirm`, {}, admin)).status).toBe(400); // the amount must be sent
+
     const t0 = nowSec();
-    const res = await post(`/app/admin/payments/${pid}/confirm`, {}, admin);
+    const res = await post(`/app/admin/payments/${pid}/confirm`, { amount_satang: '60300' }, admin);
     expect(res.status).toBe(303);
     expect(res.headers.get('Location')).toContain('m=confirmed');
     const confirmed = (await payment(pid))!;
@@ -77,7 +83,7 @@ describe('admin confirms a payment -> the subscription becomes active', () => {
     expect(deck.status).toBe(200);
 
     // confirming twice changes nothing
-    const again = await post(`/app/admin/payments/${pid}/confirm`, {}, admin);
+    const again = await post(`/app/admin/payments/${pid}/confirm`, { amount_satang: '60300' }, admin);
     expect(again.headers.get('Location')).toContain('m=already');
     expect((await sub(teacher.id, book))!.period_end).toBe(s.period_end);
   });
@@ -91,7 +97,7 @@ describe('admin confirms a payment -> the subscription becomes active', () => {
     await makeSub(teacher.id, book, { end, price: 200 });
     const pid = await requestPayment(teacher, book, '1');
     expect((await payment(pid))!.amount_satang).toBe(200 * 100);
-    await post(`/app/admin/payments/${pid}/confirm`, {}, admin);
+    await post(`/app/admin/payments/${pid}/confirm`, { amount_satang: '20000' }, admin);
     expect((await sub(teacher.id, book))!.period_end).toBe(addMonths(end, 1));
   });
 
@@ -107,7 +113,7 @@ describe('admin confirms a payment -> the subscription becomes active', () => {
     expect((await sub(teacher.id, book))!.status).toBe('pending');
     expect((await call(`/app/deck/${unit}/`, { cookie: teacher.cookie })).status).toBe(403);
     // a rejected payment cannot be confirmed afterwards
-    expect((await post(`/app/admin/payments/${pid}/confirm`, {}, admin)).headers.get('Location')).toContain('m=already');
+    expect((await post(`/app/admin/payments/${pid}/confirm`, { amount_satang: String((await payment(pid))!.amount_satang) }, admin)).headers.get('Location')).toContain('m=already');
   });
 
   it('asking again before paying reuses the one pending payment; after "I have paid" its amount is frozen', async () => {
@@ -122,6 +128,20 @@ describe('admin confirms a payment -> the subscription becomes active', () => {
     const c = await requestPayment(teacher, book, '12');
     expect(c).toBe(a);
     expect((await payment(a))!.months).toBe(6);
+  });
+
+  it('if the member changes the request after the admin opened the page, the confirm is refused (no 12 months for a 1-month transfer)', async () => {
+    const book = await makeBook({ rate: 3 });
+    const unit = await makeUnit(book, { slides: 67 });
+    const teacher = await newMember();
+    const admin = await newAdmin();
+    const pid = await requestPayment(teacher, book, '1');                   // 201 baht: what the admin sees and checks
+    expect(await requestPayment(teacher, book, '12')).toBe(pid);           // the member switches to 12 months (2,412 baht)
+    const res = await post(`/app/admin/payments/${pid}/confirm`, { amount_satang: '20100' }, admin);
+    expect(res.headers.get('Location')).toContain('m=changed');
+    expect((await payment(pid))!.status).toBe('pending');
+    expect((await sub(teacher.id, book))!.status).toBe('pending');
+    expect((await call(`/app/deck/${unit}/`, { cookie: teacher.cookie })).status).toBe(403);
   });
 
   it('extend and expire from the admin page', async () => {
@@ -150,6 +170,39 @@ describe('admin confirms a payment -> the subscription becomes active', () => {
     await post(`/app/admin/members/${teacher.id}/block`, {}, admin);
     expect((await call('/app/', { cookie: teacher.cookie })).status).toBe(200);
     expect(await (await call('/app/', { cookie: teacher.cookie })).text()).toContain('เข้าสู่ระบบด้วย LINE');
+  });
+
+  it('PDPA erasure removes name, school and LINE id, logs the member out and ends access; payments stay as records', async () => {
+    const book = await makeBook();
+    const unit = await makeUnit(book);
+    const teacher = await newMember({ name: 'ครูลบข้อมูล', school: 'โรงเรียนลบข้อมูล' });
+    const line = (await env.DB.prepare('SELECT line_user_id FROM teachers WHERE id = ?1').bind(teacher.id).first<{ line_user_id: string }>())!.line_user_id;
+    await makeSub(teacher.id, book);
+    const pending = await requestPayment(teacher, book, '1');
+    const admin = await newAdmin();
+    expect((await post(`/app/admin/members/${teacher.id}/erase`, {}, admin)).status).toBe(400);          // the box must be ticked
+    expect((await post(`/app/admin/members/${admin.id}/erase`, { confirm: 'yes' }, admin)).status).toBe(400); // not yourself
+    expect((await post(`/app/admin/members/${teacher.id}/erase`, { confirm: 'yes' }, admin)).status).toBe(303);
+
+    const row = (await env.DB.prepare('SELECT * FROM teachers WHERE id = ?1').bind(teacher.id).first<Record<string, unknown>>())!;
+    expect(row.line_user_id).toBe(`erased:${teacher.id}`);
+    expect(row.school).toBe('');
+    expect(row.status).toBe('blocked');
+    expect(JSON.stringify(row)).not.toContain('ครูลบข้อมูล');
+    expect((await sub(teacher.id, book))!.status).toBe('expired');
+    expect((await payment(pending))!.status).toBe('rejected');
+    expect((await call(`/app/deck/${unit}/`, { cookie: teacher.cookie })).status).toBe(302);          // session gone
+    const page = await (await call(`/app/admin/members/${teacher.id}`, { cookie: admin.cookie })).text();
+    expect(page).not.toContain(line);
+    expect(page).not.toContain('โรงเรียนลบข้อมูล');
+    const log = await env.DB.prepare(`SELECT * FROM audit_log WHERE action = 'member.erase'`).first<{ target: string }>();
+    expect(log!.target).toBe(`teacher:${teacher.id}`);
+  });
+
+  it('/app/admin without the slash goes to the dashboard', async () => {
+    const res = await call('/app/admin');
+    expect(res.status).toBe(308);
+    expect(res.headers.get('Location')).toBe('/app/admin/');
   });
 });
 

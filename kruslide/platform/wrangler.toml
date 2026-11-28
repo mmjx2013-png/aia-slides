@@ -40,3 +40,8 @@ crons = ["17 3 * * *"]
 
 [observability]
 enabled = true
+
+[observability.logs]
+# Keep our own console.error lines (they hold no personal data) but not one log line per request, which would
+# record each visitor's URL and request details. Set to true for a while when you need to debug a problem.
+invocation_logs = false

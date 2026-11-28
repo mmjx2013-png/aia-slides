@@ -3,20 +3,25 @@
    Motion: reveals (.rv → .in by site.js), counters, the hero classroom loop (pure CSS, 14 s).
    prefers-reduced-motion: every animation and transition is switched off and the final state shows. */
 
-/* ---------- fonts (self-hosted: Inter for Latin, Anuphan for Thai via unicode-range) ---------- */
+/* ---------- fonts (self-hosted: Inter for Latin, Anuphan for Thai via unicode-range) ----------
+   Each Anuphan face repeats the exact single weight of its Inter face. Chromium only merges faces whose
+   descriptors match; a range such as "400 500" would lose to Inter's "400" and Thai would fall back to a system font. */
 @font-face{font-family:KS;src:url(../fonts/Inter-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:KS;src:url(../fonts/Inter-Medium.woff2) format("woff2");font-weight:500;font-display:swap}
 @font-face{font-family:KS;src:url(../fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:KS;src:url(../fonts/Inter-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:KS;src:url(../fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800;font-display:swap}
-@font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400 500;unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F;font-display:swap}
 @font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F;font-display:swap}
-@font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700 800;unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:KS;src:url(../fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F;font-display:swap}
 @font-face{font-family:KSD;src:url(../fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:KSD;src:url(../fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:KSD;src:url(../fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800;font-display:swap}
 @font-face{font-family:KSD;src:url(../fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F;font-display:swap}
-@font-face{font-family:KSD;src:url(../fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700 800;unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:KSD;src:url(../fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:KSD;src:url(../fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F;font-display:swap}
 
 /* ---------- tokens: a stationery palette (navy ink, highlighter yellow, red pen, mint tick) ---------- */
 :root{
@@ -561,7 +566,7 @@ html.js .hero-vis.rv.in{transform:none}
  .work-ft{padding:4px 10px 10px}
  .faq-in{grid-template-columns:1fr;gap:10px}
  .faq .sec-head{position:static}
- .ask{max-width:none}
+ .ask{display:none}
  .steps-row{grid-template-columns:1fr 1fr;row-gap:36px}
  .steps-row::before{display:none}
  .trust-in{grid-template-columns:1fr 1fr;row-gap:22px}

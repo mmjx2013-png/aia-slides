@@ -13,7 +13,9 @@ export async function inlineScriptHashes(htmlText: string): Promise<string[]> {
     if (/\bsrc\s*=/i.test(attrs)) continue;
     const type = /\btype\s*=\s*["']?([^"'\s>]+)/i.exec(attrs)?.[1]?.toLowerCase();
     if (type && !['text/javascript', 'module', 'application/javascript'].includes(type)) continue; // JSON data blocks never run
-    out.push(`'sha256-${b64(await sha256(m[2]))}'`);
+    // The browser hashes the script text AFTER the HTML parser has turned CRLF and lone CR into LF,
+    // so a deck saved with Windows line endings must be hashed the same way or its script would be blocked.
+    out.push(`'sha256-${b64(await sha256(m[2].replace(/\r\n?/g, '\n')))}'`);
   }
   return [...new Set(out)];
 }

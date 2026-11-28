@@ -27,8 +27,11 @@ export function watermarkMarkup(text: string): string {
 export function injectWatermark(res: Response, text: string): Response {
   let headDone = false, bodyDone = false;
   const markup = watermarkMarkup(text);
+  const style = `<style id="ks-wm-style">${WATERMARK_CSS}</style>`;
   return new HTMLRewriter()
-    .on('head', { element(el) { if (!headDone) { headDone = true; el.append(`<style id="ks-wm-style">${WATERMARK_CSS}</style>`, { html: true }); } } })
+    .on('head', { element(el) { if (!headDone) { headDone = true; el.append(style, { html: true }); } } })
     .on('body', { element(el) { if (!bodyDone) { bodyDone = true; el.append(markup, { html: true }); } } })
+    // A deck without explicit <head>/<body> tags would otherwise go out unmarked: add the mark at the very end.
+    .onDocument({ end(end) { if (!bodyDone) end.append((headDone ? '' : style) + markup, { html: true }); } })
     .transform(res);
 }

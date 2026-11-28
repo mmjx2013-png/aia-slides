@@ -47,6 +47,7 @@ function watch(page, name) {
   });
   page.on('pageerror', (e) => problems.push(`${name}: page error: ${e.message}`));
 }
+const fitsWidth = (page) => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
 const shot = async (page, file, full = true) => { await page.screenshot({ path: join(SHOTS, file), fullPage: full, animations: 'disabled' }); console.log('  screenshot', file); };
 
 async function lineLogin(page, who) {
@@ -98,6 +99,7 @@ async function main() {
   await t.waitForURL(/\/app\/payments\/\d+/);
   check(await t.locator('svg.qr').isVisible(), 'payment page shows a PromptPay QR');
   check(await t.getByText('603 บาท').first().isVisible(), 'payment page shows 3 months = 603 baht');
+  check(await fitsWidth(t), 'payment page fits the phone width');
   await shot(t, '08-payment-promptpay-mobile.png');
   await t.fill('#note', 'โอนจากแอปธนาคาร เวลา 10:30');
   await t.click('button:has-text("แจ้งโอนแล้ว")');
@@ -147,12 +149,21 @@ async function main() {
   await shot(a, '15-admin-subscriptions.png');
   await a.goto(`${BASE}/app/admin/audit`);
   await shot(a, '16-admin-audit-log.png');
+  // the owner may confirm payments from a phone
+  const amctx = await browser.newContext({ ...phone, storageState: await actx.storageState() });
+  const am = await amctx.newPage(); watch(am, 'admin-mobile');
+  await am.goto(`${BASE}/app/admin/payments?status=confirmed`);
+  check(await am.getByText('ยืนยันแล้ว').first().isVisible(), 'admin pages work on a phone');
+  check(await fitsWidth(am), 'admin page fits the phone width (wide tables scroll inside their box)');
+  await shot(am, '16b-admin-payments-mobile.png');
+  await amctx.close();
   const csv = await actx.request.get(`${BASE}/app/admin/export/payments.csv`);
   check(csv.ok() && (await csv.text()).includes('ครูสมศรี'), 'CSV export works');
 
   // --- teacher again: the book is active, open the deck
   await t.goto(`${BASE}/app/`);
   check(await t.getByText('เปิดสไลด์').first().isVisible(), 'after confirmation the member sees "open slides"');
+  check(await fitsWidth(t), 'member home fits the phone width');
   await shot(t, '17-member-home-active-mobile.png');
 
   const dctx = await browser.newContext({ ...desktop, viewport: { width: 1440, height: 810 }, storageState: await tctx.storageState() });
