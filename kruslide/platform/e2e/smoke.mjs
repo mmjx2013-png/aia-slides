@@ -48,7 +48,23 @@ function watch(page, name) {
   page.on('pageerror', (e) => problems.push(`${name}: page error: ${e.message}`));
 }
 const fitsWidth = (page) => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-const shot = async (page, file, full = true) => { await page.screenshot({ path: join(SHOTS, file), fullPage: full, animations: 'disabled' }); console.log('  screenshot', file); };
+const imagesLoaded = (page, sel) => page.evaluate((s) => [...document.querySelectorAll(s)].every((i) => i.complete && i.naturalWidth > 0), sel);
+const inDays = (d) => new Date(Date.now() + d * 86400000 + 7 * 3600000).toISOString().slice(0, 10);
+const decoded = (page) => page.evaluate(() => Promise.all([...document.images].map((i) => i.decode().catch(() => {})))).catch(() => {});
+const shotView = async (page, file) => { await decoded(page); return shot(page, file, false); };
+// A full-page shot grows the viewport to the whole page first, so the sticky header and the phone tab bar are drawn
+// where a reader sees them (top and bottom), not in the middle of the picture.
+const shot = async (page, file, full = true) => {
+  const vp = page.viewportSize();
+  if (full) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const h = await page.evaluate(() => document.documentElement.scrollHeight);
+    if (h > vp.height) { await page.setViewportSize({ width: vp.width, height: h }); await page.waitForTimeout(150); }
+  }
+  await page.screenshot({ path: join(SHOTS, file), animations: 'disabled' });
+  if (full) await page.setViewportSize(vp);
+  console.log('  screenshot', file);
+};
 
 async function lineLogin(page, who) {
   await page.goto(`${BASE}/app/login`);
@@ -85,6 +101,89 @@ async function main() {
   await t.click('button[type=submit]:has-text("บันทึก")');
   await t.waitForURL(/\/app\/(\?|$)/);
   await shot(t, '05-member-home-mobile.png');
+  check(await fitsWidth(t), 'member home (onboarding, bento) fits the phone width');
+
+  // --- request a book (ขอทำหนังสือ) + style quiz, on a phone
+  await t.click('nav.tabs a.cta');
+  await t.waitForURL(/\/app\/requests\/new/);
+  check(await t.getByRole('heading', { name: 'ขอทำหนังสือ' }).isVisible(), 'the "ขอทำหนังสือ" tab opens the request form');
+  await t.fill('#subject', 'คณิตศาสตร์');
+  await t.fill('#textbook', 'สสวท. คณิตศาสตร์ ม.1 เล่ม 1');
+  await t.click('label:has(input[name="grade"][value="ม.1"])');
+  await t.fill('#units', 'หน่วยที่ 1–4 (จำนวนเต็ม, เลขยกกำลัง, ทศนิยม, รูปเรขาคณิต)');
+  await t.fill('#start_date', inDays(45));
+  await t.fill('#note', 'นักเรียนชอบเกม อยากได้โจทย์ท้ายหน่วยเยอะ ๆ');
+  check(await fitsWidth(t), 'request form fits the phone width');
+  await shot(t, '21-request-form-mobile.png');
+  await t.click('button:has-text("ถัดไป")');
+  await t.waitForURL(/\/app\/requests\/\d+\/quiz\/1$/);
+  const reqId = Number(/requests\/(\d+)\//.exec(t.url())[1]);
+  await t.waitForLoadState('load');
+  check(await imagesLoaded(t, '.pick img'), 'quiz question 1 shows both sample slides');
+  check(await fitsWidth(t), 'quiz fits the phone width');
+  const fold = await t.evaluate(() => document.querySelector('.bothbtn').getBoundingClientRect().bottom <= window.innerHeight);
+  check(fold, 'on a phone, both samples and "ได้ทั้งคู่" fit on one screen');
+  check(await t.evaluate(() => document.documentElement.classList.contains('js')), 'app.js runs under the quiz CSP');
+  await shotView(t, '22-quiz-q1-mobile.png');
+  // tap A: the tick shows before the next question loads
+  await t.tap('button.pick[value="a"]');
+  await t.waitForTimeout(200);
+  check(await t.locator('button.pick.chosen[value="a"]').count() === 1, 'a tap marks the chosen sample (tick) before moving on');
+  await shotView(t, '23-quiz-tap-feedback-mobile.png');
+  await t.waitForURL(/quiz\/2$/);
+  const picks = ['b', 'a', 'a', 'a', 'a', 'both', 'a', 'b', 'a'];
+  for (let n = 2; n <= 10; n++) {
+    if (n === 5) { await t.waitForLoadState('load'); await shotView(t, '24-quiz-q5-mobile.png'); }
+    if (n === 10) { await t.waitForLoadState('load'); await shotView(t, '24b-quiz-q10-language-mobile.png'); }
+    await t.tap(picks[n - 2] === 'both' ? 'button.bothbtn' : `button.pick[value="${picks[n - 2]}"]`);
+    await t.waitForURL(n < 10 ? new RegExp(`quiz/${n + 1}$`) : /\/app\/requests\/\d+\?m=sent/);
+  }
+  check(await t.getByText('ขอบคุณ ทีมงานจะติดต่อกลับทาง LINE').isVisible(), 'after 10 taps the teacher sees "ขอบคุณ ทีมงานจะติดต่อกลับทาง LINE"');
+  await t.locator('.thumb img').last().scrollIntoViewIfNeeded();
+  await t.waitForTimeout(600);
+  check(await imagesLoaded(t, '.thumb img'), 'the thank-you page shows thumbnails of the chosen samples');
+  await t.evaluate(() => window.scrollTo(0, 0));
+  await t.waitForTimeout(2800); // let the confetti finish
+  await shot(t, '25-request-thanks-mobile.png');
+  // without JavaScript the quiz is plain forms and still works
+  const nojs = await browser.newContext({ ...phone, javaScriptEnabled: false, storageState: await tctx.storageState() });
+  const nj = await nojs.newPage(); watch(nj, 'quiz-nojs');
+  await nj.goto(`${BASE}/app/requests/new`);
+  await nj.fill('#subject', 'วิทยาศาสตร์');
+  await nj.fill('#textbook', 'สสวท. วิทยาศาสตร์ ม.2 เล่ม 1');
+  await nj.click('label:has(input[name="grade"][value="ม.2"])');
+  await nj.fill('#units', 'ทั้งเล่ม');
+  await nj.fill('#start_date', inDays(60));
+  // Keyboard here: Playwright's click checks need page scripts, which this context switches off.
+  await nj.press('#textbook', 'Enter');                       // implicit form submission
+  await nj.waitForURL(/quiz\/1$/);
+  await nj.press('button.pick[value="b"]', 'Enter');          // a plain submit button
+  await nj.waitForURL(/quiz\/2$/);
+  await nj.press('button.bothbtn', 'Enter');
+  await nj.waitForURL(/quiz\/3$/);
+  check(true, 'without JavaScript the quiz works as plain forms (2 answers sent)');
+  await shotView(nj, '26-quiz-nojs-mobile.png');
+  await nojs.close();
+  await t.goto(`${BASE}/app/requests`);
+  check(await t.getByText('เลือกสไตล์แล้ว 2/10').isVisible(), 'my requests list shows the unfinished one with its progress');
+  check(await fitsWidth(t), 'my requests list fits the phone width');
+  await shot(t, '27-my-requests-mobile.png');
+  // the quiz on a desktop, with the keyboard
+  const tdesk = await browser.newContext({ ...desktop, storageState: await tctx.storageState() });
+  const td = await tdesk.newPage(); watch(td, 'quiz-desktop');
+  await td.goto(`${BASE}/app/requests`);
+  await td.click('a:has-text("ทำต่อ")');
+  await td.waitForURL(/quiz\/3$/);
+  await td.waitForLoadState('load');
+  await shotView(td, '28-quiz-desktop.png');
+  await td.keyboard.press('ArrowRight');
+  await td.waitForURL(/quiz\/4$/);
+  check(true, 'on a desktop the arrow keys answer the quiz');
+  await td.goto(`${BASE}/app/`);
+  await shot(td, '05b-member-home-desktop.png');
+  await td.goto(`${BASE}/app/requests`);
+  await shot(td, '27b-my-requests-desktop.png');
+  await tdesk.close();
   expectRefusal = true;
   const denied = await t.goto(`${BASE}/app/deck/1/`);
   check(denied.status() === 403, 'a member without a subscription gets 403 on the deck');
@@ -117,10 +216,35 @@ async function main() {
   }
   await a.goto(`${BASE}/app/admin/`);
   check(await a.getByText('ครูสมศรี (ทดสอบ)').first().isVisible(), 'admin dashboard lists the pending payment');
+  check(await a.locator('a.stat.hot b').innerText() === '1', 'admin dashboard counts 1 new book request');
   await shot(a, '10-admin-dashboard-pending.png');
   await a.click('button:has-text("ยืนยัน")');
   await a.waitForURL(/m=confirmed/);
   await shot(a, '11-admin-payment-confirmed.png');
+
+  // book requests: list, status + owner note, brief
+  await actx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: BASE });
+  await a.goto(`${BASE}/app/admin/requests`);
+  await a.waitForLoadState('load');
+  check(await a.getByText('Style A modern clean · calm colours · real photos').first().isVisible(), 'admin sees the request with its style summary');
+  await a.locator('.thumb img').last().scrollIntoViewIfNeeded();
+  await a.waitForTimeout(600);
+  check(await imagesLoaded(a, '.thumb img'), 'admin sees the chosen samples as thumbnails');
+  await shot(a, '29-admin-requests-desktop.png');
+  await a.locator(`#r${reqId} select[name="status"]`).selectOption('quoted');
+  await a.fill(`#on${reqId}`, 'เสนอราคา 990 บาท/เดือน ส่งทาง LINE แล้ว');
+  await a.click(`#r${reqId} button:has-text("บันทึก")`);
+  await a.waitForURL(/m=request/);
+  check(await a.getByText('บันทึกคำขอแล้ว').isVisible(), 'admin changes the status and saves the owner note');
+  await a.goto(`${BASE}/app/admin/requests?status=quoted`);
+  check(await a.locator(`#r${reqId} .badge`).first().innerText() === 'เสนอราคาแล้ว', 'the request shows as quoted');
+  await a.goto(`${BASE}/app/admin/requests/${reqId}`);
+  await a.click('button[data-copy="brief"]');
+  await a.waitForTimeout(300);
+  const clip = await a.evaluate(() => navigator.clipboard.readText());
+  check(clip.startsWith(`KruSlide book request #${reqId}`) && clip.includes('Style summary: Style A modern clean · calm colours'), '"copy brief" puts the clean brief on the clipboard');
+  check(!clip.includes('ครูสมศรี'), 'the brief holds no teacher name');
+  await shot(a, '30-admin-request-brief-desktop.png');
 
   // books CRUD + upload the real Unit 4 deck through the form
   await a.goto(`${BASE}/app/admin/books`);
@@ -156,11 +280,18 @@ async function main() {
   check(await am.getByText('ยืนยันแล้ว').first().isVisible(), 'admin pages work on a phone');
   check(await fitsWidth(am), 'admin page fits the phone width (wide tables scroll inside their box)');
   await shot(am, '16b-admin-payments-mobile.png');
+  await am.goto(`${BASE}/app/admin/requests?status=all`);
+  check(await fitsWidth(am), 'admin requests page fits the phone width');
+  await shot(am, '31-admin-requests-mobile.png');
   await amctx.close();
   const csv = await actx.request.get(`${BASE}/app/admin/export/payments.csv`);
   check(csv.ok() && (await csv.text()).includes('ครูสมศรี'), 'CSV export works');
 
-  // --- teacher again: the book is active, open the deck
+  // --- teacher again: the request is quoted; the book is active, open the deck
+  await t.goto(`${BASE}/app/requests/${reqId}`);
+  check(await t.getByText('ส่งใบเสนอราคาแล้ว').first().isVisible(), 'the teacher sees the new status of the request');
+  check(!(await t.content()).includes('990 บาท/เดือน ส่งทาง LINE'), 'the teacher never sees the owner note');
+  await shot(t, '32-request-status-mobile.png');
   await t.goto(`${BASE}/app/`);
   check(await t.getByText('เปิดสไลด์').first().isVisible(), 'after confirmation the member sees "open slides"');
   check(await fitsWidth(t), 'member home fits the phone width');

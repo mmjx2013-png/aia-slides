@@ -38,8 +38,8 @@ KID_CSS = r'''
 .kids{display:flex;align-items:flex-end;gap:var(--gap,18px)}
 .kidb{position:relative;width:var(--kw,120px);height:calc(var(--kw,120px)*1.15);flex:none}
 .kidb svg{position:absolute;inset:0;width:100%;height:100%}
-.kidb .arm{position:absolute;left:var(--ax,72%);top:56%;width:22%;height:70%;transform-origin:50% 92%;transform:rotate(var(--a0,150deg));
-  transition:transform .6s cubic-bezier(.3,1.25,.5,1) var(--ad,0s)}
+.kidb .arm{position:absolute;left:var(--ax,70%);top:-2%;width:22%;height:75%;transform-origin:50% 92%;transform:rotate(var(--a0,150deg));
+  opacity:0;transition:transform .6s cubic-bezier(.3,1.25,.5,1) var(--ad,0s),opacity .2s ease var(--ad,0s)}
 .kidb.l .arm{left:6%;transform:rotate(calc(-1*var(--a0,150deg)))}
 .kidb .arm i{position:absolute;left:28%;top:18%;width:44%;height:80%;border-radius:999px;background:var(--sh,#3D7BFF)}
 .kidb .arm b{position:absolute;left:12%;top:0;width:76%;height:30%;border-radius:50% 50% 45% 45%;background:var(--sk,#F2C39A)}

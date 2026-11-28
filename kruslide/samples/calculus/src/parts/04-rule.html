@@ -3,7 +3,7 @@
  <div class="chip y in" style="left:130px;top:64px"><b>3</b>กฎยกกำลัง · Power Rule</div>
  <h2 class="in" style="left:130px;top:128px;--d:120">ดึงเลขชี้กำลัง<span class="hl">ลงมาคูณ</span> แล้วลบหนึ่ง</h2>
 
- <div class="pan y in" id="c4-rule" style="left:130px;top:268px;width:1660px;height:262px;--d:250">
+ <div class="pan y in" id="c4-rule" style="left:130px;top:258px;width:1660px;height:250px;--d:250">
   <div class="c4-big mx"><span class="fr dd"><span>d</span><span>dx</span></span>x<sup class="hs c-q" data-h="r">n</sup> = <span class="ht c-q" data-h="r">n</span><span class="hm" data-h="r">·</span>x<sup class="hm" data-h="r"><span class="c-q">n</span><span class="c-d">−1</span></sup></div>
   <div class="c4-ex">
    <div class="mx">x<sup class="hs c-q" data-h="e1">2</sup><i>→</i><span class="ht c-q" data-h="e1">2</span>x</div>
@@ -11,28 +11,35 @@
    <div class="mx">x<sup class="hs c-q" data-h="e3">4</sup><i>→</i><span class="ht c-q" data-h="e3">4</span>x<sup class="hm" data-h="e3">3</sup></div>
   </div>
  </div>
+ <svg class="ab" id="c4-trail" viewBox="0 0 1920 1080" style="left:0;top:0;width:1920px;height:1080px;pointer-events:none" aria-hidden="true">
+  <defs><marker id="c4-ah" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M1 1 L11 6 L1 11 Z" fill="#1A1B3D"/></marker></defs>
+  <path id="c4-arc" d="" fill="none" stroke="#1A1B3D" stroke-width="5" stroke-dasharray="3 12" stroke-linecap="round" marker-end="url(#c4-ah)"/>
+  <text id="c4-arcl" class="c4-tl" text-anchor="middle">ลงมาคูณ</text>
+  <text id="c4-minl" class="c4-tl" text-anchor="start">แล้วลบ 1</text>
+ </svg>
 
- <div class="pan c4-st g1" id="c4-s1" style="left:130px;top:592px;width:500px;height:398px">
+ <div class="pan c4-st g1" id="c4-s1" style="left:130px;top:556px;width:500px;height:434px">
   <div class="c4-n"><b>1</b>ทีละพจน์</div>
   <div class="mx c4-l c-f">f(x) = x<sup>3</sup> − 3x</div>
   <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>x<sup class="hs c-q" data-h="s1">3</sup> = <span class="ht c-q" data-h="s1">3</span>x<sup class="hm" data-h="s1">2</sup></div>
-  <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>3x = 3·1 = <span>3</span></div>
-  <div class="c4-note">x = x<sup>1</sup> จึงได้ 1·x<sup>0</sup> = 1</div>
+  <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>3x = 3 · 1 = 3</div>
+  <div class="c4-note mx">เพราะ x = x<sup>1</sup> → 1 · x<sup>0</sup> = 1</div>
  </div>
- <svg class="ab c4-arr g2" viewBox="0 0 80 60" style="left:640px;top:760px;width:70px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
- <div class="pan c4-st lr g2" id="c4-s2" style="left:720px;top:592px;width:500px;height:398px">
+ <svg class="ab c4-arr g2" viewBox="0 0 80 60" style="left:637px;top:744px;width:76px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="pan c4-st lr g2" id="c4-s2" style="left:720px;top:556px;width:500px;height:434px">
   <div class="c4-n"><b>2</b>รวมกัน</div>
   <div class="mx c4-res c-d">f′(x) = 3x<sup>2</sup> − 3</div>
-  <div class="c4-note">นี่คือกราฟเส้นสีแดงในสไลด์ที่แล้ว</div>
+  <svg class="plot" id="c4-mini2" viewBox="0 0 430 190" style="position:relative;width:430px;height:190px" aria-label="กราฟ f′ สีแดง ตัดแกน x ที่ −1 และ 1" role="img"></svg>
+  <div class="c4-note">= กราฟสีแดงในสไลด์ที่แล้ว</div>
  </div>
- <svg class="ab c4-arr g3" viewBox="0 0 80 60" style="left:1230px;top:760px;width:70px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
- <div class="pan c4-st g3" id="c4-s3" style="left:1310px;top:592px;width:480px;height:398px">
+ <svg class="ab c4-arr g3" viewBox="0 0 80 60" style="left:1227px;top:744px;width:76px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="pan c4-st g3" id="c4-s3" style="left:1310px;top:556px;width:480px;height:434px">
   <div class="c4-n"><b>3</b>ตรวจกับกราฟ</div>
   <div class="mx c4-l">f′(1) = 3(1)<sup>2</sup> − 3 = <b class="c4-zero">0</b></div>
-  <svg class="plot" id="c4-mini" viewBox="0 0 420 200" style="position:relative;width:420px;height:200px;margin-top:8px" aria-label="กราฟเล็ก ก้นหุบที่ x = 1 เส้นสัมผัสราบ" role="img"></svg>
-  <div class="c4-note c4-ok">ก้นหุบที่ x = 1 ราบจริง ✓</div>
+  <svg class="plot" id="c4-mini" viewBox="0 0 410 190" style="position:relative;width:410px;height:190px" aria-label="กราฟเล็ก ก้นหุบที่ x = 1 เส้นสัมผัสราบ" role="img"></svg>
+  <div class="c4-note c4-ok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#check"/></svg>ก้นหุบที่ x = 1 ราบจริง</div>
  </div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>04 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>04 / 08</b></span></div>
  <aside class="notes">กฎ: d/dx xⁿ = n·xⁿ⁻¹ (เลขชี้กำลังลงมาคูณข้างหน้า แล้วเลขชี้กำลังลดลง 1). ตัวอย่าง x² → 2x (ตรงกับสไลด์ 2: ที่ x = 1 ได้ 2), x³ → 3x². ฝึก: f(x) = x³ − 3x → f′(x) = 3x² − 3. ตรวจ f′(1) = 3 − 3 = 0 ตรงกับก้นหุบในสไลด์ 3</aside>
 </section>

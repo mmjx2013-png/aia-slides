@@ -13,7 +13,7 @@
   function $(s, c) { return (c || document).querySelector(s); }
   function $$(s, c) { return [].slice.call((c || document).querySelectorAll(s)); }
   function S(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
-  function T(at, text, parent) { var e = S('text', at, parent); e.textContent = text; return e; }
+  function T(at, text, parent) { var f = at.fill; delete at.fill; var e = S('text', at, parent); if (f) e.style.fill = f; e.textContent = text; return e; }
   function set(el, at) { for (var k in at) el.setAttribute(k, typeof at[k] === 'number' ? +at[k].toFixed(2) : at[k]); }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
   function num(v, d) { var s = Math.abs(v).toFixed(d); return (v < 0 && +s !== 0 ? '−' : '') + s; }   /* real minus sign */
@@ -154,7 +154,7 @@
     var DRIVE = 4800, GAP = 1100, X0 = 20, L = 1980, REF = 120, VMAX = 110, dots = [];
     for (var k = 0; k <= 12; k++) {
       var uu = k / 12, x = X0 + L * uu * uu + REF;
-      if (x < 1900) dots.push({ u: uu, el: S('circle', { cx: x.toFixed(1), cy: 141, r: 9, fill: PINK, stroke: INK, 'stroke-width': 3 }, $('#c1-dots')) });
+      if (x < 1900) dots.push({ u: uu, el: S('circle', { cx: x.toFixed(1), cy: 132, r: 9, fill: PINK, stroke: INK, 'stroke-width': 3 }, $('#c1-dots')) });
     }
     var raf = 0, t0 = null, last = 0, rot = 0, u = 0;
     function pose(w, dotsOn) {
@@ -198,23 +198,25 @@
     var P = plot(svg, { id: 'c2', x0: -0.5, x1: 2.75, y0: -0.7, y1: 7.3, l: 84, t: 40, w: 900, h: 620, gx: 0.25, gy: 0.5, xt: [1, 2], yt: [2, 4, 6] });
     var f = function (x) { return x * x; };
     var cv = S('path', { 'class': 'cf draw', d: P.path(f, -0.5, 2.75, 220), pathLength: 1 }, P.body); cv.style.setProperty('--d', 450);
-    var tan = S('line', { 'class': 'tan', x1: P.sx(-0.5), y1: P.sy(-2), x2: P.sx(2.75), y2: P.sy(4.5) }, P.body);
     var sec = S('line', { 'class': 'sec' }, P.body);
+    var tan = S('line', { 'class': 'tan', x1: P.sx(-0.5), y1: P.sy(-2), x2: P.sx(2.75), y2: P.sy(4.5) }, P.body);
     var run = S('line', { 'class': 'sec dash' }, P.top), rise = S('line', { 'class': 'sec dash' }, P.top);
     T({ 'class': 'lbl halo', x: P.sx(2.05), y: P.sy(6.6), fill: BLUE, 'text-anchor': 'end' }, 'y = x²', P.top);
     var tanL = T({ 'class': 'lbl halo', x: P.sx(1.12), y: P.sy(0.38), fill: RED }, 'เส้นสัมผัส · ความชัน 2', P.top);
     var runL = T({ 'class': 'lbl halo', 'text-anchor': 'middle', fill: PINK }, '', P.top);
     var riseL = T({ 'class': 'lbl halo', fill: PINK }, '', P.top);
     S('circle', { 'class': 'pt', cx: P.sx(1), cy: P.sy(1), r: 14, fill: '#fff' }, P.top);
-    var pL = T({ 'class': 'lbl halo', x: P.sx(1) - 24, y: P.sy(1) - 18, 'text-anchor': 'end' }, 'P', P.top);
+    T({ 'class': 'lbl halo', x: P.sx(1) - 30, y: P.sy(1) - 20, 'text-anchor': 'end' }, 'P', P.top);
     var ring = S('circle', { r: 34, fill: 'none', stroke: PINK, 'stroke-width': 4, 'class': 'c2-ring' }, P.top);
     var q = S('circle', { 'class': 'pt', r: 18, fill: PINK }, P.top);
     var qL = T({ 'class': 'lbl halo' }, 'Q', P.top);
     var eh = $('#c2-h'), en = $('#c2-num'), ed = $('#c2-den'), em = $('#c2-m'), rows = $$('#c2-tape tbody tr'), h = 1.5, lock = false;
     function line(m) { set(sec, { x1: P.sx(-0.5), y1: P.sy(1 + m * (-1.5)), x2: P.sx(2.75), y2: P.sy(1 + m * 1.75) }); }
+    function exact(v) { var t = v.toFixed(6).replace(/0+$/, ''), d = (t.split('.')[1] || '').length; return num(v, Math.max(3, d)); }
     function setH(v) {
+      v = Math.round(v * 1000) / 1000; if (Math.abs(v) < 0.001) v = v < 0 ? -0.001 : 0.001;   /* h has 3 decimals, so every shown number is exact */
       h = v;
-      var qx = 1 + h, qy = f(qx), m = 2 + h, rs = qy - 1, X = P.sx(qx), Y = P.sy(qy), far = Math.abs(h) > 0.2;
+      var qx = 1 + h, qy = f(qx), m = 2 + h, rs = qy - 1, X = P.sx(qx), Y = P.sy(qy), far = Math.abs(h) > 0.34;
       line(m);
       set(run, { x1: P.sx(1), y1: P.sy(1), x2: X, y2: P.sy(1) });
       set(rise, { x1: X, y1: P.sy(1), x2: X, y2: Y });
@@ -225,15 +227,15 @@
       set(qL, { x: X + (h > 0 ? -26 : 26), y: Y - 22, 'text-anchor': h > 0 ? 'end' : 'start' }); qL.style.opacity = Math.abs(h) > 0.12 ? 1 : 0;
       var tv = lock ? 1 : clamp((0.3 - Math.abs(h)) / 0.28, 0, 1);
       tan.style.opacity = tv; tanL.style.opacity = tv > 0.95 ? 1 : 0;
-      eh.textContent = num(h, 3); en.textContent = num(rs, 3); ed.textContent = num(h, 3); em.textContent = num(m, 3);
+      eh.textContent = num(h, 3); en.textContent = exact(rs); ed.textContent = num(h, 3); em.textContent = num(m, 3);
       em.classList.toggle('near', Math.abs(h) < 0.0105);
     }
     function showRows(v) { rows.forEach(function (r) { r.classList.toggle('vis', +r.dataset.h >= v - 1e-9); }); }
     drag(svg, function (px, py, ph) {
       if (ph === 'end') return;
       A.stop();
-      var hh = clamp(P.ix(px), -0.4, 2.65) - 1;
-      if (Math.abs(hh) < 0.004) hh = hh < 0 ? -0.001 : 0.001;
+      var hh = clamp(P.ix(px), -0.4, 2.65) - 1, k = svg.getBoundingClientRect().width / 1030 || 1;
+      if (Math.abs(hh) < Math.max(0.004, 7 / k / (P.o.w / 3.25))) hh = hh < 0 ? -0.001 : 0.001;   /* within ~7 screen px of P: snap to h = ±0.001 */
       setH(hh); hint.classList.add('gone');
     });
     setH(1.5);
@@ -262,7 +264,7 @@
     var f = function (x) { return x * x * x - 3 * x; }, d = function (x) { return 3 * x * x - 3; };
     var Pa = plot(svg, { id: 'c3a', x0: -2.2, x1: 2.2, y0: -3.4, y1: 3.4, l: 84, t: 40, w: 960, h: 400, gx: 0.5, gy: 1, xt: [-2, -1, 1, 2], yt: [-2, 2], zero: false });
     S('line', { x1: 24, x2: 1066, y1: 474, y2: 474, stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }, svg);
-    var Pb = plot(svg, { id: 'c3b', x0: -2.2, x1: 2.2, y0: -4, y1: 10.5, l: 84, t: 520, w: 960, h: 356, gx: 0.5, gy: 1.5, gm: 3, xt: [-2, -1, 1, 2], yt: [-3, 3, 6, 9], zero: false, yl: 'y' });
+    var Pb = plot(svg, { id: 'c3b', x0: -2.2, x1: 2.2, y0: -4, y1: 10.3, l: 84, t: 540, w: 960, h: 336, gx: 0.5, gy: 1.5, gm: 3, xt: [-2, -1, 1, 2], yt: [3, 6, 9], zero: false, yl: 'y' });
     var cf = S('path', { 'class': 'cf draw', d: Pa.path(f, -2.2, 2.2, 240), pathLength: 1 }, Pa.body); cf.style.setProperty('--d', 450);
     var tr = S('path', { 'class': 'cd' }, Pb.body);
     var cur = S('line', { stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '10 9' }, svg);
@@ -274,9 +276,9 @@
       S('circle', { cx: Pb.sx(x), cy: Pb.sy(0), r: 13, fill: GREEN, stroke: INK, 'stroke-width': 4 }, marks);
     });
     T({ 'class': 'lbl halo', x: Pa.sx(-1), y: Pa.sy(2) - 30, 'text-anchor': 'middle', fill: '#0B8A50' }, 'ยอดเขา: ความชัน 0', marks);
-    T({ 'class': 'lbl halo', x: Pa.sx(1), y: Pa.sy(-2) + 56, 'text-anchor': 'middle', fill: '#0B8A50' }, 'ก้นหุบ: ความชัน 0', marks);
-    T({ 'class': 'lbl halo', x: Pb.sx(0), y: Pb.sy(0) + 46, 'text-anchor': 'middle', fill: '#0B8A50' }, 'f′ = 0 ที่ x = −1 และ 1', marks);
-    var tg = S('line', { 'class': 'tan' }, svg);
+    T({ 'class': 'lbl halo', x: Pa.sx(1) + 24, y: Pa.sy(-2) + 52, fill: '#0B8A50' }, 'ก้นหุบ: ความชัน 0', marks);
+    T({ 'class': 'lbl halo', x: Pb.sx(0), y: Pb.sy(3.75), 'text-anchor': 'middle', fill: '#0B8A50' }, 'f′(x) = 0 ที่ x = −1 และ x = 1', marks);
+    var tg = S('line', { 'class': 'tan' }, Pa.body);
     var da = S('circle', { 'class': 'pt', r: 14, fill: BLUE }, svg), db = S('circle', { 'class': 'pt', r: 14, fill: RED }, svg);
     var ex = $('#c3-x'), em = $('#c3-m'), ea = $('#c3-arrow svg'), es = $('#c3-state'), x = -1.8, lo = -1.8, hi = -1.8;
     function draw(v) {
@@ -314,28 +316,46 @@
     };
   })();
 
-  /* ============ 4 · power rule: hops + a mini graph check ============ */
+  /* ============ 4 · power rule: hops, the hop's dashed trail, two mini graphs ============ */
   C['c-rule'] = (function () {
-    var sl = $('#c-rule'), gen = 0, A = Anim();
+    var sl = $('#c-rule'), gen = 0, A = Anim(), rule = $('#c4-rule'), trail = $('#c4-trail');
     var f = function (x) { return x * x * x - 3 * x; }, d = function (x) { return 3 * x * x - 3; };
-    var P = plot($('#c4-mini'), { id: 'c4m', x0: -0.35, x1: 2.1, y0: -2.6, y1: 2.4, l: 34, t: 14, w: 360, h: 170, xt: [1], zero: false });
+    var P = plot($('#c4-mini'), { id: 'c4m', x0: -0.35, x1: 2.1, y0: -2.7, y1: 2.5, l: 34, t: 16, w: 350, h: 166, xt: [1], zero: false });
     S('path', { 'class': 'cf', d: P.path(f, -0.35, 2.1, 120), style: 'stroke-width:6' }, P.body);
-    var tg = S('line', { 'class': 'tan', style: 'stroke-width:6' }, P.top), dot = S('circle', { 'class': 'pt', r: 10, fill: BLUE, 'stroke-width': 3.5 }, P.top);
+    var tg = S('line', { 'class': 'tan', style: 'stroke-width:6' }, P.body), dot = S('circle', { 'class': 'pt', r: 10, fill: BLUE, 'stroke-width': 3.5 }, P.top);
+    var Q = plot($('#c4-mini2'), { id: 'c4n', x0: -2.1, x1: 2.1, y0: -4.2, y1: 10.5, l: 24, t: 14, w: 370, h: 150, xt: [-1, 1], zero: false });
+    var q = S('path', { 'class': 'cd draw', d: Q.path(d, -2.05, 2.05, 120), pathLength: 1, style: 'stroke-width:6' }, Q.body); q.style.setProperty('--d', 500);
+    [-1, 1].forEach(function (x, i) { var c = S('circle', { 'class': 'pop', cx: Q.sx(x), cy: Q.sy(0), r: 10, fill: GREEN, stroke: INK, 'stroke-width': 3.5 }, Q.top); c.style.setProperty('--d', 1300 + i * 200); });
     function at(x) {
       var X = P.sx(x), Y = P.sy(f(x)), vx = P.sx(x + 1) - X, vy = P.sy(f(x) + d(x)) - Y, L = Math.hypot(vx, vy) || 1;
       set(tg, { x1: X - vx / L * 80, y1: Y - vy / L * 80, x2: X + vx / L * 80, y2: Y + vy / L * 80 }); set(dot, { cx: X, cy: Y });
     }
     at(1);
+    /* the dashed trail of the rule's hop, measured inside the banner so the entrance motion does not matter */
+    function drawTrail(on) {
+      trail.classList.toggle('show', !!on); if (!on) return;
+      var src = $('.hs[data-h="r"]', rule), dst = $('.ht[data-h="r"]', rule), ex = $('sup.hm[data-h="r"] .c-d', rule);
+      var R = rule.getBoundingClientRect(), k = R.width / rule.offsetWidth || 1, ox = rule.offsetLeft, oy = rule.offsetTop;
+      function pt(el, fx, fy) { var r = el.getBoundingClientRect(); return [ox + (r.left - R.left + r.width * fx) / k, oy + (r.top - R.top + r.height * fy) / k]; }
+      var a = pt(src, 0.5, 0.1), b = pt(dst, 0.5, 0.12), m = [(a[0] + b[0]) / 2, Math.min(a[1], b[1]) - 64], e = pt(ex, 1, 0.5), c = pt(dst, 0.5, 1);
+      $('#c4-arc').setAttribute('d', 'M' + a[0].toFixed(1) + ' ' + a[1].toFixed(1) + ' Q' + m[0].toFixed(1) + ' ' + m[1].toFixed(1) + ' ' + b[0].toFixed(1) + ' ' + b[1].toFixed(1));
+      set($('#c4-arcl'), { x: c[0], y: oy + rule.offsetHeight - 24 });
+      set($('#c4-minl'), { x: e[0] + 18, y: e[1] + 10 });
+    }
     var beats = [['r', 'e1', 'e2', 'e3'], ['s1'], [], []];
     function later(ms, fn) { var my = gen; setTimeout(function () { if (my === gen && sl.classList.contains('on')) fn(); }, ms); }
     return {
       set: function (st, prev) {
         gen++; A.stop(); clearFly(sl);
-        beats.forEach(function (ks, b) { ks.forEach(function (k) { land(sl, k, b < st || (b === st && (still() || prev !== st - 1))); }); });
         var fwd = !still() && prev === st - 1;
-        if (fwd && st === 0) { later(800, function () { fly(sl, 'r'); }); ['e1', 'e2', 'e3'].forEach(function (k, i) { later(2000 + i * 650, function () { fly(sl, k); }); }); }
+        beats.forEach(function (ks, b) { ks.forEach(function (k) { land(sl, k, b < st || (b === st && !fwd)); }); });
+        if (fwd && st === 0) {
+          drawTrail(false);
+          later(800, function () { fly(sl, 'r'); }); later(1850, function () { drawTrail(true); });
+          ['e1', 'e2', 'e3'].forEach(function (k, i) { later(2300 + i * 650, function () { fly(sl, k); }); });
+        } else drawTrail(true);
         if (fwd && st === 1) later(700, function () { fly(sl, 's1'); });
-        if (st === 3 && fwd) { at(0.15); later(500, function () { A.run(1300, function (p) { at(0.15 + 0.85 * eio(p)); }); }); }
+        if (st === 3 && fwd) { at(0.15); later(500, function () { A.run(1400, function (p) { at(0.15 + 0.85 * eio(p)); }); }); }
         else at(1);
       },
       leave: function () { gen++; A.stop(); clearFly(sl); }
@@ -355,8 +375,8 @@
     rects.style.transformBox = 'view-box'; rects.style.transformOrigin = '0px ' + P.sy(0) + 'px';
     var cv = S('path', { 'class': 'cf draw', d: P.path(f, -0.22, 2.3, 200), pathLength: 1 }, P.body); cv.style.setProperty('--d', 350);
     S('line', { x1: P.sx(2), x2: P.sx(2), y1: P.sy(0), y2: P.sy(4.45), stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '4 10', 'stroke-linecap': 'round' }, P.top);
-    T({ 'class': 'lbl halo', x: P.sx(2.18), y: P.sy(4.25), fill: BLUE, 'text-anchor': 'end' }, 'y = x²', P.top);
-    var eN = $('#c5-nv'), eT = $('#c5-tv'), eS = $('#c5-sv'), eE = $('#c5-ev'), eB = $('#c5-eb'), th = $('#c5-th'), fill = $('#c5-fill'), trk = $('#c5-trk');
+    T({ 'class': 'lbl halo', x: P.sx(1.9), y: P.sy(4.22), fill: BLUE, 'text-anchor': 'end' }, 'y = x²', P.top);
+    var eN = $('#c5-nv'), eT = $('#c5-tv'), eS = $('#c5-sv'), eE = $('#c5-ev'), eB = $('#c5-eb'), th = $('#c5-th'), fill = $('#c5-fill'), trk = $('#c5-trk'), inr = $('#c5-in');
     function sumOf(k) { return 4 * (k + 1) * (2 * k + 1) / (3 * k * k); }   /* = Σ (2i/k)² · (2/k), i = 1..k */
     function readout(s) {
       eS.textContent = s.toFixed(3); var e = Math.max(0, s - EX);
@@ -378,9 +398,9 @@
       trk.setAttribute('aria-valuenow', n);
       readout(sumOf(n));
     }
-    function lim(on) { sl.classList.toggle('lim', on); }
+    function lim(on) { sl.classList.toggle('is-lim', on); }
     function user(v) { A.stop(); lim(false); setN(v); }
-    drag(trk, function (px, py, ph) { if (ph !== 'end') user(2 + 48 * clamp(px / (trk.offsetWidth || 1), 0, 1)); });
+    drag(trk, function (px, py, ph) { if (ph !== 'end') user(2 + 48 * clamp((px - inr.offsetLeft) / (inr.offsetWidth || 1), 0, 1)); });
     $('#c5-minus').addEventListener('click', function (e) { e.stopPropagation(); user(n - 1); });
     $('#c5-plus').addEventListener('click', function (e) { e.stopPropagation(); user(n + 1); });
     setN(2);
@@ -419,7 +439,7 @@
     var knL = S('circle', { r: 15, fill: PINK, stroke: INK, 'stroke-width': 4 }, Lp.top);
     var trF = S('path', { 'class': 'cv' }, Rp.body);
     var barR = S('rect', { width: 16, fill: SUN, stroke: INK, 'stroke-width': 3 }, Rp.under);
-    var tgR = S('line', { 'class': 'tan g1' }, Rp.top);
+    var tgR = S('line', { 'class': 'tan g1' }, Rp.body);
     var dotR = S('circle', { 'class': 'pt', r: 13, fill: VIOLET }, Rp.top);
     var knR = S('circle', { r: 15, fill: PINK, stroke: INK, 'stroke-width': 4 }, Rp.top);
     var a1 = $('#c6-a1'), a2 = $('#c6-a2'), h1 = $('#c6-h1'), h2 = $('#c6-h2');
@@ -456,7 +476,7 @@
   /* ============ 7 · quick check: hop in Q1's working, area fill in Q2's working ============ */
   C['c-quiz'] = (function () {
     var sl = $('#c-quiz'), A = Anim(), gen = 0;
-    var P = plot($('#c7-mini'), { id: 'c7m', x0: -0.25, x1: 3.35, y0: -0.8, y1: 10, l: 36, t: 18, w: 240, h: 166, xt: [3], zero: false });
+    var P = plot($('#c7-mini'), { id: 'c7m', x0: -0.25, x1: 3.35, y0: -0.8, y1: 10, l: 30, t: 22, w: 220, h: 132, xt: [3], zero: false });
     var f = function (x) { return x * x; };
     var cp = S('clipPath', { id: 'c7-grow' }, P.defs), cr = S('rect', { x: P.sx(0), y: 0, width: 0, height: 300 }, cp);
     S('path', { d: P.area(f, 0, 3), fill: SUN, stroke: INK, 'stroke-width': 2.5, 'clip-path': 'url(#c7-grow)' }, P.under);
@@ -492,7 +512,7 @@
     for (var k = 0; k <= 100; k += 10) {
       var a = -120 + k * 2.4, p1 = gp(a, 140), p2 = gp(a, k % 20 ? 128 : 118);
       S('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: INK, 'stroke-width': k % 20 ? 3 : 5, 'stroke-linecap': 'round' }, sp);
-      if (k % 20 === 0) { var p3 = gp(a, 96); T({ 'class': 'tl', x: p3[0], y: p3[1] + 9, 'text-anchor': 'middle' }, String(k), sp); }
+      if (k % 20 === 0) { var p3 = gp(a, 90); T({ 'class': 'tl', x: p3[0], y: p3[1] + 9, 'text-anchor': 'middle' }, String(k), sp); }
     }
     var spv = T({ 'class': 'big2', x: 200, y: 316, 'text-anchor': 'middle' }, '0', sp);
     T({ 'class': 'u', x: 200, y: 350, 'text-anchor': 'middle' }, 'กม./ชม.', sp);
@@ -502,10 +522,10 @@
     var odArc = S('path', { stroke: SUN, 'stroke-width': 30, fill: 'none' }, od);
     S('path', { d: arc(-120, 120, 171), stroke: INK, 'stroke-width': 4, fill: 'none' }, od);
     S('path', { d: arc(-120, 120, 141), stroke: INK, 'stroke-width': 4, fill: 'none' }, od);
-    [0, 5, 10].forEach(function (km) { var p = gp(-120 + km * 24, 108); T({ 'class': 'tl', x: p[0], y: p[1] + 9, 'text-anchor': 'middle' }, String(km), od); });
-    S('rect', { x: 98, y: 168, width: 204, height: 84, rx: 16, fill: INK }, od);
-    var odv = T({ 'class': 'big2', x: 200, y: 233, 'text-anchor': 'middle', style: 'fill:#fff' }, '0.0', od);
-    T({ 'class': 'u', x: 200, y: 300, 'text-anchor': 'middle' }, 'กม. (ระยะทางสะสม)', od);
+    [0, 5, 10].forEach(function (km) { var p = gp(-120 + km * 24, 112); T({ 'class': 'tl', x: p[0], y: p[1] + 9, 'text-anchor': 'middle' }, String(km), od); });
+    S('rect', { x: 92, y: 138, width: 216, height: 92, rx: 18, fill: INK }, od);
+    var odv = T({ 'class': 'big2', x: 200, y: 208, 'text-anchor': 'middle', fill: '#fff' }, '0.0', od);
+    T({ 'class': 'u', x: 200, y: 330, 'text-anchor': 'middle' }, 'กม. สะสม', od);
     var Ps = plot($('#c8-sg'), { id: 'c8s', x0: -0.6, x1: 16.2, y0: -0.8, y1: 11.4, l: 54, t: 22, w: 320, h: 222, gx: 2.5, gy: 2.5, xt: [5, 10, 15], yt: [5, 10], xl: 't', yl: 's ระยะทาง', zero: false });
     var Pv = plot($('#c8-vg'), { id: 'c8v', x0: -0.6, x1: 16.2, y0: -7, y1: 96, l: 54, t: 22, w: 320, h: 222, gx: 2.5, gy: 20, xt: [5, 10, 15], yt: [40, 80], xl: 't', yl: 'v ความเร็ว', zero: false });
     S('path', { d: Ps.path(s, 0, TT), fill: 'none', stroke: '#CBD3F2', 'stroke-width': 5, 'stroke-dasharray': '2 9', 'stroke-linecap': 'round' }, Ps.body);

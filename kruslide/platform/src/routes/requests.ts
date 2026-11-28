@@ -196,13 +196,14 @@ export async function answer(ctx: Ctx): Promise<Response> {
 // ---------- the teacher's view of a request ----------
 /** Thumbnails of the chosen sample slides (both halves for "ได้ทั้งคู่"). */
 export function choiceThumbs(answers: Answers, small = false): Safe {
+  const lazy = small ? html` loading="lazy"` : ''; // the admin list can be long; the teacher's page has 10 small images
   const items = QUIZ.filter((q) => answers[q.key]);
   if (!items.length) return html`<p class="muted small">ยังไม่ได้เลือกสไตล์</p>`;
   return html`<div class="picks${small ? ' sm' : ''}">${items.map((q) => {
     const c = answers[q.key]!;
     const sides = c === 'both' ? (['a', 'b'] as const) : ([c] as const);
     return html`<figure class="thumb"><div class="im${sides.length > 1 ? ' two' : ''}">${sides.map((s) =>
-      html`<img src="${imagePath(q.key, s, true)}" width="480" height="270" alt="" loading="lazy" decoding="async">`)}</div>
+      html`<img src="${imagePath(q.key, s, true)}" width="480" height="270" alt=""${lazy} decoding="async">`)}</div>
       <figcaption><b>${answerTh(q, c)}</b>${q.th}</figcaption></figure>`;
   })}</div>`;
 }

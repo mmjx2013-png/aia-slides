@@ -31,6 +31,7 @@ def section(s):
     if s.get('light_at') is not None: a += f' data-light-at="{s["light_at"]}"'
     if s.get('dark_at') is not None: a += f' data-dark-at="{s["dark_at"]}"'
     if s.get('noclick'): a += ' data-noclick'
+    if s.get('bg_at'): a += f' data-bg-at="{s["bg_at"]}"'
     return a + '>' + s['html'] + '</section>'
 
 html = f'''<!doctype html>

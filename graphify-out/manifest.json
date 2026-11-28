@@ -654,16 +654,16 @@
     "semantic_hash": "bd4aab3542c8d65e4e6f2ed113a4c092"
   },
   "kruslide/platform/e2e/smoke.mjs": {
-    "mtime": 1795849617.5509417,
-    "seen": 1795851253.2342536,
-    "ast_hash": "a8d6c681c45c38a5235fe0c2a7adcec3",
-    "semantic_hash": "a8d6c681c45c38a5235fe0c2a7adcec3"
+    "mtime": 1795852979.3756645,
+    "seen": 1795853060.7784908,
+    "ast_hash": "61573476ba08e825b56bc92b6409969b",
+    "semantic_hash": ""
   },
   "kruslide/platform/package.json": {
-    "mtime": 1795848231.2659101,
-    "seen": 1795851253.2342577,
-    "ast_hash": "b999cb7a9f90bf47bcefd898b5e7420f",
-    "semantic_hash": "b999cb7a9f90bf47bcefd898b5e7420f"
+    "mtime": 1795851666.2581143,
+    "seen": 1795853060.7784927,
+    "ast_hash": "0737fee0b3906d02bd419eaf5ba89d1f",
+    "semantic_hash": ""
   },
   "kruslide/platform/scripts/dev.mjs": {
     "mtime": 1795848288.20045,
@@ -678,16 +678,16 @@
     "semantic_hash": "3c1ca4fdc95f33dce761c49601fcc22e"
   },
   "kruslide/platform/scripts/seed.mjs": {
-    "mtime": 1795849357.5768945,
-    "seen": 1795851253.234262,
-    "ast_hash": "ddcd845b744408ecfccec87172a20257",
-    "semantic_hash": "ddcd845b744408ecfccec87172a20257"
+    "mtime": 1795852313.2156315,
+    "seen": 1795853060.7785444,
+    "ast_hash": "968a7963c725fde20c9f40b28853d7d0",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/db.ts": {
-    "mtime": 1795851171.184856,
-    "seen": 1795851253.234263,
-    "ast_hash": "d59b38101734d9fe2f3449223ac8a510",
-    "semantic_hash": "d59b38101734d9fe2f3449223ac8a510"
+    "mtime": 1795851366.280781,
+    "seen": 1795853060.7785466,
+    "ast_hash": "3cd0ac12af0f377ecac3d7ac079bbac9",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/env.ts": {
     "mtime": 1795851143.141358,
@@ -696,10 +696,10 @@
     "semantic_hash": "7f8dce478381ca07373ca7055e3701df"
   },
   "kruslide/platform/src/index.ts": {
-    "mtime": 1795849396.308494,
-    "seen": 1795851253.2342653,
-    "ast_hash": "b02e29bed9f631bcbfc45ebfd7bca536",
-    "semantic_hash": "b02e29bed9f631bcbfc45ebfd7bca536"
+    "mtime": 1795851406.1212964,
+    "seen": 1795853060.778573,
+    "ast_hash": "a6cd3af3715820134d37744934acb14d",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/lib/audit.ts": {
     "mtime": 1795847293.2285385,
@@ -780,10 +780,10 @@
     "semantic_hash": "c34d0f22901d9bb52249ca4c58ad26a6"
   },
   "kruslide/platform/src/lib/validate.ts": {
-    "mtime": 1795849402.0019796,
-    "seen": 1795851253.2342827,
-    "ast_hash": "cf64c2e17c8e293560a0539621913448",
-    "semantic_hash": "cf64c2e17c8e293560a0539621913448"
+    "mtime": 1795851366.2776546,
+    "seen": 1795853060.7789047,
+    "ast_hash": "2213b43e33e2f1eb18771225fe53f049",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/lib/watermark.ts": {
     "mtime": 1795849505.5539858,
@@ -816,10 +816,10 @@
     "semantic_hash": "cd65781caf08ab55c4e76be5559f3e6f"
   },
   "kruslide/platform/src/routes/admin.ts": {
-    "mtime": 1795849488.7746801,
-    "seen": 1795851253.2342913,
-    "ast_hash": "47af254e4546de89b4c33b83af146686",
-    "semantic_hash": "47af254e4546de89b4c33b83af146686"
+    "mtime": 1795851396.2111464,
+    "seen": 1795853060.779016,
+    "ast_hash": "2a810ebb59e5c78aaf75592d15de16d1",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/routes/auth.ts": {
     "mtime": 1795847545.558275,
@@ -828,28 +828,28 @@
     "semantic_hash": "e140d48a9485906e3994e10a9e8e6655"
   },
   "kruslide/platform/src/routes/deck.ts": {
-    "mtime": 1795848637.5197577,
-    "seen": 1795851253.2342942,
-    "ast_hash": "5383e64bee5f82db60165eb2491cbe1d",
-    "semantic_hash": "5383e64bee5f82db60165eb2491cbe1d"
+    "mtime": 1795851441.9314103,
+    "seen": 1795853060.7790482,
+    "ast_hash": "d9b010f633cdbfe80e549c10713e82f2",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/routes/member.ts": {
-    "mtime": 1795848519.132085,
-    "seen": 1795851253.2342954,
-    "ast_hash": "9c18f9782afa5e5790963c7eae3998d8",
-    "semantic_hash": "9c18f9782afa5e5790963c7eae3998d8"
+    "mtime": 1795852911.767639,
+    "seen": 1795853060.7790496,
+    "ast_hash": "ff30a601a60356ba71e3aa0895fefdaa",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/routes/privacy.ts": {
-    "mtime": 1795847655.6728137,
-    "seen": 1795851253.2342966,
-    "ast_hash": "b45763d43e0dd2fd845ffc2fed9bb84a",
-    "semantic_hash": "b45763d43e0dd2fd845ffc2fed9bb84a"
+    "mtime": 1795851441.9310057,
+    "seen": 1795853060.7790513,
+    "ast_hash": "18bef95fb7c46d59b718c5e4d056c870",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/routes/static.ts": {
-    "mtime": 1795847655.6708705,
-    "seen": 1795851253.2342975,
-    "ast_hash": "6620f8ceecafcb50e57aeda235475bbc",
-    "semantic_hash": "6620f8ceecafcb50e57aeda235475bbc"
+    "mtime": 1795851301.2940924,
+    "seen": 1795853060.7790546,
+    "ast_hash": "3dd48886027b96ec17624db8c46f38ca",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/routes/webhooks.ts": {
     "mtime": 1795847786.9070587,
@@ -858,16 +858,16 @@
     "semantic_hash": "b11e6e75dfd24154af1b1a6a336a43ab"
   },
   "kruslide/platform/src/views/css.ts": {
-    "mtime": 1795851203.079325,
-    "seen": 1795851253.2343001,
-    "ast_hash": "c963b51dc32d92e30c5db46804e6c01a",
-    "semantic_hash": "c963b51dc32d92e30c5db46804e6c01a"
+    "mtime": 1795852979.37164,
+    "seen": 1795853060.779083,
+    "ast_hash": "4d603284eb1cd10e0d15dce99bfe54e0",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/views/layout.ts": {
-    "mtime": 1795851136.1340828,
-    "seen": 1795851253.2343013,
-    "ast_hash": "8bfece866c0c3a660aae0fb8e6a1f3a3",
-    "semantic_hash": "8bfece866c0c3a660aae0fb8e6a1f3a3"
+    "mtime": 1795852979.3676713,
+    "seen": 1795853060.7790864,
+    "ast_hash": "eac40afb10184bf10991e809652c6a76",
+    "semantic_hash": ""
   },
   "kruslide/platform/test/admin.test.ts": {
     "mtime": 1795849501.5510647,
@@ -960,10 +960,10 @@
     "semantic_hash": "91d272f62fd750316b8f13c25d00095d"
   },
   "kruslide/trailer/fetch_images.py": {
-    "mtime": 1795849829.410005,
-    "seen": 1795851253.2343204,
-    "ast_hash": "e046f8bfda43fba83f4204dd23deb1cc",
-    "semantic_hash": "e046f8bfda43fba83f4204dd23deb1cc"
+    "mtime": 1795852095.5552866,
+    "seen": 1795853060.7794085,
+    "ast_hash": "a2bba2a182922e5a0972bdd3bca82393",
+    "semantic_hash": ""
   },
   "kruslide/trailer/images.json": {
     "mtime": 1795848230.806329,
@@ -1040,8 +1040,8 @@
   "kruslide/platform/migrations/0001_init.sql": {
     "mtime": 1795847223.046705,
     "seen": 1795851253.2342556,
-    "ast_hash": "203761187818d269e36cceadb8e72ea8",
-    "semantic_hash": "203761187818d269e36cceadb8e72ea8"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "kruslide/brand/fonts/LICENSE-Inter.txt": {
     "mtime": 1795849722.0672405,
@@ -1056,15 +1056,213 @@
     "semantic_hash": "0d63e4003388c97921e7e765e8b921a2"
   },
   "kruslide/trailer/credits.md": {
-    "mtime": 1795850017.3290925,
-    "seen": 1795851253.234434,
-    "ast_hash": "46590c65b58961330a18d77aea6762f2",
-    "semantic_hash": "46590c65b58961330a18d77aea6762f2"
+    "mtime": 1795852985.05815,
+    "seen": 1795853060.7815726,
+    "ast_hash": "19735562c9ea816beab23007fe845fad",
+    "semantic_hash": ""
   },
   "kruslide/brand/kruslide-icon.svg": {
     "mtime": 1795850484.002044,
     "seen": 1795851253.2344575,
     "ast_hash": "94228da817752b1c77fbc69ae41cdec6",
     "semantic_hash": "94228da817752b1c77fbc69ae41cdec6"
+  },
+  "kruslide/platform/scripts/quiz/render.mjs": {
+    "mtime": 1795852153.5998726,
+    "seen": 1795853060.7785413,
+    "ast_hash": "f44f003e97c5c0e9b786e605a343829d",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/scripts/quiz/slides.mjs": {
+    "mtime": 1795853015.9989872,
+    "seen": 1795853060.7785428,
+    "ast_hash": "5a745fb023aabab3a6184a61ab88ea2c",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/lib/quiz.ts": {
+    "mtime": 1795851278.9368732,
+    "seen": 1795853060.7788544,
+    "ast_hash": "ce68a2ac6df5a765cdb06c44e435c8ee",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/routes/requests.ts": {
+    "mtime": 1795852681.1288788,
+    "seen": 1795853060.7790527,
+    "ast_hash": "bee863bacb06a8903483e2d762fa7ba5",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/views/brand.ts": {
+    "mtime": 1795851068.839216,
+    "seen": 1795853060.779081,
+    "ast_hash": "74c3d5c41f4bbbc19b007283c1435ec9",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/views/js.ts": {
+    "mtime": 1795851290.218092,
+    "seen": 1795853060.7790842,
+    "ast_hash": "6dd03f74e718c765b255e009d409631a",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/test/requests.test.ts": {
+    "mtime": 1795852492.8396611,
+    "seen": 1795853060.7792943,
+    "ast_hash": "bf1b7d76106eb657147f98a3e8198d15",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/build.py": {
+    "mtime": 1795851361.0892808,
+    "seen": 1795853060.779395,
+    "ast_hash": "c45f2a002ce88c33773988f14aeaa360",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/src/calc.js": {
+    "mtime": 1795852642.079781,
+    "seen": 1795853060.7793963,
+    "ast_hash": "d1e9d18b63f5cd426ad4c97b44516172",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/src/engine.js": {
+    "mtime": 1795850863.4527106,
+    "seen": 1795853060.7793975,
+    "ast_hash": "191ddcb6235e2b10c1e8c0b0c1f09333",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/src/tools.js": {
+    "mtime": 1795850863.4525306,
+    "seen": 1795853060.7793987,
+    "ast_hash": "8b1ca563c3514e83ccad6bcf7348348e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/geo.js": {
+    "mtime": 1795851281.261242,
+    "seen": 1795853060.7793999,
+    "ast_hash": "f6d58faef890d0cc5af02229857e2b21",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/map.js": {
+    "mtime": 1795853030.6116824,
+    "seen": 1795853060.7794013,
+    "ast_hash": "1154558b2240cc22b32e9818dcf313d2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/school/js/site.js": {
+    "mtime": 1795850856.1743016,
+    "seen": 1795853060.7794025,
+    "ast_hash": "a1fb6a0e30c46e20799c30385e77bde6",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/audio.py": {
+    "mtime": 1795851586.047955,
+    "seen": 1795853060.7794034,
+    "ast_hash": "ec0109b05cff3f93627818ee95f08841",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/build.sh": {
+    "mtime": 1795852100.89414,
+    "seen": 1795853060.7794049,
+    "ast_hash": "56affde6275c5fd623b5e16ff1159328",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/cards.js": {
+    "mtime": 1795851340.2213824,
+    "seen": 1795853060.779406,
+    "ast_hash": "6f6c8ec0c577c6ff83d29e9e010effc8",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/edit.py": {
+    "mtime": 1795851858.1871455,
+    "seen": 1795853060.779407,
+    "ast_hash": "f73ba8437d49a8b44720f53195ca0ac0",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/finish.py": {
+    "mtime": 1795852028.4501357,
+    "seen": 1795853060.7794094,
+    "ast_hash": "e1bbcc20b6aaac7294a0e4a09bb73924",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/qa.py": {
+    "mtime": 1795852057.2461374,
+    "seen": 1795853060.779455,
+    "ast_hash": "91b3f0979497fb4213fe2d40cc009f7b",
+    "semantic_hash": ""
+  },
+  "kruslide/trailer/render.py": {
+    "mtime": 1795851845.5927734,
+    "seen": 1795853060.779456,
+    "ast_hash": "c2485d611bdf03228ce985393ec99949",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/scripts/quiz/photos/CREDITS.md": {
+    "mtime": 1795852300.654152,
+    "seen": 1795853060.7815573,
+    "ast_hash": "045bb44358f25ba510e8be79e3b78c52",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/README.md": {
+    "mtime": 1795852789.594181,
+    "seen": 1795853060.7815592,
+    "ast_hash": "66e06db51bf646ecad265552024ec60e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795850848.9666739,
+    "seen": 1795853060.7815607,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795850848.9666917,
+    "seen": 1795853060.7815619,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/fonts/LICENSE-Anuphan-OFL.txt": {
+    "mtime": 1795851281.3221333,
+    "seen": 1795853060.7815633,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/fonts/LICENSE-Taviraj-OFL.txt": {
+    "mtime": 1795851281.32223,
+    "seen": 1795853060.7815652,
+    "ast_hash": "215a68e876182251508d517f8892fe28",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/school/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795850856.1752324,
+    "seen": 1795853060.7815669,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/school/fonts/LICENSE-fontsource-ibm-plex-sans-thai-5.3.0.txt": {
+    "mtime": 1795850856.1758595,
+    "seen": 1795853060.7815683,
+    "ast_hash": "acb967c279997a113a45ae2ded46abff",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/statistics/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795850855.8686848,
+    "seen": 1795853060.7815695,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/statistics/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795850855.8688369,
+    "seen": 1795853060.7815702,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/src/symbols.svg": {
+    "mtime": 1795850941.7380712,
+    "seen": 1795853060.7821054,
+    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/package-lock.json": {
+    "mtime": 1795851666.3021142,
+    "seen": 1795853060.7821288,
+    "ast_hash": "9b001358fefd6ec42e886f93e313407b",
+    "semantic_hash": ""
   }
 }

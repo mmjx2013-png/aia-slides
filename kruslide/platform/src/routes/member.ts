@@ -24,7 +24,7 @@ function landing(ctx: Ctx): Response {
 <section class="hero">
   <div>
     <span class="pill">${icon('school')}สำหรับคุณครูไทยและครู English Program</span>
-    <h1>สไลด์ที่ทั้งห้อง<mark>อยากตอบ</mark> พร้อมสอนทุกหน่วย</h1>
+    <h1><span class="nw">สไลด์ที่ทั้งห้อง<mark>อยากตอบ</mark></span><br><span class="nw">พร้อมสอนทุกหน่วย</span></h1>
     <p class="lead">สมัครเป็นรายเล่มตามหนังสือเรียน เปิดสอนผ่านลิงก์ของครูสไลด์ได้ทันที หรือขอให้เราทำเล่มที่คุณครูสอน พร้อมเลือกสไตล์ที่ชอบเอง</p>
     <p class="row mt-s"><a class="btn line big" href="/app/login">${icon('chat')}เข้าสู่ระบบด้วย LINE</a></p>
     <ul class="ticks"><li>${icon('check')}ไม่ต้องติดตั้งโปรแกรม</li><li>${icon('check')}${RATE_MIN}–${RATE_MAX} บาท/สไลด์/เดือน</li><li>${icon('check')}จ่ายผ่าน PromptPay</li></ul>

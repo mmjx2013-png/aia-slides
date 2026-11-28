@@ -1,7 +1,8 @@
 // Seed LOCAL D1 + R2 with the Unit 4 deck as a sample unit (never touches the remote database or bucket).
 //   npm run seed
 // Creates book 1 "คณิตศาสตร์ ม.1 เล่ม 1" (published, 3 baht/slide) with unit 1 = teacher-slides/unit4/index.html,
-// and the self-hosted fonts under shared/fonts/ (used by the decks and by the member pages).
+// the self-hosted fonts under shared/fonts/ (used by the decks and by the member pages), and the style-quiz
+// sample slides (quiz/*.webp, made by scripts/quiz/render.mjs) under shared/quiz/.
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -11,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
+const QUIZ = join(ROOT, 'quiz');
 const UNIT4 = resolve(ROOT, '../../teacher-slides/unit4');
 const DECK = join(UNIT4, 'index.html');
 const FONTS = join(UNIT4, 'fonts');
@@ -65,7 +67,19 @@ UPDATE books SET slide_count = (SELECT COALESCE(SUM(slide_count), 0) FROM units 
 }
 
 wrangler('r2', 'object', 'put', `${BUCKET}/${key}`, '--local', '--file', DECK, '--content-type', 'text/html; charset=utf-8');
-for (const f of readdirSync(FONTS).filter((n) => n.endsWith('.woff2'))) {
-  wrangler('r2', 'object', 'put', `${BUCKET}/shared/fonts/${f}`, '--local', '--file', join(FONTS, f), '--content-type', 'font/woff2');
+
+// Fonts and quiz images: one bulk upload each (much faster than one wrangler call per file).
+function bulk(prefix, dir, ext, type) {
+  const files = readdirSync(dir).filter((n) => n.endsWith(ext));
+  const list = join(mkdtempSync(join(tmpdir(), 'kruslide-bulk-')), 'list.json');
+  writeFileSync(list, JSON.stringify(files.map((f) => ({ key: `${prefix}${f}`, file: join(dir, f) }))));
+  try {
+    wrangler('r2', 'bulk', 'put', BUCKET, '--local', '--filename', list, '--content-type', type);
+  } finally {
+    rmSync(dirname(list), { recursive: true, force: true });
+  }
+  return files.length;
 }
-console.log('Seeded local D1 + R2. Start the app with: npm run dev  ->  http://127.0.0.1:8787/app/');
+const nFonts = bulk('shared/fonts/', FONTS, '.woff2', 'font/woff2');
+const nQuiz = bulk('shared/quiz/', QUIZ, '.webp', 'image/webp');
+console.log(`Seeded local D1 + R2 (${nFonts} fonts, ${nQuiz} quiz images). Start the app with: npm run dev  ->  http://127.0.0.1:8787/app/`);

@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xjfQVJwurbYebmEd/kpYVL/SmNINZ1H7mWm1XKXU8xY='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-0FUXgHnr9azzmGnMXQZL6tAOgojHbZVQ/TYyNvcO824='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>แคลคูลัส ม.6 · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · Calculus (ม.6) · style "bright graph paper"
@@ -50,7 +50,7 @@ body{position:fixed;inset:0;margin:0}
 
 /* ---------- frame: chip, headline, footer ---------- */
 .chip{position:absolute;display:inline-flex;align-items:center;gap:14px;height:52px;padding:0 22px 0 8px;border-radius:999px;background:var(--ink);color:#fff;font:700 24px/1 Inter;letter-spacing:.02em}
-.chip b{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--sun);color:var(--ink);font:800 20px Inter}
+.chip b{display:grid;place-items:center;min-width:40px;height:40px;padding:0 6px;border-radius:20px;background:var(--sun);color:var(--ink);font:800 22px Inter}
 .chip.r b{background:var(--red);color:#fff}.chip.p b{background:var(--pink);color:#fff}.chip.y b{background:var(--sun)}.chip.g b{background:var(--green);color:#fff}.chip.bl b{background:var(--blue);color:#fff}
 h2{position:absolute;font:800 66px/1.3 Display;letter-spacing:-.01em;color:var(--ink)}
 .hl{position:relative;z-index:0;white-space:nowrap}
@@ -60,10 +60,7 @@ h2{position:absolute;font:800 66px/1.3 Display;letter-spacing:-.01em;color:var(-
 @keyframes wipe{to{transform:none}}
 .foot{position:absolute;left:130px;right:130px;bottom:26px;height:34px;display:flex;align-items:center;justify-content:space-between;font:600 22px/1 Inter;color:var(--mute)}
 .foot .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:800}
-.foot .brand i{display:inline-grid;grid-template-columns:11px 11px;gap:3px}
-.foot .brand i::before,.foot .brand i::after{content:"";width:11px;height:11px;border-radius:3px;background:var(--red);box-shadow:0 14px 0 var(--sun)}
-.foot .brand i::after{background:var(--blue);box-shadow:0 14px 0 var(--pink)}
-.foot .brand i{height:25px}
+.foot .brand .logo{width:30px;height:30px;flex:none}
 .foot .brand span{font-weight:600;color:var(--mute)}
 .foot .pg{display:flex;align-items:center;gap:18px}
 .foot .pg b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
@@ -81,15 +78,16 @@ h2{position:absolute;font:800 66px/1.3 Display;letter-spacing:-.01em;color:var(-
 
 /* ---------- maths typesetting (no libraries) ---------- */
 .mx{font-family:Inter;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:.005em}
-.mx sup,.mx sub{position:relative;font-size:.6em;line-height:0;vertical-align:baseline;margin-left:.04em}
-.mx sup{top:-.78em}.mx sub{top:.34em}
+.mx sup,.mx sub{position:relative;font-size:.62em;line-height:0;vertical-align:baseline;margin-left:.03em}
+.mx sup{top:-.72em}.mx sub{top:.3em}
+.fr sup{font-size:.74em}
 .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .12em;line-height:1.12;position:relative;top:-.06em}
 .fr>span{display:block;padding:0 .14em;text-align:center;white-space:nowrap}
 .fr>span:first-child{border-bottom:.065em solid currentColor;padding-bottom:.06em}
 .fr>span:last-child{padding-top:.04em}
-.fr.s{font-size:.82em}
+.fr.s{font-size:.86em}
 .lim{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin-right:.2em;position:relative;top:.18em}
-.lim small{font-size:.5em;font-weight:700;margin-top:.12em;white-space:nowrap}
+.lim small{font-size:.56em;font-weight:700;margin-top:.12em;white-space:nowrap}
 .sym{display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
 .int{position:relative;display:inline-block;width:.66em;height:1.55em;vertical-align:middle;margin:0 .42em 0 .02em;top:-.06em}
 .int svg{position:absolute;inset:0;width:100%;height:100%;stroke-width:8}
@@ -165,9 +163,12 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 #ctl button:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
 #pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
 .shot #ctl{display:none!important}
+/* small screens: the bar sits in the top-right corner, away from the sliders and graphs at the bottom of the slides */
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}
 
 /* ---------- per-slide styles (selectors start with the slide's own id prefix) ---------- */
-.pan p{font:600 28px/1.5 Inter;display:flex;align-items:center}
+.pan p{font:600 28px/1.5 Inter;white-space:nowrap}
+.pan p .sw{position:relative;top:-3px}
 .sym use{pointer-events:none}
 
 /* 1 · title */
@@ -175,16 +176,19 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 #c1-sub{font:600 40px/1.4 Inter;color:var(--mute)}
 #c1-sub b{color:var(--ink);font-weight:800}
 #c1-hook{font:800 84px/1.34 Display;color:var(--ink);width:1000px}
-#c1-card{padding:30px 42px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-.c1-row{font-size:52px;display:flex;align-items:center;gap:20px;line-height:1.3}
-.c1-k{font-family:Display;font-weight:800;min-width:250px}
-.c1-q{display:inline-grid;place-items:center;width:92px;height:92px;border-radius:50%;background:var(--red);color:#fff;border:4px solid var(--ink);font:800 62px/1 Display;transform:rotate(-4deg)}
+#c1-card{padding:28px 42px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.c1-row{font-size:52px;line-height:1.3}
+.c1-row>*{vertical-align:middle}
+.c1-k{display:inline-block;font-family:Display;font-weight:800;min-width:292px}
+.c1-q{display:inline-grid;margin-left:14px;place-items:center;width:92px;height:92px;border-radius:50%;background:var(--red);color:#fff;border:4px solid var(--ink);font:800 62px/1 Display;transform:rotate(-4deg)}
 .on.b1 .c1-q{animation:stamp .6s var(--ease) both 1s}
 .c1-say{margin-top:8px;font:600 30px/1.4 Inter;color:var(--mute)}
 .c1-say b{color:var(--pink);font-weight:800}
 #c1-spd{font:800 104px Display;fill:var(--ink);font-variant-numeric:tabular-nums}
 .c1-unit{font:700 30px Inter;fill:var(--mute)}
 #c1-gauge .tl{font:800 30px Inter;fill:var(--ink)}
+.c1-sun{left:1240px;top:-150px;width:780px;height:780px;border-radius:50%;background:var(--sun);border:4px solid var(--ink)}
+.c1-sun.in{opacity:0}
 #c1-pin{top:770px;width:160px;margin-left:-80px;display:flex;flex-direction:column;align-items:center}
 #c1-pin span{background:var(--pink);color:#fff;border:4px solid var(--ink);border-radius:14px;padding:4px 18px;font:800 28px/1.3 Inter;box-shadow:4px 4px 0 var(--ink)}
 #c1-pin::after{content:"";width:5px;height:40px;background:var(--ink);border-radius:3px}
@@ -202,7 +206,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 #c2-read{padding:26px 34px;display:flex;flex-direction:column;justify-content:space-between}
 .c2-hrow{display:flex;align-items:baseline;justify-content:space-between}
 .c2-hv{font-size:64px}
-.c2-frow{font-size:38px;display:flex;align-items:center;gap:10px;color:var(--ink)}
+.c2-frow{font-size:38px;color:var(--ink)}
 .c2-mrow{display:flex;align-items:center;justify-content:space-between}
 .c2-mrow .lab{line-height:1.35}
 #c2-m{font-size:132px;transition:color .3s}
@@ -212,15 +216,16 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 #c2-tape{padding:18px 30px}
 #c2-tape table{width:100%;border-collapse:collapse;font:700 30px/1.2 Inter;font-variant-numeric:tabular-nums}
 #c2-tape th{font:700 24px/1.3 Inter;color:var(--mute);text-align:left;padding:4px 0 6px;border-bottom:3px solid var(--ink)}
-#c2-tape td{padding:5px 0;border-bottom:2px dashed var(--line)}
+#c2-tape td{padding:1px 0 2px;border-bottom:2px dashed var(--line)}
 #c2-tape tr:last-child td{border-bottom:0}
 #c2-tape td:first-child{color:var(--pink);width:40%}
 #c2-tape tbody tr{opacity:.12;transition:opacity .3s}
 #c2-tape tbody tr.vis{opacity:1}
 #c2-tape tbody tr.vis td:last-child{color:var(--red)}
 #c2-def{padding:24px 30px;display:flex;flex-direction:column;justify-content:center;gap:6px}
-.c2-d1{font-size:38px;display:flex;align-items:center;gap:6px}
-.c2-d2{font-size:38px;display:flex;align-items:center;gap:10px;padding-left:96px}
+.c2-d1{font-size:38px;line-height:1.5}
+.c2-d2{font-size:38px;line-height:1.5;padding-left:92px}
+.c2-d1>*,.c2-d2>*{vertical-align:middle}
 .c2-two{display:inline-grid;place-items:center;min-width:68px;height:68px;border-radius:16px;background:var(--red);color:#fff;border:3px solid var(--ink)}
 .on.b2 .c2-two{animation:stamp .55s var(--ease) both .7s}
 
@@ -239,29 +244,36 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 #c3-hint{left:auto!important;right:166px}
 
 /* 4 · power rule */
-#c4-rule{display:flex;align-items:center;justify-content:space-between;padding:0 70px 0 64px}
-.c4-big{font-size:118px;line-height:1}
-.c4-big .dd{font-size:.62em;margin-right:.18em}
-.c4-ex{display:flex;flex-direction:column;gap:10px;padding:18px 34px;background:#fff;border:4px solid var(--ink);border-radius:22px}
-.c4-ex .mx{font-size:46px;line-height:1.25;display:flex;align-items:center}
-.c4-ex i{font-style:normal;margin:0 .5em;color:var(--mute)}
+#c4-rule{display:flex;align-items:center;justify-content:space-between;padding:20px 60px 0 70px}
+.c4-big{font-size:136px;line-height:1}
+.c4-big .dd{font-size:.56em;margin-right:.2em}
+.c4-ex{display:flex;flex-direction:column;gap:4px;padding:12px 40px;background:#fff;border:4px solid var(--ink);border-radius:22px;margin-top:-20px}
+.c4-ex .mx{font-size:50px;line-height:1.3}
+.c4-ex i{font-style:normal;margin:0 .45em;color:var(--mute)}
+.c4-tl{font:800 28px Inter;fill:var(--ink);opacity:0;transition:opacity .5s}
+#c4-arc{opacity:0;transition:opacity .5s}
+#c4-trail.show #c4-arc,#c4-trail.show .c4-tl{opacity:1}
+#c-rule:not(.on) #c4-trail{display:none}
 .ht,.hm{opacity:0}
 .ht.landed{opacity:1}
 .hm.landed{opacity:1;animation:pop .45s var(--ease) both}
 .hs.flown{opacity:.28;transition:opacity .4s}
 .rm .hs.flown{opacity:.28}
 .hopfly{position:absolute;z-index:30;pointer-events:none;transform-origin:0 0;white-space:nowrap}
-.c4-st{padding:26px 30px;display:flex;flex-direction:column;gap:14px}
+.c4-st{padding:24px 30px;display:flex;flex-direction:column;gap:12px}
 .c4-n{display:flex;align-items:center;gap:14px;font:800 32px/1.3 Display}
 .c4-n b{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--ink);color:#fff;font:800 26px Inter}
-.c4-l{font-size:42px;line-height:1.35;display:flex;align-items:center;gap:8px}
-.c4-l .dd{margin-right:4px}
+.c4-l{font-size:40px;line-height:1.6}
+.c4-l>*{vertical-align:middle}
+.c4-l .dd{font-size:.7em;margin-right:.3em}
 .c4-note{font:600 26px/1.45 Inter;color:var(--mute)}
-.c4-note sup{font-size:.6em;position:relative;top:-.6em;line-height:0;vertical-align:baseline}
-.c4-res{font-size:62px;margin:34px 0 22px}
+.c4-note.mx{font-family:Inter;font-weight:600;font-size:28px}
+.c4-note.mx sup{font-size:.76em}
+.c4-res{font-size:56px;margin:4px 0 0}
 .c4-zero{display:inline-grid;place-items:center;min-width:62px;height:62px;border-radius:14px;background:var(--green);color:#fff;border:3px solid var(--ink)}
 .on.b3 .c4-zero{animation:stamp .55s var(--ease) both 1.6s}
-.c4-ok{color:var(--okc);font-weight:800}
+.c4-ok{color:var(--okc);font-weight:800;display:flex;align-items:center;gap:10px}
+.c4-ok svg{width:34px;height:34px;padding:5px;border-radius:50%;background:var(--green);color:#fff}
 
 /* 5 · area */
 #c5-n{padding:22px 32px;display:flex;flex-direction:column;justify-content:center}
@@ -270,10 +282,11 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 .c5-nn,.c5-ninf{position:absolute;left:0;top:0;transition:opacity .4s}
 .c5-ninf{opacity:0;display:flex;align-items:center;gap:16px}
 .c5-ninf .inf{width:110px;height:56px;stroke-width:9}
-#c-area.lim .c5-nn{opacity:0}#c-area.lim .c5-ninf{opacity:1}
+#c-area.is-lim .c5-nn{opacity:0}#c-area.is-lim .c5-ninf{opacity:1}
 #c5-sum{padding:22px 32px;display:flex;flex-direction:column;justify-content:space-between}
 #c5-sv{font-size:124px}
-.c5-f{font-size:34px;display:flex;align-items:center}
+.c5-f{font-size:34px;line-height:1.3}
+.c5-f>*{vertical-align:middle}
 #c5-err{padding:20px 32px;display:flex;flex-direction:column;justify-content:center;gap:14px}
 .c5-erow{display:flex;align-items:baseline;justify-content:space-between}
 #c5-ev{font-size:44px}
@@ -281,33 +294,38 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 .c5-bar i{display:block;height:100%;width:100%;background:repeating-linear-gradient(135deg,var(--pink) 0 8px,#FF8DBA 8px 16px);transform-origin:left;transition:transform .15s}
 .c5-hatch{width:30px;height:24px;border-radius:5px;border:3px solid var(--ink);background:repeating-linear-gradient(135deg,var(--pink) 0 5px,#FFC6DC 5px 10px)}
 #c5-extag{transition:opacity .4s}
-#c-area.lim #c5-extag{opacity:0}
+#c-area.is-lim #c5-extag{opacity:0}
 #c5-rects,#c5-exs{transition:opacity .7s}
 #c5-exact{opacity:0;transition:opacity .9s}
-#c-area.lim #c5-rects,#c-area.lim #c5-exs{opacity:0}
-#c-area.lim #c5-exact{opacity:1}
+#c-area.is-lim #c5-rects,#c-area.is-lim #c5-exs{opacity:0}
+#c-area.is-lim #c5-exact{opacity:1}
 #c5-int{padding:24px 32px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-.c5-ieq{font-size:58px;display:flex;align-items:center}
+.c5-ieq{font-size:48px;line-height:1.3}
+.c5-ieq .apx{margin:0 .2em}
+.c5-ieq>*{vertical-align:middle}
 #c5-sl{display:flex;align-items:center;gap:26px;padding:0 28px}
 .c5-pm{flex:none;width:84px;height:84px;border-radius:50%;border:4px solid var(--ink);background:var(--sun);color:var(--ink);font:800 50px/1 Inter;cursor:pointer;box-shadow:4px 4px 0 var(--ink);touch-action:manipulation;display:grid;place-items:center;padding-bottom:6px}
 .c5-pm:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
 .c5-pm:focus-visible{outline:4px solid var(--pink);outline-offset:3px}
 .c5-trk{position:relative;flex:1;height:150px;touch-action:none;cursor:grab}
-.c5-rail{position:absolute;left:0;right:0;top:50px;height:20px;border-radius:10px;background:#EEF0F8;border:3px solid var(--ink);overflow:hidden}
+.c5-in{position:absolute;left:44px;right:44px;top:0;bottom:0}
+.c5-rail{position:absolute;left:0;right:0;top:48px;height:20px;border-radius:10px;background:#EEF0F8;border:3px solid var(--ink);overflow:hidden}
 .c5-rail i{display:block;height:100%;width:0;background:var(--blue)}
-.c5-ticks span{position:absolute;top:92px;transform:translateX(-50%);font:700 24px/1.3 Inter;color:var(--mute)}
-.c5-th{position:absolute;top:24px;width:74px;height:74px;margin-left:-37px;border-radius:50%;background:#fff;border:5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:grid;place-items:center;font:800 30px Inter;color:var(--blue);font-variant-numeric:tabular-nums}
-#c-area.lim .c5-th{background:var(--blue);color:#fff}
+.c5-ticks span{position:absolute;top:100px;transform:translateX(-50%);font:700 24px/1.3 Inter;color:var(--mute)}
+.c5-th{position:absolute;top:21px;width:74px;height:74px;margin-left:-37px;border-radius:50%;background:#fff;border:5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:grid;place-items:center;font:800 30px Inter;color:var(--blue);font-variant-numeric:tabular-nums}
+#c-area.is-lim .c5-th{background:var(--blue);color:#fff}
 
 /* 6 · fundamental theorem */
 .c6-pills{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
 .c6-pills .tag{height:50px;font-size:26px}
 .c6-pills .tag b{font-variant-numeric:tabular-nums;font-weight:800}
-.c6-pills .tag.mx{font-size:30px}
+.c6-pills .tag .mx{font-size:32px}
+.c6-pills .c6-ft{height:80px;padding-top:4px}
 .c6-y{background:var(--sun)!important}
 .c6-r{background:var(--red)!important;color:#fff}
 .c6-ml{width:280px;display:flex;flex-direction:column;align-items:center;gap:2px;font:800 28px/1.3 Inter;text-align:center}
-.c6-ml .mx{font-size:40px;display:flex;align-items:center}
+.c6-ml .mx{font-size:40px;line-height:1.2}
+.c6-ml .mx>*{vertical-align:middle}
 .c6-run{offset-path:path("M22 236 C70 150 210 150 258 236");offset-distance:0%;offset-rotate:0deg}
 .c6-run.b{offset-path:path("M258 330 C210 416 70 416 22 330")}
 .on .c6-run.a{animation:runp 2.2s ease-in-out infinite}
@@ -318,21 +336,26 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 .c6-no{flex:none;display:grid;place-items:center;width:62px;height:62px;border-radius:50%;background:var(--sun);border:4px solid var(--ink);font:800 32px Inter}
 .c6-no.r{background:var(--red);color:#fff}
 #c6-s2{display:flex;align-items:center;justify-content:space-between;padding:0 40px}
-.c6-eq{font-size:50px;display:flex;align-items:center}
+.c6-eq{font-size:50px;line-height:1.2}
+.c6-eq>*{vertical-align:middle}
 .c6-83{display:inline-flex;align-items:center;padding:0 10px;border-radius:14px;background:var(--sun);border:3px solid var(--ink);margin-left:8px}
-.c6-same{font:600 26px/1.4 Inter;color:var(--mute);width:380px}
+.c6-same{font:600 26px/1.45 Inter;color:var(--mute);text-align:right}
 
 /* 7 · quiz */
 #c7-q1,#c7-q2{padding:30px 40px;display:flex;flex-direction:column;gap:22px}
 .c7-no{align-self:flex-start;padding:6px 18px;border-radius:12px;background:var(--blue);color:#fff;border:3px solid var(--ink);font:800 28px/1.3 Inter}
 .c7-no.p{background:var(--pink)}
-.c7-q{font-size:54px;line-height:1.3;display:flex;align-items:center;gap:6px}
+.c7-q{font-size:54px;line-height:1.4}
+.c7-q>*{vertical-align:middle}
 .c7-q .int{font-size:1.08em}
 #c7-ch{margin-top:4px}
 .c7-ans{margin-top:auto;padding:20px 28px;background:#fff;border:4px solid var(--ink);border-radius:22px;display:flex;flex-direction:column;gap:6px}
-.c7-ans .mx{font-size:40px;line-height:1.35;display:flex;align-items:center}
+.c7-ans .mx{font-size:40px;line-height:1.45}
+.c7-ans .mx>*{vertical-align:middle}
 .c7-to{font-style:normal;margin:0 .4em;color:var(--mute)}
-.c7-hint{font:600 30px/1.3 Inter;color:var(--mute);display:flex;align-items:center;gap:8px}
+.c7-hint{font:600 30px/1.4 Inter;color:var(--mute)}
+.c7-hint>*{vertical-align:middle}
+#c7-mini{position:relative;flex:none}
 #c7-a2{flex-direction:row;align-items:center;justify-content:space-between}
 .c7-a2t{display:flex;flex-direction:column;gap:6px}
 #c7-in .tw-in{width:220px!important}
@@ -348,6 +371,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 #c8-sp .tl,#c8-od .tl{font:800 26px Inter;fill:var(--ink)}
 #c8-sp .big2,#c8-od .big2{font:800 64px Display;fill:var(--ink);font-variant-numeric:tabular-nums}
 #c8-sp .u,#c8-od .u{font:700 24px Inter;fill:var(--mute)}
+#c7-in .tw-lab{color:var(--mute);font-weight:600}
 
 /* Widgets rendered by tools.js (tap a choice, typed answer with Check) + the global pen, in this deck's sticker look. */
 .w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.3 Inter,system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -435,6 +459,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 
  <p class="ab in" id="c1-hook" style="left:130px;top:540px;--d:650">ความเร็ว <span class="hl p" style="--d:1100">ณ ขณะหนึ่ง</span><br>คืออะไร?</p>
 
+ <div class="ab c1-sun in" style="--d:150"></div>
  <svg class="ab in" id="c1-gauge" viewBox="0 0 640 640" style="left:1150px;top:96px;width:640px;height:640px;--d:300" aria-label="หน้าปัดความเร็ว" role="img">
   <circle cx="331" cy="331" r="298" fill="#1A1B3D"/>
   <circle cx="320" cy="320" r="298" fill="#fff" stroke="#1A1B3D" stroke-width="5"/>
@@ -464,7 +489,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="ab g1" id="c1-pin"><span>ขณะนี้</span></div>
  <div class="ab in" id="c1-tape" style="left:130px;top:806px;--d:900"><i></i>จุดชมพู = ตำแหน่งรถทุก ๆ 0.4 วินาที</div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>01 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>01 / 08</b></span></div>
  <aside class="notes">ถามห้อง: รถเร่งความเร็ว จุดชมพูห่างขึ้นเรื่อย ๆ เพราะเวลาเท่ากันแต่ไปได้ไกลขึ้น หน้าปัดบอกความเร็วตอนนี้ได้ แต่สูตรระยะทาง ÷ เวลา ใช้ไม่ได้เมื่อเวลาเป็น 0 (ได้ 0/0) แคลคูลัสตอบคำถามนี้ด้วยลิมิต</aside>
 </section>
 
@@ -475,9 +500,9 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 
  <div class="pan in" id="c2-pan" style="left:130px;top:262px;width:1030px;height:728px;--d:200"></div>
  <svg class="plot hit in" id="c2-svg" viewBox="0 0 1030 728" style="left:130px;top:262px;width:1030px;height:728px;--d:200" aria-label="กราฟ y = x กำลังสอง ลากจุด Q ได้" role="img"></svg>
- <div class="ab" id="c2-hint" style="left:226px;top:300px"><svg class="sym" viewBox="0 0 48 48"><use href="#hand"/></svg>ลากจุด Q เข้าหา P ได้ทั้งกราฟ</div>
+ <div class="ab" id="c2-hint" style="left:420px;top:296px"><svg class="sym" viewBox="0 0 48 48"><use href="#hand"/></svg>ลากจุด Q เข้าหา P ได้ทั้งกราฟ</div>
 
- <div class="pan in" id="c2-read" style="left:1220px;top:262px;width:570px;height:400px;--d:350">
+ <div class="pan lp in" id="c2-read" style="left:1220px;top:262px;width:570px;height:400px;--d:350">
   <div class="c2-hrow"><span class="lab k">ระยะห่าง</span><span class="mx c-q c2-hv">h = <span id="c2-h">1.500</span></span></div>
   <div class="c2-frow mx"><span class="fr"><span>f(1+h) − f(1)</span><span>h</span></span> = <span class="fr c-q"><span id="c2-num">5.250</span><span id="c2-den">1.500</span></span></div>
   <div class="c2-mrow"><span class="lab k">ความชัน<br>เส้นตัด</span><span class="big c-q" id="c2-m">3.500</span></div>
@@ -508,7 +533,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
   <div class="mx c2-d2">= <span class="lim">lim<small>h→0</small></span>(2 + h) = <b class="c2-two">2</b></div>
  </div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 08</b></span></div>
  <aside class="notes">ความชันเส้นตัด = ((1+h)² − 1)/h = (2h + h²)/h = 2 + h. ให้นักเรียนลาก Q เข้าหา P แล้วอ่านค่า: h = 1 → 3, 0.5 → 2.5, 0.1 → 2.1 ... เข้าใกล้ 2 แต่ h เป็น 0 ไม่ได้ (0/0) จึงใช้ลิมิต ได้ f′(1) = 2 = ความชันของเส้นสัมผัส y = 2x − 1</aside>
 </section>
 
@@ -519,10 +544,10 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 
  <div class="pan in" id="c3-key" style="left:130px;top:352px;width:520px;height:196px;--d:300">
   <p><i class="sw" style="background:var(--blue)"></i><b class="mx c-f">f(x) = x<sup>3</sup> − 3x</b></p>
-  <p><i class="sw" style="background:var(--red)"></i><b class="mx c-d">f′(x)</b> = ความชันของ f</p>
+  <p><i class="sw" style="background:var(--red)"></i><b class="mx c-d">f′(x)</b>&nbsp;= ความชันของ f</p>
  </div>
 
- <div class="pan in" id="c3-read" style="left:130px;top:590px;width:520px;height:400px;--d:450">
+ <div class="pan lr in" id="c3-read" style="left:130px;top:590px;width:520px;height:400px;--d:450">
   <div class="c3-xrow"><span class="lab k">ที่ x =</span><span class="mx" id="c3-x">−1.80</span></div>
   <div class="lab k" style="margin-top:12px">ความชัน f′(x)</div>
   <div class="c3-mrow"><span class="big c-d" id="c3-m">6.72</span><span id="c3-arrow"><svg viewBox="0 0 100 40" aria-hidden="true"><path d="M8 20 H80 M62 6 L84 20 L62 34" fill="none" stroke="#1A1B3D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
@@ -532,10 +557,10 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="pan in" id="c3-pan" style="left:700px;top:64px;width:1090px;height:926px;--d:200"></div>
  <svg class="plot hit in" id="c3-svg" viewBox="0 0 1090 926" style="left:700px;top:64px;width:1090px;height:926px;--d:200" aria-label="กราฟ f และกราฟความชัน f′ ลากเส้นตั้งได้" role="img"></svg>
  <div class="ab tag c-f in" style="left:742px;top:96px;--d:400">กราฟ f(x)</div>
- <div class="ab tag c-d in" style="left:742px;top:540px;--d:500">กราฟ f′(x) = ความชัน</div>
- <div class="ab" id="c3-hint" style="left:1340px;top:540px"><svg class="sym" viewBox="0 0 48 48"><use href="#hand"/></svg>ลากซ้าย–ขวา</div>
+ <div class="ab tag c-d in" style="left:742px;top:552px;--d:500">กราฟ f′(x) = ความชัน</div>
+ <div class="ab" id="c3-hint" style="left:1500px;top:552px"><svg class="sym" viewBox="0 0 48 48"><use href="#hand"/></svg>ลากซ้าย–ขวา</div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>03 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>03 / 08</b></span></div>
  <aside class="notes">ทุกจุดบนกราฟ f มีเส้นสัมผัสหนึ่งเส้น ความชันของมันคือค่า f′(x) จุดแดงด้านล่างคือค่านั้น เมื่อเลื่อนไปเรื่อย ๆ จุดแดงวาดกราฟใหม่ออกมา = ฟังก์ชันอนุพันธ์ f′(x) = 3x² − 3. ยอดเขา (−1, 2) และก้นหุบ (1, −2) ความชันเป็น 0 ตรงกับที่ f′ ตัดแกน x ที่ x = ±1</aside>
 </section>
 
@@ -544,7 +569,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="chip y in" style="left:130px;top:64px"><b>3</b>กฎยกกำลัง · Power Rule</div>
  <h2 class="in" style="left:130px;top:128px;--d:120">ดึงเลขชี้กำลัง<span class="hl">ลงมาคูณ</span> แล้วลบหนึ่ง</h2>
 
- <div class="pan y in" id="c4-rule" style="left:130px;top:268px;width:1660px;height:262px;--d:250">
+ <div class="pan y in" id="c4-rule" style="left:130px;top:258px;width:1660px;height:250px;--d:250">
   <div class="c4-big mx"><span class="fr dd"><span>d</span><span>dx</span></span>x<sup class="hs c-q" data-h="r">n</sup> = <span class="ht c-q" data-h="r">n</span><span class="hm" data-h="r">·</span>x<sup class="hm" data-h="r"><span class="c-q">n</span><span class="c-d">−1</span></sup></div>
   <div class="c4-ex">
    <div class="mx">x<sup class="hs c-q" data-h="e1">2</sup><i>→</i><span class="ht c-q" data-h="e1">2</span>x</div>
@@ -552,29 +577,36 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
    <div class="mx">x<sup class="hs c-q" data-h="e3">4</sup><i>→</i><span class="ht c-q" data-h="e3">4</span>x<sup class="hm" data-h="e3">3</sup></div>
   </div>
  </div>
+ <svg class="ab" id="c4-trail" viewBox="0 0 1920 1080" style="left:0;top:0;width:1920px;height:1080px;pointer-events:none" aria-hidden="true">
+  <defs><marker id="c4-ah" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M1 1 L11 6 L1 11 Z" fill="#1A1B3D"/></marker></defs>
+  <path id="c4-arc" d="" fill="none" stroke="#1A1B3D" stroke-width="5" stroke-dasharray="3 12" stroke-linecap="round" marker-end="url(#c4-ah)"/>
+  <text id="c4-arcl" class="c4-tl" text-anchor="middle">ลงมาคูณ</text>
+  <text id="c4-minl" class="c4-tl" text-anchor="start">แล้วลบ 1</text>
+ </svg>
 
- <div class="pan c4-st g1" id="c4-s1" style="left:130px;top:592px;width:500px;height:398px">
+ <div class="pan c4-st g1" id="c4-s1" style="left:130px;top:556px;width:500px;height:434px">
   <div class="c4-n"><b>1</b>ทีละพจน์</div>
   <div class="mx c4-l c-f">f(x) = x<sup>3</sup> − 3x</div>
   <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>x<sup class="hs c-q" data-h="s1">3</sup> = <span class="ht c-q" data-h="s1">3</span>x<sup class="hm" data-h="s1">2</sup></div>
-  <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>3x = 3·1 = <span>3</span></div>
-  <div class="c4-note">x = x<sup>1</sup> จึงได้ 1·x<sup>0</sup> = 1</div>
+  <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>3x = 3 · 1 = 3</div>
+  <div class="c4-note mx">เพราะ x = x<sup>1</sup> → 1 · x<sup>0</sup> = 1</div>
  </div>
- <svg class="ab c4-arr g2" viewBox="0 0 80 60" style="left:640px;top:760px;width:70px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
- <div class="pan c4-st lr g2" id="c4-s2" style="left:720px;top:592px;width:500px;height:398px">
+ <svg class="ab c4-arr g2" viewBox="0 0 80 60" style="left:637px;top:744px;width:76px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="pan c4-st lr g2" id="c4-s2" style="left:720px;top:556px;width:500px;height:434px">
   <div class="c4-n"><b>2</b>รวมกัน</div>
   <div class="mx c4-res c-d">f′(x) = 3x<sup>2</sup> − 3</div>
-  <div class="c4-note">นี่คือกราฟเส้นสีแดงในสไลด์ที่แล้ว</div>
+  <svg class="plot" id="c4-mini2" viewBox="0 0 430 190" style="position:relative;width:430px;height:190px" aria-label="กราฟ f′ สีแดง ตัดแกน x ที่ −1 และ 1" role="img"></svg>
+  <div class="c4-note">= กราฟสีแดงในสไลด์ที่แล้ว</div>
  </div>
- <svg class="ab c4-arr g3" viewBox="0 0 80 60" style="left:1230px;top:760px;width:70px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
- <div class="pan c4-st g3" id="c4-s3" style="left:1310px;top:592px;width:480px;height:398px">
+ <svg class="ab c4-arr g3" viewBox="0 0 80 60" style="left:1227px;top:744px;width:76px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="pan c4-st g3" id="c4-s3" style="left:1310px;top:556px;width:480px;height:434px">
   <div class="c4-n"><b>3</b>ตรวจกับกราฟ</div>
   <div class="mx c4-l">f′(1) = 3(1)<sup>2</sup> − 3 = <b class="c4-zero">0</b></div>
-  <svg class="plot" id="c4-mini" viewBox="0 0 420 200" style="position:relative;width:420px;height:200px;margin-top:8px" aria-label="กราฟเล็ก ก้นหุบที่ x = 1 เส้นสัมผัสราบ" role="img"></svg>
-  <div class="c4-note c4-ok">ก้นหุบที่ x = 1 ราบจริง ✓</div>
+  <svg class="plot" id="c4-mini" viewBox="0 0 410 190" style="position:relative;width:410px;height:190px" aria-label="กราฟเล็ก ก้นหุบที่ x = 1 เส้นสัมผัสราบ" role="img"></svg>
+  <div class="c4-note c4-ok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#check"/></svg>ก้นหุบที่ x = 1 ราบจริง</div>
  </div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>04 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>04 / 08</b></span></div>
  <aside class="notes">กฎ: d/dx xⁿ = n·xⁿ⁻¹ (เลขชี้กำลังลงมาคูณข้างหน้า แล้วเลขชี้กำลังลดลง 1). ตัวอย่าง x² → 2x (ตรงกับสไลด์ 2: ที่ x = 1 ได้ 2), x³ → 3x². ฝึก: f(x) = x³ − 3x → f′(x) = 3x² − 3. ตรวจ f′(1) = 3 − 3 = 0 ตรงกับก้นหุบในสไลด์ 3</aside>
 </section>
 
@@ -599,9 +631,9 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 
  <div class="pan in" id="c5-pan" style="left:700px;top:64px;width:1090px;height:730px;--d:200"></div>
  <svg class="plot in" id="c5-svg" viewBox="0 0 1090 730" style="left:700px;top:64px;width:1090px;height:730px;--d:200" aria-label="กราฟ y = x กำลังสอง กับสี่เหลี่ยมใต้กราฟ" role="img"></svg>
- <div class="ab tag c-q in" id="c5-extag" style="left:1370px;top:96px;--d:600"><i class="c5-hatch"></i>ส่วนที่เกินโค้ง</div>
+ <div class="ab tag c-q in" id="c5-extag" style="left:906px;top:104px;--d:600"><i class="c5-hatch"></i>ส่วนที่เกินโค้ง</div>
 
- <div class="pan lb g2" id="c5-int" style="left:790px;top:104px;width:560px;height:250px">
+ <div class="pan lb g2" id="c5-int" style="left:900px;top:100px;width:566px;height:230px">
   <div class="lab k">เมื่อ n มากขึ้นไม่สิ้นสุด</div>
   <div class="mx c5-ieq"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">2</i><i class="dn">0</i></span>x<sup>2</sup> dx = <span class="fr"><span>8</span><span>3</span></span><svg class="sym apx" viewBox="0 0 60 52"><use href="#s-apx"/></svg>2.667</div>
  </div>
@@ -609,14 +641,16 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="pan in" id="c5-sl" style="left:700px;top:836px;width:1090px;height:154px;--d:350">
   <button type="button" class="c5-pm" id="c5-minus" aria-label="ลดจำนวนสี่เหลี่ยม">−</button>
   <div class="c5-trk hit" id="c5-trk" aria-label="แถบเลื่อนจำนวนสี่เหลี่ยม ลากได้ทั้งแถบ" role="slider" aria-valuemin="2" aria-valuemax="50" aria-valuenow="2">
-   <div class="c5-rail"><i id="c5-fill"></i></div>
-   <div class="c5-ticks"><span style="left:0%">2</span><span style="left:16.667%">10</span><span style="left:37.5%">20</span><span style="left:58.333%">30</span><span style="left:79.167%">40</span><span style="left:100%">50</span></div>
-   <div class="c5-th" id="c5-th"><span id="c5-tv">2</span></div>
+   <div class="c5-in" id="c5-in">
+    <div class="c5-rail"><i id="c5-fill"></i></div>
+    <div class="c5-ticks"><span style="left:0%">2</span><span style="left:16.667%">10</span><span style="left:37.5%">20</span><span style="left:58.333%">30</span><span style="left:79.167%">40</span><span style="left:100%">50</span></div>
+    <div class="c5-th" id="c5-th"><span id="c5-tv">2</span></div>
+   </div>
   </div>
   <button type="button" class="c5-pm" id="c5-plus" aria-label="เพิ่มจำนวนสี่เหลี่ยม">+</button>
  </div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>05 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>05 / 08</b></span></div>
  <aside class="notes">สี่เหลี่ยมกว้าง 2/n สูง f ที่ขอบขวา ผลรวม = 4(n+1)(2n+1)/(3n²): n = 2 → 5, n = 4 → 3.75, n = 50 → 2.747. เกินพื้นที่จริงเสมอ (ส่วนสีชมพู) และส่วนเกินหดลงเรื่อย ๆ ลิมิตเมื่อ n มากขึ้นไม่สิ้นสุด = ∫₀² x² dx = 8/3 ≈ 2.667</aside>
 </section>
 
@@ -630,13 +664,13 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="pan in" id="c6-rp" style="left:1100px;top:262px;width:690px;height:560px;--d:300"></div>
  <svg class="plot hit in" id="c6-rs" viewBox="0 0 690 560" style="left:1100px;top:262px;width:690px;height:560px;--d:300" aria-label="กราฟ F(x) พื้นที่สะสม" role="img"></svg>
 
- <div class="ab c6-pills in" style="left:206px;top:292px;--d:500">
-  <span class="tag c-f mx">f(x) = x<sup>2</sup></span>
+ <div class="ab c6-pills in" style="left:272px;top:290px;--d:500">
+  <span class="tag c-f"><span class="mx">f(x) = x<sup>2</sup></span></span>
   <span class="tag c6-y">พื้นที่ใต้ f = <b id="c6-a1">0.576</b></span>
   <span class="tag c6-r g1">ความสูง f(x) = <b id="c6-h1">1.440</b></span>
  </div>
- <div class="ab c6-pills in" style="left:1176px;top:292px;--d:600">
-  <span class="tag c-v mx">F(x) = <span class="fr s"><span>x<sup>3</sup></span><span>3</span></span></span>
+ <div class="ab c6-pills in" style="left:1242px;top:290px;--d:600">
+  <span class="tag c-v c6-ft"><span class="mx">F(x) = <span class="fr s"><span>x<sup>3</sup></span><span>3</span></span></span></span>
   <span class="tag c6-y">ความสูง F(x) = <b id="c6-a2">0.576</b></span>
   <span class="tag c6-r g1">ความชันของ F = <b id="c6-h2">1.440</b></span>
  </div>
@@ -654,14 +688,14 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="ab c6-ml in" style="left:820px;top:296px;--d:800"><b>สะสมพื้นที่</b><span class="mx"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg></span>dx</span></div>
  <div class="ab c6-ml in" style="left:820px;top:690px;--d:900"><b class="c-d">หาความชัน</b><span class="mx"><span class="fr s dd"><span>d</span><span>dx</span></span></span></div>
 
- <div class="pan ly o0" id="c6-s0" style="left:130px;top:862px;width:1660px;height:128px"><span class="c6-no">1</span>พื้นที่<b>สีเหลือง</b>ใต้ f ตั้งแต่ 0 ถึง x &nbsp;=&nbsp; ความสูงของ F ที่ x</div>
- <div class="pan lr o1" id="c6-s1" style="left:130px;top:862px;width:1660px;height:128px"><span class="c6-no r">2</span>ความชันของ F ที่ x &nbsp;=&nbsp; ความสูง<b class="c-d">สีแดง</b>ของ f ที่ x</div>
+ <div class="pan ly o0" id="c6-s0" style="left:130px;top:862px;width:1660px;height:128px"><span class="c6-no">1</span><span>พื้นที่<b class="c-a">สีเหลือง</b>ใต้ f ตั้งแต่ 0 ถึง x &nbsp;=&nbsp; ความสูงของ F ที่ x</span></div>
+ <div class="pan lr o1" id="c6-s1" style="left:130px;top:862px;width:1660px;height:128px"><span class="c6-no r">2</span><span>ความชันของ F ที่ x &nbsp;=&nbsp; ความสูง<b class="c-d">สีแดง</b>ของ f ที่ x</span></div>
  <div class="pan o2" id="c6-s2" style="left:130px;top:862px;width:1660px;height:128px">
-  <div class="mx c6-eq"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">2</i><i class="dn">0</i></span>x<sup>2</sup> dx = F(2) − F(0) = <span class="fr"><span>8</span><span>3</span></span> − 0 = <b class="c6-83"><span class="fr"><span>8</span><span>3</span></span></b></div>
-  <div class="c6-same">ตรงกับสี่เหลี่ยมนับไม่ถ้วนในสไลด์ที่แล้ว แต่ใช้การลบครั้งเดียว</div>
+  <div class="mx c6-eq"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">2</i><i class="dn">0</i></span>x<sup>2</sup>&nbsp;dx = F(2) − F(0) = <span class="fr"><span>8</span><span>3</span></span>&nbsp;− 0 = <b class="c6-83"><span class="fr"><span>8</span><span>3</span></span></b></div>
+  <div class="c6-same">ค่าเดียวกับลิมิตของสี่เหลี่ยมในสไลด์ 5<br>แต่คิดด้วยการลบครั้งเดียว</div>
  </div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>06 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>06 / 08</b></span></div>
  <aside class="notes">F(x) = พื้นที่ใต้ f(t) = t² ตั้งแต่ 0 ถึง x = x³/3. ตัวอย่าง x = 1.2: พื้นที่ = 1.728/3 = 0.576 = ความสูงของ F; ความชันของ F = F′(1.2) = 1.44 = f(1.2). ดังนั้น F′ = f (หาพื้นที่แล้วหาความชัน ได้ฟังก์ชันเดิม). ผลที่ได้: ∫₀² x² dx = F(2) − F(0) = 8/3 ตรงกับลิมิตของผลรวมสี่เหลี่ยม</aside>
 </section>
 
@@ -685,19 +719,18 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
 
  <div class="pan lp in" id="c7-q2" style="left:990px;top:262px;width:800px;height:728px;--d:320">
   <div class="c7-no p">ข้อ 2</div>
-  <div class="c7-q mx"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">3</i><i class="dn">0</i></span>x<sup>2</sup> dx = ?</div>
-  <div class="c7-hint mx">ใบ้: F(x) = <span class="fr s"><span>x<sup>3</sup></span><span>3</span></span> (จากสไลด์ที่แล้ว)</div>
-  <div class="w-input ia" id="c7-in" data-label="พิมพ์คำตอบ" data-answer="9" data-accept="9.0;27/3;9 ตารางหน่วย" data-tol="0"></div>
+  <div class="c7-q mx"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">3</i><i class="dn">0</i></span>x<sup>2</sup>&nbsp;dx = ?</div>
+  <div class="w-input ia" id="c7-in" data-label="ใบ้: ใช้ F(x) = x³/3 จากสไลด์ที่แล้ว" data-answer="9" data-accept="9.0;27/3;9 ตารางหน่วย" data-tol="0"></div>
   <div class="c7-ans g2" id="c7-a2">
    <div class="c7-a2t">
     <div class="mx">F(3) − F(0)</div>
     <div class="mx">= <span class="fr"><span>27</span><span>3</span></span> − 0 = <b class="c-g" data-count="9" data-at="2">9</b></div>
    </div>
-   <svg class="plot" id="c7-mini" viewBox="0 0 300 220" style="width:300px;height:220px" aria-label="พื้นที่ใต้ y = x กำลังสอง จาก 0 ถึง 3" role="img"></svg>
+   <svg class="plot" id="c7-mini" viewBox="0 0 280 190" style="width:280px;height:190px" aria-label="พื้นที่ใต้ y = x กำลังสอง จาก 0 ถึง 3" role="img"></svg>
   </div>
  </div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>07 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>07 / 08</b></span></div>
  <aside class="notes">ข้อ 1: f′(x) = 4x³, f′(2) = 4·8 = 32 (ตัวลวง: 16 = f(2), 8 = 4·2, 64 = 4·2⁴). ข้อ 2: F(x) = x³/3, F(3) − F(0) = 27/3 = 9. ให้นักเรียนตอบบนจอก่อน กด → เพื่อเฉลยทีละข้อ</aside>
 </section>
 
@@ -706,25 +739,25 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
  <div class="chip bl in" style="left:130px;top:64px"><b><svg viewBox="0 0 24 24" style="width:24px;height:24px"><use href="#check"/></svg></b>สรุป</div>
  <h2 class="in" style="left:130px;top:128px;--d:120">คำตอบอยู่บน<span class="hl">หน้าปัดรถ</span></h2>
 
- <div class="pan lb in" id="c8-dash" style="left:130px;top:262px;width:1660px;height:520px;--d:200"></div>
- <svg class="ab in" id="c8-sp" viewBox="0 0 400 400" style="left:168px;top:300px;width:330px;height:330px;--d:350" aria-label="มาตรความเร็ว" role="img"></svg>
- <svg class="plot in" id="c8-sg" viewBox="0 0 400 300" style="left:530px;top:300px;width:400px;height:300px;--d:450" aria-label="กราฟระยะทางกับเวลา" role="img"></svg>
- <svg class="plot in" id="c8-vg" viewBox="0 0 400 300" style="left:990px;top:300px;width:400px;height:300px;--d:550" aria-label="กราฟความเร็วกับเวลา" role="img"></svg>
- <svg class="ab in" id="c8-od" viewBox="0 0 400 400" style="left:1422px;top:300px;width:330px;height:330px;--d:650" aria-label="มาตรระยะทาง" role="img"></svg>
- <div class="ab c8-cap in" style="left:168px;top:652px;width:762px;--d:800"><span class="tag c8-r">อนุพันธ์</span>มาตรความเร็ว = <b class="c-d">ความชัน</b>ของกราฟระยะทาง</div>
- <div class="ab c8-cap in" style="left:990px;top:652px;width:762px;--d:900"><span class="tag c8-y">ปริพันธ์</span>มาตรระยะทาง = <b class="c-a">พื้นที่</b>ใต้กราฟความเร็ว</div>
+ <div class="pan lb in" id="c8-dash" style="left:130px;top:252px;width:1660px;height:508px;--d:200"></div>
+ <svg class="ab in" id="c8-sp" viewBox="0 0 400 400" style="left:166px;top:282px;width:350px;height:350px;--d:350" aria-label="มาตรความเร็ว" role="img"></svg>
+ <svg class="plot in" id="c8-sg" viewBox="0 0 400 300" style="left:540px;top:290px;width:400px;height:300px;--d:450" aria-label="กราฟระยะทางกับเวลา" role="img"></svg>
+ <svg class="plot in" id="c8-vg" viewBox="0 0 400 300" style="left:990px;top:290px;width:400px;height:300px;--d:550" aria-label="กราฟความเร็วกับเวลา" role="img"></svg>
+ <svg class="ab in" id="c8-od" viewBox="0 0 400 400" style="left:1404px;top:282px;width:350px;height:350px;--d:650" aria-label="มาตรระยะทาง" role="img"></svg>
+ <div class="ab c8-cap in" style="left:170px;top:664px;width:770px;--d:800"><span class="tag c8-r">อนุพันธ์</span>มาตรความเร็ว = <b class="c-d">ความชัน</b>ของกราฟระยะทาง</div>
+ <div class="ab c8-cap in" style="left:990px;top:664px;width:770px;--d:900"><span class="tag c8-y">ปริพันธ์</span>มาตรระยะทาง = <b class="c-a">พื้นที่</b>ใต้กราฟความเร็ว</div>
 
- <div class="pan c8-take lr g1" style="left:130px;top:830px;width:520px;height:160px;--d:0">
-  <svg viewBox="0 0 90 90" aria-hidden="true"><path d="M8 78 Q40 70 82 12" fill="none" stroke="#2D5BFF" stroke-width="7" stroke-linecap="round"/><line x1="14" y1="86" x2="86" y2="30" stroke="#FF5A36" stroke-width="7" stroke-linecap="round"/></svg>
+ <div class="pan c8-take lr g1" style="left:130px;top:810px;width:520px;height:180px;--d:0">
+  <svg viewBox="0 0 90 90" aria-hidden="true"><path d="M6 80 Q44 78 84 10" fill="none" stroke="#2D5BFF" stroke-width="7" stroke-linecap="round"/><line x1="22" y1="88" x2="88" y2="38" stroke="#FF5A36" stroke-width="7" stroke-linecap="round"/><circle cx="59" cy="60" r="8" fill="#fff" stroke="#1A1B3D" stroke-width="4"/></svg>
   <p><b class="c-d">อนุพันธ์</b><br>ลิมิตของความชันเส้นตัด</p></div>
- <div class="pan c8-take ly g1" style="left:700px;top:830px;width:520px;height:160px;--d:150">
+ <div class="pan c8-take ly g1" style="left:700px;top:810px;width:520px;height:180px;--d:150">
   <svg viewBox="0 0 90 90" aria-hidden="true"><rect x="10" y="60" width="18" height="22" fill="#FFC229" stroke="#1A1B3D" stroke-width="4"/><rect x="28" y="44" width="18" height="38" fill="#FFC229" stroke="#1A1B3D" stroke-width="4"/><rect x="46" y="26" width="18" height="56" fill="#FFC229" stroke="#1A1B3D" stroke-width="4"/><rect x="64" y="8" width="18" height="74" fill="#FFC229" stroke="#1A1B3D" stroke-width="4"/></svg>
   <p><b class="c-a">ปริพันธ์</b><br>ลิมิตของผลรวมสี่เหลี่ยม</p></div>
- <div class="pan c8-take lb g1" style="left:1270px;top:830px;width:520px;height:160px;--d:300">
+ <div class="pan c8-take lb g1" style="left:1270px;top:810px;width:520px;height:180px;--d:300">
   <svg viewBox="0 0 90 90" aria-hidden="true"><path d="M16 38 A30 30 0 0 1 74 38" fill="none" stroke="#FFC229" stroke-width="8" stroke-linecap="round"/><path d="M64 28 L76 42 L60 44" fill="none" stroke="#1A1B3D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M74 54 A30 30 0 0 1 16 54" fill="none" stroke="#FF5A36" stroke-width="8" stroke-linecap="round"/><path d="M26 64 L14 50 L30 48" fill="none" stroke="#1A1B3D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <p><b class="c-f">สองอย่างนี้ย้อนกลับกัน</b><br>ทฤษฎีบทหลักมูล</p></div>
 
- <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>08 / 08</b></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>08 / 08</b></span></div>
  <aside class="notes">ตอบคำถามแรก: ความเร็ว ณ ขณะหนึ่ง = ความชันของกราฟระยะทาง ณ เวลานั้น = อนุพันธ์ (ลิมิตของระยะทาง ÷ เวลา เมื่อช่วงเวลาเล็กลงจนเข้าใกล้ 0). มาตรระยะทางสะสมความเร็วตลอดทาง = พื้นที่ใต้กราฟความเร็ว = ปริพันธ์. ตัวอย่างการขับ: v(t) = 40(1 − cos 2πt/T) กม./ชม., T = 15 นาที, ระยะทางรวม 10 กม.</aside>
 </section>
 
@@ -2101,7 +2134,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
   function $(s, c) { return (c || document).querySelector(s); }
   function $$(s, c) { return [].slice.call((c || document).querySelectorAll(s)); }
   function S(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
-  function T(at, text, parent) { var e = S('text', at, parent); e.textContent = text; return e; }
+  function T(at, text, parent) { var f = at.fill; delete at.fill; var e = S('text', at, parent); if (f) e.style.fill = f; e.textContent = text; return e; }
   function set(el, at) { for (var k in at) el.setAttribute(k, typeof at[k] === 'number' ? +at[k].toFixed(2) : at[k]); }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
   function num(v, d) { var s = Math.abs(v).toFixed(d); return (v < 0 && +s !== 0 ? '−' : '') + s; }   /* real minus sign */
@@ -2242,7 +2275,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     var DRIVE = 4800, GAP = 1100, X0 = 20, L = 1980, REF = 120, VMAX = 110, dots = [];
     for (var k = 0; k <= 12; k++) {
       var uu = k / 12, x = X0 + L * uu * uu + REF;
-      if (x < 1900) dots.push({ u: uu, el: S('circle', { cx: x.toFixed(1), cy: 141, r: 9, fill: PINK, stroke: INK, 'stroke-width': 3 }, $('#c1-dots')) });
+      if (x < 1900) dots.push({ u: uu, el: S('circle', { cx: x.toFixed(1), cy: 132, r: 9, fill: PINK, stroke: INK, 'stroke-width': 3 }, $('#c1-dots')) });
     }
     var raf = 0, t0 = null, last = 0, rot = 0, u = 0;
     function pose(w, dotsOn) {
@@ -2286,23 +2319,25 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     var P = plot(svg, { id: 'c2', x0: -0.5, x1: 2.75, y0: -0.7, y1: 7.3, l: 84, t: 40, w: 900, h: 620, gx: 0.25, gy: 0.5, xt: [1, 2], yt: [2, 4, 6] });
     var f = function (x) { return x * x; };
     var cv = S('path', { 'class': 'cf draw', d: P.path(f, -0.5, 2.75, 220), pathLength: 1 }, P.body); cv.style.setProperty('--d', 450);
-    var tan = S('line', { 'class': 'tan', x1: P.sx(-0.5), y1: P.sy(-2), x2: P.sx(2.75), y2: P.sy(4.5) }, P.body);
     var sec = S('line', { 'class': 'sec' }, P.body);
+    var tan = S('line', { 'class': 'tan', x1: P.sx(-0.5), y1: P.sy(-2), x2: P.sx(2.75), y2: P.sy(4.5) }, P.body);
     var run = S('line', { 'class': 'sec dash' }, P.top), rise = S('line', { 'class': 'sec dash' }, P.top);
     T({ 'class': 'lbl halo', x: P.sx(2.05), y: P.sy(6.6), fill: BLUE, 'text-anchor': 'end' }, 'y = x²', P.top);
     var tanL = T({ 'class': 'lbl halo', x: P.sx(1.12), y: P.sy(0.38), fill: RED }, 'เส้นสัมผัส · ความชัน 2', P.top);
     var runL = T({ 'class': 'lbl halo', 'text-anchor': 'middle', fill: PINK }, '', P.top);
     var riseL = T({ 'class': 'lbl halo', fill: PINK }, '', P.top);
     S('circle', { 'class': 'pt', cx: P.sx(1), cy: P.sy(1), r: 14, fill: '#fff' }, P.top);
-    var pL = T({ 'class': 'lbl halo', x: P.sx(1) - 24, y: P.sy(1) - 18, 'text-anchor': 'end' }, 'P', P.top);
+    T({ 'class': 'lbl halo', x: P.sx(1) - 30, y: P.sy(1) - 20, 'text-anchor': 'end' }, 'P', P.top);
     var ring = S('circle', { r: 34, fill: 'none', stroke: PINK, 'stroke-width': 4, 'class': 'c2-ring' }, P.top);
     var q = S('circle', { 'class': 'pt', r: 18, fill: PINK }, P.top);
     var qL = T({ 'class': 'lbl halo' }, 'Q', P.top);
     var eh = $('#c2-h'), en = $('#c2-num'), ed = $('#c2-den'), em = $('#c2-m'), rows = $$('#c2-tape tbody tr'), h = 1.5, lock = false;
     function line(m) { set(sec, { x1: P.sx(-0.5), y1: P.sy(1 + m * (-1.5)), x2: P.sx(2.75), y2: P.sy(1 + m * 1.75) }); }
+    function exact(v) { var t = v.toFixed(6).replace(/0+$/, ''), d = (t.split('.')[1] || '').length; return num(v, Math.max(3, d)); }
     function setH(v) {
+      v = Math.round(v * 1000) / 1000; if (Math.abs(v) < 0.001) v = v < 0 ? -0.001 : 0.001;   /* h has 3 decimals, so every shown number is exact */
       h = v;
-      var qx = 1 + h, qy = f(qx), m = 2 + h, rs = qy - 1, X = P.sx(qx), Y = P.sy(qy), far = Math.abs(h) > 0.2;
+      var qx = 1 + h, qy = f(qx), m = 2 + h, rs = qy - 1, X = P.sx(qx), Y = P.sy(qy), far = Math.abs(h) > 0.34;
       line(m);
       set(run, { x1: P.sx(1), y1: P.sy(1), x2: X, y2: P.sy(1) });
       set(rise, { x1: X, y1: P.sy(1), x2: X, y2: Y });
@@ -2313,15 +2348,15 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
       set(qL, { x: X + (h > 0 ? -26 : 26), y: Y - 22, 'text-anchor': h > 0 ? 'end' : 'start' }); qL.style.opacity = Math.abs(h) > 0.12 ? 1 : 0;
       var tv = lock ? 1 : clamp((0.3 - Math.abs(h)) / 0.28, 0, 1);
       tan.style.opacity = tv; tanL.style.opacity = tv > 0.95 ? 1 : 0;
-      eh.textContent = num(h, 3); en.textContent = num(rs, 3); ed.textContent = num(h, 3); em.textContent = num(m, 3);
+      eh.textContent = num(h, 3); en.textContent = exact(rs); ed.textContent = num(h, 3); em.textContent = num(m, 3);
       em.classList.toggle('near', Math.abs(h) < 0.0105);
     }
     function showRows(v) { rows.forEach(function (r) { r.classList.toggle('vis', +r.dataset.h >= v - 1e-9); }); }
     drag(svg, function (px, py, ph) {
       if (ph === 'end') return;
       A.stop();
-      var hh = clamp(P.ix(px), -0.4, 2.65) - 1;
-      if (Math.abs(hh) < 0.004) hh = hh < 0 ? -0.001 : 0.001;
+      var hh = clamp(P.ix(px), -0.4, 2.65) - 1, k = svg.getBoundingClientRect().width / 1030 || 1;
+      if (Math.abs(hh) < Math.max(0.004, 7 / k / (P.o.w / 3.25))) hh = hh < 0 ? -0.001 : 0.001;   /* within ~7 screen px of P: snap to h = ±0.001 */
       setH(hh); hint.classList.add('gone');
     });
     setH(1.5);
@@ -2350,7 +2385,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     var f = function (x) { return x * x * x - 3 * x; }, d = function (x) { return 3 * x * x - 3; };
     var Pa = plot(svg, { id: 'c3a', x0: -2.2, x1: 2.2, y0: -3.4, y1: 3.4, l: 84, t: 40, w: 960, h: 400, gx: 0.5, gy: 1, xt: [-2, -1, 1, 2], yt: [-2, 2], zero: false });
     S('line', { x1: 24, x2: 1066, y1: 474, y2: 474, stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }, svg);
-    var Pb = plot(svg, { id: 'c3b', x0: -2.2, x1: 2.2, y0: -4, y1: 10.5, l: 84, t: 520, w: 960, h: 356, gx: 0.5, gy: 1.5, gm: 3, xt: [-2, -1, 1, 2], yt: [-3, 3, 6, 9], zero: false, yl: 'y' });
+    var Pb = plot(svg, { id: 'c3b', x0: -2.2, x1: 2.2, y0: -4, y1: 10.3, l: 84, t: 540, w: 960, h: 336, gx: 0.5, gy: 1.5, gm: 3, xt: [-2, -1, 1, 2], yt: [3, 6, 9], zero: false, yl: 'y' });
     var cf = S('path', { 'class': 'cf draw', d: Pa.path(f, -2.2, 2.2, 240), pathLength: 1 }, Pa.body); cf.style.setProperty('--d', 450);
     var tr = S('path', { 'class': 'cd' }, Pb.body);
     var cur = S('line', { stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '10 9' }, svg);
@@ -2362,9 +2397,9 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
       S('circle', { cx: Pb.sx(x), cy: Pb.sy(0), r: 13, fill: GREEN, stroke: INK, 'stroke-width': 4 }, marks);
     });
     T({ 'class': 'lbl halo', x: Pa.sx(-1), y: Pa.sy(2) - 30, 'text-anchor': 'middle', fill: '#0B8A50' }, 'ยอดเขา: ความชัน 0', marks);
-    T({ 'class': 'lbl halo', x: Pa.sx(1), y: Pa.sy(-2) + 56, 'text-anchor': 'middle', fill: '#0B8A50' }, 'ก้นหุบ: ความชัน 0', marks);
-    T({ 'class': 'lbl halo', x: Pb.sx(0), y: Pb.sy(0) + 46, 'text-anchor': 'middle', fill: '#0B8A50' }, 'f′ = 0 ที่ x = −1 และ 1', marks);
-    var tg = S('line', { 'class': 'tan' }, svg);
+    T({ 'class': 'lbl halo', x: Pa.sx(1) + 24, y: Pa.sy(-2) + 52, fill: '#0B8A50' }, 'ก้นหุบ: ความชัน 0', marks);
+    T({ 'class': 'lbl halo', x: Pb.sx(0), y: Pb.sy(3.75), 'text-anchor': 'middle', fill: '#0B8A50' }, 'f′(x) = 0 ที่ x = −1 และ x = 1', marks);
+    var tg = S('line', { 'class': 'tan' }, Pa.body);
     var da = S('circle', { 'class': 'pt', r: 14, fill: BLUE }, svg), db = S('circle', { 'class': 'pt', r: 14, fill: RED }, svg);
     var ex = $('#c3-x'), em = $('#c3-m'), ea = $('#c3-arrow svg'), es = $('#c3-state'), x = -1.8, lo = -1.8, hi = -1.8;
     function draw(v) {
@@ -2402,28 +2437,46 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     };
   })();
 
-  /* ============ 4 · power rule: hops + a mini graph check ============ */
+  /* ============ 4 · power rule: hops, the hop's dashed trail, two mini graphs ============ */
   C['c-rule'] = (function () {
-    var sl = $('#c-rule'), gen = 0, A = Anim();
+    var sl = $('#c-rule'), gen = 0, A = Anim(), rule = $('#c4-rule'), trail = $('#c4-trail');
     var f = function (x) { return x * x * x - 3 * x; }, d = function (x) { return 3 * x * x - 3; };
-    var P = plot($('#c4-mini'), { id: 'c4m', x0: -0.35, x1: 2.1, y0: -2.6, y1: 2.4, l: 34, t: 14, w: 360, h: 170, xt: [1], zero: false });
+    var P = plot($('#c4-mini'), { id: 'c4m', x0: -0.35, x1: 2.1, y0: -2.7, y1: 2.5, l: 34, t: 16, w: 350, h: 166, xt: [1], zero: false });
     S('path', { 'class': 'cf', d: P.path(f, -0.35, 2.1, 120), style: 'stroke-width:6' }, P.body);
-    var tg = S('line', { 'class': 'tan', style: 'stroke-width:6' }, P.top), dot = S('circle', { 'class': 'pt', r: 10, fill: BLUE, 'stroke-width': 3.5 }, P.top);
+    var tg = S('line', { 'class': 'tan', style: 'stroke-width:6' }, P.body), dot = S('circle', { 'class': 'pt', r: 10, fill: BLUE, 'stroke-width': 3.5 }, P.top);
+    var Q = plot($('#c4-mini2'), { id: 'c4n', x0: -2.1, x1: 2.1, y0: -4.2, y1: 10.5, l: 24, t: 14, w: 370, h: 150, xt: [-1, 1], zero: false });
+    var q = S('path', { 'class': 'cd draw', d: Q.path(d, -2.05, 2.05, 120), pathLength: 1, style: 'stroke-width:6' }, Q.body); q.style.setProperty('--d', 500);
+    [-1, 1].forEach(function (x, i) { var c = S('circle', { 'class': 'pop', cx: Q.sx(x), cy: Q.sy(0), r: 10, fill: GREEN, stroke: INK, 'stroke-width': 3.5 }, Q.top); c.style.setProperty('--d', 1300 + i * 200); });
     function at(x) {
       var X = P.sx(x), Y = P.sy(f(x)), vx = P.sx(x + 1) - X, vy = P.sy(f(x) + d(x)) - Y, L = Math.hypot(vx, vy) || 1;
       set(tg, { x1: X - vx / L * 80, y1: Y - vy / L * 80, x2: X + vx / L * 80, y2: Y + vy / L * 80 }); set(dot, { cx: X, cy: Y });
     }
     at(1);
+    /* the dashed trail of the rule's hop, measured inside the banner so the entrance motion does not matter */
+    function drawTrail(on) {
+      trail.classList.toggle('show', !!on); if (!on) return;
+      var src = $('.hs[data-h="r"]', rule), dst = $('.ht[data-h="r"]', rule), ex = $('sup.hm[data-h="r"] .c-d', rule);
+      var R = rule.getBoundingClientRect(), k = R.width / rule.offsetWidth || 1, ox = rule.offsetLeft, oy = rule.offsetTop;
+      function pt(el, fx, fy) { var r = el.getBoundingClientRect(); return [ox + (r.left - R.left + r.width * fx) / k, oy + (r.top - R.top + r.height * fy) / k]; }
+      var a = pt(src, 0.5, 0.1), b = pt(dst, 0.5, 0.12), m = [(a[0] + b[0]) / 2, Math.min(a[1], b[1]) - 64], e = pt(ex, 1, 0.5), c = pt(dst, 0.5, 1);
+      $('#c4-arc').setAttribute('d', 'M' + a[0].toFixed(1) + ' ' + a[1].toFixed(1) + ' Q' + m[0].toFixed(1) + ' ' + m[1].toFixed(1) + ' ' + b[0].toFixed(1) + ' ' + b[1].toFixed(1));
+      set($('#c4-arcl'), { x: c[0], y: oy + rule.offsetHeight - 24 });
+      set($('#c4-minl'), { x: e[0] + 18, y: e[1] + 10 });
+    }
     var beats = [['r', 'e1', 'e2', 'e3'], ['s1'], [], []];
     function later(ms, fn) { var my = gen; setTimeout(function () { if (my === gen && sl.classList.contains('on')) fn(); }, ms); }
     return {
       set: function (st, prev) {
         gen++; A.stop(); clearFly(sl);
-        beats.forEach(function (ks, b) { ks.forEach(function (k) { land(sl, k, b < st || (b === st && (still() || prev !== st - 1))); }); });
         var fwd = !still() && prev === st - 1;
-        if (fwd && st === 0) { later(800, function () { fly(sl, 'r'); }); ['e1', 'e2', 'e3'].forEach(function (k, i) { later(2000 + i * 650, function () { fly(sl, k); }); }); }
+        beats.forEach(function (ks, b) { ks.forEach(function (k) { land(sl, k, b < st || (b === st && !fwd)); }); });
+        if (fwd && st === 0) {
+          drawTrail(false);
+          later(800, function () { fly(sl, 'r'); }); later(1850, function () { drawTrail(true); });
+          ['e1', 'e2', 'e3'].forEach(function (k, i) { later(2300 + i * 650, function () { fly(sl, k); }); });
+        } else drawTrail(true);
         if (fwd && st === 1) later(700, function () { fly(sl, 's1'); });
-        if (st === 3 && fwd) { at(0.15); later(500, function () { A.run(1300, function (p) { at(0.15 + 0.85 * eio(p)); }); }); }
+        if (st === 3 && fwd) { at(0.15); later(500, function () { A.run(1400, function (p) { at(0.15 + 0.85 * eio(p)); }); }); }
         else at(1);
       },
       leave: function () { gen++; A.stop(); clearFly(sl); }
@@ -2443,8 +2496,8 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     rects.style.transformBox = 'view-box'; rects.style.transformOrigin = '0px ' + P.sy(0) + 'px';
     var cv = S('path', { 'class': 'cf draw', d: P.path(f, -0.22, 2.3, 200), pathLength: 1 }, P.body); cv.style.setProperty('--d', 350);
     S('line', { x1: P.sx(2), x2: P.sx(2), y1: P.sy(0), y2: P.sy(4.45), stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '4 10', 'stroke-linecap': 'round' }, P.top);
-    T({ 'class': 'lbl halo', x: P.sx(2.18), y: P.sy(4.25), fill: BLUE, 'text-anchor': 'end' }, 'y = x²', P.top);
-    var eN = $('#c5-nv'), eT = $('#c5-tv'), eS = $('#c5-sv'), eE = $('#c5-ev'), eB = $('#c5-eb'), th = $('#c5-th'), fill = $('#c5-fill'), trk = $('#c5-trk');
+    T({ 'class': 'lbl halo', x: P.sx(1.9), y: P.sy(4.22), fill: BLUE, 'text-anchor': 'end' }, 'y = x²', P.top);
+    var eN = $('#c5-nv'), eT = $('#c5-tv'), eS = $('#c5-sv'), eE = $('#c5-ev'), eB = $('#c5-eb'), th = $('#c5-th'), fill = $('#c5-fill'), trk = $('#c5-trk'), inr = $('#c5-in');
     function sumOf(k) { return 4 * (k + 1) * (2 * k + 1) / (3 * k * k); }   /* = Σ (2i/k)² · (2/k), i = 1..k */
     function readout(s) {
       eS.textContent = s.toFixed(3); var e = Math.max(0, s - EX);
@@ -2466,9 +2519,9 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
       trk.setAttribute('aria-valuenow', n);
       readout(sumOf(n));
     }
-    function lim(on) { sl.classList.toggle('lim', on); }
+    function lim(on) { sl.classList.toggle('is-lim', on); }
     function user(v) { A.stop(); lim(false); setN(v); }
-    drag(trk, function (px, py, ph) { if (ph !== 'end') user(2 + 48 * clamp(px / (trk.offsetWidth || 1), 0, 1)); });
+    drag(trk, function (px, py, ph) { if (ph !== 'end') user(2 + 48 * clamp((px - inr.offsetLeft) / (inr.offsetWidth || 1), 0, 1)); });
     $('#c5-minus').addEventListener('click', function (e) { e.stopPropagation(); user(n - 1); });
     $('#c5-plus').addEventListener('click', function (e) { e.stopPropagation(); user(n + 1); });
     setN(2);
@@ -2507,7 +2560,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     var knL = S('circle', { r: 15, fill: PINK, stroke: INK, 'stroke-width': 4 }, Lp.top);
     var trF = S('path', { 'class': 'cv' }, Rp.body);
     var barR = S('rect', { width: 16, fill: SUN, stroke: INK, 'stroke-width': 3 }, Rp.under);
-    var tgR = S('line', { 'class': 'tan g1' }, Rp.top);
+    var tgR = S('line', { 'class': 'tan g1' }, Rp.body);
     var dotR = S('circle', { 'class': 'pt', r: 13, fill: VIOLET }, Rp.top);
     var knR = S('circle', { r: 15, fill: PINK, stroke: INK, 'stroke-width': 4 }, Rp.top);
     var a1 = $('#c6-a1'), a2 = $('#c6-a2'), h1 = $('#c6-h1'), h2 = $('#c6-h2');
@@ -2544,7 +2597,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
   /* ============ 7 · quick check: hop in Q1's working, area fill in Q2's working ============ */
   C['c-quiz'] = (function () {
     var sl = $('#c-quiz'), A = Anim(), gen = 0;
-    var P = plot($('#c7-mini'), { id: 'c7m', x0: -0.25, x1: 3.35, y0: -0.8, y1: 10, l: 36, t: 18, w: 240, h: 166, xt: [3], zero: false });
+    var P = plot($('#c7-mini'), { id: 'c7m', x0: -0.25, x1: 3.35, y0: -0.8, y1: 10, l: 30, t: 22, w: 220, h: 132, xt: [3], zero: false });
     var f = function (x) { return x * x; };
     var cp = S('clipPath', { id: 'c7-grow' }, P.defs), cr = S('rect', { x: P.sx(0), y: 0, width: 0, height: 300 }, cp);
     S('path', { d: P.area(f, 0, 3), fill: SUN, stroke: INK, 'stroke-width': 2.5, 'clip-path': 'url(#c7-grow)' }, P.under);
@@ -2580,7 +2633,7 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     for (var k = 0; k <= 100; k += 10) {
       var a = -120 + k * 2.4, p1 = gp(a, 140), p2 = gp(a, k % 20 ? 128 : 118);
       S('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: INK, 'stroke-width': k % 20 ? 3 : 5, 'stroke-linecap': 'round' }, sp);
-      if (k % 20 === 0) { var p3 = gp(a, 96); T({ 'class': 'tl', x: p3[0], y: p3[1] + 9, 'text-anchor': 'middle' }, String(k), sp); }
+      if (k % 20 === 0) { var p3 = gp(a, 90); T({ 'class': 'tl', x: p3[0], y: p3[1] + 9, 'text-anchor': 'middle' }, String(k), sp); }
     }
     var spv = T({ 'class': 'big2', x: 200, y: 316, 'text-anchor': 'middle' }, '0', sp);
     T({ 'class': 'u', x: 200, y: 350, 'text-anchor': 'middle' }, 'กม./ชม.', sp);
@@ -2590,10 +2643,10 @@ svg.plot{position:absolute;display:block;overflow:visible;font-family:Inter;touc
     var odArc = S('path', { stroke: SUN, 'stroke-width': 30, fill: 'none' }, od);
     S('path', { d: arc(-120, 120, 171), stroke: INK, 'stroke-width': 4, fill: 'none' }, od);
     S('path', { d: arc(-120, 120, 141), stroke: INK, 'stroke-width': 4, fill: 'none' }, od);
-    [0, 5, 10].forEach(function (km) { var p = gp(-120 + km * 24, 108); T({ 'class': 'tl', x: p[0], y: p[1] + 9, 'text-anchor': 'middle' }, String(km), od); });
-    S('rect', { x: 98, y: 168, width: 204, height: 84, rx: 16, fill: INK }, od);
-    var odv = T({ 'class': 'big2', x: 200, y: 233, 'text-anchor': 'middle', style: 'fill:#fff' }, '0.0', od);
-    T({ 'class': 'u', x: 200, y: 300, 'text-anchor': 'middle' }, 'กม. (ระยะทางสะสม)', od);
+    [0, 5, 10].forEach(function (km) { var p = gp(-120 + km * 24, 112); T({ 'class': 'tl', x: p[0], y: p[1] + 9, 'text-anchor': 'middle' }, String(km), od); });
+    S('rect', { x: 92, y: 138, width: 216, height: 92, rx: 18, fill: INK }, od);
+    var odv = T({ 'class': 'big2', x: 200, y: 208, 'text-anchor': 'middle', fill: '#fff' }, '0.0', od);
+    T({ 'class': 'u', x: 200, y: 330, 'text-anchor': 'middle' }, 'กม. สะสม', od);
     var Ps = plot($('#c8-sg'), { id: 'c8s', x0: -0.6, x1: 16.2, y0: -0.8, y1: 11.4, l: 54, t: 22, w: 320, h: 222, gx: 2.5, gy: 2.5, xt: [5, 10, 15], yt: [5, 10], xl: 't', yl: 's ระยะทาง', zero: false });
     var Pv = plot($('#c8-vg'), { id: 'c8v', x0: -0.6, x1: 16.2, y0: -7, y1: 96, l: 54, t: 22, w: 320, h: 222, gx: 2.5, gy: 20, xt: [5, 10, 15], yt: [40, 80], xl: 't', yl: 'v ความเร็ว', zero: false });
     S('path', { d: Ps.path(s, 0, TT), fill: 'none', stroke: '#CBD3F2', 'stroke-width': 5, 'stroke-dasharray': '2 9', 'stroke-linecap': 'round' }, Ps.body);

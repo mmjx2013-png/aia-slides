@@ -5,6 +5,7 @@ Only public domain, CC0, CC BY and CC BY-SA files are accepted; anything else st
 Wikimedia now answers 429 ("use thumbnail images in sizes listed on https://w.wiki/GHai") to bulk downloads of
 originals from cloud IPs. So each file is tried as the original once; on 429 the 3840 px standard rendition is
 taken instead (same image, resized by Wikimedia). meta.json records which one was used ("got").
+--credits only rewrites credits.md (adding when each image is on screen, from out/timeline.json).
 Re-run with --originals [--only id1,id2] later to try to upgrade the 3840 px files to the originals."""
 import html, json, os, re, sys, time, urllib.parse, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -78,20 +79,46 @@ def main():
     write_credits(meta)
 
 def write_credits(meta):
-    L = ['# Image credits: Ayutthaya trailer', '',
+    tl_path = os.path.join(HERE, 'out', 'timeline.json')
+    on_screen = {}
+    if os.path.exists(tl_path):
+        for sh in json.load(open(tl_path, encoding='utf-8'))['shots']:
+            on_screen[sh['id']] = f"{sh['start']:.1f}–{sh['end']:.1f} s"
+    order = sorted(meta, key=lambda m: float(on_screen.get(m['id'], '999').split('–')[0]))
+    L = ['# Credits: Ayutthaya (อยุธยา) trailer', '',
          'Every picture in the trailer is a photograph or historical artwork from Wikimedia Commons.',
-         'All were checked for a licence that allows reuse (public domain, CC0, CC BY or CC BY-SA).',
-         'The trailer crops, moves, colour-grades and adds grain to these images; for CC BY-SA files those changes',
-         'are shared under the same licence. Licence links are given with each file.', '',
-         '| # | File in img/ | Subject | Author | Licence | Source page |', '|---|---|---|---|---|---|']
-    for i, m in enumerate(meta, 1):
+         'Each was checked for a licence that allows reuse (public domain, CC0, CC BY or CC BY-SA).',
+         'The trailer crops, moves, colour-grades and adds grain to these images; for the CC BY-SA files that',
+         'adaptation is shared under the same licence. Licence links are given with each file.',
+         '"Size" is the size of the original on Commons; "copy used" says whether the original or Wikimedia\'s',
+         '3840 px rendition was used (Commons rate-limits downloads of originals; `python3 fetch_images.py --originals`',
+         'retries them).', '',
+         '| Shot | On screen | File in img/ | Subject | Author | Licence | Size, copy used | Source page |',
+         '|---|---|---|---|---|---|---|---|']
+    for i, m in enumerate(order, 1):
         lic = f"[{m['licence']}]({m['licence_url']})" if m['licence_url'] else m['licence']
         author = m['author'].replace('|', '/')[:160]
-        L.append(f"| {i} | `{m['file']}` ({m['width']}×{m['height']}) | {m['subject']} | {author} | {lic} | [{m['title'][5:]}]({m['page']}) |")
-    L += ['', 'Narration: AI voice (Venice API text-to-speech). Music and sound: original, synthesised for this trailer.',
-          'Fonts: Anuphan (SIL Open Font License) and Inter (SIL Open Font License).', '', '© KruSlide']
+        L.append(f"| {i} | {on_screen.get(m['id'], '-')} | `{m['file']}` | {m['subject']} | {author} | {lic} | "
+                 f"{m['width']}×{m['height']}, {m.get('got') or 'original'} | [{m['title'][5:]}]({m['page']}) |")
+    L += ['', '## Sound, voice and type',
+          '- Narration: AI voice, Venice API text-to-speech (Gemini 3.1 Flash TTS, voice "Charon"); script in narration.json.',
+          '- Music and sound effects: original, synthesised with ffmpeg for this trailer (audio.py).',
+          '- Fonts: Anuphan and Inter, both SIL Open Font License, self-hosted.', '',
+          '## Facts in the narration',
+          '- Ayutthaya was founded in 1351 CE (พ.ศ. ๑๘๙๓) and was the Siamese royal capital until it fell in 1767 CE',
+          '  (พ.ศ. ๒๓๑๐): 417 years counted in Buddhist-era years (2310 − 1893), the figure Thai sources use.',
+          '- The old city is an island where the Chao Phraya, Pa Sak and Lopburi rivers meet.',
+          '- It was a port and trading city that drew merchants from Asia and Europe (the Dutch VOC chart and',
+          '  the 1662 and 1726 Dutch views in the trailer are records of that trade).',
+          '- The Historic City of Ayutthaya has been a UNESCO World Heritage Site since 1991 (พ.ศ. ๒๕๓๔).',
+          '- Sources: UNESCO World Heritage List, "Historic City of Ayutthaya", https://whc.unesco.org/en/list/576 ;',
+          '  Encyclopaedia Britannica, "Ayutthaya"; Fine Arts Department of Thailand, Ayutthaya Historical Park.',
+          '', '© KruSlide']
     open(os.path.join(HERE, 'credits.md'), 'w', encoding='utf-8').write('\n'.join(L) + '\n')
     print('wrote credits.md')
 
 if __name__ == '__main__':
-    main()
+    if '--credits' in sys.argv:     # only rewrite credits.md from img/meta.json (+ out/timeline.json)
+        write_credits(json.load(open(os.path.join(IMG, 'meta.json'), encoding='utf-8')))
+    else:
+        main()

@@ -9,7 +9,7 @@ usage:
   python3 render.py                    render the whole film -> out/work/video_4k.mp4 (H.264, no audio)
   python3 render.py --stills 3.5 20    write full-size JPEG stills at those times to out/work/stills/
   python3 render.py --range 10 15 x.mp4   render only seconds 10-15 to x.mp4 (for checks)
-options: --workers N (default: CPU count), --crf N (default 16)
+options: --workers N (default: CPU count), --crf N (default 17; peaks are capped at 60 Mbit/s)
 """
 import json, math, os, subprocess, sys, time
 import multiprocessing as mp
@@ -24,7 +24,7 @@ WORK = os.path.join(HERE, 'out', 'work')
 
 # ---------------------------------------------------------------- the look
 GLOBAL_SAT = 0.88
-GRAIN = 0.030          # std-dev of the grain before it is upscaled (about 0.019 after)
+GRAIN = 0.024          # std-dev of the grain field before it is enlarged to grain-sized clumps
 VIGNETTE = 0.38        # darkening in the far corners
 GLOW = 0.22            # warm halation around highlights
 
@@ -95,15 +95,40 @@ def camera(shot, t):
     z = az * (bz / az) ** e                                # constant-speed zoom
     return ax + (bx - ax) * e, ay + (by - ay) * e, z
 
-def shot_frame(shot, t):
-    img, lut, sat = source(shot)
+SHUTTER = 0.5          # 180-degree shutter: motion blur over half a frame, like a film camera
+
+def crop_matrix(img, shot, t):
     ih, iw = img.shape[:2]
     cx, cy, z = camera(shot, t)
     cw = z * iw; ch = cw * PH / W
     x0 = cx * iw - cw / 2; y0 = cy * ih - ch / 2
     sx, sy = cw / W, ch / PH
-    M = np.array([[sx, 0, x0 + 0.5 * sx - 0.5], [0, sy, y0 + 0.5 * sy - 0.5]], np.float64)
-    px = cv2.warpAffine(img, M, (W, PH), flags=cv2.INTER_LANCZOS4 | cv2.WARP_INVERSE_MAP, borderMode=cv2.BORDER_REFLECT)
+    return np.array([[sx, 0, x0 + 0.5 * sx - 0.5], [0, sy, y0 + 0.5 * sy - 0.5]], np.float64)
+
+def motion_px(img, shot, t):
+    """How far (output pixels) the picture corners travel during the shutter interval."""
+    dt = SHUTTER / FPS
+    A, B = crop_matrix(img, shot, t - dt / 2), crop_matrix(img, shot, t + dt / 2)
+    worst = 0.0
+    for u, v in ((0, 0), (W, 0), (0, PH), (W, PH), (W / 2, PH / 2)):
+        pa = A @ (u, v, 1); pb = B @ (u, v, 1)              # source position of this output pixel at both times
+        worst = max(worst, float(np.hypot(*(pb - pa))) / A[0, 0])
+    return worst
+
+def shot_frame(shot, t):
+    img, lut, sat = source(shot)
+    blur = motion_px(img, shot, t)
+    n = 1 if blur < 1.2 else min(6, int(math.ceil(blur / 1.3)) + 1)
+    if n == 1:
+        px = cv2.warpAffine(img, crop_matrix(img, shot, t), (W, PH), flags=cv2.INTER_LANCZOS4 | cv2.WARP_INVERSE_MAP,
+                            borderMode=cv2.BORDER_REFLECT)
+    else:   # temporal supersampling across the shutter interval = true motion blur for pans, tilts and zooms
+        acc = np.zeros((PH, W, 3), np.uint16)
+        for k in range(n):
+            tk = t + ((k + 0.5) / n - 0.5) * SHUTTER / FPS
+            acc += cv2.warpAffine(img, crop_matrix(img, shot, tk), (W, PH), flags=cv2.INTER_CUBIC | cv2.WARP_INVERSE_MAP,
+                                  borderMode=cv2.BORDER_REFLECT)
+        px = ((acc + n // 2) // n).astype(np.uint8)
     out = np.empty((PH, W, 3), np.float32)
     for c in range(3):
         out[..., c] = lut[c][px[..., c]]
@@ -179,10 +204,10 @@ def frame(n):
                 x *= (1 - c['dim'] * o)
             apply_card(x, c, t, o)
     x *= vignette()
-    # film grain: fresh every frame, about 2 px in size, strongest in the mid-tones, monochrome
+    # film grain: fresh every frame, about 3 px in size, strongest in the mid-tones, monochrome
     rng = np.random.default_rng(7919 + n)
-    g = rng.standard_normal((PH // 2, W // 2), dtype=np.float32)
-    g = cv2.resize(g, (W, PH), interpolation=cv2.INTER_LINEAR)
+    g = rng.standard_normal((PH // 3, W // 3), dtype=np.float32)
+    g = cv2.resize(g, (W, PH), interpolation=cv2.INTER_CUBIC)
     lum = x[..., 0] * 0.0722 + x[..., 1] * 0.7152 + x[..., 2] * 0.2126
     m = np.clip(0.30 + 2.8 * lum * (1 - lum), 0, 1) * (lum > 0.004)
     x += (g * m * GRAIN)[..., None]
@@ -193,8 +218,8 @@ def frame(n):
 
 # ---------------------------------------------------------------- encoding
 def x264_args(crf):
-    return ['-c:v', 'libx264', '-preset', 'slow', '-crf', str(crf), '-tune', 'grain', '-profile:v', 'high', '-level:v', '5.1',
-            '-pix_fmt', 'yuv420p', '-x264-params', f'keyint={FPS * 2}:min-keyint={FPS}:vbv-maxrate=120000:vbv-bufsize=200000',
+    return ['-c:v', 'libx264', '-preset', 'slow', '-crf', str(crf), '-tune', 'film', '-profile:v', 'high', '-level:v', '5.1',
+            '-pix_fmt', 'yuv420p', '-maxrate', '60M', '-bufsize', '120M', '-x264-params', f'keyint={FPS * 2}:min-keyint={FPS}',
             '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv']
 
 def encode_range(args):
@@ -230,7 +255,7 @@ def render(a, b, out, workers, crf):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    workers = os.cpu_count(); crf = 16
+    workers = os.cpu_count(); crf = 17
     if '--workers' in args:
         i = args.index('--workers'); workers = int(args[i + 1]); del args[i:i + 2]
     if '--crf' in args:

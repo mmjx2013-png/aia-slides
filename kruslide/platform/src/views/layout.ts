@@ -165,6 +165,11 @@ export function emptyArt(): Safe {
 <path d="M124 14l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#18B07F"/><path d="M22 22l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#8B6CF6"/></svg>`);
 }
 
+/** First letter for the avatar, skipping Thai leading vowels (เ แ โ ใ ไ), so "เจ้าของ" shows "จ". */
+export function initial(name: string): string {
+  return [...(name || '?')].find((c) => !/[\u0E40-\u0E44\s"'(]/.test(c)) ?? '?';
+}
+
 // ---------- page frame ----------
 interface PageOpts {
   title: string;
@@ -191,7 +196,7 @@ export function page(ctx: Ctx, o: PageOpts): Safe {
         <a class="cta hide-m" href="/app/requests/new"${cur('new')}>${icon('plus')}<span class="lbl">ขอทำหนังสือ</span></a>
         ${logout}
       </nav>
-      <a class="who" href="/app/profile" title="ข้อมูลของฉัน"><span class="ava" aria-hidden="true">${[...(t.display_name || '?')][0]}</span><span>${t.display_name}</span></a>`
+      <a class="who" href="/app/profile" title="ข้อมูลของฉัน"><span class="ava" aria-hidden="true">${initial(t.display_name)}</span><span>${t.display_name}</span></a>`
       : html`<nav class="nav" aria-label="เมนู"><a href="/app/privacy"${cur('privacy')}>ความเป็นส่วนตัว</a></nav>`;
   const tabs = t && !o.focus
     ? html`<nav class="tabs" aria-label="เมนูหลัก">

@@ -49,10 +49,10 @@ SHOTS = [
     dict(id='06-sanphet-golden', start=('L5.start', -0.55), xin=1.1,
          a=(0.52, 0.52, 0.95), b=(0.58, 0.48, 0.74), grade=dict(exp=-0.05)),
     dict(id='07-yai-chai-mongkhon', start=('L5.end', -1.6), xin=1.1,
-         a=(0.57, 0.70, 0.80), b=(0.55, 0.36, 0.80), grade=dict(exp=0.0)),
+         a=(0.57, 0.60, 0.80), b=(0.55, 0.38, 0.80), grade=dict(exp=0.0)),
     # cut to black on the impact, L6 over black, then:
     dict(id='09-lokayasutharam', start=('L7.start', -1.05), xin=1.5, fade_from_black=True,
-         a=(0.36, 0.43, 0.64), b=(0.56, 0.42, 0.62), grade=dict(exp=-0.30, sat=0.8)),
+         a=(0.38, 0.43, 0.64), b=(0.55, 0.42, 0.62), grade=dict(exp=-0.30, sat=0.8)),
     dict(id='10-buddha-head-roots', start=('L8.start', -0.75), xin=1.3,
          a=(0.47, 0.48, 0.86), b=(0.47, 0.46, 0.53), grade=dict(exp=0.05)),
     dict(id='08-chaiwatthanaram-reflection', start=('L9.start', -0.75), xin=1.2,
