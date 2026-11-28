@@ -1,0 +1,37 @@
+<!-- 2 · Zoom from tissue to cell: drag the magnification bar (40×–400×, it settles on the nearest objective 4×, 10×, 40×).
+     Onion skin (iodine) and cheek cells (methylene blue) are drawn to scale; the scale bar and field size follow the zoom.
+     Beat 1 zooms the onion from 40× to 400×; beat 2 switches to cheek cells at 400× and compares. -->
+<section class="slide" id="m-zoom" data-steps="2" data-title="กำลังขยาย">
+ <div class="kick in" style="left:96px;top:58px">วิทยาศาสตร์ ม.1 · กล้องจุลทรรศน์</div>
+ <h2 class="in" style="left:92px;top:88px;--d:80">ซูมจากเนื้อเยื่อ สู่เซลล์</h2>
+
+ <div class="field in" id="m2-field" style="left:300px;top:196px;width:800px;height:800px;--d:200"><canvas id="m2-cv" width="800" height="800" aria-label="ภาพวาดเนื้อเยื่อใต้กล้อง" role="img"></canvas></div>
+ <div class="lens in" style="left:300px;top:196px;width:800px;height:800px;--d:200"></div>
+ <div class="sbar ab in" id="m2-bar" style="left:600px;top:930px;--d:400"><i></i><span>100 µm</span></div>
+
+ <div class="ab in" id="m2-side" style="left:1180px;top:150px;width:644px;--d:300">
+  <span class="lbl">ตัวอย่างบนสไลด์</span>
+  <div class="m2-spec ia" role="group" aria-label="เลือกตัวอย่าง">
+   <button type="button" class="pill" data-s="onion" aria-pressed="true"><i style="background:#C88A2E"></i>เยื่อหอมแดง · ไอโอดีน</button>
+   <button type="button" class="pill" data-s="cheek" aria-pressed="false"><i style="background:#3D6FB4"></i>เยื่อบุข้างแก้ม · เมทิลีนบลู</button>
+  </div>
+  <span class="lbl">กำลังขยาย <b>ลากได้ทั้งแถบ</b></span>
+  <div class="zs hit" id="m2-trk" role="slider" aria-label="กำลังขยาย ลากได้ทั้งแถบ" aria-valuemin="40" aria-valuemax="400" aria-valuenow="40">
+   <div class="zs-in" id="m2-in"><div class="zs-r"><i id="m2-fill"></i></div>
+    <span class="zs-k" style="left:0%">40×</span><span class="zs-k" style="left:39.794%">100×</span><span class="zs-k" style="left:100%">400×</span>
+    <div class="zs-th" id="m2-th"></div></div>
+  </div>
+  <div class="obj" id="m2-obj">
+   <div data-o="4"><i></i><b>4×</b></div><div data-o="10"><i></i><b>10×</b></div><div data-o="40"><i></i><b>40×</b></div>
+  </div>
+  <p class="m2-mag num" id="m2-mag">เลนส์ใกล้ตา 10× × เลนส์ใกล้วัตถุ 4× = <b>40 เท่า</b></p>
+  <p class="m2-lvl" id="m2-lvl"></p>
+  <div class="m2-cmp g2">
+   <p><b style="color:#E0A64C">เยื่อหอม</b> มีผนังเซลล์ รูปร่างเหลี่ยม เรียงชิดกันเป็นแผ่น</p>
+   <p><b style="color:#7FA8E0">เยื่อบุข้างแก้ม</b> ไม่มีผนังเซลล์ รูปร่างค่อนข้างกลม แบน อยู่แยกกัน</p>
+  </div>
+ </div>
+
+ <!--@FOOT@-->
+ <aside class="notes">กำลังขยายรวม = กำลังขยายเลนส์ใกล้ตา × เลนส์ใกล้วัตถุ (10 × 4 = 40, 10 × 10 = 100, 10 × 40 = 400) ยิ่งขยายมาก ภาพยิ่งแคบลง: ที่ 40 เท่าเห็นเซลล์จำนวนมากเรียงเป็นเนื้อเยื่อ ที่ 400 เท่าเห็นเซลล์เดียวชัด ผนังเซลล์และนิวเคลียส ภาพวาดตามขนาดจริงโดยประมาณ (เซลล์เยื่อหอมยาวราว 200–400 ไมโครเมตร เซลล์เยื่อบุข้างแก้มกว้างราว 50–70 ไมโครเมตร) ลากแถบขยายได้ทุกจุด ปล่อยแล้วจะเลือกเลนส์ที่ใกล้ที่สุด กด → ซูมเยื่อหอม กด → อีกครั้งเปลี่ยนเป็นเซลล์เยื่อบุข้างแก้มแล้วเปรียบเทียบ</aside>
+</section>

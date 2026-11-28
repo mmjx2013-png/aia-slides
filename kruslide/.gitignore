@@ -6,4 +6,8 @@ trailer/out/
 trailer/img/
 *.mp4
 *.wav
-trailer/voice/
+trailer/voice/*
+!trailer/voice/tts-gemini-3-1-flash__Charon__calm/
+# the 1080p trailer is small enough for git and Cloudflare Pages (< 25 MiB); the 4K files are not
+!site/media/ayutthaya-1080.mp4
+!deck/media/ayutthaya-1080.mp4

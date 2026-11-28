@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8lFvQGFCMSaB7yPWQaW6hIHgu9esfcq0zaGywpyPLCc='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lx+zCdAn3fmDLQgOf8pB0tJXssWi/RsqxUPBoOHDxMw='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>เครื่องยนต์ 4 จังหวะ · สไตล์สำรวจกลไก · KruSlide</title>
 <style>/* KruSlide styles sample F · Mechanism explorer (สำรวจกลไก) · look: "technical cutaway"
@@ -2155,6 +2155,11 @@ svg.eng{display:block;overflow:visible;font-family:Inter}
     (window.__mech = window.__mech || {}); (window.__mech.engines = window.__mech.engines || {}).quiz = E;
   })();
 
+  /* the deck showed its first slide before this file ran: switch on that slide's drawings now */
+  (function () {
+    var on = stage.querySelector('.slide.on'), st = window.__deck ? window.__deck.state().st : 0;
+    comps.forEach(function (c) { if (c.slide === on) { c.on = true; if (c.active) c.active(true); if (c.beat) c.beat(st); } });
+  })();
   window.__mech = window.__mech || {};
   window.__mech.kin = { pinY: pinY, liftI: liftI, liftE: liftE, gas: gas, strokeOf: strokeOf, R: R, L: L };
   wake();

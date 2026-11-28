@@ -731,6 +731,11 @@
     (window.__mech = window.__mech || {}); (window.__mech.engines = window.__mech.engines || {}).quiz = E;
   })();
 
+  /* the deck showed its first slide before this file ran: switch on that slide's drawings now */
+  (function () {
+    var on = stage.querySelector('.slide.on'), st = window.__deck ? window.__deck.state().st : 0;
+    comps.forEach(function (c) { if (c.slide === on) { c.on = true; if (c.active) c.active(true); if (c.beat) c.beat(st); } });
+  })();
   window.__mech = window.__mech || {};
   window.__mech.kin = { pinY: pinY, liftI: liftI, liftE: liftE, gas: gas, strokeOf: strokeOf, R: R, L: L };
   wake();
