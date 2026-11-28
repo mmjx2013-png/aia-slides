@@ -44,8 +44,12 @@ Planet sizes and distances on slide 2 and 3: NASA Planetary Fact Sheet (equatori
 | `e-stilt2.webp` | Stilt mangrove and its prop roots, Thailand | https://commons.wikimedia.org/wiki/File:Indo-West_Pacific_Stilt_Mangrove_imported_from_iNaturalist_photo_249073136_on_27_February_2024.jpg (iNaturalist open data, photo 249073136) | CC0 |
 | `e-nipa.webp` | Nipa palm (*Nypa fruticans*), Thailand | https://commons.wikimedia.org/wiki/File:Nypa_fruticans_251538575.jpg (iNaturalist open data, photo 251538575) | CC0 |
 | `e-nipa2.webp` | Nipa palm fruit, Thailand | https://commons.wikimedia.org/wiki/File:Nypa_fruticans_253985626.jpg (iNaturalist open data, photo 253985626) | CC0 |
-| `e-snapper.webp` | Mangrove red snapper (*Lutjanus argentimaculatus*), Thailand | https://commons.wikimedia.org/wiki/Category:Lutjanus_argentimaculatus (iNaturalist open data, photo 261893694; Commons file "Lutjanus argentimaculatus 261893694.jpg") | CC0 |
+| `e-snapper.webp` | Mangrove red snapper (*Lutjanus argentimaculatus*), Thailand | https://commons.wikimedia.org/wiki/File:Lutjanus_argentimaculatus_261893694.jpg (iNaturalist open data, photo 261893694) | CC0 |
 | `e-snapper2.webp` | Mangrove red snapper in murky water, Thailand | https://commons.wikimedia.org/wiki/File:Lutjanus_argentimaculatus_257971200.jpg (iNaturalist open data, photo 257971200) | CC0 |
-| `e-horseshoe.webp` | Mangrove horseshoe crab (*Carcinoscorpius rotundicauda*) | Commons file "Carcinoscorpius rotundicauda 279700632.jpg" (iNaturalist open data, photo 279700632) | CC0 |
+| `e-horseshoe.webp` | Mangrove horseshoe crab (*Carcinoscorpius rotundicauda*) | https://commons.wikimedia.org/wiki/File:Carcinoscorpius_rotundicauda_279700632.jpg (iNaturalist open data, photo 279700632) | CC0 |
 | `e-avicennia.webp` | Grey mangrove (*Avicennia*) and its breathing roots, Rakhine, Myanmar | https://commons.wikimedia.org/wiki/File:Mangrove,_Rakhine,_Myanmar.jpg (iNaturalist open data, photo 252079119) | CC0 |
 | `e-macaque.webp` | Long-tailed (crab-eating) macaques | https://commons.wikimedia.org/wiki/File:Long-tailed_Macaque_249911936.jpg (iNaturalist open data, photo 249911936) | CC0 |
+
+Facts on slides E·5: Thai mangrove area about 2.3 million rai in 1961 (พ.ศ. 2504) and about 1.05 million rai in 1996
+(พ.ศ. 2539), from Royal Forest Department satellite surveys as widely reported; please verify the exact figures before
+publishing the lesson.
