@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lFA9k1VreQQaOjlBXFsdsx37vYMiNobKw/5yD8xfe3U='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-o6YpWUbuzi8RLveto2erGcRVeVjdAdlf0vmtlgidx8o='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>ภูมิภาคของประเทศไทย · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · ภูมิภาคของประเทศไทย (ม.1) · style "topographic map"
@@ -2068,12 +2068,12 @@ window.GEO={"W":584.3,"H":1048,"regions":{"n":{"th":"ภาคเหนือ","
       K.drag(t, {
         start: function (p) { gx = p.x - T.x; gy = p.y - T.y; },
         move: function (p) {
-          if (!t.classList.contains('drag')) { t.classList.add('drag'); unmark(T); slideEl.appendChild(t); }
+          if (!t.classList.contains('drag')) { t.classList.add('drag'); unmark(T); }
           T.x = p.x - gx; T.y = p.y - gy; t.style.left = T.x + 'px'; t.style.top = T.y + 'px';
         },
         end: function (p, e, moved) {
           if (!moved) { t.classList.remove('drag'); return; }
-          var hit = document.elementFromPoint(e.clientX, e.clientY), g = hit && hit.closest ? hit.closest('#g2-map .m-reg') : null;
+          var g = null; document.elementsFromPoint(e.clientX, e.clientY).some(function (h) { g = h.closest ? h.closest('#g2-map .m-reg') : null; return !!g; });
           t.classList.remove('drag');
           if (g) { T.at = g.dataset.r; t.classList.add('pinned'); place(T, p.x - 20, p.y - 27, false); ft.say(''); }
           else goHome(T);

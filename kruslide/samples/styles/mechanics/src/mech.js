@@ -205,11 +205,11 @@
   var FLOW_I = [-262, -453, -150, -455, -60, -450, -44, -394], FLOW_E = [44, -394, 60, -450, 150, -455, 262, -453];
 
   /* ================= Engine ================= */
-  var LABELS = {
-    piston: ['ลูกสูบ', 'Piston', -255, -300], rod: ['ก้านสูบ', 'Connecting rod', -255, -150], crank: ['เพลาข้อเหวี่ยง', 'Crankshaft', 255, 60],
-    ivalve: ['วาล์วไอดี', 'Intake valve', -255, -560], evalve: ['วาล์วไอเสีย', 'Exhaust valve', 255, -560], plug: ['หัวเทียน', 'Spark plug', 120, -760],
-    block: ['กระบอกสูบ', 'Cylinder', 255, -250], head: ['ฝาสูบ', 'Cylinder head', 255, -420], cams: ['เพลาลูกเบี้ยว', 'Camshafts', -120, -760]
-  };
+  /* exploded-view labels: [group, text, x, y, anchor] in the part's own (pre-explode) coordinates */
+  var XLAB = [['.xp-piston', 'ลูกสูบ', 0, -374, 'middle'], ['.xp-rod', 'ก้านสูบ', -62, -170, 'end'], ['.xp-crank', 'เพลาข้อเหวี่ยง', 0, 156, 'middle'],
+    ['.xp-ivalve', 'วาล์วไอดี', -128, -560, 'end'], ['.xp-evalve', 'วาล์วไอเสีย', 128, -560, 'start'], ['.xp-plug', 'หัวเทียน', 34, -505, 'start'],
+    ['.cam-i', 'ลูกเบี้ยวไอดี', -102, -690, 'middle'], ['.cam-e', 'ลูกเบี้ยวไอเสีย', 102, -690, 'middle'],
+    ['.xp-head', 'ฝาสูบ', -122, -338, 'middle'], ['.xp-block', 'กระบอกสูบ', 0, 196, 'middle']];
   function Engine(svg, o) {
     o = o || {};
     var p = 'en' + (++uid), th = o.start || 0, prev = th;
@@ -234,7 +234,7 @@
       g('evalve', 'evalve', '<g transform="translate(' + SE.x + ' ' + SE.y + ') rotate(' + TILT + ')"><path class="spr" fill="none" stroke="#3B6E8F" stroke-width="3.2" stroke-linejoin="round"/></g>' +
         '<g class="ve">' + valveSVG(true) + '<path class="hitv" d="M0 4 V-222" stroke="transparent" stroke-width="46"/></g>') +
       g('plug', 'plug', plugSVG() + '<g class="spark" opacity="0">' + sparkSVG() + '</g><rect x="-22" y="-590" width="44" height="200" fill="transparent"/>') +
-      g('cams', 'cams', '<g class="ci">' + camSVG() + '</g><g class="ce">' + camSVG() + '</g>') +
+      g('cams', 'cams', '<g class="cam-i"><g class="ci">' + camSVG() + '</g></g><g class="cam-e"><g class="ce">' + camSVG() + '</g></g>') +
       g('cover', '', coverSVG()) +
       (o.ports ? '<g class="plab"><text x="-300" y="-512" text-anchor="middle" class="pl-t">ไอดี</text><text x="-300" y="-382" text-anchor="middle" class="pl-e">AIR + FUEL</text>' +
         '<path d="M-330 -453 H-276" stroke="#3A9BD6" stroke-width="5" marker-end="url(#m-arr-b)"/>' +
@@ -298,7 +298,7 @@
       if (api.onset) api.onset(a);
     }
     /* exploded view: every part slides out along its own path (CSS transforms, 0.7 s), the drawing zooms out to fit */
-    var VB0 = (o.vb || '-340 -720 680 980').split(' ').map(Number), VB1 = [-760, -1080, 1520, 1450], vbT = null, ex = false;
+    var VB0 = (o.vb || '-340 -720 680 980').split(' ').map(Number), VB1 = [-700, -930, 1400, 1330], vbT = null, ex = false;
     function setVB(v) { svg.setAttribute('viewBox', v.map(function (n) { return n.toFixed(1); }).join(' ')); }
     function explode(on) {
       on = !!on; if (on === ex) return; ex = on;
@@ -307,13 +307,10 @@
       if (vbT) vbT.cancel();
       vbT = tween(700, function (t) { setVB(from.map(function (f, i) { return f + (to[i] - f) * t; })); });
     }
-    /* leader labels (shown in the exploded view and when a part is picked) */
-    Object.keys(LABELS).forEach(function (key) {
-      var Lb = LABELS[key], grp = svg.querySelector('.xp-' + (key === 'block' ? 'block' : key)); if (!grp) return;
-      var gl = sv('g', { 'class': 'xl', 'data-for': key }, grp);
-      var right = Lb[2] > 0;
-      sv('circle', { cx: Lb[2], cy: Lb[3], r: 6, fill: '#E8590C' }, gl);
-      var t = sv('text', { x: Lb[2] + (right ? 16 : -16), y: Lb[3] + 9, 'text-anchor': right ? 'start' : 'end', 'class': 'xl-t' }, gl); t.textContent = Lb[0];
+    /* labels for the exploded view: they ride with their part and fade in once the parts have moved */
+    XLAB.forEach(function (x) {
+      var grp = svg.querySelector(x[0]); if (!grp) return;
+      var t = sv('text', { x: x[2], y: x[3], 'text-anchor': x[4], 'class': 'xl' }, grp); t.textContent = x[1];
     });
     var api = { set: set, get: function () { return th; }, explode: explode, exploded: function () { return ex; }, svg: svg, el: el };
     set(th);

@@ -154,3 +154,4 @@
 .p3-info dt{color:var(--mute)}
 .p3-oct{padding:16px 20px;border-left:4px solid var(--teal);background:var(--tealL);font:500 20px/1.5 Inter;color:var(--ink)}
 .p3-oct b{color:var(--tealD)}
+.p3-hint{font:500 26px Inter;fill:var(--soft);pointer-events:none;transition:opacity .4s}

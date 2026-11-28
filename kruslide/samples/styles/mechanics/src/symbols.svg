@@ -1,0 +1,22 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<pattern id="m-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#DAD6CC"/><line x1="0" y1="0" x2="0" y2="10" stroke="#A39E93" stroke-width="2"/></pattern>
+<pattern id="m-hatch2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="10" height="10" fill="#E1E3E3"/><line x1="0" y1="0" x2="0" y2="10" stroke="#A5ACB1" stroke-width="2"/></pattern>
+<linearGradient id="m-steel" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#7D8893"/><stop offset=".32" stop-color="#E9EDF0"/><stop offset=".55" stop-color="#B4BDC6"/><stop offset="1" stop-color="#6A7682"/></linearGradient>
+<linearGradient id="m-steel-v" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E9EDF0"/><stop offset=".45" stop-color="#AEB7C0"/><stop offset="1" stop-color="#6E7A86"/></linearGradient>
+<linearGradient id="m-alu" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#A9B1B8"/><stop offset=".3" stop-color="#F3F5F6"/><stop offset=".62" stop-color="#CDD3D8"/><stop offset="1" stop-color="#959EA7"/></linearGradient>
+<radialGradient id="m-steel-r" cx=".38" cy=".34" r=".75"><stop offset="0" stop-color="#F1F3F5"/><stop offset=".55" stop-color="#AEB7C0"/><stop offset="1" stop-color="#66727E"/></radialGradient>
+<radialGradient id="m-web" cx=".42" cy=".3" r=".9"><stop offset="0" stop-color="#C3CAD1"/><stop offset=".6" stop-color="#8D98A3"/><stop offset="1" stop-color="#5D6873"/></radialGradient>
+<radialGradient id="m-gear" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#E6EAEE"/><stop offset=".7" stop-color="#B9C1C9"/><stop offset="1" stop-color="#8E99A4"/></radialGradient>
+<linearGradient id="m-hot" x1="0" x2="1"><stop offset="0" stop-color="#8A6A5C"/><stop offset=".35" stop-color="#E9D2C2"/><stop offset=".6" stop-color="#C08F77"/><stop offset="1" stop-color="#7A5A4E"/></linearGradient>
+<radialGradient id="m-rock" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#C9BBA6"/><stop offset=".6" stop-color="#9F907C"/><stop offset="1" stop-color="#776A5A"/></radialGradient>
+<radialGradient id="m-flame" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF3C4"/><stop offset=".35" stop-color="#FFC24A"/><stop offset=".75" stop-color="#F08C00" stop-opacity=".95"/><stop offset="1" stop-color="#E8590C" stop-opacity=".9"/></radialGradient>
+<radialGradient id="m-flash" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFD866" stop-opacity=".8"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></radialGradient>
+<marker id="m-arr-b" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#3A9BD6"/></marker>
+<marker id="m-arr-g" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8B7E70"/></marker>
+<marker id="m-arr-o" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#E8590C"/></marker>
+<marker id="m-arr-k" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#5B636B"/></marker>
+<marker id="m-tick" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M2 8 L8 2" stroke="#1F2429" stroke-width="1.6"/></marker>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+<symbol id="cross" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></symbol>
+<symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+</defs></svg>

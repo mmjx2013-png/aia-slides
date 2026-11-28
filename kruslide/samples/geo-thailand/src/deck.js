@@ -163,12 +163,12 @@
       K.drag(t, {
         start: function (p) { gx = p.x - T.x; gy = p.y - T.y; },
         move: function (p) {
-          if (!t.classList.contains('drag')) { t.classList.add('drag'); unmark(T); slideEl.appendChild(t); }
+          if (!t.classList.contains('drag')) { t.classList.add('drag'); unmark(T); }
           T.x = p.x - gx; T.y = p.y - gy; t.style.left = T.x + 'px'; t.style.top = T.y + 'px';
         },
         end: function (p, e, moved) {
           if (!moved) { t.classList.remove('drag'); return; }
-          var hit = document.elementFromPoint(e.clientX, e.clientY), g = hit && hit.closest ? hit.closest('#g2-map .m-reg') : null;
+          var g = null; document.elementsFromPoint(e.clientX, e.clientY).some(function (h) { g = h.closest ? h.closest('#g2-map .m-reg') : null; return !!g; });
           t.classList.remove('drag');
           if (g) { T.at = g.dataset.r; t.classList.add('pinned'); place(T, p.x - 20, p.y - 27, false); ft.say(''); }
           else goHome(T);

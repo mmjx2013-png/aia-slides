@@ -13,7 +13,7 @@
   var NS = 'http://www.w3.org/2000/svg';
   var qs = new URLSearchParams(location.search);
   var ANSWERS = qs.has('answers');
-  var INK = '#1A1B3D', BLUE = '#2D5BFF', VIOLET = '#7B61FF', CORAL = '#FF5A36', MINT = '#12B76A', SUN = '#FFC229';
+  var INK = '#3B2A20', BLUE = '#3D6FD8', VIOLET = '#7B61FF', CORAL = '#D9412E', MINT = '#3E9B57', SUN = '#FFD15C';
   var PAL = [BLUE, VIOLET, CORAL, MINT, SUN, '#5B6785', '#E0569B', '#0EA5C6'];   /* 8 distinct colours: pies with 7–8 slices never repeat a colour */
   var uid = 0, widgets = [];
 

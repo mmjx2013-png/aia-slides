@@ -281,12 +281,12 @@
     var svg = $('#p3-svg'), VAL = { H: 1, O: 2, C: 4 }, SITES = { H: [0], O: [0, 104.5], C: [0, 90, 180, 270] }, RAD = { H: 34, O: 42, C: 42 }, L = 130;
     var TRAY = { H: [110, 210], O: [110, 420], C: [110, 630] }, WX0 = 236, WX1 = 1206, WY0 = 14, WY1 = 786;
     var GOAL = {
-      h2o: { n: { H: 2, O: 1, C: 0 }, goal: 'น้ำ: O 1 อะตอม ต่อกับ H 2 อะตอม', name: 'H<sub>2</sub>O',
+      h2o: { n: { H: 2, O: 1, C: 0 }, goal: 'น้ำ: O 1 อะตอม ต่อกับ H 2 อะตอม', name: 'H<sub>2</sub>O', uni: 'H₂O',
         info: [['พันธะ', 'เดี่ยว 2 พันธะ (O–H)'], ['อิเล็กตรอนคู่ร่วมพันธะ', '2 คู่'], ['รูปร่างโมเลกุล', 'มุมงอ 104.5°']] },
-      co2: { n: { H: 0, O: 2, C: 1 }, goal: 'คาร์บอนไดออกไซด์: C 1 อะตอม ต่อกับ O 2 อะตอม', name: 'CO<sub>2</sub>',
+      co2: { n: { H: 0, O: 2, C: 1 }, goal: 'คาร์บอนไดออกไซด์: C 1 อะตอม ต่อกับ O 2 อะตอม', name: 'CO<sub>2</sub>', uni: 'CO₂',
         info: [['พันธะ', 'คู่ 2 พันธะ (O=C=O)'], ['อิเล็กตรอนคู่ร่วมพันธะ', '4 คู่'], ['รูปร่างโมเลกุล', 'เส้นตรง 180°']] },
-      ch4: { n: { H: 4, O: 0, C: 1 }, goal: 'มีเทน: C 1 อะตอม ต่อกับ H 4 อะตอม', name: 'CH<sub>4</sub>',
-        info: [['พันธะ', 'เดี่ยว 4 พันธะ (C–H)'], ['อิเล็กตรอนคู่ร่วมพันธะ', '4 คู่'], ['รูปร่างโมเลกุล', 'ทรงสี่หน้า 109.5° (ภาพนี้วาดแบบ 2 มิติ)']] }
+      ch4: { n: { H: 4, O: 0, C: 1 }, goal: 'มีเทน: C 1 อะตอม ต่อกับ H 4 อะตอม', name: 'CH<sub>4</sub>', uni: 'CH₄',
+        info: [['พันธะ', 'เดี่ยว 4 พันธะ (C–H)'], ['อิเล็กตรอนคู่ร่วมพันธะ', '4 คู่'], ['รูปร่างโมเลกุล', 'ทรงสี่หน้า 109.5°']] }
     };
     var goal = 'h2o', atoms = [], bonds = [], uid = 0, held = null, off = [0, 0], busy = false, A = Anim(), timers = [];
     var defs = S('defs', {}, svg), pat = S('pattern', { id: 'p3-dots', width: 32, height: 32, patternUnits: 'userSpaceOnUse', x: WX0, y: WY0 }, defs);
@@ -295,6 +295,7 @@
     S('rect', { 'class': 'tray', x: 14, y: 14, width: 192, height: 772, rx: 4 }, svg);
     T({ 'class': 'tlab', x: 110, y: 76, 'text-anchor': 'middle' }, 'ถาดอะตอม', svg);
     var gX = S('g', {}, svg), gB = S('g', {}, svg), gA = S('g', {}, svg), snapC = S('circle', { 'class': 'snap', r: 52, opacity: 0 }, svg);
+    var hint = T({ 'class': 'p3-hint', x: 721, y: 410, 'text-anchor': 'middle' }, 'ลากอะตอมจากถาดมาวางตรงนี้ แล้วต่อเข้าที่แขน', svg);
     var fb = $('#p3-fb'), info = $('#p3-info'), countEl = $('#p3-count');
 
     function atomG(t, parent) { var g = S('g', { 'class': 'atom t-' + t }, parent); g._st = S('g', {}, g); S('circle', { 'class': 'a-c', r: RAD[t] }, g); T({ 'class': 'a-t' }, t, g); return g; }
@@ -364,6 +365,7 @@
         var f = free(a), ks = SITES[a.t].map(function (s, k) { return k; }).filter(function (k) { return !used(a, k); });
         ks.slice(0, Math.max(0, f)).forEach(function (k) { stub(a.g._st, a.t, sAng(a, k)); });
       });
+      hint.style.opacity = atoms.length ? 0 : 1;
       counts();
     }
     function tally() { var n = { H: 0, O: 0, C: 0 }; atoms.forEach(function (a) { n[a.t]++; }); return n; }
@@ -438,7 +440,7 @@
       win(); return true;
     }
     function win() {
-      say('ok', 'ถูกต้อง! ได้โมเลกุล ' + GOAL[goal].name.replace(/<\/?sub>/g, '') + ' ทุกอะตอมครบออกเตต');
+      say('ok', 'ถูกต้อง! ได้โมเลกุล ' + GOAL[goal].uni + ' ทุกอะตอมครบออกเตต');
       info.innerHTML = ''; var dl = H('dl', '', null, info);
       GOAL[goal].info.forEach(function (r) { var d = H('div', '', null, dl); H('dt', '', r[0], d); H('dd', '', r[1], d); });
       info.classList.add('show');
@@ -456,7 +458,7 @@
         T({ 'class': 'blab', x: mid.x, y: mid.y - 74 }, '180°', gX);
         T({ 'class': 'blab', x: mid.x, y: mid.y + 92 }, 'พันธะคู่ 2 พันธะ', gX);
       } else if (goal === 'ch4') {
-        T({ 'class': 'blab', x: mid.x + 96, y: mid.y - 96 }, '90° บนกระดาษ · 109.5° ในสามมิติ', gX).setAttribute('text-anchor', 'start');
+        T({ 'class': 'blab', x: mid.x + 92, y: mid.y + 104 }, 'บนกระดาษ 90° · ของจริง 3 มิติ 109.5°', gX).setAttribute('text-anchor', 'start');
       }
     }
     function clearAll(an) { timers.forEach(clearTimeout); timers = []; A.stop(); atoms.slice().forEach(function (a) { remove(a, an); }); bonds = []; clearResult(); draw(); }
