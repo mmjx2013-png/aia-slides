@@ -1,0 +1,43 @@
+<!-- 2 · Secant to tangent on y = x²: drag Q towards P; the slope (2 + h) updates live. -->
+<section class="slide" id="c-secant" data-steps="2" data-title="เส้นตัดสู่เส้นสัมผัส">
+ <div class="chip p in" style="left:130px;top:64px"><b>1</b>อนุพันธ์ · Derivative</div>
+ <h2 class="in" style="left:130px;top:128px;--d:120">เส้นตัดหมุนจนกลายเป็น<span class="hl r">เส้นสัมผัส</span></h2>
+
+ <div class="pan in" id="c2-pan" style="left:130px;top:262px;width:1030px;height:728px;--d:200"></div>
+ <svg class="plot hit in" id="c2-svg" viewBox="0 0 1030 728" style="left:130px;top:262px;width:1030px;height:728px;--d:200" aria-label="กราฟ y = x กำลังสอง ลากจุด Q ได้" role="img"></svg>
+ <div class="ab" id="c2-hint" style="left:226px;top:300px"><svg class="sym" viewBox="0 0 48 48"><use href="#hand"/></svg>ลากจุด Q เข้าหา P ได้ทั้งกราฟ</div>
+
+ <div class="pan in" id="c2-read" style="left:1220px;top:262px;width:570px;height:400px;--d:350">
+  <div class="c2-hrow"><span class="lab k">ระยะห่าง</span><span class="mx c-q c2-hv">h = <span id="c2-h">1.500</span></span></div>
+  <div class="c2-frow mx"><span class="fr"><span>f(1+h) − f(1)</span><span>h</span></span> = <span class="fr c-q"><span id="c2-num">5.250</span><span id="c2-den">1.500</span></span></div>
+  <div class="c2-mrow"><span class="lab k">ความชัน<br>เส้นตัด</span><span class="big c-q" id="c2-m">3.500</span></div>
+ </div>
+
+ <div class="pan h1" id="c2-key" style="left:1220px;top:700px;width:570px;height:290px">
+  <p><i class="sw" style="background:var(--blue)"></i><b class="c-f">y = x<sup>2</sup></b></p>
+  <p><i class="sw" style="background:var(--pink)"></i><b class="c-q">เส้นตัด</b> ผ่าน P และ Q</p>
+  <p><i class="sw" style="background:var(--red)"></i><b class="c-d">เส้นสัมผัส</b> แตะกราฟที่ P จุดเดียว</p>
+ </div>
+
+ <div class="pan o1" id="c2-tape" style="left:1220px;top:700px;width:570px;height:290px">
+  <table>
+   <thead><tr><th>h</th><th>ความชัน = 2 + h</th></tr></thead>
+   <tbody>
+    <tr data-h="1"><td>1</td><td>3</td></tr>
+    <tr data-h="0.5"><td>0.5</td><td>2.5</td></tr>
+    <tr data-h="0.1"><td>0.1</td><td>2.1</td></tr>
+    <tr data-h="0.01"><td>0.01</td><td>2.01</td></tr>
+    <tr data-h="0.001"><td>0.001</td><td>2.001</td></tr>
+   </tbody>
+  </table>
+ </div>
+
+ <div class="pan lr o2" id="c2-def" style="left:1220px;top:700px;width:570px;height:290px">
+  <div class="lab k">อนุพันธ์ของ f ที่ x = 1</div>
+  <div class="mx c2-d1">f′(1) = <span class="lim">lim<small>h→0</small></span><span class="fr"><span>f(1+h) − f(1)</span><span>h</span></span></div>
+  <div class="mx c2-d2">= <span class="lim">lim<small>h→0</small></span>(2 + h) = <b class="c2-two">2</b></div>
+ </div>
+
+ <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 08</b></span></div>
+ <aside class="notes">ความชันเส้นตัด = ((1+h)² − 1)/h = (2h + h²)/h = 2 + h. ให้นักเรียนลาก Q เข้าหา P แล้วอ่านค่า: h = 1 → 3, 0.5 → 2.5, 0.1 → 2.1 ... เข้าใกล้ 2 แต่ h เป็น 0 ไม่ได้ (0/0) จึงใช้ลิมิต ได้ f′(1) = 2 = ความชันของเส้นสัมผัส y = 2x − 1</aside>
+</section>

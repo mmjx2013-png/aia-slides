@@ -1,0 +1,46 @@
+<!-- 1 · Title + hook: an accelerating car, its speedometer, and a ticker tape of dots dropped at equal time steps. -->
+<section class="slide" id="c-title" data-steps="1" data-title="แคลคูลัส">
+ <div class="chip y h1" style="left:130px;top:112px;--d:100"><b>ม.6</b>ตัวอย่างบทเรียน · คณิตศาสตร์</div>
+ <h1 class="ab h1" id="c1-t" style="left:122px;top:178px;--d:200">แคลคูลัส</h1>
+ <p class="ab h1" id="c1-sub" style="left:130px;top:446px;--d:380"><b>Calculus</b> · อนุพันธ์และปริพันธ์</p>
+
+ <div class="pan g1" id="c1-card" style="left:130px;top:96px;width:930px;height:396px">
+  <div class="c1-row mx"><span class="c1-k">ความเร็ว</span> = <span class="fr"><span>ระยะทาง</span><span>เวลา</span></span></div>
+  <div class="c1-row mx"><span class="c1-k c-q">ณ ขณะหนึ่ง</span> = <span class="fr"><span>0 ม.</span><span>0 วินาที</span></span> = <span class="c1-q">?</span></div>
+  <div class="c1-say">แต่หน้าปัดรถบอกได้ทันที: <b><span id="c1-ask">68</span> กม./ชม.</b></div>
+ </div>
+
+ <p class="ab in" id="c1-hook" style="left:130px;top:540px;--d:650">ความเร็ว <span class="hl p" style="--d:1100">ณ ขณะหนึ่ง</span><br>คืออะไร?</p>
+
+ <svg class="ab in" id="c1-gauge" viewBox="0 0 640 640" style="left:1150px;top:96px;width:640px;height:640px;--d:300" aria-label="หน้าปัดความเร็ว" role="img">
+  <circle cx="331" cy="331" r="298" fill="#1A1B3D"/>
+  <circle cx="320" cy="320" r="298" fill="#fff" stroke="#1A1B3D" stroke-width="5"/>
+  <g id="c1-arcs"></g><g id="c1-ticks"></g>
+  <circle id="c1-ring" cx="320" cy="508" r="0" fill="none" stroke="#FF3D8B" stroke-width="6"/>
+  <text id="c1-spd" x="320" y="520" text-anchor="middle">0</text>
+  <text x="320" y="566" text-anchor="middle" class="c1-unit">กม./ชม.</text>
+  <g id="c1-needle"><path d="M320 92 L334 320 L306 320 Z" fill="#FF5A36" stroke="#1A1B3D" stroke-width="4" stroke-linejoin="round"/></g>
+  <circle cx="320" cy="320" r="30" fill="#1A1B3D"/><circle cx="320" cy="320" r="11" fill="#FFC229"/>
+ </svg>
+
+ <svg class="ab in" id="c1-road" viewBox="0 0 1920 160" style="left:0;top:852px;width:1920px;height:160px;--d:500" aria-hidden="true">
+  <rect x="-10" y="70" width="1940" height="80" fill="#E7E9F4" stroke="#1A1B3D" stroke-width="5"/>
+  <line x1="0" y1="110" x2="1920" y2="110" stroke="#FFC229" stroke-width="6" stroke-dasharray="36 28"/>
+  <g id="c1-dots"></g>
+  <g id="c1-car">
+   <g id="c1-lines" stroke="#1A1B3D" stroke-width="5" stroke-linecap="round"><line x1="-70" y1="38" x2="-18" y2="38"/><line x1="-96" y1="60" x2="-22" y2="60"/><line x1="-64" y1="82" x2="-16" y2="82"/></g>
+   <path d="M10 78 Q8 56 30 52 L72 48 Q94 18 132 16 L160 16 Q188 18 206 46 L226 52 Q240 56 238 76 L236 86 Q236 94 228 94 L18 94 Q10 94 10 86 Z" fill="#FF5A36" stroke="#1A1B3D" stroke-width="5" stroke-linejoin="round"/>
+   <path d="M86 47 Q100 26 128 24 L148 24 L148 47 Z" fill="#CFE0FF" stroke="#1A1B3D" stroke-width="4" stroke-linejoin="round"/>
+   <path d="M157 24 Q180 26 192 47 L157 47 Z" fill="#CFE0FF" stroke="#1A1B3D" stroke-width="4" stroke-linejoin="round"/>
+   <line x1="22" y1="68" x2="226" y2="68" stroke="#FFC229" stroke-width="6"/>
+   <circle cx="230" cy="62" r="6" fill="#FFC229" stroke="#1A1B3D" stroke-width="3"/>
+   <g transform="translate(62 94)"><circle r="25" fill="#1A1B3D"/><g class="c1-wh"><circle r="12" fill="#C9CEE4"/><path d="M0 -12 V12 M-12 0 H12" stroke="#1A1B3D" stroke-width="4"/></g></g>
+   <g transform="translate(184 94)"><circle r="25" fill="#1A1B3D"/><g class="c1-wh"><circle r="12" fill="#C9CEE4"/><path d="M0 -12 V12 M-12 0 H12" stroke="#1A1B3D" stroke-width="4"/></g></g>
+  </g>
+ </svg>
+ <div class="ab g1" id="c1-pin"><span>ขณะนี้</span></div>
+ <div class="ab in" id="c1-tape" style="left:130px;top:806px;--d:900"><i></i>จุดชมพู = ตำแหน่งรถทุก ๆ 0.4 วินาที</div>
+
+ <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>01 / 08</b></span></div>
+ <aside class="notes">ถามห้อง: รถเร่งความเร็ว จุดชมพูห่างขึ้นเรื่อย ๆ เพราะเวลาเท่ากันแต่ไปได้ไกลขึ้น หน้าปัดบอกความเร็วตอนนี้ได้ แต่สูตรระยะทาง ÷ เวลา ใช้ไม่ได้เมื่อเวลาเป็น 0 (ได้ 0/0) แคลคูลัสตอบคำถามนี้ด้วยลิมิต</aside>
+</section>

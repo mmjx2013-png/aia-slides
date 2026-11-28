@@ -91,6 +91,24 @@ export interface Payment {
   created_at: number;
 }
 
+export interface BookRequest {
+  id: number;
+  teacher_id: number;
+  subject: string;
+  grade: string;
+  textbook: string;
+  units: string;
+  /** YYYY-MM-DD */
+  start_date: string;
+  note: string;
+  summary: string;
+  status: 'draft' | 'new' | 'quoted' | 'building' | 'done' | 'declined';
+  owner_note: string;
+  created_at: number;
+  updated_at: number;
+  submitted_at: number | null;
+}
+
 /** Everything a route handler needs about the current request. */
 export interface Ctx {
   req: Request;

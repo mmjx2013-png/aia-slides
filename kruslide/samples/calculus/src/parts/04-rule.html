@@ -1,0 +1,38 @@
+<!-- 4 · Power rule with a worked example, one step per beat. The exponent physically hops down to the front. -->
+<section class="slide" id="c-rule" data-steps="3" data-title="กฎยกกำลัง">
+ <div class="chip y in" style="left:130px;top:64px"><b>3</b>กฎยกกำลัง · Power Rule</div>
+ <h2 class="in" style="left:130px;top:128px;--d:120">ดึงเลขชี้กำลัง<span class="hl">ลงมาคูณ</span> แล้วลบหนึ่ง</h2>
+
+ <div class="pan y in" id="c4-rule" style="left:130px;top:268px;width:1660px;height:262px;--d:250">
+  <div class="c4-big mx"><span class="fr dd"><span>d</span><span>dx</span></span>x<sup class="hs c-q" data-h="r">n</sup> = <span class="ht c-q" data-h="r">n</span><span class="hm" data-h="r">·</span>x<sup class="hm" data-h="r"><span class="c-q">n</span><span class="c-d">−1</span></sup></div>
+  <div class="c4-ex">
+   <div class="mx">x<sup class="hs c-q" data-h="e1">2</sup><i>→</i><span class="ht c-q" data-h="e1">2</span>x</div>
+   <div class="mx">x<sup class="hs c-q" data-h="e2">3</sup><i>→</i><span class="ht c-q" data-h="e2">3</span>x<sup class="hm" data-h="e2">2</sup></div>
+   <div class="mx">x<sup class="hs c-q" data-h="e3">4</sup><i>→</i><span class="ht c-q" data-h="e3">4</span>x<sup class="hm" data-h="e3">3</sup></div>
+  </div>
+ </div>
+
+ <div class="pan c4-st g1" id="c4-s1" style="left:130px;top:592px;width:500px;height:398px">
+  <div class="c4-n"><b>1</b>ทีละพจน์</div>
+  <div class="mx c4-l c-f">f(x) = x<sup>3</sup> − 3x</div>
+  <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>x<sup class="hs c-q" data-h="s1">3</sup> = <span class="ht c-q" data-h="s1">3</span>x<sup class="hm" data-h="s1">2</sup></div>
+  <div class="mx c4-l"><span class="fr s dd"><span>d</span><span>dx</span></span>3x = 3·1 = <span>3</span></div>
+  <div class="c4-note">x = x<sup>1</sup> จึงได้ 1·x<sup>0</sup> = 1</div>
+ </div>
+ <svg class="ab c4-arr g2" viewBox="0 0 80 60" style="left:640px;top:760px;width:70px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="pan c4-st lr g2" id="c4-s2" style="left:720px;top:592px;width:500px;height:398px">
+  <div class="c4-n"><b>2</b>รวมกัน</div>
+  <div class="mx c4-res c-d">f′(x) = 3x<sup>2</sup> − 3</div>
+  <div class="c4-note">นี่คือกราฟเส้นสีแดงในสไลด์ที่แล้ว</div>
+ </div>
+ <svg class="ab c4-arr g3" viewBox="0 0 80 60" style="left:1230px;top:760px;width:70px;height:60px" aria-hidden="true"><path class="draw" pathLength="1" d="M6 30 H66 M48 12 L68 30 L48 48" fill="none" stroke="#1A1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="pan c4-st g3" id="c4-s3" style="left:1310px;top:592px;width:480px;height:398px">
+  <div class="c4-n"><b>3</b>ตรวจกับกราฟ</div>
+  <div class="mx c4-l">f′(1) = 3(1)<sup>2</sup> − 3 = <b class="c4-zero">0</b></div>
+  <svg class="plot" id="c4-mini" viewBox="0 0 420 200" style="position:relative;width:420px;height:200px;margin-top:8px" aria-label="กราฟเล็ก ก้นหุบที่ x = 1 เส้นสัมผัสราบ" role="img"></svg>
+  <div class="c4-note c4-ok">ก้นหุบที่ x = 1 ราบจริง ✓</div>
+ </div>
+
+ <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>04 / 08</b></span></div>
+ <aside class="notes">กฎ: d/dx xⁿ = n·xⁿ⁻¹ (เลขชี้กำลังลงมาคูณข้างหน้า แล้วเลขชี้กำลังลดลง 1). ตัวอย่าง x² → 2x (ตรงกับสไลด์ 2: ที่ x = 1 ได้ 2), x³ → 3x². ฝึก: f(x) = x³ − 3x → f′(x) = 3x² − 3. ตรวจ f′(1) = 3 − 3 = 0 ตรงกับก้นหุบในสไลด์ 3</aside>
+</section>

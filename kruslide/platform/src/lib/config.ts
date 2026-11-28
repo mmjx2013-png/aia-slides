@@ -11,6 +11,8 @@ export const LIMITS = {
   login: [30, 600] as const,       // per IP: /app/login and /app/auth/callback
   member: [30, 600] as const,      // per teacher: subscribe, profile, "I have paid"
   admin: [120, 60] as const,       // per admin: every admin POST
+  requestDaily: [10, 86400] as const, // per teacher: new book requests per day
+  quiz: [200, 600] as const,       // per teacher: style-quiz answers (10 taps per request, changes allowed)
 };
 
 export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;

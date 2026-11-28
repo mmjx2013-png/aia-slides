@@ -18,6 +18,8 @@ export interface Side {
 
 export interface Question {
   key: string;
+  /** The dimension's name in Thai (captions). */
+  th: string;
   /** The question, in Thai. */
   q: string;
   /** The dimension's name in English (for the brief). */
@@ -30,61 +32,61 @@ export interface Question {
 
 export const QUIZ: readonly Question[] = [
   {
-    key: 'style', q: 'ชอบหน้าตาสไลด์แบบไหน', dim: 'Style',
+    key: 'style', th: 'สไตล์', q: 'ชอบหน้าตาสไลด์แบบไหน', dim: 'Style',
     a: { th: 'โมเดิร์น สะอาดตา', en: 'Style A modern clean', hint: 'การ์ดขาว เส้นคม จัดเป็นระเบียบ' },
     b: { th: 'สมุดจด ลายมือ', en: 'Style B notebook', hint: 'กระดาษจุด กระดาษโน้ต ลายมือ' },
     bothEn: 'Style A or B',
   },
   {
-    key: 'colour', q: 'โทนสีแบบไหนเข้ากับห้องเรียนของคุณครู', dim: 'Colour',
+    key: 'colour', th: 'โทนสี', q: 'โทนสีแบบไหนเข้ากับห้องเรียนของคุณครู', dim: 'Colour',
     a: { th: 'สีสด สนุก', en: 'vivid colours', hint: 'สีเต็ม ตัดกันชัด ดึงสายตา' },
     b: { th: 'สีนุ่ม สบายตา', en: 'calm colours', hint: 'สีอ่อน ขาวเยอะ อ่านนานไม่ล้า' },
     bothEn: 'vivid or calm colours',
   },
   {
-    key: 'visuals', q: 'ภาพประกอบแบบไหนดี', dim: 'Visuals',
+    key: 'visuals', th: 'ภาพประกอบ', q: 'ภาพประกอบแบบไหนดี', dim: 'Visuals',
     a: { th: 'ภาพถ่ายจริง', en: 'real photos', hint: 'ภาพจากของจริง ใกล้ตัวนักเรียน' },
     b: { th: 'ภาพวาดการ์ตูน', en: 'illustrations', hint: 'ภาพวาดเรียบง่าย สีสดใส' },
     bothEn: 'photos or illustrations',
   },
   {
-    key: 'density', q: 'หนึ่งหน้าควรมีเนื้อหาเท่าไร', dim: 'Density',
+    key: 'density', th: 'เนื้อหาต่อหน้า', q: 'หนึ่งหน้าควรมีเนื้อหาเท่าไร', dim: 'Density',
     a: { th: 'หน้าละ 1 เรื่อง', en: 'one idea per slide', hint: 'ตัวใหญ่ ชัด เห็นจากหลังห้อง' },
     b: { th: 'หลายเรื่องในหน้าเดียว', en: 'more on one slide', hint: 'กราฟ ตาราง และข้อสรุปในหน้าเดียว' },
     bothEn: 'one idea or more per slide',
   },
   {
-    key: 'interaction', q: 'อยากให้นักเรียนออกมาตอบบนจอบ่อยแค่ไหน', dim: 'Student answering',
+    key: 'interaction', th: 'การตอบบนจอ', q: 'อยากให้นักเรียนออกมาตอบบนจอบ่อยแค่ไหน', dim: 'Student answering',
     a: { th: 'ตอบบ่อย ทุกหน้า', en: 'many interactive tasks', hint: 'แตะเลือก ลากกราฟ พิมพ์คำตอบ' },
     b: { th: 'ตอบบางช่วง', en: 'few interactive tasks', hint: 'อธิบายเป็นหลัก มีคำถามท้ายเรื่อง' },
     bothEn: 'some or many interactive tasks',
   },
   {
-    key: 'animation', q: 'แอนิเมชันแบบไหนที่ชอบ', dim: 'Animation',
+    key: 'animation', th: 'แอนิเมชัน', q: 'แอนิเมชันแบบไหนที่ชอบ', dim: 'Animation',
     a: { th: 'เคลื่อนไหวเยอะ', en: 'rich animation', hint: 'กราฟงอก ป้ายเด้ง ทีละขั้นตอน' },
     b: { th: 'เคลื่อนไหวเบา ๆ', en: 'light animation', hint: 'ค่อย ๆ ปรากฏ นิ่ง สงบ' },
     bothEn: 'rich or light animation',
   },
   {
-    key: 'charts', q: 'กราฟแบบไหนที่อยากใช้สอน', dim: 'Charts',
+    key: 'charts', th: 'กราฟ', q: 'กราฟแบบไหนที่อยากใช้สอน', dim: 'Charts',
     a: { th: 'สนุก มีลูกเล่น', en: 'playful charts', hint: 'แท่งมน มีไอคอน มีคำพูด' },
     b: { th: 'เป็นทางการ', en: 'formal charts', hint: 'มีแกน เส้นตาราง ชื่อแกนครบ' },
     bothEn: 'playful or formal charts',
   },
   {
-    key: 'font', q: 'ตัวอักษรแบบไหนอ่านแล้วชอบ', dim: 'Font',
+    key: 'font', th: 'ตัวอักษร', q: 'ตัวอักษรแบบไหนอ่านแล้วชอบ', dim: 'Font',
     a: { th: 'ตัวกลมมน', en: 'rounded font', hint: 'นุ่ม เป็นมิตร เหมาะกับเด็กเล็ก' },
     b: { th: 'ตัวคม ทันสมัย', en: 'sharp font', hint: 'เรียบ คม อ่านง่ายแบบหนังสือ' },
     bothEn: 'rounded or sharp font',
   },
   {
-    key: 'background', q: 'พื้นหลังแบบไหนดี', dim: 'Background',
+    key: 'background', th: 'พื้นหลัง', q: 'พื้นหลังแบบไหนดี', dim: 'Background',
     a: { th: 'เรียบ สะอาด', en: 'plain background', hint: 'พื้นขาว เนื้อหาเด่น' },
     b: { th: 'มีลวดลายตกแต่ง', en: 'decorated background', hint: 'ลายจุด รูปทรง สติกเกอร์' },
     bothEn: 'plain or decorated background',
   },
   {
-    key: 'language', q: 'ภาษาบนสไลด์', dim: 'Language',
+    key: 'language', th: 'ภาษา', q: 'ภาษาบนสไลด์', dim: 'Language',
     a: { th: 'ภาษาไทย', en: 'Thai', hint: 'สำหรับห้องเรียนปกติ' },
     b: { th: 'English (EP)', en: 'English (EP)', hint: 'สำหรับห้อง English Program' },
     bothEn: 'Thai and English',

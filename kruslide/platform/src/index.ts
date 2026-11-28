@@ -11,6 +11,7 @@ import * as member from './routes/member';
 import * as deck from './routes/deck';
 import * as admin from './routes/admin';
 import * as statics from './routes/static';
+import * as requests from './routes/requests';
 import { privacy } from './routes/privacy';
 import { stripeWebhook } from './routes/webhooks';
 
@@ -26,12 +27,25 @@ const router = new Router()
   .post('/app/books/:id/subscribe', member.subscribe)
   .get('/app/payments/:id', member.paymentPage)
   .post('/app/payments/:id/notify', member.notify)
+  .get('/app/requests', requests.myRequests)
+  .post('/app/requests', requests.createRequest)
+  .get('/app/requests/new', requests.newRequest)
+  .get('/app/requests/:id', requests.requestPage)
+  .get('/app/requests/:id/quiz/:n', requests.quizPage)
+  .post('/app/requests/:id/quiz/:n', requests.answer)
   .get('/app/deck/:id', deck.deckSlash)
   .get('/app/deck/:id/', deck.deck)
   .get('/app/deck/:id/:path*', deck.deckAsset)
   .get('/app/static/app.css', statics.css)
+  .get('/app/static/app.js', statics.js)
+  .get('/app/static/favicon.svg', statics.favicon)
+  .get('/app/static/apple-touch-icon.png', statics.appleTouchIcon)
   .get('/app/static/fonts/:file', statics.font)
+  .get('/app/static/quiz/:file', statics.quizImage)
   .get('/app/admin/', admin.dashboard)
+  .get('/app/admin/requests', admin.requests)
+  .get('/app/admin/requests/:id', admin.request)
+  .post('/app/admin/requests/:id', admin.updateRequest)
   .get('/app/admin/payments', admin.payments)
   .post('/app/admin/payments/:id/confirm', admin.confirm)
   .post('/app/admin/payments/:id/reject', admin.reject)

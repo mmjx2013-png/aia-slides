@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<!-- Title cards of the Ayutthaya trailer. cards.js fills #card and screenshots it, transparent, at the size of
+     the 2.39:1 picture area (3840 x 1606). Fonts are self-hosted (SIL Open Font License). -->
+<style>
+@font-face { font-family: 'Anuphan'; font-weight: 400; src: url('../../teacher-slides/unit4/fonts/Anuphan-Thai-400.woff2') format('woff2'); }
+@font-face { font-family: 'Anuphan'; font-weight: 600; src: url('../../teacher-slides/unit4/fonts/Anuphan-Thai-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 400; src: url('../../teacher-slides/unit4/fonts/Inter-Regular.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 500; src: url('../../teacher-slides/unit4/fonts/Inter-Medium.woff2') format('woff2'); }
+html, body { margin: 0; width: 3840px; height: 1606px; background: transparent; overflow: hidden; }
+#card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        font-family: 'Anuphan', 'Inter', sans-serif; color: #f4e9d4; text-align: center;
+        text-shadow: 0 0 90px rgba(0,0,0,.55), 0 6px 34px rgba(0,0,0,.45); }
+.big { font-weight: 400; line-height: 1.55; letter-spacing: .015em; padding: 0 80px; }
+.small { font-weight: 400; color: #e2c58f; line-height: 1.7; padding: 0 60px; }
+.rule { width: 260px; height: 3px; margin: 6px 0 22px;
+        background: linear-gradient(90deg, rgba(226,197,143,0), rgba(226,197,143,.95) 50%, rgba(226,197,143,0)); }
+.latin { font-family: 'Inter', sans-serif; font-weight: 500; text-transform: uppercase; }
+/* styles */
+.presents .small { font-size: 60px; color: #efe3cc; letter-spacing: .06em; opacity: .9; }
+.date { padding-top: 40px; }
+.date .big { font-size: 230px; }
+.date .small { font-size: 62px; letter-spacing: .08em; }
+.date .small.latin { font-size: 56px; letter-spacing: .32em; }
+.title .big { font-size: 430px; font-weight: 400; letter-spacing: .03em; line-height: 1.45; }
+.title .rule { width: 520px; margin: 0 0 34px; }
+.title .small { font-size: 72px; letter-spacing: .62em; padding-left: calc(60px + .62em); }
+.end .small { font-size: 58px; color: #efe3cc; letter-spacing: .03em; }
+.end .copy { font-family: 'Inter', sans-serif; font-size: 44px; color: #b9a98d; letter-spacing: .22em; margin-top: 26px; }
+</style>
+</head>
+<body><div id="card"></div></body>
+</html>

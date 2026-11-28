@@ -11,6 +11,14 @@ export const APP_CSP = [
   "frame-ancestors 'none'",
 ].join('; ');
 
+/**
+ * CSP for the few pages that load our one script (/app/static/app.js: quiz taps, "copy brief"). The script is allowed
+ * by its exact URL, not by 'self', so no other file on the origin (e.g. a deck asset) could ever run as a script here.
+ */
+export function scriptCsp(origin: string): string {
+  return `${APP_CSP}; script-src ${origin}/app/static/app.js`;
+}
+
 /** Headers every response gets unless the route set its own value. */
 export const BASE_HEADERS: Record<string, string> = {
   'Content-Security-Policy': APP_CSP,

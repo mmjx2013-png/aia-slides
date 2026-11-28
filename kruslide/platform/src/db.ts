@@ -1,4 +1,5 @@
-import type { Book, Env, Payment, Subscription, Teacher, Unit } from './env';
+import type { Book, BookRequest, Env, Payment, Subscription, Teacher, Unit } from './env';
+import type { Answers, Choice } from './lib/quiz';
 import { addMonths, monthlyPrice, totalPrice } from './lib/pricing';
 import { HttpError } from './lib/http';
 
@@ -36,7 +37,7 @@ export const ERASED_PREFIX = 'erased:';
 
 /**
  * PDPA erasure on request: the name, school and LINE user id are removed, the member is blocked and logged out,
- * open subscriptions end and unpaid requests are closed. Payment amounts and dates stay (accounting records);
+ * open subscriptions end and unpaid requests are closed, and their book requests (with the quiz answers) are deleted. Payment amounts and dates stay (accounting records);
  * the audit log only ever holds the row id. A later LINE login with the same account starts a fresh, empty member.
  */
 export async function eraseTeacher(env: Env, id: number, now: number): Promise<void> {
@@ -50,6 +51,8 @@ export async function eraseTeacher(env: Env, id: number, now: number): Promise<v
     env.DB.prepare(`UPDATE payments SET status = 'rejected', confirmed_by = 'erased', decided_at = ?1, ref = NULL WHERE teacher_id = ?2 AND status = 'pending'`)
       .bind(now, id),
     env.DB.prepare('DELETE FROM sessions WHERE teacher_id = ?1').bind(id),
+    env.DB.prepare('DELETE FROM book_request_answers WHERE request_id IN (SELECT id FROM book_requests WHERE teacher_id = ?1)').bind(id),
+    env.DB.prepare('DELETE FROM book_requests WHERE teacher_id = ?1').bind(id),
   ]);
 }
 
@@ -348,8 +351,102 @@ export async function counts(env: Env, now: number) {
     `SELECT (SELECT COUNT(*) FROM teachers) AS teachers,
             (SELECT COUNT(*) FROM subscriptions WHERE status = 'active' AND period_end > ?1) AS active,
             (SELECT COUNT(*) FROM payments WHERE status = 'pending') AS pending,
-            (SELECT COALESCE(SUM(amount_satang), 0) FROM payments WHERE status = 'confirmed' AND decided_at > ?2) AS revenue30`,
-  ).bind(now, now - 30 * 86400).first<{ teachers: number; active: number; pending: number; revenue30: number }>();
+            (SELECT COALESCE(SUM(amount_satang), 0) FROM payments WHERE status = 'confirmed' AND decided_at > ?2) AS revenue30,
+            (SELECT COUNT(*) FROM book_requests WHERE status = 'new') AS new_requests`,
+  ).bind(now, now - 30 * 86400).first<{ teachers: number; active: number; pending: number; revenue30: number; new_requests: number }>();
+}
+
+// ---------- book requests (ขอทำหนังสือ) ----------
+export interface RequestInput { subject: string; grade: string; textbook: string; units: string; startDate: string; note: string; }
+
+export async function createRequest(env: Env, teacherId: number, r: RequestInput, now: number): Promise<number> {
+  const row = await env.DB.prepare(
+    `INSERT INTO book_requests (teacher_id, subject, grade, textbook, units, start_date, note, status, created_at, updated_at)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, 'draft', ?8, ?8) RETURNING id`,
+  ).bind(teacherId, r.subject, r.grade, r.textbook, r.units, r.startDate, r.note, now).first<{ id: number }>();
+  return row!.id;
+}
+
+export function getRequest(env: Env, id: number) {
+  return env.DB.prepare('SELECT * FROM book_requests WHERE id = ?1').bind(id).first<BookRequest>();
+}
+
+export interface RequestRow extends BookRequest { answered: number; }
+/** A teacher's own requests, newest first (with how many quiz questions are answered). */
+export async function listMyRequests(env: Env, teacherId: number): Promise<RequestRow[]> {
+  const { results } = await env.DB.prepare(
+    `SELECT r.*, (SELECT COUNT(*) FROM book_request_answers a WHERE a.request_id = r.id) AS answered
+     FROM book_requests r WHERE r.teacher_id = ?1 ORDER BY r.created_at DESC, r.id DESC LIMIT 100`,
+  ).bind(teacherId).all<RequestRow>();
+  return results;
+}
+
+export type RequestFilter = BookRequest['status'] | 'open' | 'all';
+export interface AdminRequestRow extends RequestRow { display_name: string; school: string; }
+/** Admin: every teacher's requests. 'open' = new + quoted + building. */
+export async function listRequests(env: Env, filter: RequestFilter, limit = 200): Promise<AdminRequestRow[]> {
+  const { results } = await env.DB.prepare(
+    `SELECT r.*, t.display_name, t.school, (SELECT COUNT(*) FROM book_request_answers a WHERE a.request_id = r.id) AS answered
+     FROM book_requests r JOIN teachers t ON t.id = r.teacher_id
+     WHERE (?1 = 'all' OR r.status = ?1 OR (?1 = 'open' AND r.status IN ('new', 'quoted', 'building')))
+     ORDER BY CASE r.status WHEN 'new' THEN 0 WHEN 'quoted' THEN 1 WHEN 'building' THEN 2 WHEN 'draft' THEN 3 ELSE 4 END,
+       COALESCE(r.submitted_at, r.created_at) DESC, r.id DESC LIMIT ?2`,
+  ).bind(filter, limit).all<AdminRequestRow>();
+  return results;
+}
+
+export async function requestCounts(env: Env): Promise<Record<BookRequest['status'], number>> {
+  const { results } = await env.DB.prepare('SELECT status, COUNT(*) AS n FROM book_requests GROUP BY status').all<{ status: BookRequest['status']; n: number }>();
+  const out = { draft: 0, new: 0, quoted: 0, building: 0, done: 0, declined: 0 };
+  for (const r of results) out[r.status] = r.n;
+  return out;
+}
+
+export async function getAnswers(env: Env, requestId: number): Promise<Answers> {
+  const { results } = await env.DB.prepare('SELECT question, choice FROM book_request_answers WHERE request_id = ?1')
+    .bind(requestId).all<{ question: string; choice: Choice }>();
+  const out: Answers = {};
+  for (const r of results) out[r.question] = r.choice;
+  return out;
+}
+
+/** Answers of many requests at once (admin list). */
+export async function answersFor(env: Env, ids: number[]): Promise<Map<number, Answers>> {
+  const out = new Map<number, Answers>(ids.map((id) => [id, {}]));
+  if (!ids.length) return out;
+  const { results } = await env.DB.prepare(
+    'SELECT request_id, question, choice FROM book_request_answers WHERE request_id IN (SELECT value FROM json_each(?1))',
+  ).bind(JSON.stringify(ids)).all<{ request_id: number; question: string; choice: Choice }>();
+  for (const r of results) out.get(r.request_id)![r.question] = r.choice;
+  return out;
+}
+
+/** Store (or change) one quiz answer. Only while the request is still a draft; returns false otherwise. */
+export async function saveAnswer(env: Env, requestId: number, question: string, choice: Choice, now: number): Promise<boolean> {
+  const [ins] = await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO book_request_answers (request_id, question, choice, answered_at)
+       SELECT ?1, ?2, ?3, ?4 WHERE EXISTS (SELECT 1 FROM book_requests WHERE id = ?1 AND status = 'draft')
+       ON CONFLICT (request_id, question) DO UPDATE SET choice = excluded.choice, answered_at = excluded.answered_at`,
+    ).bind(requestId, question, choice, now),
+    env.DB.prepare(`UPDATE book_requests SET updated_at = ?2 WHERE id = ?1 AND status = 'draft'`).bind(requestId, now),
+  ]);
+  return (ins.meta.changes ?? 0) > 0;
+}
+
+/** The quiz is finished: keep the summary and send the request to the owner (draft -> new), once. */
+export async function submitRequest(env: Env, requestId: number, summary: string, now: number): Promise<boolean> {
+  const r = await env.DB.prepare(
+    `UPDATE book_requests SET status = 'new', summary = ?2, submitted_at = ?3, updated_at = ?3 WHERE id = ?1 AND status = 'draft'`,
+  ).bind(requestId, summary, now).run();
+  return (r.meta.changes ?? 0) > 0;
+}
+
+/** Admin: set the status and the private owner note. */
+export async function updateRequestAdmin(env: Env, requestId: number, status: BookRequest['status'], ownerNote: string, now: number): Promise<boolean> {
+  const r = await env.DB.prepare('UPDATE book_requests SET status = ?2, owner_note = ?3, updated_at = ?4 WHERE id = ?1')
+    .bind(requestId, status, ownerNote, now).run();
+  return (r.meta.changes ?? 0) > 0;
 }
 
 /** Daily housekeeping. */

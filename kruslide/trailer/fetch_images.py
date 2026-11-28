@@ -5,7 +5,7 @@ Only public domain, CC0, CC BY and CC BY-SA files are accepted; anything else st
 Wikimedia now answers 429 ("use thumbnail images in sizes listed on https://w.wiki/GHai") to bulk downloads of
 originals from cloud IPs. So each file is tried as the original once; on 429 the 3840 px standard rendition is
 taken instead (same image, resized by Wikimedia). meta.json records which one was used ("got").
-Re-run with --originals later to try to upgrade the 3840 px files to the originals."""
+Re-run with --originals [--only id1,id2] later to try to upgrade the 3840 px files to the originals."""
 import html, json, os, re, sys, time, urllib.parse, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, 'img')
@@ -14,6 +14,7 @@ API = 'https://commons.wikimedia.org/w/api.php'
 OK = re.compile(r'^(public domain|pd\b|cc0|cc by(-sa)? [0-9.]+|cc by(-sa)?$)', re.I)
 
 UPGRADE = '--originals' in sys.argv
+ONLY = sys.argv[sys.argv.index('--only') + 1].split(',') if '--only' in sys.argv else None
 
 def get(url, retry=True):
     for attempt in range(10):
@@ -53,7 +54,7 @@ def main():
         prev = {m['id']: m for m in old_meta}.get(c['id'], {})
         got = prev.get('got', '')
         have = os.path.exists(path) and os.path.getsize(path) > 10000
-        if not have or (UPGRADE and got != 'original'):
+        if not have or (UPGRADE and got != 'original' and (ONLY is None or c['id'] in ONLY)):
             print('download', c['id'], ii['width'], 'x', ii['height'], f"{ii['size']/1e6:.1f} MB")
             data, got = None, ''
             try:

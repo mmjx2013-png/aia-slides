@@ -1,0 +1,44 @@
+<!-- 6 · Fundamental theorem in one picture: the area under f up to x becomes the height of F; the slope of F is the height of f. -->
+<section class="slide" id="c-ftc" data-steps="2" data-title="ทฤษฎีบทหลักมูล">
+ <div class="chip bl in" style="left:130px;top:64px"><b>5</b>ทฤษฎีบทหลักมูลของแคลคูลัส</div>
+ <h2 class="in" style="left:130px;top:128px;--d:120">พื้นที่กับความชัน<span class="hl b">ย้อนกลับกัน</span>พอดี</h2>
+
+ <div class="pan in" id="c6-lp" style="left:130px;top:262px;width:690px;height:560px;--d:200"></div>
+ <svg class="plot hit in" id="c6-ls" viewBox="0 0 690 560" style="left:130px;top:262px;width:690px;height:560px;--d:200" aria-label="กราฟ f(x) = x กำลังสอง กับพื้นที่ใต้กราฟ" role="img"></svg>
+ <div class="pan in" id="c6-rp" style="left:1100px;top:262px;width:690px;height:560px;--d:300"></div>
+ <svg class="plot hit in" id="c6-rs" viewBox="0 0 690 560" style="left:1100px;top:262px;width:690px;height:560px;--d:300" aria-label="กราฟ F(x) พื้นที่สะสม" role="img"></svg>
+
+ <div class="ab c6-pills in" style="left:206px;top:292px;--d:500">
+  <span class="tag c-f mx">f(x) = x<sup>2</sup></span>
+  <span class="tag c6-y">พื้นที่ใต้ f = <b id="c6-a1">0.576</b></span>
+  <span class="tag c6-r g1">ความสูง f(x) = <b id="c6-h1">1.440</b></span>
+ </div>
+ <div class="ab c6-pills in" style="left:1176px;top:292px;--d:600">
+  <span class="tag c-v mx">F(x) = <span class="fr s"><span>x<sup>3</sup></span><span>3</span></span></span>
+  <span class="tag c6-y">ความสูง F(x) = <b id="c6-a2">0.576</b></span>
+  <span class="tag c6-r g1">ความชันของ F = <b id="c6-h2">1.440</b></span>
+ </div>
+
+ <svg class="ab in" id="c6-cyc" viewBox="0 0 280 560" style="left:820px;top:262px;width:280px;height:560px;--d:700" aria-hidden="true">
+  <path id="c6-top" d="M22 236 C70 150 210 150 258 236" fill="none" stroke="#1A1B3D" stroke-width="16" stroke-linecap="round"/>
+  <path d="M22 236 C70 150 210 150 258 236" fill="none" stroke="#FFC229" stroke-width="9" stroke-linecap="round"/>
+  <path d="M232 214 L262 242 L224 252" fill="#FFC229" stroke="#1A1B3D" stroke-width="5" stroke-linejoin="round"/>
+  <path id="c6-bot" d="M258 330 C210 416 70 416 22 330" fill="none" stroke="#1A1B3D" stroke-width="16" stroke-linecap="round"/>
+  <path d="M258 330 C210 416 70 416 22 330" fill="none" stroke="#FF5A36" stroke-width="9" stroke-linecap="round"/>
+  <path d="M48 352 L18 324 L56 314" fill="#FF5A36" stroke="#1A1B3D" stroke-width="5" stroke-linejoin="round"/>
+  <circle class="c6-run a" r="12" fill="#fff" stroke="#1A1B3D" stroke-width="5"/>
+  <circle class="c6-run b g1" r="12" fill="#fff" stroke="#1A1B3D" stroke-width="5"/>
+ </svg>
+ <div class="ab c6-ml in" style="left:820px;top:296px;--d:800"><b>สะสมพื้นที่</b><span class="mx"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg></span>dx</span></div>
+ <div class="ab c6-ml in" style="left:820px;top:690px;--d:900"><b class="c-d">หาความชัน</b><span class="mx"><span class="fr s dd"><span>d</span><span>dx</span></span></span></div>
+
+ <div class="pan ly o0" id="c6-s0" style="left:130px;top:862px;width:1660px;height:128px"><span class="c6-no">1</span>พื้นที่<b>สีเหลือง</b>ใต้ f ตั้งแต่ 0 ถึง x &nbsp;=&nbsp; ความสูงของ F ที่ x</div>
+ <div class="pan lr o1" id="c6-s1" style="left:130px;top:862px;width:1660px;height:128px"><span class="c6-no r">2</span>ความชันของ F ที่ x &nbsp;=&nbsp; ความสูง<b class="c-d">สีแดง</b>ของ f ที่ x</div>
+ <div class="pan o2" id="c6-s2" style="left:130px;top:862px;width:1660px;height:128px">
+  <div class="mx c6-eq"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">2</i><i class="dn">0</i></span>x<sup>2</sup> dx = F(2) − F(0) = <span class="fr"><span>8</span><span>3</span></span> − 0 = <b class="c6-83"><span class="fr"><span>8</span><span>3</span></span></b></div>
+  <div class="c6-same">ตรงกับสี่เหลี่ยมนับไม่ถ้วนในสไลด์ที่แล้ว แต่ใช้การลบครั้งเดียว</div>
+ </div>
+
+ <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>06 / 08</b></span></div>
+ <aside class="notes">F(x) = พื้นที่ใต้ f(t) = t² ตั้งแต่ 0 ถึง x = x³/3. ตัวอย่าง x = 1.2: พื้นที่ = 1.728/3 = 0.576 = ความสูงของ F; ความชันของ F = F′(1.2) = 1.44 = f(1.2). ดังนั้น F′ = f (หาพื้นที่แล้วหาความชัน ได้ฟังก์ชันเดิม). ผลที่ได้: ∫₀² x² dx = F(2) − F(0) = 8/3 ตรงกับลิมิตของผลรวมสี่เหลี่ยม</aside>
+</section>

@@ -12,6 +12,18 @@ export function cleanText(v: unknown, { max, min = 0, field }: { max: number; mi
   return out;
 }
 
+/** Like cleanText, but keeps line breaks (at most one blank line in a row): for notes typed into a textarea. */
+export function cleanMultiline(v: unknown, { max, min = 0, field }: { max: number; min?: number; field: string }): string {
+  const s = typeof v === 'string' ? v : '';
+  const out = s.normalize('NFC').replace(/\r\n?/g, '\n')
+    .replace(/[\u0000-\u0009\u000b-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2066-\u2069]/g, ' ')
+    .split('\n').map((l) => l.replace(/\s+/g, ' ').trim()).join('\n')
+    .replace(/\n{3,}/g, '\n\n').trim();
+  if (out.length < min) throw new HttpError(400, `กรุณากรอก${field}`, field);
+  if (out.length > max) throw new HttpError(400, `${field}ยาวเกินไป (ไม่เกิน ${max} ตัวอักษร)`, field);
+  return out;
+}
+
 export function int(v: unknown, { min, max, field }: { min: number; max: number; field: string }): number {
   const s = typeof v === 'string' ? v.trim() : typeof v === 'number' ? String(v) : '';
   if (!/^-?\d{1,9}$/.test(s)) throw new HttpError(400, `${field} ต้องเป็นตัวเลข`, field);

@@ -1,0 +1,41 @@
+<!-- 5 · Area under y = x² from 0 to 2 by right-endpoint rectangles; slider n = 2..50; the sum counts live towards 8/3. -->
+<section class="slide" id="c-area" data-steps="2" data-title="พื้นที่ใต้โค้ง">
+ <div class="chip y in" style="left:130px;top:64px"><b>4</b>ปริพันธ์ · Integral</div>
+ <h2 class="in" style="left:130px;top:128px;width:540px;--d:120">พื้นที่ใต้โค้ง<br>= ผลรวม<span class="hl">สี่เหลี่ยม</span></h2>
+
+ <div class="pan b in" id="c5-n" style="left:130px;top:352px;width:520px;height:172px;--d:300">
+  <div class="lab">จำนวนสี่เหลี่ยม</div>
+  <div class="c5-nv mx"><span class="c5-nn">n = <span id="c5-nv">2</span></span><span class="c5-ninf">n → <svg class="sym inf" viewBox="0 0 110 56"><use href="#s-inf"/></svg></span></div>
+ </div>
+ <div class="pan y in" id="c5-sum" style="left:130px;top:560px;width:520px;height:250px;--d:420">
+  <div class="lab k">ผลรวมพื้นที่สี่เหลี่ยม</div>
+  <div class="big" id="c5-sv">5.000</div>
+  <div class="mx c5-f"><span class="sig"><svg class="sym" viewBox="0 0 60 74"><use href="#s-sig"/></svg></span>f(x<sub>i</sub>) × <span class="fr s"><span>2</span><span>n</span></span></div>
+ </div>
+ <div class="pan in" id="c5-err" style="left:130px;top:846px;width:520px;height:144px;--d:540">
+  <div class="c5-erow"><span class="lab k">เกินพื้นที่จริง</span><b class="mx c-q" id="c5-ev">+2.333</b></div>
+  <div class="c5-bar"><i id="c5-eb"></i></div>
+ </div>
+
+ <div class="pan in" id="c5-pan" style="left:700px;top:64px;width:1090px;height:730px;--d:200"></div>
+ <svg class="plot in" id="c5-svg" viewBox="0 0 1090 730" style="left:700px;top:64px;width:1090px;height:730px;--d:200" aria-label="กราฟ y = x กำลังสอง กับสี่เหลี่ยมใต้กราฟ" role="img"></svg>
+ <div class="ab tag c-q in" id="c5-extag" style="left:1370px;top:96px;--d:600"><i class="c5-hatch"></i>ส่วนที่เกินโค้ง</div>
+
+ <div class="pan lb g2" id="c5-int" style="left:790px;top:104px;width:560px;height:250px">
+  <div class="lab k">เมื่อ n มากขึ้นไม่สิ้นสุด</div>
+  <div class="mx c5-ieq"><span class="int"><svg class="sym" viewBox="0 0 40 120"><use href="#s-int"/></svg><i class="up">2</i><i class="dn">0</i></span>x<sup>2</sup> dx = <span class="fr"><span>8</span><span>3</span></span><svg class="sym apx" viewBox="0 0 60 52"><use href="#s-apx"/></svg>2.667</div>
+ </div>
+
+ <div class="pan in" id="c5-sl" style="left:700px;top:836px;width:1090px;height:154px;--d:350">
+  <button type="button" class="c5-pm" id="c5-minus" aria-label="ลดจำนวนสี่เหลี่ยม">−</button>
+  <div class="c5-trk hit" id="c5-trk" aria-label="แถบเลื่อนจำนวนสี่เหลี่ยม ลากได้ทั้งแถบ" role="slider" aria-valuemin="2" aria-valuemax="50" aria-valuenow="2">
+   <div class="c5-rail"><i id="c5-fill"></i></div>
+   <div class="c5-ticks"><span style="left:0%">2</span><span style="left:16.667%">10</span><span style="left:37.5%">20</span><span style="left:58.333%">30</span><span style="left:79.167%">40</span><span style="left:100%">50</span></div>
+   <div class="c5-th" id="c5-th"><span id="c5-tv">2</span></div>
+  </div>
+  <button type="button" class="c5-pm" id="c5-plus" aria-label="เพิ่มจำนวนสี่เหลี่ยม">+</button>
+ </div>
+
+ <div class="foot"><span class="brand"><i></i>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>05 / 08</b></span></div>
+ <aside class="notes">สี่เหลี่ยมกว้าง 2/n สูง f ที่ขอบขวา ผลรวม = 4(n+1)(2n+1)/(3n²): n = 2 → 5, n = 4 → 3.75, n = 50 → 2.747. เกินพื้นที่จริงเสมอ (ส่วนสีชมพู) และส่วนเกินหดลงเรื่อย ๆ ลิมิตเมื่อ n มากขึ้นไม่สิ้นสุด = ∫₀² x² dx = 8/3 ≈ 2.667</aside>
+</section>
