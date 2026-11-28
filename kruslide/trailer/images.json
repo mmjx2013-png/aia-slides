@@ -1,0 +1,17 @@
+{
+  "note": "Wikimedia Commons files used in the trailer. fetch_images.py downloads the originals into img/ and writes credits.md.",
+  "images": [
+    {"id": "01-iudea-1662",        "title": "File:View of Iudea (Ayutthaya), Capital of Siam ca. 1662 (SK-A-4477).jpg", "subject": "Painting of Ayutthaya (Iudea), Johannes Vingboons, c. 1662-1663, Rijksmuseum"},
+    {"id": "02-valentijn-1726",    "title": "File:Map of Ayutthaya (Judia) Golden Age by Francois Valentijn 1726.png", "subject": "Map of the island city 'Judia', François Valentijn, 1726"},
+    {"id": "03-chaiwatthanaram-drone", "title": "File:Wat Chaiwatthanaram by drone.jpg", "subject": "Wat Chaiwatthanaram beside the Chao Phraya, aerial"},
+    {"id": "04-voc-ships-1635",    "title": "File:Chart of Chao Phraya to Bangkok VOC Ships c1635.png", "subject": "Dutch VOC chart of the lower Chao Phraya with ships, c. 1635"},
+    {"id": "05-pasak-river",       "title": "File:Pa Sak River in Ayutthaya.jpg", "subject": "Pa Sak River in Ayutthaya, with a boat"},
+    {"id": "06-sanphet-golden",    "title": "File:Wat Phra Si Sanphet, Ayutthaya, Thailand - Asian Historical Architecture.jpg", "subject": "The three chedis of Wat Phra Si Sanphet, late light"},
+    {"id": "07-yai-chai-mongkhon", "title": "File:Wat Yai Chai Mongkhon, Ayutthaya, Thailand (5257562162).jpg", "subject": "Wat Yai Chai Mongkhon, Buddha and great chedi"},
+    {"id": "08-chaiwatthanaram-reflection", "title": "File:Wat Chaiwatthanaram and Reflection.jpg", "subject": "Wat Chaiwatthanaram reflected in water"},
+    {"id": "09-lokayasutharam",    "title": "File:02f-Wat Lokaya Sutha (NgnL)-08740.jpg", "subject": "Reclining Buddha, Wat Lokayasutharam"},
+    {"id": "10-buddha-head-roots", "title": "File:เศียรพระพุทธรูปในรากโพธิ์.jpg", "subject": "Buddha head in tree roots, Wat Mahathat"},
+    {"id": "11-sanphet-night",     "title": "File:Wat Phra Si Sanphet Ayutthaya at night.jpg", "subject": "Wat Phra Si Sanphet lit at night"},
+    {"id": "12-chaiwatthanaram-dusk", "title": "File:Ayutthaya - Wat Chai Watthanaram - 0075.jpg", "subject": "Wat Chaiwatthanaram lit at dusk"}
+  ]
+}
