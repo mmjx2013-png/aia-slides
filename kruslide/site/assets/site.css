@@ -353,6 +353,8 @@ html.js .hint.flash{animation:flash .6s var(--ease)}
 .sty-body .sty-tag{grid-column:1;grid-row:1/4;margin:0}
 .sty-tag{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;font:800 20px/1 KSD}
 .sty-tag .ic{width:20px;height:20px}
+.sty-body .sty-tag.t-sky{color:var(--sky-t)}.sty-body .sty-tag.t-sun{color:var(--sun-t)}.sty-body .sty-tag.t-tom{color:var(--tom-t)}.sty-body .sty-tag.t-navy{color:#fff}
+.nw{white-space:nowrap}
 .sty h3{font:800 22px/1.35 KSD;color:var(--navy)}
 .sty p{font-size:16px;line-height:1.6;color:var(--ink2)}
 .swatches{display:flex;gap:8px;margin-top:8px}
@@ -624,7 +626,9 @@ html.js .hero-vis.rv.in{transform:none}
  .qa-a{padding:0 18px 18px;font-size:15.5px}
  .final{padding:8px 0 70px}
  .final-card{padding:52px 20px 40px;border-radius:28px}
- .d1{width:70px;left:-10px;top:8%}.d2{width:56px;right:4%;top:5%}.d3{width:54px;right:6%;bottom:6%}
+ .d1,.d3{display:none}.d2{width:46px;right:-6px;top:-6px;opacity:.85}
+ .final-card h2{font-size:26px}
+ .line-id b{display:inline-block;margin-top:4px}
  .foot-in{grid-template-columns:1fr;gap:26px}
  .foot-copy{flex-direction:column;align-items:flex-start}
  .fab{right:14px;bottom:14px;width:54px;height:54px;padding:0;justify-content:center}
