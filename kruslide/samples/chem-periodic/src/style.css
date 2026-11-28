@@ -1,0 +1,36 @@
+/* KruSlide sample · Periodic table (เคมี ม.4) · style "clean lab white"
+   Pure white, precise 1.5px hairlines in cool grey, one teal accent and nothing else.
+   Teal means "this one": the selected element, a filter match, a snap point, a correct answer.  Stage 1920x1080. */
+:root{--ink:#121A21;--mute:#5F6B75;--soft:#8D98A1;--line:#CDD5DA;--hair:#E3E8EB;--fog:#F3F5F6;
+ --teal:#0A8F8F;--tealD:#077373;--tealL:#E2F3F2;--no:#B4472F;
+ --ctl-bg:#121A21;--ctl-fg:#fff;--ctl-acc:#0A8F8F;--foot-ink:#121A21;--foot-mute:#5F6B75;
+ --penbar-bg:#fff;--penbar-line:#CDD5DA;--penbar-ink:#121A21;
+ --pens:"หมึก:#121A21,เขียวน้ำทะเล:#0A8F8F,เทา:#8D98A1,ส้มแดง:#D4552F,เหลือง:#F2C230"}
+html,body{background:#DDE2E5;color:var(--ink)}
+#stage{background:#fff}
+.slide{background:#fff}
+/* a hairline frame with corner ticks, like a printed lab data sheet */
+.slide::before{content:"";position:absolute;inset:36px;border:1.5px solid var(--hair);pointer-events:none}
+.kick{position:absolute;font:600 19px/1 Inter;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+.kick b{color:var(--ink);font-weight:700;letter-spacing:.08em}
+h1,h2{position:absolute;font:600 64px/1.25 Display;letter-spacing:-.01em;color:var(--ink)}
+h2{font-size:54px}
+.sub{position:absolute;font:500 25px/1.45 Inter;color:var(--mute)}
+.mono{font-variant-numeric:tabular-nums}
+.rule{position:absolute;height:0;border-top:1.5px solid var(--line)}
+.lbl{font:600 17px/1.2 Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+
+/* buttons: hairline pills; the pressed one turns teal */
+.pill{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px;border-radius:24px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font:600 21px/1 Inter;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
+.pill:hover{border-color:var(--soft)}
+.pill[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pill:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.pill .sw{width:18px;height:18px;border-radius:4px;flex:none}
+.pill[aria-pressed="true"] .sw{box-shadow:0 0 0 1.5px #fff}
+
+/* category swatches (shared by the table, the key and the filter pills) */
+.sw.metal{background:var(--fog);border:1.5px solid var(--line)}
+.sw.semi{background:repeating-linear-gradient(135deg,#fff 0 4px,#C3CCD2 4px 5.5px);border:1.5px solid var(--line)}
+.sw.non{background:#fff;border:1.5px solid var(--line)}
+.sw.noble{background:#fff;border:1.5px solid var(--ink);box-shadow:inset 0 0 0 2.5px #fff,inset 0 0 0 4px var(--line)}
+.sw.unk{background:#fff;border:1.5px dashed var(--soft)}

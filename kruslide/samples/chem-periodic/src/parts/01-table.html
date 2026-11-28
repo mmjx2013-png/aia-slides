@@ -1,0 +1,52 @@
+<!-- 1 · The periodic table to explore: tap any element for its card (Bohr model for Z = 1–20), filter by category. Beat 1 draws the metal/non-metal staircase. -->
+<section class="slide" id="p-table" data-steps="1" data-title="ตารางธาตุ">
+ <div class="kick in" style="left:96px;top:70px"><b>เคมี ม.4</b> · 01 · ตารางธาตุ</div>
+ <h1 class="in" style="left:92px;top:94px;--d:80">ตารางธาตุ</h1>
+ <p class="sub in" style="left:96px;top:178px;--d:160">แตะธาตุใดก็ได้ เพื่อดูโครงสร้างอะตอม</p>
+
+ <div class="filters ia in" id="p1-flt" role="group" aria-label="กรองตามประเภทธาตุ" style="right:604px;top:122px;--d:200">
+  <button type="button" class="pill" data-f="all" aria-pressed="true">ทั้งหมด</button>
+  <button type="button" class="pill" data-f="metal" aria-pressed="false"><i class="sw metal"></i>โลหะ</button>
+  <button type="button" class="pill" data-f="semi" aria-pressed="false"><i class="sw semi"></i>กึ่งโลหะ</button>
+  <button type="button" class="pill" data-f="non" aria-pressed="false"><i class="sw non"></i>อโลหะ</button>
+  <button type="button" class="pill" data-f="noble" aria-pressed="false"><i class="sw noble"></i>แก๊สมีตระกูล</button>
+ </div>
+
+ <div class="ptable ia" id="p1-tab" style="left:96px;top:272px" role="group" aria-label="ตารางธาตุ 118 ธาตุ"></div>
+
+ <div class="pkey ab in" id="p1-key" style="left:232px;top:268px;--d:500">
+  <div class="pk-cell"><i>11</i><b>Na</b><s>22.99</s></div>
+  <div class="pk-ann"><span style="top:6px">เลขอะตอม (จำนวนโปรตอน)</span><span style="top:46px">สัญลักษณ์ธาตุ</span><span style="top:88px">มวลอะตอม</span></div>
+  <ul class="pk-cats">
+   <li><i class="sw metal"></i>โลหะ</li><li><i class="sw semi"></i>กึ่งโลหะ</li><li><i class="sw non"></i>อโลหะ</li>
+   <li><i class="sw noble"></i>แก๊สมีตระกูล</li><li><i class="sw unk"></i>ยังไม่ทราบสมบัติแน่ชัด</li>
+  </ul>
+  <p class="pk-note">20 ธาตุแรก (ตัวเข้ม) มีมวลอะตอมและแบบจำลองอะตอม</p>
+ </div>
+
+ <svg class="ab" id="p1-stair" viewBox="0 0 1220 632" style="left:96px;top:272px;width:1220px;height:632px" aria-hidden="true">
+  <g class="g1"><path class="draw" pathLength="1" d="" id="p1-stp" fill="none" stroke="#0A8F8F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="--d:150"/></g>
+ </svg>
+ <div class="stair-tag ab g1" id="p1-sttag" style="--d:900"><span>โลหะ</span><i></i><span>อโลหะ</span></div>
+
+ <aside class="card ab in" id="p1-card" style="left:1356px;top:64px;width:468px;height:926px;--d:300" aria-live="polite">
+  <div class="cd-head">
+   <div class="cd-z mono" id="p1-cz">11</div>
+   <div class="cd-sym" id="p1-cs">Na</div>
+   <div class="cd-name"><b id="p1-cn">โซเดียม</b><span id="p1-ce">Sodium</span></div>
+   <div class="cd-mass"><span class="lbl">มวลอะตอม</span><b class="mono" id="p1-cm">22.99</b></div>
+  </div>
+  <svg class="cd-bohr" id="p1-bohr" viewBox="-200 -200 400 400" aria-label="แบบจำลองอะตอม" role="img"></svg>
+  <p class="cd-none" id="p1-cnone">แบบจำลองอะตอมของบอร์ในบทนี้<br>แสดงสำหรับธาตุลำดับที่ 1–20</p>
+  <dl class="cd-rows">
+   <div><dt>หมู่</dt><dd id="p1-cg">1 (IA)</dd></div>
+   <div><dt>คาบ</dt><dd id="p1-cp">3</dd></div>
+   <div><dt>อิเล็กตรอนแต่ละชั้น</dt><dd class="mono" id="p1-ca">2, 8, 1</dd></div>
+   <div><dt>ประเภท</dt><dd id="p1-ct">โลหะ</dd></div>
+  </dl>
+  <p class="cd-tip" id="p1-tip"></p>
+ </aside>
+
+ <!--@FOOT@-->
+ <aside class="notes">ให้นักเรียนแตะธาตุทีละตัว สังเกตว่า จำนวนชั้นของอิเล็กตรอน = เลขคาบ และอิเล็กตรอนวงนอกสุด (เวเลนซ์) = เลขหมู่ A (ยกเว้น He อยู่หมู่ VIIIA เพราะชั้นนอกเต็มแล้ว) ปุ่มกรองแสดงว่าโลหะอยู่ด้านซ้ายและกลางตาราง อโลหะอยู่ด้านขวาบน กด → เพื่อวาดเส้นขั้นบันไดที่แบ่งโลหะกับอโลหะ ธาตุกึ่งโลหะอยู่ชิดเส้นนี้ (B Si Ge As Sb Te) ธาตุ 109–118 เป็นธาตุสังเคราะห์ที่ยังไม่ทราบสมบัติแน่ชัด และบางตำราจัดกลุ่ม Po กับ At ต่างกันได้</aside>
+</section>

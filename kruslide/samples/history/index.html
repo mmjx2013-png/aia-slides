@@ -70,7 +70,7 @@ body.ready{opacity:1}
 [data-s="head"].ge1 #pHead .light{transform:scale(1.6)}
 #pReflect{clip-path:circle(2300px at 1480px 330px)}
 [data-s="unesco"] #pReflect{opacity:1;z-index:6}
-[data-s="unesco"].ge1 #pReflect{clip-path:circle(118px at 1480px 330px)}
+[data-s="unesco"].ge1 #pReflect{clip-path:circle(118px at 1480px 330px);transition:opacity .9s ease,clip-path 1.05s cubic-bezier(.2,.75,.25,1)}
 #pReflect img{transform-origin:0 0;transition:transform 1.4s var(--move)}
 [data-s="unesco"].ge1 #pReflect img{transform:translate(1127px,214px) scale(.4)}
 
@@ -310,7 +310,7 @@ body.ready{opacity:1}
     <p class="f1 num lat" style="left:1290px;top:170px" data-count="417" data-at="1" data-dur="2600" data-fmt="plain">0</p>
     <p class="f1 be ink" style="left:1640px;top:300px">ปี</p>
     <p class="f1 lede ink" style="left:1300px;top:392px">พระมหากษัตริย์ 33 พระองค์<br>จาก 5 ราชวงศ์</p>
-    <div class="f1 tl ia" id="tl" data-pos="0" role="group" aria-label="เส้นเวลา พ.ศ. 1893 ถึง 2310">
+    <div class="f1 tl compare ia" id="tl" data-pos="0" role="group" aria-label="เส้นเวลา พ.ศ. 1893 ถึง 2310">
       <span class="hint">ลากเส้นเวลาได้ ←→</span>
       <div class="ax"></div><div class="fill"></div>
       <div class="tk" style="left:0"></div><div class="tk" style="left:52.52%"></div><div class="tk" style="left:56.12%"></div><div class="tk" style="left:67.15%"></div><div class="tk" style="left:74.82%"></div><div class="tk" style="left:100%"></div>
@@ -343,12 +343,12 @@ body.ready{opacity:1}
     <div class="veil" style="background:linear-gradient(20deg,rgba(15,12,10,.9) 0,rgba(15,12,10,.6) 32%,rgba(15,12,10,0) 55%)"></div>
     <p class="o0 kick sh" style="left:1572px;top:640px;--d:2.2s">ตำแหน่งบนเกาะเมือง</p>
     <p class="f1 kick sh" style="left:1578px;top:640px;--d:1.2s">เขตพระราชวังหลวง</p>
-    <div class="r kick" style="left:110px;top:640px">วัดสำคัญ</div>
-    <h2 class="r d2 dk sh" style="left:104px;top:676px;--i:1">วัดพระศรีสรรเพชญ์</h2>
-    <p class="o0 lede dk" style="left:110px;top:806px;width:900px;--d:.8s">ภาพจำของกรุงศรีอยุธยา</p>
+    <div class="r kick" style="left:110px;top:640px;--d:1.4s">วัดสำคัญ</div>
+    <h2 class="r d2 dk sh" style="left:104px;top:676px;--i:1;--d:1.4s">วัดพระศรีสรรเพชญ์</h2>
+    <p class="o0 lede dk" style="left:110px;top:806px;width:900px;--d:1.8s">ภาพจำของกรุงศรีอยุธยา</p>
     <p class="o1 lede dk" style="left:110px;top:806px;width:900px">วัดในเขตพระราชวังหลวง ใช้ประกอบพระราชพิธี<br>จึงไม่มีพระสงฆ์จำพรรษา</p>
     <p class="o2 lede dk" style="left:110px;top:806px;width:900px">เจดีย์ทรงลังกา 3 องค์<br>บรรจุพระบรมอัฐิของพระมหากษัตริย์</p>
-    <p class="r cr dk" style="left:110px;top:1012px;--i:4">ภาพ: Preecha.MJ · CC BY-SA 4.0</p>
+    <p class="r cr dk" style="left:110px;top:1012px;--i:4;--d:1.6s">ภาพ: Preecha.MJ · CC BY-SA 4.0</p>
   </section>
 
   <!-- 6 · Wat Chaiwatthanaram -->
@@ -455,6 +455,7 @@ body.ready{opacity:1}
   <button id="bFull" type="button" title="F">เต็มจอ</button>
 </nav>
 <script src="geo.js"></script>
+<script src="tex/tex.js"></script>
 <script src="map.js"></script>
 <script>
 /* ---------- the camera script: one shot per beat (a beat with no shot keeps the previous one) ---------- */
@@ -548,7 +549,7 @@ body.ready{opacity:1}
   /* the 417-year timeline: sweeps once with the count, then the class can drag it (anywhere on the band) */
   var tl=document.getElementById('tl'),tlro=document.getElementById('tlro'),tlk=tl.querySelector('.knob'),sweep=0,
       EV=[[1893,'สถาปนากรุงศรีอยุธยา'],[2112,'เสียกรุงครั้งที่ 1'],[2127,'สมเด็จพระนเรศวรประกาศอิสรภาพ'],[2173,'สร้างวัดไชยวัฒนาราม'],[2205,'ราวปีที่วาดภาพนี้'],[2310,'เสียกรุงครั้งที่ 2']];
-  function tset(p){p=Math.max(0,Math.min(100,p));var y=Math.round(1893+p*4.17),ev=EV[0][1];EV.forEach(function(e){if(y>=e[0])ev=e[1];});
+  function tset(p){p=Math.max(0,Math.min(100,p));if(p>99.4)p=100;var y=Math.round(1893+p*4.17),ev='ผ่านไป '+(y-1893)+' ปี';EV.forEach(function(e){if(Math.abs(y-e[0])<=7)ev=e[1];});
     tl.style.setProperty('--pos',p+'%');tl.setAttribute('data-pos',Math.round(p));tlk.setAttribute('aria-valuenow',y);tlk.setAttribute('aria-valuetext','พ.ศ. '+y+' '+ev);
     tlro.innerHTML='';var b=document.createElement('b');b.textContent='พ.ศ. '+y;tlro.appendChild(b);tlro.appendChild(document.createTextNode(ev));
     var w=tlro.offsetWidth||400,x=p/100*1700,rx=-50;if(x-w/2<0)rx=-x/w*100;else if(x+w/2>1700)rx=-100+(1700-x)/w*100;tl.style.setProperty('--rx',rx+'%');}

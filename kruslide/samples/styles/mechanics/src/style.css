@@ -1,0 +1,110 @@
+/* KruSlide styles sample F · Mechanism explorer (สำรวจกลไก) · look: "technical cutaway"
+   An engineer's drawing sheet: warm drafting ivory, a thin sheet frame with a title block (the footer), precise thin ink,
+   section hatching and soft brushed-metal parts. Colour has ONE meaning everywhere:
+   blue = fresh fuel/air mixture (ไอดี) · indigo = squeezed mixture · orange = spark, flame and power · warm grey = exhaust (ไอเสีย)
+   steel greys = metal parts · green = correct. Stage 1920x1080. */
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+
+:root{--ease:cubic-bezier(.22,.7,.2,1);
+ --paper:#EFECE5;--paper2:#E6E2D8;--ink:#1F2429;--mute:#5B636B;--line:#BFC3C4;--hair:#D3D3CE;
+ --steel:#AEB7C0;--steel-d:#6E7A86;--steel-l:#E3E7EB;
+ --mix:#3A9BD6;--dense:#3B5BCC;--fire:#F08C00;--power:#E8590C;--exh:#8B7E70;
+ --ok:#2F9E44;--okc:#237A35;--no:#D9480F;--noc:#B23A0B;--lok:#DDF1E0;--lno:#FBE3D6;
+ --card:#FBFAF7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#2A2E33;overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--paper)}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .45s ease,visibility 0s linear .45s;
+ background:radial-gradient(ellipse 80% 70% at 50% 45%,#F4F2EC 0%,var(--paper) 60%,var(--paper2) 100%)}
+.slide.on{visibility:visible;opacity:1;transition:opacity .45s ease}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ab{position:absolute}
+
+/* ---------- the drawing sheet: frame, corner ticks, zone marks, title block (= footer) ---------- */
+.sheet{position:absolute;inset:34px;border:2px solid var(--ink);pointer-events:none}
+.sheet::before{content:"";position:absolute;inset:8px;border:1px solid var(--line)}
+.sheet i{position:absolute;font:600 15px/1 Inter;color:var(--mute);letter-spacing:.08em}
+.sheet i.t{top:-25px}.sheet i.l{left:-24px}
+.foot{position:absolute;right:34px;bottom:34px;height:58px;display:flex;align-items:stretch;border:2px solid var(--ink);border-right:0;border-bottom:0;background:var(--card);font:600 21px/1 Inter;color:var(--mute)}
+.foot>span{display:flex;align-items:center;padding:0 22px;border-left:1px solid var(--line)}
+.foot>span:first-child{border-left:0}
+.foot .brand{gap:12px;color:var(--ink);font-weight:800}
+.foot .brand .logo{width:30px;height:30px;flex:none}
+.foot .brand span{font-weight:600;color:var(--mute)}
+.foot .ttl{font-weight:600;color:var(--ink)}
+.foot .pg{gap:16px}
+.foot .pg b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- type ---------- */
+.kick{position:absolute;display:flex;align-items:center;gap:14px;font:700 22px/1 Inter;letter-spacing:.12em;color:var(--power);text-transform:uppercase}
+.kick b{display:grid;place-items:center;width:40px;height:40px;border:2px solid var(--power);border-radius:50%;font:800 19px Inter;letter-spacing:0}
+h2{position:absolute;font:700 62px/1.3 Display;letter-spacing:-.01em;color:var(--ink)}
+h2 em{font-style:normal;color:var(--power)}
+.lede{position:absolute;font:500 28px/1.5 Inter;color:var(--mute)}
+.lab{font:700 24px/1.3 Inter;color:var(--mute)}
+.mono{font-variant-numeric:tabular-nums}
+.en{font:600 17px/1 Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+
+/* ---------- spec cards ---------- */
+.card{position:absolute;background:var(--card);border:2px solid var(--ink);border-radius:6px;box-shadow:0 18px 40px -22px rgba(31,36,41,.45)}
+.card .hd{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 22px;border-bottom:1px solid var(--line);font:700 18px/1 Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.card .hd b{color:var(--ink);letter-spacing:.04em}
+
+/* ---------- buttons (technical, flat) ---------- */
+.tb{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;min-width:56px;padding:0 20px;border:2px solid var(--ink);border-radius:6px;background:var(--card);color:var(--ink);font:700 22px/1 Inter;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s,transform .12s}
+.tb:hover{background:#fff}
+.tb:active{transform:translateY(2px)}
+.tb[aria-pressed="true"]{background:var(--ink);color:#fff}
+.tb:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+.tb svg{width:22px;height:22px;flex:none}
+.tb.or{background:var(--power);border-color:var(--power);color:#fff}
+
+/* ---------- motion (one easing family) ----------
+   .in enters with the slide (--d ms) · .g1..g3 appear on beat 1..3 · .draw draws a path (pathLength=1) */
+.in{opacity:0}
+.on .in{animation:rise .65s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3{opacity:0;pointer-events:none}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
+.h1{transition:opacity .4s ease}
+.on.b1 .h1{opacity:0;pointer-events:none}
+.fade{opacity:0}.on .fade{animation:fadein .7s ease both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.on .draw{animation:draw 1.2s var(--ease) both;animation-delay:calc(var(--d,300)*1ms)}
+.on.b1 .g1 .draw{animation:draw 1s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.on :is(.g1,.g2) .draw{animation:none}
+.on.b1 .g1 .draw{animation:draw 1s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- control bar (engine) ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);gap:6px;align-items:center;padding:7px;border-radius:8px;background:var(--ink);box-shadow:0 8px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s;font:600 15px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.85;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:9px 13px;cursor:pointer;min-width:42px}
+#ctl button:hover{background:rgba(255,255,255,.12)}
+#ctl button[aria-pressed="true"]{background:var(--power);border-color:var(--power)}
+#ctl button:focus-visible{outline:2px solid var(--fire);outline-offset:2px}
+#pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+.shot #ctl{display:none!important}
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}

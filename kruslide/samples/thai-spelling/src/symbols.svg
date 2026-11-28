@@ -1,0 +1,67 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<filter id="ps" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#5A3C1E" flood-opacity=".28"/></filter>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+<symbol id="cross" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></symbol>
+<symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+
+<!-- our own paper cut-out pictures, 200x200 -->
+<symbol id="pic-pu" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <g fill="none" stroke="#C9452A" stroke-width="9" stroke-linecap="round"><path d="M62 118 Q36 120 26 142"/><path d="M64 130 Q42 138 36 160"/><path d="M70 140 Q56 152 54 172"/><path d="M138 118 Q164 120 174 142"/><path d="M136 130 Q158 138 164 160"/><path d="M130 140 Q144 152 146 172"/></g>
+ <path d="M60 88 Q40 70 44 48 Q30 56 30 72 Q30 92 56 100 Z" fill="#E8603C"/><path d="M44 48 Q58 50 62 64 Q50 60 46 66 Z" fill="#F7EEDC"/>
+ <path d="M140 88 Q160 70 156 48 Q170 56 170 72 Q170 92 144 100 Z" fill="#E8603C"/><path d="M156 48 Q142 50 138 64 Q150 60 154 66 Z" fill="#F7EEDC"/>
+ <ellipse cx="100" cy="118" rx="58" ry="38" fill="#E8603C"/><ellipse cx="100" cy="128" rx="44" ry="20" fill="#F08A6C"/>
+ <path d="M84 84 L84 66 M116 84 L116 66" stroke="#C9452A" stroke-width="7" stroke-linecap="round"/>
+ <circle cx="84" cy="62" r="11" fill="#fff"/><circle cx="116" cy="62" r="11" fill="#fff"/><circle cx="86" cy="63" r="5" fill="#3A2A1E"/><circle cx="114" cy="63" r="5" fill="#3A2A1E"/>
+ <path d="M88 116 Q100 126 112 116" fill="none" stroke="#3A2A1E" stroke-width="4" stroke-linecap="round"/></g></symbol>
+
+<symbol id="pic-ma" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <path d="M50 100 Q28 104 26 146 Q36 128 50 122 Z" fill="#6B4022"/>
+ <rect x="58" y="124" width="12" height="52" rx="5" fill="#9C5F30"/><rect x="74" y="126" width="12" height="50" rx="5" fill="#B9773F"/>
+ <rect x="114" y="124" width="12" height="52" rx="5" fill="#9C5F30"/><rect x="130" y="126" width="12" height="50" rx="5" fill="#B9773F"/>
+ <path d="M56 172 h16 v8 h-16z M72 172 h16 v8 h-16z M112 172 h16 v8 h-16z M128 172 h16 v8 h-16z" fill="#3A2A1E"/>
+ <ellipse cx="98" cy="112" rx="54" ry="29" fill="#B9773F"/>
+ <path d="M126 98 L144 46 Q150 36 160 40 L186 66 Q192 74 184 80 Q176 84 168 78 L158 70 L152 114 Z" fill="#B9773F"/>
+ <path d="M150 42 L154 24 L162 40 Z" fill="#9C5F30"/>
+ <path d="M146 44 L136 56 L142 58 L132 70 L139 72 L128 84 L136 86 L126 98 L134 66 Z" fill="#6B4022"/>
+ <circle cx="166" cy="56" r="4.5" fill="#3A2A1E"/><circle cx="182" cy="74" r="2.5" fill="#6B4022"/>
+ <ellipse cx="92" cy="104" rx="32" ry="12" fill="#C98A52" opacity=".7"/></g></symbol>
+
+<symbol id="pic-tao" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <ellipse cx="56" cy="150" rx="16" ry="11" fill="#6FA35A"/><ellipse cx="144" cy="150" rx="16" ry="11" fill="#6FA35A"/>
+ <path d="M150 128 Q178 118 184 98 Q190 84 176 80 Q160 78 156 96 Q152 110 140 118 Z" fill="#7DB46C"/><circle cx="174" cy="92" r="4" fill="#3A2A1E"/>
+ <path d="M38 138 Q30 140 24 150 Q34 150 42 146 Z" fill="#6FA35A"/>
+ <path d="M34 140 Q36 70 100 66 Q164 70 166 140 Z" fill="#4F8A4A"/>
+ <path d="M100 76 L122 88 L122 112 L100 124 L78 112 L78 88 Z" fill="#9BC97E"/>
+ <path d="M58 98 L74 106 L74 126 L60 134 L46 126 Q46 108 58 98Z M142 98 L126 106 L126 126 L140 134 L154 126 Q154 108 142 98Z" fill="#9BC97E"/>
+ <path d="M28 140 H172" stroke="#3E6E3A" stroke-width="8" stroke-linecap="round"/></g></symbol>
+
+<symbol id="pic-ngu" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <path d="M30 168 Q20 140 52 132 Q96 124 118 132 Q150 142 156 116 Q160 92 124 88 Q86 86 70 70 Q58 54 76 40 Q92 30 112 36" fill="none" stroke="#8DBA3C" stroke-width="26" stroke-linecap="round"/>
+ <path d="M30 168 Q20 140 52 132 Q96 124 118 132 Q150 142 156 116 Q160 92 124 88 Q86 86 70 70 Q58 54 76 40" fill="none" stroke="#F2C14E" stroke-width="10" stroke-dasharray="6 16" stroke-linecap="round"/>
+ <ellipse cx="124" cy="38" rx="24" ry="17" fill="#8DBA3C"/><circle cx="130" cy="32" r="5" fill="#fff"/><circle cx="131" cy="32" r="2.6" fill="#3A2A1E"/>
+ <path d="M146 42 L164 46 L172 40 M164 46 L172 52" fill="none" stroke="#D2553B" stroke-width="4" stroke-linecap="round"/></g></symbol>
+
+<symbol id="pic-ta" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <path d="M20 102 Q100 26 180 102 Q100 170 20 102 Z" fill="#fff"/>
+ <circle cx="100" cy="100" r="38" fill="#2E9C95"/><circle cx="100" cy="100" r="18" fill="#2A1E16"/><circle cx="110" cy="90" r="7" fill="#fff"/>
+ <path d="M20 102 Q100 26 180 102" fill="none" stroke="#3A2A1E" stroke-width="8" stroke-linecap="round"/>
+ <path d="M58 62 L48 44 M84 50 L80 30 M116 50 L120 30 M142 62 L152 44" stroke="#3A2A1E" stroke-width="7" stroke-linecap="round"/></g></symbol>
+
+<symbol id="pic-tu" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <rect x="44" y="20" width="112" height="150" rx="8" fill="#C27A44"/>
+ <rect x="54" y="30" width="44" height="130" rx="4" fill="#E0A36A"/><rect x="102" y="30" width="44" height="130" rx="4" fill="#E0A36A"/>
+ <circle cx="92" cy="96" r="5" fill="#6B4022"/><circle cx="108" cy="96" r="5" fill="#6B4022"/>
+ <rect x="52" y="168" width="12" height="16" rx="3" fill="#6B4022"/><rect x="136" y="168" width="12" height="16" rx="3" fill="#6B4022"/></g></symbol>
+
+<symbol id="pic-pao" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <circle cx="96" cy="104" r="76" fill="#E8603C"/><circle cx="96" cy="104" r="58" fill="#fff"/><circle cx="96" cy="104" r="40" fill="#E8603C"/><circle cx="96" cy="104" r="22" fill="#fff"/><circle cx="96" cy="104" r="9" fill="#E8603C"/>
+ <path d="M98 102 L176 30" stroke="#6B4022" stroke-width="7" stroke-linecap="round"/>
+ <path d="M168 26 L188 20 L182 40 Z M164 40 L176 52 L184 38 Z" fill="#2E9C95"/></g></symbol>
+
+<symbol id="pic-ya" viewBox="0 0 200 200"><g filter="url(#ps)">
+ <rect x="56" y="22" width="56" height="22" rx="5" fill="#2E9C95"/>
+ <rect x="44" y="42" width="80" height="132" rx="18" fill="#9CD3EE"/>
+ <rect x="54" y="82" width="60" height="56" rx="6" fill="#fff"/>
+ <path d="M84 92 V128 M66 110 H102" stroke="#E8603C" stroke-width="11" stroke-linecap="round"/>
+ <g transform="rotate(-30 156 136)"><rect x="128" y="120" width="58" height="30" rx="15" fill="#F2B33D"/><path d="M157 120 h14 a15 15 0 0 1 0 30 h-14 z" fill="#E8603C"/></g></g></symbol>
+</defs></svg>

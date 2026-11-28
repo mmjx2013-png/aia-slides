@@ -63,7 +63,8 @@ SHOTS = [
          a=(0.60, 0.45, 0.66), b=(0.57, 0.45, 0.84), grade=dict(exp=0.0)),
 ]
 
-# Title cards (rendered by cards.js from cards.html). 'in'/'out' are anchors like the shots'.
+# Title cards (rendered by cards.js from cards.html). 'in'/'out' are anchors like the shots'
+# (L6.seg2 = start of the 2nd phrase of L6, found in the audio).
 # 'dim' darkens the picture under the card. 'scale' is the slow growth of the card over its life.
 # 'x' moves a card sideways (centre as a fraction of the width; default 0.5). Rule kept: no text over a Buddha's face.
 CARDS = [
@@ -72,9 +73,9 @@ CARDS = [
     dict(id='y1893', big='พ.ศ. ๑๘๙๓', small='ค.ศ. 1351', style='date',
          t_in=('L1.lastseg', -0.10), t_out=('L2.start', -0.45), fi=0.7, fo=0.55, dim=0.30, scale=0.03),
     dict(id='y417', big='๔๑๗ ปี', small='ราชธานี  ·  พ.ศ. ๑๘๙๓ – ๒๓๑๐', style='date',
-         t_in=('L5.lastseg', -0.15), t_out=('FALL', -0.12), fi=0.6, fo=0.3, dim=0.30, scale=0.03, x=0.30),   # left of the Buddha: no text over a Buddha image
+         t_in=('L5.seg2', 0.90), t_out=('FALL', -0.12), fi=0.6, fo=0.3, dim=0.30, scale=0.03, x=0.30),   # left of the Buddha: no text over a Buddha image
     dict(id='y2310', big='พ.ศ. ๒๓๑๐', small='ค.ศ. 1767', style='date',
-         t_in=('L6.lastseg', -0.10), t_out=('L7.start', -0.25), fi=0.6, fo=0.6, dim=0.0, scale=0.03),
+         t_in=('L6.seg2', -0.10), t_out=('L7.start', -0.25), fi=0.6, fo=0.6, dim=0.0, scale=0.03),
     dict(id='unesco', big='มรดกโลก', small='UNESCO  ·  พ.ศ. ๒๕๓๔  ·  1991', style='date',
          t_in=('L9.start', 0.10), t_out=('L9.end', 0.45), fi=0.7, fo=0.55, dim=0.30, scale=0.03),
     dict(id='title', big='อยุธยา', small='AYUTTHAYA', style='title',
@@ -83,7 +84,7 @@ CARDS = [
          t_in=('END', 0.35), t_out=('END', 2.85), fi=0.6, fo=0.6, dim=0.0, scale=0.0),
 ]
 
-FALL_BEFORE_L6 = 0.95   # the cut to black (and the impact) comes this long before L6 starts
+FALL_BEFORE_L6 = 0.75   # the cut to black (and the impact) comes this long before L6 starts
 TITLE_AFTER_L9 = 0.75   # the title shot (and the second impact) comes this long after L9 ends
 TITLE_LEN = 4.4         # title shot length; then a fade to black and the end card
 END_CARD_LEN = 3.1
@@ -137,6 +138,8 @@ def build():
         segs = [(start + a - v['on'], start + b - v['on']) for a, b in v['segs']]
         T[ln['id'] + '.start'], T[ln['id'] + '.end'] = start, start + dur
         T[ln['id'] + '.lastseg'] = segs[-1][0]
+        for k, (a0, _) in enumerate(segs, 1):
+            T[f"{ln['id']}.seg{k}"] = a0          # start of the k-th phrase
         if len(segs) > 1:      # longest pause inside the line
             gaps = [(segs[i + 1][0] - segs[i][1], (segs[i + 1][0] + segs[i][1]) / 2) for i in range(len(segs) - 1)]
             T[ln['id'] + '.pause'] = max(gaps)[1]

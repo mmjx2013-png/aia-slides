@@ -162,10 +162,12 @@
     var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     ['uRes', 'uS', 'uCam', 'uC', 'uA', 'uAtm', 'tG', 'tM', 'tH', 'bM', 'bH'].forEach(function (n) { uni[n] = gl.getUniformLocation(prog, n); });
-    [['tex/earth-4096.jpg', 0, 'tG'], ['tex/asia-mid.jpg', 1, 'tM'], ['tex/thai-high.jpg', 2, 'tH']].forEach(function (d) {
+    var TX = window.TEX || {};
+    [[TX.earth || 'tex/earth-4096.jpg', 0, 'tG'], [TX.mid || 'tex/asia-mid.jpg', 1, 'tM'], [TX.high || 'tex/thai-high.jpg', 2, 'tH']].forEach(function (d) {
       var img = new Image(); img.onload = function () {
         if (!gl) return; var t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + d[1]); gl.bindTexture(gl.TEXTURE_2D, t);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img); gl.generateMipmap(gl.TEXTURE_2D);
+        try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img); } catch (e) { return; }   // e.g. opened from file:// : the drawn globe is used instead
+        gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, d[1] ? gl.CLAMP_TO_EDGE : gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         var ext = gl.getExtension('EXT_texture_filter_anisotropic'); if (ext) gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, 8);
@@ -269,7 +271,7 @@
     ctx.save(); ctx.globalAlpha = a; ctx.beginPath(); ctx.arc(C.cx, C.cy, C.R, 0, 7); ctx.fillStyle = '#18282B'; ctx.fill(); ctx.clip();
     ctx.fillStyle = '#5E6B45';
     var src = C.R > 1200 ? [].concat.apply([], Object.keys(G.asia).map(function (k) { return G.asia[k]; })) : G.world;
-    src.forEach(function (r) { pathLL(r, true, true); ctx.fill(); }); ctx.restore();
+    src.forEach(function (r) { for (var i = 2; i < r.length; i += 2) if (Math.abs(r[i] - r[i - 2]) > 180) return; pathLL(r, true, true); ctx.fill(); }); ctx.restore();
   }
   function satOverlays(a, t) {
     var gr = getV('gr'), bd = getV('bd'), th = getV('th'), tp = getV('tp'), cr = getV('cr');

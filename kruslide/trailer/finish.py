@@ -5,7 +5,11 @@
   out/ayutthaya-4k-novoice.mp4  same picture, music bed only
   out/ayutthaya-1080.mp4        1920x1080 web version, two-pass, sized to stay under ~24 MB
   out/poster.jpg                3840x2160 still of the title
+optional:
+  python3 finish.py --web4k     out/ayutthaya-4k-web.mp4: 4K at ~12 Mbit/s (under GitHub's 100 MB file limit,
+                                for a deck served from GitHub Pages; the master is for local playback)
 """
+import sys
 import json, os, shutil, subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +44,24 @@ def web():
         if f.startswith('x264_1080'):
             os.remove(os.path.join(WORK, f))
 
+def web4k(mb=92.0):
+    dur = TL['frames'] / TL['fps']
+    abr = 192_000
+    vbr = int((mb * 8e6 - abr * dur) / dur * 0.97)
+    src = os.path.join(OUT, 'ayutthaya-4k.mp4')
+    dst = os.path.join(OUT, 'ayutthaya-4k-web.mp4')
+    log = os.path.join(WORK, 'x264_4kweb')
+    common = ['-c:v', 'libx264', '-preset', 'medium', '-tune', 'film', '-profile:v', 'high', '-level:v', '5.1',
+              '-pix_fmt', 'yuv420p', '-b:v', str(vbr), '-maxrate', str(int(vbr * 2)), '-bufsize', str(int(vbr * 4)),
+              '-x264-params', f'keyint={TL["fps"] * 2}', '-colorspace', 'bt709', '-color_primaries', 'bt709',
+              '-color_trc', 'bt709', '-passlogfile', log]
+    ff('-i', src, *common, '-pass', '1', '-an', '-f', 'mp4', os.devnull)
+    ff('-i', src, *common, '-pass', '2', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', dst)
+    for f in os.listdir(WORK):
+        if f.startswith('x264_4kweb'):
+            os.remove(os.path.join(WORK, f))
+    print(f'ayutthaya-4k-web.mp4 {os.path.getsize(dst) / 1e6:.1f} MB')
+
 def poster():
     t = TL['anchors']['TITLE'] + 1.9
     subprocess.run(['python3', os.path.join(HERE, 'render.py'), '--stills', f'{t:.2f}'], check=True)
@@ -47,6 +69,8 @@ def poster():
     shutil.copy(src, os.path.join(OUT, 'poster.jpg'))
 
 if __name__ == '__main__':
+    if '--web4k' in sys.argv:
+        web4k(); sys.exit()
     mux(os.path.join(WORK, 'audio', 'mix.wav'), os.path.join(OUT, 'ayutthaya-4k.mp4'), 'Ayutthaya (อยุธยา) - KruSlide sample trailer')
     mux(os.path.join(WORK, 'audio', 'bed.wav'), os.path.join(OUT, 'ayutthaya-4k-novoice.mp4'), 'Ayutthaya (อยุธยา) - music only')
     web()

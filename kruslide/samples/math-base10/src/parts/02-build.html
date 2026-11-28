@@ -1,0 +1,36 @@
+<!-- 2 · Build the number on the sign: drag (or tap) blocks from the trays onto the place-value mat. 10 ones snap into a ten, 10 tens into a hundred. Beat 1: the digit cards flip to their place values. -->
+<section class="slide" id="b-build" data-steps="1" data-title="สร้างจำนวน" style="--u:30px">
+ <div class="chip in" style="left:130px;top:64px"><b>1</b>ลองสร้างจำนวน</div>
+ <h2 class="h1" style="left:130px;top:126px;--d:120">ลากบล็อกลงแผ่นรอง ให้ได้จำนวนบนป้าย</h2>
+ <h2 class="g1" id="b2-exp" style="left:130px;top:126px;--d:900">243 = 200 + 40 + 3</h2>
+
+ <div class="ab in" id="b2-mat" style="--d:150">
+  <div class="b2-col h"><div class="b2-hd">ร้อย</div></div>
+  <div class="b2-col t"><div class="b2-hd">สิบ</div></div>
+  <div class="b2-col o"><div class="b2-hd">หน่วย</div><div class="b2-frame" aria-hidden="true"></div></div>
+  <div class="b2-dg h" id="b2-dh"><span class="f">0</span><span class="k">0</span></div>
+  <div class="b2-dg t" id="b2-dt"><span class="f">0</span><span class="k">0</span></div>
+  <div class="b2-dg o" id="b2-do"><span class="f">0</span><span class="k">0</span></div>
+  <i class="b2-plus" style="left:550px">+</i><i class="b2-plus" style="left:950px">+</i>
+ </div>
+ <div class="ab" id="b2-layer"></div>
+
+ <div class="ab in" id="b2-sign" style="--d:300"><i class="rope l"></i><i class="rope r"></i>
+  <div class="b2-board"><span>สร้างจำนวน</span><b id="b2-tgt">243</b></div>
+ </div>
+ <div class="ab b2-tray ia in" data-k="h" style="top:330px;--d:400" role="button" aria-label="เพิ่มแผ่นร้อย"><span class="b2-tl"><b>+</b>แผ่นร้อย</span><span class="b2-art"></span></div>
+ <div class="ab b2-tray ia in" data-k="t" style="top:486px;--d:480" role="button" aria-label="เพิ่มแท่งสิบ"><span class="b2-tl"><b>+</b>แท่งสิบ</span><span class="b2-art"></span></div>
+ <div class="ab b2-tray ia in" data-k="o" style="top:642px;--d:560" role="button" aria-label="เพิ่มก้อนหน่วย"><span class="b2-tl"><b>+</b>ก้อนหน่วย</span><span class="b2-art"></span></div>
+ <p class="ab in" id="b2-hint" style="--d:650">แตะถาด = เพิ่ม 1 ชิ้น · แตะบล็อกบนแผ่นรอง = เอาออก</p>
+
+ <div class="ab ia in" id="b2-btns" style="--d:500">
+  <button class="wbtn pri" type="button" id="b2-chk">ตรวจคำตอบ</button>
+  <button class="wbtn" type="button" id="b2-ans">ดูเฉลย</button>
+  <button class="wbtn" type="button" id="b2-rst">เริ่มใหม่</button>
+  <button class="wbtn" type="button" id="b2-new">เลขใหม่</button>
+  <span class="fb" id="b2-fb" role="status" aria-live="polite"></span>
+ </div>
+
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 03</b></span></div>
+ <aside class="notes">ให้นักเรียนออกมาลากบล็อกจากถาดด้านขวาลงแผ่นรอง (หรือแตะถาดเพื่อเพิ่มทีละชิ้น) ลากบล็อกออกนอกแผ่นรองหรือแตะบล็อกเพื่อเอาออก ใส่ก้อนหน่วยครบ 10 ก้อน จะติดกันเป็นแท่งสิบแล้วย้ายไปหลักสิบเอง (สิบแท่งก็กลายเป็นแผ่นร้อย) กดตรวจคำตอบ ถ้ายังไม่ถูกจะบอกว่าหลักไหนขาดหรือเกิน กด → แผ่นรองจะเติมให้ตรงป้าย แล้วบัตรตัวเลขพลิกเป็นค่าประจำหลัก เช่น 243 = 200 + 40 + 3 ปุ่มเลขใหม่เปลี่ยนเลขบนป้าย มีเลขที่มี 0 เช่น 302 และ 170 ให้ถามว่า 0 หมายถึงอะไร</aside>
+</section>

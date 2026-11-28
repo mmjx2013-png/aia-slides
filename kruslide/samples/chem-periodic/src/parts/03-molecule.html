@@ -1,0 +1,32 @@
+<!-- 3 · Build a molecule: drag H, O and C from the tray; bonds snap to free arms; bond order fills in by itself (O=C=O). Pick H2O, CO2 or CH4, then Check / Show answer / Reset. Beat 1 shows the octet idea. -->
+<section class="slide" id="p-mol" data-steps="1" data-title="สร้างโมเลกุล">
+ <div class="kick in" style="left:96px;top:70px"><b>เคมี ม.4</b> · 03 · พันธะโคเวเลนต์</div>
+ <h2 class="in" style="left:92px;top:96px;--d:80">ต่อโมเลกุลด้วยมือ</h2>
+ <p class="sub in" style="left:620px;top:118px;width:700px;--d:160">ลากอะตอมจากถาดไปต่อที่<b class="c-t">แขนสีเขียวน้ำทะเล</b> พันธะจะล็อกเข้าที่เอง</p>
+
+ <svg class="ab in hit" id="p3-svg" viewBox="0 0 1220 800" style="left:96px;top:190px;width:1220px;height:800px;--d:200" aria-label="พื้นที่ต่อโมเลกุล ลากอะตอมจากถาดทางซ้าย" role="application"></svg>
+
+ <div class="ab in" id="p3-side" style="left:1380px;top:190px;width:444px;--d:300">
+  <span class="lbl">เป้าหมาย</span>
+  <div class="p3-tabs ia" id="p3-tabs" role="group" aria-label="เลือกโมเลกุลเป้าหมาย">
+   <button type="button" class="pill mono" data-m="h2o" aria-pressed="true">H<sub>2</sub>O</button>
+   <button type="button" class="pill mono" data-m="co2" aria-pressed="false">CO<sub>2</sub></button>
+   <button type="button" class="pill mono" data-m="ch4" aria-pressed="false">CH<sub>4</sub></button>
+  </div>
+  <p class="p3-goal" id="p3-goal">น้ำ: O 1 อะตอม ต่อกับ H 2 อะตอม</p>
+  <div class="p3-count" id="p3-count"></div>
+  <div class="p3-btns ia">
+   <button type="button" class="tw-btn pri" id="p3-check">ตรวจคำตอบ</button>
+   <button type="button" class="tw-btn" id="p3-show">ดูเฉลย</button>
+   <button type="button" class="tw-btn" id="p3-reset">เริ่มใหม่</button>
+  </div>
+  <p class="p3-fb" id="p3-fb" role="status" aria-live="polite"></p>
+  <div class="p3-info" id="p3-info"></div>
+ </div>
+ <div class="ab g1 p3-oct" style="left:1380px;top:846px;width:444px">
+  <b>กฎออกเตต</b> อะตอมใช้อิเล็กตรอนร่วมกันเป็นคู่ (1 พันธะ = 1 คู่) จนวงนอกสุดครบ 8 ตัว ส่วน H ครบ 2 ตัว
+ </div>
+
+ <!--@FOOT@-->
+ <aside class="notes">จำนวนแขน = จำนวนพันธะที่อะตอมนั้นสร้างได้ (H 1, O 2, C 4) มาจากจำนวนอิเล็กตรอนที่ขาดอีกกี่ตัวจึงครบออกเตต: O มีเวเลนซ์ 6 ขาด 2 C มีเวเลนซ์ 4 ขาด 4 H ขาด 1 จึงครบ 2 ให้นักเรียนต่อ H2O ก่อน แล้วลอง CO2: เมื่อ O สองอะตอมต่อกับ C แขนที่เหลือจะรวมเป็นพันธะคู่ O=C=O เอง ตรวจคำตอบจะบอกว่าแขนไหนยังว่าง รูปร่างจริง: H2O มุมงอ 104.5° CO2 เส้นตรง 180° CH4 ทรงสี่หน้า 109.5° (ภาพ 2 มิติวาดเป็นกากบาท)</aside>
+</section>

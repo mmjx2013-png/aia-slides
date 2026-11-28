@@ -1,0 +1,47 @@
+/* KruSlide sample · ประสมคำ (ภาษาไทย ป.1–3) · style "paper cut-out"
+   Layered coloured paper on a cream sheet: every piece has a soft paper shadow, a slight tilt and a lighter inner layer.
+   Colour has ONE meaning everywhere: coral = พยัญชนะ (consonant) · teal = สระ (vowel) · mustard = วรรณยุกต์ (tone mark)
+   plum / teal / coral houses = อักษรสูง / กลาง / ต่ำ on slide 3. */
+:root{--outside:#5B4636;--paper:#F7EEDC;--ink:#3A2A1E;--mute:#7A6450;--line:#E3D3B8;
+ --coral:#EF7A5A;--lcoral:#FCDCCF;--dcoral:#C9563A;--teal:#2E9C95;--lteal:#D2EEEA;--dteal:#1F7570;--mustard:#F2B33D;--lmustard:#FDEBC3;--dmustard:#B9821A;
+ --sky:#BFE3F2;--leaf:#86BE6E;--leaf2:#5E9E5B;--plum:#9A6BA8;--lplum:#EADCF0;--kraft:#E6CFA8;
+ --okc:#2F8A4C;--noc:#C9472E;--green:#3E9C5A;--red:#D2553B;--blue:#2E9C95;--lgreen:#DCF1DF;--lred:#FADAD2;--lsun:#FDEBC3;--sun:#F2B33D;--pink:#C9563A;
+ --sh:0 1px 0 rgba(90,60,30,.10),0 6px 14px rgba(90,60,30,.16),0 18px 30px -12px rgba(90,60,30,.22);
+ --sh2:0 1px 0 rgba(90,60,30,.12),0 3px 6px rgba(90,60,30,.16);
+ --pen1:#3A2A1E;--pen2:#2E9C95;--pen3:#EF7A5A;--pen4:#5E9E5B;--pen5:#F2B33D;--ctl:#3A2A1E;--ctl-on:#F2B33D;
+ --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .36  0 0 0 0 .25  0 0 0 0 .14  0 0 0 .10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#stage{background:var(--paper)}
+.slide{background:var(--grain),var(--paper)}
+
+/* paper pieces */
+.pp{position:absolute;background:#FFFBF2;border-radius:18px;box-shadow:var(--sh)}
+.pp::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--grain);pointer-events:none}
+.tilt-l{transform:rotate(-1.4deg)}.tilt-r{transform:rotate(1.2deg)}
+.tape{position:absolute;width:120px;height:34px;background:rgba(242,179,61,.55);transform:rotate(-6deg);box-shadow:0 1px 2px rgba(90,60,30,.12)}
+.tape.t2{background:rgba(46,156,149,.38);transform:rotate(5deg)}
+.cut{filter:drop-shadow(0 2px 0 rgba(90,60,30,.10)) drop-shadow(0 8px 10px rgba(90,60,30,.20))}
+.pic{display:block}
+
+/* label chip = a strip of coloured paper */
+.chip{position:absolute;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 24px 0 10px;border-radius:12px;background:var(--teal);color:#fff;font:700 26px/1.45 Inter;box-shadow:var(--sh2);transform:rotate(-1.5deg)}
+.chip b{display:grid;place-items:center;min-width:40px;height:40px;padding:0 8px;border-radius:10px;background:#FFFBF2;color:var(--dteal);font:800 24px/1 Inter}
+.chip.c{background:var(--coral)}.chip.c b{color:var(--dcoral)}
+.chip.p{background:var(--plum)}.chip.p b{color:var(--plum)}
+h1,h2{position:absolute;color:var(--ink);font-family:Display;font-weight:800;line-height:1.45}
+h2{font-size:64px;letter-spacing:-.005em}
+.lead{font:600 34px/1.45 Inter;color:var(--mute)}
+.lead b{color:var(--ink);font-weight:800}
+
+/* glyph tiles: a faint อ placeholder with the strong mark on top (clip shows only the mark's band) */
+.gl{position:relative;display:inline-block;line-height:1.45;white-space:nowrap}
+.gl .ga{color:var(--faint,rgba(58,42,30,.22))}
+.gl .gb{position:absolute;left:0;top:0;color:var(--mark,var(--ink))}
+.gl .gb.top{clip-path:inset(0 0 66% 0)}
+.gl .gb.bot{clip-path:inset(78.5% 0 0 0)}
+.gl .h{visibility:hidden}
+
+/* parts colours */
+.k-c{--mark:var(--dcoral);color:var(--dcoral)}.k-v{--mark:var(--dteal);color:var(--dteal)}.k-t{--mark:var(--dmustard);color:var(--dmustard)}
+
+/* footer sits on the light front hill */
+.foot{--foot-ink:var(--ink);--foot-mute:var(--mute)}

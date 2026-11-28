@@ -1,0 +1,81 @@
+/* KruSlide sample library · base (same in every sample): shared fonts, stage, beats, motion helpers, control bar, footer layout.
+   The look of each sample lives in style.css; per-slide layout in slides.css; widgets in tools.css. Stage 1920x1080. */
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--outside,#222);overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--paper)}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .45s ease,visibility 0s linear .45s}
+.slide.on{visibility:visible;opacity:1;transition:opacity .45s ease}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ab{position:absolute}
+svg{overflow:visible}
+button{font-family:inherit}
+.ia,.drag-el{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+
+/* ---------- motion: .in enters with the slide (--d ms) · .g1..g4 appear on beat 1..4 · .h1..h3 leave on beat 1..3 ---------- */
+:root{--ease:cubic-bezier(.2,.7,.2,1);--spring:cubic-bezier(.3,1.4,.5,1)}
+.in{opacity:0}
+.on .in{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3,.g4{opacity:0;pointer-events:none}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3,.on.b4 .g4{animation:rise .55s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
+.on .h1,.on .h2,.on .h3{animation:rise .55s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .h1,.on.b2 .h2,.on.b3 .h3{animation:out .35s ease both;pointer-events:none}
+.fade{opacity:0}.on .fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-14px)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.on .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,300)*1ms)}
+.pop{opacity:0;transform-box:fill-box;transform-origin:center}
+.on .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,400)*1ms)}
+.on :is(.g1,.g2,.g3,.g4) :is(.draw,.pop){animation:none}
+.on.b1 .g1 .draw,.on.b2 .g2 .draw,.on.b3 .g3 .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,250)*1ms)}
+.on.b1 .g1 .pop,.on.b2 .g2 .pop,.on.b3 .g3 .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- footer (logo C + KruSlide ครูสไลด์ · © KruSlide NN / NN), colours from the style ---------- */
+.foot{position:absolute;left:130px;right:130px;bottom:26px;height:34px;display:flex;align-items:center;justify-content:space-between;font:600 22px/1 Inter;color:var(--foot-mute,var(--mute));z-index:3;pointer-events:none}
+.foot .brand{display:flex;align-items:center;gap:12px;color:var(--foot-ink,var(--ink));font-weight:800}
+.foot .brand .logo{width:30px;height:30px;flex:none}
+.foot .brand span{font-weight:600;color:var(--foot-mute,var(--mute))}
+.foot .pg{display:flex;align-items:center;gap:18px}
+.foot .pg b{color:var(--foot-ink,var(--ink));font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- control bar (engine) ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);gap:6px;align-items:center;padding:7px;border-radius:16px;background:var(--ctl,#1A1B3D);box-shadow:0 8px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s;font:600 15px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.85;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;cursor:pointer;min-width:42px}
+#ctl button:hover{background:rgba(255,255,255,.12)}
+#ctl button[aria-pressed="true"]{background:var(--ctl-on,#FFC229);color:#1A1B3D;border-color:var(--ctl-on,#FFC229)}
+#ctl button:focus-visible{outline:2px solid var(--ctl-on,#FFC229);outline-offset:2px}
+#pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+.shot #ctl{display:none!important}
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}
+
+/* ---------- drag helpers (kit.js) ---------- */
+.drag-el{touch-action:none;cursor:grab}
+.drag-el.dragging{cursor:grabbing;z-index:30;transition:none!important;pointer-events:none}
+.drop-hot{outline-offset:6px}
