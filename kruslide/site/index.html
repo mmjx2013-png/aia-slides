@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Strict CSP: only this site's own files load (no inline script, no inline style, no external requests).
+     The live demo is our own page in demo/, so frames are allowed from 'self' only. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; media-src 'self'; frame-src 'self'; connect-src 'none'; object-src 'none'; manifest-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>ครูสไลด์ KruSlide · สไลด์สอนแบบโต้ตอบ ครบทั้งเล่ม สำหรับคุณครู</title>
+<meta name="description" content="ครูสไลด์ทำสไลด์สอนแบบโต้ตอบครบทั้งเล่มตามหนังสือเรียน มีแอนิเมชันทุกหน้า นักเรียนตอบบนจอ พร้อมคู่มือครูและเฉลยแสดงวิธีทำ เริ่มต้น 3–5 บาทต่อสไลด์ต่อเดือน">
+<meta name="theme-color" content="#FFFAF2">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/Anuphan-Thai-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/InterDisplay-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/lang.js"></script>
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<!-- TODO-LINE-ID: every LINE link on this page uses the placeholder @kruslide (search for "@kruslide" and
+     for data-todo="TODO-LINE-ID"). Replace it with the real LINE Official Account ID when the owner sends it. -->
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+ <symbol id="logo" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#1C2A55"/><rect x="7" y="8.5" width="26" height="18" rx="3.5" fill="#fff"/><rect x="11" y="18" width="4" height="6" rx="1" fill="#3D7BFF"/><rect x="18" y="13.5" width="4" height="10.5" rx="1" fill="#F2553C"/><rect x="25" y="16" width="4" height="8" rx="1" fill="#FFC83D"/><path d="M20 27v4.5M14.5 32.5h11" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></symbol>
+ <symbol id="i-slides" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M8.5 20.5h7M12 16.5v4M7.5 13v-2.5M11 13V8M14.5 13V9.5"/></symbol>
+ <symbol id="i-steps" viewBox="0 0 24 24"><path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.6 1.6L8 4.8M3.5 12l1.6 1.6L8 10.8M3.5 18l1.6 1.6L8 16.8"/></symbol>
+ <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 9.3v5.4l4.6-2.7z"/></symbol>
+ <symbol id="i-web" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.2"/><path d="M3 8.5h18M6.2 6.3h.01M8.7 6.3h.01M7 12.5h6M7 16h10"/></symbol>
+ <symbol id="i-present" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="12" rx="1.6"/><path d="M12 15v3M8 21.5l4-3.5 4 3.5M7 11.5l3-3 2.2 2.2L17 6"/></symbol>
+ <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.8 0-.5-.2-.9-.5-1.3-.3-.3-.5-.7-.5-1.2 0-1 .8-1.7 1.8-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11.5" r="1.1"/><circle cx="10" cy="7.5" r="1.1"/><circle cx="14.6" cy="7.5" r="1.1"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 3.5c-5.2 0-9.3 3.3-9.3 7.5 0 3.7 3.2 6.8 7.6 7.4l-.5 2.6c-.1.5.4.8.8.6l4.3-3C18.8 17.7 21.3 14.6 21.3 11c0-4.2-4.1-7.5-9.3-7.5z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+ <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M8 5.5v13a1 1 0 0 0 1.5.9l10.4-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5z"/></symbol>
+ <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5M12 14.5v2"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+ <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4.2-1L19 8.2 15.8 5 5 15.8z"/><path d="M13.8 7l3.2 3.2"/></symbol>
+ <symbol id="i-hand" viewBox="0 0 24 24"><path d="M9 11.5V5.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v1.5m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.8a6 6 0 0 1-4.9-2.6L4.2 15a1.6 1.6 0 0 1 2.6-1.8L9 15.5"/></symbol>
+ <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c1.4-3.9 4.2-5.9 7.5-5.9s6.1 2 7.5 5.9"/></symbol>
+ <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+ <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+ <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+ <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+ <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+ <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5h10.5A3.5 3.5 0 0 1 19 8v12.5H8.5A3.5 3.5 0 0 1 5 17z"/><path d="M5 17a3.5 3.5 0 0 1 3.5-3.5H19"/></symbol>
+ <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.5 3.2-5.5 6-5.5s5.2 2 6 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M16.6 14.6c2.3.3 3.9 2 4.4 5.4"/></symbol>
+ <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+ <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+ <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12L4 7.5M12 12v9"/></symbol>
+ <symbol id="i-motion" viewBox="0 0 24 24"><circle cx="15.5" cy="12" r="5"/><path d="M3 12h4.5M4.5 8h4M4.5 16h4"/></symbol>
+ <symbol id="i-screen" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+ <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+</svg>
+
+<a class="skip" href="#main"><span class="th">ข้ามไปที่เนื้อหา</span><span class="en">Skip to content</span></a>
+
+<header class="top" id="top">
+ <div class="wrap top-in">
+  <a class="brand" href="#top" aria-label="ครูสไลด์ KruSlide หน้าแรก" data-en-aria-label="KruSlide home">
+   <svg class="brand-mark" aria-hidden="true"><use href="#logo"/></svg>
+   <span class="brand-txt"><b>Kru<span>Slide</span></b><small>ครูสไลด์</small></span>
+  </a>
+  <nav class="nav" id="nav" aria-label="เมนูหลัก" data-en-aria-label="Main menu">
+   <a href="#services"><span class="th">บริการ</span><span class="en">Services</span></a>
+   <a href="#demo"><span class="th">ลองเดโม</span><span class="en">Live demo</span></a>
+   <a href="#styles"><span class="th">สไตล์</span><span class="en">Styles</span></a>
+   <a href="#pricing"><span class="th">ราคา</span><span class="en">Pricing</span></a>
+   <a href="#work"><span class="th">ผลงาน</span><span class="en">Work</span></a>
+   <a href="#faq"><span class="th">คำถาม</span><span class="en">FAQ</span></a>
+   <div class="nav-m">
+    <a class="btn btn-ghost" href="/app/"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
+    <a class="btn btn-line" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span class="th">คุยกับเราทาง LINE</span><span class="en">Chat with us on LINE</span></a>
+   </div>
+  </nav>
+  <div class="top-act">
+   <div class="lang" role="group" aria-label="ภาษา" data-en-aria-label="Language">
+    <button type="button" data-lang="th" aria-pressed="true">TH</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+   </div>
+   <a class="btn btn-ghost btn-sm hide-m" href="/app/"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
+   <a class="btn btn-line btn-sm hide-m" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>LINE</a>
+   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="เปิดเมนู" data-en-aria-label="Open menu"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+ </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="hero" aria-labelledby="hero-h">
+ <div class="wrap hero-in">
+  <div class="hero-txt">
+   <p class="pill rv"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg><span class="th">สำหรับคุณครูไทย และครู English Program</span><span class="en">For Thai and English Program teachers</span></p>
+   <h1 id="hero-h" class="rv" data-d="80"><span class="th">สไลด์สอนที่ทำให้<br><mark>ทั้งห้องอยากตอบ</mark></span><span class="en">Lesson slides that get <mark>the whole class answering</mark></span></h1>
+   <p class="lead rv" data-d="160"><span class="th">ครูสไลด์ทำสไลด์โต้ตอบให้ครบทั้งเล่มตามหนังสือเรียนของคุณครู มีแอนิเมชันทุกหน้า นักเรียนออกมาตอบบนจอได้จริง พร้อมคู่มือครูและเฉลยที่แสดงวิธีทำ เปิดลิงก์แล้วสอนได้ทันที</span><span class="en">We turn your whole textbook into interactive slides: animation on every slide, students answer right on the screen, and each unit comes with a teacher guide and step-by-step answers. Open the link and teach.</span></p>
+   <div class="cta-row rv" data-d="240">
+    <a class="btn btn-line btn-lg" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span class="th">คุยกับเราทาง LINE</span><span class="en">Chat with us on LINE</span></a>
+    <a class="btn btn-soft btn-lg" href="#demo"><svg class="ic" aria-hidden="true"><use href="#i-hand"/></svg><span class="th">ลองเล่นเดโมสด</span><span class="en">Try the live demo</span></a>
+   </div>
+   <p class="hero-price rv" data-d="300"><span class="th">เริ่มต้นเพียง</span><span class="en">From</span> <b>3–5 <span class="th">บาท/สไลด์/เดือน</span><span class="en">baht per slide per month</span></b></p>
+   <ul class="ticks rv" data-d="360">
+    <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">ไม่ต้องติดตั้งโปรแกรม</span><span class="en">Nothing to install</span></li>
+    <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">ใช้ได้กับโปรเจกเตอร์และจอสัมผัส</span><span class="en">Projector and touch screen ready</span></li>
+    <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">ภาษาไทย / English</span><span class="en">Thai or English</span></li>
+   </ul>
+  </div>
+
+  <div class="hero-vis rv" data-d="120">
+   <p class="sr"><span class="th">ภาพเคลื่อนไหวจำลองห้องเรียน: นักเรียนลากกราฟแท่งให้ถูกต้อง แตะเลือกคำตอบบนจอ ใช้ปากกาวาดวงกลม แล้วครูกดเฉลยทีละขั้น</span><span class="en">Animated classroom: a student drags a bar to the right height, taps an answer on the screen, circles it with the pen, and the teacher reveals the answer step by step.</span></p>
+   <div class="stage" aria-hidden="true">
+    <div class="wall"></div>
+    <div class="scr">
+     <div class="sl">
+      <div class="sl-k"><span class="th">บทที่ 4 · สถิติ</span><span class="en">Unit 4 · Statistics</span></div>
+      <div class="sl-t"><span class="th">วันไหนขายชานมได้มากที่สุด?</span><span class="en">Which day sold the most tea?</span></div>
+      <div class="sl-chart">
+       <i class="bar b1"><em>30</em></i><i class="bar b2"><em>25</em></i><i class="bar b3"><em>40</em></i><i class="bar b4"><em>15</em></i>
+      </div>
+      <div class="sl-days"><span class="th">จ.</span><span class="en">Mon</span><span class="th">อ.</span><span class="en">Tue</span><span class="th">พ.</span><span class="en">Wed</span><span class="th">พฤ.</span><span class="en">Thu</span></div>
+      <div class="sl-ch">
+       <div class="c"><b>A</b><span class="th">วันจันทร์</span><span class="en">Monday</span></div>
+       <div class="c"><b>B</b><span class="th">วันอังคาร</span><span class="en">Tuesday</span></div>
+       <div class="c c-ok"><b>C</b><span class="th">วันพุธ</span><span class="en">Wednesday</span><svg class="ok" viewBox="0 0 24 24"><use href="#i-check"/></svg></div>
+       <div class="c"><b>D</b><span class="th">วันพฤหัสบดี</span><span class="en">Thursday</span></div>
+      </div>
+      <i class="ripple"></i>
+      <div class="sl-rev"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span class="th">วันพุธขายได้ <b>40 แก้ว</b> มากที่สุด</span><span class="en">Wednesday: <b>40 cups</b>, the most</span></div>
+      <div class="sl-key">→</div>
+      <svg class="sl-pen" viewBox="0 0 100 62.5">
+       <path class="wob" pathLength="100" d="M33.2 13.1c3.6-1.9 9.1-1.2 9.9 2.5.9 4.3-5 6.6-9.8 6.2-4.6-.4-7.3-3.6-5.4-6.6 1.4-2.2 4.6-3.3 8.3-3.4"/>
+       <ellipse class="perf" cx="35.75" cy="16.6" rx="6.6" ry="4.4"/>
+      </svg>
+      <svg class="cur" viewBox="0 0 24 24"><path d="M5.5 3.2l13 8.6-5.8 1.2 3.4 6.4-2.6 1.4-3.4-6.4-4.3 4.1z"/></svg>
+      <div class="sl-bar"><i></i><i></i><i class="on"></i><i></i></div>
+     </div>
+    </div>
+    <div class="kids">
+     <div class="kid k1"><i class="arm"></i><i class="body"></i><i class="head"></i></div>
+     <div class="kid k2"><i class="arm"></i><i class="body"></i><i class="head"><i class="tail"></i></i></div>
+     <div class="kid k3"><i class="arm"></i><i class="body"></i><i class="head"></i><span class="say">C!</span></div>
+     <div class="kid k4"><i class="arm"></i><i class="body"></i><i class="head"><i class="clip"></i></i></div>
+     <div class="kid k5"><i class="arm"></i><i class="body"></i><i class="head"></i></div>
+    </div>
+    <div class="chip chip-a"><svg class="ic" viewBox="0 0 24 24"><use href="#i-users"/></svg><span><span class="th">ตอบแล้ว</span><span class="en">Answered</span> <b class="cnt"></b>/35</span></div>
+    <div class="chip chip-b"><svg class="ic" viewBox="0 0 24 24"><use href="#i-motion"/></svg><span><span class="th">แอนิเมชันทุกหน้า</span><span class="en">Animation on every slide</span></span></div>
+    <div class="chip chip-c"><svg class="ic" viewBox="0 0 24 24"><use href="#i-pen"/></svg><span><span class="th">วาดวงกลม ได้วงกลมเป๊ะ</span><span class="en">Wobbly loop, perfect circle</span></span></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="wrap">
+  <nav class="cats" aria-label="หมวดบริการ" data-en-aria-label="Service categories">
+   <a class="cat rv" data-d="0" href="#services"><i class="cat-ic t-sky"><svg class="ic" aria-hidden="true"><use href="#i-slides"/></svg></i><span class="th">สไลด์ทั้งเล่ม</span><span class="en">Whole-book slides</span></a>
+   <a class="cat rv" data-d="60" href="#services"><i class="cat-ic t-mint"><svg class="ic" aria-hidden="true"><use href="#i-steps"/></svg></i><span class="th">เฉลยทีละขั้น</span><span class="en">Worked answers</span></a>
+   <a class="cat rv" data-d="120" href="#services"><i class="cat-ic t-tom"><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg></i><span class="th">วิดีโอสอน</span><span class="en">Teaching videos</span></a>
+   <a class="cat rv" data-d="180" href="#services"><i class="cat-ic t-sun"><svg class="ic" aria-hidden="true"><use href="#i-web"/></svg></i><span class="th">เว็บไซต์โรงเรียน</span><span class="en">School websites</span></a>
+   <a class="cat rv" data-d="240" href="#services"><i class="cat-ic t-lilac"><svg class="ic" aria-hidden="true"><use href="#i-present"/></svg></i><span class="th">สไลด์นำเสนอ</span><span class="en">Presentation decks</span></a>
+   <a class="cat rv" data-d="300" href="#styles"><i class="cat-ic t-navy"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></i><span class="th">ธีมโรงเรียน</span><span class="en">School theme</span></a>
+  </nav>
+ </div>
+</section>
+
+<!-- ================= TRUST STRIP ================= -->
+<section class="trust" aria-label="ตัวเลขของเรา" data-en-aria-label="KruSlide in numbers">
+ <div class="wrap">
+  <div class="trust-in rv">
+   <div class="stat"><b><span data-count="67">67</span></b><span class="th">สไลด์ในหน่วยตัวอย่าง พร้อมเฉลยทุกข้อ</span><span class="en">slides in our sample unit, every item answered</span></div>
+   <div class="stat"><b><span data-count="10">10</span></b><span class="th">เครื่องมือให้นักเรียนตอบบนจอ</span><span class="en">ways for students to answer on screen</span></div>
+   <div class="stat"><b><span data-count="100">100</span>%</b><span class="th">ของสไลด์มีแอนิเมชัน</span><span class="en">of slides are animated</span></div>
+   <div class="stat"><b><span data-count="0">0</span></b><span class="th">ไฟล์ที่ต้องดาวน์โหลด เปิดผ่านลิงก์</span><span class="en">files to download: open the link</span></div>
+  </div>
+ </div>
+</section>
+
+<!-- ================= WHY ================= -->
+<section class="sec why" id="why" aria-labelledby="why-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">ทำไมต้องครูสไลด์</span><span class="en">Why KruSlide</span></p>
+   <h2 id="why-h"><span class="th">เวลาของคุณครูควรอยู่กับนักเรียน<br>ไม่ใช่กับการจัดหน้าสไลด์</span><span class="en">Your time belongs to your students, not to slide formatting</span></h2>
+  </div>
+  <div class="vs">
+   <div class="vs-card vs-pain rv">
+    <p class="vs-tag"><span class="th">ทุกวันนี้</span><span class="en">Today</span></p>
+    <ul>
+     <li><i><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></i><div><h3><span class="th">เตรียมสไลด์จนดึก</span><span class="en">Up late making slides</span></h3><p><span class="th">คาบเรียนดีๆ หนึ่งคาบ ต้องหาภาพ วาดกราฟ และจัดหน้าหลายชั่วโมง</span><span class="en">One good lesson means hours of finding pictures, drawing charts and fixing layouts.</span></p></div></li>
+     <li><i><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></i><div><h3><span class="th">ห้องเงียบ มีไม่กี่คนที่ตอบ</span><span class="en">A quiet room</span></h3><p><span class="th">สไลด์ที่มีแต่ตัวหนังสือทำให้นักเรียนนั่งฟังเฉยๆ</span><span class="en">Slides full of text keep students listening, not answering.</span></p></div></li>
+     <li><i><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></i><div><h3><span class="th">เขียนเฉลยบนกระดานซ้ำทุกห้อง</span><span class="en">The same answers, every class</span></h3><p><span class="th">อธิบายวิธีทำเดิมซ้ำทุกห้อง ทุกปี</span><span class="en">Writing out the same worked answers for every class, every year.</span></p></div></li>
+    </ul>
+   </div>
+   <div class="vs-arrow" aria-hidden="true"><svg class="ic"><use href="#i-arrow"/></svg></div>
+   <div class="vs-card vs-gain rv" data-d="120">
+    <p class="vs-tag"><span class="th">กับครูสไลด์</span><span class="en">With KruSlide</span></p>
+    <ul>
+     <li><i><svg class="ic" aria-hidden="true"><use href="#i-link"/></svg></i><div><h3><span class="th">เปิดลิงก์ แล้วสอนได้เลย</span><span class="en">Open the link and teach</span></h3><p><span class="th">ครบทั้งเล่มตามหนังสือ ทุกหน้ามีแอนิเมชัน พร้อมคู่มือครู</span><span class="en">The whole book, every slide animated, with a teacher guide.</span></p></div></li>
+     <li><i><svg class="ic" aria-hidden="true"><use href="#i-hand"/></svg></i><div><h3><span class="th">ทุกคนได้ออกมาตอบ</span><span class="en">Everyone gets to answer</span></h3><p><span class="th">แตะ ลาก พิมพ์ หรือวาดบนจอ กด Check แล้วรู้ผลทันที</span><span class="en">Tap, drag, type or draw on the screen; Check gives the result at once.</span></p></div></li>
+     <li><i><svg class="ic" aria-hidden="true"><use href="#i-steps"/></svg></i><div><h3><span class="th">เฉลยทีละขั้น</span><span class="en">Answers, one step at a time</span></h3><p><span class="th">ให้นักเรียนนำเสนอก่อน แล้วกด → เพื่อเปิดวิธีทำทีละขั้น</span><span class="en">Students present first; then press → to reveal the method step by step.</span></p></div></li>
+    </ul>
+   </div>
+  </div>
+
+  <div class="saver rv" aria-labelledby="saver-h">
+   <div class="saver-q">
+    <h3 id="saver-h"><span class="th">ลองคิดเวลาที่คุณครูจะได้คืน</span><span class="en">Work out the time you get back</span></h3>
+    <div class="steppers">
+     <div class="stepper">
+      <span class="st-l" id="sv-min-l"><span class="th">เวลาทำสไลด์ต่อคาบ</span><span class="en">Slide-making time per lesson</span></span>
+      <div class="st-c">
+       <button type="button" class="st-b" data-step="-15" data-for="sv-min" aria-label="ลด 15 นาที" data-en-aria-label="15 minutes less"><svg class="ic" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+       <output id="sv-min" data-min="15" data-max="300" data-val="60" aria-labelledby="sv-min-l">60</output><span class="st-u"><span class="th">นาที</span><span class="en">min</span></span>
+       <button type="button" class="st-b" data-step="15" data-for="sv-min" aria-label="เพิ่ม 15 นาที" data-en-aria-label="15 minutes more"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+      </div>
+     </div>
+     <div class="stepper">
+      <span class="st-l" id="sv-n-l"><span class="th">จำนวนคาบที่สอนในเทอม</span><span class="en">Lessons you teach this term</span></span>
+      <div class="st-c">
+       <button type="button" class="st-b" data-step="-5" data-for="sv-n" aria-label="ลด 5 คาบ" data-en-aria-label="5 lessons fewer"><svg class="ic" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+       <output id="sv-n" data-min="5" data-max="200" data-val="40" aria-labelledby="sv-n-l">40</output><span class="st-u"><span class="th">คาบ</span><span class="en">lessons</span></span>
+       <button type="button" class="st-b" data-step="5" data-for="sv-n" aria-label="เพิ่ม 5 คาบ" data-en-aria-label="5 lessons more"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="saver-a" aria-live="polite">
+    <p class="saver-big"><b id="sv-out">40</b> <span class="th">ชั่วโมง</span><span class="en">hours</span></p>
+    <p><span class="th">คือเวลาทำสไลด์ที่ได้คืนในเทอมนี้ ใช้ไปกับนักเรียน ครอบครัว หรือพักผ่อนได้เต็มที่</span><span class="en">of slide-making you get back this term, for your students, your family or a real rest.</span></p>
+    <p class="saver-note"><span class="th">ค่าสไลด์ 300 บาท/เดือน เท่ากับวันละ 10 บาท ถูกกว่าค่าเวลาของคุณครูเพียงชั่วโมงเดียว</span><span class="en">300 baht a month is 10 baht a day: less than one hour of a teacher's time.</span></p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="sec services" id="services" aria-labelledby="svc-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">บริการของเรา</span><span class="en">What we make</span></p>
+   <h2 id="svc-h"><span class="th">ครบทุกอย่างที่ห้องเรียนต้องใช้</span><span class="en">Everything a classroom needs</span></h2>
+   <p class="sub"><span class="th">เลือกได้ตามที่ต้องการ ราคาชัดเจนทุกรายการ</span><span class="en">Pick what you need. Every price is on this page.</span></p>
+  </div>
+  <div class="svc-grid">
+   <article class="svc svc-main rv">
+    <div class="svc-art t-sky" aria-hidden="true">
+     <svg viewBox="0 0 400 190">
+      <rect x="70" y="18" width="260" height="150" rx="14" fill="#fff" stroke="#1C2A55" stroke-width="5"/>
+      <rect x="88" y="36" width="90" height="9" rx="4.5" fill="#1C2A55"/>
+      <rect x="88" y="52" width="60" height="7" rx="3.5" fill="#B7C6EA"/>
+      <g class="grow"><rect x="92" y="108" width="20" height="40" rx="3" fill="#3D7BFF"/><rect x="120" y="92" width="20" height="56" rx="3" fill="#8B6CF6"/><rect x="148" y="78" width="20" height="70" rx="3" fill="#F2553C"/><rect x="176" y="118" width="20" height="30" rx="3" fill="#18B07F"/></g>
+      <path d="M86 150h120" stroke="#1C2A55" stroke-width="3" stroke-linecap="round"/>
+      <rect x="222" y="74" width="92" height="18" rx="6" fill="#E6EEFF"/><rect x="222" y="98" width="92" height="18" rx="6" fill="#18B07F"/><rect x="222" y="122" width="92" height="18" rx="6" fill="#E6EEFF"/>
+      <path d="M296 103l4 4 8-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="tap" d="M262 120l14 9-6 1.3 3.6 6.8-2.8 1.5-3.6-6.8-4.6 4.4z" fill="#1C2A55" stroke="#fff" stroke-width="1.6"/>
+     </svg>
+    </div>
+    <div class="svc-body">
+     <p class="badge"><span class="th">สินค้าหลัก</span><span class="en">Main product</span></p>
+     <h3><span class="th">สไลด์สอนแบบโต้ตอบ ครบทั้งเล่ม</span><span class="en">Interactive lesson slides, by textbook</span></h3>
+     <p><span class="th">ทุกหน่วยของหนังสือ ใช้ผ่านลิงก์ของเรา ไม่ต้องส่งไฟล์ ในแต่ละหน่วยมี:</span><span class="en">Every unit of the book, used through our link (no files to manage). Each unit includes:</span></p>
+     <ul class="mini">
+      <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">แอนิเมชันทุกหน้า</span><span class="en">animation on every slide</span></li>
+      <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">นักเรียนตอบบนจอ</span><span class="en">students answer on the screen</span></li>
+      <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">คู่มือครู</span><span class="en">a teacher guide</span></li>
+      <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">เฉลยแสดงวิธีทำ</span><span class="en">answers with worked steps</span></li>
+     </ul>
+     <div class="svc-foot"><p class="from"><span class="th">ราคา</span><span class="en">Price</span> <b>3–5 <span class="th">บาท/สไลด์/เดือน</span><span class="en">baht / slide / month</span></b></p><a class="more" href="#pricing"><span class="th">คำนวณราคา</span><span class="en">Work out your price</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+   </article>
+
+   <article class="svc rv" data-d="80">
+    <div class="svc-art t-mint" aria-hidden="true">
+     <svg viewBox="0 0 400 190">
+      <rect x="96" y="20" width="168" height="150" rx="14" fill="#fff" stroke="#1C2A55" stroke-width="5"/>
+      <g class="steps"><circle cx="124" cy="56" r="11" fill="#18B07F"/><rect x="144" y="51" width="96" height="10" rx="5" fill="#1C2A55"/><circle cx="124" cy="92" r="11" fill="#18B07F"/><rect x="144" y="87" width="78" height="10" rx="5" fill="#9AA6C2"/><circle cx="124" cy="128" r="11" fill="#FFC83D"/><rect x="144" y="123" width="88" height="10" rx="5" fill="#9AA6C2"/></g>
+      <path d="M119 56l3.5 3.5 6-6M119 92l3.5 3.5 6-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="124" y="133" font-size="15" font-weight="800" fill="#1C2A55" text-anchor="middle" font-family="KS">3</text>
+      <g class="lock"><rect x="248" y="88" width="66" height="56" rx="12" fill="#1C2A55"/><path d="M262 88v-12a19 19 0 0 1 38 0v12" fill="none" stroke="#1C2A55" stroke-width="8"/><circle cx="281" cy="112" r="7" fill="#FFC83D"/><rect x="278" y="114" width="6" height="14" rx="3" fill="#FFC83D"/></g>
+     </svg>
+    </div>
+    <div class="svc-body">
+     <h3><span class="th">เฉลยพร้อมวิธีทำ + เว็บเฉลยล็อกรหัส</span><span class="en">Worked answer keys + a locked answer site</span></h3>
+     <p><span class="th">เฉลยทุกข้อในหนังสือ แสดงวิธีคิดทีละขั้น (ดู คิด ทำไม ระวัง) อยู่บนเว็บที่ล็อกด้วยรหัสผ่าน เปิดได้เฉพาะคุณครู</span><span class="en">Every item in the book, solved step by step (look, think, why, watch out), on a password-locked site that only the teacher can open.</span></p>
+     <div class="svc-foot"><p class="from"><b>590 <span class="th">บาท/หน่วย</span><span class="en">baht / unit</span></b></p><a class="more" href="#pricing"><span class="th">ดูราคา</span><span class="en">See prices</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+   </article>
+
+   <article class="svc rv" data-d="0">
+    <div class="svc-art t-tom" aria-hidden="true">
+     <svg viewBox="0 0 400 190">
+      <rect x="70" y="22" width="200" height="120" rx="14" fill="#1C2A55"/>
+      <rect x="70" y="22" width="200" height="16" fill="#0F1733"/><rect x="70" y="126" width="200" height="16" fill="#0F1733"/>
+      <circle class="play" cx="170" cy="82" r="24" fill="#fff"/><path d="M163 70v24l20-12z" fill="#F2553C"/>
+      <rect x="96" y="154" width="148" height="10" rx="5" fill="#fff"/><rect x="118" y="170" width="104" height="8" rx="4" fill="#F7B3A6"/>
+      <g class="wave" fill="#F2553C"><rect x="292" y="70" width="8" height="24" rx="4"/><rect x="306" y="56" width="8" height="52" rx="4"/><rect x="320" y="64" width="8" height="36" rx="4"/><rect x="334" y="48" width="8" height="68" rx="4"/><rect x="348" y="66" width="8" height="32" rx="4"/></g>
+     </svg>
+    </div>
+    <div class="svc-body">
+     <h3><span class="th">วิดีโอสอนพร้อมเสียงบรรยาย</span><span class="en">Narrated teaching videos</span></h3>
+     <p><span class="th">แอนิเมชัน 2D ที่อธิบายบทเรียนให้เข้าใจง่าย หรือ 3D แบบภาพยนตร์เหมือนตัวอย่างหนัง มีคำบรรยายใต้ภาพทุกเรื่อง</span><span class="en">Clear 2D animated lessons, or 3D cinematic videos like a film trailer. Captions on every video.</span></p>
+     <div class="svc-foot"><p class="from"><span class="th">เริ่มต้น</span><span class="en">From</span> <b>100 <span class="th">บาท/นาที</span><span class="en">baht / minute</span></b></p><a class="more" href="#work"><span class="th">ดูตัวอย่าง</span><span class="en">See a sample</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+   </article>
+
+   <article class="svc rv" data-d="80">
+    <div class="svc-art t-sun" aria-hidden="true">
+     <svg viewBox="0 0 400 190">
+      <rect x="54" y="20" width="190" height="142" rx="12" fill="#fff" stroke="#1C2A55" stroke-width="5"/>
+      <path d="M54 44h190" stroke="#1C2A55" stroke-width="4"/><circle cx="70" cy="32" r="4" fill="#F2553C"/><circle cx="83" cy="32" r="4" fill="#FFC83D"/><circle cx="96" cy="32" r="4" fill="#18B07F"/>
+      <rect x="70" y="56" width="158" height="44" rx="8" fill="#FFE3A3"/><rect x="80" y="66" width="70" height="9" rx="4.5" fill="#1C2A55"/><rect x="80" y="81" width="46" height="7" rx="3.5" fill="#1C2A55" opacity=".5"/>
+      <g class="tiles"><rect x="70" y="110" width="46" height="38" rx="7" fill="#E6EEFF"/><rect x="126" y="110" width="46" height="38" rx="7" fill="#DCF5EB"/><rect x="182" y="110" width="46" height="38" rx="7" fill="#FFE6E0"/></g>
+      <g class="easel"><path d="M300 150l-22 32M300 150l22 32M300 150v34" stroke="#1C2A55" stroke-width="5" stroke-linecap="round"/><rect x="256" y="62" width="88" height="88" rx="8" fill="#1C2A55"/><path d="M270 128l18-20 14 12 26-30" stroke="#FFC83D" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+     </svg>
+    </div>
+    <div class="svc-body">
+     <h3><span class="th">เว็บไซต์โรงเรียน และสไลด์นำเสนอ</span><span class="en">School websites and presentation decks</span></h3>
+     <p><span class="th">เว็บไซต์สองภาษาที่เร็วและปลอดภัย และสไลด์นำเสนอสำหรับงานสำคัญ เช่น เว็บไซต์และสไลด์นำเสนอของโรงเรียนสาธิต มรภ.เพชรบุรี</span><span class="en">Fast, secure bilingual websites, and decks for the big meeting, like the Satit PBRU school site and its pitch deck.</span></p>
+     <div class="svc-foot"><p class="from"><span class="th">เริ่มต้น</span><span class="en">From</span> <b>2,490 <span class="th">บาท</span><span class="en">baht</span></b></p><a class="more" href="#pricing"><span class="th">ดูราคา</span><span class="en">See prices</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+   </article>
+  </div>
+ </div>
+</section>
+
+<!-- ================= LIVE DEMO ================= -->
+<section class="sec demo" id="demo" aria-labelledby="demo-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">ลองเล่นได้เลย</span><span class="en">Try it yourself</span></p>
+   <h2 id="demo-h"><span class="th">นี่คือสไลด์จริง ไม่ใช่วิดีโอ</span><span class="en">These are real slides, not a video</span></h2>
+   <p class="sub"><span class="th">เลือกเครื่องมือด้านล่าง แล้วลองตอบบนจอเหมือนนักเรียนในห้อง</span><span class="en">Pick a tool below, then answer on the screen just like a student would.</span></p>
+  </div>
+  <div class="tabs rv" role="tablist" aria-label="เครื่องมือในสไลด์" data-en-aria-label="Slide tools">
+   <button type="button" role="tab" id="t-1" aria-controls="demo-panel" aria-selected="true" data-slide="1" data-hint-th="แตะคำตอบที่คิดว่าถูก สไลด์จะบอกทันทีว่าถูกหรือไม่" data-hint-en="Tap the answer you think is right; the slide tells you at once."><svg class="ic" aria-hidden="true"><use href="#i-hand"/></svg><span class="th">แตะเลือกคำตอบ</span><span class="en">Tap a choice</span></button>
+   <button type="button" role="tab" id="t-2" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="2" data-hint-th="พิมพ์คำตอบแล้วกด Check และลองเขียนวิธีทำด้วยมือในกรอบ" data-hint-en="Type an answer and press Check; write your working by hand in the box."><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><span class="th">พิมพ์ + เขียนมือ</span><span class="en">Type + handwrite</span></button>
+   <button type="button" role="tab" id="t-3" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="3" data-hint-th="ลากการ์ดคำถามไปใส่กล่องที่ถูกต้อง แล้วกด Check" data-hint-en="Drag each card into the right box, then press Check."><svg class="ic" aria-hidden="true"><use href="#i-steps"/></svg><span class="th">ลากการ์ดจัดกลุ่ม</span><span class="en">Sort cards</span></button>
+   <button type="button" role="tab" id="t-4" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="4" data-hint-th="ลากแท่งกราฟขึ้นหรือลงให้ตรงกับตาราง" data-hint-en="Drag each bar up or down to match the table."><svg class="ic" aria-hidden="true"><use href="#i-slides"/></svg><span class="th">กราฟแท่ง</span><span class="en">Bar chart</span></button>
+   <button type="button" role="tab" id="t-5" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="5" data-hint-th="บางจุดผิดอยู่ ลากจุดให้ตรงกับอุณหภูมิในตาราง" data-hint-en="Some points are wrong: drag them to match the temperatures."><svg class="ic" aria-hidden="true"><use href="#i-motion"/></svg><span class="th">กราฟเส้น</span><span class="en">Line graph</span></button>
+   <button type="button" role="tab" id="t-6" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="6" data-hint-th="พิมพ์มุมของแต่ละส่วน แผนภูมิวงกลมจะวาดตามที่พิมพ์" data-hint-en="Type the angle of each slice; the pie draws itself as you type."><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg><span class="th">แผนภูมิวงกลม</span><span class="en">Pie chart</span></button>
+   <button type="button" role="tab" id="t-8" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="8" data-hint-th="เพิ่มหรือลดรูปแก้วในแต่ละแถว (ครึ่งรูป = 5 แก้ว)" data-hint-en="Add or remove cups in each row (half a cup = 5 cups)."><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg><span class="th">แผนภูมิรูปภาพ</span><span class="en">Pictogram</span></button>
+   <button type="button" role="tab" id="t-9" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="9" data-hint-th="แตะเพื่อวางจุดตามข้อมูล หรือให้ทั้งห้องช่วยกันทำแบบสำรวจด้านขวา" data-hint-en="Tap to stack the dots, or run the class survey on the right."><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">แผนภาพจุด</span><span class="en">Dot plot</span></button>
+   <button type="button" role="tab" id="t-pen" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="12" data-pen="1" data-hint-th="เปิดปากกาแล้ว ลองวาดวงกลมเบี้ยวๆ รอบตัวเลข มันจะกลายเป็นวงกลมสวย (กด ✎ Pen เพื่อปิด)" data-hint-en="The pen is on: draw a wobbly loop around a number and it becomes a neat circle (press ✎ Pen to close)."><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><span class="th">ปากกาวาดรูปอัตโนมัติ</span><span class="en">Pen with auto-shapes</span></button>
+   <button type="button" role="tab" id="t-step" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-slide="1" data-hint-th="ให้นักเรียนตอบก่อน แล้วคลิกที่สไลด์และกดลูกศร → (หรือปุ่ม › ด้านล่าง) เพื่อเปิดเฉลย" data-hint-en="Let students answer first, then click the slide and press → (or the › button) to reveal the answer."><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span class="th">เฉลยทีละขั้น ← →</span><span class="en">Step reveal ← →</span></button>
+  </div>
+  <div class="demo-frame rv" id="demo-panel" role="tabpanel" aria-labelledby="t-1">
+   <div class="screen">
+    <iframe id="demo-if" src="demo/index.html#1" title="เดโมสไลด์โต้ตอบของครูสไลด์" data-en-title="KruSlide interactive slide demo" loading="lazy" allow="fullscreen" allowfullscreen referrerpolicy="same-origin"></iframe>
+   </div>
+   <div class="demo-bar">
+    <p class="hint" id="demo-hint" aria-live="polite">แตะคำตอบที่คิดว่าถูก สไลด์จะบอกทันทีว่าถูกหรือไม่</p>
+    <a class="btn btn-ghost-d btn-sm" id="demo-open" href="demo/index.html#1" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-expand"/></svg><span class="th">เปิดเต็มจอ</span><span class="en">Open full screen</span></a>
+   </div>
+   <p class="demo-note"><span class="th">ตัวอย่างนี้เป็นภาษาอังกฤษ (หลักสูตร EP) เราทำเป็นภาษาไทยได้เช่นกัน · ทุกเครื่องมือมีปุ่ม Check, Show answer และ Reset</span><span class="en">This sample is in English (EP); we make Thai versions too. Every tool has Check, Show answer and Reset.</span></p>
+  </div>
+ </div>
+</section>
+
+<!-- ================= STYLES ================= -->
+<section class="sec styles" id="styles" aria-labelledby="sty-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">สไตล์สไลด์</span><span class="en">Slide styles</span></p>
+   <h2 id="sty-h"><span class="th">เลือกสไตล์ที่ชอบ หรือใส่สีของโรงเรียน</span><span class="en">Pick a style, or wear your school's colours</span></h2>
+   <p class="sub"><span class="th">คลิกที่ภาพเพื่อดูตัวอย่างแบบเต็ม</span><span class="en">Click a picture to see it full size.</span></p>
+  </div>
+  <div class="sty-grid">
+   <article class="sty rv">
+    <button type="button" class="sty-shot" data-gal="0" aria-label="ดูตัวอย่างสไตล์ A" data-en-aria-label="View style A samples"><img src="img/style-A-1-sm.webp" width="800" height="450" alt="" loading="lazy" decoding="async"><span class="sty-count">3</span></button>
+    <div class="sty-body"><p class="sty-tag t-sky">A</p><h3><span class="th">โมเดิร์น คลีน</span><span class="en">Modern clean</span></h3><p><span class="th">สะอาด อ่านง่าย การ์ดและกราฟชัดเจน แบบเดียวกับสไลด์ Unit 4 ที่ใช้จริง</span><span class="en">Clean and easy to read, with clear cards and charts, like our live Unit 4 deck.</span></p></div>
+   </article>
+   <article class="sty rv" data-d="80">
+    <button type="button" class="sty-shot" data-gal="3" aria-label="ดูตัวอย่างสไตล์ B" data-en-aria-label="View style B samples"><img src="img/style-B-1-sm.webp" width="800" height="450" alt="" loading="lazy" decoding="async"><span class="sty-count">3</span></button>
+    <div class="sty-body"><p class="sty-tag t-sun">B</p><h3><span class="th">สมุดจด</span><span class="en">Notebook</span></h3><p><span class="th">โพสต์อิท ลายมือ และเส้นวาดมือ เป็นกันเองเหมือนสมุดของนักเรียน</span><span class="en">Sticky notes, handwriting and hand-drawn lines, as friendly as a student's notebook.</span></p></div>
+   </article>
+   <article class="sty rv" data-d="160">
+    <button type="button" class="sty-shot" data-gal="6" aria-label="ดูตัวอย่างสไตล์ C" data-en-aria-label="View the style C sample"><img src="img/style-C-sm.webp" width="800" height="450" alt="" loading="lazy" decoding="async"><span class="sty-new"><span class="th">ใหม่</span><span class="en">New</span></span></button>
+    <div class="sty-body"><p class="sty-tag t-tom">C</p><h3><span class="th">อินโฟกราฟิก</span><span class="en">Infographic</span></h3><p><span class="th">ตัวเลขใหญ่ ไอคอน กราฟ และบล็อกสีเข้ม เห็นภาพรวมในพริบตา</span><span class="en">Bold numbers, icons, charts and strong colour blocks: the big picture at a glance.</span></p></div>
+   </article>
+   <article class="sty sty-theme rv" data-d="240">
+    <button type="button" class="sty-shot sty-fan" data-gal="7" aria-label="ดูตัวอย่างธีมโรงเรียน 3 แบบ" data-en-aria-label="View 3 school theme samples">
+     <img class="f3" src="img/theme-maroon-cream-sm.webp" width="800" height="450" alt="" loading="lazy" decoding="async">
+     <img class="f2" src="img/theme-green-white-sm.webp" width="800" height="450" alt="" loading="lazy" decoding="async">
+     <img class="f1" src="img/theme-navy-gold-sm.webp" width="800" height="450" alt="" loading="lazy" decoding="async">
+     <span class="sty-count">3</span>
+    </button>
+    <div class="sty-body"><p class="sty-tag t-navy"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></p><h3><span class="th">ธีมโรงเรียนของคุณ</span><span class="en">Your school theme</span></h3><p><span class="th">ใส่โลโก้และสีของโรงเรียนได้ทุกสไตล์ เช่น กรมท่า-ทอง เขียว-ขาว เลือดหมู-ครีม</span><span class="en">Your logo and colours on any style, e.g. navy and gold, green and white, maroon and cream.</span></p><p class="swatches" aria-hidden="true"><i class="sw sw-ng"></i><i class="sw sw-gw"></i><i class="sw sw-mc"></i></p></div>
+   </article>
+  </div>
+ </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="sec how" id="how" aria-labelledby="how-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">ขั้นตอนง่ายๆ</span><span class="en">How it works</span></p>
+   <h2 id="how-h"><span class="th">4 ขั้นตอน จากหนังสือสู่ห้องเรียน</span><span class="en">Four steps from textbook to classroom</span></h2>
+  </div>
+  <ol class="steps-row">
+   <li class="step rv"><span class="step-n">1</span><i class="step-ic t-tom"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg></i><h3><span class="th">ทักมาทาง LINE</span><span class="en">Message us on LINE</span></h3><p><span class="th">บอกวิชา ชั้น และหนังสือเรียนที่ใช้</span><span class="en">Tell us the subject, grade and textbook.</span></p></li>
+   <li class="step rv" data-d="120"><span class="step-n">2</span><i class="step-ic t-sun"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></i><h3><span class="th">เลือกหน้าตา</span><span class="en">Choose the look</span></h3><p><span class="th">เราส่งแบบร่าง 2–3 แบบ ให้คุณครูเลือกสไตล์และสี</span><span class="en">We send 2–3 quick drafts; you pick the style and colours.</span></p></li>
+   <li class="step rv" data-d="240"><span class="step-n">3</span><i class="step-ic t-sky"><svg class="ic" aria-hidden="true"><use href="#i-slides"/></svg></i><h3><span class="th">เราทำครบทั้งเล่ม</span><span class="en">We build the book</span></h3><p><span class="th">ทุกหน้ามีแอนิเมชันและเครื่องมือให้นักเรียนตอบ ตรวจทุกหน้าก่อนส่ง</span><span class="en">Every slide animated, with answer tools, checked page by page.</span></p></li>
+   <li class="step rv" data-d="360"><span class="step-n">4</span><i class="step-ic t-mint"><svg class="ic" aria-hidden="true"><use href="#i-link"/></svg></i><h3><span class="th">เปิดลิงก์ แล้วสอน</span><span class="en">Teach from the link</span></h3><p><span class="th">เข้าสู่ระบบด้วย LINE แล้วเปิดสไลด์ได้ทุกห้องเรียน</span><span class="en">Log in with LINE and open your slides in any classroom.</span></p></li>
+  </ol>
+ </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="sec pricing" id="pricing" aria-labelledby="price-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">ราคา</span><span class="en">Pricing</span></p>
+   <h2 id="price-h"><span class="th">ราคาชัดเจน จ่ายตามจำนวนสไลด์</span><span class="en">Clear prices: pay by the slide</span></h2>
+   <p class="sub"><span class="th">หนังสือแต่ละเล่มมีขนาดไม่เท่ากัน ราคาจึงคิดตามจำนวนสไลด์จริง</span><span class="en">Books differ in size, so the price follows the number of slides.</span></p>
+  </div>
+
+  <div class="plan rv">
+   <div class="plan-info">
+    <p class="badge"><span class="th">สินค้าหลัก</span><span class="en">Main product</span></p>
+    <h3><span class="th">สไลด์สอนแบบโต้ตอบ ครบทั้งเล่ม</span><span class="en">Interactive lesson slides, whole book</span></h3>
+    <p class="plan-price"><b>3–5</b> <span><span class="th">บาท/สไลด์/เดือน</span><span class="en">baht / slide / month</span></span></p>
+    <ul class="mini">
+     <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">แอนิเมชันทุกหน้า</span><span class="en">Animation on every slide</span></li>
+     <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">นักเรียนตอบบนจอ: แตะ ลาก พิมพ์ วาด</span><span class="en">Students answer on screen: tap, drag, type, draw</span></li>
+     <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">คู่มือครูทุกหน่วย</span><span class="en">A teacher guide for every unit</span></li>
+     <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">เฉลยแสดงวิธีทำ เปิดทีละขั้น</span><span class="en">Worked answers, revealed step by step</span></li>
+     <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="th">ใช้ผ่านลิงก์ของเรา มีชื่อคุณครูกำกับบนสไลด์</span><span class="en">Used through our link, licensed in your name</span></li>
+    </ul>
+   </div>
+   <div class="calc" aria-labelledby="calc-h">
+    <h4 id="calc-h"><span class="th">คำนวณค่าสไลด์ต่อเดือน</span><span class="en">Work out your monthly price</span></h4>
+    <label class="calc-l" for="calc-n"><span class="th">จำนวนสไลด์ทั้งเล่ม</span><span class="en">Slides in the whole book</span></label>
+    <div class="calc-row">
+     <input type="range" id="calc-r" min="10" max="800" step="1" value="67" aria-label="จำนวนสไลด์" data-en-aria-label="Number of slides">
+     <div class="calc-num"><input type="number" id="calc-n" min="1" max="5000" step="1" value="67" inputmode="numeric"><span><span class="th">สไลด์</span><span class="en">slides</span></span></div>
+    </div>
+    <div class="chips-q" role="group" aria-label="ตัวอย่างจำนวนสไลด์" data-en-aria-label="Example slide counts">
+     <button type="button" data-n="67"><span class="th">1 หน่วย (Unit 4) · 67</span><span class="en">1 unit (Unit 4) · 67</span></button>
+     <button type="button" data-n="200">200</button>
+     <button type="button" data-n="400">400</button>
+     <button type="button" data-n="600">600</button>
+    </div>
+    <div class="calc-out" aria-live="polite">
+     <p class="calc-lbl"><span class="th">ค่าสไลด์โดยประมาณ</span><span class="en">Estimated price</span></p>
+     <p class="calc-big"><b id="calc-lo">201</b>–<b id="calc-hi">335</b> <span><span class="th">บาท/เดือน</span><span class="en">baht / month</span></span></p>
+     <p class="calc-day"><span class="th">เฉลี่ยวันละ</span><span class="en">About</span> <b id="calc-dlo">7</b>–<b id="calc-dhi">11</b> <span class="th">บาท</span><span class="en">baht a day</span></p>
+    </div>
+    <p class="calc-note"><span class="th">ราคาจริงอยู่ในช่วงนี้ เราแจ้งราคาที่แน่นอนทาง LINE หลังดูหนังสือของคุณครู</span><span class="en">Your price falls in this range; we confirm the exact figure on LINE after seeing your book.</span></p>
+    <a class="btn btn-line btn-block" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span class="th">ขอใบเสนอราคาทาง LINE</span><span class="en">Ask for a quote on LINE</span></a>
+   </div>
+  </div>
+
+  <div class="price-grid">
+   <div class="pcard rv">
+    <div class="pcard-h"><i class="t-sky"><svg class="ic" aria-hidden="true"><use href="#i-slides"/></svg></i><h3><span class="th">เสริมสำหรับสไลด์</span><span class="en">Slide extras</span></h3></div>
+    <dl>
+     <div><dt><span class="th">ธีมโรงเรียน (โลโก้ + สี)</span><span class="en">School theme (logo + colours)</span></dt><dd>990 <small><span class="th">ครั้งเดียว</span><span class="en">one-off</span></small></dd></div>
+     <div><dt><span class="th">หน่วยใหม่จากแผนการสอนของคุณครู</span><span class="en">Custom unit from your lesson plan</span></dt><dd>1,990 <small><span class="th">/ หน่วย</span><span class="en">/ unit</span></small></dd></div>
+     <div><dt><span class="th">เฉลยหนังสือพร้อมวิธีทำ + เว็บเฉลยล็อกรหัส</span><span class="en">Book answer keys + locked answer site</span></dt><dd>590 <small><span class="th">/ หน่วย</span><span class="en">/ unit</span></small></dd></div>
+    </dl>
+   </div>
+   <div class="pcard rv" data-d="80">
+    <div class="pcard-h"><i class="t-tom"><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg></i><h3><span class="th">วิดีโอสอน</span><span class="en">Teaching videos</span></h3></div>
+    <dl>
+     <div><dt><span class="th">วิดีโอสอน 2D</span><span class="en">Teaching video (2D)</span><small><span class="th">ขั้นต่ำ 5 นาที รวมคำบรรยายใต้ภาพ</span><span class="en">minimum 5 minutes, captions included</span></small></dt><dd>100 <small><span class="th">/ นาที</span><span class="en">/ minute</span></small></dd></div>
+     <div><dt><span class="th">เสียงบรรยาย AI (ไทยหรืออังกฤษ)</span><span class="en">AI voice-over (Thai or English)</span></dt><dd>+30 <small><span class="th">/ นาที</span><span class="en">/ minute</span></small></dd></div>
+     <div><dt><span class="th">วิดีโอ 3D / แบบภาพยนตร์</span><span class="en">3D / cinematic video</span><small><span class="th">×2–×3 ของราคาต่อนาที</span><span class="en">×2–×3 the per-minute price</span></small></dt><dd>200–300 <small><span class="th">/ นาที</span><span class="en">/ minute</span></small></dd></div>
+    </dl>
+   </div>
+   <div class="pcard rv" data-d="160">
+    <div class="pcard-h"><i class="t-sun"><svg class="ic" aria-hidden="true"><use href="#i-web"/></svg></i><h3><span class="th">เว็บไซต์และงานนำเสนอ</span><span class="en">Websites and decks</span></h3></div>
+    <dl>
+     <div><dt><span class="th">สไลด์นำเสนอ ไม่เกิน 15 หน้า</span><span class="en">Presentation, up to 15 slides</span></dt><dd>2,490</dd></div>
+     <div><dt><span class="th">เว็บไซต์โรงเรียน 1 หน้า</span><span class="en">School website, 1 page</span></dt><dd>4,990</dd></div>
+     <div><dt><span class="th">เว็บไซต์โรงเรียน 5–10 หน้า</span><span class="en">School website, 5–10 pages</span></dt><dd>12,900</dd></div>
+     <div><dt><span class="th">เว็บไซต์โรงเรียน 15 หน้าขึ้นไป ไทย/อังกฤษ</span><span class="en">School website, 15+ pages, TH/EN</span></dt><dd>19,900</dd></div>
+     <div><dt><span class="th">ดูแลเว็บไซต์</span><span class="en">Website care</span></dt><dd>1,990 <small><span class="th">/ ปี</span><span class="en">/ year</span></small></dd></div>
+    </dl>
+   </div>
+  </div>
+  <p class="price-foot rv"><span class="th">ราคาทั้งหมดเป็นเงินบาท · ตอนนี้ชำระด้วยการโอนพร้อมเพย์ และเรายืนยันการชำระให้</span><span class="en">All prices in Thai baht. For now, pay by PromptPay transfer and we confirm it for you.</span></p>
+ </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="sec work" id="work" aria-labelledby="work-h">
+ <div class="wrap">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">ผลงานที่ใช้งานจริง</span><span class="en">Live work</span></p>
+   <h2 id="work-h"><span class="th">เปิดดูผลงานจริงได้เลย</span><span class="en">Open our real work</span></h2>
+  </div>
+  <div class="work-feature rv">
+   <div class="vid" id="vid">
+    <!-- TRAILER-SLOT: the Ayutthaya cinematic trailer (1080p web export) goes to media/ayutthaya-1080.mp4.
+         Until it is copied in, the poster below is shown and pressing play shows a "coming soon" note. -->
+    <video id="trailer" controls preload="none" playsinline poster="media/ayutthaya-poster.jpg" width="1600" height="900">
+     <source src="media/ayutthaya-1080.mp4" type="video/mp4">
+    </video>
+    <p class="vid-soon" id="vid-soon" hidden><span class="th">วิดีโอตัวอย่างกำลังจะมา เร็วๆ นี้</span><span class="en">The sample video is on its way.</span></p>
+   </div>
+   <div class="work-ft">
+    <p class="badge badge-tom"><span class="th">วิดีโอ 3D / ภาพยนตร์</span><span class="en">3D / cinematic video</span></p>
+    <h3><span class="th">อยุธยา: ตัวอย่างวิดีโอประวัติศาสตร์</span><span class="en">Ayutthaya: a history trailer</span></h3>
+    <p><span class="th">ภาพถ่ายจริงที่อนุญาตให้ใช้ซ้ำ กล้องเคลื่อนช้าๆ แบบภาพยนตร์ คำบรรยายภาษาไทย และเสียงบรรยากาศ ทำให้บทเรียนประวัติศาสตร์น่าติดตามเหมือนดูหนัง</span><span class="en">Licensed real photographs, slow film-style camera moves, Thai narration and ambient sound: a history lesson that plays like a movie trailer.</span></p>
+   </div>
+  </div>
+  <div class="work-grid">
+   <a class="wk rv" href="https://mmjx2013-png.github.io/aia-slides/m1-statistics/" target="_blank" rel="noopener">
+    <span class="wk-img"><img src="img/work-unit4.webp" width="800" height="450" alt="สไลด์ Unit 4 สถิติ หน้าแรก" data-en-alt="Unit 4 Statistics deck, title slide" loading="lazy" decoding="async"></span>
+    <span class="wk-b"><span class="wk-t"><span class="th">สไลด์โต้ตอบ</span><span class="en">Interactive slides</span></span><b><span class="th">คณิต ม.1 Unit 4 สถิติ (67 สไลด์)</span><span class="en">Maths M1, Unit 4 Statistics (67 slides)</span></b><span class="wk-go"><span class="th">เปิดดู</span><span class="en">Open</span><svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></span>
+   </a>
+   <a class="wk rv" data-d="80" href="https://mmjx2013-png.github.io/aia-slides/m1-statistics/guide/" target="_blank" rel="noopener">
+    <span class="wk-img"><img src="img/work-guide.webp" width="800" height="450" alt="คู่มือครูสำหรับสไลด์ Unit 4" data-en-alt="Teacher guide for the Unit 4 slides" loading="lazy" decoding="async"></span>
+    <span class="wk-b"><span class="wk-t"><span class="th">คู่มือครู</span><span class="en">Teacher guide</span></span><b><span class="th">คู่มือการใช้สไลด์ Unit 4</span><span class="en">How to teach with the Unit 4 slides</span></b><span class="wk-go"><span class="th">เปิดดู</span><span class="en">Open</span><svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></span>
+   </a>
+   <a class="wk rv" data-d="160" href="https://mmjx2013-png.github.io/aia-slides/satit/" target="_blank" rel="noopener">
+    <span class="wk-img"><img src="img/work-satit.webp" width="800" height="450" alt="เว็บไซต์โรงเรียนสาธิต มรภ.เพชรบุรี" data-en-alt="Satit PBRU school website" loading="lazy" decoding="async"></span>
+    <span class="wk-b"><span class="wk-t"><span class="th">เว็บไซต์โรงเรียน</span><span class="en">School website</span></span><b><span class="th">โรงเรียนสาธิต มรภ.เพชรบุรี (ไทย/อังกฤษ)</span><span class="en">Satit PBRU demonstration school (TH/EN)</span></b><span class="wk-go"><span class="th">เปิดดู</span><span class="en">Open</span><svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></span>
+   </a>
+   <a class="wk rv" data-d="240" href="https://mmjx2013-png.github.io/aia-slides/satit/pitch/" target="_blank" rel="noopener">
+    <span class="wk-img"><img src="img/work-pitch.webp" width="800" height="450" alt="สไลด์นำเสนอเว็บไซต์โรงเรียนสาธิต" data-en-alt="Satit PBRU pitch deck" loading="lazy" decoding="async"></span>
+    <span class="wk-b"><span class="wk-t"><span class="th">สไลด์นำเสนอ</span><span class="en">Pitch deck</span></span><b><span class="th">สไลด์นำเสนอเว็บไซต์สาธิต มรภ.เพชรบุรี</span><span class="en">The Satit PBRU website pitch deck</span></b><span class="wk-go"><span class="th">เปิดดู</span><span class="en">Open</span><svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></span>
+   </a>
+  </div>
+ </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec faq" id="faq" aria-labelledby="faq-h">
+ <div class="wrap faq-in">
+  <div class="sec-head rv">
+   <p class="kicker"><span class="th">คำถามที่พบบ่อย</span><span class="en">FAQ</span></p>
+   <h2 id="faq-h"><span class="th">มีคำถาม? เรารวบรวมไว้ให้แล้ว</span><span class="en">Questions? Here are the answers</span></h2>
+  </div>
+  <div class="qa">
+   <details class="rv"><summary><span class="th">ต้องติดตั้งโปรแกรม หรือดาวน์โหลดไฟล์ไหม?</span><span class="en">Do I need to install anything or download files?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">ไม่ต้องเลย คุณครูเปิดสไลด์ผ่านลิงก์ของเราในเบราว์เซอร์ (แนะนำ Chrome หรือ Safari) ใช้ได้กับโปรเจกเตอร์ จอสัมผัส แท็บเล็ต และ iPad</span><span class="en">No. You open the slides through our link in a browser (Chrome or Safari recommended). They work on projectors, touch boards, tablets and iPads.</span></p></div></details>
+   <details class="rv"><summary><span class="th">นักเรียนต้องมีมือถือหรือแท็บเล็ตของตัวเองไหม?</span><span class="en">Do students need their own phones or tablets?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">ไม่ต้อง นักเรียนออกมาตอบบนจอหน้าห้อง (จอสัมผัส หรือใช้เมาส์ของคุณครู) ทั้งห้องได้เห็นและช่วยกันคิด</span><span class="en">No. Students come up and answer on the classroom screen (a touch board or the teacher's mouse), so the whole class sees and thinks together.</span></p></div></details>
+   <details class="rv"><summary><span class="th">ทำจากหนังสือเล่มไหนได้บ้าง?</span><span class="en">Which textbooks can you work from?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">บอกชื่อหนังสือที่โรงเรียนใช้มาได้เลย เราใช้โจทย์และตัวเลขตามหนังสือ แต่เขียนคำอธิบายด้วยคำของเราเอง และวาดภาพและกราฟใหม่ทั้งหมด ไม่ใช้ภาพถ่ายจากหนังสือ</span><span class="en">Tell us the book your school uses. We keep the book's questions and numbers, write the explanations in our own words and redraw every picture and chart. We never use photos of the book.</span></p></div></details>
+   <details class="rv"><summary><span class="th">ราคา 3–5 บาท/สไลด์/เดือน คิดอย่างไร?</span><span class="en">How does 3–5 baht per slide per month work?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">นับจำนวนสไลด์ของทั้งเล่ม แล้วคูณ 3–5 บาทต่อเดือน เช่น หน่วยที่มี 67 สไลด์ ประมาณ 200–335 บาทต่อเดือน ลองใช้เครื่องคำนวณในส่วนราคา แล้วเราจะแจ้งราคาที่แน่นอนทาง LINE</span><span class="en">We count the slides in the whole book and multiply by 3–5 baht a month. A 67-slide unit is about 200–335 baht a month. Try the calculator in Pricing; we confirm the exact price on LINE.</span></p></div></details>
+   <details class="rv"><summary><span class="th">นักเรียนจะเห็นเฉลยก่อนไหม?</span><span class="en">Will students see the answers too early?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">ไม่ เฉลยจะขึ้นเมื่อคุณครูกดเท่านั้น ให้นักเรียนนำเสนอก่อนแล้วค่อยเปิดวิธีทำทีละขั้น ส่วนเฉลยข้อสอบอยู่บนเว็บแยกที่ล็อกด้วยรหัสผ่าน เปิดได้เฉพาะคุณครู</span><span class="en">No. Answers appear only when the teacher clicks, so students present first and the method is revealed step by step. Test answers live on a separate password-locked site for the teacher only.</span></p></div></details>
+   <details class="rv"><summary><span class="th">แชร์สไลด์ให้ครูท่านอื่นได้ไหม?</span><span class="en">Can I share the slides with other teachers?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">สไลด์แต่ละชุดใช้ในนามของคุณครูผู้ซื้อ และมีชื่อคุณครูกับโรงเรียนกำกับจางๆ บนสไลด์ หากต้องการใช้หลายท่านในกลุ่มสาระ ทักมาคุยกันทาง LINE ได้เลย</span><span class="en">Each set is licensed to the teacher who buys it and shows a light "Licensed to teacher · school" mark. If your whole department wants it, message us on LINE.</span></p></div></details>
+   <details class="rv"><summary><span class="th">ชำระเงินอย่างไร?</span><span class="en">How do I pay?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">ตอนนี้ชำระด้วยการโอนพร้อมเพย์ แล้วเรายืนยันการชำระในระบบให้ การชำระด้วยบัตรจะเพิ่มเข้ามาภายหลัง</span><span class="en">For now, pay by PromptPay transfer and we confirm it in the system for you. Card payments will be added later.</span></p></div></details>
+   <details class="rv"><summary><span class="th">มีสไลด์ภาษาอังกฤษสำหรับห้อง EP ไหม?</span><span class="en">Do you make English slides for EP classes?</span><i aria-hidden="true"></i></summary><div class="qa-a"><p><span class="th">มี เราทำได้ทั้งภาษาไทยและภาษาอังกฤษ ตัวอย่าง Unit 4 ที่เห็นในหน้านี้เป็นภาษาอังกฤษสำหรับห้อง EP</span><span class="en">Yes. We make Thai and English slides; the Unit 4 sample on this page is in English for EP classes.</span></p></div></details>
+  </div>
+ </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final" aria-labelledby="final-h">
+ <div class="wrap">
+  <div class="final-card rv">
+   <svg class="doodle d1" viewBox="0 0 120 80" aria-hidden="true"><path d="M8 70V40M30 70V22M52 70V48M74 70V12" stroke-width="10" stroke-linecap="round"/></svg>
+   <svg class="doodle d2" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="28" stroke-width="8"/><path d="M40 40V12A28 28 0 0 1 66 50z" stroke="none"/></svg>
+   <svg class="doodle d3" viewBox="0 0 90 60" aria-hidden="true"><path d="M6 32l18 18L84 8" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+   <h2 id="final-h"><span class="th">อยากเห็นหนังสือของคุณครู<br>เป็นสไลด์แบบนี้ไหม?</span><span class="en">Want your textbook to look like this?</span></h2>
+   <p><span class="th">ส่งชื่อหนังสือมาทาง LINE เราตอบกลับพร้อมราคาโดยประมาณ</span><span class="en">Send us the book title on LINE and we will reply with a price estimate.</span></p>
+   <div class="cta-row">
+    <a class="btn btn-line btn-lg" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span class="th">คุยกับเราทาง LINE</span><span class="en">Chat with us on LINE</span></a>
+    <a class="btn btn-ghost-d btn-lg" href="#demo"><svg class="ic" aria-hidden="true"><use href="#i-hand"/></svg><span class="th">ลองเดโมอีกครั้ง</span><span class="en">Try the demo again</span></a>
+   </div>
+   <p class="line-id"><span class="th">LINE ID:</span><span class="en">LINE ID:</span> <b data-todo="TODO-LINE-ID">@kruslide</b></p>
+  </div>
+ </div>
+</section>
+
+</main>
+
+<footer class="foot">
+ <div class="wrap foot-in">
+  <div class="foot-brand">
+   <a class="brand" href="#top" aria-label="ครูสไลด์ KruSlide กลับขึ้นด้านบน" data-en-aria-label="KruSlide, back to top"><svg class="brand-mark" aria-hidden="true"><use href="#logo"/></svg><span class="brand-txt"><b>Kru<span>Slide</span></b><small>ครูสไลด์</small></span></a>
+   <p><span class="th">สไลด์สอนแบบโต้ตอบ เฉลยทีละขั้น วิดีโอสอน และเว็บไซต์โรงเรียน สำหรับคุณครูไทยและครู EP</span><span class="en">Interactive lesson slides, worked answers, teaching videos and school websites for Thai and EP teachers.</span></p>
+  </div>
+  <nav class="foot-nav" aria-label="ลิงก์ท้ายหน้า" data-en-aria-label="Footer links">
+   <a href="#services"><span class="th">บริการ</span><span class="en">Services</span></a>
+   <a href="#demo"><span class="th">ลองเดโม</span><span class="en">Live demo</span></a>
+   <a href="#pricing"><span class="th">ราคา</span><span class="en">Pricing</span></a>
+   <a href="#work"><span class="th">ผลงาน</span><span class="en">Work</span></a>
+   <a href="#faq"><span class="th">คำถาม</span><span class="en">FAQ</span></a>
+   <a href="brochure.pdf"><span class="th">โบรชัวร์ (PDF)</span><span class="en">Brochure (PDF)</span></a>
+   <a href="/app/"><span class="th">เข้าสู่ระบบ</span><span class="en">Log in</span></a>
+  </nav>
+  <div class="foot-line">
+   <p class="foot-h">LINE</p>
+   <a class="btn btn-line btn-sm" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>@kruslide</a>
+  </div>
+  <div class="privacy" id="privacy">
+   <p class="foot-h"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg><span class="th">ความเป็นส่วนตัว</span><span class="en">Privacy</span></p>
+   <p><span class="th">เว็บไซต์นี้ไม่ใช้คุกกี้ ไม่มีโฆษณา และไม่มีตัวติดตาม เราจำเพียงภาษาที่คุณเลือกไว้ในเบราว์เซอร์ของคุณเอง ข้อมูลที่ส่งมาทาง LINE ใช้เพื่อตอบคำถามและทำงานให้คุณเท่านั้น ไม่ขายหรือส่งต่อให้ใคร</span><span class="en">This site uses no cookies, ads or trackers. It only remembers your language choice, in your own browser. What you send us on LINE is used only to answer you and do your work; we never sell or pass it on.</span></p>
+  </div>
+ </div>
+ <div class="wrap foot-copy"><p>© 2026 KruSlide (ครูสไลด์)</p><a href="#top" class="totop"><span class="th">กลับขึ้นด้านบน</span><span class="en">Back to top</span> ↑</a></div>
+</footer>
+
+<a class="fab" id="fab" href="https://line.me/R/ti/p/@kruslide" data-todo="TODO-LINE-ID" target="_blank" rel="noopener" aria-label="คุยกับเราทาง LINE" data-en-aria-label="Chat with us on LINE"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span>LINE</span></a>
+
+<dialog class="lb" id="lb" aria-label="ตัวอย่างสไตล์" data-en-aria-label="Style samples">
+ <div class="lb-in">
+  <figure class="lb-fig"><img id="lb-img" src="img/style-A-1.webp" width="1600" height="900" alt=""><figcaption id="lb-cap"></figcaption></figure>
+  <button type="button" class="lb-b lb-prev" id="lb-prev" aria-label="ภาพก่อนหน้า" data-en-aria-label="Previous picture"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg></button>
+  <button type="button" class="lb-b lb-next" id="lb-next" aria-label="ภาพถัดไป" data-en-aria-label="Next picture"><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></button>
+  <button type="button" class="lb-b lb-x" id="lb-x" aria-label="ปิด" data-en-aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+  <p class="lb-n" id="lb-n"></p>
+ </div>
+</dialog>
+</body>
+</html>

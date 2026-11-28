@@ -1,0 +1,112 @@
+import type { Ctx, Env } from './env';
+import { Router } from './router';
+import { HttpError, clientIp, htmlResponse, redirect, secure, textResponse } from './lib/http';
+import { adminIds, isProduction } from './lib/config';
+import { csrfToken, readSession } from './lib/session';
+import { errorPage } from './views/layout';
+import { housekeeping } from './db';
+import { audit } from './lib/audit';
+import * as auth from './routes/auth';
+import * as member from './routes/member';
+import * as deck from './routes/deck';
+import * as admin from './routes/admin';
+import * as statics from './routes/static';
+import { privacy } from './routes/privacy';
+import { stripeWebhook } from './routes/webhooks';
+
+const router = new Router()
+  .get('/app/', member.home)
+  .get('/app/login', auth.login)
+  .get('/app/auth/callback', auth.callback)
+  .post('/app/logout', auth.logout)
+  .get('/app/privacy', privacy)
+  .get('/app/profile', member.profile)
+  .post('/app/profile', member.profile)
+  .get('/app/books/:id', member.bookPage)
+  .post('/app/books/:id/subscribe', member.subscribe)
+  .get('/app/payments/:id', member.paymentPage)
+  .post('/app/payments/:id/notify', member.notify)
+  .get('/app/deck/:id', deck.deckSlash)
+  .get('/app/deck/:id/', deck.deck)
+  .get('/app/deck/:id/:path*', deck.deckAsset)
+  .get('/app/static/app.css', statics.css)
+  .get('/app/static/fonts/:file', statics.font)
+  .get('/app/admin/', admin.dashboard)
+  .get('/app/admin/payments', admin.payments)
+  .post('/app/admin/payments/:id/confirm', admin.confirm)
+  .post('/app/admin/payments/:id/reject', admin.reject)
+  .get('/app/admin/members', admin.members)
+  .get('/app/admin/members/:id', admin.member)
+  .post('/app/admin/members/:id/block', (c) => admin.setStatus(c, 'blocked'))
+  .post('/app/admin/members/:id/unblock', (c) => admin.setStatus(c, 'active'))
+  .post('/app/admin/members/:id/grant', admin.grant)
+  .get('/app/admin/subscriptions', admin.subscriptions)
+  .post('/app/admin/subscriptions/:id/extend', admin.extend)
+  .post('/app/admin/subscriptions/:id/expire', admin.expire)
+  .get('/app/admin/books', admin.books)
+  .post('/app/admin/books', admin.createBook)
+  .get('/app/admin/books/:id', admin.book)
+  .post('/app/admin/books/:id', admin.updateBook)
+  .post('/app/admin/books/:id/delete', admin.deleteBook)
+  .post('/app/admin/books/:id/units', admin.createUnit)
+  .post('/app/admin/units/:id', admin.updateUnit)
+  .post('/app/admin/units/:id/delete', admin.deleteUnit)
+  .post('/app/admin/units/:id/upload', admin.upload)
+  .get('/app/admin/export/:type.csv', admin.exportCsv)
+  .get('/app/admin/audit', admin.auditLog)
+  .post('/app/webhooks/stripe', stripeWebhook);
+
+function publicOrigin(env: Env, url: URL): string {
+  const o = (env.APP_ORIGIN || '').replace(/\/+$/, '');
+  return /^https?:\/\/[^/]+$/.test(o) ? o : url.origin;
+}
+
+async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<Response> {
+  const url = new URL(req.url);
+  const ctx: Ctx = {
+    req, env, exec, url, origin: publicOrigin(env, url), ip: clientIp(req), now: Math.floor(Date.now() / 1000),
+    params: {}, sessionId: null, teacher: null, isAdmin: false, csrf: '',
+  };
+  try {
+    if (url.pathname === '/app') return redirect('/app/', 308);
+    if (!url.pathname.startsWith('/app/')) throw new HttpError(404, 'ไม่พบหน้านี้');
+    if (isProduction(env) && url.protocol !== 'https:') return redirect(`https://${url.host}${url.pathname}${url.search}`, 308);
+    const m = router.match(req.method, url.pathname);
+    if (m === 'method') return textResponse('Method not allowed', 405, { Allow: 'GET, POST' });
+    if (!m) throw new HttpError(404, 'ไม่พบหน้านี้');
+    ctx.params = m.params;
+    if (!url.pathname.startsWith('/app/static/')) {
+      const s = await readSession(env, req, ctx.now);
+      if (s) {
+        ctx.sessionId = s.id;
+        ctx.teacher = s.teacher;
+        ctx.isAdmin = s.teacher.status === 'active' && adminIds(env).has(s.teacher.line_user_id);
+        ctx.csrf = await csrfToken(env, s.id);
+      }
+    }
+    return await m.handler(ctx);
+  } catch (e) {
+    if (e instanceof HttpError) {
+      if (e.status === 401 && req.method === 'GET') return redirect(`/app/login?next=${encodeURIComponent(url.pathname)}`, 302);
+      if (e.status >= 500) console.error('error', e.status, e.message, e.detail ?? '');
+      const headers: Record<string, string> = e.status === 429 && e.detail ? { 'Retry-After': e.detail } : {};
+      return htmlResponse(errorPage(ctx, e.status, e.message), e.status, headers);
+    }
+    console.error('unhandled', e instanceof Error ? e.stack : String(e));
+    return htmlResponse(errorPage(ctx, 500, 'ระบบขัดข้องชั่วคราว กรุณาลองใหม่อีกครั้ง'), 500);
+  }
+}
+
+export default {
+  async fetch(req: Request, env: Env, exec: ExecutionContext): Promise<Response> {
+    const res = await handle(req, env, exec);
+    return secure(req.method === 'HEAD' ? new Response(null, res) : res);
+  },
+  async scheduled(_c: ScheduledController, env: Env, exec: ExecutionContext): Promise<void> {
+    const now = Math.floor(Date.now() / 1000);
+    exec.waitUntil((async () => {
+      const r = await housekeeping(env, now);
+      if (r.expired) await audit(env, now, 'system', 'subscription.expire.daily', null, r);
+    })());
+  },
+} satisfies ExportedHandler<Env>;

@@ -1,0 +1,42 @@
+# KruSlide member platform (Cloudflare Worker).
+# The IDs below are PLACEHOLDERS. Replace them with the real ones from `wrangler d1 create` (see README.md).
+# Secrets are NEVER written here: set them with `wrangler secret put <NAME>`.
+name = "kruslide-platform"
+main = "src/index.ts"
+compatibility_date = "2026-11-20"
+workers_dev = false
+
+# Serve only /app/* on the custom domain; the sales site (Cloudflare Pages) keeps every other path.
+# Uncomment and set your domain when deploying (README "Custom domain").
+# routes = [
+#   { pattern = "kruslide.example/app/*", zone_name = "kruslide.example" },
+# ]
+
+[vars]
+ENVIRONMENT = "production"
+# Public origin used for the LINE callback URL and the CSRF Origin check, e.g. "https://kruslide.example".
+APP_ORIGIN = ""
+# LINE Official Account shown as the contact. TODO-LINE-ID: replace with the real ID from the owner.
+LINE_OA_ID = "@kruslide"
+# "manual" = PromptPay confirmed by the owner. "stripe" is reserved for later (src/payments/stripe.ts).
+PAYMENT_PROVIDER = "manual"
+# Optional: "normal" or "aggressive" asks the teacher to add the LINE OA as a friend during login
+# (the OA must be linked to the LINE Login channel first). Empty = off.
+LINE_BOT_PROMPT = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kruslide"
+database_id = "00000000-0000-0000-0000-000000000000"   # PLACEHOLDER
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "DECKS"
+bucket_name = "kruslide-decks"        # PRIVATE bucket: never enable public access or an r2.dev URL
+
+[triggers]
+# Daily housekeeping at 03:17 UTC (10:17 Bangkok): expire subscriptions, delete old sessions and counters.
+crons = ["17 3 * * *"]
+
+[observability]
+enabled = true

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<title>Ayutthaya trailer poster (placeholder until the real frame)</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;background:#0c0806;font-family:KS,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.p{position:relative;width:1920px;height:1080px;overflow:hidden}
+svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.bar{position:absolute;left:0;right:0;height:132px;background:#0c0806}
+.bar.t{top:0}.bar.b{bottom:0}
+.title{position:absolute;left:150px;top:232px;color:#FBEEDB}
+.title .k{font:600 22px KS;letter-spacing:.42em;color:#F2C78A}
+.title h1{font:700 176px/1.15 KSD;margin:14px 0 44px;letter-spacing:.01em}
+.title .s{font:500 34px/1.4 KS;color:#F6DDBE}
+.cred{position:absolute;right:150px;top:172px;font:600 20px KS;letter-spacing:.3em;color:#E9C9A0;text-transform:uppercase}
+</style></head>
+<body><div class="p">
+<svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+ <defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#2A1A2E"/><stop offset=".38" stop-color="#7A3B32"/><stop offset=".62" stop-color="#D2763C"/><stop offset=".78" stop-color="#F0B062"/>
+  </linearGradient>
+  <radialGradient id="sun" cx="1330" cy="640" r="330" gradientUnits="userSpaceOnUse">
+   <stop offset="0" stop-color="#FFE8B0" stop-opacity=".95"/><stop offset=".18" stop-color="#FFD08A" stop-opacity=".55"/><stop offset="1" stop-color="#F0B062" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E4A2E"/><stop offset="1" stop-color="#2A1610"/></linearGradient>
+  <g id="prang">
+   <path d="M-60 0h120v-18h-10v-14h-8v-14H-58v14h-8v14h-10z" transform="translate(0,0)"/>
+   <path d="M-44-46h88v-26H-44z"/>
+   <path d="M-40-72c0-60 8-120 22-170 6-22 12-34 18-40 6 6 12 18 18 40 14 50 22 110 22 170z"/>
+   <path d="M-3-282h6v-70h-6z"/><path d="M-12-300h24l-12-10z"/>
+  </g>
+  <g id="chedi">
+   <path d="M-40 0h80v-14h-8v-12H-32v12h-8z"/>
+   <path d="M-30-26c0-30 12-52 30-58 18 6 30 28 30 58z"/>
+   <path d="M-8-84h16v-12H-8z"/><path d="M-6-96L0-170 6-96z"/>
+  </g>
+ </defs>
+ <rect width="1920" height="1080" fill="url(#sky)"/>
+ <circle cx="1330" cy="640" r="330" fill="url(#sun)"/>
+ <circle cx="1330" cy="650" r="70" fill="#FFE2A6" opacity=".92"/>
+ <!-- far haze silhouettes -->
+ <g fill="#9C5236" opacity=".55">
+  <use href="#chedi" transform="translate(300 760) scale(1.1)"/><use href="#chedi" transform="translate(470 760) scale(.8)"/>
+  <use href="#prang" transform="translate(1720 760) scale(.55)"/><use href="#chedi" transform="translate(1580 760) scale(.7)"/>
+  <path d="M0 760h1920v40H0z"/>
+ </g>
+ <!-- temple complex -->
+ <g fill="#3A1C17">
+  <path d="M760 790h860v-26h-40v-16H800v16h-40z"/>
+  <use href="#prang" transform="translate(1180 748) scale(1.55)"/>
+  <use href="#prang" transform="translate(960 752) scale(.95)"/>
+  <use href="#prang" transform="translate(1400 752) scale(.95)"/>
+  <use href="#prang" transform="translate(860 760) scale(.6)"/>
+  <use href="#prang" transform="translate(1500 760) scale(.6)"/>
+  <use href="#chedi" transform="translate(700 790) scale(1.05)"/>
+  <use href="#chedi" transform="translate(1690 790) scale(1.05)"/>
+  <path d="M0 790h1920v20H0z"/>
+  <!-- trees -->
+  <path d="M0 790c40-60 90-70 130-40 30-50 90-60 130-10 20-30 60-30 90 10 30-20 60-10 80 20H0z"/>
+  <path d="M1920 790c-50-70-110-80-150-40-30-40-80-40-110 0-20-20-50-10-60 20h320z"/>
+ </g>
+ <rect y="810" width="1920" height="270" fill="url(#water)"/>
+ <!-- reflection -->
+ <g fill="#2E1712" opacity=".55" transform="translate(0 1620) scale(1 -1)">
+  <use href="#prang" transform="translate(1180 810) scale(1.55)"/>
+  <use href="#prang" transform="translate(960 810) scale(.95)"/>
+  <use href="#prang" transform="translate(1400 810) scale(.95)"/>
+ </g>
+ <g fill="#FFD9A0" opacity=".45">
+  <rect x="1250" y="840" width="160" height="4" rx="2"/><rect x="1280" y="868" width="110" height="3" rx="1.5"/><rect x="1230" y="900" width="190" height="3" rx="1.5"/><rect x="1300" y="934" width="70" height="3" rx="1.5"/>
+ </g>
+ <!-- boat -->
+ <g fill="#1E0F0B"><path d="M520 868h190c-12 14-34 20-60 20h-80c-26 0-42-8-50-20z"/><path d="M600 868v-22l8 4v18z"/></g>
+</svg>
+<div class="bar t"></div><div class="bar b"></div>
+<div class="title">
+ <div class="k">AYUTTHAYA · HISTORY TRAILER</div>
+ <h1>อยุธยา</h1>
+ <div class="s">ตัวอย่างวิดีโอประวัติศาสตร์ แบบภาพยนตร์</div>
+</div>
+<div class="cred">KruSlide · video sample</div>
+</div></body></html>

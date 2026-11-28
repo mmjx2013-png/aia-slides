@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<title>School theme sample · KruSlide</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+/* one slide, three school colourways: theme.html#navy-gold, #green-white, #maroon-cream */
+:root{--p:#14284B;--p2:#22406F;--a:#D4A62A;--a2:#F6E7BC;--bg:#F7F4EC;--card:#fff;--ink:#14213D;--mute:#5E6678;--on-p:#fff;--line:#E4DECF;--bar:#C9D3E6}
+.green-white{--p:#0E7A43;--p2:#13924F;--a:#0E7A43;--a2:#DDF2E5;--bg:#FFFFFF;--card:#F4FAF6;--ink:#10291B;--mute:#4F6357;--line:#D3E8DA;--bar:#BFE0CB}
+.maroon-cream{--p:#7A1F2B;--p2:#93303D;--a:#B8475A;--a2:#F3DCC4;--bg:#FBF3E4;--card:#FFFBF3;--ink:#3A1218;--mute:#6E5A55;--line:#EADBC2;--bar:#E7C9B0}
+html,body{width:1920px;height:1080px;background:var(--bg);font-family:KS,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.slide{width:1920px;height:1080px;display:grid;grid-template-rows:118px minmax(0,1fr) 64px;position:relative;overflow:hidden}
+header{background:var(--p);color:var(--on-p);display:flex;align-items:center;gap:24px;padding:0 64px}
+.crest{width:78px;height:88px;flex:none}
+.school{line-height:1.2}
+.school b{display:block;font:700 32px KS}
+.school span{font:500 21px KS;opacity:.85}
+.subj{margin-left:auto;display:flex;gap:12px}
+.subj span{font:600 21px KS;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.14)}
+.subj span.a{background:var(--a2);color:var(--p)}
+main{padding:56px 64px 40px;display:grid;grid-template-columns:1fr 640px;gap:56px}
+.kick{font:700 26px KS;color:var(--p)}
+h1{font:800 70px/1.06 KSD;letter-spacing:-.02em;margin:14px 0 8px}
+h1 u{text-decoration:none;box-shadow:inset 0 -22px 0 var(--a2)}
+.th{font:600 30px/1.4 KS;color:var(--mute);margin-bottom:28px}
+.chart{background:var(--card);border:3px solid var(--line);border-radius:28px;padding:28px 34px 22px;height:588px;display:flex;flex-direction:column}
+.chart .t{font:700 24px KS;color:var(--ink)}
+.plot{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;align-items:end;border-bottom:4px solid var(--ink);padding:0 26px;margin-top:16px}
+.c{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:10px;font:800 36px KSD}
+.c i{display:block;width:100%;border-radius:14px 14px 0 0;background:var(--bar)}
+.c.on i{background:var(--p)}
+.c.on{color:var(--p)}
+.days{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;padding:10px 26px 0;text-align:center;font:700 24px KS;color:var(--mute)}
+aside{display:flex;flex-direction:column;gap:20px;padding-top:10px}
+.q{font:700 32px/1.35 KS;margin-bottom:4px}
+.q small{display:block;font:600 22px KS;color:var(--mute);margin-top:4px}
+.ch{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:20px;background:var(--card);border:3px solid var(--line);border-radius:22px;padding:20px 22px;font:700 32px KS}
+.ch b{display:grid;place-items:center;width:62px;height:62px;border-radius:16px;background:var(--a2);color:var(--p);font:800 30px KSD}
+.ch.ok{border-color:var(--p);background:var(--p);color:var(--on-p)}
+.ch.ok b{background:var(--on-p);color:var(--p)}
+.ch svg{width:40px;height:40px}
+.ans{margin-top:6px;background:var(--a2);border-radius:20px;padding:18px 24px;font:700 26px/1.4 KS;color:var(--ink);border-left:10px solid var(--a)}
+footer{background:var(--p);color:var(--on-p);display:flex;align-items:center;justify-content:space-between;padding:0 64px;font:600 20px KS}
+footer .lic{opacity:.85}
+footer .dots{display:flex;gap:10px}
+footer .dots i{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.35)}
+footer .dots i.on{background:var(--a2)}
+.navy-gold footer .dots i.on,.navy-gold .subj span.a{background:var(--a);color:var(--p)}
+.navy-gold .ch b{background:#F1E4BF}
+.green-white .ans{border-left-color:var(--p)}
+</style></head>
+<body>
+<svg width="0" height="0" class="defs" aria-hidden="true" style="position:absolute"><defs>
+ <symbol id="ok" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<div class="slide">
+ <header>
+  <svg class="crest" viewBox="0 0 78 88" aria-hidden="true">
+   <path d="M39 3l33 10v28c0 22-15 36-33 44C21 77 6 63 6 41V13z" fill="var(--a2)" stroke="var(--on-p)" stroke-width="3"/>
+   <path d="M39 12l24 7v22c0 16-10 27-24 33-14-6-24-17-24-33V19z" fill="var(--p)"/>
+   <path d="M22 50c6-3 12-3 17 0 5-3 11-3 17 0V36c-6-3-12-3-17 0-5-3-11-3-17 0z" fill="var(--a2)"/>
+   <path d="M39 36v14" stroke="var(--p)" stroke-width="2.5"/>
+   <path d="M39 18l2.6 5.4 5.9.8-4.3 4.1 1 5.8L39 31.3l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="var(--a2)"/>
+  </svg>
+  <div class="school"><b>โรงเรียนตัวอย่างวิทยา</b><span>Sample Wittaya School · ธีมโรงเรียนของคุณครู</span></div>
+  <div class="subj"><span>คณิตศาสตร์ ม.1</span><span class="a">หน่วยที่ 4 · สถิติ</span></div>
+ </header>
+ <main>
+  <section>
+   <div class="kick">บทเรียนที่ 3 · การนำเสนอข้อมูล</div>
+   <h1>วันไหนขาย<u>ชานมไข่มุก</u>ได้มากที่สุด?</h1>
+   <p class="th">ดูกราฟแท่ง แล้วแตะคำตอบที่ถูกต้อง</p>
+   <div class="chart">
+    <div class="t">ชานมไข่มุกที่ขายได้ในโรงอาหาร (แก้ว)</div>
+    <div class="plot">
+     <div class="c">30<i style="height:66%"></i></div>
+     <div class="c">25<i style="height:55%"></i></div>
+     <div class="c on">40<i style="height:88%"></i></div>
+     <div class="c">15<i style="height:33%"></i></div>
+    </div>
+    <div class="days"><span>จันทร์</span><span>อังคาร</span><span>พุธ</span><span>พฤหัสบดี</span></div>
+   </div>
+  </section>
+  <aside>
+   <div class="q">แตะวันที่ขายได้มากที่สุด<small>Tap the day with the most cups.</small></div>
+   <div class="ch"><b>A</b>วันจันทร์</div>
+   <div class="ch"><b>B</b>วันอังคาร</div>
+   <div class="ch ok"><b>C</b>วันพุธ<svg><use href="#ok"/></svg></div>
+   <div class="ch"><b>D</b>วันพฤหัสบดี</div>
+   <div class="ans">วันพุธขายได้ 40 แก้ว มากกว่าวันอื่นทุกวัน<br>40 &gt; 30 &gt; 25 &gt; 15</div>
+  </aside>
+ </main>
+ <footer><span>KruSlide · สไลด์โต้ตอบ</span><span class="dots"><i></i><i></i><i class="on"></i><i></i><i></i></span><span class="lic">Licensed to ครูตัวอย่าง · โรงเรียนตัวอย่างวิทยา</span></footer>
+</div>
+<script>document.body.className = (location.hash || '#navy-gold').slice(1);</script>
+</body></html>

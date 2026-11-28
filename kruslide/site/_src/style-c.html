@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Style C · Infographic · Unit 4 Statistics</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#14213D;--navy:#1C2A55;--sun:#FFC83D;--tom:#F2553C;--sky:#3D7BFF;--mint:#18B07F;--paper:#F3EFE6;--lsky:#E4ECFF}
+html,body{width:1920px;height:1080px;background:var(--paper);font-family:KS,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.slide{position:relative;width:1920px;height:1080px;padding:56px 64px 56px;display:grid;grid-template-rows:auto 1fr;gap:34px;overflow:hidden}
+.top{display:flex;align-items:flex-end;justify-content:space-between}
+.kick{display:inline-flex;align-items:center;gap:12px;font:800 20px KS;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.kick i{display:inline-block;width:34px;height:12px;border-radius:6px;background:var(--tom)}
+h1{font:800 88px/1 KSD;letter-spacing:-.025em;margin-top:14px}
+.src{font:600 21px/1.4 KS;color:#5A6275;text-align:right}
+.src b{color:var(--ink)}
+.grid{display:grid;grid-template-columns:560px 400px 1fr 400px;grid-template-rows:1fr 320px;grid-template-areas:"tot bars bars pct" "tot avg way way";gap:26px;min-height:0}
+.tot{grid-area:tot}.bars{grid-area:bars}.pct{grid-area:pct}.avg{grid-area:avg}.way{grid-area:way}
+.b{border-radius:34px;position:relative;overflow:hidden}
+.lbl{font:800 19px KS;letter-spacing:.14em;text-transform:uppercase}
+/* A: total */
+.tot{background:var(--sun);padding:44px 46px;display:flex;flex-direction:column}
+.tot .lbl{color:var(--navy)}
+.tot .big{font:800 250px/0.86 KSD;letter-spacing:-.05em;color:var(--navy);margin:26px 0 14px -8px}
+.tot .cap{font:700 34px/1.15 KS;color:var(--navy);max-width:440px}
+.picto{margin-top:auto;display:grid;gap:10px;border-top:3px solid rgba(28,42,85,.18);padding-top:20px}
+.prow{display:grid;grid-template-columns:70px 1fr;align-items:center;font:800 24px KS;color:var(--navy)}
+.cups{display:flex;gap:8px}
+.cups svg{width:40px;height:49px}
+.key{margin-top:6px;font:700 20px KS;color:var(--navy);display:flex;align-items:center;gap:10px}
+.key svg{width:28px;height:34px}
+/* B: bars */
+.bars{background:var(--navy);color:#fff;padding:40px 46px 34px;display:flex;flex-direction:column}
+.bars .lbl{color:#B9C4E6}
+.bars h2{font:800 40px/1.1 KSD;margin-top:8px}
+.chart{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:34px;align-items:end;margin-top:26px;border-bottom:4px solid #4A5886;padding:0 12px}
+.col{display:flex;flex-direction:column;align-items:center;gap:12px;height:100%;justify-content:flex-end}
+.col b{font:800 46px/1 KSD}
+.bar{width:100%;border-radius:18px 18px 0 0;background:#AFC3FF}
+.col.best .bar{background:var(--tom)}
+.col.best b{color:var(--sun)}
+.days{display:grid;grid-template-columns:repeat(4,1fr);gap:34px;padding:12px 12px 0;font:700 24px KS;color:#B9C4E6;text-align:center}
+.days .on{color:#fff}
+.pill{font:800 17px KS;font-style:normal;letter-spacing:.12em;text-transform:uppercase;background:var(--sun);color:var(--navy);padding:8px 14px;border-radius:10px;margin-bottom:-2px}
+.tag{position:absolute;right:46px;top:40px;background:var(--sun);color:var(--navy);font:800 18px KS;letter-spacing:.12em;padding:10px 16px;border-radius:12px;text-transform:uppercase}
+/* C: percent */
+.pct{background:var(--tom);color:#fff;padding:40px 40px;display:flex;flex-direction:column}
+.pct .lbl{color:#FFE0D9}
+.pct .big{font:800 180px/0.9 KSD;letter-spacing:-.04em;margin:22px 0 16px -6px}
+.pct .big small{font-size:110px}
+.pct .cap{font:700 28px/1.22 KS}
+.pct .calc{margin-top:auto;background:rgba(255,255,255,.16);border-radius:16px;padding:14px 18px;font:700 23px KS}
+/* D: average */
+.avg{background:#fff;padding:30px 36px;display:flex;flex-direction:column;border:3px solid #E6DFD0}
+.avg .lbl{color:var(--sky)}
+.avg .row{display:flex;align-items:baseline;gap:14px;margin-top:14px}
+.avg .big{font:800 104px/0.9 KSD;letter-spacing:-.03em;color:var(--ink)}
+.avg .u{font:700 30px KS;color:#5A6275}
+.strip{margin-top:auto;position:relative;height:74px}
+.strip .t{position:absolute;bottom:0;width:58px;border-radius:10px 10px 0 0;background:#D8E3FF}
+.strip .m{position:absolute;left:0;right:0;border-top:4px dashed var(--sky)}
+.strip .m span{position:absolute;right:0;top:-34px;font:800 18px KS;color:var(--sky);letter-spacing:.06em}
+.avg .calc{font:700 22px KS;color:#5A6275;margin-top:12px}
+/* E: donut */
+.way{background:var(--lsky);padding:28px 40px;display:grid;grid-template-columns:220px 1fr;gap:36px;align-items:center}
+.way .lbl{color:var(--sky)}
+.way h3{font:800 30px/1.12 KSD;margin:6px 0 14px}
+.legend{display:grid;gap:7px}
+.lg{display:grid;grid-template-columns:20px 90px 1fr auto;align-items:center;gap:14px;font:700 23px KS;padding-bottom:7px;border-bottom:2px solid #CFDBFA}
+.lg:last-child{border-bottom:0;padding-bottom:0}
+.lg i{width:20px;height:20px;border-radius:6px}
+.lg b{font:800 27px KSD}
+.lg small{font:600 19px KS;color:#5A6275}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <symbol id="cup" viewBox="0 0 46 56"><path d="M27 2l-5 14" stroke="#F2553C" stroke-width="4" stroke-linecap="round" fill="none"/><rect x="4" y="13" width="38" height="8" rx="4" fill="#1C2A55"/><path d="M8 21h30l-4 31a3 3 0 0 1-3 2.6H15A3 3 0 0 1 12 52z" fill="#fff" stroke="#1C2A55" stroke-width="3.5" stroke-linejoin="round"/><circle cx="18" cy="44" r="3" fill="#1C2A55"/><circle cx="26" cy="46" r="3" fill="#1C2A55"/><circle cx="23" cy="39" r="3" fill="#1C2A55"/></symbol>
+  <clipPath id="half"><rect x="0" y="0" width="23" height="56"/></clipPath>
+ </defs>
+</svg>
+<div class="slide">
+ <div class="top">
+  <div>
+   <div class="kick"><i></i>Unit 4 · Lesson 3 · Presenting data</div>
+   <h1>The canteen in numbers</h1>
+  </div>
+  <div class="src">Data: bubble tea sold at the canteen, <b>Monday to Thursday</b><br>and a survey of <b>class 1/2</b> (40 students)</div>
+ </div>
+ <div class="grid">
+  <section class="b tot">
+   <div class="lbl">Total this week</div>
+   <div class="big">110</div>
+   <div class="cap">cups of bubble tea<br>in 4 school days</div>
+   <div class="picto">
+    <div class="prow">Mon<div class="cups"><svg><use href="#cup"/></svg><svg><use href="#cup"/></svg><svg><use href="#cup"/></svg></div></div>
+    <div class="prow">Tue<div class="cups"><svg><use href="#cup"/></svg><svg><use href="#cup"/></svg><svg viewBox="0 0 46 56"><g clip-path="url(#half)"><use href="#cup"/></g></svg></div></div>
+    <div class="prow">Wed<div class="cups"><svg><use href="#cup"/></svg><svg><use href="#cup"/></svg><svg><use href="#cup"/></svg><svg><use href="#cup"/></svg></div></div>
+    <div class="prow">Thu<div class="cups"><svg><use href="#cup"/></svg><svg viewBox="0 0 46 56"><g clip-path="url(#half)"><use href="#cup"/></g></svg></div></div>
+    <div class="key"><svg><use href="#cup"/></svg>= 10 cups</div>
+   </div>
+  </section>
+  <section class="b bars">
+   <div class="lbl">Cups sold each day</div>
+   <h2>Wednesday is the busiest day</h2>
+   <div class="chart">
+    <div class="col"><b>30</b><div class="bar" style="height:56%"></div></div>
+    <div class="col"><b>25</b><div class="bar" style="height:46.5%"></div></div>
+    <div class="col best"><em class="pill">Best day</em><b>40</b><div class="bar" style="height:75%"></div></div>
+    <div class="col"><b>15</b><div class="bar" style="height:28%"></div></div>
+   </div>
+   <div class="days"><span>Mon</span><span>Tue</span><span class="on">Wed</span><span>Thu</span></div>
+  </section>
+  <section class="b pct">
+   <div class="lbl">Wednesday's share</div>
+   <div class="big">36<small>%</small></div>
+   <div class="cap">of all the cups were sold on Wednesday</div>
+   <div class="calc">40 ÷ 110 × 100 = 36.4%</div>
+  </section>
+  <section class="b avg">
+   <div class="lbl">Mean per day</div>
+   <div class="row"><div class="big">27.5</div><div class="u">cups</div></div>
+   <div class="calc">110 ÷ 4 days = 27.5</div>
+   <div class="strip">
+    <div class="t" style="left:0;height:56px"></div><div class="t" style="left:74px;height:46px"></div><div class="t" style="left:148px;height:74px;background:#FFC9BE"></div><div class="t" style="left:222px;height:28px"></div>
+    <div class="m" style="bottom:51px;right:auto;width:290px"></div>
+   </div>
+  </section>
+  <section class="b way">
+   <svg viewBox="0 0 250 250" width="220" height="220" aria-hidden="true">
+    <g transform="rotate(-90 125 125)" fill="none" stroke-width="54">
+     <circle cx="125" cy="125" r="94" stroke="#1C2A55" stroke-dasharray="236.2 354.4"/>
+     <circle cx="125" cy="125" r="94" stroke="#3D7BFF" stroke-dasharray="147.6 442.9" stroke-dashoffset="-236.2"/>
+     <circle cx="125" cy="125" r="94" stroke="#FFC83D" stroke-dasharray="118.1 472.5" stroke-dashoffset="-383.8"/>
+     <circle cx="125" cy="125" r="94" stroke="#F2553C" stroke-dasharray="88.6 502" stroke-dashoffset="-501.9"/>
+    </g>
+    <text x="125" y="120" text-anchor="middle" font-family="KSD" font-weight="800" font-size="46" fill="#14213D">40</text>
+    <text x="125" y="150" text-anchor="middle" font-family="KS" font-weight="700" font-size="19" fill="#5A6275">students</text>
+   </svg>
+   <div>
+    <div class="lbl">How class 1/2 comes to school</div>
+    <h3>4 in 10 students come by car</h3>
+    <div class="legend">
+     <div class="lg"><i style="background:#1C2A55"></i><span>Car</span><small>16 students</small><b>40%</b></div>
+     <div class="lg"><i style="background:#3D7BFF"></i><span>Bus</span><small>10 students</small><b>25%</b></div>
+     <div class="lg"><i style="background:#FFC83D"></i><span>BTS</span><small>8 students</small><b>20%</b></div>
+     <div class="lg"><i style="background:#F2553C"></i><span>Walk</span><small>6 students</small><b>15%</b></div>
+    </div>
+   </div>
+  </section>
+ </div>
+</div>
+</body></html>
