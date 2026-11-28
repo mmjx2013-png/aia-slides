@@ -55,6 +55,12 @@ export class HttpError extends Error {
   constructor(readonly status: number, message: string, readonly detail?: string) { super(message); }
 }
 
+/** "Please log in": a GET is redirected to the LINE login (and back), anything else gets 401. */
+export const LOGIN_REQUIRED = 'login-required';
+export function needLogin(): HttpError {
+  return new HttpError(401, 'กรุณาเข้าสู่ระบบ', LOGIN_REQUIRED);
+}
+
 /** Accept only a local /app/ path as a place to return to (prevents open redirects). */
 export function safeNext(value: string | null | undefined, fallback = '/app/'): string {
   if (!value || value.length > 300) return fallback;

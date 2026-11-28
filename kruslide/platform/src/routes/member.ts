@@ -1,6 +1,6 @@
 import type { Book, Ctx, Unit } from '../env';
 import { html, Safe } from '../lib/html';
-import { HttpError, htmlResponse, redirect, safeNext } from '../lib/http';
+import { HttpError, needLogin, htmlResponse, redirect, safeNext } from '../lib/http';
 import { page, flash, csrfField, cover, subBadge, payBadge, fmtDate, fmtDateTime, money } from '../views/layout';
 import * as db from '../db';
 import { MONTH_OPTIONS, monthlyPrice, perDay, RATE_MAX, RATE_MIN } from '../lib/pricing';
@@ -12,7 +12,7 @@ import { audit } from '../lib/audit';
 import { paymentProvider, providerFor } from '../payments';
 
 export function requireTeacher(ctx: Ctx): NonNullable<Ctx['teacher']> {
-  if (!ctx.teacher) throw new HttpError(401, 'กรุณาเข้าสู่ระบบ');
+  if (!ctx.teacher) throw needLogin();
   if (ctx.teacher.status !== 'active') throw new HttpError(403, 'บัญชีนี้ถูกระงับ กรุณาติดต่อทีมงานทาง LINE');
   return ctx.teacher;
 }

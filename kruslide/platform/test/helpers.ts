@@ -157,7 +157,9 @@ export function lineFetch(line: FakeLine): typeof fetch {
       return Response.json({ keys: [{ kty: 'EC', crv: 'P-256', x: jwk.x, y: jwk.y, kid: line.kid, alg: 'ES256', use: 'sig' }] });
     }
     if (url.href === 'https://api.line.me/oauth2/v2.1/token' && req.method === 'POST') {
-      const form = new URLSearchParams(await req.text());
+      const fd = await req.formData();
+      const form = new URLSearchParams();
+      for (const [k, v] of fd) if (typeof v === 'string') form.set(k, v);
       line.tokenRequests.push(form);
       const verifier = form.get('code_verifier') || '';
       const challenge = b64url(await crypto.subtle.digest('SHA-256', enc.encode(verifier)));

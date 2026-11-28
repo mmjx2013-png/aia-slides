@@ -1,6 +1,6 @@
 import type { Ctx, Env } from './env';
 import { Router } from './router';
-import { HttpError, clientIp, htmlResponse, redirect, secure, textResponse } from './lib/http';
+import { HttpError, LOGIN_REQUIRED, clientIp, htmlResponse, redirect, secure, textResponse } from './lib/http';
 import { adminIds, isProduction } from './lib/config';
 import { csrfToken, readSession } from './lib/session';
 import { errorPage } from './views/layout';
@@ -87,7 +87,7 @@ async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<R
     return await m.handler(ctx);
   } catch (e) {
     if (e instanceof HttpError) {
-      if (e.status === 401 && req.method === 'GET') return redirect(`/app/login?next=${encodeURIComponent(url.pathname)}`, 302);
+      if (e.detail === LOGIN_REQUIRED && (req.method === 'GET' || req.method === 'HEAD')) return redirect(`/app/login?next=${encodeURIComponent(url.pathname)}`, 302);
       if (e.status >= 500) console.error('error', e.status, e.message, e.detail ?? '');
       const headers: Record<string, string> = e.status === 429 && e.detail ? { 'Retry-After': e.detail } : {};
       return htmlResponse(errorPage(ctx, e.status, e.message), e.status, headers);

@@ -1,6 +1,6 @@
 import type { Book, Ctx } from '../env';
 import { html, Safe } from '../lib/html';
-import { HttpError, htmlResponse, redirect } from '../lib/http';
+import { HttpError, needLogin, htmlResponse, redirect } from '../lib/http';
 import { page, flash, csrfField, fmtDate, fmtDateTime, money, payBadge, subBadge, bookStatusBadge } from '../views/layout';
 import * as db from '../db';
 import { checkCsrf } from '../lib/csrf';
@@ -13,7 +13,7 @@ import { countSlides, inlineScriptHashes, looksLikeHtmlDocument, sha256hex } fro
 import { destroyAllSessions } from '../lib/session';
 
 function requireAdmin(ctx: Ctx) {
-  if (!ctx.teacher) throw new HttpError(401, 'กรุณาเข้าสู่ระบบ');
+  if (!ctx.teacher) throw needLogin();
   if (!ctx.isAdmin) throw new HttpError(403, 'หน้านี้สำหรับผู้ดูแลเท่านั้น');
   return ctx.teacher;
 }

@@ -1,5 +1,5 @@
 import type { Ctx, Unit } from '../env';
-import { HttpError, redirect } from '../lib/http';
+import { HttpError, needLogin, redirect } from '../lib/http';
 import { idParam } from '../lib/validate';
 import * as db from '../db';
 import { injectWatermark, watermarkText } from '../lib/watermark';
@@ -88,7 +88,7 @@ export async function deckAsset(ctx: Ctx): Promise<Response> {
   const ext = path.split('.').pop()!.toLowerCase();
   const type = ASSET_TYPES[ext];
   if (!type) throw new HttpError(404, 'ไม่พบไฟล์');
-  if (!ctx.teacher) throw new HttpError(401, 'กรุณาเข้าสู่ระบบ');
+  if (!ctx.teacher) throw needLogin();
   const { unit } = await authorise(ctx, id);
   const key = path.startsWith('fonts/') ? `shared/${path}` : `${unit.r2_key!.replace(/[^/]+$/, '')}${path}`;
   const obj = await ctx.env.DECKS.get(key);
