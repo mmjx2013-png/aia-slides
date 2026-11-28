@@ -151,8 +151,8 @@
       { th: 'ไต่บันไดเสียง', sub: 'โด เร มี ฟา ซอล', m: [60, 62, 64, 65, 67] },
       { th: 'ทวิงเคิล ทวิงเคิล', sub: 'ท่อนแรก · ทำนองพื้นบ้าน', m: [60, 60, 67, 67, 69, 69, 67] }
     ];
-    var ST = Staff(svg, { x0: 40, top: 130, gap: 32, w: 910, end: true }), tune = 0, at = 0, heard = false, playing = false, tm = [], slots = [];
-    var info = S('text', { x: 520, y: 70, 'class': 'turn', 'text-anchor': 'middle' }, svg);
+    var ST = Staff(svg, { x0: 40, top: 160, gap: 32, w: 910, end: true }), tune = 0, at = 0, heard = false, playing = false, tm = [], slots = [];
+    var info = S('text', { x: 520, y: 80, 'class': 'turn', 'text-anchor': 'middle' }, svg);
     function X(i) { var n = TUNES[tune].m.length; return 200 + i * Math.min(110, 700 / Math.max(1, n - 1)); }
     function draw(mode) {
       ST.clear(); slots = [];
@@ -203,7 +203,7 @@
       b.addEventListener('click', function (e) { e.stopPropagation(); pick(i); });
       host.appendChild(b); tb.push(b);
     });
-    var ft = K.foot($('#m2-ft'), { check: listen, checkLabel: '▶ ฟังทำนอง', show: function () { stop(); heard = true; at = TUNES[tune].m.length; draw(''); info.textContent = 'เฉลย: ' + TUNES[tune].sub; ft.say('ok', 'ชื่อโน้ต: ' + TUNES[tune].m.map(function (m) { return BYM[m].th; }).join(' ')); }, reset: function () { pick(tune); }, hint: '' });
+    var ft = K.foot($('#m2-ft'), { check: listen, checkLabel: '▶ ฟังทำนอง', show: function () { stop(); heard = true; at = TUNES[tune].m.length; draw(''); info.textContent = 'เฉลย: ' + TUNES[tune].th; ft.say('ok', 'ชื่อโน้ต: ' + TUNES[tune].m.map(function (m) { return BYM[m].th; }).join(' ')); }, reset: function () { pick(tune); }, hint: '' });
     var KB = Keyboard($('#m2-kb'), onNote);
     pick(0);
     K.slide('m2', { set: function () { active = KB; }, leave: function () { stop(); if (active === KB) active = null; } });

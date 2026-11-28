@@ -135,3 +135,4 @@ h2 .u{display:block;font-weight:600;font-size:46px;color:var(--mute)}
 .loc-lab{font:800 52px Inter;fill:var(--ink);paint-order:stroke;stroke:#F2EAD8;stroke-width:12px;stroke-linejoin:round}
 #g3-loc .m-reg .e{stroke-width:3}
 #g3-loc .m-reg{cursor:default}
+#g3:not(.b1) .read .season{visibility:hidden}

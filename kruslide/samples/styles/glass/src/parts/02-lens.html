@@ -1,0 +1,45 @@
+<!-- 2 · True relative sizes. Drag the glass lens over the small planets to magnify them; the glass card reads out the planet under it. -->
+<section class="slide" id="g-lens" data-steps="0" data-title="ขนาดจริงเทียบกัน" data-drift="10,6,.012,.12">
+ <div class="scene" id="g2-scene">
+  <div class="bg" style="background-image:url(img/bg-stars.webp)"></div>
+  <img class="sunl" src="img/p-sunlimb.webp" alt="" style="left:-290px;top:-40px;width:420px;height:1280px">
+  <span class="pn sun" style="left:28px;top:880px">ดวงอาทิตย์</span>
+  <img class="pl" src="img/p-mercury.webp" alt="" data-k="mercury" style="left:199.9px;top:594.9px;width:10.2px;height:10.2px;--i:0">
+  <i class="ldr" style="left:205px;top:609.1px;height:26.9px;--i:0"></i>
+  <span class="pn sm" style="left:205px;top:662.0px;--i:0">พุธ</span>
+  <img class="pl" src="img/p-venus.webp" alt="" data-k="venus" style="left:242.3px;top:587.3px;width:25.4px;height:25.4px;--i:1">
+  <i class="ldr" style="left:255px;top:616.7px;height:61.3px;--i:1"></i>
+  <span class="pn sm" style="left:255px;top:704.0px;--i:1">ศุกร์</span>
+  <img class="pl" src="img/p-earth.webp" alt="" data-k="earth" style="left:296.6px;top:586.6px;width:26.8px;height:26.8px;--i:2">
+  <i class="ldr" style="left:310px;top:617.4px;height:18.6px;--i:2"></i>
+  <span class="pn sm" style="left:310px;top:662.0px;--i:2">โลก</span>
+  <img class="pl" src="img/p-mars.webp" alt="" data-k="mars" style="left:352.9px;top:592.9px;width:14.3px;height:14.3px;--i:3">
+  <i class="ldr" style="left:360px;top:611.1px;height:66.9px;--i:3"></i>
+  <span class="pn sm" style="left:360px;top:704.0px;--i:3">อังคาร</span>
+  <img class="pl" src="img/p-jupiter.webp" alt="" data-k="jupiter" style="left:420.0px;top:450.0px;width:300.0px;height:300.0px;--i:4">
+  <span class="pn" style="left:570px;top:790.0px;--i:4">ดาวพฤหัสบดี</span>
+  <img class="pl" src="img/p-saturn.webp" alt="" data-k="saturn" style="left:769.6px;top:491.8px;width:574.8px;height:216.4px;--i:5">
+  <span class="pn" style="left:1057px;top:744.2px;--i:5">ดาวเสาร์</span>
+  <img class="pl" src="img/p-uranus.webp" alt="" data-k="uranus" style="left:1395.4px;top:546.4px;width:107.3px;height:107.3px;--i:6">
+  <span class="pn" style="left:1449px;top:693.6px;--i:6">ดาวยูเรนัส</span>
+  <img class="pl" src="img/p-neptune.webp" alt="" data-k="neptune" style="left:1552.0px;top:548.0px;width:103.9px;height:103.9px;--i:7">
+  <span class="pn" style="left:1604px;top:692.0px;--i:7">ดาวเนปจูน</span>
+  <i class="axis" style="top:600px"></i>
+ </div>
+ <div class="ab in" id="g2-head" style="left:190px;top:84px;--d:100">
+  <div class="kick"><b>2</b>ขนาดจริง เทียบกัน</div>
+  <h2 style="position:relative">ลากแว่น <span class="lt">ส่องดาวดวงเล็ก</span></h2>
+ </div>
+ <div class="glass liquid" data-glass="panel" id="g2-card" style="left:1290px;top:96px;width:520px;height:388px;border-radius:40px;--r:40px;--d:300" aria-live="polite">
+  <div class="gc">
+   <div class="g2-t"><span id="g2-name">โลก</span><span id="g2-en">Earth</span></div>
+   <div class="g2-row"><div><b class="num" id="g2-d">12,756</b><span>กม. กว้าง</span></div><div><b class="num" id="g2-x">1.00</b><span>เท่าของโลก</span></div><div><b class="num" id="g2-au">1.00</b><span>AU จากดวงอาทิตย์</span></div></div>
+   <p id="g2-fact">ดาวเคราะห์ดวงเดียวที่เรารู้ว่ามีน้ำเป็นของเหลวบนผิวและมีสิ่งมีชีวิต</p>
+   <span id="g2-type" class="chip rock">ดาวเคราะห์หิน</span>
+  </div>
+ </div>
+ <div class="glass" data-glass="lens" data-move id="g2-lens" style="left:150px;top:440px;width:320px;height:320px;border-radius:160px" role="slider" tabindex="0" aria-label="แว่นขยาย ลากไปทางซ้ายหรือขวา" data-planets="mercury|ดาวพุธ|Mercury|4879|0.39|หิน|ใกล้ดวงอาทิตย์ที่สุด ไม่มีบรรยากาศห่อหุ้ม กลางวันร้อนจัด กลางคืนหนาวจัด|205;venus|ดาวศุกร์|Venus|12104|0.72|หิน|ร้อนที่สุดในระบบสุริยะ ราว 465 °C เพราะบรรยากาศหนาเก็บความร้อนไว้|255;earth|โลก|Earth|12756|1.0|หิน|ดาวเคราะห์ดวงเดียวที่เรารู้ว่ามีน้ำเป็นของเหลวบนผิวและมีสิ่งมีชีวิต|310;mars|ดาวอังคาร|Mars|6792|1.52|หิน|สีแดงมาจากฝุ่นเหล็กออกไซด์ (สนิม) มีภูเขาไฟที่ใหญ่ที่สุดในระบบสุริยะ|360;jupiter|ดาวพฤหัสบดี|Jupiter|142984|5.2|แก๊ส|ใหญ่ที่สุด จุดแดงใหญ่คือพายุที่กว้างกว่าโลกทั้งใบ|570;saturn|ดาวเสาร์|Saturn|120536|9.54|แก๊ส|วงแหวนทำจากก้อนน้ำแข็งและหินนับไม่ถ้วน แต่หนาเพียงราวสิบเมตรถึงหนึ่งกิโลเมตร|1057;uranus|ดาวยูเรนัส|Uranus|51118|19.2|แก๊ส|แกนหมุนเอียงเกือบนอนตะแคง สีฟ้าอมเขียวมาจากแก๊สมีเทน|1449;neptune|ดาวเนปจูน|Neptune|49528|30.1|แก๊ส|ไกลที่สุด ลมแรงที่สุดในระบบสุริยะ เกินกว่า 2,000 กม./ชม.|1604"><div class="gc"><i class="lens-h"></i></div></div>
+ <p class="cap fade" style="left:150px;top:956px;--d:1000">ขนาดเทียบกันตามจริง (ระยะห่างไม่ได้ย่อตามจริง) · ภาพ: NASA, NASA/JPL, NASA/SDO, JHUAPL (สาธารณสมบัติ) · ภาพดาวพื้นหลังวาดโดย KruSlide</p>
+ <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 05</b></span></div></div>
+ <aside class="notes">ทุกดวงย่อด้วยอัตราส่วนเดียวกัน (ดาวพฤหัสบดีกว้าง 300 จุด) ดวงอาทิตย์จึงเห็นแค่ขอบโค้งทางซ้าย ให้นักเรียนออกมาลากแว่นขยายไปส่องดาวพุธ ศุกร์ โลก อังคาร ที่เล็กมาก การ์ดกระจกด้านบนบอกชื่อ ขนาด และระยะห่างของดวงที่อยู่ใต้แว่น ชวนสังเกต: ดวงชั้นในเล็กและเป็นหิน ดวงชั้นนอกใหญ่และเป็นแก๊ส</aside>
+</section>

@@ -31,6 +31,7 @@ h1,h2{position:absolute;color:var(--ink);font-family:Display;font-weight:800;lin
 h2{font-size:64px;letter-spacing:-.005em}
 .lead{font:600 34px/1.45 Inter;color:var(--mute)}
 .lead b{color:var(--ink);font-weight:800}
+.lead b.k-c{color:var(--dcoral)}.lead b.k-v{color:var(--dteal)}.lead b.k-t{color:var(--dmustard)}
 
 /* glyph tiles: a faint อ placeholder with the strong mark on top (clip shows only the mark's band) */
 .gl{position:relative;display:inline-block;line-height:1.45;white-space:nowrap}

@@ -57,4 +57,5 @@ h2{font-size:64px;white-space:nowrap}
 .tw-bin.b0 .tw-bint{color:#B4521A}.tw-bin.b1 .tw-bint{color:#1F4FA0}.tw-bin.b2 .tw-bint{color:#6F3C8E}
 .pics{display:flex;gap:40px}
 .pics svg{width:380px;height:170px;overflow:visible}
-.pcap{font:800 22px Inter;fill:var(--ink);paint-order:stroke;stroke:#FFFDF8;stroke-width:6px}
+#a2-ft .tw-foot{flex-wrap:wrap;row-gap:10px}#a2-ft .tw-fb{flex-basis:100%}
+.pcap{font:800 21px Inter;fill:#FFFDF8;stroke:none;paint-order:normal}

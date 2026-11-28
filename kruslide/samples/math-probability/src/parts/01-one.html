@@ -1,0 +1,26 @@
+<!-- 1 · Title + one die: tap or flick the die to roll it (animated); run 100 or 1000 rolls fast; the bars show how often each face came up. Beat 1: the theory line at 1/6. Beat 2: many rolls bring the bars to 1/6. -->
+<section class="slide" id="p-one" data-steps="2" data-title="ความน่าจะเป็น">
+ <svg class="ab" aria-hidden="true" viewBox="0 0 120 120" style="left:640px;top:880px;width:84px;height:84px;transform:rotate(-12deg)"><use href="#meeple" fill="#E4572E"/></svg>
+ <svg class="ab" aria-hidden="true" viewBox="0 0 120 120" style="left:60px;top:430px;width:70px;height:70px;transform:rotate(14deg)"><use href="#meeple" fill="#3C8DCB"/></svg>
+ <div class="card in" id="p1-t" style="left:110px;top:70px;width:620px;height:320px;--d:100"><i class="band"></i>
+  <div class="chip" style="left:36px;top:46px;box-shadow:none;background:#F4EAD6"><b>ม.3</b>คณิตศาสตร์ · ความน่าจะเป็น</div>
+  <h1 style="left:34px;top:110px;font-size:76px">ความน่าจะเป็น</h1>
+  <p class="lab ab" style="left:38px;top:222px">ทอยลูกเต๋า 1 ลูก แต่ละหน้า<br>ออกบ่อยแค่ไหน?</p>
+ </div>
+ <div class="dz ia in" id="p1-d" style="--s:220px;left:250px;top:450px;--d:300" role="button" tabindex="0" aria-label="ลูกเต๋า แตะหรือปัดเพื่อทอย"></div>
+ <div class="ab in on-felt p-res" id="p1-r" style="left:520px;top:500px;--d:400"><small>ออก</small><b id="p1-rv">–</b></div>
+ <p class="ab in on-felt p-hint" style="left:120px;top:742px;--d:500">แตะหรือปัดลูกเต๋าเพื่อทอย</p>
+ <div class="btns ia in" style="left:110px;top:800px;--d:500">
+  <button class="gbtn" type="button" data-n="1">ทอย 1 ครั้ง</button><button class="gbtn w" type="button" data-n="100">×100</button><button class="gbtn w" type="button" data-n="1000">×1000</button><button class="gbtn w" type="button" data-n="0">ล้าง</button>
+ </div>
+
+ <div class="card in" id="p1-c" style="left:780px;top:70px;width:1030px;height:920px;--d:200"><i class="band y"></i>
+  <div class="p-ct"><b>ผลการทอย</b> <span id="p1-n">0</span> ครั้ง</div>
+  <svg class="chart" id="p1-ch" viewBox="0 0 1030 700" style="left:0;top:110px;width:1030px;height:700px" role="img" aria-label="กราฟแท่ง สัดส่วนที่แต่ละหน้าออก"></svg>
+  <p class="p-note g1 h2" id="p1-th" style="--d:200"><i class="dash"></i>ทฤษฎี: แต่ละหน้ามีโอกาสเท่ากัน <b>1/6</b> (ประมาณ 16.7%)</p>
+  <p class="p-note g2" id="p1-law" style="--d:200"><i class="dash"></i>ทอยยิ่งมาก แท่งสีเหลืองยิ่งเข้าใกล้เส้น <b>1/6</b></p>
+ </div>
+
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>01 / 03</b></span></div>
+ <aside class="notes">แตะหรือปัดลูกเต๋าให้กลิ้ง (หน้าที่หันมาข้างหน้าคือผล) กราฟแท่งแสดงสัดส่วนที่แต่ละหน้าออก ลองทอยไม่กี่ครั้ง แท่งไม่เท่ากันเลย ถามห้องว่าทำไม กด ×100 หรือ ×1000 ทอยเร็ว กด → เส้นประ = ทฤษฎี: ผลที่เป็นไปได้ 6 แบบ โอกาสเท่ากัน แต่ละหน้าจึงมีความน่าจะเป็น 1/6 กด → ทอย 1000 ครั้ง (ถ้ายังทอยไม่ถึง) แท่งจะเข้าใกล้ 1/6 แต่ไม่เท่าพอดีทุกครั้ง: ความน่าจะเป็นบอกแนวโน้มเมื่อทดลองจำนวนมาก ไม่ได้บอกผลครั้งเดียว</aside>
+</section>

@@ -197,7 +197,7 @@
     }
     function show() { dabs.forEach(function (D) { place(D, wedges[D.ci]); }); check(); ft.say('ok', 'เฉลย: สีขั้นที่ 3 อยู่ระหว่างแม่สีกับสีขั้นที่ 2 ที่ผสมกัน'); }
     function reset() { dabs.forEach(back); ft.say(''); }
-    var ft = K.foot($('#a2-ft'), { check: check, show: show, reset: reset, hint: 'ลากสีไปวางในช่องว่าง แตะช่องที่ทาแล้วเพื่อเอาสีออก' });
+    var ft = K.foot($('#a2-ft'), { check: check, show: show, reset: reset, hint: 'แตะช่องที่ทาแล้ว เพื่อเอาสีออก' });
     K.slide('a2', { set: function () {} });
     window.__a2 = { dabs: dabs, wedges: wedges, place: place, check: check, show: show, reset: reset };
   })();
@@ -206,15 +206,17 @@
   (function () {
     var w = $('#a3-warm'), c = $('#a3-cool'); if (!w) return;
     function band(s, y, h, col, seed) { var g = S('g', { filter: 'url(#wcs)' }, s); S('path', { d: 'M-6 ' + y + ' Q95 ' + (y - 10 - seed) + ' 190 ' + (y + 4) + ' T386 ' + y + ' V' + (y + h) + ' H-6Z', fill: col, opacity: 0.8 }, g); }
+    function clip(s, id) { var d = S('defs', {}, s), cp = S('clipPath', { id: id }, d); S('rect', { x: 0, y: 0, width: 380, height: 170 }, cp); var g = S('g', { 'clip-path': 'url(#' + id + ')' }, s); return g; }
     function frame(s, cap) { S('rect', { x: 0, y: 0, width: 380, height: 170, fill: 'none', stroke: '#33302B', 'stroke-width': 1.5 }, s); var t = S('text', { x: 12, y: 160, 'class': 'pcap' }, s); t.textContent = cap; }
+    var W0 = w, C0 = c; w = clip(W0, 'a3-wc'); c = clip(C0, 'a3-cc');
     band(w, 0, 70, '#F6C324', 2); band(w, 45, 50, '#F4A62A', 5); band(w, 80, 40, '#EE7A22', 3);
     var sun = S('g', { filter: 'url(#wcs)' }, w); S('circle', { cx: 270, cy: 70, r: 30, fill: '#D7263D', opacity: 0.85 }, sun);
     var hill = S('g', { filter: 'url(#wcs)' }, w); S('path', { d: 'M-6 170 L-6 112 Q70 82 140 118 Q220 150 300 104 Q350 86 386 100 V170Z', fill: '#A8336A', opacity: 0.85 }, hill);
     S('path', { d: 'M-6 170 V140 Q120 120 230 146 Q320 160 386 138 V170Z', fill: '#6F3C8E', opacity: 0.8, filter: 'url(#wcs)' }, w);
-    frame(w, 'โทนร้อน: สดใส ร้อนแรง');
-    band(c, 0, 70, '#9DBF3A', 2); band(c, 0, 60, '#1E7F86', 4); band(c, 40, 50, '#1F4FA0', 6);
+    frame(W0, 'โทนร้อน: สดใส ร้อนแรง');
+    band(c, 0, 70, '#8EC3DA', 2); band(c, 38, 50, '#1E7F86', 4); band(c, 70, 40, '#1F4FA0', 6);
     var mt = S('g', { filter: 'url(#wcs)' }, c); S('path', { d: 'M-6 120 L60 62 L110 100 L170 50 L250 108 L300 80 L386 116 V170 H-6Z', fill: '#4A3F95', opacity: 0.85 }, mt);
     S('path', { d: 'M-6 170 V128 Q100 118 200 130 T386 126 V170Z', fill: '#3E9B4F', opacity: 0.85, filter: 'url(#wcs)' }, c);
-    frame(c, 'โทนเย็น: สงบ สบายตา');
+    frame(C0, 'โทนเย็น: สงบ สบายตา');
   })();
 })();

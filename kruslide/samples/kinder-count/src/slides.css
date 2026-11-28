@@ -28,7 +28,7 @@
 .k2-sh.hot{filter:drop-shadow(0 0 0 #000)}
 .k2-nm{font:800 46px Display;fill:var(--ink);opacity:0;transition:opacity .4s}
 .names .k2-nm,.k2-sh.done .k2-nm{opacity:1}
-.k2-msg{left:900px;top:200px;width:900px;text-align:right;font:800 44px/1.45 Display;color:var(--cgrn)}
+.k2-msg{left:900px;top:216px;width:900px;text-align:right;font:800 44px/1.45 Display;color:var(--cgrn)}
 /* 3 · colours */
 .k3-o{transition:opacity .4s;transform-box:fill-box;transform-origin:center bottom}
 .picked .k3-o:not(.lit){opacity:.22}

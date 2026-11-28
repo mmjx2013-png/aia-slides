@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-StrjjEiMvTB1hxZNyC39iib5JlwuDtAZUcJ9OiXppb0='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-KmYz6io4o7mG3u1Pb2/Bs/4tnJR3FVOjXrApupSjlEc='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>สั่งหุ่นยนต์ด้วยโค้ด และเลขฐานสอง · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · สั่งหุ่นยนต์ด้วยโค้ด (ป.4–6) · style "pixel game"
@@ -1684,7 +1684,7 @@ h2{font-size:58px}
       setTimeout(function () {
         if (lastClick >= at || !t.isConnected || t.disabled) return;
         synthAt = performance.now(); synthT = t;
-        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+        if (t.tagName === 'INPUT') t.focus(); else { if (t.click) t.click(); else t.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); unfocus(); }
       }, 90);
     }, true);
   })();
@@ -2007,18 +2007,18 @@ var KIT = (function () {
         var s = steps[at++], t = s.it.t, ms = K.rm() ? 0 : 380;
         clear(); if (s.it.el) s.it.el.classList.add('now');
         if (s.rep && s.rep.el) { s.rep.el.classList.add('now'); s.rep.el._n.textContent = s.k + '/' + s.rep.n; }
-        if (t === 'L' || t === 'R') { d = (d + (t === 'L' ? 3 : 1)) % 4; world.turn(d, t === 'L' ? -1 : 1, ms, cb); ui.status('', (at) + '. ' + NAME[t]); return true; }
+        if (t === 'L' || t === 'R') { d = (d + (t === 'L' ? 3 : 1)) % 4; ui.status('', at + '. ' + NAME[t]); world.turn(d, t === 'L' ? -1 : 1, ms, cb); return true; }
         var nx = x + DX[d], ny = y + DY[d];
         if (!world.free(nx, ny)) {
           if (s.it.el) s.it.el.classList.add('bad');
           world.bump(K.rm() ? 0 : 420); R.stop(); ui.status('no', 'ชนกำแพง! ดูบล็อกสีแดง แล้วแก้โปรแกรม'); ui.done(false); return false;
         }
         x = nx; y = ny;
+        ui.status('', at + '. ' + NAME[t]);
         world.move(x, y, ms, function () {
           if (x === world.goal.x && y === world.goal.y) { R.stop(); R.fin = true; clear(); reps(R.prog); ui.status('ok', 'ถึงเป้าหมายแล้ว ผ่านด่าน!'); ui.done(true); return; }
           if (cb) cb();
         });
-        ui.status('', at + '. ' + NAME[t]);
         return true;
       },
       run: function () {

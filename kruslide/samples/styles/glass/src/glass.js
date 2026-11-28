@@ -41,7 +41,7 @@
     for (var j = 0; j < ch; j++) for (var i = 0; i < cw; i++) {
       var x = (i + .5) / k, y = (j + .5) / k, d = sdf(x, y, w, h, r), o = (j * cw + i) * 4, vx = 0, vy = 0;
       if (d > 0 && d < b) {
-        var t = 1 - d / b, m = 1 - Math.sqrt(Math.max(0, 1 - t * t));          /* 0 at the inner edge of the bezel, 1 at the rim */
+        var t = 1 - d / b, m = .55 * t * t + .45 * (1 - Math.sqrt(Math.max(0, 1 - t * t)));   /* 0 at the inner edge of the bezel, 1 at the rim */
         var gx = sdf(x + 1, y, w, h, r) - sdf(x - 1, y, w, h, r), gy = sdf(x, y + 1, w, h, r) - sdf(x, y - 1, w, h, r), gl = Math.hypot(gx, gy) || 1;
         vx = -gx / gl * m; vy = -gy / gl * m;                                    /* outward normal, scaled */
       }
@@ -67,11 +67,12 @@
   }
 
   /* ---------- building one glass element ---------- */
-  var KIND = {
-    panel: { bezel: 34, str: 26, blur: 3.2 },
-    clear: { bezel: 22, str: 20, blur: 0 },
-    pill: { bezel: 26, str: 22, blur: 1.2 },
-    lens: { bezel: 70, str: 46, blur: 0 }
+  var KIND = {   /* bezel = width of the curved rim (px; 'r' = the whole half-height, a capsule or a sphere), str = how far the rim
+                   bends the light (px; 'r' = a third of the half-height), zoom = the lens over the whole face */
+    panel: { bezel: 92, str: 66, blur: 1, zoom: 1 },
+    clear: { bezel: 'r', str: 'r', blur: 0, zoom: 1.12 },
+    pill: { bezel: 'r', str: 22, blur: .6, zoom: 1 },
+    lens: { bezel: 120, str: 84, blur: 0, zoom: 1 }
   };
   var items = [];
   function offsetIn(el, slide) {   /* layout position of el inside its slide (transforms ignored) */
@@ -85,7 +86,8 @@
     var kind = el.dataset.glass || 'panel', K = KIND[kind] || KIND.panel;
     var w = el.offsetWidth, h = el.offsetHeight, cs = getComputedStyle(el), r = parseFloat(cs.borderTopLeftRadius) || 0;
     r = Math.min(r, w / 2, h / 2);
-    var bezel = Math.min(+(el.dataset.bezel || K.bezel), Math.min(w, h) / 2 - 1), str = +(el.dataset.str || K.str);
+    var half = Math.min(w, h) / 2, bz = el.dataset.bezel || K.bezel, st = el.dataset.str || K.str;
+    var bezel = Math.min(bz === 'r' ? half : +bz, half - 1), str = st === 'r' ? clamp(half * .36, 16, 64) : +st;
     var pad = Math.ceil(str + 8);
     var under = div('g-under'), copy = div('g-copy', under);
     under.style.left = -pad + 'px'; under.style.top = -pad + 'px'; under.style.width = (w + 2 * pad) + 'px'; under.style.height = (h + 2 * pad) + 'px';
@@ -98,7 +100,7 @@
     var top = div('g-top'); top.innerHTML = '<i class="g-spec"></i><i class="g-rim"></i>';
     el.appendChild(top);
     el.classList.add('g-' + kind, 'g-ready');
-    var it = { el: el, slide: slide, copy: copy, w: w, h: h, pad: pad, kind: kind, fixed: el.dataset.move == null };
+    var it = { el: el, slide: slide, copy: copy, w: w, h: h, pad: pad, kind: kind, fixed: el.dataset.move == null, zoom: +(el.dataset.zoom || K.zoom) };
     place(it);
     items.push(it);
     return it;
@@ -106,8 +108,9 @@
   /* align the copy with the real background: copy = translate(pad - x, pad - y) [then magnify, rotate...] */
   function place(it, m) {
     if (m) { it.copy.style.transform = m; return; }
-    var o = offsetIn(it.el, it.slide); it.x = o.x; it.y = o.y;
-    it.copy.style.transform = 'translate(' + (it.pad - o.x) + 'px,' + (it.pad - o.y) + 'px)';
+    var o = offsetIn(it.el, it.slide), z = it.zoom; it.x = o.x; it.y = o.y;
+    it.copy.style.transform = z === 1 ? 'translate(' + (it.pad - o.x) + 'px,' + (it.pad - o.y) + 'px)'
+      : 'translate(' + (it.pad + it.w / 2 - z * (o.x + it.w / 2)).toFixed(1) + 'px,' + (it.pad + it.h / 2 - z * (o.y + it.h / 2)).toFixed(1) + 'px) scale(' + z + ')';
   }
 
   /* ---------- light: pointer, tilt, or a slow drift ---------- */
@@ -152,8 +155,8 @@
     if (any) requestAnimationFrame(frame); else running = false;
   }
   function wake() { if (!running) { running = true; requestAnimationFrame(frame); } }
-  document.addEventListener('deck:change', function (e) {
-    var s = e.detail.slide;
+  var curSt = 0;
+  function enter(s, st) {
     if (s !== cur) {
       cur = s;
       var d = (s.dataset.drift || '18,10,.02').split(',').map(Number);
@@ -161,9 +164,11 @@
       t0 = performance.now();
       hooks.forEach(function (h) { if (h.active) h.active(h.slide === s); });
     }
-    hooks.forEach(function (h) { if (h.slide === s && h.beat) h.beat(e.detail.st); });
+    curSt = st;
+    hooks.forEach(function (h) { if (h.slide === s && h.beat) h.beat(st); });
     wake();
-  });
+  }
+  document.addEventListener('deck:change', function (e) { enter(e.detail.slide, e.detail.st); });
 
   /* ---------- start: build every glass element once fonts and images are ready ---------- */
   function buildAll() {
@@ -171,8 +176,10 @@
     items.forEach(function (it) { if (it.slide === cur || !cur) light(it); });
   }
   function refresh() { items.forEach(function (it) { if (it.fixed) place(it); }); }
-  window.__glass = { items: items, light: L, refresh: refresh, build: build, place: place, hook: function (h) { hooks.push(h); if (cur) { if (h.active) h.active(h.slide === cur); } wake(); return h; }, wake: wake, still: still, ease: ease, clamp: clamp, stageXY: stageXY };
+  window.__glass = { items: items, light: L, refresh: refresh, build: build, place: place, hook: function (h) { hooks.push(h); if (cur) { if (h.active) h.active(h.slide === cur); if (h.slide === cur && h.beat) h.beat(curSt); } wake(); return h; }, wake: wake, still: still, ease: ease, clamp: clamp, stageXY: stageXY };
   buildAll();
+  /* the deck showed its first slide before this file ran */
+  (function () { var on = stage.querySelector('.slide.on'); if (on) enter(on, window.__deck ? window.__deck.state().st : 0); })();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { refresh(); });
   addEventListener('load', refresh);
   document.dispatchEvent(new CustomEvent('glass:ready'));

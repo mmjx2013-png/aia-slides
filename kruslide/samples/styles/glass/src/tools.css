@@ -1,0 +1,61 @@
+/* Widgets from tools.js (tap a choice, typed answer with Check) + the global pen, in deck D's glass look. */
+.w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.3 Inter,system-ui,sans-serif;color:#fff;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-lab{display:block;font:600 22px/1.4 Inter,system-ui,sans-serif;color:var(--soft)}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:58px}
+.tw-btns{display:flex;gap:10px;flex:none}
+.tw-btn{position:relative;font:700 22px/1 Inter,system-ui,sans-serif;height:58px;padding:0 24px;border-radius:29px;border:0;color:#fff;cursor:pointer;white-space:nowrap;touch-action:manipulation;
+ background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.08));box-shadow:inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -10px 18px -12px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.22),0 10px 20px -10px rgba(0,0,0,.5);transition:transform .25s var(--spring),background .2s}
+.tw-btn:hover{background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.12))}
+.tw-btn:active{transform:scale(.96)}
+.tw-btn.pri{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(232,238,255,.82));color:var(--ink)}
+.tw-btn.show[aria-pressed="true"]{background:linear-gradient(180deg,rgba(75,224,143,.6),rgba(31,181,122,.45))}
+.tw-btn.show.nudge{background:linear-gradient(180deg,rgba(255,197,107,.5),rgba(255,197,107,.25))}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 24px/1.4 Inter,system-ui,sans-serif;color:var(--soft)}
+.tw-fb.ok{color:var(--ok)}.tw-fb.no{color:#FFC2B8}.tw-fb.info{color:#CFE3FF}
+.tw-fb .tw-ico{width:34px;height:34px;padding:6px;border-radius:50%;color:#0b2a1c;background:var(--ok)}
+.tw-fb.no .tw-ico{background:#FF8A7A;color:#3a0d06}
+.tw-in{font:800 46px/1 Inter,system-ui,sans-serif;height:84px;padding:0 22px;border-radius:24px;border:0;color:#fff;min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center;
+ background:rgba(4,8,20,.34);box-shadow:inset 0 2px 8px rgba(0,0,0,.45),inset 0 0 0 1.5px rgba(255,255,255,.35),0 1px 0 rgba(255,255,255,.25);transition:background .2s,box-shadow .2s}
+.tw-in:focus{outline:none;box-shadow:inset 0 2px 8px rgba(0,0,0,.45),inset 0 0 0 2px #fff}
+.tw-in.ok{background:rgba(31,181,122,.32);box-shadow:inset 0 0 0 2px var(--ok)}
+.tw-in.no{background:rgba(255,106,61,.25);box-shadow:inset 0 0 0 2px #FF8A7A}
+.tw-unit{font:700 30px Inter,system-ui,sans-serif;color:var(--soft)}
+.tw-inrow{display:flex;align-items:center;gap:18px;min-height:84px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* tap a choice: every choice is a real glass pill (glass.js) */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.c{position:relative;height:110px;border-radius:55px;font:700 38px/1 Display;transition:transform .3s var(--spring),filter .4s}
+.c .gc{display:flex;align-items:center;gap:18px;height:100%;padding:0 26px}
+.c b{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 0 1px rgba(255,255,255,.25);font:800 26px Inter;transition:background .4s,color .4s}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:hover{transform:scale(1.015)}
+.ch[data-mcq] .c:active{transform:scale(.97)}
+.ch[data-mcq] .c:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.ch .c.wrong{--tint:rgba(255,106,61,.32)}
+.ch .c.wrong b{background:#FF8A7A;color:#3a0d06}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok,.ch .c.ok.picked{--tint:rgba(31,181,122,.4)}
+.on.b1 .ch.r1 .c.ok b,.on.b2 .ch.r2 .c.ok b,.ch .c.ok.picked b{background:var(--ok);color:#0b2a1c}
+.on.b1 .ch.r1 .c:not(.ok),.on.b2 .ch.r2 .c:not(.ok){filter:saturate(.3) opacity(.5)}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok{animation:pulse .6s var(--ease) both .2s}
+
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:30px;background:rgba(20,24,40,.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px rgba(255,255,255,.18),0 18px 40px rgba(0,0,0,.4)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:50%;border:0;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:rgba(255,255,255,.14)}
+#pen-bar .pb[aria-pressed="true"]{background:rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.85)}
+#pen-bar .ps{display:block;width:38px;height:1.5px;border-radius:2px;background:rgba(255,255,255,.3);margin:2px 0}
+.shot #pen-bar{display:none!important}

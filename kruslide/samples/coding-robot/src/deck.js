@@ -151,18 +151,18 @@
         var s = steps[at++], t = s.it.t, ms = K.rm() ? 0 : 380;
         clear(); if (s.it.el) s.it.el.classList.add('now');
         if (s.rep && s.rep.el) { s.rep.el.classList.add('now'); s.rep.el._n.textContent = s.k + '/' + s.rep.n; }
-        if (t === 'L' || t === 'R') { d = (d + (t === 'L' ? 3 : 1)) % 4; world.turn(d, t === 'L' ? -1 : 1, ms, cb); ui.status('', (at) + '. ' + NAME[t]); return true; }
+        if (t === 'L' || t === 'R') { d = (d + (t === 'L' ? 3 : 1)) % 4; ui.status('', at + '. ' + NAME[t]); world.turn(d, t === 'L' ? -1 : 1, ms, cb); return true; }
         var nx = x + DX[d], ny = y + DY[d];
         if (!world.free(nx, ny)) {
           if (s.it.el) s.it.el.classList.add('bad');
           world.bump(K.rm() ? 0 : 420); R.stop(); ui.status('no', 'ชนกำแพง! ดูบล็อกสีแดง แล้วแก้โปรแกรม'); ui.done(false); return false;
         }
         x = nx; y = ny;
+        ui.status('', at + '. ' + NAME[t]);
         world.move(x, y, ms, function () {
           if (x === world.goal.x && y === world.goal.y) { R.stop(); R.fin = true; clear(); reps(R.prog); ui.status('ok', 'ถึงเป้าหมายแล้ว ผ่านด่าน!'); ui.done(true); return; }
           if (cb) cb();
         });
-        ui.status('', at + '. ' + NAME[t]);
         return true;
       },
       run: function () {

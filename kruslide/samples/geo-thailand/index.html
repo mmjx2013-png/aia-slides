@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-vgqdpTA81NTY/x+cFMMpKxS3+xgDeHumEnQoDtvlLXY='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-epXv/5fXjKKdzuYcs4SfNZupiGm4TGp+dzCFOhsZNx4='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>ภูมิภาคของประเทศไทย · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · ภูมิภาคของประเทศไทย (ม.1) · style "topographic map"
@@ -221,6 +221,7 @@ h2 .u{display:block;font-weight:600;font-size:46px;color:var(--mute)}
 .loc-lab{font:800 52px Inter;fill:var(--ink);paint-order:stroke;stroke:#F2EAD8;stroke-width:12px;stroke-linejoin:round}
 #g3-loc .m-reg .e{stroke-width:3}
 #g3-loc .m-reg{cursor:default}
+#g3:not(.b1) .read .season{visibility:hidden}
 
 /* Widgets rendered by tools.js / kit.js (buttons, feedback, tap a choice, typed answer, sort cards) + the global pen.
    The look comes from this deck's variables: --t-ink --t-bg --t-pri --t-pri-ink --t-ok --t-no --t-lok --t-lno --t-r --t-sh --t-bw --t-font */
@@ -1731,7 +1732,7 @@ h2 .u{display:block;font-weight:600;font-size:46px;color:var(--mute)}
       setTimeout(function () {
         if (lastClick >= at || !t.isConnected || t.disabled) return;
         synthAt = performance.now(); synthT = t;
-        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+        if (t.tagName === 'INPUT') t.focus(); else { if (t.click) t.click(); else t.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); unfocus(); }
       }, 90);
     }, true);
   })();

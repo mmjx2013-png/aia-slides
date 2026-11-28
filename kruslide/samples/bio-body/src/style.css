@@ -1,0 +1,34 @@
+/* KruSlide sample · Human body systems (วิทยาศาสตร์ ม.2) · style "anatomical illustration"
+   Warm paper with a faint grain, fine sepia ink lines, muted plate colours, labels on hairline leaders, "plate" captions.
+   Colour means a body system: ochre-ivory = skeleton, terracotta = muscles, muted red/blue = blood (high/low oxygen),
+   olive-ochre = digestive, dusty rose = respiratory. All drawings are our own (no textbook art, no photos). */
+:root{--paper:#F2E9D6;--paper2:#EADFC7;--ink:#3A2C22;--ink2:#6E5D4E;--hair:rgba(58,44,34,.35);--acc:#A2452F;
+ --bone:#EFE4C8;--mus:#C98A72;--art:#B5524A;--vein:#5D7BA6;--dig:#C9A46A;--liv:#9C5B4A;--res:#D9A3A0;
+ --ctl-bg:#3A2C22;--ctl-fg:#F2E9D6;--ctl-acc:#C98A72;--foot-ink:#3A2C22;--foot-mute:#6E5D4E;
+ --penbar-bg:#F2E9D6;--penbar-line:rgba(58,44,34,.4);--penbar-ink:#3A2C22;
+ --pens:"หมึก:#3A2C22,แดง:#A2452F,น้ำเงิน:#3F5F8E,เขียว:#5E7A3A,เหลือง:#E2B73E"}
+html,body{background:#D9CDB4;color:var(--ink)}
+#stage{background:
+  radial-gradient(120% 90% at 50% 40%,rgba(255,250,238,.55),rgba(255,250,238,0) 60%),
+  repeating-linear-gradient(0deg,rgba(120,96,64,.025) 0 1px,transparent 1px 3px),
+  repeating-linear-gradient(90deg,rgba(120,96,64,.02) 0 1px,transparent 1px 4px),
+  linear-gradient(180deg,#F3EBD9,#EEE3CC)}
+.slide{background:transparent}
+/* plate border: double fine rule */
+.slide::before{content:"";position:absolute;inset:30px 30px 74px;border:1.5px solid var(--hair);pointer-events:none}
+.slide::after{content:"";position:absolute;inset:38px 38px 82px;border:.8px solid rgba(58,44,34,.2);pointer-events:none}
+.kick{position:absolute;font:600 20px/1.4 Inter;color:var(--acc);letter-spacing:.02em}
+h1,h2{position:absolute;font:700 60px/1.25 Display;color:var(--ink)}
+h2{font-size:52px}
+.sub{position:absolute;font:500 23px/1.5 Inter;color:var(--ink2)}
+.plate{position:absolute;font:600 19px/1.4 Inter;letter-spacing:.03em;color:var(--ink2)}
+.num{font-variant-numeric:tabular-nums}
+.tg{display:flex;align-items:center;gap:12px;height:54px;padding:0 18px 0 12px;border:1.5px solid var(--hair);border-radius:4px;background:rgba(255,252,244,.5);color:var(--ink);font:600 22px/1 Inter;cursor:pointer;white-space:nowrap;transition:background .3s,border-color .3s,color .3s}
+.tg i{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);flex:none;transition:transform .3s}
+.tg[aria-pressed="false"]{color:var(--ink2);background:transparent}
+.tg[aria-pressed="false"] i{background:transparent!important;transform:scale(.7)}
+.tg:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 20px;border:1.5px solid var(--ink);border-radius:4px;background:transparent;color:var(--ink);font:600 21px/1 Inter;cursor:pointer;white-space:nowrap}
+.btn:hover{background:rgba(58,44,34,.06)}
+.btn.pri{background:var(--ink);color:var(--paper)}
+.btn:focus-visible{outline:2px solid var(--acc);outline-offset:3px}

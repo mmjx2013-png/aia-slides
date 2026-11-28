@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UjyM58Xu5kXZM0QXTYdyfwzw3Iut9+bTael4WXnGqJQ='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-5ba0RSBus5DcCb01schoNaOK7pgfCzkO2Z8p/08Zmiw='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>เปียโนและการอ่านโน้ตสากล · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · เปียโนและการอ่านโน้ต (ม.1) · style "music sheet"
@@ -1653,7 +1653,7 @@ h2{font-size:64px;white-space:nowrap}
       setTimeout(function () {
         if (lastClick >= at || !t.isConnected || t.disabled) return;
         synthAt = performance.now(); synthT = t;
-        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+        if (t.tagName === 'INPUT') t.focus(); else { if (t.click) t.click(); else t.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); unfocus(); }
       }, 90);
     }, true);
   })();
@@ -1976,8 +1976,8 @@ var KIT = (function () {
       { th: 'ไต่บันไดเสียง', sub: 'โด เร มี ฟา ซอล', m: [60, 62, 64, 65, 67] },
       { th: 'ทวิงเคิล ทวิงเคิล', sub: 'ท่อนแรก · ทำนองพื้นบ้าน', m: [60, 60, 67, 67, 69, 69, 67] }
     ];
-    var ST = Staff(svg, { x0: 40, top: 130, gap: 32, w: 910, end: true }), tune = 0, at = 0, heard = false, playing = false, tm = [], slots = [];
-    var info = S('text', { x: 520, y: 70, 'class': 'turn', 'text-anchor': 'middle' }, svg);
+    var ST = Staff(svg, { x0: 40, top: 160, gap: 32, w: 910, end: true }), tune = 0, at = 0, heard = false, playing = false, tm = [], slots = [];
+    var info = S('text', { x: 520, y: 80, 'class': 'turn', 'text-anchor': 'middle' }, svg);
     function X(i) { var n = TUNES[tune].m.length; return 200 + i * Math.min(110, 700 / Math.max(1, n - 1)); }
     function draw(mode) {
       ST.clear(); slots = [];
@@ -2028,7 +2028,7 @@ var KIT = (function () {
       b.addEventListener('click', function (e) { e.stopPropagation(); pick(i); });
       host.appendChild(b); tb.push(b);
     });
-    var ft = K.foot($('#m2-ft'), { check: listen, checkLabel: '▶ ฟังทำนอง', show: function () { stop(); heard = true; at = TUNES[tune].m.length; draw(''); info.textContent = 'เฉลย: ' + TUNES[tune].sub; ft.say('ok', 'ชื่อโน้ต: ' + TUNES[tune].m.map(function (m) { return BYM[m].th; }).join(' ')); }, reset: function () { pick(tune); }, hint: '' });
+    var ft = K.foot($('#m2-ft'), { check: listen, checkLabel: '▶ ฟังทำนอง', show: function () { stop(); heard = true; at = TUNES[tune].m.length; draw(''); info.textContent = 'เฉลย: ' + TUNES[tune].th; ft.say('ok', 'ชื่อโน้ต: ' + TUNES[tune].m.map(function (m) { return BYM[m].th; }).join(' ')); }, reset: function () { pick(tune); }, hint: '' });
     var KB = Keyboard($('#m2-kb'), onNote);
     pick(0);
     K.slide('m2', { set: function () { active = KB; }, leave: function () { stop(); if (active === KB) active = null; } });

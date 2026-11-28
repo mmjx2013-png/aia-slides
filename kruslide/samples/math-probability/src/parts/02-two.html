@@ -1,0 +1,29 @@
+<!-- 2 · Two dice: predict which total comes up most, then roll (one at a time, 100 or 1000 fast). Beat 1: theory k/36 on every bar. Beat 2: the 36 equally likely outcomes, with the six that make 7 lit up. -->
+<section class="slide" id="p-two" data-steps="2" data-title="ทอยลูกเต๋า 2 ลูก">
+ <div class="chip in" style="left:110px;top:60px"><b>1</b>ลูกเต๋า 2 ลูก</div>
+ <h2 class="in on-felt" style="left:106px;top:120px;--d:100">ผลรวมเท่าไร ออกบ่อยที่สุด?</h2>
+
+ <div class="card in h2" id="p2-q" style="--d:250"><i class="band b"></i>
+  <p class="p-qt">ทายก่อน! แล้วค่อยทอยดูจริง</p>
+  <div class="ch ia" data-mcq id="p2-mc"><div class="c">2</div><div class="c">6</div><div class="c ok">7</div><div class="c">12</div></div>
+  <p class="lab p-why" id="p2-why">ใช่! ลองทอยให้เห็นกับตา</p>
+ </div>
+ <div class="card g2" id="p2-g" style="--d:150"><i class="band b"></i>
+  <p class="p-qt">ผลที่เป็นไปได้ทั้งหมด 36 แบบ</p>
+  <div class="p2-grid" id="p2-grid"></div>
+  <p class="p2-cap">ผลรวม 7 มี <b>6</b> แบบ: P = <b>6/36 = 1/6</b></p>
+ </div>
+
+ <div class="dz ia in" id="p2-d1" style="--s:150px;left:720px;top:224px;--d:300" role="button" tabindex="0" aria-label="ลูกเต๋าลูกแรก"></div>
+ <div class="dz ia in" id="p2-d2" style="--s:150px;left:910px;top:238px;--d:350" role="button" tabindex="0" aria-label="ลูกเต๋าลูกที่สอง"></div>
+ <div class="ab in on-felt p-res p2-res" id="p2-r" style="left:1110px;top:206px;--d:400"><small>ผลรวม</small><b id="p2-rv">–</b></div>
+ <div class="btns ia in" style="left:1110px;top:336px;--d:450"><button class="gbtn" type="button" data-n="1">ทอย</button><button class="gbtn w" type="button" data-n="100">×100</button><button class="gbtn w" type="button" data-n="1000">×1000</button><button class="gbtn w" type="button" data-n="0">ล้าง</button></div>
+
+ <div class="card in" id="p2-c" style="--d:300"><i class="band y"></i>
+  <div class="p-ct"><b>ผลรวมที่ได้</b> <span id="p2-n">0</span> ครั้ง <span class="p-key g1" style="--d:100"><i class="dash"></i>ทฤษฎี</span></div>
+  <svg class="chart" id="p2-ch" viewBox="0 0 1110 430" style="left:0;top:96px;width:1110px;height:430px" role="img" aria-label="กราฟแท่ง ผลรวมของลูกเต๋าสองลูก"></svg>
+ </div>
+
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 03</b></span></div>
+ <aside class="notes">ให้ทุกคนทายก่อน (แตะคำตอบ) ส่วนมากเด็กคิดว่าทุกผลรวมโอกาสเท่ากัน แตะลูกเต๋าหรือปุ่มทอย แล้ว ×1000 จะเห็นแท่ง 7 สูงสุด กด → เส้นประบอกทฤษฎีของแต่ละผลรวม (k/36) กด → ตาราง 36 แบบ (ลูกแรก × ลูกที่สอง) ทุกช่องโอกาสเท่ากัน ผลรวม 7 มี 6 ช่อง (1+6, 2+5, 3+4, 4+3, 5+2, 6+1) จึงได้ 6/36 = 1/6 ส่วนผลรวม 2 และ 12 มีอย่างละช่องเดียว (1/36)</aside>
+</section>

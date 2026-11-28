@@ -1,0 +1,26 @@
+<!-- 3 · Two coins: flip them (animated) or flip 100 fast; the score pad tallies HH, HT, TH, TT. Predict first. Beat 1: the tree diagram, and a typed question P(both heads). -->
+<section class="slide" id="p-coin" data-steps="1" data-title="โยนเหรียญ 2 เหรียญ">
+ <div class="chip in" style="left:110px;top:60px"><b>2</b>โยนเหรียญ</div>
+ <h2 class="in on-felt" style="left:106px;top:120px;--d:100">โยนเหรียญ 2 เหรียญ</h2>
+ <div class="coin ia in" data-qa-ok id="p3-a" style="left:120px;top:250px;--d:200" role="button" tabindex="0" aria-label="เหรียญที่ 1"><div class="cf"><span class="h">หัว</span><span class="t">ก้อย</span></div></div>
+ <div class="coin ia in" data-qa-ok id="p3-b" style="left:380px;top:250px;--d:260" role="button" tabindex="0" aria-label="เหรียญที่ 2"><div class="cf"><span class="h">หัว</span><span class="t">ก้อย</span></div></div>
+ <div class="btns ia in" style="left:110px;top:500px;--d:300"><button class="gbtn" type="button" data-n="1">โยน</button><button class="gbtn w" type="button" data-n="100">×100</button><button class="gbtn w" type="button" data-n="0">ล้าง</button></div>
+
+ <div class="card in h1" id="p3-q" style="--d:350"><i class="band b"></i>
+  <p class="p-qt">ทายก่อน: แบบไหนออกบ่อยกว่า?</p>
+  <div class="ch ia" data-mcq id="p3-mc"><div class="c">หัวทั้งคู่</div><div class="c ok">หัวหนึ่ง ก้อยหนึ่ง</div><div class="c">พอ ๆ กัน</div></div>
+ </div>
+ <div class="card g1" id="p3-in-c" style="--d:1400"><i class="band g"></i>
+  <div class="w-input ia" id="p3-in" data-label="P(ออกหัวทั้งสองเหรียญ) = ?" data-answer="1/4" data-accept="0.25;.25;25%;1 / 4;1 ส่วน 4"></div>
+ </div>
+
+ <div class="card in" id="p3-pad" style="--d:250"><i class="band y"></i>
+  <div class="p-ct"><b>กระดาษจดคะแนน</b> <span id="p3-n">0</span> ครั้ง</div>
+  <div class="p3-rows" id="p3-rows"></div>
+ </div>
+ <p class="ab in h1 on-felt p3-hint" style="--d:500">โยนหลาย ๆ ครั้ง แล้วดูแถว<br>“หัวหนึ่ง ก้อยหนึ่ง” ได้กี่ %</p>
+ <div class="card g1" id="p3-tree" style="--d:100"><i class="band g"></i><svg class="chart" id="p3-tr" viewBox="0 0 1050 430" style="left:0;top:12px;width:1030px;height:422px" role="img" aria-label="แผนภาพต้นไม้ การโยนเหรียญสองเหรียญ"></svg></div>
+
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>03 / 03</b></span></div>
+ <aside class="notes">ให้ทายก่อน: หัวทั้งคู่ กับ หัวหนึ่งก้อยหนึ่ง แบบไหนบ่อยกว่า (หลายคนตอบว่าเท่ากัน) แตะเหรียญหรือปุ่มโยน แล้วกด ×100 ดูกระดาษจดคะแนน กด → แผนภาพต้นไม้: เหรียญแรก 2 แบบ เหรียญที่สอง 2 แบบ ได้ 4 แบบเท่า ๆ กัน (หัวหัว, หัวก้อย, ก้อยหัว, ก้อยก้อย) หัวหนึ่งก้อยหนึ่งมี 2 แบบ = 2/4 = 1/2 ส่วนหัวทั้งคู่ = 1/4 ให้พิมพ์คำตอบ (รับ 1/4, 0.25, 25%)</aside>
+</section>

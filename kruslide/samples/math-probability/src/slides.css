@@ -1,0 +1,60 @@
+.p-res{display:flex;flex-direction:column;align-items:flex-start;line-height:1}
+.p-res small{font:700 28px/1.45 Inter;opacity:.85}
+.p-res b{font:800 120px/1.05 Display;font-variant-numeric:tabular-nums}
+.p-hint{font:600 28px/1.45 Inter;opacity:.9}
+.p-ct{position:absolute;left:44px;top:44px;font:600 30px/1.45 Inter;color:var(--mute)}
+.p-ct b{color:var(--ink);font-weight:800}
+.p-ct span{font-variant-numeric:tabular-nums}
+.p-note{position:absolute;left:44px;right:44px;bottom:40px;font:600 28px/1.45 Inter;color:var(--ink)}
+.p-note b{font-weight:800}
+i.dash{display:inline-block;width:48px;height:0;border-top:5px dashed var(--ink);vertical-align:middle;margin-right:14px}
+.p-key{margin-left:24px;font-weight:700;color:var(--ink)}
+
+/* ---------- 2 · two dice ---------- */
+#p2-q{left:110px;top:230px;width:560px;height:470px;padding:44px 40px}
+.p-qt{font:700 30px/1.45 Inter;color:var(--ink);margin-bottom:18px}
+#p2-mc{grid-template-columns:1fr 1fr}
+.p-why{margin-top:16px;color:var(--okc);opacity:0;transition:opacity .4s}
+.p-why.vis{opacity:1}
+#p2-g{left:110px;top:226px;width:560px;height:770px;padding:40px 36px}
+.p2-grid{display:grid;grid-template-columns:repeat(7,62px);grid-auto-rows:62px;gap:4px;justify-content:center}
+.p2-grid span{display:grid;place-items:center;border-radius:12px;background:#F4EAD6;font:800 28px/1 Inter;color:var(--mute);font-variant-numeric:tabular-nums}
+.p2-grid span.hd{background:transparent;color:var(--ink)}
+.p2-grid span.hd svg{width:44px;height:44px}
+.p2-grid span.s7{background:var(--red);color:#fff}
+.on.b2 .p2-grid span.s7{animation:pop .5s var(--ease) both;animation-delay:calc(var(--i)*120ms + 600ms)}
+.p2-cap{margin-top:20px;font:600 30px/1.45 Inter;color:var(--ink);text-align:center}
+.p2-cap b{color:var(--red)}
+#p2-c{left:700px;top:440px;width:1110px;height:550px}
+
+/* ---------- 3 · coins ---------- */
+.coin{position:absolute;width:220px;height:220px;perspective:1200px;cursor:pointer;touch-action:none}
+.coin .cf{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.15,.75,.25,1)}
+.coin span{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;font:800 62px/1 Display;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.coin .h{background:radial-gradient(circle at 35% 30%,#FBE38E,#E2AE2A 70%,#C28E14);color:#6B4A07;box-shadow:inset 0 0 0 12px rgba(255,255,255,.25),inset 0 0 0 16px rgba(120,80,0,.25),0 10px 0 #9C710F}
+.coin .t{background:radial-gradient(circle at 35% 30%,#F4F6F8,#C3CAD2 70%,#9AA3AD);color:#3E4650;transform:rotateX(180deg);box-shadow:inset 0 0 0 12px rgba(255,255,255,.3),inset 0 0 0 16px rgba(60,70,80,.2),0 -10px 0 #7D8792}
+.coin.flip{animation:chop 1s cubic-bezier(.3,.6,.3,1)}
+@keyframes chop{0%{transform:none}40%{transform:translateY(-120px)}75%{transform:none}86%{transform:translateY(-14px)}100%{transform:none}}
+#p3-q,#p3-in-c{left:110px;top:610px;width:620px;height:384px;padding:40px 40px}
+#p3-mc .c{height:68px;font:800 30px/1.2 Inter}
+#p3-pad{left:780px;top:60px;width:1030px;height:460px;background:#FFF3B8}
+#p3-pad::before{border-color:rgba(43,33,24,.12)}
+#p3-pad .p3-rows{position:absolute;left:44px;right:44px;top:108px;display:flex;flex-direction:column;gap:6px;
+ background:repeating-linear-gradient(180deg,transparent 0 57px,rgba(60,110,170,.25) 57px 59px)}
+.p3-r{display:grid;grid-template-columns:330px 90px 1fr 110px;align-items:center;gap:18px;height:58px;font:700 28px/1.45 Inter;color:var(--ink)}
+.p3-r .k{display:flex;align-items:center;gap:8px}
+.p3-r .k i{display:inline-block;width:34px;height:34px;border-radius:50%;box-shadow:inset 0 0 0 4px rgba(0,0,0,.12)}
+.p3-r .k i.h{background:#E9B634;color:#5A3E05}.p3-r .k i.t{background:#C3CAD2;color:#3E4650}
+.p3-r .n,.p3-r .p{font-variant-numeric:tabular-nums;text-align:right}
+.p3-r .bar{position:relative;height:22px;border-radius:11px;background:rgba(43,33,24,.1)}
+.p3-r .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:11px;background:var(--yel);box-shadow:inset 0 0 0 2px #B98A10;transition:width .25s ease}
+.p3-r .bar b{position:absolute;top:-8px;bottom:-8px;width:0;border-left:4px dashed var(--ink)}
+.p3-r.sum{border-top:3px solid var(--ink);margin-top:4px;padding-top:6px;height:66px}
+.p3-r.sum .bar i{background:var(--red);box-shadow:inset 0 0 0 2px #A63A1A}
+.p3-hint{left:800px;top:580px;font:700 34px/1.45 Inter}
+#p3-tree{left:780px;top:546px;width:1030px;height:448px}
+.chart .br{stroke:var(--ink);stroke-width:4;fill:none;stroke-linecap:round}
+.chart .bl{font-size:24px;fill:var(--red);font-weight:800}
+.chart .nd{font-size:30px;font-weight:800}
+.chart .lf{font-size:28px;font-weight:800}
+.p2-res b{font-size:72px;white-space:nowrap}

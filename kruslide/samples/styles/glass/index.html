@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-O6McuXjYeD7RMNLEtZOWdNiZ07W32Wu14ZAuIh3PeGg='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>ระบบสุริยะ · สไตล์กระจก · KruSlide</title>
+<style>/* KruSlide styles sample D · Glass (กระจก) · look: "real glass over real space"
+   Full-bleed NASA photographs that drift slowly. Panels, buttons, answer choices, a lens and a card stack are made of
+   clear glass: each refracts a copy of the photograph behind it (glass.js), with a rim light and a highlight that follow
+   the pointer. White type on glass; no coloured glow, no gradient text. Stage 1920x1080. */
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+
+:root{--ease:cubic-bezier(.22,.7,.2,1);--spring:cubic-bezier(.3,1.25,.4,1);
+ --ink:#14182B;--white:#fff;--soft:rgba(255,255,255,.78);--mute:rgba(255,255,255,.62);
+ --rock:#E7B98A;--gas:#9CC7FF;--ok:#4BE08F;--okc:#1FB57A;--no:#FF8A7A;--sun:#FFC56B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#020308;overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:#fff}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:#03040a}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .5s ease,visibility 0s linear .5s;--dx:0px;--dy:0px;--ds:1}
+.slide.on{visibility:visible;opacity:1;transition:opacity .5s ease}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ab{position:absolute}
+
+/* ---------- the photograph layer (copied into every glass element) ---------- */
+.scene{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;pointer-events:none}
+.scene .bg{position:absolute;left:-40px;top:-22px;width:2000px;height:1125px;background:#03040a center/cover no-repeat;transform:translate(var(--dx),var(--dy)) scale(var(--ds));transform-origin:50% 50%;will-change:transform}
+.scene img{position:absolute;display:block;-webkit-user-drag:none}
+.veil{position:absolute;inset:0;pointer-events:none}
+
+/* ---------- glass ---------- */
+.glass{position:absolute;overflow:hidden;isolation:isolate;border-radius:40px;color:#fff;
+ box-shadow:0 30px 60px -18px rgba(0,0,0,.55),0 8px 18px -8px rgba(0,0,0,.4);--mx:50%;--my:0%;--la:180deg;--li:.6}
+.glass>.g-under{position:absolute;z-index:-2;overflow:hidden;pointer-events:none}
+.glass .g-copy{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.glass::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:var(--tint,rgba(255,255,255,.06))}
+.g-panel{--tint:linear-gradient(180deg,rgba(12,16,32,.16),rgba(8,11,24,.30))}
+.glass .gc{text-shadow:0 1px 10px rgba(0,0,0,.35)}
+.g-pill{--tint:rgba(12,16,30,.2)}
+.g-clear{--tint:rgba(255,255,255,.07)}
+.g-lens{--tint:rgba(255,255,255,.02)}
+/* lip, inner shadow and rim: the glass has thickness */
+.g-top{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
+ box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.18),inset 0 18px 26px -22px rgba(255,255,255,.5),inset 0 -22px 30px -24px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.12)}
+.g-spec{position:absolute;inset:0;border-radius:inherit;opacity:calc(.22 + .4 * var(--li));mix-blend-mode:screen;
+ background:radial-gradient(420px 300px at var(--mx) var(--my),rgba(255,255,255,.34),rgba(255,255,255,.08) 45%,transparent 70%)}
+.g-rim{position:absolute;inset:0;border-radius:inherit;padding:1.6px;
+ background:conic-gradient(from var(--la),rgba(255,255,255,.95),rgba(255,255,255,.35) 12%,rgba(255,255,255,.06) 30%,rgba(255,255,255,.02) 50%,rgba(255,255,255,.18) 70%,rgba(255,255,255,.45) 88%,rgba(255,255,255,.95));
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.g-lens .g-rim{padding:2.4px}
+.glass .gc{position:relative;z-index:2}
+/* glass appears like a drop of liquid spreading out: clip-path only (no transform, so the copy stays aligned) */
+.liquid{clip-path:inset(46% 46% round 200px);opacity:0}
+.on .liquid{animation:liquid .75s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .liquid.g1{animation:liquid .75s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.liquid.g1{animation:none}
+@keyframes liquid{0%{clip-path:inset(46% 46% round 200px);opacity:0}35%{opacity:1}100%{clip-path:inset(0 0 round var(--r,40px));opacity:1}}
+
+/* ---------- type ---------- */
+.kick{display:inline-flex;align-items:center;gap:12px;font:600 24px/1.4 Inter;color:var(--soft)}
+.kick b{display:grid;place-items:center;min-width:38px;height:38px;padding:0 10px;border-radius:19px;background:rgba(255,255,255,.18);font:700 20px Inter;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+h1,h2{font-family:Display;font-weight:700;letter-spacing:-.01em;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.25)}
+h2{position:absolute;font-size:64px;line-height:1.3}
+.lede{font:500 28px/1.5 Inter;color:var(--soft)}
+.cap{position:absolute;font:500 18px/1.4 Inter;color:rgba(255,255,255,.66);text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- footer: a thin glass bar ---------- */
+.foot{left:40px;bottom:22px;width:1840px;height:58px;border-radius:29px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font:600 21px/1 Inter;color:var(--soft)}
+.foot .gc{display:flex;align-items:center;justify-content:space-between;width:100%}
+.foot .brand{display:flex;align-items:center;gap:12px;color:#fff;font-weight:800}
+.foot .brand .logo{width:30px;height:30px;flex:none}
+.foot .brand span{font-weight:600;color:var(--soft)}
+.foot .pg{display:flex;align-items:center;gap:16px}
+.foot .pg b{color:#fff;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- motion (one easing family) ---------- */
+.in{opacity:0}
+.on .in{animation:rise .65s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3{opacity:0;pointer-events:none}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
+.on.b1 .liquid.g1{animation-name:liquid}
+.on.b1 .h1{animation:out .4s ease both;pointer-events:none}
+.fade{opacity:0}.on .fade{animation:fadein .8s ease both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-10px)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- control bar (engine), frosted ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);gap:6px;align-items:center;padding:7px;border-radius:999px;background:rgba(20,24,40,.45);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;font:600 15px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.9;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#ctl button{font:inherit;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:9px 14px;cursor:pointer;min-width:42px}
+#ctl button:hover{background:rgba(255,255,255,.18)}
+#ctl button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+#ctl button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+.shot #ctl{display:none!important}
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}
+
+/* deck D · per-slide styles */
+.lt{color:rgba(255,255,255,.72)}
+
+/* ---------- 1 · title ---------- */
+#g1-slab .gc{padding:54px 60px}
+#g1-slab h1{margin-top:18px;font-size:150px;line-height:1.22;letter-spacing:-.02em}
+#g1-slab .sub{margin-top:2px;font:600 38px/1.3 Inter;color:var(--soft);letter-spacing:.01em}
+#g1-slab .q{margin-top:44px;font:700 46px/1.42 Display;color:#fff}
+#g1-slab .q2{position:absolute;left:60px;top:430px;font:700 46px/1.42 Display;color:#fff;width:700px}
+.bub .gc{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.bub b{font:800 104px/1 Display;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.25)}
+.bub span{margin-top:6px;font:700 26px/1.3 Inter;color:#fff}
+.bub small{font:500 18px/1.3 Inter;color:var(--soft)}
+
+/* ---------- 2 · lens ---------- */
+#g2-scene .sunl{filter:saturate(1.05)}
+#g2-scene .pl{opacity:0}
+.on #g2-scene .pl{animation:fromsun 1s var(--ease) both;animation-delay:calc(200ms + var(--i) * 90ms)}
+@keyframes fromsun{from{opacity:0;transform:translateX(-120px) scale(.5)}to{opacity:1;transform:none}}
+#g2-scene .pn{position:absolute;transform:translateX(-50%);font:700 22px/1.3 Inter;color:rgba(255,255,255,.88);white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.8);opacity:0}
+#g2-scene .pn.sm{font-size:19px}
+#g2-scene .pn.sun{transform:none;color:#FFD9A8}
+.on #g2-scene .pn{animation:fadein .6s ease both;animation-delay:calc(700ms + var(--i,0) * 90ms)}
+#g2-scene .ldr{position:absolute;width:1.5px;background:rgba(255,255,255,.38);opacity:0}
+.on #g2-scene .ldr{animation:fadein .6s ease both;animation-delay:calc(700ms + var(--i,0) * 90ms)}
+#g2-scene .axis{position:absolute;left:150px;right:250px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.05));z-index:-1}
+#g2-card .gc{padding:30px 34px}
+.g2-t{display:flex;align-items:baseline;gap:16px}
+#g2-name{font:700 58px/1.25 Display}
+#g2-en{font:600 22px/1 Inter;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.g2-row{display:grid;grid-template-columns:1.25fr .9fr 1fr;gap:16px;margin-top:16px}
+.g2-row div{display:flex;flex-direction:column;gap:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.28)}
+.g2-row b{font:800 40px/1.1 Display}
+.g2-row span{font:500 18px/1.35 Inter;color:var(--soft)}
+#g2-fact{margin-top:16px;font:500 22px/1.5 Inter;color:#fff;min-height:66px}
+#g2-type{position:absolute;right:30px;top:36px}
+.chip{display:inline-grid;place-items:center;height:36px;padding:0 16px;border-radius:18px;font:700 18px/1 Inter;color:#14182B;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.chip.rock{background:var(--rock)}.chip.gas{background:var(--gas)}
+#g2-card .gc.swap>*{animation:rise .45s var(--ease) both}
+#g2-lens{cursor:grab;z-index:10;box-shadow:0 34px 60px -14px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
+#g2-lens.held{cursor:grabbing}
+#g2-lens:focus-visible{outline:3px solid #fff;outline-offset:6px}
+.lens-h{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;border:1.5px solid rgba(255,255,255,.55)}
+.on #g2-lens{animation:hint 2.4s var(--ease) 1.4s 2}
+@keyframes hint{0%,100%{box-shadow:0 34px 60px -14px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}50%{box-shadow:0 34px 60px -14px rgba(0,0,0,.7),0 0 0 10px rgba(255,255,255,.16)}}
+
+/* ---------- 3 · card stack ---------- */
+#g3-stack{overflow:visible}
+.card{left:0;top:0;transform-origin:50% 50%;cursor:default;will-change:transform}
+.card.top{cursor:grab}
+.card.held{cursor:grabbing}
+.card .gc{display:flex;flex-direction:column;align-items:center;height:100%;padding:36px 26px 30px;text-align:center}
+.card .ci{width:210px;height:210px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.card .ci.sat{width:300px;height:210px}
+.card b{margin-top:22px;font:700 46px/1.3 Display}
+.card .en{font:600 18px/1.2 Inter;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.card .cf{margin-top:14px;font:500 22px/1.45 Inter;color:var(--soft)}
+.ghost{position:absolute;left:0;top:0;width:360px;height:468px;border-radius:38px;transform-origin:180px 234px;background:rgba(8,12,26,.16);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.45),inset 0 14px 20px -18px rgba(255,255,255,.45),0 16px 30px -14px rgba(0,0,0,.4)}
+.zone{position:absolute;border-radius:40px;border:2px dashed rgba(255,255,255,.55);background:rgba(6,10,22,.18);display:flex;flex-direction:column;align-items:center;padding-top:26px;transition:background .3s,border-color .3s}
+.zone b{font:700 38px/1.3 Display;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.zone span{font:500 21px/1.4 Inter;color:var(--soft);text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.zone.over{background:rgba(255,255,255,.14);border-color:#fff;border-style:solid}
+.zone.hit{animation:pulse .5s var(--ease)}
+#g3-rock b{color:#FFD8B0}#g3-gas b{color:#CFE3FF}
+#g3-btns{display:flex;gap:20px;justify-content:center}
+.gbtn{position:relative;width:250px;height:68px;border:0;padding:0;background:transparent;cursor:pointer;font:700 30px/1 Inter;color:#fff;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .25s var(--spring)}
+.gbtn .gc{display:grid;place-items:center;height:100%}
+.gbtn:active{transform:scale(.96)}
+.gbtn:focus-visible{outline:3px solid #fff;outline-offset:4px}
+#g3-fb{font:700 28px/1.4 Inter;text-align:center;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);min-height:40px}
+#g3-fb.ok{color:var(--ok)}#g3-fb.no{color:#FFC2B8}
+
+/* ---------- 4 · quiz ---------- */
+#g4-q1 .gc,#g4-q2 .gc{padding:40px 42px}
+.qn{display:inline-grid;place-items:center;height:40px;padding:0 18px;border-radius:20px;background:rgba(255,255,255,.18);font:700 20px Inter;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.q{margin-top:22px;font:700 38px/1.45 Display;color:#fff}
+.q u{text-decoration:none;border-bottom:3px solid var(--sun)}
+#g4-q2 .q{font-size:34px}
+#g4-q2 .w-input{margin-top:28px}
+.ans{font:600 26px/1.5 Inter;color:#fff;padding:18px 24px;border-radius:24px;background:rgba(20,120,80,.38);box-shadow:inset 0 0 0 1.5px rgba(120,255,190,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#g4-scale svg{width:100%;height:100%;overflow:visible}
+#g4-scale .lab{font:600 20px Inter;fill:var(--soft)}
+#g4-scale .pp{fill:#fff}
+#g4-scale .jj{fill:rgba(231,185,138,.22);stroke:var(--rock);stroke-width:3;transform-box:fill-box;transform-origin:center}
+.on.b2 #g4-scale .jj{animation:grow 1s var(--ease) both .2s}
+@keyframes grow{from{transform:scale(.09)}to{transform:none}}
+#g4-scale text.big{font:800 46px Display;fill:#fff}
+#g4-scale text.in{font:700 22px Inter;fill:#fff}
+
+/* ---------- 5 · Sun ---------- */
+#g5-core{z-index:4}
+#g5-sum,#g5-src{z-index:8}
+#g5-core .gc{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#g5-core span{font:700 28px/1.4 Inter;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+#g5-core b{margin-top:6px;font:800 112px/1 Display;color:#fff;text-shadow:0 4px 24px rgba(120,30,0,.45)}
+#g5-core b i{font-style:normal}
+.orb{left:0;top:0;will-change:transform;box-shadow:0 14px 26px -8px rgba(0,0,0,.5)}
+.orb .gc{display:grid;place-items:center;height:100%}
+.orb img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.orb img.sat{width:86px}
+.orb{opacity:0}.on .orb{animation:fadein .8s ease both .6s}
+#g5-sum .gc,#g5-src .gc{padding:44px 46px}
+#g5-sum h2{margin-top:14px}
+#g5-sum ul{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:14px}
+#g5-sum li{font:500 25px/1.45 Inter;color:var(--soft);padding-left:22px;position:relative}
+#g5-sum li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:50%;background:#fff}
+#g5-sum li b{color:#fff;font-weight:700}
+#g5-sum li b.r{color:#FFD8B0}#g5-sum li b.g{color:#CFE3FF}
+#g5-src ol{margin:22px 0 0 26px;display:flex;flex-direction:column;gap:8px;font:500 20px/1.42 Inter;color:var(--soft)}
+#g5-src p{margin-top:20px;font:500 19px/1.5 Inter;color:var(--mute)}
+
+/* the lens: a thicker rim, a bright reflection arc and a darker lower rim, so it reads as a solid magnifier */
+#g2-lens .g-rim{padding:3px}
+#g2-lens .g-top{box-shadow:inset 0 3px 0 rgba(255,255,255,.75),inset 0 0 0 1.5px rgba(255,255,255,.3),inset 0 34px 40px -30px rgba(255,255,255,.55),inset 0 -36px 44px -30px rgba(0,0,0,.65)}
+#g2-lens .g-spec{background:radial-gradient(120px 60px at 34% 18%,rgba(255,255,255,.55),transparent 70%),radial-gradient(380px 260px at var(--mx) var(--my),rgba(255,255,255,.22),transparent 65%)}
+
+/* Widgets from tools.js (tap a choice, typed answer with Check) + the global pen, in deck D's glass look. */
+.w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.3 Inter,system-ui,sans-serif;color:#fff;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-lab{display:block;font:600 22px/1.4 Inter,system-ui,sans-serif;color:var(--soft)}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:58px}
+.tw-btns{display:flex;gap:10px;flex:none}
+.tw-btn{position:relative;font:700 22px/1 Inter,system-ui,sans-serif;height:58px;padding:0 24px;border-radius:29px;border:0;color:#fff;cursor:pointer;white-space:nowrap;touch-action:manipulation;
+ background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.08));box-shadow:inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -10px 18px -12px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.22),0 10px 20px -10px rgba(0,0,0,.5);transition:transform .25s var(--spring),background .2s}
+.tw-btn:hover{background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.12))}
+.tw-btn:active{transform:scale(.96)}
+.tw-btn.pri{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(232,238,255,.82));color:var(--ink)}
+.tw-btn.show[aria-pressed="true"]{background:linear-gradient(180deg,rgba(75,224,143,.6),rgba(31,181,122,.45))}
+.tw-btn.show.nudge{background:linear-gradient(180deg,rgba(255,197,107,.5),rgba(255,197,107,.25))}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 24px/1.4 Inter,system-ui,sans-serif;color:var(--soft)}
+.tw-fb.ok{color:var(--ok)}.tw-fb.no{color:#FFC2B8}.tw-fb.info{color:#CFE3FF}
+.tw-fb .tw-ico{width:34px;height:34px;padding:6px;border-radius:50%;color:#0b2a1c;background:var(--ok)}
+.tw-fb.no .tw-ico{background:#FF8A7A;color:#3a0d06}
+.tw-in{font:800 46px/1 Inter,system-ui,sans-serif;height:84px;padding:0 22px;border-radius:24px;border:0;color:#fff;min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center;
+ background:rgba(4,8,20,.34);box-shadow:inset 0 2px 8px rgba(0,0,0,.45),inset 0 0 0 1.5px rgba(255,255,255,.35),0 1px 0 rgba(255,255,255,.25);transition:background .2s,box-shadow .2s}
+.tw-in:focus{outline:none;box-shadow:inset 0 2px 8px rgba(0,0,0,.45),inset 0 0 0 2px #fff}
+.tw-in.ok{background:rgba(31,181,122,.32);box-shadow:inset 0 0 0 2px var(--ok)}
+.tw-in.no{background:rgba(255,106,61,.25);box-shadow:inset 0 0 0 2px #FF8A7A}
+.tw-unit{font:700 30px Inter,system-ui,sans-serif;color:var(--soft)}
+.tw-inrow{display:flex;align-items:center;gap:18px;min-height:84px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* tap a choice: every choice is a real glass pill (glass.js) */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.c{position:relative;height:110px;border-radius:55px;font:700 38px/1 Display;transition:transform .3s var(--spring),filter .4s}
+.c .gc{display:flex;align-items:center;gap:18px;height:100%;padding:0 26px}
+.c b{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 0 1px rgba(255,255,255,.25);font:800 26px Inter;transition:background .4s,color .4s}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:hover{transform:scale(1.015)}
+.ch[data-mcq] .c:active{transform:scale(.97)}
+.ch[data-mcq] .c:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.ch .c.wrong{--tint:rgba(255,106,61,.32)}
+.ch .c.wrong b{background:#FF8A7A;color:#3a0d06}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok,.ch .c.ok.picked{--tint:rgba(31,181,122,.4)}
+.on.b1 .ch.r1 .c.ok b,.on.b2 .ch.r2 .c.ok b,.ch .c.ok.picked b{background:var(--ok);color:#0b2a1c}
+.on.b1 .ch.r1 .c:not(.ok),.on.b2 .ch.r2 .c:not(.ok){filter:saturate(.3) opacity(.5)}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok{animation:pulse .6s var(--ease) both .2s}
+
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:30px;background:rgba(20,24,40,.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px rgba(255,255,255,.18),0 18px 40px rgba(0,0,0,.4)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:50%;border:0;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:rgba(255,255,255,.14)}
+#pen-bar .pb[aria-pressed="true"]{background:rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.85)}
+#pen-bar .ps{display:block;width:38px;height:1.5px;border-radius:2px;background:rgba(255,255,255,.3);margin:2px 0}
+.shot #pen-bar{display:none!important}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+<symbol id="cross" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></symbol>
+<symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+</defs></svg>
+
+<main id="stage" aria-roledescription="slide deck">
+
+<section class="slide" id="g-title" data-steps="1" data-title="ระบบสุริยะ" data-drift="26,12,.03,.14">
+ <div class="scene"><div class="bg" style="background-image:url(img/bg-saturn.webp)"></div></div>
+ <div class="glass liquid" data-glass="panel" id="g1-slab" style="left:110px;top:150px;width:820px;height:600px;border-radius:52px;--r:52px;--d:150">
+  <div class="gc">
+   <div class="kick in" style="--d:500"><b>D</b>วิทยาศาสตร์ ม.1 · ตัวอย่างบทเรียน</div>
+   <h1 class="in" style="--d:600">ระบบสุริยะ</h1>
+   <p class="sub in" style="--d:700">The Solar System</p>
+   <p class="q in h1" style="--d:850">บ้านของเราในอวกาศ<br>มีใครอยู่บ้าง?</p>
+   <p class="q2 g1" style="--d:200">ทุกดวงโคจรรอบดวงอาทิตย์</p>
+  </div>
+ </div>
+ <div class="glass bub liquid g1" data-glass="clear" style="left:1010px;top:700px;width:250px;height:250px;border-radius:125px;--r:125px;--d:100"><div class="gc"><b class="num" data-count="1" data-at="1">1</b><span>ดาวฤกษ์</span></div></div>
+ <div class="glass bub liquid g1" data-glass="clear" style="left:1300px;top:700px;width:250px;height:250px;border-radius:125px;--r:125px;--d:260"><div class="gc"><b class="num" data-count="8" data-at="1">8</b><span>ดาวเคราะห์</span></div></div>
+ <div class="glass bub liquid g1" data-glass="clear" style="left:1590px;top:700px;width:250px;height:250px;border-radius:125px;--r:125px;--d:420"><div class="gc"><b class="num" data-count="5" data-at="1">5</b><span>ดาวเคราะห์แคระ<br><small>ที่ IAU รับรอง</small></span></div></div>
+ <p class="cap fade" style="left:114px;top:790px;--d:1200">ภาพ: ดาวเสาร์ ถ่ายโดยยานแคสสินี พ.ศ. 2547 · NASA/JPL/Space Science Institute (สาธารณสมบัติ)</p>
+ <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>01 / 05</b></span></div></div>
+ <aside class="notes">ชวนนักเรียนนึกภาพ "บ้าน" ของเราในอวกาศ ขยับเมาส์หรือนิ้วบนจอ แสงบนกระจกจะขยับตาม และขอบกระจกหักเหภาพวงแหวนดาวเสาร์จริง กด → นับสมาชิก: ดาวฤกษ์ 1 ดวง (ดวงอาทิตย์) ดาวเคราะห์ 8 ดวง ดาวเคราะห์แคระที่ IAU รับรอง 5 ดวง (ซีรีส พลูโต เฮาเมอา มาคีมาคี อีริส)</aside>
+</section>
+
+
+<section class="slide" id="g-lens" data-steps="0" data-title="ขนาดจริงเทียบกัน" data-drift="10,6,.012,.12">
+ <div class="scene" id="g2-scene">
+  <div class="bg" style="background-image:url(img/bg-stars.webp)"></div>
+  <img class="sunl" src="img/p-sunlimb.webp" alt="" style="left:-290px;top:-40px;width:420px;height:1280px">
+  <span class="pn sun" style="left:28px;top:880px">ดวงอาทิตย์</span>
+  <img class="pl" src="img/p-mercury.webp" alt="" data-k="mercury" style="left:199.9px;top:594.9px;width:10.2px;height:10.2px;--i:0">
+  <i class="ldr" style="left:205px;top:609.1px;height:26.9px;--i:0"></i>
+  <span class="pn sm" style="left:205px;top:662.0px;--i:0">พุธ</span>
+  <img class="pl" src="img/p-venus.webp" alt="" data-k="venus" style="left:242.3px;top:587.3px;width:25.4px;height:25.4px;--i:1">
+  <i class="ldr" style="left:255px;top:616.7px;height:61.3px;--i:1"></i>
+  <span class="pn sm" style="left:255px;top:704.0px;--i:1">ศุกร์</span>
+  <img class="pl" src="img/p-earth.webp" alt="" data-k="earth" style="left:296.6px;top:586.6px;width:26.8px;height:26.8px;--i:2">
+  <i class="ldr" style="left:310px;top:617.4px;height:18.6px;--i:2"></i>
+  <span class="pn sm" style="left:310px;top:662.0px;--i:2">โลก</span>
+  <img class="pl" src="img/p-mars.webp" alt="" data-k="mars" style="left:352.9px;top:592.9px;width:14.3px;height:14.3px;--i:3">
+  <i class="ldr" style="left:360px;top:611.1px;height:66.9px;--i:3"></i>
+  <span class="pn sm" style="left:360px;top:704.0px;--i:3">อังคาร</span>
+  <img class="pl" src="img/p-jupiter.webp" alt="" data-k="jupiter" style="left:420.0px;top:450.0px;width:300.0px;height:300.0px;--i:4">
+  <span class="pn" style="left:570px;top:790.0px;--i:4">ดาวพฤหัสบดี</span>
+  <img class="pl" src="img/p-saturn.webp" alt="" data-k="saturn" style="left:769.6px;top:491.8px;width:574.8px;height:216.4px;--i:5">
+  <span class="pn" style="left:1057px;top:744.2px;--i:5">ดาวเสาร์</span>
+  <img class="pl" src="img/p-uranus.webp" alt="" data-k="uranus" style="left:1395.4px;top:546.4px;width:107.3px;height:107.3px;--i:6">
+  <span class="pn" style="left:1449px;top:693.6px;--i:6">ดาวยูเรนัส</span>
+  <img class="pl" src="img/p-neptune.webp" alt="" data-k="neptune" style="left:1552.0px;top:548.0px;width:103.9px;height:103.9px;--i:7">
+  <span class="pn" style="left:1604px;top:692.0px;--i:7">ดาวเนปจูน</span>
+  <i class="axis" style="top:600px"></i>
+ </div>
+ <div class="ab in" id="g2-head" style="left:190px;top:84px;--d:100">
+  <div class="kick"><b>2</b>ขนาดจริง เทียบกัน</div>
+  <h2 style="position:relative">ลากแว่น <span class="lt">ส่องดาวดวงเล็ก</span></h2>
+ </div>
+ <div class="glass liquid" data-glass="panel" id="g2-card" style="left:1290px;top:96px;width:520px;height:388px;border-radius:40px;--r:40px;--d:300" aria-live="polite">
+  <div class="gc">
+   <div class="g2-t"><span id="g2-name">โลก</span><span id="g2-en">Earth</span></div>
+   <div class="g2-row"><div><b class="num" id="g2-d">12,756</b><span>กม. กว้าง</span></div><div><b class="num" id="g2-x">1.00</b><span>เท่าของโลก</span></div><div><b class="num" id="g2-au">1.00</b><span>AU จากดวงอาทิตย์</span></div></div>
+   <p id="g2-fact">ดาวเคราะห์ดวงเดียวที่เรารู้ว่ามีน้ำเป็นของเหลวบนผิวและมีสิ่งมีชีวิต</p>
+   <span id="g2-type" class="chip rock">ดาวเคราะห์หิน</span>
+  </div>
+ </div>
+ <div class="glass" data-glass="lens" data-move id="g2-lens" style="left:150px;top:440px;width:320px;height:320px;border-radius:160px" role="slider" tabindex="0" aria-label="แว่นขยาย ลากไปทางซ้ายหรือขวา" data-planets="mercury|ดาวพุธ|Mercury|4879|0.39|หิน|ใกล้ดวงอาทิตย์ที่สุด ไม่มีบรรยากาศห่อหุ้ม กลางวันร้อนจัด กลางคืนหนาวจัด|205;venus|ดาวศุกร์|Venus|12104|0.72|หิน|ร้อนที่สุดในระบบสุริยะ ราว 465 °C เพราะบรรยากาศหนาเก็บความร้อนไว้|255;earth|โลก|Earth|12756|1.0|หิน|ดาวเคราะห์ดวงเดียวที่เรารู้ว่ามีน้ำเป็นของเหลวบนผิวและมีสิ่งมีชีวิต|310;mars|ดาวอังคาร|Mars|6792|1.52|หิน|สีแดงมาจากฝุ่นเหล็กออกไซด์ (สนิม) มีภูเขาไฟที่ใหญ่ที่สุดในระบบสุริยะ|360;jupiter|ดาวพฤหัสบดี|Jupiter|142984|5.2|แก๊ส|ใหญ่ที่สุด จุดแดงใหญ่คือพายุที่กว้างกว่าโลกทั้งใบ|570;saturn|ดาวเสาร์|Saturn|120536|9.54|แก๊ส|วงแหวนทำจากก้อนน้ำแข็งและหินนับไม่ถ้วน แต่หนาเพียงราวสิบเมตรถึงหนึ่งกิโลเมตร|1057;uranus|ดาวยูเรนัส|Uranus|51118|19.2|แก๊ส|แกนหมุนเอียงเกือบนอนตะแคง สีฟ้าอมเขียวมาจากแก๊สมีเทน|1449;neptune|ดาวเนปจูน|Neptune|49528|30.1|แก๊ส|ไกลที่สุด ลมแรงที่สุดในระบบสุริยะ เกินกว่า 2,000 กม./ชม.|1604"><div class="gc"><i class="lens-h"></i></div></div>
+ <p class="cap fade" style="left:150px;top:956px;--d:1000">ขนาดเทียบกันตามจริง (ระยะห่างไม่ได้ย่อตามจริง) · ภาพ: NASA, NASA/JPL, NASA/SDO, JHUAPL (สาธารณสมบัติ) · ภาพดาวพื้นหลังวาดโดย KruSlide</p>
+ <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 05</b></span></div></div>
+ <aside class="notes">ทุกดวงย่อด้วยอัตราส่วนเดียวกัน (ดาวพฤหัสบดีกว้าง 300 จุด) ดวงอาทิตย์จึงเห็นแค่ขอบโค้งทางซ้าย ให้นักเรียนออกมาลากแว่นขยายไปส่องดาวพุธ ศุกร์ โลก อังคาร ที่เล็กมาก การ์ดกระจกด้านบนบอกชื่อ ขนาด และระยะห่างของดวงที่อยู่ใต้แว่น ชวนสังเกต: ดวงชั้นในเล็กและเป็นหิน ดวงชั้นนอกใหญ่และเป็นแก๊ส</aside>
+</section>
+
+
+<section class="slide" id="g-stack" data-steps="1" data-title="หิน หรือ แก๊ส" data-drift="16,10,.02,.12">
+ <div class="scene"><div class="bg" style="background-image:url(img/bg-earth.webp)"></div><div class="veil" style="background:linear-gradient(180deg,rgba(2,6,16,.55),rgba(2,6,16,0) 34%,rgba(2,6,16,0) 70%,rgba(2,6,16,.45))"></div></div>
+ <div class="ab in" id="g3-head" style="left:110px;top:70px;--d:100">
+  <div class="kick"><b>3</b>จัดกลุ่มดาวเคราะห์</div>
+  <h2 style="position:relative">หิน <span class="lt">หรือ</span> แก๊ส?</h2>
+ </div>
+ <p class="lede ab in" style="left:1100px;top:118px;width:710px;text-align:right;--d:200">ลากการ์ดบนสุดไปทางซ้ายหรือขวา<br>ดูขนาดและระยะห่างเป็นเบาะแส</p>
+ <div class="zone in" id="g3-rock" style="left:110px;top:290px;width:520px;height:560px;--d:250"><b>ดาวเคราะห์หิน</b><span>ชั้นใน · เล็ก · ผิวแข็ง</span><div class="slots"></div></div>
+ <div class="zone in" id="g3-gas" style="left:1290px;top:290px;width:520px;height:560px;--d:300"><b>ดาวเคราะห์แก๊ส</b><span>ชั้นนอก · ใหญ่ · ไม่มีพื้นแข็ง</span><div class="slots"></div></div>
+ <div id="g3-stack" class="ab" style="left:0;top:0;width:0;height:0" aria-label="กองการ์ดดาวเคราะห์">
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="jupiter" data-ty="gas" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-jupiter.webp" alt="" class="ci"><b>ดาวพฤหัสบดี</b><span class="en">Jupiter</span><span class="cf">กว้าง 142,984 กม.<br>ห่างดวงอาทิตย์ 5.2 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="earth" data-ty="rock" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-earth.webp" alt="" class="ci"><b>โลก</b><span class="en">Earth</span><span class="cf">กว้าง 12,756 กม.<br>ห่างดวงอาทิตย์ 1 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="neptune" data-ty="gas" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-neptune.webp" alt="" class="ci"><b>ดาวเนปจูน</b><span class="en">Neptune</span><span class="cf">กว้าง 49,528 กม.<br>ห่างดวงอาทิตย์ 30.1 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="mars" data-ty="rock" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-mars.webp" alt="" class="ci"><b>ดาวอังคาร</b><span class="en">Mars</span><span class="cf">กว้าง 6,792 กม.<br>ห่างดวงอาทิตย์ 1.52 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="saturn" data-ty="gas" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-saturn.webp" alt="" class="ci sat"><b>ดาวเสาร์</b><span class="en">Saturn</span><span class="cf">กว้าง 120,536 กม.<br>ห่างดวงอาทิตย์ 9.54 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="mercury" data-ty="rock" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-mercury.webp" alt="" class="ci"><b>ดาวพุธ</b><span class="en">Mercury</span><span class="cf">กว้าง 4,879 กม.<br>ห่างดวงอาทิตย์ 0.39 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="uranus" data-ty="gas" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-uranus.webp" alt="" class="ci"><b>ดาวยูเรนัส</b><span class="en">Uranus</span><span class="cf">กว้าง 51,118 กม.<br>ห่างดวงอาทิตย์ 19.2 AU</span></div>
+  </div>
+  <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="venus" data-ty="rock" style="width:360px;height:468px;border-radius:38px;--r:38px">
+   <div class="gc"><img src="img/p-venus.webp" alt="" class="ci"><b>ดาวศุกร์</b><span class="en">Venus</span><span class="cf">กว้าง 12,104 กม.<br>ห่างดวงอาทิตย์ 0.72 AU</span></div>
+  </div>
+ </div>
+ <div class="ab in" id="g3-btns" style="left:700px;top:830px;width:520px;--d:400">
+  <button type="button" class="glass gbtn" data-glass="clear" id="g3-l" style="border-radius:34px;--r:34px"><span class="gc">← หิน</span></button>
+  <button type="button" class="glass gbtn" data-glass="clear" id="g3-r" style="border-radius:34px;--r:34px"><span class="gc">แก๊ส →</span></button>
+ </div>
+ <p class="ab" id="g3-fb" aria-live="polite" style="left:560px;top:250px;width:800px"></p>
+ <p class="cap fade" style="left:114px;top:968px;--d:1000">ภาพ: โลก จากดาวเทียม Terra (MODIS) · NASA (สาธารณสมบัติ) · ภาพดาวเคราะห์: NASA, NASA/JPL (สาธารณสมบัติ)</p>
+ <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>03 / 05</b></span></div></div>
+ <aside class="notes">การ์ดเรียงสลับกันไว้ ให้นักเรียนลากการ์ดบนสุดไปซ้าย (หิน) หรือขวา (แก๊ส) ถ้าผิด การ์ดจะเด้งกลับพร้อมคำใบ้ ใช้ขนาดและระยะห่างเป็นเบาะแส: ดาวเคราะห์ชั้นใน 4 ดวงเล็กและเป็นหิน ชั้นนอก 4 ดวงใหญ่และเป็นแก๊ส (ยูเรนัสและเนปจูนบางตำราเรียกยักษ์น้ำแข็ง) กด → จัดการ์ดที่เหลือให้ทั้งหมด</aside>
+</section>
+
+
+<section class="slide" id="g-quiz" data-steps="2" data-title="เช็กความเข้าใจ" data-drift="22,8,.02,.12">
+ <div class="scene"><div class="bg" style="background-image:url(img/bg-rings.webp)"></div></div>
+ <div class="ab in" style="left:110px;top:70px;--d:100"><div class="kick"><b>4</b>เช็กความเข้าใจ</div><h2 style="position:relative">ตอบบนจอ <span class="lt">แล้วค่อยเฉลย</span></h2></div>
+ <div class="glass liquid" data-glass="panel" id="g4-q1" style="left:110px;top:270px;width:820px;height:680px;border-radius:44px;--r:44px;--d:200">
+  <div class="gc"><span class="qn">ข้อ 1</span><p class="q">ดวงไหน <u>ไม่ใช่</u> ดาวเคราะห์หิน?</p></div>
+ </div>
+ <div class="ch ia r1 ab" data-mcq id="g4-ch" style="left:150px;top:470px;width:740px">
+  <div class="c glass" data-glass="clear"><span class="gc"><b>ก</b>ดาวพุธ</span></div><div class="c glass" data-glass="clear"><span class="gc"><b>ข</b>ดาวอังคาร</span></div>
+  <div class="c glass ok" data-glass="clear"><span class="gc"><b>ค</b>ดาวพฤหัสบดี</span></div><div class="c glass" data-glass="clear"><span class="gc"><b>ง</b>โลก</span></div>
+ </div>
+ <p class="ans ab g1" style="left:150px;top:796px;width:740px">ดาวพฤหัสบดีเป็นดาวเคราะห์แก๊ส ใหญ่ที่สุด อยู่ชั้นนอก ส่วนพุธ อังคาร และโลก เป็นดาวเคราะห์หินชั้นใน</p>
+ <div class="glass liquid" data-glass="panel" id="g4-q2" style="left:990px;top:270px;width:820px;height:680px;border-radius:44px;--r:44px;--d:320">
+  <div class="gc"><span class="qn">ข้อ 2</span><p class="q">ถ้าโลกเป็นลูกปิงปองกว้าง 4 ซม. ดาวพฤหัสบดี (กว้างกว่าโลกราว 11 เท่า) จะกว้างประมาณกี่เซนติเมตร?</p>
+   <div class="w-input ia" id="g4-in" data-label="พิมพ์คำตอบ" data-answer="44" data-unit="ซม." data-accept="44.0;45;43" data-tol="1.5"></div>
+  </div>
+ </div>
+ <div class="ab g2" id="g4-scale" style="left:1032px;top:776px;width:740px;height:160px">
+  <svg viewBox="0 0 740 160" aria-label="ลูกปิงปอง 4 ซม. เทียบกับลูกกลมกว้าง 44 ซม." role="img"><text x="0" y="96" class="big">4 × 11 = <tspan class="num" data-count="44" data-at="2">44</tspan> ซม.</text>
+   <circle class="pp" cx="470" cy="146" r="7"/><text x="470" y="124" text-anchor="middle" class="lab">4 ซม.</text><circle class="jj" cx="640" cy="80" r="77"/><text x="640" y="88" text-anchor="middle" class="in">44 ซม.</text></svg>
+ </div>
+ <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>04 / 05</b></span></div></div>
+ <aside class="notes">ข้อ 1: ดาวพฤหัสบดี (ตัวลวง: ทุกตัวเลือกอื่นเป็นดาวเคราะห์หิน) ข้อ 2: 4 × 11 = 44 ซม. รับคำตอบ 43–45 ให้นักเรียนตอบก่อน กด → เพื่อเฉลยทีละข้อ ข้อ 2 จะมีวงกลมเทียบขนาดลูกปิงปองกับลูกขนาดดาวพฤหัสบดี</aside>
+</section>
+
+
+<section class="slide" id="g-sun" data-steps="1" data-title="สรุป" data-drift="18,10,.025,.1">
+ <div class="scene"><div class="bg" style="background-image:url(img/bg-sun.webp)"></div></div>
+ <div class="glass liquid" data-glass="clear" id="g5-core" style="left:390px;top:330px;width:420px;height:420px;border-radius:210px;--r:210px;--d:150"><div class="gc"><span>มวลทั้งระบบ<br>อยู่ที่ดวงอาทิตย์</span><b class="num"><i data-count="99.8">99.8</i>%</b></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="0" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-mercury.webp" alt="" class=""></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="1" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-venus.webp" alt="" class=""></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="2" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-earth.webp" alt="" class=""></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="3" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-mars.webp" alt="" class=""></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="4" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-jupiter.webp" alt="" class=""></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="5" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-saturn.webp" alt="" class="sat"></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="6" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-uranus.webp" alt="" class=""></div></div>
+  <div class="glass orb" data-glass="clear" data-move data-i="7" style="width:96px;height:96px;border-radius:48px"><div class="gc"><img src="img/p-neptune.webp" alt="" class=""></div></div>
+ <div class="glass liquid h1" data-glass="panel" id="g5-sum" style="left:1250px;top:110px;width:560px;height:830px;border-radius:44px;--r:44px;--d:400">
+  <div class="gc"><div class="kick"><b>5</b>สรุป</div><h2 style="position:relative;font-size:56px">ครอบครัว<br>ของดวงอาทิตย์</h2>
+   <ul><li><b>ดวงอาทิตย์</b> ดาวฤกษ์ดวงเดียว เป็นศูนย์กลาง</li><li><b class="r">หิน 4 ดวง</b> ชั้นใน: พุธ ศุกร์ โลก อังคาร</li><li><b>แถบดาวเคราะห์น้อย</b> คั่นกลาง</li><li><b class="g">แก๊ส 4 ดวง</b> ชั้นนอก: พฤหัสบดี เสาร์ ยูเรนัส เนปจูน</li><li><b>ดาวเคราะห์แคระ</b> เช่น พลูโต และดาวหาง</li></ul></div>
+ </div>
+ <div class="glass liquid g1" data-glass="panel" id="g5-src" style="left:1250px;top:110px;width:560px;height:830px;border-radius:44px;--r:44px;--d:100">
+  <div class="gc"><div class="kick"><b>ที่มา</b>ภาพทุกภาพในบทนี้</div>
+   <ol><li>ดาวเสาร์ (แคสสินี 2547): NASA/JPL/Space Science Institute</li><li>ดวงอาทิตย์ (SDO, AIA 304 Å): NASA/SDO</li><li>โลก (Blue Marble, Terra MODIS): NASA</li><li>ดาวพุธ: NASA/JHUAPL/Carnegie Institution of Washington</li><li>ดาวศุกร์ (มาริเนอร์ 10): NASA/JPL-Caltech</li><li>ดาวอังคาร (ไวกิง 1): NASA/USGS</li><li>ดาวพฤหัสบดี (แคสสินี): NASA/JPL/University of Arizona</li><li>ดาวยูเรนัส ดาวเนปจูน (วอยเอเจอร์ 2): NASA/JPL</li></ol>
+   <p>ทุกภาพเป็นสาธารณสมบัติของ NASA จาก Wikimedia Commons ภาพดาวพื้นหลังสไลด์ 2 วาดโดย KruSlide ข้อมูลขนาดและระยะ: NASA Planetary Fact Sheet</p></div>
+ </div>
+ <p class="cap fade" style="left:114px;top:968px;--d:1000">ภาพ: ดวงอาทิตย์ในแสงอัลตราไวโอเลตไกล 304 Å · NASA/SDO (AIA) (สาธารณสมบัติ)</p>
+ <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>05 / 05</b></span></div></div>
+ <aside class="notes">สรุป: ดวงอาทิตย์มีมวลราว 99.8% ของทั้งระบบ ดาวเคราะห์โคจรรอบดวงอาทิตย์ ดวงในโคจรเร็วกว่าดวงนอก (ฟองกระจกที่โคจรอยู่เร็วช้าต่างกันตามจริงโดยประมาณ แต่ระยะห่างไม่ได้ย่อตามจริง) กด → ดูที่มาของภาพ</aside>
+</section>
+
+</main>
+<nav id="ctl" aria-label="ปุ่มควบคุมสไลด์">
+ <button id="pv" type="button" aria-label="ย้อนกลับ">‹</button>
+ <span id="pos"></span>
+ <button id="nx" type="button" aria-label="ถัดไป">›</button>
+ <button id="pen" type="button" aria-pressed="false" aria-label="ปากกา">✎ ปากกา</button>
+ <button id="fs" type="button" aria-label="เต็มจอ">⤢</button>
+</nav>
+<div id="live" class="sr" aria-live="polite"></div>
+<script>/* KruSlide styles sample: copy of teacher-slides/unit4/engine.js (via the calculus sample; Thai status text).
+   Deck engine: stage scaling, beats, navigation, lesson menu, control bar.
+   Slides: <section class="slide" data-steps="N" data-lesson="1" data-title="...">. Beats add .b1..b4 to the slide.
+   Only arrow keys, PageUp/PageDown and the ‹ › buttons change the slide; clicks, taps and swipes never do.
+   Events: document dispatches 'deck:change' {detail:{i,st,slide}} after every change; listens for 'deck:pen' (tools toggle).
+   Test hooks: window.__deck = {next, prev, jump(i, beat), state()}; ?still = no motion (screenshots). */
+(function () {
+  var root = document.documentElement, stage = document.getElementById('stage');
+  var slides = [].slice.call(stage.querySelectorAll('.slide')), N = slides.length, i = 0, st = 0;
+  var STEPS = slides.map(function (s) { return +s.dataset.steps || 0; });
+  var qs = new URLSearchParams(location.search);
+  if (qs.has('still')) root.classList.add('rm', 'shot');
+  else if (matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('rm');
+
+  /* Size from the visible area (clientWidth/Height), not innerWidth: on phones and tablets innerWidth can report a
+     larger layout viewport, which made the slide zoom in and get cut off. */
+  function vw() { return root.clientWidth || innerWidth; }
+  function vh() { return root.clientHeight || innerHeight; }
+  function fit() {
+    var s = Math.min(vw() / 1920, vh() / 1080);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+    root.style.setProperty('--scale', s);
+  }
+  addEventListener('resize', fit); addEventListener('orientationchange', fit);
+  if (window.visualViewport) visualViewport.addEventListener('resize', fit);
+  fit();
+
+  function count(el) {
+    var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null, tok = el._tok = {};
+    if (root.classList.contains('rm')) { el.textContent = to.toFixed(dec); return; }
+    function f(t) { if (el._tok !== tok) return; if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(f); }
+    el.textContent = (0).toFixed(dec); requestAnimationFrame(f);
+  }
+
+  var pos = document.getElementById('pos'), live = document.getElementById('live');
+  function lessonOf(k) { for (var j = k; j >= 0; j--) if (slides[j].dataset.lesson) return slides[j]; return null; }
+  function show(dir) {
+    slides.forEach(function (s, k) {
+      var on = k === i;
+      s.classList.toggle('on', on);
+      for (var b = 1; b <= 4; b++) s.classList.toggle('b' + b, on && st >= b);
+      if (on) { s.removeAttribute('inert'); s.setAttribute('aria-hidden', 'false'); }
+      else { s.setAttribute('inert', ''); s.setAttribute('aria-hidden', 'true'); }
+    });
+    var s = slides[i];
+    s.querySelectorAll('[data-count]').forEach(function (el) {
+      var at = +(el.dataset.at || 0);
+      if (st === at || (dir === 'jump' && st >= at)) count(el);
+      else if (st < at) { el._tok = null; el.textContent = ''; }
+    });
+    var L = lessonOf(i);
+    if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
+    if (pos) pos.textContent = (i + 1) + ' / ' + N + (STEPS[i] ? '  ·  ขั้น ' + st + '/' + STEPS[i] : '');
+    if (live) live.textContent = (L ? L.dataset.title + '. ' : '') + 'สไลด์ ' + (i + 1) + ' จาก ' + N + (STEPS[i] ? ', ขั้น ' + st + ' จาก ' + STEPS[i] : '');
+    if (!qs.has('still')) try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('deck:change', { detail: { i: i, st: st, slide: s } }));
+  }
+  function next() { if (st < STEPS[i]) st++; else if (i < N - 1) { i++; st = 0; } else return; show('fwd'); }
+  function prev() { if (st > 0) st--; else if (i > 0) { i--; st = STEPS[i]; } else return; show('back'); }
+  function jump(k, b) { i = Math.max(0, Math.min(N - 1, k | 0)); st = Math.max(0, Math.min(b | 0, STEPS[i])); show('jump'); }
+
+  function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
+  /* The slide changes ONLY with the arrow keys (or a clicker's PageUp/PageDown) and the ‹ › buttons (owner, 27 Nov).
+     Clicking, tapping or swiping on the slide never changes it, so a wrong click at the board cannot skip ahead. */
+  if (matchMedia('(pointer: coarse)').matches) root.classList.add('touchy');   /* touch screens: the bar is visible from the start */
+  addEventListener('pointerdown', function (e) { if ((e.pointerType || 'mouse') !== 'mouse') root.classList.add('touchy'); }, true);
+  stage.addEventListener('click', function () { if (menuOpen()) closeMenu(); });
+  addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
+    if (menuOpen()) {   /* while the lesson menu is open, keys move inside it and never change the slide */
+      var items = [].slice.call(menuEl.children), at = items.indexOf(document.activeElement);
+      if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); e.stopPropagation(); items[Math.min(items.length - 1, at + 1)].focus(); }
+      else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); e.stopPropagation(); items[Math.max(0, at - 1)].focus(); }
+      else if (k === 'Escape' || k === 'm' || k === 'M') { e.preventDefault(); e.stopPropagation(); closeMenu(); }
+      else if (!(t && t.closest && t.closest('#menu'))) { e.preventDefault(); e.stopPropagation(); }
+      return;
+    }
+    if (!nav) return;
+    e.preventDefault(); e.stopPropagation();
+    if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+    (k === 'PageDown' || k === 'ArrowRight') ? next() : prev();
+  }, true);
+  addEventListener('keydown', function (e) {
+    var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    var k = e.key;
+    if ((k === ' ' || k === 'Enter') && t && t.closest && t.closest('button,.ia,a')) return;
+    if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+    else if (k === 'Home') jump(0); else if (k === 'End') jump(N - 1, 9);
+    else if (k === 'f' || k === 'F') fs();
+    else if (k === 'p' || k === 'P') document.dispatchEvent(new CustomEvent('deck:pen'));
+    else if (k === 'm' || k === 'M') menu();
+    else if (k === 'Escape') closeMenu();
+  });
+  /* control bar: shows on pointer move, hides after 2.5 s */
+  var ctl = document.getElementById('ctl'), hideT = null;
+  function wake() { if (!ctl) return; ctl.classList.add('show'); clearTimeout(hideT); hideT = setTimeout(function () { ctl.classList.remove('show'); }, 2500); }
+  addEventListener('pointermove', wake); addEventListener('touchstart', wake, { passive: true });
+  function fs() { if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); }
+  var menuEl = document.getElementById('menu');
+  function menuOpen() { return !!(menuEl && menuEl.classList.contains('open')); }
+  function closeMenu() {
+    if (!menuOpen()) return;
+    menuEl.classList.remove('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'false');
+    if (menuEl.contains(document.activeElement)) document.activeElement.blur();
+  }
+  function menu() {
+    if (!menuEl) return; if (menuOpen()) { closeMenu(); return; }
+    menuEl.classList.add('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'true');
+    var cur = menuEl.querySelector('[aria-current="true"]') || menuEl.firstChild; if (cur) cur.focus();
+  }
+  if (menuEl) {
+    slides.forEach(function (s, k) {
+      if (!s.dataset.lesson) return;
+      var b = document.createElement('button'); b.type = 'button';
+      b.textContent = s.dataset.title; var sm = document.createElement('small'); sm.textContent = 'Slide ' + (k + 1); b.appendChild(sm); b._slide = s;
+      b.addEventListener('click', function () { closeMenu(); jump(k); });
+      menuEl.appendChild(b);
+    });
+  }
+  function on(id, f) { var el = document.getElementById(id); if (el) el.addEventListener('click', function (e) { e.stopPropagation(); f(); }); }
+  on('pv', prev); on('nx', next); on('mn', menu); on('fs', fs);
+  on('pen', function () { document.dispatchEvent(new CustomEvent('deck:pen')); });
+  document.addEventListener('pen:state', function (e) { var b = document.getElementById('pen'); if (b) b.setAttribute('aria-pressed', e.detail.on ? 'true' : 'false'); });
+
+  addEventListener('hashchange', function () { var n = parseInt((location.hash || '').slice(1), 10); if (n && n - 1 !== i) jump(n - 1); });
+  window.__deck = { next: next, prev: prev, jump: jump, state: function () { return { i: i, st: st, steps: STEPS[i], n: N, id: slides[i].id }; } };
+  var h = parseInt((location.hash || '').slice(1), 10);
+  jump(h ? h - 1 : (qs.has('s') ? +qs.get('s') : 0), h ? 0 : +(qs.get('b') || 0));
+})();
+
+/* KruSlide styles sample (glass): trimmed copy of teacher-slides/unit4/tools.js (via the calculus sample) with Thai labels.
+   Kept: tap a choice, typed answer with Check, sort cards into boxes, the global pen with auto-shapes, the tap guard.
+   Dropped (unused here): handwriting box and the chart builders.
+   Interactive tools for the Unit 4 deck (vanilla JS, no libraries, no network).
+   Renders every widget in CONTRACT.md + a global pen. Markup in, working tool out.
+   Widgets: .ch[data-mcq] .w-input .w-sort
+   Pen: toggled by the 'deck:pen' document event; adds .pen-on to <html>; dispatches 'pen:state' {detail:{on}}.
+   URL: ?still = default state, no motion · ?still&answers = Show answer on every widget (for checking).
+   Test hooks: every widget root has .__w (state + helpers); window.__tools = {widgets, showAll, resetAll, pen}. */
+(function () {
+  'use strict';
+  var root = document.documentElement, stage = document.getElementById('stage');
+  if (!stage) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var qs = new URLSearchParams(location.search);
+  var ANSWERS = qs.has('answers');
+  var INK = '#FFFFFF', BLUE = '#2F7BF6', VIOLET = '#7A5AF8', CORAL = '#FF6A3D', MINT = '#1FB57A', SUN = '#FFC53D';   /* deck D colours */
+  var uid = 0, widgets = [];
+
+  /* ---------- helpers ---------- */
+  function still() { return root.classList.contains('rm'); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function sv(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
+  function ico(name, cls) { var s = sv('svg', { 'class': cls || 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' }); sv('use', { href: '#' + name }, s); return s; }
+  function num(v, d) { var n = parseFloat(v); return isFinite(n) ? n : d; }
+  function list(s) { return s == null || String(s).trim() === '' ? [] : String(s).split(',').map(function (x) { return x.trim(); }); }
+  function fmt(v) { return String(Math.round(v * 100) / 100); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function near(a, b) { return Math.abs(a - b) < 1e-6; }
+  function btn(label, cls, act, fn) {
+    var b = el('button', 'tw-btn' + (cls ? ' ' + cls : ''), label); b.type = 'button'; if (act) b.dataset.act = act;
+    b.addEventListener('click', function (e) { e.stopPropagation(); fn(e); });
+    return b;
+  }
+  function anim(node, frames, opt) { if (still() || !node.animate) return null; try { return node.animate(frames, opt); } catch (e) { return null; } }
+  /* runs step(0..1) with ease-out; always ends with step(1), even without animation frames */
+  function tween(dur, step, done) {
+    var fin = false, t0 = null;
+    function end() { if (fin) return; fin = true; step(1); if (done) done(); }
+    if (still()) { end(); return { cancel: function () {} }; }
+    function f(t) { if (fin) return; if (t0 === null) t0 = t; var p = (t - t0) / dur; if (p >= 1) return end(); step(1 - Math.pow(1 - p, 3)); requestAnimationFrame(f); }
+    requestAnimationFrame(f); setTimeout(end, dur + 120);
+    return { cancel: function () { fin = true; } };
+  }
+  /* pointer position inside a node, in the node's own (unscaled) pixels: the stage is scaled by a CSS transform */
+  function local(node, e, W, H) {
+    var r = node.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * (r.width ? W / r.width : 1), y: (e.clientY - r.top) * (r.height ? H / r.height : 1) };
+  }
+  function toClient(node, x, y, W, H) { var r = node.getBoundingClientRect(); return { x: r.left + x * r.width / W, y: r.top + y * r.height / H }; }
+  function scaleOf(node) { var r = node.getBoundingClientRect(); return node.offsetWidth ? r.width / node.offsetWidth : 1; }
+  function key(e, keys) { if (keys.indexOf(e.key) < 0) return false; e.preventDefault(); e.stopPropagation(); return true; }
+
+  var liveEl = el('div', 'sr'); liveEl.setAttribute('aria-live', 'polite'); document.body.appendChild(liveEl);
+  function announce(t) { liveEl.textContent = ''; setTimeout(function () { liveEl.textContent = t; }, 30); }
+
+  function say(fb, kind, msg) {
+    fb.className = 'tw-fb' + (kind ? ' ' + kind : '');
+    fb.textContent = '';
+    if (kind === 'ok') fb.appendChild(ico('check'));
+    if (kind === 'no') fb.appendChild(ico('cross'));
+    if (msg) fb.appendChild(el('span', '', msg));
+  }
+  /* footer: Check / Show answer / Reset + feedback (aria-live). o = {check, show, reset, hint} */
+  function foot(w, o) {
+    var f = el('div', 'tw-foot'), bs = el('div', 'tw-btns'), fb = el('div', 'tw-fb');
+    fb.setAttribute('role', 'status'); fb.setAttribute('aria-live', 'polite');
+    var api = { el: f, fb: fb };
+    if (o.check) bs.appendChild(api.bCheck = btn('ตรวจคำตอบ', 'pri', 'check', o.check));
+    if (o.show) { bs.appendChild(api.bShow = btn('ดูเฉลย', 'show', 'show', o.show)); api.bShow.setAttribute('aria-pressed', 'false'); }
+    if (o.reset) bs.appendChild(api.bReset = btn('เริ่มใหม่', '', 'reset', o.reset));
+    f.appendChild(bs); f.appendChild(fb);
+    api.say = function (kind, msg) { say(fb, kind, msg || (kind ? '' : o.hint || '')); };
+    api.say('');
+    if (w.clientWidth && w.clientWidth < (o.wide || 900)) w.classList.add('w-narrow');
+    return api;
+  }
+  /* "Show answer" is a deliberate toggle: it saves the student's work, shows the answer in a clear state
+     (mint frame + "Answer" tab), and "Hide answer" brings the student's work back. */
+  function answerCtl(w, ft, o) {
+    var saved = null, c = {
+      shown: false,
+      show: function () {
+        if (c.shown) return;
+        saved = o.snap(); c.shown = true; w.classList.add('w-shown');
+        ft.bShow.textContent = 'ซ่อนเฉลย'; ft.bShow.setAttribute('aria-pressed', 'true');
+        o.reveal(); ft.say('ok', 'แสดงเฉลยแล้ว');
+      },
+      /* back to the student's own work. Check and every edit call this first, so the revealed key is never graded
+         and never becomes the student's work. Only Reset drops the saved work (off). */
+      hide: function () { if (!c.shown) return; c.off(); o.restore(saved); ft.say(''); },
+      toggle: function () { if (c.shown) c.hide(); else c.show(); },
+      off: function () {
+        if (!c.shown) return;
+        c.shown = false; w.classList.remove('w-shown');
+        ft.bShow.textContent = 'ดูเฉลย'; ft.bShow.setAttribute('aria-pressed', 'false');
+      }
+    };
+    return c;
+  }
+  function register(w, api) { w.__w = api; api.el = w; widgets.push(api); return api; }
+
+  /* ================= shape recognition (Auto shapes) ================= */
+  function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+  function segDist(p, a, b) {
+    var dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy;
+    var t = l2 ? clamp(((p.x - a.x) * dx + (p.y - a.y) * dy) / l2, 0, 1) : 0;
+    return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy);
+  }
+  function pathLen(p) { var L = 0; for (var i = 1; i < p.length; i++) L += dist(p[i - 1], p[i]); return L; }
+  function resample(p, n) {
+    var L = pathLen(p), out = [{ x: p[0].x, y: p[0].y }];
+    if (!L) { while (out.length < n) out.push({ x: p[0].x, y: p[0].y }); return out; }
+    var stepL = L / (n - 1), acc = 0, i = 1, a = p[0];
+    while (out.length < n - 1 && i < p.length) {
+      var b = p[i], d = dist(a, b);
+      if (acc + d >= stepL && d > 0) { var t = (stepL - acc) / d; a = { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }; out.push(a); acc = 0; }
+      else { acc += d; a = b; i++; }
+    }
+    while (out.length < n) out.push({ x: p[p.length - 1].x, y: p[p.length - 1].y });
+    return out;
+  }
+  function rdp(p, eps) {
+    if (p.length < 3) return p.slice();
+    var keep = [0, p.length - 1], stack = [[0, p.length - 1]];
+    while (stack.length) {
+      var s = stack.pop(), md = 0, mi = -1;
+      for (var i = s[0] + 1; i < s[1]; i++) { var d = segDist(p[i], p[s[0]], p[s[1]]); if (d > md) { md = d; mi = i; } }
+      if (md > eps) { keep.push(mi); stack.push([s[0], mi], [mi, s[1]]); }
+    }
+    return keep.sort(function (a, b) { return a - b; }).map(function (k) { return p[k]; });
+  }
+  function area2(p) { var a = 0; for (var i = 0; i < p.length; i++) { var q = p[(i + 1) % p.length]; a += p[i].x * q.y - q.x * p[i].y; } return a; }
+  /* Returns {t:'line'|'ellipse'|'rect'|'tri', pts:[...polyline], closed} or null. Strict on purpose:
+     small strokes (handwriting) and anything not clearly a shape stay freehand. */
+  function recog(raw) {
+    var n = raw.length; if (n < 2) return null;
+    var L = pathLen(raw), a = raw[0], b = raw[n - 1], chord = dist(a, b), i, d;
+    var minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+    for (i = 0; i < n; i++) { minX = Math.min(minX, raw[i].x); maxX = Math.max(maxX, raw[i].x); minY = Math.min(minY, raw[i].y); maxY = Math.max(maxY, raw[i].y); }
+    var bw = maxX - minX, bh = maxY - minY, dim = Math.max(bw, bh);
+    /* straight line */
+    if (chord >= 110 && chord / L >= 0.93) {
+      var md = 0; for (i = 1; i < n - 1; i++) md = Math.max(md, segDist(raw[i], a, b));
+      if (md <= 4 + 0.045 * chord) {
+        var q = { x: b.x, y: b.y }, ang = Math.abs(Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI);
+        if (ang < 4 || ang > 176) q.y = a.y; else if (Math.abs(ang - 90) < 4) q.x = a.x;   /* nearly level or upright: make it exact */
+        return { t: 'line', pts: [{ x: a.x, y: a.y }, q], closed: false };
+      }
+      return null;
+    }
+    /* closed loops only from here */
+    if (n < 10 || dim < 110 || Math.min(bw, bh) < 56 || chord > Math.max(26, 0.2 * dim)) return null;
+    var p = resample(raw, 72);
+    /* frame: the rotation with the smallest bounding box */
+    var best = null;
+    for (var deg = 0; deg < 90; deg += 2) {
+      var th = deg * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+      for (i = 0; i < p.length; i++) { var u = p[i].x * c + p[i].y * s, v = -p[i].x * s + p[i].y * c; x0 = Math.min(x0, u); x1 = Math.max(x1, u); y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+      var ar = (x1 - x0) * (y1 - y0);
+      if (!best || ar < best.ar - 1e-6) best = { ar: ar, deg: deg };
+    }
+    var bdeg = best.deg > 45 ? best.deg - 90 : best.deg;
+    function frame(degr) {
+      var th = degr * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9, q = [];
+      for (var k = 0; k < p.length; k++) { var u = p[k].x * c + p[k].y * s, v = -p[k].x * s + p[k].y * c; q.push({ x: u, y: v }); x0 = Math.min(x0, u); x1 = Math.max(x1, u); y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+      var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, A = (x1 - x0) / 2, B = (y1 - y0) / 2, eE = 0, eR = 0, bins = [];
+      for (k = 0; k < q.length; k++) {
+        var x = q[k].x - cx, y = q[k].y - cy;
+        eE += Math.abs(Math.hypot(x / A, y / B) - 1);
+        eR += Math.min(A - Math.abs(x), B - Math.abs(y));
+        bins[Math.floor((Math.atan2(y / B, x / A) + Math.PI) / (2 * Math.PI) * 12) % 12] = 1;
+      }
+      var cover = 0; for (k = 0; k < 12; k++) if (bins[k]) cover++;
+      return { c: c, s: s, cx: cx, cy: cy, A: A, B: B, eE: eE / q.length, eR: eR / q.length / Math.min(A, B), cover: cover, q: q, deg: degr };
+    }
+    function out(f, x, y) { return { x: x * f.c - y * f.s, y: x * f.s + y * f.c }; }   /* frame -> page */
+    var f0 = frame(0), fr = Math.abs(bdeg) < 9 ? f0 : frame(bdeg);
+    var ccw = area2(p) < 0;
+    /* triangle: three real corners */
+    var vs = rdp(p, 0.075 * dim); vs.pop();
+    var changed = true;
+    while (changed && vs.length > 3) {
+      changed = false;
+      for (i = 0; i < vs.length; i++) {
+        var pa = vs[(i + vs.length - 1) % vs.length], pb = vs[i], pc = vs[(i + 1) % vs.length];
+        var a1 = Math.atan2(pa.y - pb.y, pa.x - pb.x), a2 = Math.atan2(pc.y - pb.y, pc.x - pb.x);
+        var turn = Math.abs(a1 - a2) * 180 / Math.PI; if (turn > 180) turn = 360 - turn;
+        if (turn > 150 || dist(pb, pc) < 0.16 * dim) { vs.splice(i, 1); changed = true; break; }
+      }
+    }
+    var eT = 9;
+    if (vs.length === 3) {
+      eT = 0;
+      for (i = 0; i < p.length; i++) eT += Math.min(segDist(p[i], vs[0], vs[1]), segDist(p[i], vs[1], vs[2]), segDist(p[i], vs[2], vs[0]));
+      eT = eT / p.length / dim;
+    }
+    var sE = (f0.cover === 12 ? Math.min(f0.eE, fr.eE) : 9) / 0.085, sR = (fr.cover === 12 ? fr.eR : 9) / 0.085, sT = eT / 0.03;
+    var m = Math.min(sE, sR, sT), pts = [], k;
+    if (m > 1) return null;
+    if (m === sT) {
+      pts = vs.map(function (v) { return { x: v.x, y: v.y }; }); pts.push({ x: pts[0].x, y: pts[0].y });
+      return { t: 'tri', pts: pts, closed: true };
+    }
+    if (m === sR) {
+      var cs = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(function (g) { return out(fr, fr.cx + g[0] * fr.A, fr.cy + g[1] * fr.B); });
+      if (area2(cs) < 0 !== ccw) cs.reverse();
+      var st = 0, bd = 1e9; for (k = 0; k < 4; k++) { d = dist(cs[k], a); if (d < bd) { bd = d; st = k; } }
+      for (k = 0; k <= 4; k++) pts.push(cs[(st + k) % 4]);
+      return { t: 'rect', pts: pts, closed: true };
+    }
+    var fe = f0.eE <= fr.eE * 1.15 || fr.A / fr.B < 1.25 && fr.B / fr.A < 1.25 ? f0 : fr;
+    var A = fe.A, B = fe.B;
+    if (A / B < 1.18 && B / A < 1.18) A = B = (A + B) / 2;   /* nearly round: a true circle */
+    var la = { x: a.x * fe.c + a.y * fe.s - fe.cx, y: -a.x * fe.s + a.y * fe.c - fe.cy }, t0 = Math.atan2(la.y / B, la.x / A), N = 72;
+    var dir = area2(fe.q) < 0 ? -1 : 1;
+    for (k = 0; k <= N; k++) { var t = t0 + dir * k / N * 2 * Math.PI; pts.push(out(fe, fe.cx + A * Math.cos(t), fe.cy + B * Math.sin(t))); }
+    return { t: A === B ? 'circle' : 'ellipse', pts: pts, closed: true };
+  }
+
+  /* ================= ink engine (w-write and the global pen) ================= */
+  function paint(ctx, s, pts) {
+    var p = pts || s.pts, n = p.length, i;
+    if (!n) return;
+    ctx.globalAlpha = s.alpha; ctx.strokeStyle = ctx.fillStyle = s.color; ctx.lineCap = ctx.lineJoin = 'round';
+    if (n === 1) { ctx.beginPath(); ctx.arc(p[0].x, p[0].y, s.size / 2, 0, 7); ctx.fill(); ctx.globalAlpha = 1; return; }
+    if (s.poly || pts) {
+      ctx.lineWidth = s.size; ctx.beginPath(); ctx.moveTo(p[0].x, p[0].y);
+      for (i = 1; i < n; i++) ctx.lineTo(p[i].x, p[i].y);
+      if (s.closed && !pts) ctx.closePath();
+      ctx.stroke();
+    } else if (!s.pr) {
+      ctx.lineWidth = s.size; ctx.beginPath(); ctx.moveTo(p[0].x, p[0].y);
+      for (i = 1; i < n - 1; i++) ctx.quadraticCurveTo(p[i].x, p[i].y, (p[i].x + p[i + 1].x) / 2, (p[i].y + p[i + 1].y) / 2);
+      ctx.lineTo(p[n - 1].x, p[n - 1].y); ctx.stroke();
+    } else {   /* stylus pressure: width changes along the stroke */
+      var ax = p[0].x, ay = p[0].y;
+      for (i = 1; i < n; i++) {
+        var lastp = i === n - 1, bx = lastp ? p[i].x : (p[i].x + p[i + 1].x) / 2, by = lastp ? p[i].y : (p[i].y + p[i + 1].y) / 2;
+        ctx.lineWidth = s.size * (0.45 + 1.1 * (p[i - 1].p + p[i].p) / 2);
+        ctx.beginPath(); ctx.moveTo(ax, ay);
+        if (lastp) ctx.lineTo(bx, by); else ctx.quadraticCurveTo(p[i].x, p[i].y, bx, by);
+        ctx.stroke(); ax = bx; ay = by;
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function Ink(host, W, H, maxRatio) {
+    var base = el('canvas', 'ink-c'), live = el('canvas', 'ink-c');
+    base.setAttribute('aria-hidden', 'true'); live.setAttribute('aria-hidden', 'true');
+    host.appendChild(base); host.appendChild(live);
+    var bc = base.getContext('2d'), lc = live.getContext('2d');
+    var self = { st: { strokes: [], hist: [] }, color: INK, size: 4, alpha: 1, mode: 'draw', enabled: true, auto: true, onchange: null, last: null };
+    var ratio = 0, cur = null, pid = null, erasing = false, morph = null;
+    function changed() { if (self.onchange) self.onchange(); }
+    function redraw() {
+      bc.setTransform(ratio, 0, 0, ratio, 0, 0); bc.clearRect(0, 0, W, H);
+      self.st.strokes.forEach(function (s) { if (!morph || morph.s !== s) paint(bc, s); });
+    }
+    function clearLive() { lc.setTransform(ratio, 0, 0, ratio, 0, 0); lc.clearRect(0, 0, W, H); }
+    function fit() {
+      var q = Math.min(maxRatio, Math.max(1, (window.devicePixelRatio || 1) * scaleOf(host)));
+      q = Math.ceil(q * 4) / 4;
+      if (q === ratio) return;
+      ratio = q;
+      [base, live].forEach(function (c) { c.width = Math.round(W * q); c.height = Math.round(H * q); });
+      redraw(); if (cur) { clearLive(); paint(lc, cur); }
+    }
+    function pos(e) { var p = local(host, e, W, H); p.p = e.pressure || 0; return p; }
+    function add(e) {
+      var p = pos(e), l = cur.pts[cur.pts.length - 1];
+      if (l && Math.hypot(p.x - l.x, p.y - l.y) < 1.2) return;
+      cur.pts.push(p);
+    }
+    function hit(s, p, R) {
+      var q = s.pts, r = R + s.size / 2;
+      if (q.length === 1) return dist(q[0], p) <= r;
+      for (var i = 1; i < q.length; i++) if (segDist(p, q[i - 1], q[i]) <= r) return true;
+      return s.closed && segDist(p, q[q.length - 1], q[0]) <= r;
+    }
+    function erase(e) {
+      var p = pos(e), gone = [], S = self.st.strokes;
+      for (var k = S.length - 1; k >= 0; k--) if (hit(S[k], p, 16)) { gone.push({ s: S[k], k: k }); S.splice(k, 1); }
+      if (gone.length) { self.st.hist.push({ t: 'del', items: gone }); redraw(); changed(); }
+    }
+    function endMorph() {
+      if (!morph) return;
+      var m = morph; morph = null; m.tw.cancel();
+      clearLive(); paint(bc, m.s);
+    }
+    function snapShape(s) {
+      var r = recog(s.pts); self.last = r ? r.t : 'free';
+      if (!r) return false;
+      var rawPts = s.pts, from = resample(rawPts, 48), to = resample(r.closed ? r.pts : r.pts, 48);
+      self.st.hist.push({ t: 'snap', s: s, raw: rawPts, pr: s.pr });
+      s.pts = r.pts; s.poly = true; s.closed = r.closed; s.pr = false; s.shape = r.t;
+      if (still()) return false;
+      morph = { s: s };
+      morph.tw = tween(150, function (t) {
+        clearLive();
+        paint(lc, s, from.map(function (a, i) { return { x: a.x + (to[i].x - a.x) * t, y: a.y + (to[i].y - a.y) * t }; }));
+      }, function () { if (morph && morph.s === s) { morph = null; clearLive(); paint(bc, s); } });
+      return true;
+    }
+    function finish() {
+      if (pid === null) return;
+      try { host.releasePointerCapture(pid); } catch (e) {}
+      pid = null; erasing = false;
+      if (cur) {
+        var s = cur; cur = null;
+        self.st.strokes.push(s); self.st.hist.push({ t: 'add', s: s });
+        var morphing = self.auto && snapShape(s);
+        if (!self.auto) self.last = 'free';
+        if (!morphing) { clearLive(); paint(bc, s); }
+        changed();
+      }
+    }
+    host.addEventListener('pointerdown', function (e) {
+      if (!self.enabled || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      if (pid !== null) finish();
+      endMorph();
+      pid = e.pointerId; try { host.setPointerCapture(pid); } catch (er) {}
+      if (e.cancelable) e.preventDefault();
+      if (self.mode === 'erase') { erasing = true; erase(e); return; }
+      cur = { color: self.color, size: self.size, alpha: self.alpha, pr: e.pointerType === 'pen' && e.pressure > 0 && self.alpha === 1, pts: [] };
+      add(e); clearLive(); paint(lc, cur);
+    });
+    host.addEventListener('pointermove', function (e) {
+      if (e.pointerId !== pid) return;
+      var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : null;
+      if (!evs || !evs.length) evs = [e];
+      if (erasing) { evs.forEach(erase); return; }
+      if (!cur) return;
+      evs.forEach(add); clearLive(); paint(lc, cur);
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { host.addEventListener(t, function (e) { if (e.pointerId === pid) finish(); }); });
+    self.finish = finish;
+    self.undo = function () {
+      endMorph();
+      var h = self.st.hist.pop(), S = self.st.strokes; if (!h) return;
+      if (h.t === 'add') { var k = S.indexOf(h.s); if (k >= 0) S.splice(k, 1); }
+      else if (h.t === 'snap') { h.s.pts = h.raw; h.s.poly = false; h.s.closed = false; h.s.pr = h.pr; h.s.shape = null; }
+      else if (h.t === 'del') for (var i = h.items.length - 1; i >= 0; i--) S.splice(Math.min(h.items[i].k, S.length), 0, h.items[i].s);
+      else if (h.t === 'clear') self.st.strokes = h.all;
+      redraw(); changed();
+    };
+    self.clear = function () {
+      endMorph();
+      if (!self.st.strokes.length) return;
+      self.st.hist.push({ t: 'clear', all: self.st.strokes }); self.st.strokes = [];
+      redraw(); changed();
+    };
+    self.swap = function (st) { finish(); endMorph(); self.st = st; redraw(); changed(); };
+    self.count = function () { return self.st.strokes.length; };
+    self.shapes = function () { return self.st.strokes.map(function (s) { return s.shape || 'free'; }); };
+    self.fit = fit;
+    /* the drawing area changed size (web font loaded, label wrapped...): same pixels, new canvas, ink kept as drawn */
+    self.resize = function (w2, h2) { finish(); endMorph(); W = w2; H = h2; ratio = 0; fit(); };
+    var rt = null; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fit, 120); });
+    fit();
+    return self;
+  }
+  var SHAPES_ICON = '<circle cx="8" cy="8.5" r="5.5"/><rect x="10.5" y="11" width="10.5" height="10" rx="1.5"/>';
+  function rawIcon(inner) {
+    var s = sv('svg', { 'class': 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    s.innerHTML = inner; return s;
+  }
+
+  /* ================= MCQ ================= */
+  function mcq(w) {
+    var cs = [].slice.call(w.querySelectorAll('.c'));
+    w.setAttribute('role', 'group');
+    cs.forEach(function (c) {
+      c.tabIndex = 0; c.setAttribute('role', 'button');
+      function pick() {
+        if (c.classList.contains('ok')) { c.classList.remove('wrong'); c.classList.add('picked'); announce('ถูกต้อง!'); return; }
+        c.classList.add('wrong'); announce('ยังไม่ใช่ ลองอีกครั้ง');
+        anim(c, [{ transform: 'translateX(0)' }, { transform: 'translateX(-10px)' }, { transform: 'translateX(10px)' }, { transform: 'translateX(-7px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(0)' }], { duration: 420 });
+        clearTimeout(c._t); c._t = setTimeout(function () { c.classList.remove('wrong'); }, 800);
+      }
+      c.addEventListener('click', pick);
+      c.addEventListener('keydown', function (e) { if (key(e, ['Enter', ' '])) pick(); });
+    });
+    return register(w, {
+      type: 'mcq',
+      show: function () { cs.forEach(function (c) { if (c.classList.contains('ok')) c.classList.add('picked'); }); },
+      reset: function () { cs.forEach(function (c) { c.classList.remove('picked', 'wrong'); }); }
+    });
+  }
+
+  /* ================= w-input ================= */
+  function clean(s) { return String(s).trim().toLowerCase().replace(/\s+/g, ' '); }
+  /* A typed number, or null. Commas (or spaces) count only as proper groups of three: "1,250" is 1250, but
+     "3,5", "1,00" or "1 2" are not numbers. A typed unit, "%", the degree sign, and the words "more" / "than ..." are
+     ignored: "6 more girls" is 6 when the unit is girls. */
+  function parseNum(s, unit) {
+    var t = clean(s).replace(/−/g, '-'), u = unit ? clean(unit) : '';
+    t = t.replace(/\s+than\b.*$/, '').replace(/(\d)\s*\bmore\b/g, '$1 ').replace(/\s+/g, ' ').trim();
+    if (u && t.length > u.length && t.slice(-u.length) === u) t = t.slice(0, -u.length).trim();
+    t = t.replace(/\s*[%°]$/, '').replace(/^\+/, '');
+    var m = /^(-?)(\d{1,3}(?:,\d{3})+|\d{1,3}(?: \d{3})+|\d+)?(\.\d*)?$/.exec(t);
+    if (!m || (!m[2] && !(m[3] && m[3].length > 1))) return null;
+    return parseFloat(m[1] + (m[2] || '0').replace(/[, ]/g, '') + (m[3] || ''));
+  }
+  function input(w) {
+    var d = w.dataset, answer = (d.answer || '').trim(), unit = d.unit || '', tol = num(d.tol, 0), tries = 0;
+    var acc = [answer].concat((d.accept || '').split(';')).map(function (s) { return s.trim(); }).filter(Boolean);
+    var numeric = parseNum(answer, unit) !== null, id = 'tw-in-' + (++uid);
+    w.textContent = '';
+    if (d.label) { var lab = el('label', 'tw-lab', d.label); lab.htmlFor = id; w.appendChild(lab); }
+    var row = el('div', 'tw-inrow'), inp = el('input', 'tw-in');
+    inp.type = 'text'; inp.id = id; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off');
+    if (numeric) inp.inputMode = 'decimal';
+    if (!d.label) inp.setAttribute('aria-label', 'คำตอบของคุณ');
+    inp.style.width = clamp(answer.length * 24 + 84, 170, 420) + 'px';
+    row.appendChild(inp);
+    if (unit) row.appendChild(el('span', 'tw-unit', unit));
+    w.appendChild(row);
+    var ft = foot(w, { check: check, show: function () { ac.toggle(); }, reset: reset, wide: 1 });
+    row.appendChild(ft.fb); w.appendChild(ft.el);
+    if (w.clientWidth && w.clientWidth < 540) { w.classList.add('w-narrow'); ft.el.appendChild(ft.fb); }
+    function match(v) {
+      var a = clean(v), an = parseNum(v, unit);
+      return acc.some(function (x) {
+        var b = clean(x);
+        if (a === b) return true;
+        /* spaces may differ ("110cups"), but never inside or between numbers: "1 2" is not "12" */
+        if (!/\d[\s,]+\d/.test(a) && a.replace(/\s/g, '') === b.replace(/\s/g, '')) return true;
+        var bn = parseNum(x, unit);
+        return an !== null && bn !== null && Math.abs(an - bn) <= tol + 1e-9;
+      });
+    }
+    function mark(k) { inp.classList.remove('ok', 'no'); if (k) inp.classList.add(k); }
+    function check() {
+      ac.hide();
+      if (!inp.value.trim()) { mark(''); ft.say('info', 'พิมพ์คำตอบก่อนนะ'); return; }
+      if (match(inp.value)) { mark('ok'); ft.say('ok', 'ถูกต้อง!'); return; }
+      tries++; mark('no');
+      anim(inp, [{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'translateX(0)' }], { duration: 300 });
+      ft.say('no', tries >= 2 ? 'ลองตรวจวิธีทำอีกครั้ง' : 'ยังไม่ถูก ลองอีกครั้ง');
+      if (tries >= 2) ft.bShow.classList.add('nudge');
+    }
+    function reset() { ac.off(); inp.readOnly = false; inp.value = ''; tries = 0; mark(''); ft.bShow.classList.remove('nudge'); ft.say(''); }
+    var ac = answerCtl(w, ft, {
+      snap: function () { return { v: inp.value, cls: inp.className }; },
+      reveal: function () { inp.value = answer; inp.readOnly = true; mark('ok'); },
+      restore: function (s) { inp.value = s.v; inp.readOnly = false; mark(''); }
+    });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); inp.blur(); } });   /* blur: the arrows go back to the deck */
+    inp.addEventListener('input', function () { ac.hide(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
+    return register(w, { type: 'input', show: ac.show, hide: ac.hide, reset: reset, check: check, input: inp, tries: function () { return tries; } });
+  }
+
+  /* ================= w-sort ================= */
+  function sort(w) {
+    var bins = (w.dataset.bins || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean);
+    var items = [].slice.call(w.children).filter(function (c) { return c.classList && c.classList.contains('item'); });
+    var pool = el('div', 'tw-pool'), row = el('div', 'tw-binrow'), sel = null;
+    pool.setAttribute('role', 'button'); pool.tabIndex = -1; pool.setAttribute('aria-label', 'การ์ดที่ยังไม่ได้จัด');
+    w.textContent = '';
+    w.appendChild(pool); w.appendChild(row);
+    var binEls = bins.map(function (name, b) {
+      var bin = el('div', 'tw-bin b' + (b % 4)), slot = el('div', 'tw-slot');
+      bin.tabIndex = 0; bin.setAttribute('role', 'button'); bin.setAttribute('aria-label', 'กล่อง: ' + name);
+      bin.appendChild(el('div', 'tw-bint', name)); bin.appendChild(slot); bin._slot = slot; bin._b = b;
+      row.appendChild(bin); return bin;
+    });
+    var ft = foot(w, { check: check, show: function () { ac.toggle(); }, reset: reset, hint: 'ลากแต่ละภาพไปใส่กลุ่มที่ถูก' });
+    w.appendChild(ft.el);
+    function slotOf(t) { return t._slot || t; }
+    function where(it) { var b = it.parentNode && it.parentNode.parentNode; return b && b.classList.contains('tw-bin') ? b._b : -1; }
+    function unmark(it) { it.classList.remove('ok', 'no'); var m = it.querySelector('.tw-mark'); if (m) m.remove(); }
+    function mark(it, ok) { unmark(it); it.classList.add(ok ? 'ok' : 'no'); var m = el('span', 'tw-mark'); m.appendChild(ico(ok ? 'check' : 'cross')); it.appendChild(m); }
+    function select(it) {
+      if (sel) { sel.classList.remove('sel'); sel.setAttribute('aria-pressed', 'false'); }
+      sel = it === sel ? null : it;
+      if (sel) { sel.classList.add('sel'); sel.setAttribute('aria-pressed', 'true'); }
+      w.classList.toggle('picking', !!sel);
+    }
+    function move(it, target, quiet) {
+      var a = it.getBoundingClientRect();
+      it.style.transform = ''; it.classList.remove('drag');
+      unmark(it); slotOf(target).appendChild(it);
+      if (pool.children.length < items.length) pool.style.minHeight = '';
+      fitBins();
+      if (!quiet) {
+        var b = it.getBoundingClientRect(), k = scaleOf(it) || 1;
+        anim(it, [{ transform: 'translate(' + (a.left - b.left) / k + 'px,' + (a.top - b.top) / k + 'px)' }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      }
+    }
+    /* cards must stay inside their box: first tighten the cards, then let the box scroll */
+    function fitBins() {
+      w.classList.remove('tight');
+      binEls.forEach(function (b) { b._slot.classList.remove('scroll'); });
+      function over() { return binEls.some(function (b) { return b._slot.scrollHeight > b._slot.clientHeight + 2; }); }
+      if (!over()) return;
+      w.classList.add('tight');
+      binEls.forEach(function (b) { if (b._slot.scrollHeight > b._slot.clientHeight + 2) b._slot.classList.add('scroll'); });
+    }
+    function place(it, target) { ac.hide(); move(it, target); if (sel === it) select(it); ft.say(''); }
+    items.forEach(function (it, k) {
+      it._k = k; it.tabIndex = 0; it.setAttribute('role', 'button'); it.setAttribute('aria-pressed', 'false');
+      pool.appendChild(it);
+      var st = null, dragged = false;
+      it.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        if (st) { it.style.transform = ''; it.classList.remove('drag'); }
+        st = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+        try { it.setPointerCapture(e.pointerId); } catch (er) {}
+      });
+      it.addEventListener('pointermove', function (e) {
+        if (!st || e.pointerId !== st.id) return;
+        var dx = e.clientX - st.x, dy = e.clientY - st.y;
+        if (!st.moved && Math.hypot(dx, dy) < 8) return;
+        if (!st.moved) { st.moved = true; st.k = scaleOf(w) || 1; it.classList.add('drag'); w.classList.add('dragging'); }
+        it.style.transform = 'translate(' + dx / st.k + 'px,' + dy / st.k + 'px) rotate(2deg)';
+        var t = under(e); binEls.concat(pool).forEach(function (b) { b.classList.toggle('over', b === t); });
+      });
+      function up(e) {
+        if (!st || e.pointerId !== st.id) return;
+        var s = st; st = null;
+        try { it.releasePointerCapture(e.pointerId); } catch (er) {}
+        binEls.concat(pool).forEach(function (b) { b.classList.remove('over'); });
+        w.classList.remove('dragging');
+        if (!s.moved) return;
+        dragged = true; setTimeout(function () { dragged = false; }, 60);
+        var t = e.type === 'pointerup' ? under(e) : null;
+        if (t && slotOf(t) !== it.parentNode) place(it, t);
+        else { var a = it.style.transform; it.style.transform = ''; it.classList.remove('drag'); anim(it, [{ transform: a }, { transform: 'none' }], { duration: 200 }); }
+      }
+      it.addEventListener('pointerup', up); it.addEventListener('pointercancel', up);
+      it.addEventListener('click', function (e) { e.stopPropagation(); if (dragged) { dragged = false; return; } select(it); });
+      it.addEventListener('keydown', function (e) { if (key(e, ['Enter', ' '])) select(it); });
+    });
+    function under(e) {
+      var t = document.elementFromPoint(e.clientX, e.clientY);
+      t = t && t.closest ? t.closest('.tw-bin,.tw-pool') : null;
+      return t && w.contains(t) ? t : null;
+    }
+    binEls.concat(pool).forEach(function (b) {
+      function drop() { if (sel && slotOf(b) !== sel.parentNode) { var it = sel; place(it, b); announce('ย้ายแล้ว'); } else if (sel) select(sel); }
+      b.addEventListener('click', drop);
+      b.addEventListener('keydown', function (e) { if (e.target === b && key(e, ['Enter', ' '])) drop(); });
+    });
+    function check() {
+      ac.hide();
+      var placed = items.filter(function (it) { return where(it) >= 0; }), right = 0;
+      if (!placed.length) { ft.say('info', 'ลากภาพลงกลุ่มก่อนนะ'); return; }
+      placed.forEach(function (it) { var ok = where(it) === +it.dataset.bin; if (ok) right++; mark(it, ok); });
+      var np = placed.length, left = items.length - np;
+      if (right === items.length) ft.say('ok', 'ถูกทั้งหมด เยี่ยมมาก!');
+      else if (!left) ft.say('no', 'ถูก ' + right + ' จาก ' + items.length + ' ภาพ');
+      else ft.say(right === np ? 'info' : 'no', 'วางแล้ว ' + np + ' ภาพ ถูก ' + right + ' \u00B7 เหลืออีก ' + left);
+    }
+    function reset() { ac.off(); if (sel) select(sel); items.forEach(function (it) { move(it, pool, true); }); ft.say(''); }
+    var ac = answerCtl(w, ft, {
+      snap: function () { return binEls.concat(pool).map(function (b) { return [].slice.call(slotOf(b).children); }); },
+      reveal: function () { if (sel) select(sel); items.forEach(function (it) { var b = binEls[+it.dataset.bin]; if (b) { move(it, b); mark(it, true); } }); },
+      restore: function (s) { binEls.concat(pool).forEach(function (b, k) { s[k].forEach(function (it) { move(it, b, true); }); }); }
+    });
+    function lock() { if (pool.children.length === items.length) { pool.style.minHeight = ''; pool.style.minHeight = pool.offsetHeight + 'px'; } }
+    lock(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { lock(); fitBins(); });
+    return register(w, { type: 'sort', show: ac.show, hide: ac.hide, reset: reset, check: check, items: items, bins: binEls, pool: pool,
+      state: function () { return items.map(where); } });
+  }
+
+  /* ================= global pen ================= */
+  function pen() {
+    var layer = el('div'); layer.id = 'pen-layer'; stage.appendChild(layer);
+    var ink = Ink(layer, 1920, 1080, 1.5); ink.enabled = false;
+    var bar = el('div'); bar.id = 'pen-bar'; bar.setAttribute('role', 'toolbar'); bar.setAttribute('aria-label', 'เครื่องมือปากกา'); bar.setAttribute('aria-orientation', 'vertical');
+    stage.appendChild(bar);
+    var store = {}, cur = window.__deck ? window.__deck.state().i : 0, on = false, size = 'thin', tool = 'pen';
+    ink.st = store[cur] = { strokes: [], hist: [] };
+    var groups = { color: [], size: [], tool: [] };
+    function tb(label, inner, group, val, fn) {
+      var b = el('button', 'pb'); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; b.dataset.pen = val;
+      if (typeof inner === 'string') b.appendChild(rawIcon(inner)); else b.appendChild(inner);
+      if (group) { groups[group].push(b); b.setAttribute('aria-pressed', 'false'); }
+      b.addEventListener('click', function (e) { e.stopPropagation(); fn(); sync(); });
+      bar.appendChild(b); return b;
+    }
+    function sep() { bar.appendChild(el('i', 'ps')); }
+    var colors = [['หมึก', INK], ['น้ำเงิน', BLUE], ['ส้มแดง', CORAL], ['เขียว', MINT], ['เหลือง', SUN]];
+    var penColor = INK, hiColor = SUN;   /* the highlighter has its own colour: sun yellow by default */
+    colors.forEach(function (c) {
+      var sw = el('i', 'pc'); sw.style.background = c[1];
+      tb(c[0], sw, 'color', c[1], function () { if (tool === 'erase') tool = 'pen'; if (tool === 'hi') hiColor = c[1]; else penColor = c[1]; });
+    });
+    sep();
+    tb('เส้นบาง', '<path d="M4 16 Q9 6 13 12 T20 9" stroke-width="2"/>', 'size', 'thin', function () { size = 'thin'; });
+    tb('เส้นหนา', '<path d="M4 16 Q9 6 13 12 T20 9" stroke-width="5"/>', 'size', 'thick', function () { size = 'thick'; });
+    sep();
+    var u = sv('svg', { 'class': 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' }); sv('use', { href: '#pencil' }, u);
+    tb('ปากกา', u, 'tool', 'pen', function () { tool = 'pen'; });
+    tb('ปากกาเน้น', '<path d="M14 4l6 6-8 8H6v-6z"/><path d="M4 21h9" stroke-width="3"/>', 'tool', 'hi', function () { tool = 'hi'; });
+    tb('ยางลบ', '<path d="M8 20l-4.5-4.5a1.5 1.5 0 0 1 0-2.1L13 4l7 7-9 9z"/><path d="M8 20h12M9 8l7 7"/>', 'tool', 'erase', function () { tool = 'erase'; });
+    var bAuto = tb('จัดรูปทรงอัตโนมัติ', SHAPES_ICON, null, 'auto', function () { ink.auto = !ink.auto; });
+    sep();
+    var bUndo = tb('ย้อนกลับ', '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>', null, 'undo', function () { ink.undo(); });
+    var bClear = tb('ลบทั้งสไลด์นี้', '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>', null, 'clear', function () { ink.clear(); });
+    sep();
+    var x = sv('svg', { 'class': 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' }); sv('use', { href: '#cross' }, x);
+    tb('ปิดปากกา', x, null, 'close', function () { set(false); });
+    function sync() {
+      ink.mode = tool === 'erase' ? 'erase' : 'draw';
+      ink.color = tool === 'hi' ? hiColor : penColor;
+      ink.alpha = tool === 'hi' ? (hiColor === SUN ? 0.5 : 0.32) : 1;
+      ink.size = tool === 'hi' ? (size === 'thin' ? 22 : 36) : (size === 'thin' ? 5 : 11);
+      groups.color.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === ink.color && tool !== 'erase' ? 'true' : 'false'); });
+      groups.size.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === size ? 'true' : 'false'); });
+      groups.tool.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === tool ? 'true' : 'false'); });
+      bAuto.setAttribute('aria-pressed', ink.auto ? 'true' : 'false');
+      bUndo.disabled = !ink.st.hist.length; bClear.disabled = !ink.st.strokes.length;
+      layer.classList.toggle('erase', tool === 'erase');
+    }
+    ink.onchange = sync;
+    function set(v) {
+      v = !!v; if (v === on) return;
+      on = v; if (!on) ink.finish();
+      ink.enabled = on; root.classList.toggle('pen-on', on);
+      if (on) ink.fit();
+      document.dispatchEvent(new CustomEvent('pen:state', { detail: { on: on } }));
+      announce(on ? 'เปิดปากกา' : 'ปิดปากกา');
+    }
+    document.addEventListener('deck:pen', function () { set(!on); });
+    document.addEventListener('deck:change', function (e) {
+      var k = e.detail.i; if (k === cur) return;
+      cur = k; ink.swap(store[k] || (store[k] = { strokes: [], hist: [] }));
+    });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && on) set(false); });
+    sync();
+    return { ink: ink, set: set, on: function () { return on; }, store: store, bar: bar, layer: layer };
+  }
+
+  /* ================= tap guard =================
+     After a quick finger drag (a flick), Chrome can swallow the click of the next tap ("tap stops the fling").
+     On a classroom touch screen that means a dead Check button. If a finger or stylus goes down and up on a
+     button without moving and no click follows, send the click ourselves. */
+  (function () {
+    var down = null, lastClick = -1, synthAt = -1e9, synthT = null;
+    addEventListener('pointerdown', function (e) { down = e.pointerType === 'mouse' ? null : { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.target }; }, true);
+    addEventListener('click', function (e) {
+      if (!e.isTrusted) return;
+      if (synthT && synthT.contains(e.target) && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
+      lastClick = performance.now();
+    }, true);
+    /* A tap must never leave keyboard focus on a tool: the next Space / Enter / arrow from the clicker belongs to the deck.
+       Text inputs keep their focus. Elements reached with Tab keep working with the keyboard. */
+    function unfocus() {
+      var a = document.activeElement;
+      if (a && a !== document.body && a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA' && !a.isContentEditable && a.blur) a.blur();
+    }
+    ['pointerup', 'pointercancel'].forEach(function (t) { addEventListener(t, function () { unfocus(); setTimeout(unfocus, 0); }, true); });
+    addEventListener('click', function (e) { if (e.detail > 0) { unfocus(); setTimeout(unfocus, 0); } }, true);   /* detail 0 = pressed with the keyboard: keep focus */
+    addEventListener('pointerup', function (e) {
+      var d = down; down = null;
+      if (!d || d.id !== e.pointerId || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12) return;
+      var t = d.t && d.t.closest ? d.t.closest('button,input,[role="button"]') : null;
+      if (!t || t.disabled || !(stage.contains(t) || t.closest('#ctl'))) return;
+      var at = performance.now();
+      setTimeout(function () {
+        if (lastClick >= at || !t.isConnected || t.disabled) return;
+        synthAt = performance.now(); synthT = t;
+        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+      }, 90);
+    }, true);
+  })();
+
+  /* ================= start ================= */
+  var kinds = [['.ch[data-mcq]', mcq], ['.w-input', input], ['.w-sort', sort]];
+  kinds.forEach(function (k) {
+    [].forEach.call(stage.querySelectorAll(k[0]), function (w) {
+      try { k[1](w); } catch (err) { if (window.console) console.error('tools.js: could not render ' + k[0], err); }
+    });
+  });
+  var penApi = pen();
+  window.__tools = {
+    widgets: widgets, pen: penApi, recog: recog,
+    showAll: function () { widgets.forEach(function (x) { if (x.show) x.show(); }); },
+    resetAll: function () { widgets.forEach(function (x) { if (x.reset) x.reset(); }); }
+  };
+  if (ANSWERS) window.__tools.showAll();
+})();
+
+/* KruSlide styles sample D · "real glass" (vanilla JS, no libraries, works in Chromium and WebKit).
+   Every .glass element gets a CLIPPED COPY of its slide's .scene layer behind its content. That copy is distorted by its own
+   SVG filter (filter:url(#id) on a normal element, which WebKit supports; we never rely on backdrop-filter:url()):
+     feImage (a displacement map drawn on a canvas for this exact rounded shape) -> feDisplacementMap three times at slightly
+     different strengths, one per colour channel, so the rim refracts AND splits colour a little -> optional soft blur.
+   On top: a tint, an inner shadow with a thick lower lip, a rim light and a specular highlight that follow the pointer
+   (or the tilt of a phone/tablet, or a slow drift when nobody touches the screen).
+   The background drifts slowly (one set of CSS variables per slide), so the copies move with it and the bending is visible.
+   Kinds: data-glass="panel" (frosted a little, for text) · "clear" (buttons, choices) · "lens" (magnifier, see slide 2).
+   Test hooks: window.__glass = {items, light, lens, stack, refresh}. ?still = no motion (screenshots). */
+(function () {
+  'use strict';
+  var root = document.documentElement, stage = document.getElementById('stage');
+  if (!stage) return;
+  var NS = 'http://www.w3.org/2000/svg', XL = 'http://www.w3.org/1999/xlink', uid = 0;
+  function still() { return root.classList.contains('rm'); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function ease(p) { return 1 - Math.pow(1 - p, 3); }
+  function sv(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
+  function div(cls, parent) { var d = document.createElement('div'); d.className = cls; if (parent) parent.appendChild(d); return d; }
+  var defsSvg = sv('svg', { width: 0, height: 0, 'aria-hidden': 'true', focusable: 'false', style: 'position:absolute;width:0;height:0;overflow:hidden' });
+  document.body.appendChild(defsSvg);
+  var defs = sv('defs', {}, defsSvg);
+
+  /* ---------- displacement maps ---------- */
+  /* signed distance to a rounded rectangle (positive inside) */
+  function sdf(x, y, w, h, r) {
+    var qx = Math.abs(x - w / 2) - (w / 2 - r), qy = Math.abs(y - h / 2) - (h / 2 - r);
+    return -(Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - r);
+  }
+  var mapCache = {};
+  /* The rim of a thick glass slab: inside a bezel of width b the surface curves down like a quarter circle, so the
+     refraction grows steeply towards the edge. Each pixel samples the background further OUT along the edge normal:
+     the world just outside the glass is bent into the rim (compressed and magnified), as with real thick glass. */
+  function makeMap(w, h, r, b, s) {
+    var key = [w, h, r, b].join('x');
+    if (mapCache[key]) return mapCache[key];
+    var k = Math.min(1, 360 / Math.max(w, h)), cw = Math.max(8, Math.ceil(w * k)), ch = Math.max(8, Math.ceil(h * k));
+    var cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    var cx = cv.getContext('2d'), im = cx.createImageData(cw, ch), D = im.data;
+    for (var j = 0; j < ch; j++) for (var i = 0; i < cw; i++) {
+      var x = (i + .5) / k, y = (j + .5) / k, d = sdf(x, y, w, h, r), o = (j * cw + i) * 4, vx = 0, vy = 0;
+      if (d > 0 && d < b) {
+        var t = 1 - d / b, m = .55 * t * t + .45 * (1 - Math.sqrt(Math.max(0, 1 - t * t)));   /* 0 at the inner edge of the bezel, 1 at the rim */
+        var gx = sdf(x + 1, y, w, h, r) - sdf(x - 1, y, w, h, r), gy = sdf(x, y + 1, w, h, r) - sdf(x, y - 1, w, h, r), gl = Math.hypot(gx, gy) || 1;
+        vx = -gx / gl * m; vy = -gy / gl * m;                                    /* outward normal, scaled */
+      }
+      D[o] = Math.round(127.5 + 127.5 * vx); D[o + 1] = Math.round(127.5 + 127.5 * vy); D[o + 2] = 128; D[o + 3] = 255;
+    }
+    cx.putImageData(im, 0, 0);
+    return (mapCache[key] = cv.toDataURL('image/png'));
+  }
+  function makeFilter(w, h, r, o) {
+    var id = 'gf' + (++uid), p = o.pad, str = o.str, url = makeMap(w, h, r, o.bezel, str);
+    var f = sv('filter', { id: id, x: 0, y: 0, width: w + 2 * p, height: h + 2 * p, filterUnits: 'userSpaceOnUse', primitiveUnits: 'userSpaceOnUse', 'color-interpolation-filters': 'sRGB' }, defs);
+    var fi = sv('feImage', { x: p, y: p, width: w, height: h, preserveAspectRatio: 'none', result: 'map' }, f);
+    fi.setAttribute('href', url); fi.setAttributeNS(XL, 'xlink:href', url);
+    var ch = [['r', 1, '1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'], ['g', .93, '0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0'], ['b', .86, '0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0']];
+    ch.forEach(function (c) {
+      sv('feDisplacementMap', { 'in': 'SourceGraphic', in2: 'map', scale: (2 * str * c[1]).toFixed(1), xChannelSelector: 'R', yChannelSelector: 'G', result: 'd' + c[0] }, f);
+      sv('feColorMatrix', { 'in': 'd' + c[0], type: 'matrix', values: c[2], result: c[0] }, f);
+    });
+    sv('feComposite', { 'in': 'r', in2: 'g', operator: 'arithmetic', k1: 0, k2: 1, k3: 1, k4: 0, result: 'rg' }, f);
+    sv('feComposite', { 'in': 'rg', in2: 'b', operator: 'arithmetic', k1: 0, k2: 1, k3: 1, k4: 0, result: 'rgb' }, f);
+    if (o.blur) sv('feGaussianBlur', { 'in': 'rgb', stdDeviation: o.blur }, f);
+    return id;
+  }
+
+  /* ---------- building one glass element ---------- */
+  var KIND = {   /* bezel = width of the curved rim (px; 'r' = the whole half-height, a capsule or a sphere), str = how far the rim
+                   bends the light (px; 'r' = a third of the half-height), zoom = the lens over the whole face */
+    panel: { bezel: 92, str: 66, blur: 1, zoom: 1 },
+    clear: { bezel: 'r', str: 'r', blur: 0, zoom: 1.12 },
+    pill: { bezel: 'r', str: 22, blur: .6, zoom: 1 },
+    lens: { bezel: 120, str: 84, blur: 0, zoom: 1 }
+  };
+  var items = [];
+  function offsetIn(el, slide) {   /* layout position of el inside its slide (transforms ignored) */
+    var x = 0, y = 0, e = el;
+    while (e && e !== slide) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+    return { x: x, y: y };
+  }
+  function build(el) {
+    var slide = el.closest('.slide'), scene = slide && slide.querySelector('.scene');
+    if (!scene) return null;
+    var kind = el.dataset.glass || 'panel', K = KIND[kind] || KIND.panel;
+    var w = el.offsetWidth, h = el.offsetHeight, cs = getComputedStyle(el), r = parseFloat(cs.borderTopLeftRadius) || 0;
+    r = Math.min(r, w / 2, h / 2);
+    var half = Math.min(w, h) / 2, bz = el.dataset.bezel || K.bezel, st = el.dataset.str || K.str;
+    var bezel = Math.min(bz === 'r' ? half : +bz, half - 1), str = st === 'r' ? clamp(half * .36, 16, 64) : +st;
+    var pad = Math.ceil(str + 8);
+    var under = div('g-under'), copy = div('g-copy', under);
+    under.style.left = -pad + 'px'; under.style.top = -pad + 'px'; under.style.width = (w + 2 * pad) + 'px'; under.style.height = (h + 2 * pad) + 'px';
+    var clone = scene.cloneNode(true); clone.removeAttribute('id'); clone.setAttribute('aria-hidden', 'true');
+    [].forEach.call(clone.querySelectorAll('[id]'), function (n) { n.removeAttribute('id'); });
+    copy.appendChild(clone);
+    var fid = makeFilter(w, h, r, { pad: pad, str: str, bezel: bezel, blur: el.dataset.blur != null ? +el.dataset.blur : K.blur });
+    under.style.filter = 'url(#' + fid + ')';
+    el.insertBefore(under, el.firstChild);
+    var top = div('g-top'); top.innerHTML = '<i class="g-spec"></i><i class="g-rim"></i>';
+    el.appendChild(top);
+    el.classList.add('g-' + kind, 'g-ready');
+    var it = { el: el, slide: slide, copy: copy, w: w, h: h, pad: pad, kind: kind, fixed: el.dataset.move == null, zoom: +(el.dataset.zoom || K.zoom) };
+    place(it);
+    items.push(it);
+    return it;
+  }
+  /* align the copy with the real background: copy = translate(pad - x, pad - y) [then magnify, rotate...] */
+  function place(it, m) {
+    if (m) { it.copy.style.transform = m; return; }
+    var o = offsetIn(it.el, it.slide), z = it.zoom; it.x = o.x; it.y = o.y;
+    it.copy.style.transform = z === 1 ? 'translate(' + (it.pad - o.x) + 'px,' + (it.pad - o.y) + 'px)'
+      : 'translate(' + (it.pad + it.w / 2 - z * (o.x + it.w / 2)).toFixed(1) + 'px,' + (it.pad + it.h / 2 - z * (o.y + it.h / 2)).toFixed(1) + 'px) scale(' + z + ')';
+  }
+
+  /* ---------- light: pointer, tilt, or a slow drift ---------- */
+  var L = { x: 1300, y: 180, src: 'drift', t0: 0 }, lastMove = -1e9;
+  function stageXY(cx, cy) { var r = stage.getBoundingClientRect(), k = r.width / 1920; return { x: (cx - r.left) / k, y: (cy - r.top) / k }; }
+  addEventListener('pointermove', function (e) { var p = stageXY(e.clientX, e.clientY); L.x = p.x; L.y = p.y; L.src = 'pointer'; lastMove = performance.now(); wake(); }, { passive: true });
+  addEventListener('pointerdown', function (e) { var p = stageXY(e.clientX, e.clientY); L.x = p.x; L.y = p.y; lastMove = performance.now(); wake(); }, { passive: true });
+  /* phones and tablets: tilt moves the light (iOS asks for permission, so there the touch position drives it instead) */
+  if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+    addEventListener('deviceorientation', function (e) {
+      if (e.gamma == null) return;
+      L.x = 960 + clamp(e.gamma, -35, 35) / 35 * 900; L.y = 540 + clamp((e.beta || 45) - 45, -35, 35) / 35 * 500; L.src = 'tilt'; lastMove = performance.now(); wake();
+    });
+  }
+  function light(it) {
+    var cx = (it.cx != null ? it.cx : it.x + it.w / 2), cy = (it.cy != null ? it.cy : it.y + it.h / 2);
+    var dx = L.x - cx, dy = L.y - cy, a = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+    var s = it.el.style;
+    s.setProperty('--mx', (L.x - (cx - it.w / 2)).toFixed(0) + 'px');
+    s.setProperty('--my', (L.y - (cy - it.h / 2)).toFixed(0) + 'px');
+    s.setProperty('--la', a.toFixed(1) + 'deg');
+    s.setProperty('--li', clamp(1 - Math.hypot(dx, dy) / 1600, .25, 1).toFixed(3));
+  }
+
+  /* ---------- one clock: background drift, light, and the per-slide motion ---------- */
+  var cur = null, running = false, t0 = performance.now(), hooks = [];
+  function frame(t) {
+    var any = false;
+    if (cur && !still()) {
+      var s = (t - t0) / 1000, D = cur._drift;
+      if (D) {
+        cur.style.setProperty('--dx', (Math.sin(s * D.f) * D.x).toFixed(2) + 'px');
+        cur.style.setProperty('--dy', (Math.cos(s * D.f * .8) * D.y).toFixed(2) + 'px');
+        cur.style.setProperty('--ds', (1 + D.s * (.5 + .5 * Math.sin(s * D.f * .6))).toFixed(4));
+        any = true;
+      }
+      if (performance.now() - lastMove > 4000) { L.x = 960 + Math.cos(s * .35) * 760; L.y = 300 + Math.sin(s * .5) * 220; L.src = 'drift'; }
+      hooks.forEach(function (h) { if (h.slide === cur && h.tick) { if (h.tick(s) !== false) any = true; } });
+      any = true;
+    }
+    if (cur) items.forEach(function (it) { if (it.slide === cur) light(it); });
+    if (any) requestAnimationFrame(frame); else running = false;
+  }
+  function wake() { if (!running) { running = true; requestAnimationFrame(frame); } }
+  var curSt = 0;
+  function enter(s, st) {
+    if (s !== cur) {
+      cur = s;
+      var d = (s.dataset.drift || '18,10,.02').split(',').map(Number);
+      s._drift = { x: d[0], y: d[1], s: d[2], f: d[3] || .16 };
+      t0 = performance.now();
+      hooks.forEach(function (h) { if (h.active) h.active(h.slide === s); });
+    }
+    curSt = st;
+    hooks.forEach(function (h) { if (h.slide === s && h.beat) h.beat(st); });
+    wake();
+  }
+  document.addEventListener('deck:change', function (e) { enter(e.detail.slide, e.detail.st); });
+
+  /* ---------- start: build every glass element once fonts and images are ready ---------- */
+  function buildAll() {
+    [].forEach.call(stage.querySelectorAll('.glass'), function (el) { if (!el.classList.contains('g-ready')) build(el); });
+    items.forEach(function (it) { if (it.slide === cur || !cur) light(it); });
+  }
+  function refresh() { items.forEach(function (it) { if (it.fixed) place(it); }); }
+  window.__glass = { items: items, light: L, refresh: refresh, build: build, place: place, hook: function (h) { hooks.push(h); if (cur) { if (h.active) h.active(h.slide === cur); if (h.slide === cur && h.beat) h.beat(curSt); } wake(); return h; }, wake: wake, still: still, ease: ease, clamp: clamp, stageXY: stageXY };
+  buildAll();
+  /* the deck showed its first slide before this file ran */
+  (function () { var on = stage.querySelector('.slide.on'); if (on) enter(on, window.__deck ? window.__deck.state().st : 0); })();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { refresh(); });
+  addEventListener('load', refresh);
+  document.dispatchEvent(new CustomEvent('glass:ready'));
+  wake();
+})();
+
+/* KruSlide styles sample D · the slides' own interactions, built on glass.js:
+   slide 2 a draggable glass lens (2.6× magnification + rim refraction) that reads out the planet under it;
+   slide 3 a stack of glass cards to sort (drag or the glass buttons), every card refracting Earth and the cards below it;
+   slide 5 glass bubbles that orbit the Sun at speeds in the ratio of the real orbits (Kepler: period ∝ a^1.5).
+   Only arrow keys / PageUp / PageDown / ‹ › change the slide: every drag here uses pointer capture and touch-action:none. */
+(function () {
+  'use strict';
+  var G = window.__glass, root = document.documentElement;
+  if (!G) return;
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
+  var clamp = G.clamp, still = G.still;
+  function thai(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function tween(dur, step, done) {
+    var t0 = null, fin = false;
+    function end() { if (fin) return; fin = true; step(1); if (done) done(); }
+    if (still()) { end(); return { cancel: function () { fin = true; } }; }
+    function f(t) { if (fin) return; if (t0 === null) t0 = t; var p = (t - t0) / dur; if (p >= 1) return end(); step(G.ease(p)); requestAnimationFrame(f); }
+    requestAnimationFrame(f); setTimeout(end, dur + 250);
+    return { cancel: function () { fin = true; } };
+  }
+  function itemOf(el) { for (var i = 0; i < G.items.length; i++) if (G.items[i].el === el) return G.items[i]; return null; }
+  /* pointer drag that never reaches the deck: capture, prevent, stop */
+  function drag(el, o) {
+    el.style.touchAction = 'none';
+    var id = null;
+    el.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (root.classList.contains('pen-on')) return;
+      e.preventDefault(); e.stopPropagation(); id = e.pointerId;
+      try { el.setPointerCapture(id); } catch (er) {}
+      el.classList.add('held'); if (o.down) o.down(e);
+    });
+    el.addEventListener('pointermove', function (e) { if (e.pointerId === id && o.move) o.move(e); });
+    function up(e) { if (e.pointerId !== id) return; id = null; el.classList.remove('held'); try { el.releasePointerCapture(e.pointerId); } catch (er) {} if (o.up) o.up(e, e.type === 'pointercancel'); }
+    el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+    el.addEventListener('click', function (e) { e.stopPropagation(); });
+  }
+
+  /* ================= slide 2: the lens ================= */
+  var lens = $('#g2-lens');
+  if (lens) (function () {
+    var it = itemOf(lens), slide = lens.closest('.slide'), R = 160, MAG = 2.6;
+    var P = lens.dataset.planets.split(';').map(function (s) { var a = s.split('|'); return { k: a[0], th: a[1], en: a[2], d: +a[3], au: +a[4], ty: a[5], fact: a[6], x: +a[7] }; });
+    var name = $('#g2-name'), en = $('#g2-en'), od = $('#g2-d'), ox = $('#g2-x'), oau = $('#g2-au'), fact = $('#g2-fact'), chip = $('#g2-type');
+    var cx = 310, cy = 600, curK = null, numT = null;
+    function setLens(x, y) {
+      cx = clamp(x, R + 10, 1920 - R - 10); cy = clamp(y, 250, 1080 - R - 90);
+      lens.style.left = (cx - R) + 'px'; lens.style.top = (cy - R) + 'px';
+      it.x = cx - R; it.y = cy - R;
+      /* copy: magnify the scene about the lens centre: translate(pad + R − MAG·cx, pad + R − MAG·cy) scale(MAG) */
+      G.place(it, 'translate(' + (it.pad + R - MAG * cx).toFixed(1) + 'px,' + (it.pad + R - MAG * cy).toFixed(1) + 'px) scale(' + MAG + ')');
+      var best = null, bd = 1e9;
+      P.forEach(function (p) { var d = Math.abs(p.x - cx); if (d < bd) { bd = d; best = p; } });
+      if (best && best.k !== curK && bd < 190) show(best);
+      lens.setAttribute('aria-valuenow', Math.round(cx));
+    }
+    function show(p) {
+      curK = p.k;
+      name.textContent = p.th; en.textContent = p.en; fact.textContent = p.fact;
+      chip.textContent = p.ty === 'หิน' ? 'ดาวเคราะห์หิน' : 'ดาวเคราะห์แก๊ส'; chip.className = 'chip ' + (p.ty === 'หิน' ? 'rock' : 'gas');
+      var from = [+od.textContent.replace(/,/g, '') || 0, parseFloat(ox.textContent) || 0, parseFloat(oau.textContent) || 0], to = [p.d, p.d / 12756, p.au];
+      if (numT) numT.cancel();
+      numT = tween(500, function (t) {
+        od.textContent = thai(Math.round(from[0] + (to[0] - from[0]) * t)); ox.textContent = (from[1] + (to[1] - from[1]) * t).toFixed(2); oau.textContent = (from[2] + (to[2] - from[2]) * t).toFixed(2);
+      });
+      var card = $('#g2-card .gc'); card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap');
+    }
+    var off = null;
+    drag(lens, {
+      down: function (e) { var p = G.stageXY(e.clientX, e.clientY); off = { x: p.x - cx, y: p.y - cy }; },
+      move: function (e) { var p = G.stageXY(e.clientX, e.clientY); setLens(p.x - off.x, p.y - off.y); }
+    });
+    lens.addEventListener('keydown', function (e) {   /* Up/Down step between planets; Left/Right stay with the deck */
+      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return; e.preventDefault(); e.stopPropagation();
+      var i = P.findIndex(function (p) { return p.k === curK; }); i = clamp(i + (e.key === 'ArrowUp' ? 1 : -1), 0, P.length - 1); setLens(P[i].x, 600);
+    });
+    setLens(310, 600);
+    G.hook({ slide: slide, active: function (on) { if (on) setLens(cx, cy); } });
+    window.__glass.lens = { set: setLens, cur: function () { return curK; }, pos: function () { return { x: cx, y: cy }; }, planets: P };
+  })();
+
+  /* ================= slide 3: the glass card stack ================= */
+  var stackEl = $('#g3-stack');
+  if (stackEl) (function () {
+    var slide = stackEl.closest('.slide'), cards = $$('.card', stackEl), fb = $('#g3-fb');
+    var zones = { rock: $('#g3-rock'), gas: $('#g3-gas') }, placed = { rock: [], gas: [] };
+    var SX = 780 + 180, SY = 300 + 234, CW = 360, CH = 468;   /* stack centre, card size */
+    var cs = cards.map(function (el, i) {
+      var it = itemOf(el);
+      return { el: el, it: it, k: el.dataset.k, ty: el.dataset.ty, x: SX, y: SY, a: 0, s: 1, done: null, z: 0, ghosts: [] };
+    });
+    function seed(i) { var x = Math.sin(i * 91.7 + 3.3) * 43758.5; return x - Math.floor(x); }
+    function home(c, i) { var n = cs.length - 1 - i; return { x: SX + (seed(i) - .5) * 26, y: SY + n * -4, a: (seed(i + 9) - .5) * 9, s: 1 }; }
+    /* ghosts: each card's copy shows the cards beneath it as faint glass outlines, so stacked glass reads as glass */
+    cs.forEach(function (c) {
+      cs.forEach(function (o) {
+        if (o === c) return;
+        var g = document.createElement('i'); g.className = 'ghost'; c.it.copy.appendChild(g); c.ghosts.push({ o: o, el: g });
+      });
+    });
+    function M(c) { return 'translate(' + (c.x - CW / 2).toFixed(1) + 'px,' + (c.y - CH / 2).toFixed(1) + 'px) rotate(' + c.a.toFixed(2) + 'deg) scale(' + c.s.toFixed(3) + ')'; }
+    function apply(c) {
+      c.el.style.transform = M(c);
+      /* the copy undoes the card's own transform: T(pad + W/2, pad + H/2) · S(1/s) · R(−a) · T(−cx, −cy) */
+      G.place(c.it, 'translate(' + (c.it.pad + CW / 2) + 'px,' + (c.it.pad + CH / 2) + 'px) scale(' + (1 / c.s).toFixed(4) + ') rotate(' + (-c.a).toFixed(2) + 'deg) translate(' + (-c.x).toFixed(1) + 'px,' + (-c.y).toFixed(1) + 'px)');
+      c.it.cx = c.x; c.it.cy = c.y;
+    }
+    function ghosts() {
+      cs.forEach(function (c) {
+        c.ghosts.forEach(function (g) {
+          var below = g.o.z < c.z;
+          g.el.style.display = below ? '' : 'none';
+          if (below) g.el.style.transform = 'translate(' + (g.o.x - CW / 2).toFixed(1) + 'px,' + (g.o.y - CH / 2).toFixed(1) + 'px) rotate(' + g.o.a.toFixed(2) + 'deg) scale(' + g.o.s.toFixed(3) + ')';
+        });
+      });
+    }
+    function order() {   /* z-order: the unsorted stack on top, sorted cards below */
+      var left = cs.filter(function (c) { return !c.done; });
+      cs.forEach(function (c, i) { c.z = c.done ? 1 + placed[c.done].indexOf(c) : 20 + left.indexOf(c); c.el.style.zIndex = c.z; });
+      left.forEach(function (c) { c.el.classList.toggle('top', c === left[left.length - 1]); c.el.setAttribute('aria-hidden', c === left[left.length - 1] ? 'false' : 'true'); });
+      cs.forEach(function (c) { if (c.done) { c.el.classList.remove('top'); c.el.setAttribute('aria-hidden', 'false'); } });
+    }
+    function topCard() { var left = cs.filter(function (c) { return !c.done; }); return left[left.length - 1] || null; }
+    function slotOf(ty, n) {   /* 2 x 2 inside the zone, cards at 42 % */
+      var z = zones[ty], zx = parseFloat(z.style.left), zy = parseFloat(z.style.top), col = n % 2, row = Math.floor(n / 2);
+      return { x: zx + 140 + col * 240, y: zy + 250 + row * 214, a: (seed(n + (ty === 'gas' ? 5 : 0)) - .5) * 6, s: .42 };
+    }
+    var moving = 0;
+    function animate(c, to, dur, done) {
+      var f = { x: c.x, y: c.y, a: c.a, s: c.s }; moving++;
+      tween(dur, function (t) { c.x = f.x + (to.x - f.x) * t; c.y = f.y + (to.y - f.y) * t; c.a = f.a + (to.a - f.a) * t; c.s = f.s + (to.s - f.s) * t; apply(c); ghosts(); },
+        function () { moving--; if (done) done(); });
+    }
+    function say(t, k) { fb.textContent = t; fb.className = 'ab ' + (k || ''); }
+    function send(c, ty, quiet) {
+      if (!c || c.done) return;
+      if (c.ty !== ty) {   /* wrong: back to the stack with a shake and a hint */
+        say(c.el.querySelector('b').textContent + (ty === 'rock' ? ' ใหญ่และอยู่ไกล ลองดูอีกที' : ' เล็กและอยู่ใกล้ดวงอาทิตย์ ลองดูอีกที'), 'no');
+        var h = home(c, cs.indexOf(c));
+        animate(c, { x: h.x + (ty === 'rock' ? -40 : 40), y: h.y, a: h.a, s: 1 }, 180, function () { animate(c, h, 420); });
+        return;
+      }
+      c.done = ty; placed[ty].push(c); order();
+      animate(c, slotOf(ty, placed[ty].length - 1), quiet ? 520 : 600);
+      var n = placed.rock.length + placed.gas.length;
+      if (!quiet) say(n === cs.length ? 'ครบทั้ง 8 ดวงแล้ว เยี่ยมมาก!' : 'ถูกต้อง! ' + c.el.querySelector('b').textContent + (ty === 'rock' ? ' เป็นดาวเคราะห์หิน' : ' เป็นดาวเคราะห์แก๊ส'), 'ok');
+      zones[ty].classList.remove('hit'); void zones[ty].offsetWidth; zones[ty].classList.add('hit');
+    }
+    function reset() {
+      placed = { rock: [], gas: [] };
+      cs.forEach(function (c, i) { c.done = null; var h = home(c, i); c.x = h.x; c.y = h.y; c.a = h.a; c.s = 1; apply(c); });
+      order(); ghosts(); say('');
+    }
+    /* drag the top card: it follows the finger and tilts; release past 180 px sends it to that side */
+    cs.forEach(function (c, i) {
+      var start = null;
+      drag(c.el, {
+        down: function (e) { if (c !== topCard() || moving) { start = null; return; } var p = G.stageXY(e.clientX, e.clientY); start = { px: p.x, py: p.y, x: c.x, y: c.y }; },
+        move: function (e) {
+          if (!start) return; var p = G.stageXY(e.clientX, e.clientY), dx = p.x - start.px, dy = p.y - start.py;
+          c.x = start.x + dx; c.y = start.y + dy * .35; c.a = home(c, i).a + dx / 22; apply(c); ghosts();
+          zones.rock.classList.toggle('over', dx < -180); zones.gas.classList.toggle('over', dx > 180);
+        },
+        up: function (e, cancel) {
+          if (!start) return; var dx = c.x - start.x; start = null; zones.rock.classList.remove('over'); zones.gas.classList.remove('over');
+          if (!cancel && Math.abs(dx) > 180) send(c, dx < 0 ? 'rock' : 'gas'); else animate(c, home(c, i), 380);
+        }
+      });
+    });
+    $('#g3-l').addEventListener('click', function (e) { e.stopPropagation(); if (!moving) send(topCard(), 'rock'); });
+    $('#g3-r').addEventListener('click', function (e) { e.stopPropagation(); if (!moving) send(topCard(), 'gas'); });
+    reset();
+    G.hook({ slide: slide,
+      beat: function (st) {   /* beat 1 = the answer: every card still in the stack flies to its group */
+        if (st >= 1) { var k = 0; cs.slice().reverse().forEach(function (c) { if (!c.done) { setTimeout(function () { send(c, c.ty, true); }, still() ? 0 : 140 * k++); } }); say('ดาวเคราะห์ชั้นใน 4 ดวงเป็นหิน · ชั้นนอก 4 ดวงเป็นแก๊ส', 'ok'); }
+        else if (placed.rock.length + placed.gas.length === cs.length) reset();
+      } });
+    window.__glass.stack = { send: function (ty) { send(topCard(), ty); }, reset: reset, state: function () { return { rock: placed.rock.map(function (c) { return c.k; }), gas: placed.gas.map(function (c) { return c.k; }), top: topCard() && topCard().k }; }, cards: cs, moving: function () { return moving; } };
+  })();
+
+  /* ================= slide 5: glass bubbles orbit the glass Sun ================= */
+  var orbs = $$('#g-sun .orb');
+  if (orbs.length) (function () {
+    var slide = orbs[0].closest('.slide'), C = { x: 600, y: 540 }, AU = [.39, .72, 1, 1.52, 5.2, 9.54, 19.2, 30.1];
+    /* even spacing on screen (distances are NOT to scale); angular speed ∝ 1 / period, period ∝ a^1.5, squeezed so the
+       outer ones still move: inner bubbles visibly lap the outer ones */
+    var os = orbs.map(function (el) {
+      var i = +el.dataset.i, it = itemOf(el), r = 268 + i * 39;
+      return { el: el, it: it, i: i, rx: r, ry: r * .6, w: .55 / Math.pow(Math.pow(AU[i], 1.5), .45), ph: i * 2.3 };
+    });
+    function put(s) {
+      os.forEach(function (o) {
+        var a = o.ph + s * o.w, x = C.x + Math.cos(a) * o.rx, y = C.y + Math.sin(a) * o.ry;
+        o.el.style.transform = 'translate(' + (x - 48).toFixed(1) + 'px,' + (y - 48).toFixed(1) + 'px)';
+        o.el.style.zIndex = Math.sin(a) > 0 ? 6 : 3;
+        var z = o.it.zoom;
+        G.place(o.it, 'translate(' + (o.it.pad + 48 - z * x).toFixed(1) + 'px,' + (o.it.pad + 48 - z * y).toFixed(1) + 'px) scale(' + z + ')');
+        o.it.cx = x; o.it.cy = y;
+      });
+    }
+    put(4);
+    G.hook({ slide: slide, active: function (on) { if (on) put(4); }, tick: function (s) { put(4 + s); } });
+  })();
+
+  G.refresh();
+})();
+</script>
+</body></html>

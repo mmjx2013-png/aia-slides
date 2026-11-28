@@ -3,4 +3,5 @@
 <symbol id="cross" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></symbol>
 <symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
 <symbol id="hand" viewBox="0 0 48 48"><path d="M17 26V9a3.5 3.5 0 0 1 7 0v12M24 20v-3a3.5 3.5 0 0 1 7 0v5M31 21a3.5 3.5 0 0 1 7 0v9c0 8-5 14-13 14h-2c-5 0-8-2-11-6l-6-8a3.4 3.4 0 0 1 5-4.6L17 26" style="fill:#fff;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+<symbol id="meeple" viewBox="0 0 120 120"><circle cx="60" cy="27" r="19"/><path d="M60 46C40 46 34 52 18 58C6 62 4 76 16 80L36 80L22 110L48 110L60 88L72 110L98 110L84 80L104 80C116 76 114 62 102 58C86 52 80 46 60 46Z"/></symbol>
 </defs></svg>

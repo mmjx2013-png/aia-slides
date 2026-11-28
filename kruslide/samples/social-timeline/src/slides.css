@@ -102,3 +102,4 @@ h2{font-size:64px}
 .plaque .tw-fb{color:var(--mute2)}.plaque .tw-fb.ok{color:var(--t-ok)}.plaque .tw-fb.no{color:var(--t-no)}
 .try{border-left:4px solid var(--brass);padding:6px 0 6px 22px}
 .try p{font:500 27px/1.5 Inter;color:var(--cream)}.try b{color:var(--kt)}
+.plaque .w-input .tw-fb{flex-basis:100%}

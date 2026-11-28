@@ -68,7 +68,7 @@
   }
   /* things to draw */
   function apple(g, x, y, r) {
-    crayon(g, ell(x, y, r, r * 0.92), { fill: C.red, line: '#B8281A', bb: bbox(x, y, 2 * r, 2 * r), w: 6 });
+    crayon(g, ell(x, y, r, r * 0.92), { fill: C.red, a: 0.7, line: '#B8281A', bb: bbox(x, y, 2 * r, 2 * r), w: 6 });
     stroke(g, line([[x, y - r * .8], [x + 3, y - r * 1.25]]), C.brn, 7);
     crayon(g, ell(x + r * .42, y - r * 1.12, r * .34, r * .16, 2), { fill: C.grn, line: '#2C7A43', bb: bbox(x + r * .42, y - r * 1.12, r * .7, r * .4), w: 4, gap: 8, sw: 6 });
   }

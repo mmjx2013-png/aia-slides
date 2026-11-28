@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lVYfzp65mCB+M/k+tDA2QuDk+M/1T0n4w/MEOG6+53k='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-PIqlnuaLKVIUAaXj7mgGwCvxv31J4W6i91GEWbYYbeg='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>นับเลข รูปทรง สี อนุบาล · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample library · base (same in every sample): shared fonts, stage, beats, motion helpers, control bar, footer layout.
@@ -141,7 +141,7 @@ button{font-family:inherit}
 .k2-sh.hot{filter:drop-shadow(0 0 0 #000)}
 .k2-nm{font:800 46px Display;fill:var(--ink);opacity:0;transition:opacity .4s}
 .names .k2-nm,.k2-sh.done .k2-nm{opacity:1}
-.k2-msg{left:900px;top:200px;width:900px;text-align:right;font:800 44px/1.45 Display;color:var(--cgrn)}
+.k2-msg{left:900px;top:216px;width:900px;text-align:right;font:800 44px/1.45 Display;color:var(--cgrn)}
 /* 3 · colours */
 .k3-o{transition:opacity .4s;transform-box:fill-box;transform-origin:center bottom}
 .picked .k3-o:not(.lit){opacity:.22}
@@ -208,7 +208,7 @@ button{font-family:inherit}
  <p class="ks in" style="left:120px;top:200px;--d:150">ลากรูปไปวางบนเงาของมัน</p>
  <svg class="art ia" id="k2-play" viewBox="0 0 1920 1080" role="group" aria-label="รูปทรงและเงา"></svg>
  <p class="ab k2-msg" id="k2-msg" aria-live="polite"></p>
- <button class="kb in" id="k2-reset" type="button" style="left:1560px;top:64px;--d:400">เล่นใหม่</button>
+ <button class="kb in" id="k2-reset" type="button" style="left:1560px;top:108px;--d:400">เล่นใหม่</button>
  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 03</b></span></div>
  <aside class="notes">ให้เด็กลากรูปทรงไปวางบนเงาที่เหมือนกัน วางถูกเงาจะกลายเป็นสีและบอกชื่อรูป วางผิดรูปจะเด้งกลับ กด → เพื่อแสดงชื่อรูปทรงใต้เงา (วงกลม สี่เหลี่ยม สามเหลี่ยม ดาว หัวใจ)</aside>
 </section>
@@ -1789,7 +1789,7 @@ var K = (function () {
   }
   /* things to draw */
   function apple(g, x, y, r) {
-    crayon(g, ell(x, y, r, r * 0.92), { fill: C.red, line: '#B8281A', bb: bbox(x, y, 2 * r, 2 * r), w: 6 });
+    crayon(g, ell(x, y, r, r * 0.92), { fill: C.red, a: 0.7, line: '#B8281A', bb: bbox(x, y, 2 * r, 2 * r), w: 6 });
     stroke(g, line([[x, y - r * .8], [x + 3, y - r * 1.25]]), C.brn, 7);
     crayon(g, ell(x + r * .42, y - r * 1.12, r * .34, r * .16, 2), { fill: C.grn, line: '#2C7A43', bb: bbox(x + r * .42, y - r * 1.12, r * .7, r * .4), w: 4, gap: 8, sw: 6 });
   }

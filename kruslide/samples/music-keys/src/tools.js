@@ -1194,7 +1194,7 @@
       setTimeout(function () {
         if (lastClick >= at || !t.isConnected || t.disabled) return;
         synthAt = performance.now(); synthT = t;
-        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+        if (t.tagName === 'INPUT') t.focus(); else { if (t.click) t.click(); else t.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); unfocus(); }
       }, 90);
     }, true);
   })();

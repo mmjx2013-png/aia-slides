@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CK7zgacMP40X7AQVGrjT+QlT1/Dg2p472v+xvQuKzCM='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-WzoPdJpUvP5i5Wg/kDjkVNSZXL6ijKdGnucuBqH4vR4='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>แม่สี วงจรสี และวรรณะสี · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · แม่สีและวงจรสี (ป.4–6) · style "watercolour"
@@ -143,7 +143,8 @@ h2{font-size:64px;white-space:nowrap}
 .tw-bin.b0 .tw-bint{color:#B4521A}.tw-bin.b1 .tw-bint{color:#1F4FA0}.tw-bin.b2 .tw-bint{color:#6F3C8E}
 .pics{display:flex;gap:40px}
 .pics svg{width:380px;height:170px;overflow:visible}
-.pcap{font:800 22px Inter;fill:var(--ink);paint-order:stroke;stroke:#FFFDF8;stroke-width:6px}
+#a2-ft .tw-foot{flex-wrap:wrap;row-gap:10px}#a2-ft .tw-fb{flex-basis:100%}
+.pcap{font:800 21px Inter;fill:#FFFDF8;stroke:none;paint-order:normal}
 
 /* Widgets rendered by tools.js / kit.js (buttons, feedback, tap a choice, typed answer, sort cards) + the global pen.
    The look comes from this deck's variables: --t-ink --t-bg --t-pri --t-pri-ink --t-ok --t-no --t-lok --t-lno --t-r --t-sh --t-bw --t-font */
@@ -262,10 +263,10 @@ h2{font-size:64px;white-space:nowrap}
  <div class="ab kick in" style="left:110px;top:80px;--d:100">วงจรสี 12 สี</div>
  <h2 class="ab in" style="left:104px;top:116px;--d:200">ต่อ<span class="wash" style="--c:#1F4FA0">วงจรสี</span>ให้ครบ</h2>
  <svg class="ab in" id="a2-wheel" viewBox="0 0 900 900" style="left:150px;top:200px;width:820px;height:820px;--d:250" aria-label="วงจรสี มีช่องว่าง 9 ช่อง" role="group"></svg>
- <p class="ab lead in" style="left:1080px;top:110px;width:730px;--d:350">ลากสีไปวางในช่องว่าง สีที่อยู่ระหว่างสองสี เกิดจากการผสมสองสีนั้น</p>
+ <p class="ab lead in" style="left:1080px;top:104px;width:730px;--d:350">ลากสีไปวางในช่องว่าง<br>สีที่อยู่ระหว่างสองสี เกิดจากสองสีนั้นผสมกัน</p>
  <div class="ab tray in" id="a2-tray" style="left:1080px;top:230px;width:730px;height:470px;--d:400"></div>
  <div class="ab in" id="a2-ft" style="left:1080px;top:740px;width:730px;--d:500"></div>
- <div class="ab legend g1" style="left:1080px;top:830px;width:730px"><span><b>1</b>แม่สี (ขั้นที่ 1)</span><span><b>2</b>แม่สีผสมกัน (ขั้นที่ 2)</span><span><b>3</b>ขั้นที่ 1 + ขั้นที่ 2 (ขั้นที่ 3)</span></div>
+ <div class="ab legend g1" style="left:1080px;top:880px;width:730px"><span><b>1</b>แม่สี (ขั้นที่ 1)</span><span><b>2</b>แม่สีผสมกัน (ขั้นที่ 2)</span><span><b>3</b>ขั้นที่ 1 + ขั้นที่ 2 (ขั้นที่ 3)</span></div>
  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 03</b></span></div>
  <aside class="notes">ชี้ให้เห็นว่าสีขั้นที่ 2 อยู่กึ่งกลางระหว่างแม่สีสองสีที่ผสมกัน และสีขั้นที่ 3 อยู่ระหว่างแม่สีกับสีขั้นที่ 2 ที่ผสมกัน ให้นักเรียนผลัดกันลากสี กดตรวจคำตอบ กด → เพื่อแสดงเลข 1 2 3 บอกขั้นของสี</aside>
 </section>
@@ -1630,7 +1631,7 @@ h2{font-size:64px;white-space:nowrap}
       setTimeout(function () {
         if (lastClick >= at || !t.isConnected || t.disabled) return;
         synthAt = performance.now(); synthT = t;
-        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+        if (t.tagName === 'INPUT') t.focus(); else { if (t.click) t.click(); else t.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); unfocus(); }
       }, 90);
     }, true);
   })();
@@ -1999,7 +2000,7 @@ var KIT = (function () {
     }
     function show() { dabs.forEach(function (D) { place(D, wedges[D.ci]); }); check(); ft.say('ok', 'เฉลย: สีขั้นที่ 3 อยู่ระหว่างแม่สีกับสีขั้นที่ 2 ที่ผสมกัน'); }
     function reset() { dabs.forEach(back); ft.say(''); }
-    var ft = K.foot($('#a2-ft'), { check: check, show: show, reset: reset, hint: 'ลากสีไปวางในช่องว่าง แตะช่องที่ทาแล้วเพื่อเอาสีออก' });
+    var ft = K.foot($('#a2-ft'), { check: check, show: show, reset: reset, hint: 'แตะช่องที่ทาแล้ว เพื่อเอาสีออก' });
     K.slide('a2', { set: function () {} });
     window.__a2 = { dabs: dabs, wedges: wedges, place: place, check: check, show: show, reset: reset };
   })();
@@ -2008,16 +2009,18 @@ var KIT = (function () {
   (function () {
     var w = $('#a3-warm'), c = $('#a3-cool'); if (!w) return;
     function band(s, y, h, col, seed) { var g = S('g', { filter: 'url(#wcs)' }, s); S('path', { d: 'M-6 ' + y + ' Q95 ' + (y - 10 - seed) + ' 190 ' + (y + 4) + ' T386 ' + y + ' V' + (y + h) + ' H-6Z', fill: col, opacity: 0.8 }, g); }
+    function clip(s, id) { var d = S('defs', {}, s), cp = S('clipPath', { id: id }, d); S('rect', { x: 0, y: 0, width: 380, height: 170 }, cp); var g = S('g', { 'clip-path': 'url(#' + id + ')' }, s); return g; }
     function frame(s, cap) { S('rect', { x: 0, y: 0, width: 380, height: 170, fill: 'none', stroke: '#33302B', 'stroke-width': 1.5 }, s); var t = S('text', { x: 12, y: 160, 'class': 'pcap' }, s); t.textContent = cap; }
+    var W0 = w, C0 = c; w = clip(W0, 'a3-wc'); c = clip(C0, 'a3-cc');
     band(w, 0, 70, '#F6C324', 2); band(w, 45, 50, '#F4A62A', 5); band(w, 80, 40, '#EE7A22', 3);
     var sun = S('g', { filter: 'url(#wcs)' }, w); S('circle', { cx: 270, cy: 70, r: 30, fill: '#D7263D', opacity: 0.85 }, sun);
     var hill = S('g', { filter: 'url(#wcs)' }, w); S('path', { d: 'M-6 170 L-6 112 Q70 82 140 118 Q220 150 300 104 Q350 86 386 100 V170Z', fill: '#A8336A', opacity: 0.85 }, hill);
     S('path', { d: 'M-6 170 V140 Q120 120 230 146 Q320 160 386 138 V170Z', fill: '#6F3C8E', opacity: 0.8, filter: 'url(#wcs)' }, w);
-    frame(w, 'โทนร้อน: สดใส ร้อนแรง');
-    band(c, 0, 70, '#9DBF3A', 2); band(c, 0, 60, '#1E7F86', 4); band(c, 40, 50, '#1F4FA0', 6);
+    frame(W0, 'โทนร้อน: สดใส ร้อนแรง');
+    band(c, 0, 70, '#8EC3DA', 2); band(c, 38, 50, '#1E7F86', 4); band(c, 70, 40, '#1F4FA0', 6);
     var mt = S('g', { filter: 'url(#wcs)' }, c); S('path', { d: 'M-6 120 L60 62 L110 100 L170 50 L250 108 L300 80 L386 116 V170 H-6Z', fill: '#4A3F95', opacity: 0.85 }, mt);
     S('path', { d: 'M-6 170 V128 Q100 118 200 130 T386 126 V170Z', fill: '#3E9B4F', opacity: 0.85, filter: 'url(#wcs)' }, c);
-    frame(c, 'โทนเย็น: สงบ สบายตา');
+    frame(C0, 'โทนเย็น: สงบ สบายตา');
   })();
 })();
 </script>

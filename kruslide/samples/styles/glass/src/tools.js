@@ -14,7 +14,7 @@
   var NS = 'http://www.w3.org/2000/svg';
   var qs = new URLSearchParams(location.search);
   var ANSWERS = qs.has('answers');
-  var INK = '#14182B', BLUE = '#2F7BF6', VIOLET = '#7A5AF8', CORAL = '#FF6A3D', MINT = '#1FB57A', SUN = '#FFC53D';   /* deck D colours */
+  var INK = '#FFFFFF', BLUE = '#2F7BF6', VIOLET = '#7A5AF8', CORAL = '#FF6A3D', MINT = '#1FB57A', SUN = '#FFC53D';   /* deck D colours */
   var uid = 0, widgets = [];
 
   /* ---------- helpers ---------- */
