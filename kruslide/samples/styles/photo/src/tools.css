@@ -1,0 +1,73 @@
+/* Widgets from tools.js (sort cards into boxes, here with photo cards) + the global pen, in deck E's magazine look. */
+.w-sort{position:absolute;display:flex;flex-direction:column;gap:16px;min-width:0;font:500 24px/1.3 Inter,system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:58px}
+.tw-btns{display:flex;gap:10px;flex:none}
+.tw-btn{font:700 22px/1 Inter,system-ui,sans-serif;height:58px;padding:0 24px;border-radius:29px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,transform .1s}
+.tw-btn:hover{background:#fff}
+.tw-btn:active{transform:translateY(2px)}
+.tw-btn.pri{background:var(--green);border-color:var(--green);color:#fff}
+.tw-btn.show[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.tw-btn.show.nudge{background:#FFF1CC}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 24px/1.4 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-fb.ok{color:var(--okc)}.tw-fb.no{color:var(--noc)}.tw-fb.info{color:var(--teal)}
+.tw-fb .tw-ico{width:34px;height:34px;padding:6px;border-radius:50%;color:#fff;background:var(--ok)}
+.tw-fb.no .tw-ico{background:var(--no)}
+.tw-mark{display:none;position:absolute;right:8px;top:8px;width:36px;height:36px;border-radius:50%;place-items:center;color:#fff;background:var(--ok);box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:2}
+.tw-mark .tw-ico{width:22px;height:22px}
+.item.ok>.tw-mark,.item.no>.tw-mark{display:grid}
+.item.no>.tw-mark{background:var(--no)}
+
+/* the pool and the two boxes */
+.tw-pool{flex:none;display:flex;flex-wrap:wrap;gap:16px;align-content:flex-start;min-height:120px;padding:0;border:2px dashed transparent;border-radius:8px}
+.w-sort .tw-pool:empty{display:none}
+.tw-binrow{display:flex;gap:24px;height:380px}
+.tw-bin{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;padding:16px 18px;border-radius:8px;border:2px dashed #9DB5A4;background:#EEF4EE;transition:background .15s,border-color .15s}
+.tw-bin.b1{border-color:#C7A985;background:#F6EFE6}
+.tw-bint{font:800 28px/1.3 Display;color:var(--green)}
+.tw-bin.b1 .tw-bint{color:var(--mud)}
+.tw-slot{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:12px;align-content:flex-start}
+.tw-slot.scroll{overflow-y:auto;overscroll-behavior:contain}
+.w-sort.dragging .tw-slot.scroll{overflow:visible}
+.w-sort.picking .tw-bin,.w-sort.picking .tw-pool{cursor:pointer}
+.w-sort.picking .tw-bin{border-style:solid}
+.tw-bin.over,.tw-pool.over{border-style:solid;border-color:var(--green);background:#E1EFE3}
+.tw-bin.b1.over{border-color:var(--mud);background:#F0E4D4}
+.tw-bin:focus-visible,.w-sort .item:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.w-sort .tw-foot{position:relative;z-index:6}
+
+/* photo cards */
+.w-sort .item{position:relative;display:flex;flex-direction:column;width:196px;background:#fff;border-radius:6px;box-shadow:0 8px 20px -8px rgba(20,30,22,.4),0 0 0 1px rgba(20,30,22,.08);cursor:grab;touch-action:none;transition:box-shadow .15s,transform .15s}
+.w-sort .item .iph{display:block;width:196px;height:150px;overflow:hidden;border-radius:6px 6px 0 0;background:#C9CFC6}
+.w-sort .item .iph img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;pointer-events:none}
+.w-sort .item>b{display:block;padding:10px 12px 12px;font:700 23px/1.3 Inter;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-sort .item .zbtn{right:8px;top:8px;width:40px;height:40px;opacity:.92}
+.w-sort .item .zbtn svg{width:20px;height:20px}
+.w-sort .item.ok .zbtn,.w-sort .item.no .zbtn{top:auto;bottom:50px}
+.w-sort .item.sel{box-shadow:0 0 0 4px var(--sun),0 14px 28px -8px rgba(20,30,22,.45)}
+.w-sort .item.drag{z-index:5;cursor:grabbing;pointer-events:none;box-shadow:0 26px 46px -10px rgba(20,30,22,.55)}
+.w-sort .item.ok{box-shadow:0 0 0 4px var(--ok),0 8px 20px -8px rgba(20,30,22,.4)}
+.w-sort .item.no{box-shadow:0 0 0 4px var(--no),0 8px 20px -8px rgba(20,30,22,.4)}
+/* in a box the cards get smaller so four fit in a row */
+.tw-slot .item{width:150px}
+.tw-slot .item .iph{width:150px;height:104px}
+.tw-slot .item>b{font-size:20px;padding:8px 10px 10px}
+.tw-slot .item .zbtn{display:none}
+
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:12px;background:#fff;box-shadow:0 0 0 1px rgba(20,30,22,.12),0 18px 40px -16px rgba(20,30,22,.5)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:10px;border:2px solid transparent;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:#F1F3EE}
+#pen-bar .pb[aria-pressed="true"]{background:#FFF1CC;border-color:var(--ink)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+#pen-bar .ps{display:block;width:38px;height:2px;border-radius:2px;background:var(--rule);margin:2px 0}
+.shot #pen-bar{display:none!important}

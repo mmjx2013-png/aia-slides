@@ -110,3 +110,4 @@
 .sortbox{padding:22px 24px;border:1.5px solid var(--hair);background:rgba(255,252,244,.45)}
 .labtop{pointer-events:none}
 .labtop text{paint-order:stroke;stroke:rgba(243,235,217,.85);stroke-width:5px;stroke-linejoin:round}
+.chevs path{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;opacity:.75}

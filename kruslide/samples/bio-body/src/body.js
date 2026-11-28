@@ -300,6 +300,12 @@
     var segL = [], LT = 0, sLung = 0;
     for (var i = 1; i < LOOP.length; i++) { var d = Math.hypot(LOOP[i][0] - LOOP[i - 1][0], LOOP[i][1] - LOOP[i - 1][1]); segL.push(d); LT += d; if (i === 14) sLung = LT - d / 2; }
     function at(s) { s = ((s % LT) + LT) % LT; for (var i = 0; i < segL.length; i++) { if (s <= segL[i]) { var a = LOOP[i], b = LOOP[i + 1], f = s / segL[i]; return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]; } s -= segL[i]; } return LOOP[0]; }
+    /* direction chevrons on the loop (they also carry the direction when motion is reduced) */
+    var chev = S('g', { 'class': 'chevs' }, svg);
+    [0, 3, 12, 13, 16, 22].forEach(function (i) {
+      var a2 = LOOP[i], b2 = LOOP[i + 1], mx = (a2[0] + b2[0]) / 2, my = (a2[1] + b2[1]) / 2, ang = Math.atan2(b2[1] - a2[1], b2[0] - a2[0]) * 180 / Math.PI;
+      S('path', { d: 'M-9 -10 L5 0 L-9 10', transform: 'translate(' + mx.toFixed(1) + ',' + my.toFixed(1) + ') rotate(' + ang.toFixed(1) + ')' }, chev);
+    });
     var dots = S('g', { 'class': 'dots' }, svg), ND = 46, DOT = [];
     for (var k = 0; k < ND; k++) DOT.push(S('circle', { r: 7 }, dots));
     var labTop = S('g', { 'class': 'labtop' }, svg); labsG.forEach(function (t) { labTop.appendChild(t); });

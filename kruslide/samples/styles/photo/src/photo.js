@@ -59,9 +59,9 @@
   addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.classList.contains('open')) { e.stopPropagation(); close(); } }, true);
   document.addEventListener('deck:change', function () { close(true); });
   function zoomable(ph) {
-    if (ph._z) return; ph._z = true;
+    if (ph._z || ph.dataset.nozoom != null) return;   /* (sort cards and the hotspot photo zoom from their own button) */
+    ph._z = true;
     var zb = document.createElement('span'); zb.className = 'zoomi'; zb.innerHTML = ZI; ph.appendChild(zb);
-    if (ph.dataset.nozoom != null) return;   /* (sort cards and the hotspot photo zoom from their own button) */
     ph.tabIndex = 0; ph.setAttribute('role', 'button'); ph.setAttribute('aria-label', 'ขยายภาพ: ' + (ph.dataset.cap || ''));
     ph.addEventListener('click', function (e) { e.stopPropagation(); open(ph); });
     ph.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); open(ph); } });

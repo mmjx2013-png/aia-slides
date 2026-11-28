@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-O6McuXjYeD7RMNLEtZOWdNiZ07W32Wu14ZAuIh3PeGg='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9nM1plTk5Fjv+/7m2gBpag8A3QNImmLeXyNMOKHJd70='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>ระบบสุริยะ · สไตล์กระจก · KruSlide</title>
 <style>/* KruSlide styles sample D · Glass (กระจก) · look: "real glass over real space"
@@ -180,14 +180,21 @@ h2{position:absolute;font-size:64px;line-height:1.3}
 .zone b{font:700 38px/1.3 Display;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .zone span{font:500 21px/1.4 Inter;color:var(--soft);text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .zone.over{background:rgba(255,255,255,.14);border-color:#fff;border-style:solid}
-.zone.hit{animation:pulse .5s var(--ease)}
+.zone::after{content:"";position:absolute;inset:-2px;border-radius:40px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.9);opacity:0;pointer-events:none}
+.zone.hit::after{animation:flash .7s ease}
+@keyframes flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
 #g3-rock b{color:#FFD8B0}#g3-gas b{color:#CFE3FF}
 #g3-btns{display:flex;gap:20px;justify-content:center}
 .gbtn{position:relative;width:250px;height:68px;border:0;padding:0;background:transparent;cursor:pointer;font:700 30px/1 Inter;color:#fff;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .25s var(--spring)}
 .gbtn .gc{display:grid;place-items:center;height:100%}
 .gbtn:active{transform:scale(.96)}
 .gbtn:focus-visible{outline:3px solid #fff;outline-offset:4px}
-#g3-fb{font:700 28px/1.4 Inter;text-align:center;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);min-height:40px}
+#g3-fb{display:flex;justify-content:center}
+#g3-fb:empty{display:none}
+#g3-fb::before{content:none}
+#g3-fb{font:700 26px/1.4 Inter;text-align:center;color:#fff}
+#g3-fb.ok,#g3-fb.no{padding:0}
+#g3-fb span{padding:10px 26px;border-radius:26px;background:rgba(8,12,26,.5);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 0 0 1px rgba(255,255,255,.16)}
 #g3-fb.ok{color:var(--ok)}#g3-fb.no{color:#FFC2B8}
 
 /* ---------- 4 · quiz ---------- */
@@ -378,8 +385,8 @@ h2{position:absolute;font-size:64px;line-height:1.3}
   <h2 style="position:relative">หิน <span class="lt">หรือ</span> แก๊ส?</h2>
  </div>
  <p class="lede ab in" style="left:1100px;top:118px;width:710px;text-align:right;--d:200">ลากการ์ดบนสุดไปทางซ้ายหรือขวา<br>ดูขนาดและระยะห่างเป็นเบาะแส</p>
- <div class="zone in" id="g3-rock" style="left:110px;top:290px;width:520px;height:560px;--d:250"><b>ดาวเคราะห์หิน</b><span>ชั้นใน · เล็ก · ผิวแข็ง</span><div class="slots"></div></div>
- <div class="zone in" id="g3-gas" style="left:1290px;top:290px;width:520px;height:560px;--d:300"><b>ดาวเคราะห์แก๊ส</b><span>ชั้นนอก · ใหญ่ · ไม่มีพื้นแข็ง</span><div class="slots"></div></div>
+ <div class="zone in" id="g3-rock" style="left:110px;top:270px;width:520px;height:640px;--d:250"><b>ดาวเคราะห์หิน</b><span>ชั้นใน · เล็ก · ผิวแข็ง</span><div class="slots"></div></div>
+ <div class="zone in" id="g3-gas" style="left:1290px;top:270px;width:520px;height:640px;--d:300"><b>ดาวเคราะห์แก๊ส</b><span>ชั้นนอก · ใหญ่ · ไม่มีพื้นแข็ง</span><div class="slots"></div></div>
  <div id="g3-stack" class="ab" style="left:0;top:0;width:0;height:0" aria-label="กองการ์ดดาวเคราะห์">
   <div class="glass card" data-glass="panel" data-blur="1.6" data-move data-k="jupiter" data-ty="gas" style="width:360px;height:468px;border-radius:38px;--r:38px">
    <div class="gc"><img src="img/p-jupiter.webp" alt="" class="ci"><b>ดาวพฤหัสบดี</b><span class="en">Jupiter</span><span class="cf">กว้าง 142,984 กม.<br>ห่างดวงอาทิตย์ 5.2 AU</span></div>
@@ -410,7 +417,7 @@ h2{position:absolute;font-size:64px;line-height:1.3}
   <button type="button" class="glass gbtn" data-glass="clear" id="g3-l" style="border-radius:34px;--r:34px"><span class="gc">← หิน</span></button>
   <button type="button" class="glass gbtn" data-glass="clear" id="g3-r" style="border-radius:34px;--r:34px"><span class="gc">แก๊ส →</span></button>
  </div>
- <p class="ab" id="g3-fb" aria-live="polite" style="left:560px;top:250px;width:800px"></p>
+ <p class="ab" id="g3-fb" aria-live="polite" style="left:560px;top:206px;width:800px"></p>
  <p class="cap fade" style="left:114px;top:968px;--d:1000">ภาพ: โลก จากดาวเทียม Terra (MODIS) · NASA (สาธารณสมบัติ) · ภาพดาวเคราะห์: NASA, NASA/JPL (สาธารณสมบัติ)</p>
  <div class="glass foot fade" data-glass="pill" style="--d:200"><div class="gc"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>03 / 05</b></span></div></div>
  <aside class="notes">การ์ดเรียงสลับกันไว้ ให้นักเรียนลากการ์ดบนสุดไปซ้าย (หิน) หรือขวา (แก๊ส) ถ้าผิด การ์ดจะเด้งกลับพร้อมคำใบ้ ใช้ขนาดและระยะห่างเป็นเบาะแส: ดาวเคราะห์ชั้นใน 4 ดวงเล็กและเป็นหิน ชั้นนอก 4 ดวงใหญ่และเป็นแก๊ส (ยูเรนัสและเนปจูนบางตำราเรียกยักษ์น้ำแข็ง) กด → จัดการ์ดที่เหลือให้ทั้งหมด</aside>
@@ -1607,7 +1614,7 @@ h2{position:absolute;font-size:64px;line-height:1.3}
     function topCard() { var left = cs.filter(function (c) { return !c.done; }); return left[left.length - 1] || null; }
     function slotOf(ty, n) {   /* 2 x 2 inside the zone, cards at 42 % */
       var z = zones[ty], zx = parseFloat(z.style.left), zy = parseFloat(z.style.top), col = n % 2, row = Math.floor(n / 2);
-      return { x: zx + 140 + col * 240, y: zy + 250 + row * 214, a: (seed(n + (ty === 'gas' ? 5 : 0)) - .5) * 6, s: .42 };
+      return { x: zx + 145 + col * 230, y: zy + 240 + row * 252, a: (seed(n + (ty === 'gas' ? 5 : 0)) - .5) * 6, s: .5 };
     }
     var moving = 0;
     function animate(c, to, dur, done) {
@@ -1615,7 +1622,7 @@ h2{position:absolute;font-size:64px;line-height:1.3}
       tween(dur, function (t) { c.x = f.x + (to.x - f.x) * t; c.y = f.y + (to.y - f.y) * t; c.a = f.a + (to.a - f.a) * t; c.s = f.s + (to.s - f.s) * t; apply(c); ghosts(); },
         function () { moving--; if (done) done(); });
     }
-    function say(t, k) { fb.textContent = t; fb.className = 'ab ' + (k || ''); }
+    function say(t, k) { fb.textContent = ''; fb.className = 'ab ' + (k || ''); if (t) { var sp = document.createElement('span'); sp.textContent = t; fb.appendChild(sp); } }
     function send(c, ty, quiet) {
       if (!c || c.done) return;
       if (c.ty !== ty) {   /* wrong: back to the stack with a shake and a hint */
