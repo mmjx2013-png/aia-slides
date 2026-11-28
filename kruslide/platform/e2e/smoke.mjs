@@ -38,11 +38,16 @@ async function waitUp() {
   throw new Error('wrangler dev did not start:\n' + devLog.slice(-2000));
 }
 
+let expectRefusal = false; // set while a step deliberately opens a page that answers 403
 function watch(page, name) {
-  page.on('console', (m) => { if (m.type() === 'error') problems.push(`${name}: console error: ${m.text()}`); });
+  page.on('console', (m) => {
+    if (m.type() !== 'error') return;
+    if (expectRefusal && /status of 403/.test(m.text())) return;
+    problems.push(`${name}: console error: ${m.text()}`);
+  });
   page.on('pageerror', (e) => problems.push(`${name}: page error: ${e.message}`));
 }
-const shot = async (page, file, full = true) => { await page.screenshot({ path: join(SHOTS, file), fullPage: full }); console.log('  screenshot', file); };
+const shot = async (page, file, full = true) => { await page.screenshot({ path: join(SHOTS, file), fullPage: full, animations: 'disabled' }); console.log('  screenshot', file); };
 
 async function lineLogin(page, who) {
   await page.goto(`${BASE}/app/login`);
@@ -79,17 +84,20 @@ async function main() {
   await t.click('button[type=submit]:has-text("บันทึก")');
   await t.waitForURL(/\/app\/(\?|$)/);
   await shot(t, '05-member-home-mobile.png');
+  expectRefusal = true;
   const denied = await t.goto(`${BASE}/app/deck/1/`);
   check(denied.status() === 403, 'a member without a subscription gets 403 on the deck');
+  check(!(await t.content()).includes('Statistics'), 'the refused page contains none of the deck');
   await shot(t, '06-deck-not-subscribed-mobile.png');
+  expectRefusal = false;
   await t.goto(`${BASE}/app/books/1`);
-  check(await t.getByText('204').first().isVisible(), 'book page shows 68 slides × 3 = 204 baht/month');
+  check(await t.getByText('67 สไลด์ × 3 บาท').first().isVisible(), 'book page shows 67 slides × 3 baht = 201 baht/month');
   await shot(t, '07-book-page-mobile.png');
   await t.selectOption('#months', '3');
   await t.click('button:has-text("PromptPay")');
   await t.waitForURL(/\/app\/payments\/\d+/);
   check(await t.locator('svg.qr').isVisible(), 'payment page shows a PromptPay QR');
-  check(await t.getByText('612 บาท').first().isVisible(), 'payment page shows 3 months = 612 baht');
+  check(await t.getByText('603 บาท').first().isVisible(), 'payment page shows 3 months = 603 baht');
   await shot(t, '08-payment-promptpay-mobile.png');
   await t.fill('#note', 'โอนจากแอปธนาคาร เวลา 10:30');
   await t.click('button:has-text("แจ้งโอนแล้ว")');
@@ -156,7 +164,7 @@ async function main() {
   check((resp.headers()['content-security-policy'] || '').includes("frame-ancestors 'self'"), 'deck has CSP with frame-ancestors self');
   await d.waitForTimeout(1500);
   check(await d.locator('#ks-wm').innerText() === 'Licensed to ครูสมศรี (ทดสอบ) · โรงเรียนสาธิตทดสอบ (ตัวอย่าง)', 'deck shows the licence watermark');
-  check(await d.locator('section.slide').count() === 68, 'all 68 slides are in the deck');
+  check(await d.locator('section.slide').count() === 67, 'all 67 slides are in the deck');
   check(await d.evaluate(() => !!document.getElementById('ctl') && getComputedStyle(document.getElementById('ctl')).display !== 'none'), 'the deck engine runs (controls present)');
   await shot(d, '18-deck-watermark-desktop.png', false);
   for (let i = 0; i < 4; i++) { await d.keyboard.press('ArrowRight'); await d.waitForTimeout(700); }

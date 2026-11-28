@@ -60,7 +60,7 @@ export function cover(b: { id: number; title: string; subject: string; grade: st
   return html`<div class="cover c${b.id % 6}"><span>${b.subject} · ${b.grade}</span><b>${b.title}</b></div>`;
 }
 
-interface PageOpts { title: string; body: Safe; nav?: string; status?: number; }
+interface PageOpts { title: string; body: Safe; nav?: string; wide?: boolean; }
 
 export function page(ctx: Ctx, o: PageOpts): Safe {
   const t = ctx.teacher;
@@ -79,7 +79,7 @@ export function page(ctx: Ctx, o: PageOpts): Safe {
 <meta name="robots" content="noindex,nofollow">
 <title>${o.title} · ครูสไลด์ KruSlide</title>
 <link rel="stylesheet" href="/app/static/app.css">
-</head><body>
+</head><body${o.wide ? raw(' class="wide"') : ''}>
 <header class="top"><div class="wrap">
   <a class="logo" href="/app/"><span class="mark" aria-hidden="true">ค</span><span>ครูสไลด์<small>KRUSLIDE</small></span></a>
   ${nav}

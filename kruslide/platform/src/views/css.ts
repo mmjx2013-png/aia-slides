@@ -41,6 +41,10 @@ main{padding:28px 0 56px}
 .muted{color:var(--muted)}
 .mt{margin-top:32px}
 .mt-s{margin-top:12px}
+.nowrap{white-space:nowrap}
+label.check{display:inline-flex;gap:8px;align-items:center;font-weight:500;font-size:14px;margin:0}
+label.check input{width:18px;height:18px}
+.wide .wrap{max-width:1280px}
 .small{font-size:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:600;font-size:16px;line-height:1.2;padding:12px 18px;min-height:46px;border-radius:12px;border:2px solid var(--brand);background:var(--brand);color:var(--brand-ink);text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
 .btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(41,80,214,.22)}

@@ -191,7 +191,8 @@ describe('admin: books, units and deck upload', () => {
     await makeUnit(book);
     const t = await newMember();
     await makeSub(t.id, book);
-    expect((await post(`/app/admin/books/${book}/delete`, {}, admin)).status).toBe(409);
+    expect((await post(`/app/admin/books/${book}/delete`, {}, admin)).status).toBe(400);                 // box not ticked
+    expect((await post(`/app/admin/books/${book}/delete`, { confirm: 'yes' }, admin)).status).toBe(409);
   });
 
   it('member names are escaped on admin pages', async () => {
@@ -201,6 +202,21 @@ describe('admin: books, units and deck upload', () => {
     expect(page).not.toContain('<script>alert(1)');
     expect(page).not.toContain('<img src=x');
     expect(page).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+  });
+});
+
+describe('admin: deleting', () => {
+  it('deletes a unit and its deck from R2 only when confirmed; a book without subscribers can be deleted', async () => {
+    const admin = await newAdmin();
+    const book = await makeBook();
+    const unit = await makeUnit(book);
+    expect((await post(`/app/admin/units/${unit}/delete`, {}, admin)).status).toBe(400);
+    expect(await env.DECKS.head(`units/${unit}/index.html`)).not.toBeNull();
+    expect((await post(`/app/admin/units/${unit}/delete`, { confirm: 'yes' }, admin)).status).toBe(303);
+    expect(await env.DECKS.head(`units/${unit}/index.html`)).toBeNull();
+    expect((await env.DB.prepare('SELECT slide_count FROM books WHERE id = ?1').bind(book).first<{ slide_count: number }>())!.slide_count).toBe(0);
+    expect((await post(`/app/admin/books/${book}/delete`, { confirm: 'yes' }, admin)).status).toBe(303);
+    expect(await env.DB.prepare('SELECT id FROM books WHERE id = ?1').bind(book).first()).toBeNull();
   });
 });
 

@@ -18,8 +18,10 @@ export async function inlineScriptHashes(htmlText: string): Promise<string[]> {
   return [...new Set(out)];
 }
 
+/** Slides outside scripts and comments (the deck engine's own source mentions `<section class="slide">`). */
 export function countSlides(htmlText: string): number {
-  return (htmlText.match(/<section\b[^>]*class="[^"]*\bslide\b/g) || []).length;
+  const markup = htmlText.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
+  return (markup.match(/<section\b[^>]*class="(?:[^"]*\s)?slide(?:\s[^"]*)?"/g) || []).length;
 }
 
 export function looksLikeHtmlDocument(htmlText: string): boolean {

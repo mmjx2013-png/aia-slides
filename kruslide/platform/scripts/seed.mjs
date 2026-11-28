@@ -35,7 +35,8 @@ function scriptHashes(html) {
 const sql = (s) => `'${String(s).replace(/'/g, "''")}'`;
 
 const html = readFileSync(DECK, 'utf8');
-const slides = (html.match(/<section\b[^>]*class="[^"]*\bslide\b/g) || []).length;
+const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
+const slides = (markup.match(/<section\b[^>]*class="(?:[^"]*\s)?slide(?:\s[^"]*)?"/g) || []).length;
 const hashes = scriptHashes(html);
 const sha = createHash('sha256').update(html, 'utf8').digest('hex');
 const bytes = statSync(DECK).size;

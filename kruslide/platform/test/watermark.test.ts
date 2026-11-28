@@ -40,6 +40,12 @@ describe('watermark injection', () => {
     expect(await inlineScriptHashes(big)).toHaveLength(1);
   });
 
+  it('slide count ignores scripts and comments, and class names that only contain "slide"', () => {
+    const deck = '<section class="slide opener">a</section><section class="slide">b</section><section class="slide-note">x</section>'
+      + '<!-- <section class="slide"> --><script>/* <section class="slide" data-steps="N"> */</script>';
+    expect(countSlides(deck)).toBe(2);
+  });
+
   it('script hashes ignore external scripts and JSON data blocks', async () => {
     const h = await inlineScriptHashes('<script src="/x.js"></script><script type="application/json">{"a":1}</script><script>go()</script><script type="module">m()</script>');
     expect(h).toHaveLength(2);

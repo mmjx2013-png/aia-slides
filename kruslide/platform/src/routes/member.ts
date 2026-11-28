@@ -75,7 +75,7 @@ export async function home(ctx: Ctx): Promise<Response> {
     title: 'หนังสือของฉัน',
     nav: 'home',
     body: html`${flash(ctx)}
-<div class="row between"><div><h1>สวัสดี คุณครู${t.display_name}</h1>
+<div class="row between"><div><h1>สวัสดี ${t.display_name}</h1>
 <p class="muted">${t.school || html`<a href="/app/profile">เพิ่มชื่อโรงเรียน</a>`}</p></div></div>
 ${!t.school ? html`<div class="flash warn">กรุณา<a href="/app/profile">กรอกชื่อโรงเรียน</a>ก่อนเปิดสไลด์ (ชื่อจะแสดงมุมสไลด์ว่าเป็นของคุณครู)</div>` : ''}
 ${pending.length ? html`<div class="card"><h2>รอชำระเงิน</h2>${pending.map((p) => html`<div class="row between"><span>${p.title} · ${p.months} เดือน · <b>${money(p.amount_satang / 100)} บาท</b> ${payBadge(p)}</span><a class="btn small" href="/app/payments/${p.id}">ดูวิธีชำระเงิน</a></div>`)}</div>` : ''}

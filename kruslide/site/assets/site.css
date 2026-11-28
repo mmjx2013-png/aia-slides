@@ -286,6 +286,7 @@ html.js .vs-arrow .ic{animation:nudge 2.4s var(--ease) infinite}
 .svc:hover .easel{transform:rotate(3deg)}
 .svc:hover .tiles rect:nth-child(2){transform:translateY(-6px)}
 .svc-body{flex:1;display:flex;flex-direction:column;gap:10px;padding:24px 28px 24px}
+.svc-body .badge{align-self:flex-start}
 .svc h3{font:800 23px/1.35 KSD;color:var(--navy)}
 .svc p{font-size:16px;color:var(--ink2)}
 .mini{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin:2px 0 4px}

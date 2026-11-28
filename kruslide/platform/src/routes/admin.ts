@@ -39,7 +39,7 @@ const SECTIONS = [
 function adminPage(ctx: Ctx, title: string, current: string, body: Safe): Response {
   const side = html`<nav class="side" aria-label="เมนูผู้ดูแล">${SECTIONS.map(([k, href, label]) =>
     html`<a href="${href}"${k === current ? new Safe(' aria-current="page"') : ''}>${label}</a>`)}</nav>`;
-  return htmlResponse(page(ctx, { title: `${title} · ผู้ดูแล`, nav: 'admin', body: html`<div class="admin">${side}<div>${flash(ctx)}${body}</div></div>` }));
+  return htmlResponse(page(ctx, { title: `${title} · ผู้ดูแล`, nav: 'admin', wide: true, body: html`<div class="admin">${side}<div>${flash(ctx)}${body}</div></div>` }));
 }
 
 function paymentsTable(ctx: Ctx, rows: db.PaymentRow[]): Safe {
@@ -50,10 +50,10 @@ function paymentsTable(ctx: Ctx, rows: db.PaymentRow[]): Safe {
     <td>${p.id}</td>
     <td><a href="/app/admin/members/${p.teacher_id}">${p.display_name}</a><br><span class="muted small">${p.school}</span></td>
     <td>${p.title}<br><span class="muted small">${p.months} เดือน · ${p.slide_count}×${p.rate_baht}</span></td>
-    <td><b>${money(p.amount_satang / 100)}</b> ฿</td>
+    <td class="nowrap"><b>${money(p.amount_satang / 100)}</b> ฿</td>
     <td>${payBadge(p)}</td>
     <td class="small">${p.ref ?? ''}</td>
-    <td class="small">${fmtDateTime(p.notified_at ?? p.created_at)}</td>
+    <td class="small nowrap">${fmtDateTime(p.notified_at ?? p.created_at)}</td>
     <td>${p.status === 'pending' ? html`<div class="row">
       <form method="post" action="/app/admin/payments/${p.id}/confirm">${csrfField(ctx)}<button class="btn ok small" type="submit">ยืนยัน</button></form>
       <form method="post" action="/app/admin/payments/${p.id}/reject">${csrfField(ctx)}<button class="btn danger small" type="submit">ปฏิเสธ</button></form>
@@ -304,7 +304,7 @@ ${u.r2_key ? html`<a class="btn ghost small" href="/app/deck/${u.id}/">ดูต
 <form method="post" action="/app/admin/units/${u.id}/upload" enctype="multipart/form-data" class="row mt-s">${csrfField(ctx)}
 <label class="sr" for="f${u.id}">ไฟล์ HTML</label><input id="f${u.id}" name="file" type="file" accept=".html,text/html" required>
 <button class="btn ghost small" type="submit">อัปโหลด HTML</button><span class="small muted">นับสไลด์และคำนวณ CSP ให้อัตโนมัติ</span></form>
-<form method="post" action="/app/admin/units/${u.id}/delete" class="mt-s">${csrfField(ctx)}<button class="btn danger small" type="submit">ลบหน่วยนี้</button></form>
+<form method="post" action="/app/admin/units/${u.id}/delete" class="row mt-s">${csrfField(ctx)}<label class="check"><input type="checkbox" name="confirm" value="yes" required> ยืนยันการลบ (ลบไฟล์สไลด์ด้วย)</label><button class="btn danger small" type="submit">ลบหน่วยนี้</button></form>
 </div>`)}
 <div class="card mt"><h3>เพิ่มหน่วย</h3><form method="post" action="/app/admin/books/${b.id}/units">${csrfField(ctx)}
 <div class="cols"><div class="field"><label for="np">ลำดับ</label><input id="np" name="position" type="number" min="1" max="999" value="${nextPos}"></div>
@@ -312,7 +312,7 @@ ${u.r2_key ? html`<a class="btn ghost small" href="/app/deck/${u.id}/">ดูต
 <div class="field"><label for="ns">จำนวนสไลด์</label><input id="ns" name="slide_count" type="number" min="0" max="2000" value="0"></div></div>
 <button class="btn small" type="submit">เพิ่มหน่วย</button></form></div>
 <details class="card mt"><summary>ลบหนังสือเล่มนี้</summary><p class="small muted">ลบได้เฉพาะเล่มที่ยังไม่มีใครสมัคร ถ้ามีสมาชิกแล้ว ให้เปลี่ยนสถานะเป็นเก็บถาวร</p>
-<form method="post" action="/app/admin/books/${b.id}/delete">${csrfField(ctx)}<button class="btn danger small" type="submit">ลบหนังสือ</button></form></details>`);
+<form method="post" action="/app/admin/books/${b.id}/delete" class="row">${csrfField(ctx)}<label class="check"><input type="checkbox" name="confirm" value="yes" required> ยืนยันการลบ</label><button class="btn danger small" type="submit">ลบหนังสือ</button></form></details>`);
 }
 
 /** POST /app/admin/books/:id */
@@ -326,9 +326,15 @@ export async function updateBook(ctx: Ctx): Promise<Response> {
   return redirect(`/app/admin/books/${b.id}?m=saved`);
 }
 
+/** Deleting needs the "confirm" box ticked: there is no script on the page, so the check is in the form. */
+function requireConfirm(form: FormData): void {
+  if (str(form, 'confirm') !== 'yes') throw new HttpError(400, 'กรุณาติ๊ก "ยืนยันการลบ" ก่อนกดลบ');
+}
+
 /** POST /app/admin/books/:id/delete */
 export async function deleteBook(ctx: Ctx): Promise<Response> {
-  const { actor } = await adminPost(ctx);
+  const { form, actor } = await adminPost(ctx);
+  requireConfirm(form);
   const b = await db.getBook(ctx.env, idParam(ctx.params.id));
   if (!b) throw new HttpError(404, 'ไม่พบหนังสือ');
   const keys = await db.deleteBook(ctx.env, b.id);
@@ -369,7 +375,8 @@ export async function updateUnit(ctx: Ctx): Promise<Response> {
 
 /** POST /app/admin/units/:id/delete */
 export async function deleteUnit(ctx: Ctx): Promise<Response> {
-  const { actor } = await adminPost(ctx);
+  const { form, actor } = await adminPost(ctx);
+  requireConfirm(form);
   const u = await db.getUnit(ctx.env, idParam(ctx.params.id));
   if (!u) throw new HttpError(404, 'ไม่พบหน่วย');
   await db.deleteUnit(ctx.env, u, ctx.now);
