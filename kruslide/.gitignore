@@ -14,3 +14,5 @@ trailer/voice/*
 # back office: build output and QA screenshots are rebuildable
 backoffice/dist/
 backoffice/qa/shots/
+.pv/
+.bo/

@@ -103,6 +103,18 @@
   "math-probability": {
    "code": "S-26",
    "added": "2026-11-28"
+  },
+  "styles/glass": {
+   "code": "S-27",
+   "added": "2026-11-28"
+  },
+  "styles/photo": {
+   "code": "S-28",
+   "added": "2026-11-28"
+  },
+  "styles/mechanics": {
+   "code": "S-29",
+   "added": "2026-11-28"
   }
  },
  "styles": {
