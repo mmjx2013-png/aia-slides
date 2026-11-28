@@ -325,6 +325,7 @@ label.check input{width:19px;height:19px;accent-color:var(--navy)}
 form.row input[type=search],form.row select{flex:1;width:auto;min-width:170px}
 .radios{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:0;margin:0}
 .radios legend{font:700 15px/1.4 KS;color:var(--navy);margin-bottom:9px;padding:0}
+.radios.field{margin-bottom:22px}
 .radios label{margin:0;font-weight:600}
 .radios input{position:absolute;opacity:0;width:1px;height:1px}
 .radios span{display:inline-flex;align-items:center;min-height:44px;min-width:54px;justify-content:center;padding:0 15px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 2px var(--line2);font:700 15px/1 KS;color:var(--ink2);cursor:pointer;transition:background-color .2s,color .2s,box-shadow .2s,transform .25s var(--spring)}
