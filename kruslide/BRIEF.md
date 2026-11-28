@@ -45,7 +45,7 @@ Prices are low on purpose for now and may rise later. Do NOT print any "launch p
 
 | Item | Price |
 |---|---|
-| Lesson slides, per book | **300 / month** or **3,000 / year** (saves 600) |
+| Lesson slides (whole book) | **3–5 baht per slide per month** (owner, 28 Nov; books differ in size, so the price follows the number of slides). Example: a 67-slide unit = about 200–335 baht/month |
 | School theme (logo + colours) | 990 one-off |
 | Custom unit made from the teacher's lesson plan | 1,990 / unit |
 | Book answer keys + locked answer site | 590 / unit |
@@ -78,7 +78,12 @@ Prices are low on purpose for now and may rise later. Do NOT print any "launch p
 - Teachers open decks only through our link. Each deck shows a light "Licensed to <teacher · school>" mark.
 - The sales site links to `/app/` for login and the member area.
 
-## Videos (owner, 28 Nov): everything must be good enough to be the face of the brand. Master in **4K (3840×2160)**
+## Presentation (owner, 28 Nov): CHANGED from an explainer video to a SLIDE DECK
+- The owner presents it live in a big meeting room, 10–15 minutes, about 12–15 slides, and speaks himself or herself: NO narration in the deck. Big visuals, little text, works on a projector. A speaker script is needed.
+- Inside the deck: what KruSlide does, live demos of the mechanics, the styles, the prices, why teachers need us, and the Ayutthaya cinematic trailer (4K) playing as our video showcase.
+- Folder: kruslide/deck/.
+
+## Videos (owner, 28 Nov; item 2 below is REPLACED by the deck above): everything must be good enough to be the face of the brand. Master in **4K (3840×2160)**
 1. **Sample: cinematic history trailer.** Topic: Ayutthaya (อยุธยา), 45–60 s.
    - Look like a film trailer: real photographs, slow camera moves, letterbox, title cards, Thai narration and ambient sound.
    - Only images whose licence allows reuse, each one credited.
