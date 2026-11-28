@@ -75,15 +75,25 @@ async function viewerCycle(page, label, opener, root) {
       await page.screenshot({ path: `${OUT}/${w}-${s}.jpg`, type: 'jpeg', quality: 72, fullPage: true });
       await page.screenshot({ path: `${OUT}/${w}-${s}-fold.jpg`, type: 'jpeg', quality: 72 });
     }
-    // every products tab and the sub-tabs of styles/mechanics
-    await page.evaluate(() => { location.hash = 'products'; }); await page.waitForTimeout(400);
-    const tabs = await page.$$eval('[data-act="tab"][data-sec="products"]', els => els.map(e => e.dataset.v));
-    for (const tb of tabs) {
-      await page.click(`[data-act="tab"][data-sec="products"][data-v="${tb}"]`); await page.waitForTimeout(500);
-      await overflow(page, `${w} products/${tb}`);
-      await page.screenshot({ path: `${OUT}/${w}-products-${tb}.jpg`, type: 'jpeg', quality: 72, fullPage: true });
+    // every sub-tab of styles, mechanics and products
+    for (const sec of ['styles', 'mechanics', 'products']) {
+      await page.evaluate(x => { location.hash = x; }, sec); await page.waitForTimeout(400);
+      const tabs = await page.$$eval(`[data-act="tab"][data-sec="${sec}"]`, els => els.map(e => e.dataset.v));
+      for (const tb of tabs) {
+        await page.click(`[data-act="tab"][data-sec="${sec}"][data-v="${tb}"]`); await page.waitForTimeout(500);
+        await overflow(page, `${w} ${sec}/${tb}`);
+        await page.screenshot({ path: `${OUT}/${w}-${sec}-${tb}.jpg`, type: 'jpeg', quality: 72, fullPage: true });
+      }
+      await page.click(`[data-act="tab"][data-sec="${sec}"][data-v="${tabs[sec === 'products' ? 0 : 1]}"]`);
     }
-    await page.click('[data-act="tab"][data-sec="products"][data-v="video"]');
+    // English
+    await page.click('[data-act="lang"][data-v="en"] >> visible=true'); await page.waitForTimeout(300);
+    for (const s of ['overview', 'samples', 'order']) {
+      await page.evaluate(x => { location.hash = x; }, s); await page.waitForTimeout(500);
+      await overflow(page, `${w} en ${s}`);
+      await page.screenshot({ path: `${OUT}/${w}-en-${s}.jpg`, type: 'jpeg', quality: 72 });
+    }
+    await page.click('[data-act="lang"][data-v="th"] >> visible=true');
     await ctx.close();
   }
 
