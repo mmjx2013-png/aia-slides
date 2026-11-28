@@ -1,0 +1,41 @@
+/* KruSlide sample · เวลาและเงิน (คณิต ป.2–3) · style "soft clay toy"
+   Pastel putty background, chunky rounded pieces with soft 3D shading: a light rim top-left, a darker rim bottom-right,
+   a soft cast shadow. Colour: coral = hour hand · blue = minute hand · mint = correct · butter = money and highlights. */
+:root{--outside:#463B57;--paper:#F4ECE3;--ink:#463B57;--mute:#7D7290;--line:#E2D6C8;
+ --coral:#FF8F7A;--dcoral:#E06A54;--mint:#7FD6BA;--dmint:#2F9C7B;--butter:#FFD978;--dbutter:#D9A93A;--sky:#8EC5FF;--dsky:#3F7FD8;--lilac:#C9B6FF;
+ --okc:#2F9C7B;--noc:#D9534A;--green:#2F9C7B;--red:#E06A54;--lgreen:#D5F3E8;--lred:#FFE0DA;--sun:#FFD978;--lsun:#FFF1C7;--blue:#3F7FD8;--pink:#E06A54;
+ --clay:inset -8px -10px 0 rgba(70,59,87,.08),inset 7px 8px 0 rgba(255,255,255,.55),0 16px 28px rgba(70,59,87,.16),0 3px 0 rgba(70,59,87,.06);
+ --clay-s:inset -4px -6px 0 rgba(70,59,87,.10),inset 4px 5px 0 rgba(255,255,255,.55),0 8px 14px rgba(70,59,87,.18);
+ --pen1:#463B57;--pen2:#3F7FD8;--pen3:#E06A54;--pen4:#2F9C7B;--pen5:#FFD978;--ctl:#463B57;--ctl-on:#FFD978}
+#stage{background:var(--paper)}
+.slide{background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.55),transparent 45%),var(--paper)}
+.blob{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.75),var(--c) 45%);box-shadow:inset -18px -24px 0 rgba(70,59,87,.05);pointer-events:none}
+.clay{background:#FFFBF6;border-radius:40px;box-shadow:var(--clay)}
+.card{position:relative}
+h1,h2{position:absolute;font-family:Display;font-weight:800;color:var(--ink);line-height:1.45;text-shadow:0 5px 0 rgba(70,59,87,.08)}
+h1{font-size:136px}
+h2{font-size:66px}
+.lead{font:700 36px/1.45 Inter;color:var(--mute)}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:12px;height:60px;padding:0 26px 0 8px;border-radius:30px;background:#FFFBF6;box-shadow:var(--clay-s);font:700 26px/1.45 Inter;color:var(--ink)}
+.chip b{display:grid;place-items:center;height:44px;padding:0 16px;border-radius:22px;background:var(--coral);color:#fff;font:800 24px/1 Inter;box-shadow:inset -3px -4px 0 rgba(0,0,0,.1),inset 3px 3px 0 rgba(255,255,255,.4)}
+/* puffy pill button */
+.pill{height:72px;padding:0 30px;border:0;border-radius:36px;background:#FFFBF6;color:var(--ink);font:800 28px/1.45 Inter;cursor:pointer;touch-action:manipulation;box-shadow:var(--clay-s);transition:transform .12s}
+.pill:active{transform:translateY(3px) scale(.98)}
+.pill:focus-visible{outline:4px solid var(--dsky);outline-offset:4px}
+.pill.go{background:var(--sky);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.12)}
+/* toy money (drawn by us: numbers and rings only, no portraits or emblems) */
+.coin{position:relative;flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;width:var(--s,104px);height:var(--s,104px);color:#5B4A2A;
+ background:radial-gradient(circle at 34% 28%,#fff 0,var(--c1) 26%,var(--c2) 100%);box-shadow:inset -5px -7px 0 rgba(0,0,0,.12),inset 4px 5px 0 rgba(255,255,255,.55),0 8px 12px rgba(70,59,87,.22)}
+.coin b{font:800 calc(var(--s,104px)*.40)/1 Display;margin-top:6%}
+.coin small{font:700 calc(var(--s,104px)*.15)/1.45 Inter;margin-top:-2%}
+.coin.c1{--s:92px;--c1:#E9ECF2;--c2:#A8AFBD;color:#4D5566}
+.coin.c2{--s:98px;--c1:#FFE9A8;--c2:#D9A93A}
+.coin.c5{--s:108px;--c1:#ECEFF4;--c2:#AEB5C2;color:#4D5566;border:7px solid #D88A5E}
+.coin.c10{--s:118px;--c1:#FFE9A8;--c2:#D9A93A;border:11px solid #C3C9D4}
+.note{position:relative;flex:none;display:inline-flex;align-items:center;justify-content:flex-end;gap:8px;width:214px;height:108px;padding:0 20px 0 0;border-radius:20px;color:#fff;
+ background:radial-gradient(circle at 26% 50%,rgba(255,255,255,.55) 0 30px,transparent 31px),linear-gradient(160deg,var(--c1),var(--c2));box-shadow:inset -5px -7px 0 rgba(0,0,0,.12),inset 4px 5px 0 rgba(255,255,255,.4),0 8px 12px rgba(70,59,87,.22)}
+.note::before{content:"";position:absolute;left:30px;top:30px;width:48px;height:48px;border-radius:50%;border:5px solid rgba(255,255,255,.75)}
+.note b{font:800 50px/1 Display;text-shadow:0 3px 0 rgba(0,0,0,.12)}
+.note small{font:700 20px/1.45 Inter;margin-top:16px}
+.note.n20{--c1:#9BE0B4;--c2:#3FA66A}.note.n50{--c1:#A7CBFF;--c2:#4A84DB}.note.n100{--c1:#FFB0A6;--c2:#DD5B54}
+.foot{--foot-ink:var(--ink);--foot-mute:var(--mute)}

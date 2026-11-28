@@ -89,7 +89,7 @@
         pans[i]._k.setAttribute('cx', e.x.toFixed(1)); pans[i]._k.setAttribute('cy', e.y.toFixed(1));
       });
       var now = performance.now();
-      items.forEach(function (it) {
+      items.slice().forEach(function (it) {
         if (it.drag) { put(it, it.drag); return; }
         var tgt = it.side >= 0 ? slot(it.side, it.k, sides[it.side][it.k].indexOf(it)) : it.home;
         if (it.fly) {
@@ -111,15 +111,16 @@
       }
     }
     function frame(t) {
-      var dt = Math.min(0.033, (t - last) / 1000 || 0.016); last = t;
+      var dt = last ? clamp((t - last) / 1000, 0.001, 0.033) : 0.016; last = t;
       var w = weights(), target = clamp(KT * (w[1] - w[0]), -MAXT, MAXT);
       if (still()) { th = target; om = 0; } else { om += (-42 * (th - target) - 5.2 * om) * dt; th += om * dt; }
       draw();
       var busy = items.some(function (it) { return it.fly || it.drag; });
+      w = weights(); target = clamp(KT * (w[1] - w[0]), -MAXT, MAXT);   /* a piece may have landed during draw() */
       if (!busy && Math.abs(th - target) < 0.01 && Math.abs(om) < 0.01) { th = target; draw(); raf = 0; return; }
       raf = requestAnimationFrame(frame);
     }
-    function kick() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+    function kick() { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } }
     function changed() { if (o.onchange) o.onchange(model()); }
     var self = {
       model: model, X: o.X,

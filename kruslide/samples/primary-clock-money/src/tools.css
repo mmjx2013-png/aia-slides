@@ -1,0 +1,42 @@
+/* Widgets rendered by tools.js (tap a choice, buttons, feedback) + the global pen, in this deck's clay look. */
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:72px}
+.tw-btns{display:flex;gap:12px;flex:none}
+.tw-btn{font:800 26px/1.45 Inter,system-ui,sans-serif;height:68px;padding:0 26px;border:0;border-radius:34px;background:#FFFBF6;color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;box-shadow:var(--clay-s);transition:transform .12s}
+.tw-btn:active{transform:translateY(3px) scale(.98)}
+.tw-btn.pri{background:var(--mint);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.12)}
+.tw-btn.show[aria-pressed="true"]{background:var(--dmint);color:#fff}
+.tw-btn.show.nudge{background:var(--lsun)}
+.tw-btn:disabled{opacity:.4;cursor:default}
+.tw-btn:focus-visible{outline:4px solid var(--dsky);outline-offset:4px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:800 28px/1.45 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-fb.ok{color:var(--okc)}.tw-fb.no{color:var(--noc)}.tw-fb.info{color:var(--dsky)}
+.tw-fb .tw-ico{width:40px;height:40px;padding:7px;border-radius:50%;color:#fff;background:var(--mint)}
+.tw-fb.no .tw-ico{background:var(--noc)}
+.m2-foot .tw-foot,.m3-foot .tw-foot{flex-wrap:wrap;height:auto;row-gap:14px}
+.m3-foot .tw-fb{flex:1 0 100%}
+.m2-foot .tw-fb{min-width:260px}
+/* tap a choice */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.c{display:flex;align-items:center;gap:18px;height:100px;padding:0 24px;border-radius:50px;background:#FFFBF6;box-shadow:var(--clay-s);font:800 46px/1.45 Display;color:var(--ink);font-variant-numeric:tabular-nums;transition:background .3s,transform .1s}
+.c b{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--sky);color:#fff;font:800 28px/1 Inter;box-shadow:inset -3px -4px 0 rgba(0,0,0,.12),inset 3px 3px 0 rgba(255,255,255,.4)}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:active{transform:scale(.97)}
+.ch[data-mcq] .c:focus-visible{outline:4px solid var(--dsky);outline-offset:4px}
+.ch .c.wrong{background:var(--lred)}.ch .c.wrong b{background:var(--noc)}
+.ch .c.ok.picked{background:var(--lgreen)}.ch .c.ok.picked b{background:var(--dmint)}
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:30px;background:#FFFBF6;box-shadow:var(--clay)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:29px;border:3px solid transparent;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:#F4ECE3}
+#pen-bar .pb[aria-pressed="true"]{background:var(--lsun);border-color:var(--butter)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px #DCCFBF}
+#pen-bar .ps{display:block;width:38px;height:3px;border-radius:2px;background:#E8DCCB;margin:2px 0}
+.shot #pen-bar{display:none!important}
