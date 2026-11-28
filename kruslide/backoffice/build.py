@@ -15,6 +15,9 @@ What it does
   code ever handed out in data/codes.json, so codes never move when new samples arrive.
 - Writes dist/index.html (CSS, JS and data inlined) and reports dist's size and file count against the
   limits (60 MB, 250 files) of a claude.ai artifact.
+
+Sources: src/shell.html, src/app.css, src/app.js (the app); data/*.json (catalogs; status.json is the owner's);
+data/img/ (preview pictures made by qa/previews.cjs + qa/previews.py). QA: qa/qa.cjs (see its header).
 """
 import datetime
 import hashlib

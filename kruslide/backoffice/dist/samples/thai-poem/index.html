@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-gdv/oL94lv1VQH9Z7hOsPRcBY9DeJ9+0+Pn/ukmSuYA='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-/o28aRirQRT1of7CwafJ45buJa38/smk8q5tG2zvAzc='; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>กลอนสุภาพ ภาษาไทย ม.1–3 · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample library · base (same in every sample): shared fonts, stage, beats, motion helpers, control bar, footer layout.
@@ -129,46 +129,49 @@ h2 em{font-style:normal;color:var(--gold2)}
 #p1-med{left:1530px;top:84px;width:240px;height:240px}
 .on #p1-med{animation:p1spin 1.2s var(--ease) both .2s}
 @keyframes p1spin{from{opacity:0;transform:rotate(-45deg) scale(.7)}to{opacity:1;transform:none}}
-#p1-verse{left:150px;top:390px;width:1620px;height:240px}
+#p1-verse{left:150px;top:372px;width:1620px;height:240px}
 .p1-w{position:absolute;width:720px}
 .p1-w .wl{margin-left:4px}
 .p1-t{font:700 50px/1.45 Display;color:var(--ink);white-space:nowrap;margin-top:-6px}
 #p1-plan{left:0;top:0;width:1920px;height:1080px;pointer-events:none}
 .p1-pl{font:700 22px Inter;fill:var(--gold2)}
+.p1-dot{fill:var(--gold2)}
 .p1-c{fill:rgba(78,9,20,.6);stroke:var(--gold);stroke-width:2.5;transition:fill .5s ease .3s}
 .on.b2 .p1-c.rh{fill:var(--gold)}
 .on.b2 .p1-c.rh5{stroke-dasharray:4 4}
 .p1-a,.p1-a5{fill:none;stroke:var(--gold2);stroke-width:4;stroke-linecap:round}
-.p1-a5{stroke-width:2.5;stroke-dasharray:.012 .02;opacity:.8}
+.p1-a5{stroke-width:2.5;stroke-dasharray:.012 .02;opacity:.85}
 .on.b2 .g2 .p1-a5.draw{animation:p1dash 1s ease both;animation-delay:calc(var(--d)*1ms)}
 @keyframes p1dash{from{opacity:0}to{opacity:.85}}
-.p1-key{left:150px;top:640px;display:flex;align-items:center;gap:14px;font:600 24px/1.45 Inter;color:var(--gold2)}
+.p1-key{left:150px;top:618px;display:flex;align-items:center;gap:14px;font:600 24px/1.45 Inter;color:var(--gold2)}
 .p1-key i{display:inline-block;width:46px;height:0;border-top:4px solid var(--gold2);margin-left:18px}
 .p1-key i.k1{margin-left:0}
 .p1-key i.k2{border-top:3px dashed var(--gold2)}
 
 /* 2 · rhyme board */
-#p2-board{left:150px;top:268px;width:1620px;height:440px}
-.p2-w{position:absolute;width:740px}
-.p2-w .wl{margin-left:10px;margin-top:-2px}
+#p2-board{left:110px;top:232px;width:1700px;height:540px}
+.p2-w{position:absolute;width:800px;display:flex;align-items:center;gap:6px;z-index:3}
+.p2-lab{flex:none;width:86px;font:700 21px/1.3 Inter;color:var(--gold3)}
 .p2-row{display:flex;gap:2px;width:max-content}
 .p2-t{position:relative;display:inline-block;padding:2px 8px 6px;border-radius:12px;font:700 var(--fs,52px)/1.45 Display;color:var(--ink);cursor:pointer;touch-action:none;transition:background .2s,color .2s,box-shadow .2s}
 .p2-t:hover,.p2-t.hov{background:rgba(212,168,75,.22)}
 .p2-t.sel{background:var(--gold);color:var(--red2);box-shadow:0 0 0 4px rgba(212,168,75,.35)}
 .p2-t.lk{box-shadow:inset 0 -5px 0 var(--gold)}
 .p2-t:focus-visible{outline:3px solid var(--red3);outline-offset:2px}
-.p2-links{position:absolute;left:0;top:0;width:1620px;height:440px;pointer-events:none;z-index:2}
-.p2-p{fill:none;stroke:var(--gold3);stroke-width:6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke .3s}
-.p2-hit{fill:none;stroke:transparent;stroke-width:28;pointer-events:stroke;cursor:pointer}
+.p2-links{position:absolute;left:0;top:0;width:1700px;height:540px;pointer-events:none;z-index:2}
+.p2-p{fill:none;stroke:var(--gold3);stroke-width:5.5;stroke-linecap:round;transition:stroke .3s,stroke-width .3s}
+.p2-dot{fill:var(--gold3);transition:fill .3s}
+.p2-hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke;cursor:pointer}
 .p2-rub{fill:none;stroke:var(--gold3);stroke-width:4;stroke-dasharray:10 10;stroke-linecap:round}
-.p2-l.ok .p2-p{stroke:var(--jade)}
-.p2-l.no .p2-p{stroke:var(--noc);stroke-dasharray:.02 .02}
-.p2-l.inner .p2-p{stroke:#C58B2A;stroke-dasharray:.03 .015}
+.p2-l.ok .p2-p{stroke:var(--jade);stroke-width:6}.p2-l.ok .p2-dot{fill:var(--jade)}
+.p2-l.no .p2-p{stroke:var(--noc);stroke-dasharray:12 10}.p2-l.no .p2-dot{fill:var(--noc)}
+.p2-l.inner .p2-p{stroke:#C58B2A;stroke-width:3.5;stroke-dasharray:9 8}.p2-l.inner .p2-dot{fill:#C58B2A}
 .p2-mk circle{fill:var(--jade);stroke:var(--cream);stroke-width:3}
+.p2-mk{pointer-events:none}
 .p2-mk path{fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
 .p2-mk.no circle{fill:var(--noc)}.p2-mk.inner circle{fill:#C58B2A}
-.p2-foot{left:150px;top:728px;width:1620px}
-.p2-rules{left:150px;top:820px;width:1620px;display:flex;gap:18px}
+.p2-foot{left:110px;top:788px;width:1700px}
+.p2-rules{left:110px;top:874px;width:1700px;display:flex;gap:18px}
 .p2-rule{flex:1;display:flex;align-items:center;gap:12px;min-width:0;padding:12px 16px;border-radius:10px;border:2px solid var(--gold);background:rgba(78,9,20,.75);font:600 23px/1.45 Inter;color:var(--cream)}
 .p2-rule b{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--red2);font:800 24px/1 Inter}
 .p2-rule span{color:var(--gold2);font-weight:800}
@@ -1865,6 +1868,18 @@ var K = (function () {
   }
   $$('.slide').forEach(frame);
 
+  /* ---------- rhyme-line geometry (slides 1 and 2) ----------
+     arcPath: an arc between two points on one line; dir -1 = above, +1 = below; the peak is exactly h away.
+     sPath: a cubic from (x1,y1) down to (x2,y2) with vertical tangents at both ends, so it stays between y1 and y2. */
+  function arcPath(x1, x2, y, h, dir) {
+    var c = h / 0.75, s = Math.min(34, Math.abs(x2 - x1) * 0.12) * (x2 >= x1 ? 1 : -1);
+    return 'M' + x1.toFixed(1) + ' ' + y.toFixed(1) + ' C' + (x1 + s).toFixed(1) + ' ' + (y + dir * c).toFixed(1) + ' ' + (x2 - s).toFixed(1) + ' ' + (y + dir * c).toFixed(1) + ' ' + x2.toFixed(1) + ' ' + y.toFixed(1);
+  }
+  function sPath(x1, y1, x2, y2) {
+    var k = (y2 - y1) * 0.55;
+    return 'M' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' C' + x1.toFixed(1) + ' ' + (y1 + k).toFixed(1) + ' ' + x2.toFixed(1) + ' ' + (y2 - k).toFixed(1) + ' ' + x2.toFixed(1) + ' ' + y2.toFixed(1);
+  }
+
   /* ================= slide 1 · verse + แผนผัง ================= */
   (function () {
     var med = $('#p1-med');
@@ -1884,59 +1899,112 @@ var K = (function () {
       var t = E('div', 'p1-t', null, b);
       w.s.forEach(function (x) { E('span', 'sy', x, t); });
     });
-    /* แผนผัง: same columns as the verse */
-    var plan = $('#p1-plan'), RX = [210, 1010], RY = [752, 880], R = 17;
+    /* แผนผัง: one circle = one คำ. The วรรค names sit at the left of each group, out of the way of every line.
+       Same routing as slide 2: the top-row rhyme arcs above its row, the bottom-row rhyme arcs below it, the cross-row
+       rhyme is an S-curve with vertical ends inside the gutter; the two lines that share an end get spread anchors. */
+    var plan = $('#p1-plan'), RX = [150, 980], RY = [748, 858], R = 15, STEP = 82;
     var gc = S('g', { 'class': 'g1' }, plan), gr = S('g', { 'class': 'g2' }, plan);
-    function cx(w, k) { return RX[w % 2] + 45 + k * 88; }
+    function cx(w, k) { return RX[w % 2] + 124 + k * STEP; }
     function cy(w) { return RY[w < 2 ? 0 : 1]; }
     var hot = { '0-7': 1, '1-2': 1, '1-7': 1, '2-7': 1, '3-2': 1, '1-4': 2, '3-4': 2 };
     POEM.forEach(function (w, i) {
-      var lab = S('text', { x: i % 2 ? cx(i, 7) + 17 : cx(i, 0) - 17, y: cy(i) - 34, 'class': 'p1-pl', 'text-anchor': i % 2 ? 'end' : 'start' }, gc); lab.textContent = w.lab;
+      var lab = S('text', { x: RX[i % 2], y: cy(i) - 5, 'class': 'p1-pl' }, gc);
+      S('tspan', { x: RX[i % 2] }, lab).textContent = 'วรรค';
+      S('tspan', { x: RX[i % 2], dy: 26 }, lab).textContent = w.lab.replace('วรรค', '');
       for (var k = 0; k < 8; k++) {
         var c = S('circle', { cx: cx(i, k), cy: cy(i), r: R, 'class': 'pop p1-c' + (hot[i + '-' + k] === 1 ? ' rh' : hot[i + '-' + k] === 2 ? ' rh5' : '') }, gc);
         c.style.setProperty('--d', 120 + i * 260 + k * 30);
       }
     });
-    function arc(d, cls, delay) { var p = S('path', { d: d, pathLength: 1, 'class': 'draw ' + cls }, gr); p.style.setProperty('--d', delay); return p; }
-    var x18 = cx(0, 7), x23 = cx(1, 2), x25 = cx(1, 4), x28 = cx(1, 7), x38 = cx(2, 7), x43 = cx(3, 2), x45 = cx(3, 4), y1 = RY[0], y2 = RY[1];
-    arc('M' + x18 + ' ' + (y1 - R) + ' C' + (x18 + 50) + ' ' + (y1 - 92) + ' ' + (x23 - 50) + ' ' + (y1 - 92) + ' ' + x23 + ' ' + (y1 - R), 'p1-a', 150);
-    arc('M' + x18 + ' ' + (y1 - R) + ' C' + (x18 + 70) + ' ' + (y1 - 118) + ' ' + (x25 - 70) + ' ' + (y1 - 118) + ' ' + x25 + ' ' + (y1 - R), 'p1-a5', 450);
-    arc('M' + x28 + ' ' + (y1 + R) + ' C' + x28 + ' ' + (y1 + 70) + ' ' + x38 + ' ' + (y2 - 70) + ' ' + x38 + ' ' + (y2 - R), 'p1-a', 750);
-    arc('M' + x38 + ' ' + (y2 + R) + ' C' + (x38 + 50) + ' ' + (y2 + 62) + ' ' + (x43 - 50) + ' ' + (y2 + 62) + ' ' + x43 + ' ' + (y2 + R), 'p1-a', 1100);
-    arc('M' + x38 + ' ' + (y2 + R) + ' C' + (x38 + 70) + ' ' + (y2 + 78) + ' ' + (x45 - 70) + ' ' + (y2 + 78) + ' ' + x45 + ' ' + (y2 + R), 'p1-a5', 1350);
+    function line(d, cls, delay) { var p = S('path', { d: d, pathLength: 1, 'class': 'draw ' + cls }, gr); p.style.setProperty('--d', delay); return p; }
+    function dot(x, y, delay) { var c = S('circle', { cx: x, cy: y, r: 5, 'class': 'pop p1-dot' }, gr); c.style.setProperty('--d', delay); }
+    var y1 = RY[0], y2 = RY[1];
+    /* ท้ายวรรคสดับ → คำที่ 3 (solid) / 5 (dashed) of วรรครับ: above row 1; the wider arc takes the outer (left) anchor */
+    var a0 = cx(0, 7), up1 = y1 - R - 3;
+    line(arcPath(a0 + 8, cx(1, 2), up1, 52, -1), 'p1-a', 150); dot(a0 + 8, up1, 150); dot(cx(1, 2), up1, 650);
+    line(arcPath(a0 - 8, cx(1, 4), up1, 64, -1), 'p1-a5', 450); dot(a0 - 8, up1, 450); dot(cx(1, 4), up1, 950);
+    /* ท้ายวรรครับ → ท้ายวรรครอง: S-curve in the gutter */
+    line(sPath(cx(1, 7), y1 + R + 3, cx(2, 7), y2 - R - 3), 'p1-a', 800); dot(cx(1, 7), y1 + R + 3, 800); dot(cx(2, 7), y2 - R - 3, 1300);
+    /* ท้ายวรรครอง → คำที่ 3 (solid) / 5 (dashed) of วรรคส่ง: below row 2 */
+    var a2 = cx(2, 7), dn2 = y2 + R + 3;
+    line(arcPath(a2 + 8, cx(3, 2), dn2, 48, 1), 'p1-a', 1150); dot(a2 + 8, dn2, 1150); dot(cx(3, 2), dn2, 1650);
+    line(arcPath(a2 - 8, cx(3, 4), dn2, 60, 1), 'p1-a5', 1450); dot(a2 - 8, dn2, 1450); dot(cx(3, 4), dn2, 1950);
   })();
 
   /* ================= slide 2 · connect the rhymes ================= */
+  /* Routing rules (owner, 28 Nov): a top-row pair arcs ABOVE its row, a bottom-row pair arcs BELOW its row, and the arc
+     height grows with the distance (capped inside the card). A cross-row pair leaves the upper word's underline and enters
+     the lower word's top as an S-curve with vertical ends, inside the gutter between the rows. Several links at one word
+     get spread anchors (16 px apart, ordered so they do not cross) with a dot at each anchor. Badges sit on their own curve
+     at the point farthest from other curves, badges and words. The words sit above the line layer, so a tap on a word is
+     never caught by a line. */
   (function () {
     var sl = $('#tp-rhyme'), board = $('#p2-board'); if (!board) return;
     var svg = $('#p2-links'), tok = {}, links = [], sel = null, rub = null;
+    var BW = 1700, BH = 540, ROWY = [112, 336], COLX = [36, 868], AVAIL = 706;
     POEM.forEach(function (w, i) {
-      var b = E('div', 'p2-w', null, board); b.style.left = (i % 2 ? 840 : 50) + 'px'; b.style.top = (i < 2 ? 56 : 262) + 'px';
+      var b = E('div', 'p2-w', null, board); b.style.left = COLX[i % 2] + 'px'; b.style.top = ROWY[i < 2 ? 0 : 1] + 'px';
+      var lab = E('span', 'p2-lab', null, b); lab.innerHTML = 'วรรค<br>' + w.lab.replace('วรรค', '');
       var row = E('div', 'p2-row', null, b);
-      E('div', 'wl', w.lab, b);
       w.s.forEach(function (x, k) {
         var t = E('span', 'p2-t', x, row); t.dataset.id = i + '-' + k; tok[i + '-' + k] = t;
         t.setAttribute('role', 'button'); t.tabIndex = 0; t.setAttribute('aria-label', w.lab + ' คำที่ ' + (k + 1) + ' ' + x);
       });
     });
+    svg.setAttribute('viewBox', '0 0 ' + BW + ' ' + BH);
+    var dotsG = null;
     /* each วรรค must fit its half of the board: shrink the type until it does (measured after the web font loads) */
     function fit() {
       var fs = 52; board.style.setProperty('--fs', fs + 'px');
-      while (fs > 36 && $$('.p2-row', board).some(function (r) { return r.scrollWidth > 736; })) { fs -= 2; board.style.setProperty('--fs', fs + 'px'); }
-      redraw();
+      while (fs > 36 && $$('.p2-row', board).some(function (r) { return r.scrollWidth > AVAIL; })) { fs -= 2; board.style.setProperty('--fs', fs + 'px'); }
+      layout();
     }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-    var W = 1620, H = 440;
-    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    function anchor(t, side) { var b = K.box(t), o = K.box(board); return { x: b.cx - o.x, y: (side === 'top' ? b.y + 6 : b.y + b.h - 6) - o.y }; }
-    function curve(a, b) {
-      var A = K.box(a), B = K.box(b);
-      if (Math.abs(A.cy - B.cy) < 30) {
-        var p = anchor(a, 'top'), q = anchor(b, 'top'), h = 46 + Math.abs(q.x - p.x) * 0.12;
-        return 'M' + p.x + ' ' + p.y + ' C' + (p.x + (q.x - p.x) * 0.15) + ' ' + (p.y - h) + ' ' + (q.x - (q.x - p.x) * 0.15) + ' ' + (q.y - h) + ' ' + q.x + ' ' + q.y;
-      }
-      var up = A.cy < B.cy ? a : b, dn = up === a ? b : a, P = anchor(up, 'bottom'), Q = anchor(dn, 'top');
-      return 'M' + P.x + ' ' + P.y + ' C' + P.x + ' ' + (P.y + 60) + ' ' + Q.x + ' ' + (Q.y - 60) + ' ' + Q.x + ' ' + Q.y;
+    function boxes() {
+      var o = K.box(board), B = {};
+      Object.keys(tok).forEach(function (id) {
+        var b = K.box(tok[id]); B[id] = { cx: b.cx - o.x, x: b.x - o.x, w: b.w, top: b.y - o.y, bot: b.y + b.h - o.y, row: +id.split('-')[0] < 2 ? 0 : 1 };
+      });
+      return B;
+    }
+    /* lay out every link from scratch: which side each end uses, spread anchors, then the path */
+    function layout() {
+      if (!links.length) { if (dotsG) dotsG.textContent = ''; return; }
+      var B = boxes(), ends = {};
+      function push(word, side, l, otherX) { var k = word + '|' + side; (ends[k] = ends[k] || []).push({ l: l, ox: otherX }); }
+      links.forEach(function (l) {
+        var A = B[l.a], C = B[l.b]; l.off = {};
+        if (A.row === C.row) { l.type = 'arc'; l.side = A.row ? 'bot' : 'top'; push(l.a, l.side, l, C.cx); push(l.b, l.side, l, A.cx); }
+        else { l.type = 's'; l.up = A.row ? l.b : l.a; l.dn = A.row ? l.a : l.b; push(l.up, 'bot', l, B[l.dn].cx); push(l.dn, 'top', l, B[l.up].cx); }
+      });
+      Object.keys(ends).forEach(function (k) {
+        var word = k.split('|')[0], wx = B[word].cx, arr = ends[k];
+        /* arcs: links going left first; within a direction the wider arc takes the outer anchor. S-curves: in target order */
+        arr.sort(function (p, q) {
+          if (p.l.type === 's') return p.ox - q.ox;
+          var gp = p.ox < wx ? 0 : 1, gq = q.ox < wx ? 0 : 1;
+          return gp !== gq ? gp - gq : q.ox - p.ox;
+        });
+        arr.forEach(function (e, i) { e.l.off[word] = (i - (arr.length - 1) / 2) * 16; });
+      });
+      links.forEach(function (l) {
+        var d;
+        if (l.type === 'arc') {
+          var top = l.side === 'top', y = top ? B[l.a].top - 3 : B[l.a].bot + 3;
+          var x1 = B[l.a].cx + l.off[l.a], x2 = B[l.b].cx + l.off[l.b];
+          if (x1 > x2) { var t = x1; x1 = x2; x2 = t; }
+          var cap = Math.min(84, top ? y - 26 : BH - 26 - y), h = Math.min(cap, 24 + (x2 - x1) * 0.14) * (l.kind === 'inner' ? 0.6 : 1);
+          d = arcPath(x1, x2, y, h, top ? -1 : 1);
+          l.p1 = [x1, y]; l.p2 = [x2, y];
+        } else {
+          var u = B[l.up], n = B[l.dn], ux = u.cx + l.off[l.up], nx = n.cx + l.off[l.dn];
+          d = sPath(ux, u.bot + 3, nx, n.top - 3);
+          l.p1 = [ux, u.bot + 3]; l.p2 = [nx, n.top - 3];
+        }
+        l.p.setAttribute('d', d); l.hit.setAttribute('d', d);
+        l.d1.setAttribute('cx', l.p1[0]); l.d1.setAttribute('cy', l.p1[1]); l.d2.setAttribute('cx', l.p2[0]); l.d2.setAttribute('cy', l.p2[1]);
+      });
+      badges();
     }
     function key(a, b) { return [a, b].sort().join('|'); }
     function isReq(a, b) { return REQ.some(function (r) { return key(r[0], r[1]) === key(a, b); }); }
@@ -1950,30 +2018,56 @@ var K = (function () {
       $$('.p2-t', board).forEach(function (t) { t.classList.remove('lk'); });
       links.forEach(function (l) { tok[l.a].classList.add('lk'); tok[l.b].classList.add('lk'); });
     }
-    function addLink(a, b, quiet, cls) {
-      var k = key(a, b), old = links.filter(function (l) { return l.k === k; })[0];
-      if (old) { K.anim(old.p, [{ strokeWidth: 12 }, { strokeWidth: 6 }], { duration: 400 }); return old; }
-      var d = curve(tok[a], tok[b]);
-      var g = S('g', { 'class': 'p2-l' + (cls ? ' ' + cls : '') }, svg);
-      var p = S('path', { d: d, pathLength: 1, 'class': 'p2-p' }, g);
-      var hit = S('path', { d: d, 'class': 'p2-hit' }, g);
-      var l = { a: a, b: b, k: k, g: g, p: p };
-      links.push(l); mark();
-      if (!quiet) K.anim(p, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 600, easing: 'cubic-bezier(.4,0,.2,1)' });
-      hit.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
-      hit.addEventListener('click', function (e) { e.stopPropagation(); if (ac.shown) return; ac.hide(); removeLink(l); ft.say(''); });
+    function drawOn(l, delay) {
+      var L = l.p.getTotalLength ? l.p.getTotalLength() : 0; if (!L) return;
+      K.anim(l.p, [{ strokeDasharray: L + ' ' + L, strokeDashoffset: L }, { strokeDasharray: L + ' ' + L, strokeDashoffset: 0 }], { duration: 500, delay: delay || 0, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'backwards' });
+      [l.d1, l.d2].forEach(function (dt, i) { K.anim(dt, [{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: (delay || 0) + (i ? 450 : 0), fill: 'backwards' }); });
+    }
+    function setKind(l, k) { l.kind = k; l.g.classList.remove('ok', 'no', 'inner'); if (k) l.g.classList.add(k); }
+    function addLink(a, b, quiet, k, delay) {
+      var kk = key(a, b), old = links.filter(function (l) { return l.k === kk; })[0];
+      if (old) { K.anim(old.p, [{ strokeWidth: 11 }, { strokeWidth: 6 }], { duration: 400 }); return old; }
+      var g = S('g', { 'class': 'p2-l' }, svg);
+      var l = { a: a, b: b, k: kk, g: g, kind: '' };
+      l.p = S('path', { 'class': 'p2-p' }, g); l.hit = S('path', { 'class': 'p2-hit' }, g);
+      l.d1 = S('circle', { r: 5.5, 'class': 'p2-dot' }, g); l.d2 = S('circle', { r: 5.5, 'class': 'p2-dot' }, g);
+      if (k) setKind(l, k);
+      links.push(l); mark(); layout();
+      if (!quiet) drawOn(l, delay);
+      l.hit.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+      l.hit.addEventListener('click', function (e) { e.stopPropagation(); if (ac.shown) return; ac.hide(); unmarkAll(); removeLink(l); ft.say(''); });
       return l;
     }
     function removeLink(l) {
       links = links.filter(function (x) { return x !== l; });
       var a = K.anim(l.g, [{ opacity: 1 }, { opacity: 0 }], { duration: 250 });
       if (a) a.onfinish = function () { l.g.remove(); }; else l.g.remove();
-      mark();
+      mark(); layout();
     }
-    function select(t) {
-      if (sel) sel.classList.remove('sel');
-      sel = t; if (sel) sel.classList.add('sel');
+    /* badges: on its own curve, at the candidate point farthest from other curves, other badges and the words */
+    function badges() {
+      $$('.p2-mk', svg).forEach(function (m) { m.remove(); });
+      var marked = links.filter(function (l) { return l.kind; }); if (!marked.length) return;
+      var B = boxes(), rects = Object.keys(B).map(function (id) { return B[id]; });
+      var samples = links.map(function (l) { var L = l.p.getTotalLength(), pts = []; for (var i = 0; i <= 48; i++) { var q = l.p.getPointAtLength(L * i / 48); pts.push([q.x, q.y]); } return { l: l, pts: pts, L: L }; });
+      var placed = [];
+      marked.forEach(function (l) {
+        var me = samples.filter(function (s) { return s.l === l; })[0], best = null, bs = -1e9;
+        [0.5, 0.42, 0.58, 0.35, 0.65, 0.28, 0.72].forEach(function (t, n) {
+          var q = l.p.getPointAtLength(me.L * t), x = q.x, y = q.y, sc = 1e9;
+          samples.forEach(function (s) { if (s.l === l) return; s.pts.forEach(function (p) { sc = Math.min(sc, Math.hypot(p[0] - x, p[1] - y) - 20); }); });
+          placed.forEach(function (p) { sc = Math.min(sc, Math.hypot(p[0] - x, p[1] - y) - 36); });
+          rects.forEach(function (r) { var dx = Math.max(r.x - x, 0, x - r.x - r.w), dy = Math.max(r.top - y, 0, y - r.bot); sc = Math.min(sc, Math.hypot(dx, dy) - 18); });
+          sc = Math.min(sc, 40) - n * 0.5;   /* far enough is enough: then prefer the middle of the curve */
+          if (sc > bs) { bs = sc; best = [x, y]; }
+        });
+        placed.push(best);
+        var g = S('g', { 'class': 'p2-mk ' + l.kind, transform: 'translate(' + best[0].toFixed(1) + ' ' + best[1].toFixed(1) + ')' }, svg);
+        S('circle', { r: 15 }, g);
+        S('path', { d: l.kind === 'no' ? 'M-5.5 -5.5 L5.5 5.5 M5.5 -5.5 L-5.5 5.5' : 'M-6.5 0 L-2 5.5 L7 -5.5' }, g);
+      });
     }
+    function select(t) { if (sel) sel.classList.remove('sel'); sel = t; if (sel) sel.classList.add('sel'); }
     function pick(t) {
       if (ac.shown) return;
       ac.hide(); unmarkAll();
@@ -1981,7 +2075,7 @@ var K = (function () {
       if (sel === t) { select(null); return; }
       var a = sel.dataset.id; select(null); addLink(a, t.dataset.id); ft.say('');
     }
-    function unmarkAll() { links.forEach(function (l) { l.g.classList.remove('ok', 'no', 'inner'); }); $$('.p2-mk', svg).forEach(function (m) { m.remove(); }); }
+    function unmarkAll() { var any = links.some(function (l) { return l.kind; }); links.forEach(function (l) { setKind(l, ''); }); if (any) layout(); else $$('.p2-mk', svg).forEach(function (m) { m.remove(); }); }
     Object.keys(tok).forEach(function (id) {
       var t = tok[id];
       K.drag(t, {
@@ -1989,8 +2083,8 @@ var K = (function () {
         start: function () { if (ac.shown) return; ac.hide(); unmarkAll(); select(t); rub = S('path', { 'class': 'p2-rub' }, svg); },
         move: function (d, e, p) {
           if (!rub) return;
-          var o = K.box(board), A = anchor(t, 'top'), x = p.x - o.x, y = p.y - o.y;
-          rub.setAttribute('d', 'M' + A.x + ' ' + A.y + ' Q' + ((A.x + x) / 2) + ' ' + (Math.min(A.y, y) - 60) + ' ' + x + ' ' + y);
+          var o = K.box(board), b = K.box(t), x = p.x - o.x, y = p.y - o.y, down = y > b.cy - o.y, ax = b.cx - o.x, ay = (down ? b.y + b.h : b.y) - o.y;
+          rub.setAttribute('d', 'M' + ax + ' ' + ay + ' C' + ax + ' ' + (ay + (down ? 50 : -50)) + ' ' + x + ' ' + (y + (down ? -50 : -50)) + ' ' + x + ' ' + y);
           var h = K.hit(p, Object.keys(tok).map(function (k) { return tok[k]; }), 6);
           $$('.p2-t.hov', board).forEach(function (x) { x.classList.remove('hov'); }); if (h && h !== t) h.classList.add('hov');
         },
@@ -2006,35 +2100,29 @@ var K = (function () {
     });
     var host = $('#p2-foot');
     var ft = K.footer(host, { check: check, show: function () { ac.toggle(); }, reset: reset, hint: 'แตะคำแรก แล้วแตะคำที่สัมผัสกัน · แตะเส้นเพื่อลบ' });
-    function midMark(l, ok) {
-      var p = l.p.getPointAtLength ? l.p.getPointAtLength(l.p.getTotalLength() / 2) : null; if (!p) return;
-      var g = S('g', { 'class': 'p2-mk ' + ok, transform: 'translate(' + p.x + ' ' + p.y + ')' }, svg);
-      S('circle', { r: 17 }, g);
-      S('path', { d: ok === 'no' ? 'M-6 -6 L6 6 M6 -6 L-6 6' : 'M-7 0 L-2 6 L8 -6' }, g);
-    }
     function check() {
-      ac.hide(); unmarkAll(); select(null);
+      ac.hide(); select(null);
       if (!links.length) { ft.say('info', 'โยงเส้นอย่างน้อย 1 คู่ก่อนนะ'); return; }
       var ok = 0, inn = 0, no = 0;
-      links.forEach(function (l) { var k = kind(l.a, l.b); l.g.classList.add(k); midMark(l, k); if (k === 'ok') ok++; else if (k === 'inner') inn++; else no++; });
+      links.forEach(function (l) { var k = kind(l.a, l.b); setKind(l, k); if (k === 'ok') ok++; else if (k === 'inner') inn++; else no++; });
+      layout();
       var extra = (inn ? ' · สัมผัสใน ' + inn + ' คู่ (ไม่บังคับ)' : '') + (no ? ' · ไม่ใช่สัมผัสบังคับ ' + no + ' คู่' : '');
       if (ok === 3 && !no) ft.say('ok', 'ครบทั้ง 3 คู่!' + extra);
       else ft.say(no ? 'no' : 'info', 'สัมผัสบังคับถูก ' + ok + ' จาก 3 คู่' + extra);
     }
-    function clear() { links.slice().forEach(function (l) { l.g.remove(); }); links = []; mark(); }
+    function clear() { links.slice().forEach(function (l) { l.g.remove(); }); links = []; mark(); layout(); $$('.p2-mk', svg).forEach(function (m) { m.remove(); }); }
     function reset() { ac.off(); clear(); select(null); ft.say(''); }
     var ac = K.tk.answerCtl(host, ft, {
       snap: function () { return links.map(function (l) { return [l.a, l.b]; }); },
-      reveal: function () {
-        clear(); select(null);
-        REQ.forEach(function (r, n) { var l = addLink(r[0], r[1], K.still(), 'ok'); midMark(l, 'ok'); if (!K.still()) K.anim(l.p, [{ strokeDashoffset: 1 }, { strokeDashoffset: 1, offset: n * 0.25 }, { strokeDashoffset: 0 }], { duration: 600 + n * 250 }); });
-      },
-      restore: function (s) { clear(); $$('.p2-mk', svg).forEach(function (m) { m.remove(); }); s.forEach(function (x) { addLink(x[0], x[1], true); }); }
+      reveal: function () { clear(); select(null); REQ.forEach(function (r, n) { addLink(r[0], r[1], K.still(), 'ok', n * 250); }); layout(); },
+      restore: function (s) { clear(); s.forEach(function (x) { addLink(x[0], x[1], true); }); }
     });
-    /* layout can change when the web font arrives: redraw every curve from the words' real positions */
-    function redraw() { links.forEach(function (l) { var d = curve(tok[l.a], tok[l.b]); l.p.setAttribute('d', d); l.g.querySelector('.p2-hit').setAttribute('d', d); }); }
-    K.ctl('tp-rhyme', { set: function (st, prev) { if (prev < 0) setTimeout(redraw, 50); }, leave: function () { select(null); } });
-    window.__poem = { links: function () { return links.map(function (l) { return l.k + ':' + (l.g.classList.contains('ok') ? 'ok' : l.g.classList.contains('no') ? 'no' : l.g.classList.contains('inner') ? 'inner' : '-'); }); }, addLink: addLink, check: check, reset: reset, ac: ac };
+    K.ctl('tp-rhyme', { set: function (st, prev) { if (prev < 0) setTimeout(layout, 50); }, leave: function () { select(null); } });
+    window.__poem = {
+      links: function () { return links.map(function (l) { return l.k + ':' + (l.kind || '-'); }); },
+      paths: function () { return links.map(function (l) { return { k: l.k, kind: l.kind, d: l.p.getAttribute('d') }; }); },
+      addLink: addLink, check: check, reset: reset, ac: ac
+    };
   })();
 
   /* ================= slide 3 · count the syllables ================= */

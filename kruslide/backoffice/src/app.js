@@ -58,7 +58,7 @@ const STR = {
     p_move: 'เลื่อน', section: 'หมวด', k_sample: 'ตัวอย่าง', k_style: 'สไตล์', k_mechanic: 'กลไก', k_product: 'ผลงาน',
   },
   en: {
-    backoffice: 'Back office', see: 'See', search_all: 'Search codes or names', close: 'Close', built: 'Built {0}',
+    backoffice: 'Back office', see: 'See', search_all: 'Search codes, names', close: 'Close', built: 'Built {0}',
     add: 'Add to order', in_order: 'In the order', open: 'Open', open_live: 'Open live', all: 'All',
     hint_slides: 'change slide', hint_img: 'scroll the image', slide_n: 'slide {0}', n_slides: '{0} slides', more: '+{0}',
     ov_sub: 'Everything Claude has made: open it live and pick codes for a work order · updated {0}', new_order: 'New work order',
@@ -175,11 +175,11 @@ function tabsHtml(list, cur, sec) {
 }
 const sampleThumb = (s, extra = '') => `<button type="button" class="thumb strip" data-act="open" data-code="${s.code}" aria-label="${esc(t('open_live') + ': ' + L(s))}">
   <img src="${s.strip}" alt="" loading="lazy" decoding="async"><span class="play">${icon('i-tri')}${t('open_live')}</span>${extra}</button>`;
-function linkChip(l) {
+function linkChip(l, short) {
   if (l.s) {
     const s = BY.get(l.s) && BY.get(l.s).o; if (!s) return '';
     const sub = l.n ? t('slide_n', l.n) : '';
-    return `<button type="button" class="lk" data-act="open" data-code="${s.code}" data-href="${s.href}${l.n ? '#' + l.n : ''}" data-sub="${esc(sub)}" title="${esc(L(s))}"><b>${s.code}</b><span>${esc(L(s))}</span>${sub ? `<span class="sub">· ${esc(sub)}</span>` : ''}</button>`;
+    return `<button type="button" class="lk" data-act="open" data-code="${s.code}" data-href="${s.href}${l.n ? '#' + l.n : ''}" data-sub="${esc(sub)}" title="${esc(L(s))}"><b>${s.code}</b>${short ? '' : `<span>${esc(L(s))}</span>`}${sub ? `<span class="sub">${short ? '' : '· '}${esc(sub)}</span>` : ''}</button>`;
   }
   if (l.x) {
     const x = D.extras[l.x]; if (!x) return '';
@@ -194,7 +194,8 @@ function linkChip(l) {
   return '';
 }
 function chipList(links, max, id) {
-  const html = links.map(linkChip).filter(Boolean);
+  const seen = new Set();
+  const html = links.map(l => { const k = l.s || l.x; const h = linkChip(l, k && seen.has(k)); if (k) seen.add(k); return h; }).filter(Boolean);
   if (html.length <= max) return html.join('');
   return html.slice(0, max).join('') + `<button type="button" class="lk more" data-act="more" data-id="${id}" data-rest="${esc(JSON.stringify(links.slice(max)))}">${t('more', html.length - max)}</button>`;
 }
@@ -567,7 +568,7 @@ function buildBrief(o) {
   }
   if (g.prod.length) {
     out.push('', 'ผลงานอ้างอิง');
-    g.prod.forEach(c => { const p = BY.get(c).o; const x = p.open && D.extras[p.open]; const u = (p.links || [])[0]; out.push(`• ${c} ${p.th}${x ? ` (${repoPath(x.href)})` : u ? ` (${u.url})` : ''}`); });
+    g.prod.forEach(c => { const p = BY.get(c).o; out.push(`• ${c} ${p.th}${p.ref ? ` (${p.ref})` : ''}`); });
   }
   const e = estimate(o);
   out.push('', 'ราคาประเมิน (ตาม kruslide/BRIEF.md)');
@@ -783,7 +784,7 @@ document.addEventListener('click', e => {
   if (a === 'lang') { lang = d.v === 'en' ? 'en' : 'th'; store.set('lang', lang); rerender(); return; }
   if (a === 'tab') { ui[d.sec].tab = d.v; saveUi(); rerender(); return; }
   if (a === 'f') { const f = ui.samples; f[d.k] = (d.k !== 'view' && f[d.k] === d.v) ? '' : d.v; saveUi(); rerender(); return; }
-  if (a === 'more') { const rest = JSON.parse(d.rest || '[]'); el.insertAdjacentHTML('beforebegin', rest.map(linkChip).join('')); el.remove(); return; }
+  if (a === 'more') { const rest = JSON.parse(d.rest || '[]'); el.insertAdjacentHTML('beforebegin', rest.map(l => linkChip(l)).join('')); el.remove(); return; }
   if (a === 'tray') { trayOpen = !trayOpen; renderTray(); const b = $('#tray .tray-hd'); if (b) b.focus(); return; }
   if (a === 'clear') { order.items = []; saveOrder(); syncAdds(); renderPicked(); renderOrderOut(); if (currentSec() === 'order') rerender(); return; }
   if (a === 'copytext') { copyText(d.text, null, null); return; }
