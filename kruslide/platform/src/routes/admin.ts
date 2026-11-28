@@ -1,59 +1,18 @@
 import type { Book, BookRequest, Ctx } from '../env';
 import { html, Safe } from '../lib/html';
-import { HttpError, needLogin, htmlResponse, redirect, scriptCsp } from '../lib/http';
-import { page, flash, csrfField, fmtDate, fmtDateTime, money, payBadge, subBadge, bookStatusBadge, icon, requestBadge, REQUEST_STATUS, emptyArt } from '../views/layout';
+import { HttpError, redirect } from '../lib/http';
+import { csrfField, initial, fmtDate, fmtDateTime, money, payBadge, subBadge, bookStatusBadge, icon, requestBadge, REQUEST_STATUS, emptyArt } from '../views/layout';
 import { buildBrief, QUIZ, QUIZ_LENGTH, answerEn, imagePath } from '../lib/quiz';
 import { choiceThumbs, requestFacts } from './requests';
 import * as db from '../db';
-import { checkCsrf } from '../lib/csrf';
-import { cleanMultiline, cleanText, idParam, int, oneOf, readForm, str } from '../lib/validate';
-import { rateLimit } from '../lib/ratelimit';
-import { LIMITS, MAX_UPLOAD_BYTES } from '../lib/config';
+import { cleanMultiline, cleanText, idParam, int, oneOf, str } from '../lib/validate';
+import { MAX_UPLOAD_BYTES } from '../lib/config';
 import { audit } from '../lib/audit';
 import { monthlyPrice, MONTH_OPTIONS, RATE_MAX, RATE_MIN } from '../lib/pricing';
 import { countSlides, inlineScriptHashes, looksLikeHtmlDocument, sha256hex } from '../lib/deckmeta';
 import { destroyAllSessions } from '../lib/session';
-
-function requireAdmin(ctx: Ctx) {
-  if (!ctx.teacher) throw needLogin();
-  if (!ctx.isAdmin) throw new HttpError(403, 'หน้านี้สำหรับผู้ดูแลเท่านั้น');
-  return ctx.teacher;
-}
-
-/** Every admin POST: admin only, CSRF-checked, rate-limited per admin. */
-async function adminPost(ctx: Ctx, maxBytes?: number): Promise<{ form: FormData; actor: string }> {
-  const t = requireAdmin(ctx);
-  const form = await readForm(ctx.req, maxBytes);
-  checkCsrf(ctx, form);
-  await rateLimit(ctx.env, `admin:${t.id}`, LIMITS.admin, ctx.now);
-  return { form, actor: `admin:${t.id}` };
-}
-
-const SECTIONS = [
-  ['dash', '/app/admin/', 'ภาพรวม', 'grid'],
-  ['requests', '/app/admin/requests', 'คำขอทำหนังสือ', 'inbox'],
-  ['payments', '/app/admin/payments', 'การชำระเงิน', 'wallet'],
-  ['members', '/app/admin/members', 'สมาชิก', 'users'],
-  ['subs', '/app/admin/subscriptions', 'การสมัคร', 'layers'],
-  ['books', '/app/admin/books', 'หนังสือและหน่วย', 'book'],
-  ['audit', '/app/admin/audit', 'บันทึกการใช้งาน', 'list'],
-] as const;
-
-async function adminPage(ctx: Ctx, title: string, current: string, body: Safe, o: { script?: boolean } = {}): Promise<Response> {
-  const fresh = await ctx.env.DB.prepare(`SELECT COUNT(*) AS n FROM book_requests WHERE status = 'new'`).first<{ n: number }>();
-  const side = html`<nav class="side" aria-label="เมนูผู้ดูแล"><span class="h">ผู้ดูแล</span>${SECTIONS.map(([k, href, label, ic]) =>
-    html`<a href="${href}"${k === current ? new Safe(' aria-current="page"') : ''}>${icon(ic)}${label}${k === 'requests' && fresh?.n
-      ? html`<span class="cnt" title="คำขอใหม่">${fresh.n}</span>` : ''}</a>`)}</nav>`;
-  return htmlResponse(
-    page(ctx, { title: `${title} · ผู้ดูแล`, nav: 'admin', wide: true, script: o.script, body: html`<div class="admin">${side}<div>${flash(ctx)}${body}</div></div>` }),
-    200, o.script ? { 'Content-Security-Policy': scriptCsp(ctx.origin) } : {},
-  );
-}
-
-function tabs<T extends string>(base: string, param: string, current: T, items: readonly (readonly [T, string, number?])[]): Safe {
-  return html`<nav class="tabsrow" aria-label="ตัวกรอง">${items.map(([k, label, n]) =>
-    html`<a href="${base}?${param}=${k}"${k === current ? new Safe(' aria-current="page"') : ''}>${label}${n !== undefined ? html`<i>${n}</i>` : ''}</a>`)}</nav>`;
-}
+import { requireAdmin, adminPost, adminPage, tabs, back } from './adminkit';
+import { memberAccessPanel, approveForm } from './access';
 
 function paymentsTable(ctx: Ctx, rows: db.PaymentRow[]): Safe {
   if (!rows.length) return html`<div class="empty box"><p>ไม่มีรายการ</p></div>`;
@@ -85,7 +44,9 @@ export async function dashboard(ctx: Ctx): Promise<Response> {
   <a class="stat${newCount ? ' hot' : ''}" href="/app/admin/requests?status=new"><span class="ic-tile t-tom">${icon('inbox')}</span><b>${newCount}</b><span>คำขอทำหนังสือใหม่</span></a>
   <a class="stat" href="/app/admin/payments?status=pending"><span class="ic-tile t-sun">${icon('wallet')}</span><b>${c?.pending ?? 0}</b><span>รอยืนยันการชำระเงิน</span></a>
   <a class="stat" href="/app/admin/subscriptions?filter=active"><span class="ic-tile t-mint">${icon('layers')}</span><b>${c?.active ?? 0}</b><span>การสมัครที่ใช้งานอยู่</span></a>
+  <a class="stat${c?.waiting ? ' sun' : ''}" href="/app/admin/members?filter=waiting#waiting"><span class="ic-tile t-sun">${icon('hourglass')}</span><b>${c?.waiting ?? 0}</b><span>สมาชิกรออนุมัติ</span></a>
   <a class="stat" href="/app/admin/members"><span class="ic-tile t-sky">${icon('users')}</span><b>${c?.teachers ?? 0}</b><span>สมาชิกทั้งหมด</span></a>
+  <a class="stat" href="/app/admin/access"><span class="ic-tile t-mint">${icon('key')}</span><b>${c?.grants ?? 0}</b><span>หน่วยที่ให้สิทธิ์ไว้</span></a>
   <div class="stat"><span class="ic-tile t-lilac">${icon('chart')}</span><b>${money((c?.revenue30 ?? 0) / 100)}</b><span>รายรับ 30 วัน (บาท)</span></div>
 </div>
 ${fresh.length ? html`<div class="sec-head"><h2>คำขอทำหนังสือใหม่</h2><a href="/app/admin/requests">ดูทั้งหมด →</a></div>
@@ -100,7 +61,8 @@ ${paymentsTable(ctx, pending)}
 <div class="sec-head"><h2>ส่งออกข้อมูล (CSV)</h2></div>
 <div class="row"><a class="btn ghost small" href="/app/admin/export/members.csv">${icon('download')}สมาชิก</a>
 <a class="btn ghost small" href="/app/admin/export/subscriptions.csv">${icon('download')}การสมัคร</a>
-<a class="btn ghost small" href="/app/admin/export/payments.csv">${icon('download')}การชำระเงิน</a></div>`);
+<a class="btn ghost small" href="/app/admin/export/payments.csv">${icon('download')}การชำระเงิน</a>
+<a class="btn ghost small" href="/app/admin/export/grants.csv">${icon('download')}สิทธิ์ที่ให้ไว้</a></div>`);
 }
 
 /** GET /app/admin/payments?status= */
@@ -136,30 +98,31 @@ export async function reject(ctx: Ctx): Promise<Response> {
   return redirect(back(ctx, '/app/admin/') + 'm=rejected');
 }
 
-/** Return to the admin page the form was on (same-origin Referer under /app/admin/ only). */
-function back(ctx: Ctx, fallback: string): string {
-  const ref = ctx.req.headers.get('Referer');
-  let path = fallback;
-  if (ref) {
-    try {
-      const u = new URL(ref);
-      if (u.origin === ctx.origin && u.pathname.startsWith('/app/admin/')) path = u.pathname;
-    } catch { /* ignore */ }
-  }
-  return path + '?';
-}
-
-/** GET /app/admin/members?q= */
+/** GET /app/admin/members?q=&filter= */
 export async function members(ctx: Ctx): Promise<Response> {
   requireAdmin(ctx);
   const q = cleanText(ctx.url.searchParams.get('q') || '', { max: 80, field: 'คำค้น' });
-  const rows = await db.listTeachers(ctx.env, q, ctx.now);
-  return adminPage(ctx, 'สมาชิก', 'members', html`<h1>สมาชิก</h1>
-<form method="get" action="/app/admin/members" class="row"><input type="search" name="q" value="${q}" placeholder="ค้นหาชื่อ โรงเรียน หรือรหัส LINE" aria-label="ค้นหา"><button class="btn" type="submit">ค้นหา</button></form><div class="mt-s"></div>
-${rows.length ? html`<div class="table"><table><thead><tr><th>ชื่อ</th><th>โรงเรียน</th><th>ใช้งานอยู่</th><th>รอชำระ</th><th>สมัครเมื่อ</th><th>เข้าล่าสุด</th><th>สถานะ</th></tr></thead><tbody>
-${rows.map((t) => html`<tr><td><a href="/app/admin/members/${t.id}">${t.display_name}</a></td><td>${t.school || html`<span class="muted">–</span>`}</td>
-<td>${t.active_count}</td><td>${t.pending_count}</td><td class="small">${fmtDate(t.created_at)}</td><td class="small">${fmtDateTime(t.last_login_at)}</td>
-<td>${t.status === 'active' ? html`<span class="badge ok">ปกติ</span>` : html`<span class="badge bad">ระงับ</span>`}</td></tr>`)}
+  const filter = oneOf(ctx.url.searchParams.get('filter') || 'all', ['all', 'waiting', 'blocked'] as const, 'ตัวกรอง');
+  const [rows, waiting, books, c] = await Promise.all([
+    db.listTeachers(ctx.env, q, ctx.now, 200, filter), db.listTeachers(ctx.env, '', ctx.now, 50, 'waiting'), db.listBooks(ctx.env, false), db.counts(ctx.env, ctx.now),
+  ]);
+  const t = tabs('/app/admin/members', 'filter', filter, [['all', 'ทั้งหมด', c?.teachers ?? 0], ['waiting', 'รออนุมัติ', c?.waiting ?? 0], ['blocked', 'ระงับ']] as const);
+  return adminPage(ctx, 'สมาชิก', 'members', html`<div class="hello"><div><span class="kicker">ครูที่เข้าสู่ระบบด้วย LINE</span><h1>สมาชิก</h1></div>
+  <a class="btn ghost" href="/app/admin/access">${icon('key')}สิทธิ์ทั้งหมด</a></div>
+${waiting.length && filter !== 'blocked' ? html`<section class="waitlist" id="waiting"><div class="sec-head"><h2>${icon('hourglass')} รออนุมัติ <span class="cntb">${waiting.length}</span></h2></div>
+  <div class="wcards">${waiting.map((w) => html`<article class="card wcard">
+    <div class="person"><span class="ava">${initial(w.display_name)}</span><span><b><a href="/app/admin/members/${w.id}">${w.display_name}</a></b>
+      <small>${w.school || 'ยังไม่กรอกโรงเรียน'} · เข้าสู่ระบบ ${fmtDateTime(w.created_at)}</small></span></div>
+    ${approveForm(ctx, w, books, true)}
+    <form method="post" action="/app/admin/members/${w.id}/block" class="wblock">${csrfField(ctx)}<button class="link" type="submit">ไม่อนุมัติ (ระงับ)</button></form>
+  </article>`)}</div></section>` : ''}
+<div class="sec-head"><h2>สมาชิกทั้งหมด</h2></div>
+<form method="get" action="/app/admin/members" class="row"><input type="search" name="q" value="${q}" placeholder="ค้นหาชื่อ โรงเรียน หรือรหัส LINE" aria-label="ค้นหา">
+<input type="hidden" name="filter" value="${filter}"><button class="btn" type="submit">${icon('search')}ค้นหา</button></form>${t}
+${rows.length ? html`<div class="table"><table><thead><tr><th>ชื่อ</th><th>โรงเรียน</th><th>สมัครแล้ว</th><th>ให้สิทธิ์</th><th>รอชำระ</th><th>เข้าล่าสุด</th><th>สถานะ</th></tr></thead><tbody>
+${rows.map((r) => html`<tr><td><a href="/app/admin/members/${r.id}">${r.display_name}</a></td><td>${r.school || html`<span class="muted">–</span>`}</td>
+<td>${r.active_count} เล่ม</td><td>${r.grant_count ? html`<a href="/app/admin/members/${r.id}#access">${r.grant_count} หน่วย</a>` : '0'}</td><td>${r.pending_count}</td><td class="small">${fmtDateTime(r.last_login_at)}</td>
+<td>${r.status !== 'active' ? html`<span class="badge bad">ระงับ</span>` : r.approved_at === null ? html`<span class="badge warn">รออนุมัติ</span>` : html`<span class="badge ok">ปกติ</span>`}</td></tr>`)}
 </tbody></table></div>` : html`<div class="empty box"><p>ไม่พบสมาชิก</p></div>`}`);
 }
 
@@ -168,25 +131,32 @@ export async function member(ctx: Ctx): Promise<Response> {
   requireAdmin(ctx);
   const t = await db.getTeacher(ctx.env, idParam(ctx.params.id));
   if (!t) throw new HttpError(404, 'ไม่พบสมาชิก');
+  const erased = t.line_user_id.startsWith(db.ERASED_PREFIX);
   const [subs, pays, books] = await Promise.all([
     db.listSubscriptions(ctx.env, 'all', ctx.now, t.id), db.listPaymentsForTeacher(ctx.env, t.id), db.listBooks(ctx.env, false),
   ]);
+  const waiting = t.approved_at === null && t.status === 'active';
   return adminPage(ctx, t.display_name, 'members', html`
 <a class="back" href="/app/admin/members">${icon('left')}สมาชิก</a>
-<div class="card"><div class="row between"><div><h1>${t.display_name}</h1><p class="muted">${t.school || 'ยังไม่กรอกโรงเรียน'}</p>
-<p class="mono muted">${t.line_user_id}</p><p class="small">สมัครเมื่อ ${fmtDateTime(t.created_at)} · เข้าล่าสุด ${fmtDateTime(t.last_login_at)}</p></div>
+<div class="card"><div class="row between"><div class="person big"><span class="ava">${initial(t.display_name)}</span><span><h1>${t.display_name}</h1>
+<small>${t.school || 'ยังไม่กรอกโรงเรียน'}</small></span></div>
+<div class="row">${t.status !== 'active' ? html`<span class="badge bad">ระงับ</span>` : waiting ? html`<span class="badge warn">รออนุมัติ</span>` : html`<span class="badge ok">อนุมัติแล้ว</span>`}
 <form method="post" action="/app/admin/members/${t.id}/${t.status === 'active' ? 'block' : 'unblock'}">${csrfField(ctx)}
 <button class="btn ${t.status === 'active' ? 'danger' : 'ok'} small" type="submit">${t.status === 'active' ? 'ระงับสมาชิก' : 'เปิดใช้งาน'}</button></form></div></div>
-<div class="sec-head"><h2>การสมัคร</h2></div>${subsTable(ctx, subs)}
-<div class="card mt-s"><h3>ให้สิทธิ์ / ต่ออายุด้วยมือ</h3><p class="muted small">เช่น ทดลองใช้ฟรี หรือรับเงินนอกระบบ (ไม่สร้างรายการชำระเงิน)</p>
+<p class="mono muted mt-s">${t.line_user_id}</p><p class="small">สมัครเมื่อ ${fmtDateTime(t.created_at)} · เข้าล่าสุด ${fmtDateTime(t.last_login_at)}${t.approved_at ? html` · อนุมัติ ${fmtDateTime(t.approved_at)}` : ''}</p></div>
+${waiting ? html`<section class="card wbanner"><h2>${icon('hourglass')} รออนุมัติ</h2><p class="muted small">ครูคนนี้เข้าสู่ระบบด้วย LINE ครั้งแรกแล้ว ยังเปิดอะไรไม่ได้จนกว่าจะอนุมัติ อนุมัติพร้อมให้สิทธิ์ทั้งเล่มได้เลย หรือเลือกรายหน่วยด้านล่างหลังอนุมัติ</p>
+  ${approveForm(ctx, t, books)}</section>` : ''}
+${erased ? '' : await memberAccessPanel(ctx, t)}
+<div class="sec-head"><h2>การสมัคร (จ่ายเงิน)</h2></div>${subsTable(ctx, subs)}
+<div class="card mt-s"><h3>ต่ออายุการสมัครด้วยมือ</h3><p class="muted small">เช่น รับเงินนอกระบบ (ไม่สร้างรายการชำระเงิน) ถ้าจะให้ใช้ฟรีรายหน่วย ใช้ “สิทธิ์เข้าถึงสไลด์” ด้านบน</p>
 <form method="post" action="/app/admin/members/${t.id}/grant" class="row">${csrfField(ctx)}
 <select name="book_id" aria-label="หนังสือ">${books.map((b) => html`<option value="${b.id}">${b.title}</option>`)}</select>
 <select name="months" aria-label="จำนวนเดือน">${MONTH_OPTIONS.map((m) => html`<option value="${m}">${m} เดือน</option>`)}</select>
-<button class="btn small" type="submit">ให้สิทธิ์</button></form></div>
+<button class="btn small" type="submit">ต่ออายุ</button></form></div>
 <div class="sec-head"><h2>การชำระเงิน</h2></div>${paymentsTable(ctx, pays)}
-${t.line_user_id.startsWith(db.ERASED_PREFIX) || t.id === ctx.teacher!.id ? '' : html`<details class="card mt"><summary>ลบข้อมูลส่วนตัวของสมาชิก (ตามคำขอ PDPA)</summary>
-<p class="small muted">ลบชื่อ โรงเรียน และรหัส LINE ระงับบัญชี ออกจากระบบทุกเครื่อง และปิดการสมัครที่ยังเปิดอยู่ ยอดและวันที่ชำระเงินยังเก็บไว้เป็นหลักฐานทางบัญชี ย้อนกลับไม่ได้</p>
-<form method="post" action="/app/admin/members/${t.id}/erase" class="row">${csrfField(ctx)}<label class="check"><input type="checkbox" name="confirm" value="yes" required> ยืนยันการลบข้อมูล</label><button class="btn danger small" type="submit">ลบข้อมูลสมาชิก</button></form></details>`}`);
+${erased || t.id === ctx.teacher!.id ? '' : html`<details class="card mt"><summary>ลบข้อมูลส่วนตัวของสมาชิก (ตามคำขอ PDPA)</summary>
+<p class="small muted">ลบชื่อ โรงเรียน รหัส LINE สิทธิ์ที่ให้ไว้ และคำขอทำหนังสือ ระงับบัญชี ออกจากระบบทุกเครื่อง และปิดการสมัครที่ยังเปิดอยู่ ยอดและวันที่ชำระเงินยังเก็บไว้เป็นหลักฐานทางบัญชี ย้อนกลับไม่ได้</p>
+<form method="post" action="/app/admin/members/${t.id}/erase" class="row">${csrfField(ctx)}<label class="check"><input type="checkbox" name="confirm" value="yes" required> ยืนยันการลบข้อมูล</label><button class="btn danger small" type="submit">ลบข้อมูลสมาชิก</button></form></details>`}`, { script: true });
 }
 
 /** POST /app/admin/members/:id/erase: PDPA erasure (needs the "confirm" box). */
@@ -326,7 +296,7 @@ export async function book(ctx: Ctx): Promise<Response> {
   const nextPos = units.reduce((m, u) => Math.max(m, u.position), 0) + 1;
   return adminPage(ctx, b.title, 'books', html`
 <a class="back" href="/app/admin/books">${icon('left')}หนังสือ</a>
-<div class="card"><div class="row between"><h1>${b.title}</h1>${bookStatusBadge(b.status)}</div>
+<div class="card"><div class="row between"><h1>${b.title}</h1><div class="row">${bookStatusBadge(b.status)}<a class="btn ghost small" href="/app/admin/books/${b.id}/access">${icon('users')}ใครเข้าถึงได้บ้าง</a></div></div>
 <p class="muted">${b.slide_count} สไลด์ (รวมทุกหน่วย) × ${b.rate_baht_per_slide} บาท = <b>${b.slide_count ? money(monthlyPrice(b.slide_count, b.rate_baht_per_slide)) : 0} บาท/เดือน</b> · ราคาใหม่ใช้กับการสมัครครั้งถัดไป</p>
 ${bookForm(ctx, b, `/app/admin/books/${b.id}`, 'บันทึก')}</div>
 <h2 class="mt">หน่วยการเรียนรู้</h2>
@@ -336,6 +306,7 @@ ${units.map((u) => html`<div class="card"><form method="post" action="/app/admin
 <div class="field"><label for="s${u.id}">จำนวนสไลด์</label><input id="s${u.id}" name="slide_count" type="number" min="0" max="2000" value="${u.slide_count}"></div></div>
 <div class="row"><button class="btn small" type="submit">บันทึกหน่วย</button>
 ${u.r2_key ? html`<a class="btn ghost small" href="/app/deck/${u.id}/">ดูตัวอย่าง</a>` : ''}
+<a class="btn ghost small" href="/app/admin/books/${b.id}/access?unit=${u.id}">${icon('users')}ใครเข้าถึงได้</a>
 <span class="small muted">${u.r2_key ? html`ไฟล์: ${money(Math.round((u.html_bytes ?? 0) / 1024))} KB · อัปโหลด ${fmtDateTime(u.uploaded_at)} · <span class="mono">${(u.html_sha256 ?? '').slice(0, 12)}</span>` : 'ยังไม่มีไฟล์สไลด์'}</span></div></form>
 <form method="post" action="/app/admin/units/${u.id}/upload" enctype="multipart/form-data" class="row mt-s">${csrfField(ctx)}
 <label class="sr" for="f${u.id}">ไฟล์ HTML</label><input id="f${u.id}" name="file" type="file" accept=".html,text/html" required>
@@ -460,7 +431,7 @@ const iso = (t: number | null) => (t ? new Date(t * 1000).toISOString() : '');
 /** GET /app/admin/export/:type.csv */
 export async function exportCsv(ctx: Ctx): Promise<Response> {
   requireAdmin(ctx);
-  const type = oneOf(ctx.params.type, ['members', 'subscriptions', 'payments'] as const, 'type');
+  const type = oneOf(ctx.params.type, ['members', 'subscriptions', 'payments', 'grants'] as const, 'type');
   let body: string;
   if (type === 'members') {
     const rows = await db.listTeachers(ctx.env, '', ctx.now, 100000);
@@ -470,6 +441,10 @@ export async function exportCsv(ctx: Ctx): Promise<Response> {
     const rows = await db.listSubscriptions(ctx.env, 'all', ctx.now, undefined, 100000);
     body = toCsv(['id', 'teacher_id', 'display_name', 'school', 'book', 'status', 'period_start', 'period_end', 'monthly_price_baht'],
       rows.map((s) => [s.id, s.teacher_id, s.display_name, s.school, s.title, db.effectiveStatus(s, ctx.now), iso(s.period_start), iso(s.period_end), s.monthly_price]));
+  } else if (type === 'grants') {
+    const rows = await db.listAllGrants(ctx.env);
+    body = toCsv(['id', 'teacher_id', 'display_name', 'school', 'book', 'unit_position', 'unit', 'expires_at', 'active', 'granted_by', 'note', 'created_at'],
+      rows.map((g) => [g.id, g.teacher_id, g.display_name, g.school, g.book_title, g.position, g.unit_title, iso(g.expires_at), db.isLive(g, ctx.now) ? 'yes' : 'no', g.granted_by, g.note, iso(g.created_at)]));
   } else {
     const rows = await db.listPayments(ctx.env, 'all', 100000);
     body = toCsv(['id', 'teacher_id', 'display_name', 'school', 'book', 'provider', 'months', 'amount_baht', 'status', 'ref', 'confirmed_by', 'created_at', 'decided_at'],

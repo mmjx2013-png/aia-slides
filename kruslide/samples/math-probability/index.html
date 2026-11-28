@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-I460N3dyHzwmXBKqiyVgxrigH8SuzZjy8rdsOx2jUbc='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Itt6JadRrDYeKQRTA2w1+qQm+RaWonpYHHnbWqBWYnI='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>ความน่าจะเป็น ม.3 · ตัวอย่างบทเรียน · KruSlide</title>
 <style>/* KruSlide sample · ความน่าจะเป็น (ม.3) · style "game night" (family board games, no casino)
@@ -1839,8 +1839,8 @@ i.dash{display:inline-block;width:48px;height:0;border-top:5px dashed var(--ink)
     return {
       set: function (st, prev) {
         ch.theory(st >= 1);
-        if (still() && N === 0) { counts = [0, 0, 0, 0, 0, 0]; N = 0; roll(st === 2 ? 1000 : st === 1 ? 100 : 12); return; }
-        if (st === 2 && prev === 1 && N < 1000) roll(1000);
+        if (st === 2 && prev !== 2 && N < 1000) { roll(1000 - N); return; }   /* top the experiment up to 1000 rolls */
+        if (still() && N === 0) roll(st === 1 ? 100 : 12);
       },
       leave: function () { if (run) run.stop(); }
     };
@@ -1876,8 +1876,8 @@ i.dash{display:inline-block;width:48px;height:0;border-top:5px dashed var(--ink)
     return {
       set: function (st, prev) {
         ch.theory(st >= 1);
-        if (still() && N === 0) { roll(st >= 1 ? 1000 : 60); return; }
-        if (st === 1 && prev === 0 && N < 1000) roll(1000);
+        if (st >= 1 && prev < 1 && N < 1000) { roll(1000 - N); return; }   /* top the experiment up to 1000 rolls */
+        if (still() && N === 0) roll(60);
       },
       leave: function () { if (run) run.stop(); }
     };

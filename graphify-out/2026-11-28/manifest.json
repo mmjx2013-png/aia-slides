@@ -294,8 +294,8 @@
     "semantic_hash": "f25572adb29343f1365c34cfcd24a216"
   },
   "MEMORY.md": {
-    "mtime": 1795849765.3620012,
-    "seen": 1795851253.2344227,
+    "mtime": 1795853371.5422156,
+    "seen": 1795855029.670233,
     "ast_hash": "1210e76eb96460c9f29ad125d448e6c0",
     "semantic_hash": "1210e76eb96460c9f29ad125d448e6c0"
   },
@@ -708,10 +708,10 @@
     "semantic_hash": "79009dab375a6d7b290681449f618da7"
   },
   "kruslide/platform/src/lib/config.ts": {
-    "mtime": 1795851203.079685,
-    "seen": 1795851253.2342677,
-    "ast_hash": "e29fb909694d410d6fadb59084ee73e3",
-    "semantic_hash": "e29fb909694d410d6fadb59084ee73e3"
+    "mtime": 1795853371.5550125,
+    "seen": 1795855029.6651075,
+    "ast_hash": "26481a46fc89f02c00abb91425262747",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/lib/cookies.ts": {
     "mtime": 1795847249.3654006,
@@ -744,10 +744,10 @@
     "semantic_hash": "d9008154552336810d6a5dabbc9ff6b1"
   },
   "kruslide/platform/src/lib/http.ts": {
-    "mtime": 1795851143.1417162,
-    "seen": 1795851253.234275,
-    "ast_hash": "6501f4b6566c59f5330c4c28cf5374d3",
-    "semantic_hash": "6501f4b6566c59f5330c4c28cf5374d3"
+    "mtime": 1795853173.175655,
+    "seen": 1795855029.665209,
+    "ast_hash": "82a687d2a4eac3e782aff88b3436be4d",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/lib/line.ts": {
     "mtime": 1795847317.7727559,
@@ -1032,9 +1032,9 @@
     "semantic_hash": "ffd4f79dfa6dc8363ac03b67a7cdb050"
   },
   "kruslide/platform/README.md": {
-    "mtime": 1795853137.943655,
-    "seen": 1795853161.4377937,
-    "ast_hash": "a0de56956adf706ee77f31c8d20c5fb9",
+    "mtime": 1795853456.7931552,
+    "seen": 1795855029.6704197,
+    "ast_hash": "570663bf1ff9ccaa5412d9c2f2fa122b",
     "semantic_hash": ""
   },
   "kruslide/platform/migrations/0001_init.sql": {
@@ -1056,9 +1056,9 @@
     "semantic_hash": "0d63e4003388c97921e7e765e8b921a2"
   },
   "kruslide/trailer/credits.md": {
-    "mtime": 1795853138.523673,
-    "seen": 1795853161.438087,
-    "ast_hash": "19735562c9ea816beab23007fe845fad",
+    "mtime": 1795854691.7484226,
+    "seen": 1795855029.670866,
+    "ast_hash": "c42dfd83442d6ab6aadc4fd3e8f631bc",
     "semantic_hash": ""
   },
   "kruslide/brand/kruslide-icon.svg": {
@@ -1104,9 +1104,9 @@
     "semantic_hash": ""
   },
   "kruslide/platform/test/requests.test.ts": {
-    "mtime": 1795852492.8396611,
-    "seen": 1795853060.7792943,
-    "ast_hash": "bf1b7d76106eb657147f98a3e8198d15",
+    "mtime": 1795853179.0636919,
+    "seen": 1795855029.6659162,
+    "ast_hash": "0039b1e4de38064b052f1c4dac5cf9ec",
     "semantic_hash": ""
   },
   "kruslide/samples/calculus/build.py": {
@@ -1140,9 +1140,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/history/map.js": {
-    "mtime": 1795853030.6116824,
-    "seen": 1795853060.7794013,
-    "ast_hash": "1154558b2240cc22b32e9818dcf313d2",
+    "mtime": 1795854120.650074,
+    "seen": 1795855029.6661317,
+    "ast_hash": "d95b52ad9cd8af04542286e58f687d01",
     "semantic_hash": ""
   },
   "kruslide/samples/school/js/site.js": {
@@ -1170,15 +1170,15 @@
     "semantic_hash": ""
   },
   "kruslide/trailer/edit.py": {
-    "mtime": 1795851858.1871455,
-    "seen": 1795853060.779407,
-    "ast_hash": "f73ba8437d49a8b44720f53195ca0ac0",
+    "mtime": 1795854047.5575318,
+    "seen": 1795855029.6662457,
+    "ast_hash": "6a1de9ec57ab8eaf526b5346a32a025e",
     "semantic_hash": ""
   },
   "kruslide/trailer/finish.py": {
-    "mtime": 1795852028.4501357,
-    "seen": 1795853060.7794094,
-    "ast_hash": "e1bbcc20b6aaac7294a0e4a09bb73924",
+    "mtime": 1795854156.3755481,
+    "seen": 1795855029.6662629,
+    "ast_hash": "6ebeeea52cf1add070e4e75031157d52",
     "semantic_hash": ""
   },
   "kruslide/trailer/qa.py": {
@@ -1257,6 +1257,528 @@
     "mtime": 1795850941.7380712,
     "seen": 1795853060.7821054,
     "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/calculus/sample.json": {
+    "mtime": 1795853678.704534,
+    "seen": 1795855029.6660252,
+    "ast_hash": "fb0ca1f0775ac8444f6f5fc512bb9292",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-periodic/build.py": {
+    "mtime": 1795854343.9090672,
+    "seen": 1795855029.66609,
+    "ast_hash": "f8a289efb2768b47d82687c2b08aa07a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-periodic/src/engine.js": {
+    "mtime": 1795854343.9086967,
+    "seen": 1795855029.6660914,
+    "ast_hash": "4dc91ecdfd0514d07d1b2005ac1d111a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-periodic/src/periodic.js": {
+    "mtime": 1795854980.2116985,
+    "seen": 1795855029.6660926,
+    "ast_hash": "53ce251ae812f9cba693b5d3cfab15f1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-periodic/src/tools.js": {
+    "mtime": 1795854343.9088128,
+    "seen": 1795855029.6660936,
+    "ast_hash": "5b469ecca4359e470f35eaec03312c85",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/build.py": {
+    "mtime": 1795854331.4159918,
+    "seen": 1795855029.6660943,
+    "ast_hash": "898723dba321c74338036db687eb189b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/src/engine.js": {
+    "mtime": 1795854331.41732,
+    "seen": 1795855029.6660957,
+    "ast_hash": "391683732dff91938aa9221d3264fbba",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/src/kit.js": {
+    "mtime": 1795854331.4173937,
+    "seen": 1795855029.666097,
+    "ast_hash": "3c6eb45e092363b9230c6020c70d6434",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/src/tools.js": {
+    "mtime": 1795854331.4173496,
+    "seen": 1795855029.6660976,
+    "ast_hash": "387dd1dd6754c3dc6f7d5c788f93ee86",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/build.py": {
+    "mtime": 1795854331.4118984,
+    "seen": 1795855029.6660986,
+    "ast_hash": "898723dba321c74338036db687eb189b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/src/engine.js": {
+    "mtime": 1795854331.4131806,
+    "seen": 1795855029.6660998,
+    "ast_hash": "391683732dff91938aa9221d3264fbba",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/src/kit.js": {
+    "mtime": 1795854331.4132574,
+    "seen": 1795855029.6661005,
+    "ast_hash": "3c6eb45e092363b9230c6020c70d6434",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/src/tools.js": {
+    "mtime": 1795854331.4132135,
+    "seen": 1795855029.6661015,
+    "ast_hash": "387dd1dd6754c3dc6f7d5c788f93ee86",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/build.py": {
+    "mtime": 1795854157.5388608,
+    "seen": 1795855029.6661024,
+    "ast_hash": "69f963b4a6b7c9d8f4cf70b09a3c4a59",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/geo.py": {
+    "mtime": 1795854440.085493,
+    "seen": 1795855029.6661034,
+    "ast_hash": "06e324ea3ad7088565ab918031903028",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/sample.json": {
+    "mtime": 1795854787.9617307,
+    "seen": 1795855029.666104,
+    "ast_hash": "853264fb42c732225cf2f23d0b6f9c67",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/src/data-geo.js": {
+    "mtime": 1795854443.2717564,
+    "seen": 1795855029.666105,
+    "ast_hash": "8cdb24c1e13ca7c825bad7f0ebb71f5a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/src/deck.js": {
+    "mtime": 1795854979.3396585,
+    "seen": 1795855029.6661057,
+    "ast_hash": "7473e8fcf469ab5f55e862fead164933",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/src/engine.js": {
+    "mtime": 1795854157.5421348,
+    "seen": 1795855029.6661067,
+    "ast_hash": "850b56bb615c39ca91eaab6efe477563",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/src/kit.js": {
+    "mtime": 1795854216.394266,
+    "seen": 1795855029.6661077,
+    "ast_hash": "791a962f9f3ca0658f8e1046eec301d1",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/src/tools.js": {
+    "mtime": 1795854167.775105,
+    "seen": 1795855029.6661084,
+    "ast_hash": "053ee1394ddc61efaa8cee636483d44e",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/sample.json": {
+    "mtime": 1795854943.0206316,
+    "seen": 1795855029.666133,
+    "ast_hash": "03683f9d7fec85b55477a9195c837cca",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/tex/tex.js": {
+    "mtime": 1795854120.6472201,
+    "seen": 1795855029.6661344,
+    "ast_hash": "bd4fe0382aeb0c827b4d723871ea6eb8",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/build.py": {
+    "mtime": 1795854331.420684,
+    "seen": 1795855029.6661353,
+    "ast_hash": "898723dba321c74338036db687eb189b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/src/engine.js": {
+    "mtime": 1795854331.42216,
+    "seen": 1795855029.666136,
+    "ast_hash": "391683732dff91938aa9221d3264fbba",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/src/kit.js": {
+    "mtime": 1795854331.4222605,
+    "seen": 1795855029.666137,
+    "ast_hash": "3c6eb45e092363b9230c6020c70d6434",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/src/tools.js": {
+    "mtime": 1795854331.4221902,
+    "seen": 1795855029.6661382,
+    "ast_hash": "387dd1dd6754c3dc6f7d5c788f93ee86",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-base10/build.py": {
+    "mtime": 1795854113.4000666,
+    "seen": 1795855029.666139,
+    "ast_hash": "ec29a595226d1182a65ee60ef6c78a7f",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-base10/src/app.js": {
+    "mtime": 1795854740.2568145,
+    "seen": 1795855029.6661396,
+    "ast_hash": "30c4fb9833eaad21253bcd647f56a466",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-base10/src/engine.js": {
+    "mtime": 1795854113.400108,
+    "seen": 1795855029.6661406,
+    "ast_hash": "4b1d97ba910b59c19bc9c30f8c4e7801",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-base10/src/tools.js": {
+    "mtime": 1795854669.47443,
+    "seen": 1795855029.6661413,
+    "ast_hash": "1cb88c4f9761704a264fcdc237691ea4",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-equation-balance/build.py": {
+    "mtime": 1795854113.4011972,
+    "seen": 1795855029.6661422,
+    "ast_hash": "82e1d9d9e99197c9acb8894ab897971b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-equation-balance/src/engine.js": {
+    "mtime": 1795854113.4012315,
+    "seen": 1795855029.666143,
+    "ast_hash": "f8d51dff1bc147f806bd4b4c1f0ac306",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-equation-balance/src/tools.js": {
+    "mtime": 1795854113.4013278,
+    "seen": 1795855029.666144,
+    "ast_hash": "1be130c8a08b00a0148f513e6344213a",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-fractions/build.py": {
+    "mtime": 1795854113.4004827,
+    "seen": 1795855029.666145,
+    "ast_hash": "c44c8da266d5df567a7dd91ae2b4be87",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-fractions/src/engine.js": {
+    "mtime": 1795854113.4005203,
+    "seen": 1795855029.666146,
+    "ast_hash": "1f6ebb078fc420e4f00e92d2f5871f9f",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-fractions/src/tools.js": {
+    "mtime": 1795855011.4291282,
+    "seen": 1795855029.6661468,
+    "ast_hash": "08bd0f5a80fc3ec986dae8afd8ddeae6",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-geometry/build.py": {
+    "mtime": 1795854113.4008782,
+    "seen": 1795855029.6661475,
+    "ast_hash": "c59128ccf4926e851ba23e545915f2fc",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-geometry/src/engine.js": {
+    "mtime": 1795854113.4009156,
+    "seen": 1795855029.6661487,
+    "ast_hash": "c8a99c1f625346a4e43c7c87847fcb7c",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-geometry/src/tools.js": {
+    "mtime": 1795854113.4010193,
+    "seen": 1795855029.6661494,
+    "ast_hash": "cc3aed1d7cc6dad7c144b193f976c9ed",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-linear/build.py": {
+    "mtime": 1795854113.4015083,
+    "seen": 1795855029.6661503,
+    "ast_hash": "afe982c77d2fedfa07d6fb53b8700233",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-linear/src/engine.js": {
+    "mtime": 1795854113.4015439,
+    "seen": 1795855029.6661513,
+    "ast_hash": "35d428c279af4a92a9c554905a113672",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-linear/src/tools.js": {
+    "mtime": 1795854113.4016528,
+    "seen": 1795855029.6661527,
+    "ast_hash": "e3162854f5ac17d1dcec1866edf75df0",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-probability/build.py": {
+    "mtime": 1795854113.4018557,
+    "seen": 1795855029.6661537,
+    "ast_hash": "ef80f3635406534c2f50d2bd084af56b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-probability/src/engine.js": {
+    "mtime": 1795854113.4018958,
+    "seen": 1795855029.6661549,
+    "ast_hash": "1b58236d81a3ded259a47c860e250624",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-probability/src/tools.js": {
+    "mtime": 1795854113.4019997,
+    "seen": 1795855029.6661556,
+    "ast_hash": "e8448195f8e330e702e7520a673c73f2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/build.py": {
+    "mtime": 1795854331.4248588,
+    "seen": 1795855029.6661563,
+    "ast_hash": "898723dba321c74338036db687eb189b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/src/engine.js": {
+    "mtime": 1795854331.4260976,
+    "seen": 1795855029.6661572,
+    "ast_hash": "391683732dff91938aa9221d3264fbba",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/src/kit.js": {
+    "mtime": 1795854331.4261665,
+    "seen": 1795855029.6661584,
+    "ast_hash": "3c6eb45e092363b9230c6020c70d6434",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/src/tools.js": {
+    "mtime": 1795854331.4261267,
+    "seen": 1795855029.6661592,
+    "ast_hash": "387dd1dd6754c3dc6f7d5c788f93ee86",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/src/mech.js": {
+    "mtime": 1795854958.037105,
+    "seen": 1795855029.6661825,
+    "ast_hash": "b24ffdf8a3aa8cff36b3cbb75fd510e6",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/build.py": {
+    "mtime": 1795854331.4078717,
+    "seen": 1795855029.6661837,
+    "ast_hash": "898723dba321c74338036db687eb189b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/src/engine.js": {
+    "mtime": 1795854331.4091523,
+    "seen": 1795855029.6661847,
+    "ast_hash": "391683732dff91938aa9221d3264fbba",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/src/kit.js": {
+    "mtime": 1795854331.4092362,
+    "seen": 1795855029.6661856,
+    "ast_hash": "3c6eb45e092363b9230c6020c70d6434",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/src/tools.js": {
+    "mtime": 1795854331.409183,
+    "seen": 1795855029.6661866,
+    "ast_hash": "387dd1dd6754c3dc6f7d5c788f93ee86",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/build.py": {
+    "mtime": 1795854331.4034863,
+    "seen": 1795855029.6661875,
+    "ast_hash": "898723dba321c74338036db687eb189b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/sample.json": {
+    "mtime": 1795854952.2423096,
+    "seen": 1795855029.6661882,
+    "ast_hash": "f9bbb0ebc253e7cef0c4c0750e53f2bf",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/src/deck.json": {
+    "mtime": 1795854463.6942806,
+    "seen": 1795855029.6661897,
+    "ast_hash": "704fb80e37bb79543b06b667af852c50",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/src/engine.js": {
+    "mtime": 1795854331.404954,
+    "seen": 1795855029.6661904,
+    "ast_hash": "391683732dff91938aa9221d3264fbba",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/src/kit.js": {
+    "mtime": 1795854331.4050343,
+    "seen": 1795855029.666191,
+    "ast_hash": "3c6eb45e092363b9230c6020c70d6434",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/src/spell.js": {
+    "mtime": 1795854796.9263003,
+    "seen": 1795855029.666192,
+    "ast_hash": "6e3d6d5de69eedd60c8aa0ca1985f2fe",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/src/tools.js": {
+    "mtime": 1795854331.4049916,
+    "seen": 1795855029.666193,
+    "ast_hash": "387dd1dd6754c3dc6f7d5c788f93ee86",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/_shared/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795853719.5935464,
+    "seen": 1795855029.6704586,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/_shared/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795853719.5935717,
+    "seen": 1795855029.6704614,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/README.md": {
+    "mtime": 1795854183.954264,
+    "seen": 1795855029.6705737,
+    "ast_hash": "e8f8da925db53a1571af6a4d5ce05398",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/history/credits.md": {
+    "mtime": 1795854155.6662621,
+    "seen": 1795855029.6705763,
+    "ast_hash": "99525f385b2891524526f618310597bf",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795853938.5172062,
+    "seen": 1795855029.6708512,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/glass/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795853938.5172281,
+    "seen": 1795855029.670854,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795853938.525251,
+    "seen": 1795855029.6708562,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795853938.5252755,
+    "seen": 1795855029.6708581,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795853938.5211837,
+    "seen": 1795855029.670861,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/photo/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795853938.5212052,
+    "seen": 1795855029.6708632,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/chem-periodic/src/symbols.svg": {
+    "mtime": 1795854343.9089723,
+    "seen": 1795855029.671566,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-grammar/src/symbols.svg": {
+    "mtime": 1795854331.417439,
+    "seen": 1795855029.671569,
+    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/english-vocab/src/symbols.svg": {
+    "mtime": 1795854331.4132984,
+    "seen": 1795855029.6715717,
+    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/geo-thailand/src/symbols.svg": {
+    "mtime": 1795854565.49206,
+    "seen": 1795855029.6716225,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/kinder-count/src/symbols.svg": {
+    "mtime": 1795854331.4223015,
+    "seen": 1795855029.671627,
+    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-base10/src/symbols.svg": {
+    "mtime": 1795854247.220964,
+    "seen": 1795855029.6716294,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-equation-balance/src/symbols.svg": {
+    "mtime": 1795854247.2258122,
+    "seen": 1795855029.6716316,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-fractions/src/symbols.svg": {
+    "mtime": 1795854247.222453,
+    "seen": 1795855029.6716337,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-geometry/src/symbols.svg": {
+    "mtime": 1795854247.2242475,
+    "seen": 1795855029.6716356,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-linear/src/symbols.svg": {
+    "mtime": 1795854247.2272196,
+    "seen": 1795855029.6716375,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/math-probability/src/symbols.svg": {
+    "mtime": 1795854247.2288055,
+    "seen": 1795855029.6716392,
+    "ast_hash": "c97b2879d76666de5c0818607bd5d787",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/primary-clock-money/src/symbols.svg": {
+    "mtime": 1795854331.426206,
+    "seen": 1795855029.6716413,
+    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/styles/mechanics/src/symbols.svg": {
+    "mtime": 1795854946.4143093,
+    "seen": 1795855029.671644,
+    "ast_hash": "b93cac8446696ffbfd33bee227caa2ab",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-poem/src/symbols.svg": {
+    "mtime": 1795854331.40928,
+    "seen": 1795855029.671646,
+    "ast_hash": "371453c29e18a2305ab985e9349fb516",
+    "semantic_hash": ""
+  },
+  "kruslide/samples/thai-spelling/src/symbols.svg": {
+    "mtime": 1795854377.5382755,
+    "seen": 1795855029.6716485,
+    "ast_hash": "880c6af157eec0352d905f0053b2bab1",
     "semantic_hash": ""
   },
   "kruslide/platform/package-lock.json": {

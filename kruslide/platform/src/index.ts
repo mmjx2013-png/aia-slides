@@ -12,6 +12,7 @@ import * as deck from './routes/deck';
 import * as admin from './routes/admin';
 import * as statics from './routes/static';
 import * as requests from './routes/requests';
+import * as access from './routes/access';
 import { privacy } from './routes/privacy';
 import { stripeWebhook } from './routes/webhooks';
 
@@ -55,12 +56,20 @@ const router = new Router()
   .post('/app/admin/members/:id/unblock', (c) => admin.setStatus(c, 'active'))
   .post('/app/admin/members/:id/grant', admin.grant)
   .post('/app/admin/members/:id/erase', admin.erase)
+  .post('/app/admin/members/:id/access', access.saveMemberAccess)
+  .post('/app/admin/members/:id/approve', access.approve)
+  .get('/app/admin/access', access.matrix)
+  .post('/app/admin/access', access.matrixPost)
+  .post('/app/admin/grants/:id/revoke', access.revoke)
   .get('/app/admin/subscriptions', admin.subscriptions)
   .post('/app/admin/subscriptions/:id/extend', admin.extend)
   .post('/app/admin/subscriptions/:id/expire', admin.expire)
   .get('/app/admin/books', admin.books)
   .post('/app/admin/books', admin.createBook)
   .get('/app/admin/books/:id', admin.book)
+  .get('/app/admin/books/:id/access', access.bookAccess)
+  .post('/app/admin/books/:id/grant', access.grantFromBook)
+  .post('/app/admin/books/:id/revoke', access.revokeBook)
   .post('/app/admin/books/:id', admin.updateBook)
   .post('/app/admin/books/:id/delete', admin.deleteBook)
   .post('/app/admin/books/:id/units', admin.createUnit)
@@ -104,6 +113,7 @@ async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<R
   } catch (e) {
     if (e instanceof HttpError) {
       if (e.detail === LOGIN_REQUIRED && (req.method === 'GET' || req.method === 'HEAD')) return redirect(`/app/login?next=${encodeURIComponent(url.pathname)}`, 302);
+      if (e.detail === member.WAITING && ctx.teacher) return htmlResponse(member.waitingPage(ctx), 403);
       if (e.status >= 500) console.error('error', e.status, e.message, e.detail ?? '');
       const headers: Record<string, string> = e.status === 429 && e.detail ? { 'Retry-After': e.detail } : {};
       return htmlResponse(errorPage(ctx, e.status, e.message), e.status, headers);

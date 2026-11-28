@@ -58,7 +58,7 @@ describe('LINE login flow (mocked token endpoint + JWKS)', () => {
     expect(sc).toMatch(/Path=\//);
     expect(line.tokenRequests).toHaveLength(1);
 
-    const teacher = await env.DB.prepare('SELECT * FROM teachers WHERE line_user_id = ?1').bind(line.sub).first<{ id: number; display_name: string }>();
+    const teacher = await env.DB.prepare('SELECT * FROM teachers WHERE line_user_id = ?1').bind(line.sub).first<{ id: number; display_name: string; approved_at: number | null }>();
     expect(teacher!.display_name).toBe('ครูสมใจ');
     // the session row stores only a hash of the id
     const s = await env.DB.prepare('SELECT id_hash, expires_at FROM sessions WHERE teacher_id = ?1').bind(teacher!.id).first<{ id_hash: string; expires_at: number }>();
@@ -67,9 +67,13 @@ describe('LINE login flow (mocked token endpoint + JWKS)', () => {
 
     const home = await call('/app/', { cookie: `__Host-ks_session=${session}` });
     expect(home.status).toBe(200);
-    expect(await home.text()).toContain('ครูสมใจ');
+    const text = await home.text();
+    expect(text).toContain('ครูสมใจ');
+    // NEW_MEMBER_APPROVAL is on by default: a first login waits for the owner's approval
+    expect(text).toContain('รออนุมัติ');
+    expect(teacher!.approved_at).toBeNull();
     const audit = await env.DB.prepare(`SELECT action FROM audit_log WHERE actor = ?1`).bind(`teacher:${teacher!.id}`).first<{ action: string }>();
-    expect(audit!.action).toBe('signup');
+    expect(audit!.action).toBe('signup.waiting');
   });
 
   it('the same callback cannot be replayed (state is one-time)', async () => {

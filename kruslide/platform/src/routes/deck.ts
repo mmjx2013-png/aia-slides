@@ -1,7 +1,8 @@
 import type { Ctx, Unit } from '../env';
 import { HttpError, htmlResponse, needLogin, redirect } from '../lib/http';
 import { html } from '../lib/html';
-import { page, emptyArt, icon } from '../views/layout';
+import { page, emptyArt, icon, lineAddUrl } from '../views/layout';
+import { lineOa } from '../lib/config';
 import { idParam } from '../lib/validate';
 import * as db from '../db';
 import { injectWatermark, watermarkText } from '../lib/watermark';
@@ -41,15 +42,20 @@ export function deckHeaders(unit: Pick<Unit, 'script_hashes'>): Record<string, s
   };
 }
 
-/** Who may open a unit: an admin (preview), or an active member with an active subscription to its book. */
+/**
+ * Who may open a unit: an admin (preview), or an active, approved member with an active subscription to its book
+ * (not a draft book) OR an active grant for the unit. Checked on every request, so a revoke or a block works at once.
+ */
 async function authorise(ctx: Ctx, unitId: number): Promise<{ unit: Unit; name: string; school: string }> {
   const t = requireTeacher(ctx);
   const unit = await db.getUnit(ctx.env, unitId);
   if (!unit || !unit.r2_key) throw new HttpError(404, 'ไม่พบสไลด์หน่วยนี้');
   if (ctx.isAdmin) return { unit, name: t.display_name, school: t.school || 'KruSlide admin preview' };
-  const book = await db.getBook(ctx.env, unit.book_id);
-  if (!book || book.status === 'draft' || !(await db.hasAccess(ctx.env, t.id, book.id, ctx.now))) {
-    throw new HttpError(403, 'สไลด์นี้เปิดได้เฉพาะสมาชิกที่สมัครหนังสือเล่มนี้และยังไม่หมดอายุ', `book:${unit.book_id}`);
+  if (!db.canOpen(await db.unitAccess(ctx.env, t.id, unit, ctx.now))) {
+    const book = await db.getBook(ctx.env, unit.book_id);
+    const sellable = !!book && book.status === 'published';
+    throw new HttpError(403, sellable ? 'สไลด์นี้เปิดได้เฉพาะสมาชิกที่สมัครหนังสือเล่มนี้ หรือได้รับสิทธิ์จากทีมงาน และยังไม่หมดอายุ'
+      : 'สไลด์นี้เปิดได้เฉพาะสมาชิกที่ได้รับสิทธิ์จากทีมงาน และยังไม่หมดอายุ', sellable ? `book:${unit.book_id}` : 'no-access');
   }
   return { unit, name: t.display_name, school: t.school };
 }
@@ -67,12 +73,14 @@ export async function deck(ctx: Ctx): Promise<Response> {
   try {
     auth = await authorise(ctx, id);
   } catch (e) {
-    const book = e instanceof HttpError && e.status === 403 ? /^book:(\d+)$/.exec(e.detail || '')?.[1] : undefined;
-    if (!book) throw e;
+    if (!(e instanceof HttpError) || e.status !== 403 || !(e.detail === 'no-access' || /^book:\d+$/.test(e.detail || ''))) throw e;
+    const book = /^book:(\d+)$/.exec(e.detail || '')?.[1];
+    const oa = lineOa(ctx.env);
     return htmlResponse(page(ctx, {
       title: 'ยังเปิดสไลด์นี้ไม่ได้',
-      body: html`<div class="card empty">${emptyArt()}<h1>ยังเปิดสไลด์นี้ไม่ได้</h1><p>${(e as HttpError).message}</p>
-        <p class="row"><a class="btn" href="/app/books/${book}">ดูหนังสือเล่มนี้และสมัคร ${icon('right')}</a><a class="btn ghost" href="/app/">หนังสือของฉัน</a></p></div>`,
+      body: html`<div class="card empty">${emptyArt()}<h1>ยังเปิดสไลด์นี้ไม่ได้</h1><p>${e.message}</p>
+        <p class="row">${book ? html`<a class="btn" href="/app/books/${book}">ดูหนังสือเล่มนี้และสมัคร ${icon('right')}</a>`
+          : html`<a class="btn line" href="${lineAddUrl(oa)}" rel="noopener">${icon('chat')}ขอสิทธิ์ทาง LINE ${oa}</a>`}<a class="btn ghost" href="/app/">หนังสือของฉัน</a></p></div>`,
     }), 403);
   }
   const { unit, name, school } = auth;

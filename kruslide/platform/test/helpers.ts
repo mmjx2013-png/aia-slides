@@ -29,10 +29,12 @@ export async function call(path: string, init: RequestInit & { cookie?: string; 
   return res;
 }
 
-export async function makeTeacher(o: { line?: string; name?: string; school?: string; status?: 'active' | 'blocked' } = {}): Promise<number> {
+/** A member. Approved unless `waiting` (a first LINE login that the owner has not approved yet). */
+export async function makeTeacher(o: { line?: string; name?: string; school?: string; status?: 'active' | 'blocked'; waiting?: boolean } = {}): Promise<number> {
+  const t = nowSec();
   const row = await env.DB.prepare(
-    `INSERT INTO teachers (line_user_id, display_name, school, status, created_at) VALUES (?1, ?2, ?3, ?4, ?5) RETURNING id`,
-  ).bind(o.line ?? lineId(), o.name ?? 'ครูทดสอบ', o.school ?? 'โรงเรียนทดสอบวิทยา', o.status ?? 'active', nowSec()).first<{ id: number }>();
+    `INSERT INTO teachers (line_user_id, display_name, school, status, created_at, approved_at, approved_by) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7) RETURNING id`,
+  ).bind(o.line ?? lineId(), o.name ?? 'ครูทดสอบ', o.school ?? 'โรงเรียนทดสอบวิทยา', o.status ?? 'active', t, o.waiting ? null : t, o.waiting ? null : 'test').first<{ id: number }>();
   return row!.id;
 }
 

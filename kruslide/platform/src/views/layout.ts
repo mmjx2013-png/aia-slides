@@ -15,6 +15,16 @@ export function fmtIsoDate(d: string): string {
   return Number.isFinite(t) ? TH_DATE.format(new Date(t)) : d;
 }
 
+/** "ถึง 28 ก.พ. 2570" or "ไม่มีวันหมดอายุ". */
+export function untilText(until: number | null): string {
+  return until === null ? 'ไม่มีวันหมดอายุ' : `ถึง ${fmtDate(until)}`;
+}
+
+/** LINE "add friend" link for the Official Account. */
+export function lineAddUrl(oa: string): string {
+  return `https://line.me/R/ti/p/${encodeURIComponent(oa)}`;
+}
+
 export function csrfField(ctx: Ctx): Safe {
   return html`<input type="hidden" name="_csrf" value="${ctx.csrf}">`;
 }
@@ -53,6 +63,10 @@ const ICONS: Record<string, string> = {
   hand: '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5"/><path d="M14 10.5V6a1.5 1.5 0 0 1 3 0v8a6 6 0 0 1-6 6h-.6a5 5 0 0 1-3.9-1.9L4 14.6a1.6 1.6 0 0 1 2.4-2.1L8 14"/>',
   wand: '<path d="M4 20L16 8"/><path d="M14 6l4 4"/><path d="M18 3v2M21 6h-2M5 4v2M6 5H4M19 15v2M20 16h-2"/>',
   note: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  key: '<circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8L20 3M16.5 6.5l3 3M14 9l2 2"/>',
+  lock: '<rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  hourglass: '<path d="M6.5 3h11M6.5 21h11M7.5 3c0 5 9 6 9 9s-9 4-9 9M16.5 3c0 5-9 6-9 9s9 4 9 9"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/>',
   chat: '<path d="M12 3.5c-5 0-9 3.2-9 7.2 0 3.6 3.2 6.6 7.5 7.1.3.1.7.2.8.5.1.3.1.7 0 1l-.1.8c0 .3-.2 1 .9.5s5.9-3.5 8.1-6c1.5-1.6 2.3-3.3 2.3-5C21 6.7 17 3.5 12 3.5z" fill="currentColor" stroke="none"/>',
 };
 
@@ -87,6 +101,13 @@ const FLASH: Record<string, [string, 'ok' | 'bad' | 'warn']> = {
   sent: ['ส่งคำขอแล้ว ทีมงานจะติดต่อกลับทาง LINE', 'ok'],
   locked: ['คำขอนี้ส่งแล้ว แก้คำตอบไม่ได้ หากต้องการเปลี่ยน แจ้งทีมงานทาง LINE', 'warn'],
   request: ['บันทึกคำขอแล้ว', 'ok'],
+  access: ['บันทึกสิทธิ์เข้าถึงสไลด์แล้ว', 'ok'],
+  approved: ['อนุมัติสมาชิกแล้ว', 'ok'],
+  granted: ['ให้สิทธิ์แล้ว', 'ok'],
+  revoked: ['ยกเลิกสิทธิ์แล้ว', 'warn'],
+  bulk: ['ให้สิทธิ์ทั้งเล่มกับสมาชิกที่เลือกแล้ว', 'ok'],
+  bulkoff: ['ยกเลิกสิทธิ์ทั้งเล่มของสมาชิกที่เลือกแล้ว', 'warn'],
+  pick: ['กรุณาเลือกสมาชิกอย่างน้อย 1 คน', 'warn'],
 };
 
 export function flash(ctx: Ctx): Safe {
@@ -188,6 +209,11 @@ export function page(ctx: Ctx, o: PageOpts): Safe {
   const logout = html`<form method="post" action="/app/logout">${csrfField(ctx)}<button type="submit" title="ออกจากระบบ">${icon('logout')}<span class="lbl">ออกจากระบบ</span></button></form>`;
   const nav = o.focus
     ? html`<div class="qtop">${o.focus.top}</div><a class="qx" href="/app/requests" title="ออกจากแบบทดสอบ (คำตอบที่ตอบแล้วยังอยู่)">${icon('x')}<span class="sr">ออกจากแบบทดสอบ</span></a>`
+    : t && ctx.waiting
+      ? html`<nav class="nav" aria-label="เมนู">
+        <a class="hide-m" href="/app/"${cur('home')}>${icon('hourglass')}<span class="lbl">รออนุมัติ</span></a>
+        <a class="hide-m" href="/app/profile"${cur('profile')}>${icon('user')}<span class="lbl">ข้อมูลของฉัน</span></a>
+        ${logout}</nav>`
     : t
       ? html`<nav class="nav" aria-label="เมนู">
         <a class="hide-m" href="/app/"${cur('home')}>${icon('book')}<span class="lbl">หนังสือของฉัน</span></a>
@@ -198,7 +224,12 @@ export function page(ctx: Ctx, o: PageOpts): Safe {
       </nav>
       <a class="who" href="/app/profile" title="ข้อมูลของฉัน"><span class="ava" aria-hidden="true">${initial(t.display_name)}</span><span>${t.display_name}</span></a>`
       : html`<nav class="nav" aria-label="เมนู"><a href="/app/privacy"${cur('privacy')}>ความเป็นส่วนตัว</a></nav>`;
-  const tabs = t && !o.focus
+  const tabs = t && !o.focus && ctx.waiting
+    ? html`<nav class="tabs" aria-label="เมนูหลัก">
+        <a href="/app/"${cur('home')}>${icon('hourglass')}รออนุมัติ</a>
+        <a href="/app/profile"${cur('profile')}>${icon('user')}ข้อมูลของฉัน</a>
+      </nav>`
+    : t && !o.focus
     ? html`<nav class="tabs" aria-label="เมนูหลัก">
         <a href="/app/"${cur('home')}>${icon('book')}หนังสือ</a>
         <a href="/app/requests"${cur('requests')}>${icon('inbox')}คำขอ</a>

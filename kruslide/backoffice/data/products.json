@@ -1,0 +1,63 @@
+{
+  "note": "Other products. open = an extra bundled into dist (unit4, deck, site); url = a public link (shown as a plain link); price = ids from prices.json.",
+  "tabs": [
+    {"id": "video", "th": "วิดีโอ", "en": "Videos"},
+    {"id": "lesson", "th": "บทเรียนเต็มหน่วย", "en": "Full lessons"},
+    {"id": "deck", "th": "งานนำเสนอ", "en": "Presentations"},
+    {"id": "web", "th": "เว็บไซต์", "en": "Websites"},
+    {"id": "platform", "th": "แพลตฟอร์มสมาชิก", "en": "Member platform"},
+    {"id": "brand", "th": "แบรนด์", "en": "Brand kit"}
+  ],
+  "items": [
+    {"code": "P-01", "tab": "video", "th": "เทรลเลอร์ประวัติศาสตร์: อยุธยา (4K)", "en": "History trailer: Ayutthaya (4K)",
+     "desc_th": "วิดีโอแบบตัวอย่างหนัง ภาพถ่ายจริงที่อนุญาตให้ใช้ กล้องเคลื่อนช้า แถบดำ ไตเติล เสียงบรรยายไทยและเสียงบรรยากาศ ต้นฉบับ 4K (ที่นี่เล่นไฟล์ 1080p)",
+     "desc_en": "A film-trailer style video: licensed real photographs, slow camera moves, letterbox, title cards, Thai narration and ambience. 4K master (1080p here).",
+     "video": "kruslide/site/media/ayutthaya-1080.mp4", "poster": "kruslide/deck/media/ayutthaya-poster.jpg",
+     "price": ["video3d", "video2d", "voice"], "facts_th": ["ต้นฉบับ 3840×2160", "เสียงบรรยายไทย", "เครดิตภาพครบ"], "facts_en": ["3840×2160 master", "Thai narration", "every image credited"]},
+    {"code": "P-02", "tab": "lesson", "th": "Unit 4 สถิติ ม.1 (68 สไลด์)", "en": "Unit 4 Statistics, M1 (68 slides)",
+     "desc_th": "บทเรียนเต็มหน่วยตัวจริง ทุกสไลด์มีแอนิเมชัน นักเรียนตอบบนจอ มีคู่มือครูและเว็บเฉลย ใช้เครื่องมือมาตรฐาน M-01 ถึง M-13 ครบ",
+     "desc_en": "The real full unit: animation on every slide, students answer on screen, teacher guide and answer site; uses all standard tools M-01 to M-13.",
+     "preview": "kruslide/site/img/work-unit4.webp", "open": "unit4", "style": "ST-01",
+     "links": [{"th": "สไลด์ออนไลน์", "en": "Live deck", "url": "https://mmjx2013-png.github.io/aia-slides/m1-statistics/"}, {"th": "คู่มือครู", "en": "Teacher guide", "url": "https://mmjx2013-png.github.io/aia-slides/m1-statistics/guide/"}, {"th": "เว็บเฉลย (ล็อกรหัส)", "en": "Answer key (locked)", "url": "https://mmjx2013-png.github.io/aia-slides/m1-answer-key/"}],
+     "price": ["slides", "answers", "theme"]},
+    {"code": "P-03", "tab": "deck", "th": "สไลด์โชว์ผลงาน KruSlide", "en": "KruSlide showcase deck",
+     "desc_th": "สไลด์ 12–15 หน้าให้เจ้าของพูดเองในห้องประชุม 10–15 นาที มีเดโมกลไกสด สไตล์ ราคา และเทรลเลอร์อยุธยา พร้อมสคริปต์ผู้พูด",
+     "desc_en": "A 12–15 slide deck the owner presents live in 10–15 minutes: live mechanic demos, styles, prices and the Ayutthaya trailer, with a speaker script.",
+     "preview": "kruslide/backoffice/data/img/deck.webp", "open": "deck", "price": ["deck"]},
+    {"code": "P-04", "tab": "deck", "th": "สไลด์นำเสนอโรงเรียนสาธิต (pitch)", "en": "Satit school pitch deck",
+     "desc_th": "งานนำเสนอเว็บใหม่ให้โรงเรียนสาธิต มรภ.เพชรบุรี เปิดดูได้ที่ลิงก์สาธารณะ",
+     "desc_en": "The pitch for the Satit PBRU website, on its public link.",
+     "preview": "kruslide/site/img/work-pitch.webp", "links": [{"th": "เปิดลิงก์สาธารณะ", "en": "Public link", "url": "https://mmjx2013-png.github.io/aia-slides/satit/pitch/"}], "price": ["deck"]},
+    {"code": "P-05", "tab": "web", "th": "เว็บขาย KruSlide", "en": "KruSlide sales site",
+     "desc_th": "เว็บขายแบบตลาดงานที่เป็นมิตร การ์ดหมวดหมู่ การ์ดราคา คลังตัวอย่าง ไทย/อังกฤษ (ยังไม่ขึ้นโดเมนจริง)",
+     "desc_en": "A friendly marketplace-style sales site: category cards, price cards, sample library, TH/EN (not on its own domain yet).",
+     "preview": "kruslide/backoffice/data/img/site.webp", "open": "site", "price": ["web10"]},
+    {"code": "P-06", "tab": "web", "th": "เว็บโรงเรียนสาธิต มรภ.เพชรบุรี", "en": "Satit PBRU school website",
+     "desc_th": "เว็บโรงเรียน 15 หน้า ไทย/อังกฤษ ภาพใหญ่ กระจกฝ้าสีขาว สำหรับผู้ปกครอง",
+     "desc_en": "A 15-page TH/EN school website with big photos and white frosted glass, for parents.",
+     "preview": "kruslide/site/img/work-satit.webp", "links": [{"th": "เปิดลิงก์สาธารณะ", "en": "Public link", "url": "https://mmjx2013-png.github.io/aia-slides/satit/"}], "price": ["web15", "care"]},
+    {"code": "P-07", "tab": "platform", "th": "แพลตฟอร์มสมาชิก /app/", "en": "Member platform /app/",
+     "desc_th": "เข้าระบบด้วย LINE สมัครรายเดือนต่อเล่ม ชำระผ่าน PromptPay แอดมินยืนยัน ขอทำหนังสือ แบบทดสอบสไตล์ 10 ข้อ และลายน้ำ Licensed to บนสไลด์ (รอขึ้น Cloudflare)",
+     "desc_en": "LINE login, monthly subscription per book, PromptPay with admin confirmation, book requests, a 10-question style quiz and a 'Licensed to' watermark (waiting for the Cloudflare deploy).",
+     "gallery": [
+       {"src": "kruslide/platform/screenshots/01-landing-desktop.png", "th": "หน้าแรก", "en": "Landing"},
+       {"src": "kruslide/platform/screenshots/05b-member-home-desktop.png", "th": "หน้าสมาชิก", "en": "Member home"},
+       {"src": "kruslide/platform/screenshots/18-deck-watermark-desktop.png", "th": "สไลด์มีลายน้ำ Licensed to", "en": "Deck with the licence mark"},
+       {"src": "kruslide/platform/screenshots/22-quiz-q1-mobile.png", "th": "แบบทดสอบสไตล์ (มือถือ)", "en": "Style quiz (phone)", "crop": 1688},
+       {"src": "kruslide/platform/screenshots/08-payment-promptpay-mobile.png", "th": "ชำระผ่าน PromptPay (มือถือ)", "en": "PromptPay payment (phone)", "crop": 1688},
+       {"src": "kruslide/platform/screenshots/29-admin-requests-desktop.png", "th": "แอดมิน: คำขอทำหนังสือ", "en": "Admin: book requests"}
+     ]},
+    {"code": "P-08", "tab": "brand", "th": "ชุดแบรนด์ KruSlide", "en": "KruSlide brand kit",
+     "desc_th": "โลโก้ C (อักษร K + ลูกศรเมาส์) บนพื้นสว่างและเข้ม ไอคอนแอป รูปโปรไฟล์ LINE สี และฟอนต์",
+     "desc_en": "Logo C (a K with a pointer) on light and dark, app icon, LINE profile picture, colours and fonts.",
+     "gallery": [
+       {"src": "kruslide/brand/kruslide-logo-light.png", "th": "โลโก้บนพื้นสว่าง", "en": "Logo on light"},
+       {"src": "kruslide/brand/kruslide-logo-dark.png", "th": "โลโก้บนพื้นเข้ม", "en": "Logo on dark"},
+       {"src": "kruslide/brand/kruslide-icon-1024.png", "th": "ไอคอนแอป", "en": "App icon"},
+       {"src": "kruslide/brand/kruslide-line-profile-640.png", "th": "รูปโปรไฟล์ LINE", "en": "LINE profile picture"},
+       {"src": "kruslide/brand/logo-options.png", "th": "โลโก้ 4 แบบที่เคยเสนอ (เลือก C)", "en": "The 4 logo options (C chosen)"}
+     ],
+     "colors": [{"hex": "#1C2A55", "th": "กรมท่า", "en": "Navy"}, {"hex": "#3D7BFF", "th": "ฟ้า", "en": "Blue"}, {"hex": "#FFC83D", "th": "เหลือง", "en": "Yellow"}, {"hex": "#FFFFFF", "th": "ขาว", "en": "White"}],
+     "fonts": [{"name": "Anuphan", "th": "ภาษาไทย", "en": "Thai"}, {"name": "Inter", "th": "ภาษาอังกฤษและตัวเลข", "en": "Latin and numbers"}]}
+  ]
+}

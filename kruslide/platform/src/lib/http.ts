@@ -1,6 +1,6 @@
 import { Safe } from './html';
 
-/** CSP for the member and admin pages: no scripts at all, only our own stylesheet and fonts. */
+/** CSP for the member and admin pages: no scripts, only our own stylesheet, fonts and images. */
 export const APP_CSP = [
   "default-src 'none'",
   "style-src 'self'",
@@ -15,9 +15,11 @@ export const APP_CSP = [
  * CSP for the few pages that load our one script (/app/static/app.js: quiz taps, "copy brief"). The script is allowed
  * by its exact URL, not by 'self', so no other file on the origin (e.g. a deck asset) could ever run as a script here.
  */
-export function scriptCsp(origin: string): string {
+export function scriptCsp(origin: string, connectPath?: string): string {
   const ok = /^https?:\/\/[A-Za-z0-9.-]+(:\d{1,5})?$/.test(origin); // never let a bad APP_ORIGIN widen the policy
-  return `${APP_CSP}; script-src ${ok ? `${origin}/app/static/app.js` : "'none'"}`;
+  const csp = `${APP_CSP}; script-src ${ok ? `${origin}/app/static/app.js` : "'none'"}`;
+  // A page whose script sends a form in the background (the access matrix) may reach exactly that one path.
+  return ok && connectPath && /^\/app\/[a-z/]+$/.test(connectPath) ? `${csp}; connect-src ${origin}${connectPath}` : csp;
 }
 
 /** Headers every response gets unless the route set its own value. */

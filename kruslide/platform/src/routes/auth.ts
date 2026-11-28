@@ -4,7 +4,7 @@ import { randomToken, sha256url, safeEqual } from '../lib/crypto';
 import { parseCookies, setCookie, clearCookie } from '../lib/cookies';
 import { HttpError, redirect, safeNext } from '../lib/http';
 import { rateLimit } from '../lib/ratelimit';
-import { LIMITS, OAUTH_COOKIE, OAUTH_TTL } from '../lib/config';
+import { LIMITS, OAUTH_COOKIE, OAUTH_TTL, adminIds, approvalRequired } from '../lib/config';
 import { createSession, destroySession } from '../lib/session';
 import { upsertTeacherFromLine } from '../db';
 import { audit } from '../lib/audit';
@@ -57,14 +57,16 @@ export async function callback(ctx: Ctx): Promise<Response> {
   const who = await verifyIdToken(ctx.env, idToken, { nonce: row.nonce, now: ctx.now });
   let name: string;
   try { name = cleanText(who.name, { max: 80, min: 1, field: 'ชื่อ' }); } catch { name = 'คุณครู'; }
-  const { teacher, created } = await upsertTeacherFromLine(ctx.env, who.sub, name, ctx.now);
+  // A first login waits for the owner's approval (unless approval is off, or it is an admin's LINE account).
+  const approve = !approvalRequired(ctx.env) || adminIds(ctx.env).has(who.sub);
+  const { teacher, created } = await upsertTeacherFromLine(ctx.env, who.sub, name, ctx.now, approve);
   if (teacher.status === 'blocked') {
     await audit(ctx.env, ctx.now, `teacher:${teacher.id}`, 'login.blocked');
     throw new HttpError(403, 'บัญชีนี้ถูกระงับ กรุณาติดต่อทีมงานทาง LINE');
   }
   if (ctx.sessionId) await destroySession(ctx.env, ctx.sessionId); // never reuse a session id across a login
   const session = await createSession(ctx.env, teacher.id, ctx.now);
-  await audit(ctx.env, ctx.now, `teacher:${teacher.id}`, created ? 'signup' : 'login');
+  await audit(ctx.env, ctx.now, `teacher:${teacher.id}`, created ? (teacher.approved_at === null ? 'signup.waiting' : 'signup') : 'login');
   const next = !teacher.school ? `/app/profile?next=${encodeURIComponent(row.return_to)}&m=${created ? 'welcome' : 'school'}` : row.return_to;
   const h = new Headers();
   h.append('Set-Cookie', session.cookie);

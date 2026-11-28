@@ -1,0 +1,24 @@
+{
+  "source": "kruslide/BRIEF.md (owner-approved, 28 Nov 2026)",
+  "note_th": "ราคาตั้งต่ำโดยตั้งใจ อาจปรับขึ้นภายหลัง ห้ามพิมพ์วันหมดโปรใด ๆ",
+  "items": [
+    {"id": "slides", "group": "slides", "th": "สไลด์บทเรียน (ตามหนังสือ ทั้งเล่ม)", "en": "Lesson slides (whole book)", "min": 3, "max": 5, "per_th": "สไลด์/เดือน", "per_en": "slide/month", "period": "month", "qty_th": "สไลด์", "qty_en": "slides", "default_qty": 67, "note_th": "ตัวอย่าง: หน่วย 67 สไลด์ ≈ 200–335 บาท/เดือน", "note_en": "e.g. a 67-slide unit ≈ 200–335 baht/month"},
+    {"id": "theme", "group": "slides", "th": "ธีมโรงเรียน (โลโก้ + สี)", "en": "School theme (logo + colours)", "min": 990, "max": 990, "per_th": "ครั้งเดียว", "per_en": "one-off", "period": "once", "qty_th": "ธีม", "qty_en": "theme", "default_qty": 1},
+    {"id": "custom_unit", "group": "slides", "th": "หน่วยตามแผนการสอนของครู", "en": "Custom unit from the teacher's lesson plan", "min": 1990, "max": 1990, "per_th": "หน่วย", "per_en": "unit", "period": "once", "qty_th": "หน่วย", "qty_en": "units", "default_qty": 1},
+    {"id": "answers", "group": "slides", "th": "เฉลยละเอียดทั้งเล่ม + เว็บเฉลยล็อกรหัส", "en": "Book answer keys + locked answer site", "min": 590, "max": 590, "per_th": "หน่วย", "per_en": "unit", "period": "once", "qty_th": "หน่วย", "qty_en": "units", "default_qty": 1},
+    {"id": "video2d", "group": "video", "th": "วิดีโอสอน 2D (มีซับไตเติล)", "en": "Teaching video, 2D (captions included)", "min": 100, "max": 100, "per_th": "นาที (ขั้นต่ำ 5 นาที)", "per_en": "minute (minimum 5)", "period": "once", "qty_th": "นาที", "qty_en": "minutes", "default_qty": 5, "min_qty": 5},
+    {"id": "voice", "group": "video", "th": "เสียงบรรยาย AI (ไทยหรืออังกฤษ)", "en": "AI voice-over (Thai or English)", "min": 30, "max": 30, "per_th": "นาที (บวกเพิ่ม)", "per_en": "minute (add-on)", "period": "once", "qty_th": "นาที", "qty_en": "minutes", "default_qty": 5},
+    {"id": "video3d", "group": "video", "th": "วิดีโอ 3D / ภาพยนตร์ (×2–×3)", "en": "3D / cinematic video (×2–×3)", "min": 200, "max": 300, "per_th": "นาที", "per_en": "minute", "period": "once", "qty_th": "นาที", "qty_en": "minutes", "default_qty": 1, "note_th": "ตัวอย่าง: เทรลเลอร์อยุธยา", "note_en": "e.g. the Ayutthaya trailer"},
+    {"id": "deck", "group": "deck", "th": "สไลด์นำเสนอ ไม่เกิน 15 หน้า", "en": "Presentation slides, up to 15 pages", "min": 2490, "max": 2490, "per_th": "ชุด", "per_en": "deck", "period": "once", "qty_th": "ชุด", "qty_en": "decks", "default_qty": 1},
+    {"id": "web1", "group": "web", "th": "เว็บโรงเรียน 1 หน้า", "en": "School website, 1 page", "min": 4990, "max": 4990, "per_th": "เว็บ", "per_en": "site", "period": "once", "qty_th": "เว็บ", "qty_en": "sites", "default_qty": 1},
+    {"id": "web10", "group": "web", "th": "เว็บโรงเรียน 5–10 หน้า", "en": "School website, 5–10 pages", "min": 12900, "max": 12900, "per_th": "เว็บ", "per_en": "site", "period": "once", "qty_th": "เว็บ", "qty_en": "sites", "default_qty": 1},
+    {"id": "web15", "group": "web", "th": "เว็บโรงเรียน 15 หน้าขึ้นไป ไทย/อังกฤษ", "en": "School website, 15+ pages, TH/EN", "min": 19900, "max": 19900, "per_th": "เว็บ", "per_en": "site", "period": "once", "qty_th": "เว็บ", "qty_en": "sites", "default_qty": 1, "note_th": "ตัวอย่าง: เว็บสาธิต มรภ.เพชรบุรี", "note_en": "e.g. the Satit PBRU site"},
+    {"id": "care", "group": "web", "th": "ดูแลเว็บไซต์", "en": "Website care", "min": 1990, "max": 1990, "per_th": "ปี", "per_en": "year", "period": "year", "qty_th": "ปี", "qty_en": "years", "default_qty": 1}
+  ],
+  "groups": [
+    {"id": "slides", "th": "สไลด์บทเรียน", "en": "Lesson slides"},
+    {"id": "video", "th": "วิดีโอ", "en": "Video"},
+    {"id": "deck", "th": "งานนำเสนอ", "en": "Presentations"},
+    {"id": "web", "th": "เว็บไซต์โรงเรียน", "en": "School websites"}
+  ]
+}

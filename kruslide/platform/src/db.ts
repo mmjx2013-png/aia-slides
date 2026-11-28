@@ -189,12 +189,6 @@ export function getSubscriptionById(env: Env, id: number) {
   return env.DB.prepare('SELECT * FROM subscriptions WHERE id = ?1').bind(id).first<Subscription>();
 }
 
-export async function hasAccess(env: Env, teacherId: number, bookId: number, now: number): Promise<boolean> {
-  const row = await env.DB.prepare(
-    `SELECT 1 AS ok FROM subscriptions WHERE teacher_id = ?1 AND book_id = ?2 AND status = 'active' AND period_end > ?3`,
-  ).bind(teacherId, bookId, now).first<{ ok: number }>();
-  return !!row;
-}
 
 export interface MySub extends Subscription { title: string; subject: string; grade: string; book_status: Book['status']; }
 export async function listMySubscriptions(env: Env, teacherId: number): Promise<MySub[]> {

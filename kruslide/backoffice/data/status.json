@@ -1,0 +1,18 @@
+{
+  "updated": "2026-11-28",
+  "note_th": "ไฟล์นี้เจ้าของอัปเดตเอง: state = done (เสร็จ) / doing (กำลังทำ); wait_th = กำลังรออะไร",
+  "items": [
+    {"state": "done", "th": "สไลด์ Unit 4 สถิติ ม.1 (68 สไลด์ + คู่มือครู)", "en": "Unit 4 statistics deck (68 slides + teacher guide)", "open": "unit4"},
+    {"state": "done", "th": "ตัวอย่างแคลคูลัส ม.4-6", "en": "Calculus sample", "open": "calculus"},
+    {"state": "done", "th": "ตัวอย่างอยุธยา (ซูมจากลูกโลก)", "en": "Ayutthaya sample (globe-to-map)", "open": "history"},
+    {"state": "done", "th": "เทรลเลอร์อยุธยา 4K", "en": "Ayutthaya 4K trailer", "open": "P-01"},
+    {"state": "done", "th": "สไลด์โชว์ผลงาน KruSlide", "en": "Showcase deck", "open": "P-03"},
+    {"state": "done", "th": "ออกแบบเว็บขายใหม่", "en": "Sales site redesign", "open": "P-05"},
+    {"state": "done", "th": "แพลตฟอร์ม: ขอทำหนังสือ + แบบทดสอบสไตล์", "en": "Platform: book request + style quiz", "open": "P-07"},
+    {"state": "done", "th": "ตัวอย่างภาษาและปฐมวัย 6 ชุด", "en": "6 language and early-years samples"},
+    {"state": "doing", "th": "ตัวอย่างเพิ่มอีก 18 ชุด: วิทยาศาสตร์ คณิตศาสตร์ สังคม/ศิลปะ/เทคโนโลยี/สุขศึกษา", "en": "18 more samples: science, maths, social/arts/tech/health"},
+    {"state": "doing", "th": "สไตล์ D กระจก · E ภาพเยอะ · F สำรวจกลไก", "en": "Styles D glass, E photo-rich, F mechanism explorer"},
+    {"state": "doing", "th": "สไลด์ดวงจันทร์ แบบที่ 1", "en": "Moon type-1 deck", "wait_th": "รอเจ้าของเลือก mock-up", "wait_en": "waiting for the owner's mock-up picks", "image": "kruslide/samples/moon/mockups/overview.jpg"},
+    {"state": "doing", "th": "ขึ้นระบบจริงบน Cloudflare", "en": "Cloudflare deploy", "wait_th": "รอโดเมน, R2, LINE Login และ repo ส่วนตัว", "wait_en": "waiting on the domain, R2, LINE Login and a private repo"}
+  ]
+}

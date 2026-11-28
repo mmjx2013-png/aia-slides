@@ -116,13 +116,13 @@
   /* ---------- light: pointer, tilt, or a slow drift ---------- */
   var L = { x: 1300, y: 180, src: 'drift', t0: 0 }, lastMove = -1e9;
   function stageXY(cx, cy) { var r = stage.getBoundingClientRect(), k = r.width / 1920; return { x: (cx - r.left) / k, y: (cy - r.top) / k }; }
-  addEventListener('pointermove', function (e) { var p = stageXY(e.clientX, e.clientY); L.x = p.x; L.y = p.y; L.src = 'pointer'; lastMove = performance.now(); wake(); }, { passive: true });
-  addEventListener('pointerdown', function (e) { var p = stageXY(e.clientX, e.clientY); L.x = p.x; L.y = p.y; lastMove = performance.now(); wake(); }, { passive: true });
+  addEventListener('pointermove', function (e) { var p = stageXY(e.clientX, e.clientY); L.x = p.x; L.y = p.y; L.src = 'pointer'; L.dirty = true; lastMove = performance.now(); wake(); }, { passive: true });
+  addEventListener('pointerdown', function (e) { var p = stageXY(e.clientX, e.clientY); L.x = p.x; L.y = p.y; L.src = 'pointer'; L.dirty = true; lastMove = performance.now(); wake(); }, { passive: true });
   /* phones and tablets: tilt moves the light (iOS asks for permission, so there the touch position drives it instead) */
   if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== 'function') {
     addEventListener('deviceorientation', function (e) {
       if (e.gamma == null) return;
-      L.x = 960 + clamp(e.gamma, -35, 35) / 35 * 900; L.y = 540 + clamp((e.beta || 45) - 45, -35, 35) / 35 * 500; L.src = 'tilt'; lastMove = performance.now(); wake();
+      L.x = 960 + clamp(e.gamma, -35, 35) / 35 * 900; L.y = 540 + clamp((e.beta || 45) - 45, -35, 35) / 35 * 500; L.src = 'tilt'; L.dirty = true; lastMove = performance.now(); wake();
     });
   }
   function light(it) {
@@ -135,23 +135,35 @@
     s.setProperty('--li', clamp(1 - Math.hypot(dx, dy) / 1600, .25, 1).toFixed(3));
   }
 
-  /* ---------- one clock: background drift, light, and the per-slide motion ---------- */
-  var cur = null, running = false, t0 = performance.now(), hooks = [];
+  /* ---------- one clock: a camera move on entry, pointer parallax, light, and the per-slide motion ----------
+     Re-filtering a glass element costs real work, so the background moves only when there is a reason: an 11 s camera
+     move after a slide appears (ease-out, then it rests) and a small parallax that follows the pointer or the tilt.
+     When nothing moves the loop stops, and the glass costs nothing. */
+  var cur = null, running = false, t0 = performance.now(), hooks = [], par = { x: 0, y: 0, tx: 0, ty: 0 }, lastLight = 0;
   function frame(t) {
     var any = false;
+    if (window.__glass && window.__glass.pause) { running = false; return; }
     if (cur && !still()) {
-      var s = (t - t0) / 1000, D = cur._drift;
+      var s = (t - t0) / 1000, D = cur._drift, idle = performance.now() - lastMove > 4000;
       if (D) {
-        cur.style.setProperty('--dx', (Math.sin(s * D.f) * D.x).toFixed(2) + 'px');
-        cur.style.setProperty('--dy', (Math.cos(s * D.f * .8) * D.y).toFixed(2) + 'px');
-        cur.style.setProperty('--ds', (1 + D.s * (.5 + .5 * Math.sin(s * D.f * .6))).toFixed(4));
-        any = true;
+        var p = Math.min(1, s / 11), e = 1 - Math.pow(1 - p, 3);          /* camera move: from one corner of the drift box to the other */
+        par.tx = (L.src === 'drift' ? 0 : (L.x / 1920 - .5) * -2 * D.px); par.ty = (L.src === 'drift' ? 0 : (L.y / 1080 - .5) * -2 * D.px);
+        par.x += (par.tx - par.x) * .12; par.y += (par.ty - par.y) * .12;
+        var moving = p < 1 || Math.abs(par.tx - par.x) > .05 || Math.abs(par.ty - par.y) > .05;
+        if (moving || !cur._rest) {
+          cur.style.setProperty('--dx', (D.x * (1 - 2 * e) + par.x).toFixed(2) + 'px');
+          cur.style.setProperty('--dy', (D.y * (2 * e - 1) * .8 + par.y).toFixed(2) + 'px');
+          cur.style.setProperty('--ds', (1 + D.s * (1 - e)).toFixed(4));
+          cur._rest = !moving;
+        }
+        if (moving) any = true;
       }
-      if (performance.now() - lastMove > 4000) { L.x = 960 + Math.cos(s * .35) * 760; L.y = 300 + Math.sin(s * .5) * 220; L.src = 'drift'; }
+      if (idle) {   /* nobody is touching: the light circles slowly (overlays only, 20 updates a second) */
+        if (t - lastLight > 50) { lastLight = t; L.x = 960 + Math.cos(s * .35) * 760; L.y = 300 + Math.sin(s * .5) * 220; L.src = 'drift'; items.forEach(function (it) { if (it.slide === cur) light(it); }); }
+        any = true;
+      } else if (L.dirty) { L.dirty = false; items.forEach(function (it) { if (it.slide === cur) light(it); }); }
       hooks.forEach(function (h) { if (h.slide === cur && h.tick) { if (h.tick(s) !== false) any = true; } });
-      any = true;
     }
-    if (cur) items.forEach(function (it) { if (it.slide === cur) light(it); });
     if (any) requestAnimationFrame(frame); else running = false;
   }
   function wake() { if (!running) { running = true; requestAnimationFrame(frame); } }
@@ -160,7 +172,8 @@
     if (s !== cur) {
       cur = s;
       var d = (s.dataset.drift || '18,10,.02').split(',').map(Number);
-      s._drift = { x: d[0], y: d[1], s: d[2], f: d[3] || .16 };
+      s._drift = { x: d[0], y: d[1], s: d[2], px: d[0] * .6 }; s._rest = false;
+      items.forEach(function (it) { if (it.slide === s) light(it); });
       t0 = performance.now();
       hooks.forEach(function (h) { if (h.active) h.active(h.slide === s); });
     }

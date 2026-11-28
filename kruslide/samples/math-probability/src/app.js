@@ -121,8 +121,8 @@
     return {
       set: function (st, prev) {
         ch.theory(st >= 1);
-        if (still() && N === 0) { counts = [0, 0, 0, 0, 0, 0]; N = 0; roll(st === 2 ? 1000 : st === 1 ? 100 : 12); return; }
-        if (st === 2 && prev === 1 && N < 1000) roll(1000);
+        if (st === 2 && prev !== 2 && N < 1000) { roll(1000 - N); return; }   /* top the experiment up to 1000 rolls */
+        if (still() && N === 0) roll(st === 1 ? 100 : 12);
       },
       leave: function () { if (run) run.stop(); }
     };
@@ -158,8 +158,8 @@
     return {
       set: function (st, prev) {
         ch.theory(st >= 1);
-        if (still() && N === 0) { roll(st >= 1 ? 1000 : 60); return; }
-        if (st === 1 && prev === 0 && N < 1000) roll(1000);
+        if (st >= 1 && prev < 1 && N < 1000) { roll(1000 - N); return; }   /* top the experiment up to 1000 rolls */
+        if (still() && N === 0) roll(60);
       },
       leave: function () { if (run) run.stop(); }
     };
