@@ -4,6 +4,8 @@
 Parts: src/parts/*.html in name order (one <section class="slide"> each).
 Inlines src/style.css + src/slides.css + src/tools.css, src/symbols.svg, and the scripts in JS below.
 engine.js and tools.js are copies of the calculus sample (Thai labels); kit.js holds small shared helpers; deck.js is this deck.
+Photos: src/img/<name>.webp (each <= 250 KB, credited in CREDITS.md) are inlined as data URIs wherever a part or the CSS
+says {{img:<name>}}, so index.html stays one self-contained file (the platform ships only index.html).
 Fonts are NOT copied: they come from the shared folder ../_shared/fonts/ (same origin, so the CSP allows them)."""
 import re, json, hashlib, base64
 from pathlib import Path
@@ -34,6 +36,18 @@ for k, s in enumerate(re.split(r'(?=<section\b)', body)[1:], 1):
 
 def read(name): return (SRC / name).read_text(encoding='utf-8')
 css = read('style.css') + '\n' + read('slides.css') + '\n' + read('tools.css')
+
+used = set()
+def img(m):
+    f = SRC / 'img' / (m.group(1) + '.webp')
+    if not f.exists(): problems.append('missing image ' + f.name); return ''
+    if f.stat().st_size > 250_000: problems.append(f'{f.name} is over 250 KB')
+    used.add(f.name)
+    return 'data:image/webp;base64,' + base64.b64encode(f.read_bytes()).decode()
+body = re.sub(r'\{\{img:([a-z0-9-]+)\}\}', img, body)
+css = re.sub(r'\{\{img:([a-z0-9-]+)\}\}', img, css)
+unused = sorted(p.name for p in (SRC / 'img').glob('*.webp') if p.name not in used)
+if unused: problems.append('images not used: ' + ', '.join(unused))
 js = '\n'.join(read(f) for f in JS)
 if re.search(r'https?://', js.replace('http://www.w3.org/2000/svg', '').replace('http://www.w3.org/1999/xlink', '')): problems.append('a URL in the scripts')
 

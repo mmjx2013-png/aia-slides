@@ -660,9 +660,9 @@
     "semantic_hash": ""
   },
   "kruslide/platform/package.json": {
-    "mtime": 1795851666.2581143,
-    "seen": 1795853060.7784927,
-    "ast_hash": "0737fee0b3906d02bd419eaf5ba89d1f",
+    "mtime": 1795862164.6897922,
+    "seen": 1795862566.2262487,
+    "ast_hash": "4a3b169ad278631c25a867714eb8b270",
     "semantic_hash": ""
   },
   "kruslide/platform/scripts/dev.mjs": {
@@ -690,15 +690,15 @@
     "semantic_hash": ""
   },
   "kruslide/platform/src/env.ts": {
-    "mtime": 1795858204.781549,
-    "seen": 1795858719.5124233,
-    "ast_hash": "33fdb1d0fd9bb00a3882b5b2f2a1cd49",
+    "mtime": 1795861867.904302,
+    "seen": 1795862566.226575,
+    "ast_hash": "d651d95533ff051ccacc0a364990ebe7",
     "semantic_hash": ""
   },
   "kruslide/platform/src/index.ts": {
-    "mtime": 1795858661.7292733,
-    "seen": 1795858719.5124261,
-    "ast_hash": "d1a1ef069e43517af86e2cd37841abce",
+    "mtime": 1795862046.2617426,
+    "seen": 1795862566.226579,
+    "ast_hash": "2ab2c2dc79709891a43c60a786389a50",
     "semantic_hash": ""
   },
   "kruslide/platform/src/lib/audit.ts": {
@@ -708,9 +708,9 @@
     "semantic_hash": "79009dab375a6d7b290681449f618da7"
   },
   "kruslide/platform/src/lib/config.ts": {
-    "mtime": 1795858204.7818596,
-    "seen": 1795858719.5124729,
-    "ast_hash": "74ac9f3ec972c30409574b2e90837e85",
+    "mtime": 1795861955.9993083,
+    "seen": 1795862566.2266724,
+    "ast_hash": "9638a914c1d74b8b769add6c5c2eac69",
     "semantic_hash": ""
   },
   "kruslide/platform/src/lib/cookies.ts": {
@@ -726,10 +726,10 @@
     "semantic_hash": "f1484428e6ed4735788d7457b0abe8bf"
   },
   "kruslide/platform/src/lib/csrf.ts": {
-    "mtime": 1795847293.225665,
-    "seen": 1795851253.2342715,
-    "ast_hash": "72745cd0ae693321ca555b62c3480266",
-    "semantic_hash": "72745cd0ae693321ca555b62c3480266"
+    "mtime": 1795861955.9997056,
+    "seen": 1795862566.2267632,
+    "ast_hash": "1857b3c070bf0baa17d039cf250f361c",
+    "semantic_hash": ""
   },
   "kruslide/platform/src/lib/deckmeta.ts": {
     "mtime": 1795849357.57645,
@@ -816,27 +816,27 @@
     "semantic_hash": "cd65781caf08ab55c4e76be5559f3e6f"
   },
   "kruslide/platform/src/routes/admin.ts": {
-    "mtime": 1795858653.1643267,
-    "seen": 1795858719.5131617,
-    "ast_hash": "bab066fcf3e979c73bbad6686ba71cfb",
+    "mtime": 1795862076.1769037,
+    "seen": 1795862566.2274525,
+    "ast_hash": "04092a9fe747648e60ef4e750a9e4d93",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/auth.ts": {
-    "mtime": 1795858457.2835393,
-    "seen": 1795858719.5131671,
-    "ast_hash": "57d9636226c70eb47b88f1b3c5b50c6e",
+    "mtime": 1795862046.2621927,
+    "seen": 1795862566.2275362,
+    "ast_hash": "7a5b6ce6cca8567079ac4575acd57346",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/deck.ts": {
-    "mtime": 1795858447.5119739,
-    "seen": 1795858719.5131707,
-    "ast_hash": "6763687a5d1bf43cdb9614a6ad62433f",
+    "mtime": 1795861867.9056287,
+    "seen": 1795862566.2275395,
+    "ast_hash": "3b8c75c7bc0369a5401dee82575fc0aa",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/member.ts": {
-    "mtime": 1795858425.0896137,
-    "seen": 1795858719.513173,
-    "ast_hash": "e4a82f955d8e48d0e0f541d2d5b64530",
+    "mtime": 1795862076.1763117,
+    "seen": 1795862566.2275422,
+    "ast_hash": "a77e11a8a15736ada4f22d380f35c971",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/privacy.ts": {
@@ -846,9 +846,9 @@
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/static.ts": {
-    "mtime": 1795851301.2940924,
-    "seen": 1795853060.7790546,
-    "ast_hash": "3dd48886027b96ec17624db8c46f38ca",
+    "mtime": 1795861867.9051743,
+    "seen": 1795862566.2276957,
+    "ast_hash": "48efc577d61fe978a5c6421eb90be7e0",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/webhooks.ts": {
@@ -858,15 +858,15 @@
     "semantic_hash": "b11e6e75dfd24154af1b1a6a336a43ab"
   },
   "kruslide/platform/src/views/css.ts": {
-    "mtime": 1795859341.7979953,
-    "seen": 1795859795.7830625,
-    "ast_hash": "1663517bdd7df73cb1f50c197e25a49f",
+    "mtime": 1795862076.1786873,
+    "seen": 1795862566.2277825,
+    "ast_hash": "77e4b7eabdf857219a7ba15d871d4424",
     "semantic_hash": ""
   },
   "kruslide/platform/src/views/layout.ts": {
-    "mtime": 1795858363.038413,
-    "seen": 1795858719.5134273,
-    "ast_hash": "ca6bf17bce075c9f7b8ee75d0605dd49",
+    "mtime": 1795862046.2625275,
+    "seen": 1795862566.2277894,
+    "ast_hash": "19b88e6ca7ce9a5131b22c4a37a656a4",
     "semantic_hash": ""
   },
   "kruslide/platform/test/admin.test.ts": {
@@ -894,10 +894,10 @@
     "semantic_hash": "145fb3fe1d6fb97b6a5779176e0b0197"
   },
   "kruslide/platform/test/env.d.ts": {
-    "mtime": 1795847809.769885,
-    "seen": 1795851253.234307,
-    "ast_hash": "c6b94429245365e2c8225f1ae275d4cb",
-    "semantic_hash": "c6b94429245365e2c8225f1ae275d4cb"
+    "mtime": 1795861876.3232093,
+    "seen": 1795862566.2279437,
+    "ast_hash": "4c015dd46617cad1380bdbb9b92be8aa",
+    "semantic_hash": ""
   },
   "kruslide/platform/test/headers.test.ts": {
     "mtime": 1795848087.285056,
@@ -906,9 +906,9 @@
     "semantic_hash": "0703afcc2e78192b0667674bbc7f1e25"
   },
   "kruslide/platform/test/helpers.ts": {
-    "mtime": 1795858810.9528432,
-    "seen": 1795859795.7832162,
-    "ast_hash": "f50684ca5e956599c82fa6be672bd11d",
+    "mtime": 1795862275.574319,
+    "seen": 1795862566.2279825,
+    "ast_hash": "163d48f7cd09d088427dce84ee0b7fe5",
     "semantic_hash": ""
   },
   "kruslide/platform/test/pricing.test.ts": {
@@ -1032,9 +1032,9 @@
     "semantic_hash": "ffd4f79dfa6dc8363ac03b67a7cdb050"
   },
   "kruslide/platform/README.md": {
-    "mtime": 1795859679.5660577,
-    "seen": 1795859795.789044,
-    "ast_hash": "76ce940897dba8059cb8a9808eaa914f",
+    "mtime": 1795862535.8639708,
+    "seen": 1795862566.2382913,
+    "ast_hash": "71d60bdea336dfdbc541047497146823",
     "semantic_hash": ""
   },
   "kruslide/platform/migrations/0001_init.sql": {
@@ -1098,9 +1098,9 @@
     "semantic_hash": ""
   },
   "kruslide/platform/src/views/js.ts": {
-    "mtime": 1795858783.5001128,
-    "seen": 1795859795.7830646,
-    "ast_hash": "9808f954425eb758b3484f31d291c9e9",
+    "mtime": 1795862254.284329,
+    "seen": 1795862566.2277858,
+    "ast_hash": "73c531e814992d711b042a1157773cce",
     "semantic_hash": ""
   },
   "kruslide/platform/test/requests.test.ts": {
@@ -1560,9 +1560,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/styles/mechanics/src/mech.js": {
-    "mtime": 1795856724.0118523,
-    "seen": 1795858719.5162516,
-    "ast_hash": "3c91c6ede6ac0b43d0eae256a8e1fd49",
+    "mtime": 1795860573.6003373,
+    "seen": 1795862566.233809,
+    "ast_hash": "a818780ff4a326b162e21cefe3d8acec",
     "semantic_hash": ""
   },
   "kruslide/samples/thai-poem/build.py": {
@@ -1794,9 +1794,9 @@
     "semantic_hash": ""
   },
   "kruslide/backoffice/data/products.json": {
-    "mtime": 1795859750.545678,
-    "seen": 1795859795.7819831,
-    "ast_hash": "0eaa5d40c4bc93185bb3e05074322790",
+    "mtime": 1795860190.6308243,
+    "seen": 1795862566.2260256,
+    "ast_hash": "35f4cd15f21ba1d89d3e2739aab316c5",
     "semantic_hash": ""
   },
   "kruslide/backoffice/data/status.json": {
@@ -1818,9 +1818,9 @@
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/access.ts": {
-    "mtime": 1795859341.7986646,
-    "seen": 1795859795.7828531,
-    "ast_hash": "46a45983d946f4ec08db167404fc2795",
+    "mtime": 1795862254.284007,
+    "seen": 1795862566.2274485,
+    "ast_hash": "678f1dc9f2000d2742f622d9ea3ae535",
     "semantic_hash": ""
   },
   "kruslide/platform/src/routes/adminkit.ts": {
@@ -2388,9 +2388,9 @@
     "semantic_hash": ""
   },
   "kruslide/samples/thai-poem/src/poem.js": {
-    "mtime": 1795855497.8476722,
-    "seen": 1795858719.5163696,
-    "ast_hash": "ec35fc885c1d4443fdf22377ae15c75d",
+    "mtime": 1795860228.152484,
+    "seen": 1795862566.2342348,
+    "ast_hash": "52e622f0112cec3c5231dddde33aa6ec",
     "semantic_hash": ""
   },
   "kruslide/trailer/voice/tts-gemini-3-1-flash__Charon__calm/check.json": {
@@ -2484,9 +2484,9 @@
     "semantic_hash": ""
   },
   "kruslide/backoffice/build.py": {
-    "mtime": 1795859750.5460684,
-    "seen": 1795859795.781926,
-    "ast_hash": "59e511770b8d6090dd49f3cc400c0658",
+    "mtime": 1795860210.5703917,
+    "seen": 1795862566.225909,
+    "ast_hash": "342c6ea7666d59bd55c90157d003fa46",
     "semantic_hash": ""
   },
   "kruslide/backoffice/data/codes.json": {
@@ -2508,39 +2508,87 @@
     "semantic_hash": ""
   },
   "kruslide/backoffice/qa/qa.cjs": {
-    "mtime": 1795859561.2660584,
-    "seen": 1795859795.7820134,
-    "ast_hash": "55e7d33d74f6d039eb670fce3b54f52c",
+    "mtime": 1795859882.4508414,
+    "seen": 1795862566.2261906,
+    "ast_hash": "e9ae94dd141fa938f8c2fc14cf6c6342",
     "semantic_hash": ""
   },
   "kruslide/backoffice/src/app.js": {
-    "mtime": 1795859750.5450602,
-    "seen": 1795859795.782015,
-    "ast_hash": "67e29e53b1c4c882422e6ba1aac8a118",
+    "mtime": 1795860190.6321733,
+    "seen": 1795862566.2261944,
+    "ast_hash": "be92e9cc8da0682d9ce730aa410357ae",
     "semantic_hash": ""
   },
   "kruslide/platform/test/access.test.ts": {
-    "mtime": 1795858925.3905458,
-    "seen": 1795859795.7830887,
-    "ast_hash": "7e0024ec93fd36382241dcd7cdac8e0d",
-    "semantic_hash": ""
-  },
-  "kruslide/backoffice/qa/shots/brief-example.txt": {
-    "mtime": 1795859855.254601,
-    "seen": 1795859859.506145,
-    "ast_hash": "9e34c35e257d78bf088b9b65b7e8a8eb",
+    "mtime": 1795862254.2846453,
+    "seen": 1795862566.2277932,
+    "ast_hash": "c741d9984ab8e47a38809909091f97f7",
     "semantic_hash": ""
   },
   "kruslide/samples/styles/CREDITS.md": {
-    "mtime": 1795859106.0745566,
-    "seen": 1795859795.7894108,
-    "ast_hash": "d3ca4ba6c2c9eec80eed0bffcae84e4d",
+    "mtime": 1795861393.3481922,
+    "seen": 1795862566.239029,
+    "ast_hash": "7c16e61ab364292c53b3cb3da7f0f044",
     "semantic_hash": ""
   },
   "kruslide/samples/styles/README.md": {
-    "mtime": 1795859018.4585512,
-    "seen": 1795859795.789413,
-    "ast_hash": "f3652b40a354e98dc25353b452bf4d73",
+    "mtime": 1795861400.5854743,
+    "seen": 1795862566.2390325,
+    "ast_hash": "6a7656299f9a7f7519d3668b8d7daeb6",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/e2e/demo-smoke.mjs": {
+    "mtime": 1795862208.4814382,
+    "seen": 1795862566.2261987,
+    "ast_hash": "2fc0e0c3f65c63b077a9b8733fb99294",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/scripts/demo-build.mjs": {
+    "mtime": 1795861914.3867235,
+    "seen": 1795862566.2262516,
+    "ast_hash": "0efe6d03fdbece2ec3c540855471818a",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/scripts/demo-deploy.mjs": {
+    "mtime": 1795862428.574754,
+    "seen": 1795862566.2262547,
+    "ast_hash": "7a7258e2809a83cae7f9f427bc67647c",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/scripts/demo-dev.mjs": {
+    "mtime": 1795862111.2747352,
+    "seen": 1795862566.2262578,
+    "ast_hash": "25d5018374ab895298419202edb4431e",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/demo/catalog.ts": {
+    "mtime": 1795862354.4747496,
+    "seen": 1795862566.2265654,
+    "ast_hash": "7f09f79049a0fc43b2dc89cfc449dcef",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/demo/routes.ts": {
+    "mtime": 1795862337.8061805,
+    "seen": 1795862566.2265685,
+    "ast_hash": "0455f640dab4892acd6d7e2803f9e405",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/demo/seed.ts": {
+    "mtime": 1795861987.0347278,
+    "seen": 1795862566.2265713,
+    "ast_hash": "168ae52065b35ac404e39203fced2483",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/src/lib/storage.ts": {
+    "mtime": 1795861854.5307198,
+    "seen": 1795862566.2271626,
+    "ast_hash": "f8f0793f3bf6504a3fa0e5c364d474ff",
+    "semantic_hash": ""
+  },
+  "kruslide/platform/test/demo.test.ts": {
+    "mtime": 1795862323.5347478,
+    "seen": 1795862566.2279398,
+    "ast_hash": "3a90ef227caf3785e1b72b5a96932c58",
     "semantic_hash": ""
   },
   "kruslide/platform/package-lock.json": {
