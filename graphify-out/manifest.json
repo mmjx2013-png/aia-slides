@@ -217,15 +217,15 @@
   },
   "tools/deploy.sh": {
     "mtime": 1795779212.6591067,
-    "seen": 1795779320.0424757,
+    "seen": 1795851253.2343907,
     "ast_hash": "d8774c7c55d7cd1dd958d9c714e020a3",
-    "semantic_hash": ""
+    "semantic_hash": "d8774c7c55d7cd1dd958d9c714e020a3"
   },
   "tools/deploy_deck.sh": {
     "mtime": 1795779212.659885,
-    "seen": 1795779320.0424786,
+    "seen": 1795851253.2343917,
     "ast_hash": "35b949ff707f93170a3d39bd4c70922b",
-    "semantic_hash": ""
+    "semantic_hash": "35b949ff707f93170a3d39bd4c70922b"
   },
   "tools/encode_frames.py": {
     "mtime": 1795512149.9502568,
@@ -294,8 +294,8 @@
     "semantic_hash": "f25572adb29343f1365c34cfcd24a216"
   },
   "MEMORY.md": {
-    "mtime": 1795586104.6068785,
-    "seen": 1795589700.4339921,
+    "mtime": 1795849765.3620012,
+    "seen": 1795851253.2344227,
     "ast_hash": "1210e76eb96460c9f29ad125d448e6c0",
     "semantic_hash": "1210e76eb96460c9f29ad125d448e6c0"
   },
@@ -475,9 +475,9 @@
   },
   "trading-data/README.md": {
     "mtime": 1795747878.2739909,
-    "seen": 1795779320.0425873,
+    "seen": 1795851253.2344515,
     "ast_hash": "7e102e61c3085405b97ab8d09dc3a112",
-    "semantic_hash": ""
+    "semantic_hash": "7e102e61c3085405b97ab8d09dc3a112"
   },
   "satit-site/pitch/security-report.pdf": {
     "mtime": 1795595472.3699102,
@@ -487,560 +487,584 @@
   },
   "teacher-slides/mockups/make.py": {
     "mtime": 1795766008.868737,
-    "seen": 1795779320.0423474,
+    "seen": 1795851253.2343395,
     "ast_hash": "167803474412cd9af60a53873a0ba714",
-    "semantic_hash": ""
+    "semantic_hash": "167803474412cd9af60a53873a0ba714"
   },
   "teacher-slides/mockups/make2.py": {
     "mtime": 1795767611.980341,
-    "seen": 1795779320.0423508,
+    "seen": 1795851253.234341,
     "ast_hash": "a437b7aa056884f65479dac05ebfe782",
-    "semantic_hash": ""
+    "semantic_hash": "a437b7aa056884f65479dac05ebfe782"
   },
   "teacher-slides/mockups/shoot.cjs": {
     "mtime": 1795765953.1845129,
-    "seen": 1795779320.042353,
+    "seen": 1795851253.234342,
     "ast_hash": "4b5593fc1d27b044ae9f70ddc1948d96",
-    "semantic_hash": ""
+    "semantic_hash": "4b5593fc1d27b044ae9f70ddc1948d96"
   },
   "teacher-slides/mockups/shoot2.cjs": {
     "mtime": 1795766625.1045527,
-    "seen": 1795779320.0423553,
+    "seen": 1795851253.234343,
     "ast_hash": "b839965d8174758ba71c0e5e6fc53e1f",
-    "semantic_hash": ""
+    "semantic_hash": "b839965d8174758ba71c0e5e6fc53e1f"
   },
   "teacher-slides/unit4/build.py": {
     "mtime": 1795776322.047861,
-    "seen": 1795779320.042357,
+    "seen": 1795851253.2343445,
     "ast_hash": "345eb69fc6df34f88cf2d570d576775d",
-    "semantic_hash": ""
+    "semantic_hash": "345eb69fc6df34f88cf2d570d576775d"
   },
   "teacher-slides/unit4/engine.js": {
     "mtime": 1795778092.6360786,
-    "seen": 1795779320.0423636,
+    "seen": 1795851253.2343454,
     "ast_hash": "7892b3fd19bced835b4853fc7067a070",
-    "semantic_hash": ""
+    "semantic_hash": "7892b3fd19bced835b4853fc7067a070"
   },
   "teacher-slides/unit4/gen/gen30.py": {
     "mtime": 1795772365.2042754,
-    "seen": 1795779320.0423656,
+    "seen": 1795851253.2343469,
     "ast_hash": "2d8f8238c491b03f2f75a89aa3849c7b",
-    "semantic_hash": ""
+    "semantic_hash": "2d8f8238c491b03f2f75a89aa3849c7b"
   },
   "teacher-slides/unit4/gen/gen35.py": {
     "mtime": 1795769945.5883107,
-    "seen": 1795779320.0423672,
+    "seen": 1795851253.234348,
     "ast_hash": "03c916f0843dd6c4a82b05d16f9ca1ec",
-    "semantic_hash": ""
+    "semantic_hash": "03c916f0843dd6c4a82b05d16f9ca1ec"
   },
   "teacher-slides/unit4/keys/vault.py": {
     "mtime": 1795779124.890689,
-    "seen": 1795779320.0423691,
+    "seen": 1795851253.2343493,
     "ast_hash": "73cf2aa1dd968e40f08e711dfc828946",
-    "semantic_hash": ""
+    "semantic_hash": "73cf2aa1dd968e40f08e711dfc828946"
   },
   "teacher-slides/unit4/lock.js": {
     "mtime": 1795776253.4825182,
-    "seen": 1795779320.042371,
+    "seen": 1795851253.2343547,
     "ast_hash": "8998923493493893aeabfe812dec09b6",
-    "semantic_hash": ""
+    "semantic_hash": "8998923493493893aeabfe812dec09b6"
   },
   "teacher-slides/unit4/preview-clip.cjs": {
     "mtime": 1795770051.4149618,
-    "seen": 1795779320.042373,
+    "seen": 1795851253.234356,
     "ast_hash": "6295f7ca0677cfe8a152638eeeb09102",
-    "semantic_hash": ""
+    "semantic_hash": "6295f7ca0677cfe8a152638eeeb09102"
   },
   "teacher-slides/unit4/qa.cjs": {
     "mtime": 1795768210.4322267,
-    "seen": 1795779320.0423746,
+    "seen": 1795851253.2343574,
     "ast_hash": "75c4bae5bb3ab66d17823e38e8d23951",
-    "semantic_hash": ""
+    "semantic_hash": "75c4bae5bb3ab66d17823e38e8d23951"
   },
   "teacher-slides/unit4/sheet.py": {
     "mtime": 1795768065.4380314,
-    "seen": 1795779320.0423768,
+    "seen": 1795851253.2343583,
     "ast_hash": "76c3f447c63b5f2ab247c039eb98c606",
-    "semantic_hash": ""
+    "semantic_hash": "76c3f447c63b5f2ab247c039eb98c606"
   },
   "teacher-slides/unit4/tests/engine.test.cjs": {
     "mtime": 1795775151.591447,
-    "seen": 1795779320.0423787,
+    "seen": 1795851253.2343595,
     "ast_hash": "4d8052245683a3811bf2ed0b73052355",
-    "semantic_hash": ""
+    "semantic_hash": "4d8052245683a3811bf2ed0b73052355"
   },
   "teacher-slides/unit4/tests/tools.test.cjs": {
     "mtime": 1795775422.3594055,
-    "seen": 1795779320.0423808,
+    "seen": 1795851253.234361,
     "ast_hash": "27513edae0a42daae97e67f712761073",
-    "semantic_hash": ""
+    "semantic_hash": "27513edae0a42daae97e67f712761073"
   },
   "teacher-slides/unit4/tools.js": {
     "mtime": 1795778532.5716147,
-    "seen": 1795779320.0423825,
+    "seen": 1795851253.2343621,
     "ast_hash": "3d0e68c011a30267a4460358032c96a9",
-    "semantic_hash": ""
+    "semantic_hash": "3d0e68c011a30267a4460358032c96a9"
   },
   "tools/fetch_fund_prices.sh": {
     "mtime": 1795753605.1664026,
-    "seen": 1795779320.0424845,
+    "seen": 1795851253.2343938,
     "ast_hash": "4812c78294e28731a1d054acb032d692",
-    "semantic_hash": ""
+    "semantic_hash": "4812c78294e28731a1d054acb032d692"
   },
   "teacher-slides/mockups/fonts/BricolageGrotesque-OFL.txt": {
     "mtime": 1795766124.9312727,
-    "seen": 1795779320.0425644,
+    "seen": 1795851253.234439,
     "ast_hash": "bd05ea51cf13ec198f9133c1f1f64da0",
-    "semantic_hash": ""
+    "semantic_hash": "bd05ea51cf13ec198f9133c1f1f64da0"
   },
   "teacher-slides/mockups/fonts/InstrumentSans-OFL.txt": {
     "mtime": 1795766124.9959686,
-    "seen": 1795779320.042567,
+    "seen": 1795851253.2344398,
     "ast_hash": "030a9e886b4fe2e1720b5db020eca3ad",
-    "semantic_hash": ""
+    "semantic_hash": "030a9e886b4fe2e1720b5db020eca3ad"
   },
   "teacher-slides/mockups/fonts/NothingYouCouldDo-OFL.txt": {
     "mtime": 1795765906.1124609,
-    "seen": 1795779320.0425687,
+    "seen": 1795851253.2344413,
     "ast_hash": "42a7c035f1ddb3fcda7ddf746519b017",
-    "semantic_hash": ""
+    "semantic_hash": "42a7c035f1ddb3fcda7ddf746519b017"
   },
   "teacher-slides/mockups/fonts/Outfit-OFL.txt": {
     "mtime": 1795765906.1120946,
-    "seen": 1795779320.0425704,
+    "seen": 1795851253.2344422,
     "ast_hash": "af9efd1ed592546b9477763b02d684c1",
-    "semantic_hash": ""
+    "semantic_hash": "af9efd1ed592546b9477763b02d684c1"
   },
   "teacher-slides/unit4/BOOK-ANSWERS.md": {
     "mtime": 1795776147.013781,
-    "seen": 1795779320.042572,
+    "seen": 1795851253.2344434,
     "ast_hash": "e3a96be6b8762b5db2131c95b3a901b1",
-    "semantic_hash": ""
+    "semantic_hash": "e3a96be6b8762b5db2131c95b3a901b1"
   },
   "teacher-slides/unit4/CONTRACT.md": {
     "mtime": 1795768474.9724357,
-    "seen": 1795779320.042574,
+    "seen": 1795851253.2344446,
     "ast_hash": "aacc65e1eda7ee3481d1d1ad0aa99dd2",
-    "semantic_hash": ""
+    "semantic_hash": "aacc65e1eda7ee3481d1d1ad0aa99dd2"
   },
   "teacher-slides/unit4/fonts/LICENSE-Inter.txt": {
     "mtime": 1795767860.337775,
-    "seen": 1795779320.0425754,
+    "seen": 1795851253.2344456,
     "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
-    "semantic_hash": ""
+    "semantic_hash": "d0500719b7ab0a60885be95f4f44306b"
   },
   "teacher-slides/unit4/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
     "mtime": 1795768146.6604588,
-    "seen": 1795779320.0425775,
+    "seen": 1795851253.2344468,
     "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
-    "semantic_hash": ""
+    "semantic_hash": "0d63e4003388c97921e7e765e8b921a2"
   },
   "teacher-slides/unit4/gen/README.md": {
     "mtime": 1795772365.2060702,
-    "seen": 1795779320.0425797,
+    "seen": 1795851253.234448,
     "ast_hash": "b559f9888e172d0ba2904a290cec2768",
-    "semantic_hash": ""
+    "semantic_hash": "b559f9888e172d0ba2904a290cec2768"
   },
   "teacher-slides/unit4/guide/guide.pdf": {
     "mtime": 1795779207.5306938,
-    "seen": 1795779320.0425973,
+    "seen": 1795851253.2344565,
     "ast_hash": "f5b1c7bd83815f706b1029247f556d28",
-    "semantic_hash": ""
+    "semantic_hash": "f5b1c7bd83815f706b1029247f556d28"
   },
   "teacher-slides/unit4/symbols.svg": {
     "mtime": 1795768045.4340303,
-    "seen": 1795779320.0425992,
+    "seen": 1795851253.2344587,
     "ast_hash": "bd4aab3542c8d65e4e6f2ed113a4c092",
-    "semantic_hash": ""
+    "semantic_hash": "bd4aab3542c8d65e4e6f2ed113a4c092"
   },
   "kruslide/platform/e2e/smoke.mjs": {
     "mtime": 1795849617.5509417,
-    "seen": 1795849714.1653383,
+    "seen": 1795851253.2342536,
     "ast_hash": "a8d6c681c45c38a5235fe0c2a7adcec3",
-    "semantic_hash": ""
+    "semantic_hash": "a8d6c681c45c38a5235fe0c2a7adcec3"
   },
   "kruslide/platform/package.json": {
     "mtime": 1795848231.2659101,
-    "seen": 1795849714.1653414,
+    "seen": 1795851253.2342577,
     "ast_hash": "b999cb7a9f90bf47bcefd898b5e7420f",
-    "semantic_hash": ""
+    "semantic_hash": "b999cb7a9f90bf47bcefd898b5e7420f"
   },
   "kruslide/platform/scripts/dev.mjs": {
     "mtime": 1795848288.20045,
-    "seen": 1795849714.1653435,
+    "seen": 1795851253.2342591,
     "ast_hash": "bce0ccdf1666424c2453f428e9fb213a",
-    "semantic_hash": ""
+    "semantic_hash": "bce0ccdf1666424c2453f428e9fb213a"
   },
   "kruslide/platform/scripts/mock-line.mjs": {
     "mtime": 1795848176.1019068,
-    "seen": 1795849714.1653445,
+    "seen": 1795851253.2342606,
     "ast_hash": "3c1ca4fdc95f33dce761c49601fcc22e",
-    "semantic_hash": ""
+    "semantic_hash": "3c1ca4fdc95f33dce761c49601fcc22e"
   },
   "kruslide/platform/scripts/seed.mjs": {
     "mtime": 1795849357.5768945,
-    "seen": 1795849714.165346,
+    "seen": 1795851253.234262,
     "ast_hash": "ddcd845b744408ecfccec87172a20257",
-    "semantic_hash": ""
+    "semantic_hash": "ddcd845b744408ecfccec87172a20257"
   },
   "kruslide/platform/src/db.ts": {
-    "mtime": 1795849488.7740524,
-    "seen": 1795849714.1653469,
-    "ast_hash": "7669221c4333712255a5c4399a32ab43",
-    "semantic_hash": ""
+    "mtime": 1795851171.184856,
+    "seen": 1795851253.234263,
+    "ast_hash": "d59b38101734d9fe2f3449223ac8a510",
+    "semantic_hash": "d59b38101734d9fe2f3449223ac8a510"
   },
   "kruslide/platform/src/env.ts": {
-    "mtime": 1795847249.3613396,
-    "seen": 1795849714.165348,
-    "ast_hash": "ced7d6f0b87883f578256ab77cb75495",
-    "semantic_hash": ""
+    "mtime": 1795851143.141358,
+    "seen": 1795851253.2342644,
+    "ast_hash": "7f8dce478381ca07373ca7055e3701df",
+    "semantic_hash": "7f8dce478381ca07373ca7055e3701df"
   },
   "kruslide/platform/src/index.ts": {
     "mtime": 1795849396.308494,
-    "seen": 1795849714.1653495,
+    "seen": 1795851253.2342653,
     "ast_hash": "b02e29bed9f631bcbfc45ebfd7bca536",
-    "semantic_hash": ""
+    "semantic_hash": "b02e29bed9f631bcbfc45ebfd7bca536"
   },
   "kruslide/platform/src/lib/audit.ts": {
     "mtime": 1795847293.2285385,
-    "seen": 1795849714.165351,
+    "seen": 1795851253.2342665,
     "ast_hash": "79009dab375a6d7b290681449f618da7",
-    "semantic_hash": ""
+    "semantic_hash": "79009dab375a6d7b290681449f618da7"
   },
   "kruslide/platform/src/lib/config.ts": {
-    "mtime": 1795847293.2221456,
-    "seen": 1795849714.1653528,
-    "ast_hash": "8b438c83b13d98ef8d3808257366ca78",
-    "semantic_hash": ""
+    "mtime": 1795851203.079685,
+    "seen": 1795851253.2342677,
+    "ast_hash": "e29fb909694d410d6fadb59084ee73e3",
+    "semantic_hash": "e29fb909694d410d6fadb59084ee73e3"
   },
   "kruslide/platform/src/lib/cookies.ts": {
     "mtime": 1795847249.3654006,
-    "seen": 1795849714.1653538,
+    "seen": 1795851253.234269,
     "ast_hash": "e343b5ce874c14956a3d5ad2c7948ab2",
-    "semantic_hash": ""
+    "semantic_hash": "e343b5ce874c14956a3d5ad2c7948ab2"
   },
   "kruslide/platform/src/lib/crypto.ts": {
     "mtime": 1795847249.3627543,
-    "seen": 1795849714.1653554,
+    "seen": 1795851253.23427,
     "ast_hash": "f1484428e6ed4735788d7457b0abe8bf",
-    "semantic_hash": ""
+    "semantic_hash": "f1484428e6ed4735788d7457b0abe8bf"
   },
   "kruslide/platform/src/lib/csrf.ts": {
     "mtime": 1795847293.225665,
-    "seen": 1795849714.1653569,
+    "seen": 1795851253.2342715,
     "ast_hash": "72745cd0ae693321ca555b62c3480266",
-    "semantic_hash": ""
+    "semantic_hash": "72745cd0ae693321ca555b62c3480266"
   },
   "kruslide/platform/src/lib/deckmeta.ts": {
     "mtime": 1795849357.57645,
-    "seen": 1795849714.165358,
+    "seen": 1795851253.2342727,
     "ast_hash": "1f98583d4fd9dfb515a6a1809bcc528d",
-    "semantic_hash": ""
+    "semantic_hash": "1f98583d4fd9dfb515a6a1809bcc528d"
   },
   "kruslide/platform/src/lib/html.ts": {
     "mtime": 1795847249.3641639,
-    "seen": 1795849714.1653593,
+    "seen": 1795851253.234274,
     "ast_hash": "d9008154552336810d6a5dabbc9ff6b1",
-    "semantic_hash": ""
+    "semantic_hash": "d9008154552336810d6a5dabbc9ff6b1"
   },
   "kruslide/platform/src/lib/http.ts": {
-    "mtime": 1795847948.4421625,
-    "seen": 1795849714.1653605,
-    "ast_hash": "78372001beb9e4373c65e5be7b5cb6a5",
-    "semantic_hash": ""
+    "mtime": 1795851143.1417162,
+    "seen": 1795851253.234275,
+    "ast_hash": "6501f4b6566c59f5330c4c28cf5374d3",
+    "semantic_hash": "6501f4b6566c59f5330c4c28cf5374d3"
   },
   "kruslide/platform/src/lib/line.ts": {
     "mtime": 1795847317.7727559,
-    "seen": 1795849714.1653616,
+    "seen": 1795851253.234276,
     "ast_hash": "0a895b994405dad0653d36e743aff7aa",
-    "semantic_hash": ""
+    "semantic_hash": "0a895b994405dad0653d36e743aff7aa"
   },
   "kruslide/platform/src/lib/pricing.ts": {
     "mtime": 1795847356.4068534,
-    "seen": 1795849714.1653626,
+    "seen": 1795851253.2342777,
     "ast_hash": "b960d9a501b1ec70567486c30fc00404",
-    "semantic_hash": ""
+    "semantic_hash": "b960d9a501b1ec70567486c30fc00404"
   },
   "kruslide/platform/src/lib/promptpay.ts": {
     "mtime": 1795847356.4083521,
-    "seen": 1795849714.1653638,
+    "seen": 1795851253.234279,
     "ast_hash": "4a4b22961b2a140f19fd4dfa16be7137",
-    "semantic_hash": ""
+    "semantic_hash": "4a4b22961b2a140f19fd4dfa16be7137"
   },
   "kruslide/platform/src/lib/ratelimit.ts": {
     "mtime": 1795847293.2272303,
-    "seen": 1795849714.165365,
+    "seen": 1795851253.23428,
     "ast_hash": "16f446b4c01435635c41566b71aa0081",
-    "semantic_hash": ""
+    "semantic_hash": "16f446b4c01435635c41566b71aa0081"
   },
   "kruslide/platform/src/lib/session.ts": {
     "mtime": 1795847293.2241013,
-    "seen": 1795849714.165366,
+    "seen": 1795851253.2342815,
     "ast_hash": "c34d0f22901d9bb52249ca4c58ad26a6",
-    "semantic_hash": ""
+    "semantic_hash": "c34d0f22901d9bb52249ca4c58ad26a6"
   },
   "kruslide/platform/src/lib/validate.ts": {
     "mtime": 1795849402.0019796,
-    "seen": 1795849714.1653671,
+    "seen": 1795851253.2342827,
     "ast_hash": "cf64c2e17c8e293560a0539621913448",
-    "semantic_hash": ""
+    "semantic_hash": "cf64c2e17c8e293560a0539621913448"
   },
   "kruslide/platform/src/lib/watermark.ts": {
     "mtime": 1795849505.5539858,
-    "seen": 1795849714.1653683,
+    "seen": 1795851253.2342837,
     "ast_hash": "dc13a3ef4bca1b43932576c54e7c4ded",
-    "semantic_hash": ""
+    "semantic_hash": "dc13a3ef4bca1b43932576c54e7c4ded"
   },
   "kruslide/platform/src/payments/index.ts": {
     "mtime": 1795847440.5594635,
-    "seen": 1795849714.1653693,
+    "seen": 1795851253.2342849,
     "ast_hash": "fe066d5c028bb3dc309d717e310226bc",
-    "semantic_hash": ""
+    "semantic_hash": "fe066d5c028bb3dc309d717e310226bc"
   },
   "kruslide/platform/src/payments/manual.ts": {
     "mtime": 1795847440.560949,
-    "seen": 1795849714.1653707,
+    "seen": 1795851253.234286,
     "ast_hash": "ccf6f68001cb3d1f6ad5d981d6854bb6",
-    "semantic_hash": ""
+    "semantic_hash": "ccf6f68001cb3d1f6ad5d981d6854bb6"
   },
   "kruslide/platform/src/payments/stripe.ts": {
     "mtime": 1795847440.5623853,
-    "seen": 1795849714.1653717,
+    "seen": 1795851253.2342873,
     "ast_hash": "bea4012457a0c5289500378caf114049",
-    "semantic_hash": ""
+    "semantic_hash": "bea4012457a0c5289500378caf114049"
   },
   "kruslide/platform/src/router.ts": {
     "mtime": 1795847802.241205,
-    "seen": 1795849714.1653724,
+    "seen": 1795851253.2342885,
     "ast_hash": "cd65781caf08ab55c4e76be5559f3e6f",
-    "semantic_hash": ""
+    "semantic_hash": "cd65781caf08ab55c4e76be5559f3e6f"
   },
   "kruslide/platform/src/routes/admin.ts": {
     "mtime": 1795849488.7746801,
-    "seen": 1795849714.1653738,
+    "seen": 1795851253.2342913,
     "ast_hash": "47af254e4546de89b4c33b83af146686",
-    "semantic_hash": ""
+    "semantic_hash": "47af254e4546de89b4c33b83af146686"
   },
   "kruslide/platform/src/routes/auth.ts": {
     "mtime": 1795847545.558275,
-    "seen": 1795849714.1653752,
+    "seen": 1795851253.2342927,
     "ast_hash": "e140d48a9485906e3994e10a9e8e6655",
-    "semantic_hash": ""
+    "semantic_hash": "e140d48a9485906e3994e10a9e8e6655"
   },
   "kruslide/platform/src/routes/deck.ts": {
     "mtime": 1795848637.5197577,
-    "seen": 1795849714.1653762,
+    "seen": 1795851253.2342942,
     "ast_hash": "5383e64bee5f82db60165eb2491cbe1d",
-    "semantic_hash": ""
+    "semantic_hash": "5383e64bee5f82db60165eb2491cbe1d"
   },
   "kruslide/platform/src/routes/member.ts": {
     "mtime": 1795848519.132085,
-    "seen": 1795849714.1653774,
+    "seen": 1795851253.2342954,
     "ast_hash": "9c18f9782afa5e5790963c7eae3998d8",
-    "semantic_hash": ""
+    "semantic_hash": "9c18f9782afa5e5790963c7eae3998d8"
   },
   "kruslide/platform/src/routes/privacy.ts": {
     "mtime": 1795847655.6728137,
-    "seen": 1795849714.1653783,
+    "seen": 1795851253.2342966,
     "ast_hash": "b45763d43e0dd2fd845ffc2fed9bb84a",
-    "semantic_hash": ""
+    "semantic_hash": "b45763d43e0dd2fd845ffc2fed9bb84a"
   },
   "kruslide/platform/src/routes/static.ts": {
     "mtime": 1795847655.6708705,
-    "seen": 1795849714.1653793,
+    "seen": 1795851253.2342975,
     "ast_hash": "6620f8ceecafcb50e57aeda235475bbc",
-    "semantic_hash": ""
+    "semantic_hash": "6620f8ceecafcb50e57aeda235475bbc"
   },
   "kruslide/platform/src/routes/webhooks.ts": {
     "mtime": 1795847786.9070587,
-    "seen": 1795849714.165381,
+    "seen": 1795851253.234299,
     "ast_hash": "b11e6e75dfd24154af1b1a6a336a43ab",
-    "semantic_hash": ""
+    "semantic_hash": "b11e6e75dfd24154af1b1a6a336a43ab"
   },
   "kruslide/platform/src/views/css.ts": {
-    "mtime": 1795849610.6249905,
-    "seen": 1795849714.165382,
-    "ast_hash": "1e361cc0dc47a6ec1feacd92a8dae83c",
-    "semantic_hash": ""
+    "mtime": 1795851203.079325,
+    "seen": 1795851253.2343001,
+    "ast_hash": "c963b51dc32d92e30c5db46804e6c01a",
+    "semantic_hash": "c963b51dc32d92e30c5db46804e6c01a"
   },
   "kruslide/platform/src/views/layout.ts": {
-    "mtime": 1795849488.775108,
-    "seen": 1795849714.1653829,
-    "ast_hash": "2f7b65d34cab9db94b1373c1b0a3a5c5",
-    "semantic_hash": ""
+    "mtime": 1795851136.1340828,
+    "seen": 1795851253.2343013,
+    "ast_hash": "8bfece866c0c3a660aae0fb8e6a1f3a3",
+    "semantic_hash": "8bfece866c0c3a660aae0fb8e6a1f3a3"
   },
   "kruslide/platform/test/admin.test.ts": {
     "mtime": 1795849501.5510647,
-    "seen": 1795849714.1653845,
+    "seen": 1795851253.2343025,
     "ast_hash": "78703822ac5317e60bc4fe640d69e80c",
-    "semantic_hash": ""
+    "semantic_hash": "78703822ac5317e60bc4fe640d69e80c"
   },
   "kruslide/platform/test/auth.test.ts": {
     "mtime": 1795847916.7989445,
-    "seen": 1795849714.165386,
+    "seen": 1795851253.2343037,
     "ast_hash": "ccd94f9bc7857ed16e98db443b0d03d5",
-    "semantic_hash": ""
+    "semantic_hash": "ccd94f9bc7857ed16e98db443b0d03d5"
   },
   "kruslide/platform/test/csrf.test.ts": {
     "mtime": 1795849431.5179813,
-    "seen": 1795849714.165387,
+    "seen": 1795851253.234305,
     "ast_hash": "b37e1bd3b6d8d2bc721735691b64671a",
-    "semantic_hash": ""
+    "semantic_hash": "b37e1bd3b6d8d2bc721735691b64671a"
   },
   "kruslide/platform/test/deck.test.ts": {
     "mtime": 1795848632.665642,
-    "seen": 1795849714.1653883,
+    "seen": 1795851253.234306,
     "ast_hash": "145fb3fe1d6fb97b6a5779176e0b0197",
-    "semantic_hash": ""
+    "semantic_hash": "145fb3fe1d6fb97b6a5779176e0b0197"
   },
   "kruslide/platform/test/env.d.ts": {
     "mtime": 1795847809.769885,
-    "seen": 1795849714.1653893,
+    "seen": 1795851253.234307,
     "ast_hash": "c6b94429245365e2c8225f1ae275d4cb",
-    "semantic_hash": ""
+    "semantic_hash": "c6b94429245365e2c8225f1ae275d4cb"
   },
   "kruslide/platform/test/headers.test.ts": {
     "mtime": 1795848087.285056,
-    "seen": 1795849714.1653905,
+    "seen": 1795851253.2343082,
     "ast_hash": "0703afcc2e78192b0667674bbc7f1e25",
-    "semantic_hash": ""
+    "semantic_hash": "0703afcc2e78192b0667674bbc7f1e25"
   },
   "kruslide/platform/test/helpers.ts": {
     "mtime": 1795847985.8189075,
-    "seen": 1795849714.1653917,
+    "seen": 1795851253.2343094,
     "ast_hash": "469e20163f562db6bd655cf457c4330f",
-    "semantic_hash": ""
+    "semantic_hash": "469e20163f562db6bd655cf457c4330f"
   },
   "kruslide/platform/test/pricing.test.ts": {
     "mtime": 1795848087.282278,
-    "seen": 1795849714.1653926,
+    "seen": 1795851253.2343104,
     "ast_hash": "0c57dc7fb9614043eb2c5d9938da8f24",
-    "semantic_hash": ""
+    "semantic_hash": "0c57dc7fb9614043eb2c5d9938da8f24"
   },
   "kruslide/platform/test/promptpay.test.ts": {
     "mtime": 1795848087.2885835,
-    "seen": 1795849714.1653936,
+    "seen": 1795851253.2343116,
     "ast_hash": "7a0243dee6dbc16dba675c77fd95d2cc",
-    "semantic_hash": ""
+    "semantic_hash": "7a0243dee6dbc16dba675c77fd95d2cc"
   },
   "kruslide/platform/test/ratelimit.test.ts": {
     "mtime": 1795848087.2868574,
-    "seen": 1795849714.1653945,
+    "seen": 1795851253.234313,
     "ast_hash": "27134ebab5476ed154eedded88b891b5",
-    "semantic_hash": ""
+    "semantic_hash": "27134ebab5476ed154eedded88b891b5"
   },
   "kruslide/platform/test/scheduled.test.ts": {
     "mtime": 1795848519.133927,
-    "seen": 1795849714.1653955,
+    "seen": 1795851253.2343142,
     "ast_hash": "f4c76b349f19266f8e21d748831e2a90",
-    "semantic_hash": ""
+    "semantic_hash": "f4c76b349f19266f8e21d748831e2a90"
   },
   "kruslide/platform/test/setup.ts": {
     "mtime": 1795847948.4138932,
-    "seen": 1795849714.1653965,
+    "seen": 1795851253.2343156,
     "ast_hash": "bd1ef796684d9470a70259d40f8b0561",
-    "semantic_hash": ""
+    "semantic_hash": "bd1ef796684d9470a70259d40f8b0561"
   },
   "kruslide/platform/test/watermark.test.ts": {
     "mtime": 1795849507.245986,
-    "seen": 1795849714.1653974,
+    "seen": 1795851253.2343166,
     "ast_hash": "59bb795ad533490b4c37248aa59fa06f",
-    "semantic_hash": ""
+    "semantic_hash": "59bb795ad533490b4c37248aa59fa06f"
   },
   "kruslide/platform/tsconfig.json": {
     "mtime": 1795847802.245473,
-    "seen": 1795849714.1653986,
+    "seen": 1795851253.2343178,
     "ast_hash": "62a3c6be33eb25d30d05baf965418d8e",
-    "semantic_hash": ""
+    "semantic_hash": "62a3c6be33eb25d30d05baf965418d8e"
   },
   "kruslide/platform/vitest.config.ts": {
     "mtime": 1795847802.2458847,
-    "seen": 1795849714.1653996,
+    "seen": 1795851253.2343194,
     "ast_hash": "91d272f62fd750316b8f13c25d00095d",
-    "semantic_hash": ""
+    "semantic_hash": "91d272f62fd750316b8f13c25d00095d"
   },
   "kruslide/trailer/fetch_images.py": {
-    "mtime": 1795849177.90975,
-    "seen": 1795849714.1654005,
-    "ast_hash": "f907d856516708b4c082e247a3b54d13",
-    "semantic_hash": ""
+    "mtime": 1795849829.410005,
+    "seen": 1795851253.2343204,
+    "ast_hash": "e046f8bfda43fba83f4204dd23deb1cc",
+    "semantic_hash": "e046f8bfda43fba83f4204dd23deb1cc"
   },
   "kruslide/trailer/images.json": {
     "mtime": 1795848230.806329,
-    "seen": 1795849714.165402,
+    "seen": 1795851253.2343214,
     "ast_hash": "d9496a41dc25ab79ea12108093746672",
-    "semantic_hash": ""
+    "semantic_hash": "d9496a41dc25ab79ea12108093746672"
   },
   "kruslide/trailer/narration.json": {
-    "mtime": 1795847877.3339024,
-    "seen": 1795849714.1654027,
-    "ast_hash": "687f6f813141c02f234cb3b2773d2b60",
-    "semantic_hash": ""
+    "mtime": 1795850442.0951097,
+    "seen": 1795851253.2343228,
+    "ast_hash": "222ed20ab29c3b079c009876b9a09572",
+    "semantic_hash": "222ed20ab29c3b079c009876b9a09572"
   },
   "kruslide/trailer/tts.py": {
-    "mtime": 1795847889.9418898,
-    "seen": 1795849714.165404,
-    "ast_hash": "18f92cd2c9b071c225c50717b8f4680b",
-    "semantic_hash": ""
+    "mtime": 1795850156.134617,
+    "seen": 1795851253.234324,
+    "ast_hash": "61b5c1e0285be0c4af125c88def3baaa",
+    "semantic_hash": "61b5c1e0285be0c4af125c88def3baaa"
   },
   "school/africa/build.py": {
     "mtime": 1795842137.6507978,
-    "seen": 1795849714.165498,
+    "seen": 1795851253.234331,
     "ast_hash": "f8fdcf173380a8bdd41ca663c4c06456",
-    "semantic_hash": ""
+    "semantic_hash": "f8fdcf173380a8bdd41ca663c4c06456"
   },
   "school/africa/geo.py": {
     "mtime": 1795841454.616702,
-    "seen": 1795849714.1655,
+    "seen": 1795851253.2343318,
     "ast_hash": "5a148c13b5427bf6fe5d617aa929b418",
-    "semantic_hash": ""
+    "semantic_hash": "5a148c13b5427bf6fe5d617aa929b418"
   },
   "school/africa/mux.py": {
     "mtime": 1795842170.671967,
-    "seen": 1795849714.1655009,
+    "seen": 1795851253.2343338,
     "ast_hash": "f5eed4bcc8e1d40a6df97bc21fc27a2f",
-    "semantic_hash": ""
+    "semantic_hash": "f5eed4bcc8e1d40a6df97bc21fc27a2f"
   },
   "school/africa/record.cjs": {
     "mtime": 1795842177.35269,
-    "seen": 1795849714.1655025,
+    "seen": 1795851253.2343347,
     "ast_hash": "67faa56d8293830c3755cfed0469e1af",
-    "semantic_hash": ""
+    "semantic_hash": "67faa56d8293830c3755cfed0469e1af"
   },
   "school/africa/script.py": {
     "mtime": 1795842170.6281328,
-    "seen": 1795849714.1655035,
+    "seen": 1795851253.2343357,
     "ast_hash": "924f20452e23ef9b0b2961d8978a3e03",
-    "semantic_hash": ""
+    "semantic_hash": "924f20452e23ef9b0b2961d8978a3e03"
   },
   "school/africa/shots.cjs": {
     "mtime": 1795842057.744738,
-    "seen": 1795849714.1655045,
+    "seen": 1795851253.234337,
     "ast_hash": "739cc86ac1f6f9320cc42d2b216b4056",
-    "semantic_hash": ""
+    "semantic_hash": "739cc86ac1f6f9320cc42d2b216b4056"
   },
   "school/africa/tts.py": {
     "mtime": 1795841895.8090475,
-    "seen": 1795849714.165506,
+    "seen": 1795851253.2343383,
     "ast_hash": "11f6974ab3937d287e6ba42eb04af12d",
-    "semantic_hash": ""
+    "semantic_hash": "11f6974ab3937d287e6ba42eb04af12d"
   },
   "kruslide/BRIEF.md": {
     "mtime": 1795846638.802748,
-    "seen": 1795849714.166938,
+    "seen": 1795851253.2344284,
     "ast_hash": "ffd4f79dfa6dc8363ac03b67a7cdb050",
-    "semantic_hash": ""
+    "semantic_hash": "ffd4f79dfa6dc8363ac03b67a7cdb050"
   },
   "kruslide/platform/README.md": {
     "mtime": 1795849544.597752,
-    "seen": 1795849714.1669402,
+    "seen": 1795851253.2344325,
     "ast_hash": "c700642f4f3c59198b002180f2b425f9",
-    "semantic_hash": ""
+    "semantic_hash": "c700642f4f3c59198b002180f2b425f9"
   },
-  "kruslide/platform/package-lock.json": {
-    "mtime": 1795848231.30991,
-    "seen": 1795849714.167406,
-    "ast_hash": "aa9d2e1b73dda0ee73c5eff77c9e6bc3",
-    "semantic_hash": ""
+  "kruslide/platform/migrations/0001_init.sql": {
+    "mtime": 1795847223.046705,
+    "seen": 1795851253.2342556,
+    "ast_hash": "203761187818d269e36cceadb8e72ea8",
+    "semantic_hash": "203761187818d269e36cceadb8e72ea8"
+  },
+  "kruslide/brand/fonts/LICENSE-Inter.txt": {
+    "mtime": 1795849722.0672405,
+    "seen": 1795851253.2344296,
+    "ast_hash": "d0500719b7ab0a60885be95f4f44306b",
+    "semantic_hash": "d0500719b7ab0a60885be95f4f44306b"
+  },
+  "kruslide/brand/fonts/LICENSE-fontsource-anuphan-5.3.0.txt": {
+    "mtime": 1795849722.0674834,
+    "seen": 1795851253.2344313,
+    "ast_hash": "0d63e4003388c97921e7e765e8b921a2",
+    "semantic_hash": "0d63e4003388c97921e7e765e8b921a2"
+  },
+  "kruslide/trailer/credits.md": {
+    "mtime": 1795850017.3290925,
+    "seen": 1795851253.234434,
+    "ast_hash": "46590c65b58961330a18d77aea6762f2",
+    "semantic_hash": "46590c65b58961330a18d77aea6762f2"
+  },
+  "kruslide/brand/kruslide-icon.svg": {
+    "mtime": 1795850484.002044,
+    "seen": 1795851253.2344575,
+    "ast_hash": "94228da817752b1c77fbc69ae41cdec6",
+    "semantic_hash": "94228da817752b1c77fbc69ae41cdec6"
   }
 }
