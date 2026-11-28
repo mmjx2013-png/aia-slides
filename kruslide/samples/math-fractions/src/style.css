@@ -54,6 +54,8 @@ p,li,.body,.lab{line-height:1.45}
 .on.b1 .g1,.on.b2 .g2,.on.b3 .g3,.on.b4 .g4{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
 .on .h1,.on .h2,.on .h3{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
 .on.b1 .h1,.on.b2 .h2,.on.b3 .h3{animation:out .35s ease both;pointer-events:none}
+/* an element that appears on one beat and leaves on a later one (.g1.h2): hidden until its beat */
+.on:not(.b1) :is(.g1.h2,.g1.h3),.on:not(.b2) .g2.h3{animation:none}
 .fade{opacity:0}.on .fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
 .on.b1 .g1.fade,.on.b2 .g2.fade,.on.b3 .g3.fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}

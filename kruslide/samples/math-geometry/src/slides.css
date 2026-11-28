@@ -1,0 +1,36 @@
+/* ---------- 1 · angle sum ---------- */
+#g1-pn{left:1330px;top:120px;width:480px;height:344px;padding:22px 34px}
+.g1-r{display:flex;align-items:center;height:64px;font:800 40px/1 Inter}
+.g1-r b{margin-left:auto;font:800 52px/1 Display;font-variant-numeric:tabular-nums}
+.g1-sum{margin-top:22px;padding-top:16px;border-top:2px solid var(--ink);font:700 30px/1.45 Inter;color:var(--mute);font-variant-numeric:tabular-nums}
+.g1-sum b{color:var(--ink);font-size:38px}
+#g1-ask,#g1-st,#g1-rule{left:1330px;top:832px;width:480px;font:600 30px/1.45 Inter;color:var(--ink)}
+#g1-st b,#g1-rule b{color:var(--cx)}
+
+/* ---------- 2 · exterior angle ---------- */
+#g2-hint{left:700px;top:98px}
+#g2-pn{left:110px;top:270px;width:520px;height:424px;padding:18px 32px}
+.g2-r{display:flex;align-items:center;height:60px;font:800 36px/1 Inter}
+.g2-r b{margin-left:auto;font:800 46px/1 Display;font-variant-numeric:tabular-nums}
+.g2-r small{font:700 22px/1.45 Inter;margin-left:12px;color:var(--cx)}
+.g2-x{border-top:2px solid var(--ink);margin-top:8px;padding-top:6px;height:70px}
+.g2-eq{margin-top:12px;font:700 30px/1.45 Inter;color:var(--ink);font-variant-numeric:tabular-nums}
+.g2-eq b{font-size:38px}
+#g2-q{left:110px;top:730px;width:560px;height:252px;padding:18px 28px}
+.g2-qt{font:600 28px/1.45 Inter;color:var(--ink);margin-bottom:14px}
+#g2-ch{grid-template-columns:repeat(4,1fr);gap:10px}
+#g2-ch .c{font-size:40px}
+
+/* ---------- 3 · kinds of triangle ---------- */
+#g3-det{left:1330px;top:120px;width:480px;height:380px;padding:24px 30px}
+.g3-k{display:flex;align-items:center;gap:22px;height:104px}
+.g3-k .lab{width:110px;flex:none}
+#g3-s1{color:var(--ca)}#g3-s2{color:var(--cb)}
+.g3-len{margin-top:14px;padding-top:14px;border-top:2px solid var(--ink);font:700 24px/1.45 Inter;color:var(--mute);font-variant-numeric:tabular-nums}
+#g3-tip,#g3-ch,#g3-q{left:1330px;top:560px;width:480px;height:400px;padding:30px 30px}
+#g3-tip p,#g3-ch p{font:600 30px/1.45 Inter;color:var(--ink)}
+#g3-ch b{color:var(--cx)}
+.g3-row{display:flex;align-items:center;gap:18px;margin-top:30px}
+.g3-row .fb{font:700 28px/1.45 Inter;color:var(--mute)}.g3-row .fb.ok{color:var(--okc)}
+.g3-qt{font:600 28px/1.45 Inter;color:var(--ink);margin-bottom:22px}
+#g3-mc .c{height:96px}

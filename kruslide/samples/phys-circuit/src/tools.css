@@ -1,0 +1,36 @@
+/* Widgets from tools.js (tap a choice, typed answer with Check) in blueprint line work: outlines, square corners. */
+.w-input{position:relative;display:flex;flex-direction:column;gap:10px;min-width:0;font:500 24px/1.3 Inter,system-ui,sans-serif;color:var(--ln);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:52px}
+.tw-btns{display:flex;gap:12px;flex:none}
+.tw-btn{font:600 21px/1 Inter,system-ui,sans-serif;height:52px;padding:0 20px;border-radius:4px;border:2px solid var(--ln);background:rgba(15,38,71,.35);color:var(--ln);cursor:pointer;white-space:nowrap;touch-action:manipulation}
+.tw-btn:hover{background:rgba(242,247,255,.12)}
+.tw-btn.pri{background:var(--ln);color:var(--bpD)}
+.tw-btn.show[aria-pressed="true"]{border-color:var(--lit);color:var(--lit)}
+.tw-btn.show.nudge{border-style:dashed;border-color:var(--lit)}
+.tw-btn:disabled{opacity:.4;cursor:default}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:2px dashed var(--lit);outline-offset:3px}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 22px/1.3 Inter,system-ui,sans-serif;color:var(--ln2)}
+.tw-fb.ok{color:var(--lit)}.tw-fb.no{color:var(--warn)}
+.tw-fb .tw-ico{width:32px;height:32px;padding:5px;border-radius:50%;color:var(--bpD);background:var(--lit)}
+.tw-fb.no .tw-ico{background:var(--warn)}
+.tw-in{font:800 40px/1 Inter,system-ui,sans-serif;height:70px;padding:0 16px;border-radius:4px;border:2px solid var(--ln);background:rgba(15,38,71,.6);color:var(--ln);min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center}
+.tw-in:focus{outline:none;border-color:var(--lit)}
+.tw-in.ok{border-color:var(--lit);color:var(--lit)}
+.tw-in.no{border-color:var(--warn);color:var(--warn)}
+.tw-unit{font:700 28px Inter,system-ui,sans-serif;color:var(--ln2)}
+.tw-inrow{display:flex;align-items:center;gap:14px;min-height:70px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* tap a choice (data-mcq); .r1 = the right choice shows on beat 1 */
+.ch{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.c{display:flex;align-items:center;gap:12px;height:64px;padding:0 14px;border:2px solid var(--ln);border-radius:4px;background:rgba(15,38,71,.4);color:var(--ln);font:700 25px/1 Inter;transition:background .4s,filter .4s,border-color .4s,color .4s}
+.c b{flex:none;width:36px;height:36px;border:2px solid var(--ln2);display:grid;place-items:center;font:700 19px Inter;color:var(--ln2)}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:active{background:rgba(242,247,255,.14)}
+.ch[data-mcq] .c:focus-visible{outline:2px dashed var(--lit);outline-offset:3px}
+.ch .c.wrong{border-color:var(--warn);color:var(--warn)}
+.on.b1 .ch.r1 .c.ok,.ch .c.ok.picked{border-color:var(--lit);color:#16253F;background:var(--lit)}
+.on.b1 .ch.r1 .c.ok b,.ch .c.ok.picked b{border-color:#16253F;color:#16253F}
+.on.b1 .ch.r1 .c:not(.ok){filter:opacity(.45)}

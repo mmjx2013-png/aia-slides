@@ -1,0 +1,44 @@
+/* ---------- per-slide layout ---------- */
+.art{touch-action:none}
+/* 1 · count */
+.k1-a{transition:transform .8s cubic-bezier(.3,1.25,.5,1)}
+.k1-bob{transform-box:fill-box;transform-origin:50% 100%}
+.k1-tag{opacity:0;transform:scale(.3);transform-box:fill-box;transform-origin:center;transition:opacity .3s,transform .4s var(--spring)}
+.k1-tag.on{opacity:1;transform:none}
+.k1-tn{font:800 34px Inter;fill:var(--ink)}
+.k1-under{font:800 52px Display;fill:var(--ink);opacity:0;transition:opacity .4s .5s}
+.row .k1-under{opacity:1}
+.k1-panel{left:1180px;top:170px;width:620px;height:640px;display:flex;flex-direction:column;align-items:center}
+.k1-numsvg{width:520px;height:380px}
+#k1-num{font:800 340px Display;fill:var(--cred);transform-box:fill-box;transform-origin:center}
+.k1-word{font:800 64px/1.45 Display;color:var(--ink);margin-top:-30px;height:93px}
+.k1-dots{display:flex;gap:16px;margin-top:16px}
+.k1-dots i{width:54px;height:54px;border-radius:50%;border:5px dashed #C9C1B2;transition:background .3s,border-color .3s}
+.k1-dots i.on{background:var(--cred);border:5px solid #B8281A}
+.k1-done{margin-top:26px;font:800 52px/1.45 Display;color:var(--cgrn);opacity:0;transform:scale(.6);transition:opacity .4s,transform .5s var(--spring)}
+.k1-done.on{opacity:1;transform:rotate(-3deg)}
+/* 2 · shapes */
+.k2-shape{cursor:grab}
+.k2-shape.lift{cursor:grabbing}
+.k2-shape.lift>g{filter:drop-shadow(0 18px 14px rgba(60,50,30,.25))}
+.k2-shape.done{pointer-events:none}
+.k2-shape>g{transform-box:fill-box;transform-origin:center}
+.k2-sh{transition:opacity .4s}
+.k2-sh.hot>g{opacity:.85}
+.k2-sh.hot{filter:drop-shadow(0 0 0 #000)}
+.k2-nm{font:800 46px Display;fill:var(--ink);opacity:0;transition:opacity .4s}
+.names .k2-nm,.k2-sh.done .k2-nm{opacity:1}
+.k2-msg{left:900px;top:200px;width:900px;text-align:right;font:800 44px/1.45 Display;color:var(--cgrn)}
+/* 3 · colours */
+.k3-o{transition:opacity .4s;transform-box:fill-box;transform-origin:center bottom}
+.picked .k3-o:not(.lit){opacity:.22}
+.k3-pen{transition:transform .3s var(--spring);transform-box:fill-box;transform-origin:center}
+.k3-pen.lit{transform:translateY(-18px)}
+.k3-pl{font:800 40px Display}
+.k3-ring{opacity:0;animation:k3ring .5s ease both}
+@keyframes k3ring{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+.k3-ring{transform-box:fill-box;transform-origin:center}
+.k3-say{width:880px;color:var(--ink)}
+.k3-name{left:980px;top:70px;width:820px;height:200px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center}
+.k3-name b{font:800 104px/1.45 Display}
+.k3-name span{font:800 44px/1.45 Display;color:var(--ink);margin-top:-14px}

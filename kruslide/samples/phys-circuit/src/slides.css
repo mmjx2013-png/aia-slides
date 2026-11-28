@@ -1,0 +1,70 @@
+/* ---------- the drawing (SVG) ---------- */
+.board{touch-action:none;-webkit-user-select:none;user-select:none}
+.w{fill:none;stroke:var(--ln);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.w.thick{stroke-width:9;stroke-linecap:butt}
+.w.dash{stroke-dasharray:4 6;stroke-width:3}
+.w.node{fill:var(--bp);stroke-width:3}
+.w.meter{fill:var(--bpD)}
+.w.socket{stroke-dasharray:6 7;stroke:var(--ln2)}
+.lever{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.bfill{fill:var(--lit);fill-opacity:0;transition:fill-opacity .45s ease}
+.ray{stroke:var(--lit);stroke-width:4;stroke-linecap:round}
+.jdot{fill:var(--ln)}
+.slotbox{fill:rgba(15,38,71,.3);stroke:var(--ln2);stroke-width:2.5;stroke-dasharray:9 7}
+.slot-plus{font:300 40px Inter;fill:var(--ln2);pointer-events:none}
+.edge.snap .slotbox,.edge.snap .comp{stroke:var(--lit)}
+.edge.snap .slotbox{fill:rgba(255,213,74,.14);stroke:var(--lit)}
+.edge.picked .comp .w{stroke:#fff}
+.edge.hot .w{stroke:var(--warn)}
+.comp{cursor:pointer}
+.sym-t{font:700 28px Inter;fill:var(--ln);pointer-events:none}
+.lab{font:600 21px Inter;fill:var(--ln2);pointer-events:none}
+.lab.lit{fill:var(--lit)}
+.lab.warn{fill:var(--warn)}
+.lab.meter-t{font:700 24px Inter;fill:var(--ln)}
+.flow{fill:none;stroke:var(--lit);stroke-width:5;stroke-linecap:round;stroke-dasharray:2 22;animation:flow linear infinite;pointer-events:none}
+@keyframes flow{to{stroke-dashoffset:-24}}
+.chev{fill:none;stroke:var(--lit);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.probe{fill:none;stroke:var(--okc);stroke-width:2.5;stroke-dasharray:7 6;pointer-events:none}
+.probe-tip{fill:var(--okc)}
+.vm{fill:var(--bpD);stroke:var(--okc);stroke-width:4}
+.vm-t{font:800 26px Inter;fill:var(--okc)}
+.held{opacity:.92;pointer-events:none}
+.held .w{stroke:var(--lit)}
+.tray-b{fill:rgba(15,38,71,.45);stroke:var(--ln2);stroke-width:2}
+.tray-it{cursor:grab}
+.tray-it.empty{opacity:.35;cursor:default}
+.tray-t{font:600 19px Inter;fill:var(--ln)}
+.tray-n{font:800 22px Inter;fill:var(--lit)}
+.tray-h{font:700 20px Inter;fill:var(--ln2);letter-spacing:.04em}
+
+/* ---------- title block / readouts ---------- */
+.tblock{display:flex;flex-direction:column;border:2px solid var(--ln);background:rgba(15,38,71,.5)}
+.tb-row{display:flex;flex-direction:column;gap:2px;padding:14px 20px;border-bottom:1.5px solid rgba(242,247,255,.5)}
+.tb-k{font:600 20px/1.35 Inter;color:var(--ln2)}
+.tb-k i{font-style:normal;color:var(--ln)}
+.tb-v{font:800 52px/1.1 Inter;color:var(--ln)}
+.tb-sum{display:flex;justify-content:space-between;padding:10px 20px;border-bottom:1.5px solid rgba(242,247,255,.5);font:600 21px/1.3 Inter;color:var(--ln2)}
+.tb-sum b{color:var(--ln);font-weight:800}
+.tb-ohm{padding:14px 20px;min-height:96px;border-bottom:1.5px solid rgba(242,247,255,.5);font:500 22px/1.55 Inter;color:var(--ln2)}
+.tb-ohm b{color:var(--ln);font-weight:800}
+.tb-st{padding:12px 20px;min-height:58px;border-bottom:1.5px solid rgba(242,247,255,.5);font:700 21px/1.45 Inter;color:var(--ln2)}
+.tb-st.ok{color:var(--lit)}
+.tb-st.warn{color:#16253F;background:var(--warn)}
+.tb-btns{display:flex;gap:12px;padding:14px 20px;border-bottom:1.5px solid rgba(242,247,255,.5)}
+.tb-note{padding:12px 20px;font:500 21px/1.5 Inter;color:var(--ln);background:rgba(255,213,74,.12);border-bottom:1.5px solid rgba(242,247,255,.5)}
+.tb-note b{color:var(--lit)}
+.tb-title{display:grid;grid-template-columns:1fr 1fr;margin-top:auto}
+.tb-title div{display:flex;flex-direction:column;padding:8px 16px;border-top:1.5px solid rgba(242,247,255,.5)}
+.tb-title div:nth-child(odd){border-right:1.5px solid rgba(242,247,255,.5)}
+.tb-title dt{font:600 15px/1.3 Inter;color:var(--ln2)}
+.tb-title dd{font:700 20px/1.3 Inter;color:var(--ln)}
+
+/* ---------- 3 · compare ---------- */
+.cap{font:700 26px/1.3 Inter;color:var(--ln);padding:2px 14px;border:2px solid var(--ln)}
+#k3a-svg,#k3b-svg{background:rgba(15,38,71,.28);outline:1.5px solid rgba(242,247,255,.45)}
+.qbox{padding:16px 22px;border:2px solid var(--ln);background:rgba(15,38,71,.45)}
+.qb-t{font:600 25px/1.4 Inter;color:var(--ln);margin-bottom:12px}
+.qb-t b{color:var(--lit)}
+.why{padding:14px 22px;border:2px solid var(--lit);background:rgba(255,213,74,.12);font:500 24px/1.5 Inter;color:var(--ln)}
+.why b{color:var(--lit)}

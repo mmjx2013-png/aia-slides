@@ -1,0 +1,135 @@
+/* KruSlide sample · มุมของรูปสามเหลี่ยม (ม.1) · style "architect drafting"
+   Cream drafting paper with a dot grid and a ruled sheet border, hairline graphite lines, dimension lines,
+   and the drafting tools doing the maths: a protractor, a ruler, a compass.
+   Colour has ONE meaning everywhere: red = angle at A · blue = angle at B · ochre = angle at C ·
+   teal = the exterior angle · graphite = the drawing.  Stage 1920x1080. */
+:root{--ease:cubic-bezier(.2,.7,.2,1);
+ --ink:#2C2D31;--mute:#6C675C;--paper:#F3EDDC;--outer:#1E1F22;--bar:#2C2D31;--acc:#E9B949;
+ --ca:#C8432B;--cb:#2F5F9E;--cc:#B97F0F;--cx:#1F8582;--rule:#B9AE92;
+ --okc:#2E7D4A;--noc:#C0392B;--lgreen:#DDEFE0;--lred:#F6DDD6;--lsun:#F8EBC4;--blue:#2F5F9E;--green:#2E7D4A;--red:#C8432B;--sun:#E9B949;
+ --sh:0 2px 0 rgba(44,45,49,.08)}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--outer,#222);overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--paper)}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .45s ease,visibility 0s linear .45s}
+.slide.on{visibility:visible;opacity:1;transition:opacity .45s ease}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ab{position:absolute}
+/* Thai needs room above and below the line: 1.45 everywhere text wraps */
+p,li,.body,.lab{line-height:1.45}
+
+/* ---------- footer (logo C), identical on every KruSlide sample ---------- */
+.foot{position:absolute;left:130px;right:130px;bottom:26px;height:34px;display:flex;align-items:center;justify-content:space-between;font:600 22px/1 Inter;color:var(--mute);z-index:3}
+.foot .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:800}
+.foot .brand .logo{width:30px;height:30px;flex:none}
+.foot .brand span{font-weight:600;color:var(--mute)}
+.foot .pg{display:flex;align-items:center;gap:18px}
+.foot .pg b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- motion (one easing family; calm 0.4–0.7 s) ----------
+   .in enters with the slide (--d ms) · .g1..g4 appear on beat 1..4 · .h1..h3 leave on beat 1..3 */
+.in{opacity:0}
+.on .in{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3,.g4{opacity:0;pointer-events:none}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3,.on.b4 .g4{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
+.on .h1,.on .h2,.on .h3{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .h1,.on.b2 .h2,.on.b3 .h3{animation:out .35s ease both;pointer-events:none}
+/* an element that appears on one beat and leaves on a later one (.g1.h2): hidden until its beat */
+.on:not(.b1) :is(.g1.h2,.g1.h3),.on:not(.b2) .g2.h3{animation:none}
+.fade{opacity:0}.on .fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .g1.fade,.on.b2 .g2.fade,.on.b3 .g3.fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-14px)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.on .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,300)*1ms)}
+.pop{opacity:0;transform-box:fill-box;transform-origin:center}
+.on .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,400)*1ms)}
+.on :is(.g1,.g2,.g3,.g4) :is(.draw,.pop){animation:none}
+.on.b1 .g1 .draw,.on.b2 .g2 .draw,.on.b3 .g3 .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,250)*1ms)}
+.on.b1 .g1 .pop,.on.b2 .g2 .pop,.on.b3 .g3 .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- control bar (engine) ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);gap:6px;align-items:center;padding:7px;border-radius:16px;background:var(--bar,#1F1F24);box-shadow:0 8px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s;font:600 15px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.85;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;cursor:pointer;min-width:42px}
+#ctl button:hover{background:rgba(255,255,255,.12)}
+#ctl button[aria-pressed="true"]{background:var(--acc,#FFC229);color:#111;border-color:var(--acc,#FFC229)}
+#ctl button:focus-visible{outline:2px solid var(--acc,#FFC229);outline-offset:2px}
+#pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+.shot #ctl{display:none!important}
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}
+
+/* ---------- the sheet: dot grid, ruled border with registration marks ---------- */
+.slide{background:radial-gradient(circle,rgba(108,103,92,.28) 1.4px,transparent 1.6px) 20px 20px/40px 40px,
+  linear-gradient(180deg,#F5EFDF,#EFE7D2)}
+.sheet{position:absolute;left:44px;top:40px;right:44px;bottom:84px;border:2px solid var(--ink);pointer-events:none}
+.sheet::before{content:"";position:absolute;inset:8px;border:1px solid rgba(44,45,49,.45)}
+.sheet i{position:absolute;width:22px;height:22px;border-color:var(--ink);border-style:solid;border-width:0}
+.sheet i:nth-child(1){left:-12px;top:-12px;border-width:2px 0 0 2px}.sheet i:nth-child(2){right:-12px;top:-12px;border-width:2px 2px 0 0}
+.sheet i:nth-child(3){left:-12px;bottom:-12px;border-width:0 0 2px 2px}.sheet i:nth-child(4){right:-12px;bottom:-12px;border-width:0 2px 2px 0}
+.foot{bottom:28px}
+
+/* ---------- drafting panels: plain paper cards with a hairline frame and a corner label ---------- */
+.pnl{position:absolute;background:rgba(251,248,239,.94);border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(44,45,49,.12)}
+.pnl .tag{position:absolute;left:-2px;top:-36px;height:36px;padding:0 14px;display:flex;align-items:center;background:var(--ink);color:#F3EDDC;font:700 22px/1 Inter;letter-spacing:.1em;text-transform:uppercase}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:14px;height:46px;padding:0 18px 0 0;border:2px solid var(--ink);background:#FBF8EF;font:700 24px/1 Inter;color:var(--ink)}
+.chip b{display:grid;place-items:center;height:100%;padding:0 14px;background:var(--ink);color:#F3EDDC;font:800 22px Inter;letter-spacing:.04em}
+h1,h2{position:absolute;font-family:Display;font-weight:700;letter-spacing:-.005em;color:var(--ink);line-height:1.3}
+h2{font-size:58px}
+.lab{font:600 26px/1.45 Inter;color:var(--mute)}
+.body{font:500 30px/1.45 Inter;color:var(--ink)}
+.ka{color:var(--ca)}.kb{color:var(--cb)}.kc{color:var(--cc)}.kx{color:var(--cx)}.km{color:var(--mute)}
+/* the angle sign (the font has no ∠): <svg class="an"><use href="#ang"/></svg> */
+.an{display:inline-block;width:.78em;height:.78em;vertical-align:-.04em;margin-right:.08em;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- the drawing (SVG, built by app.js) ---------- */
+svg.dw{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;touch-action:none;-webkit-user-select:none;user-select:none}
+.dw text{font-family:Inter;font-weight:700}
+.dw .side{stroke:var(--ink);stroke-width:4;stroke-linecap:round;fill:none}
+.dw .ext{stroke:var(--ink);stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round;fill:none;opacity:.55}
+.dw .vx{fill:#FBF8EF;stroke:var(--ink);stroke-width:3}
+.dw .vx2{stroke:var(--ink);stroke-width:2}
+.dw .hit{fill:transparent;cursor:grab}
+.dw .vn{font:800 44px Inter;fill:var(--ink)}
+.dw .al{font:800 34px Inter;paint-order:stroke;stroke:#F5EFDF;stroke-width:8px;stroke-linejoin:round}
+.dw .dim{stroke:var(--mute);stroke-width:2;fill:none}
+.dw .dimt{font:700 26px Inter;fill:var(--mute);paint-order:stroke;stroke:#F5EFDF;stroke-width:7px}
+.dw .tk{stroke:var(--ink);stroke-width:4;stroke-linecap:round}
+.dw.grab .hit{cursor:grabbing}
+
+/* drafting buttons */
+.dbtn{font:700 24px/1 Inter;height:56px;padding:0 22px;border:2px solid var(--ink);background:#FBF8EF;color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;box-shadow:3px 3px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.dbtn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.dbtn.pri{background:var(--ink);color:#F3EDDC}
+.dbtn:focus-visible{outline:3px solid var(--cb);outline-offset:3px}
+/* the rubber stamp */
+.stamp{display:inline-flex;align-items:center;gap:10px;padding:6px 18px;border:4px solid currentColor;border-radius:10px;font:800 34px/1.3 Display;transform:rotate(-4deg);opacity:.35;filter:grayscale(1)}
+.stamp.on{opacity:1;filter:none;animation:stampin .45s var(--ease)}
+@keyframes stampin{0%{transform:scale(1.5) rotate(-10deg);opacity:0}70%{transform:scale(.96) rotate(-4deg);opacity:1}100%{transform:rotate(-4deg)}}

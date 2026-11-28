@@ -1,0 +1,44 @@
+<!-- 2 · The four strokes: drag anywhere on the crank-angle bar (0–720°), play / pause, three speeds. Gases are coloured. -->
+<section class="slide" id="m-strokes" data-steps="1" data-title="4 จังหวะ">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:104px"><b>2</b>วัฏจักรสี่จังหวะ</div>
+ <h2 class="in" style="left:130px;top:142px;--d:100">4 จังหวะ <em>เพลาหมุน 2 รอบ</em></h2>
+ <div class="card in h1" id="m2-card" style="left:130px;top:262px;width:640px;height:520px;--d:200">
+  <div class="hd">จังหวะตอนนี้ <b id="m2-turn">รอบที่ 1</b></div>
+  <div id="m2-sname">ดูด</div><div id="m2-sen" class="en">Intake</div>
+  <p id="m2-say">ลูกสูบเลื่อนลง วาล์วไอดีเปิด ไอดี (อากาศผสมเชื้อเพลิง) ถูกดูดเข้ากระบอกสูบ</p>
+  <dl id="m2-st"><div><dt>ลูกสูบ</dt><dd id="m2-pis">ลง ↓</dd></div><div><dt>วาล์วไอดี</dt><dd id="m2-iv" class="open">เปิด</dd></div><div><dt>วาล์วไอเสีย</dt><dd id="m2-ev">ปิด</dd></div></dl>
+ </div>
+ <svg class="ab in" id="m2-eng" style="left:790px;top:46px;width:640px;height:790px;--d:150" role="img" aria-label="ภาพตัดเครื่องยนต์ ขยับตามมุมเพลาข้อเหวี่ยง"></svg>
+ <div class="card in" id="m2-dialc" style="left:1464px;top:104px;width:326px;height:404px;--d:300">
+  <div class="hd">มุมเพลา <b id="m2-deg">60°</b></div>
+  <svg id="m2-dial" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="92" class="dl-r"/><path class="dl-t" d="M0 -92 V-80 M92 0 H80 M0 92 V80 M-92 0 H-80"/><text y="-60" class="dl-l" text-anchor="middle">บน</text><text y="72" class="dl-l" text-anchor="middle">ล่าง</text>
+   <g id="m2-dial-n"><path d="M0 0 L0 -70" class="dl-n"/><circle cy="-70" r="11" class="dl-p"/></g><circle r="14" class="dl-c"/></svg>
+  <div class="lamps"><span id="m2-li" class="lp li">วาล์วไอดี</span><span id="m2-le" class="lp le">วาล์วไอเสีย</span><span id="m2-ls" class="lp ls">ประกายไฟ</span></div>
+ </div>
+ <div class="ab in" id="m2-big" style="left:1464px;top:530px;width:326px;--d:380">
+  <div class="bs b0"><b>ดูด</b><span>0–180°</span></div><div class="bs b1"><b>อัด</b><span>180–360°</span></div><div class="bs b2"><b>ระเบิด</b><span>360–540°</span></div><div class="bs b3"><b>คาย</b><span>540–720°</span></div>
+ </div>
+ <div class="ab in" id="m2-ctl" style="left:130px;top:806px;--d:450">
+  <button type="button" class="tb or" id="m2-play" aria-pressed="true"><svg class="ic-play" viewBox="0 0 24 24" style="display:none"><path d="M7 4 L20 12 L7 20 Z" fill="currentColor"/></svg><svg class="ic-pause" viewBox="0 0 24 24"><path d="M6 4 H10 V20 H6 Z M14 4 H18 V20 H14 Z" fill="currentColor"/></svg><span>หยุด</span></button>
+  <span class="lab">ความเร็ว</span>
+  <span id="m2-speed"><button type="button" class="tb" data-v="0.25" aria-pressed="false">×¼</button><button type="button" class="tb" data-v="0.5" aria-pressed="true">×½</button><button type="button" class="tb" data-v="1" aria-pressed="false">×1</button></span>
+  <span class="hint">ลากที่ไหนก็ได้บนแถบ เพื่อหมุนเพลาข้อเหวี่ยงเอง</span>
+ </div>
+ <div class="ab in" id="m2-scrub" style="left:130px;top:870px;width:1660px;--d:500">
+  <div class="ticks"><i style="left:0">0°<small>บนสุด</small></i><i style="left:25%">180°<small>ล่างสุด</small></i><i style="left:50%">360°<small>บนสุด</small></i><i style="left:75%">540°<small>ล่างสุด</small></i><i style="left:100%">720°</i></div>
+  <div id="m2-bar">
+   <div class="seg s0"><b>ดูด</b> <span>INTAKE</span></div><div class="seg s1"><b>อัด</b> <span>COMPRESSION</span></div><div class="seg s2"><b>ระเบิด</b> <span>POWER</span></div><div class="seg s3"><b>คาย</b> <span>EXHAUST</span></div>
+   <i class="ev evi1" style="left:0;width:31.67%"></i><i class="ev evi0" style="left:98.33%;width:1.67%"></i><i class="ev eve" style="left:68.33%;width:31.67%"></i><i class="ev eve" style="left:0;width:1.67%"></i>
+   <i class="spk" style="left:47.22%"></i>
+   <div id="m2-head"><i></i></div>
+  </div>
+ </div>
+ <div class="card g1" id="m2-sum" style="left:130px;top:262px;width:640px;height:520px">
+  <div class="hd">สรุป</div>
+  <p>ใน 1 วัฏจักร ลูกสูบขึ้น–ลง <b>4</b> ครั้ง เพลาข้อเหวี่ยงหมุน <b>2</b> รอบ ได้กำลังงานเพียง <b class="or">1</b> จังหวะ (ระเบิด)</p>
+  <p class="sm">อีก 3 จังหวะใช้พลังงานที่สะสมในล้อช่วยแรง (flywheel) หมุนต่อไป</p>
+ </div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>02 / 06</b></span></div>
+ <aside class="notes">ให้นักเรียนลากแถบเอง: 0° ลูกสูบบนสุด เริ่มดูด จนถึง 180° ล่างสุด จากนั้นอัด 180–360° หัวเทียนจุดที่ 340° (ก่อนบนสุด 20°) ระเบิด 360–540° คาย 540–720° เส้นบางใต้แถบคือช่วงที่วาล์วเปิดจริง: ไอดีเปิดก่อน 0° เล็กน้อยและปิดหลัง 180° ถึง 48° ไอเสียเปิดก่อน 540° 48° ปิดหลัง 720° 12° กด → ดูสรุป: 4 จังหวะ 2 รอบ ได้กำลัง 1 จังหวะ</aside>
+</section>

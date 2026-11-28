@@ -223,12 +223,13 @@
       '<g class="zoom">' +
       g('sump', 'block', '<path d="M-190 120 H190 V188 Q190 230 150 230 H-150 Q-190 230 -190 188 Z" fill="#E7E3DA" stroke="' + INK + '" stroke-width="2.5"/>' +
         '<path d="M-180 178 Q-120 170 -60 178 T60 178 T180 178 V188 Q180 220 150 220 H-150 Q-180 220 -180 188 Z" fill="#E2B65A" opacity=".55"/>') +
-      g('crank', 'crank', '<g class="crk">' + crankSVG() + '</g>') +
       g('block', 'block', blockSVG()) +
+      g('crank', 'crank', '<g class="crk">' + crankSVG() + '</g>') +
       g('head', 'head', headSVG()) +
       '<g class="xp xp-gasl">' + chamber + '<g class="pi"></g><g class="pe"></g></g>' +
       g('piston', 'piston', '<g class="pst">' + pistonSVG() + '</g>') +
-      g('rod', 'rod', '<g class="rodg">' + rodSVG() + '</g><g class="pinr">' + pinSVG() + '</g>') +
+      g('rod', 'rod', '<g class="rodg">' + rodSVG() + '</g>') +
+      g('pin', 'piston', '<g class="pinr">' + pinSVG() + '</g>') +
       g('ivalve', 'ivalve', '<g transform="translate(' + SI.x + ' ' + SI.y + ') rotate(' + (-TILT) + ')"><path class="spr" fill="none" stroke="#3B6E8F" stroke-width="3.2" stroke-linejoin="round"/></g>' +
         '<g class="vi">' + valveSVG(false) + '<path class="hitv" d="M0 4 V-222" stroke="transparent" stroke-width="46"/></g>') +
       g('evalve', 'evalve', '<g transform="translate(' + SE.x + ' ' + SE.y + ') rotate(' + TILT + ')"><path class="spr" fill="none" stroke="#3B6E8F" stroke-width="3.2" stroke-linejoin="round"/></g>' +
@@ -240,6 +241,9 @@
         '<path d="M-330 -453 H-276" stroke="#3A9BD6" stroke-width="5" marker-end="url(#m-arr-b)"/>' +
         '<text x="300" y="-512" text-anchor="middle" class="pl-t">ไอเสีย</text><text x="300" y="-382" text-anchor="middle" class="pl-e">EXHAUST</text>' +
         '<path d="M276 -453 H330" stroke="#8B7E70" stroke-width="5" marker-end="url(#m-arr-g)"/></g>' : '') +
+      (o.dims ? '<g class="dims"><path d="M160 -358 H266 M160 -218 H266" stroke="#5B636B" stroke-width="1.4"/>' +
+        '<path class="draw" pathLength="1" style="--d:1300" d="M252 -358 V-218" stroke="#1F2429" stroke-width="2.4" marker-start="url(#m-tick)" marker-end="url(#m-tick)"/>' +
+        '<text x="240" y="-298" text-anchor="end" class="dm-a">ช่วงชัก</text><text x="240" y="-266" text-anchor="end" class="dm-b">70 มม.</text></g>' : '') +
       '<g class="xls"></g>' +
       '</g>';
     var q = function (s) { return svg.querySelector(s); };
@@ -320,11 +324,17 @@
   /* ================= slide 1: title, an engine that runs by itself ================= */
   var e1s = $('#m1-eng');
   if (e1s) (function () {
-    var E = Engine(e1s, { start: 345, ports: true });
+    var E = Engine(e1s, { start: 345, ports: true, dims: true });
     var rpm = $('#m1-rpm'), chips = [].slice.call(document.querySelectorAll('#m1-strokes .sk'));
     E.onset = function (a) { var s = strokeOf(a); chips.forEach(function (c, i) { c.classList.toggle('lit', i === s); }); };
     E.set(345);
+    var cnts = [].slice.call(document.querySelectorAll('#m1-facts .cnt')), shown = false;
+    function counts(st) {   /* the two numbers count up on beat 1, with thousands separators */
+      if (st >= 1 && !shown) { shown = true; cnts.forEach(function (c) { var to = +c.dataset.to; tween(1100, function (t) { c.textContent = thai(Math.round(to * t)); }); }); }
+      if (st < 1) shown = false;
+    }
     comp(e1s.closest('.slide'), {
+      beat: counts,
       active: function (on) { if (on && still()) E.set(345); },
       tick: function (dt) { if (still()) return false; E.set(E.get() + dt * 150); return true; }
     });
@@ -365,13 +375,13 @@
       b.addEventListener('click', function (e) { e.stopPropagation(); speed = +b.dataset.v; speeds.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); if (!playing) setPlay(true); });
     });
     /* drag anywhere on the bar: the angle follows the finger across the whole 0–720° */
-    var wasPlaying = false, base = 0;
+    
     function angAt(e) { var r = bar.getBoundingClientRect(); return clamp((e.clientX - r.left) / r.width, 0, 1) * 720; }
     function setAng(t) { var cur = m720(E.get()); var nt = E.get() + (t - cur); E.set(nt); }
     drag(bar, {
-      down: function (e) { wasPlaying = playing; setPlay(false); setAng(angAt(e)); },
+      down: function (e) { setPlay(false); setAng(angAt(e)); },
       move: function (e) { setAng(angAt(e)); },
-      up: function () { if (wasPlaying) setPlay(true); }
+      up: function () {}   /* stay paused where the student left it; ▶ starts again */
     });
     bar.tabIndex = 0; bar.setAttribute('role', 'slider'); bar.setAttribute('aria-label', 'มุมเพลาข้อเหวี่ยง'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '720');
     bar.addEventListener('keydown', function (e) {   /* Up/Down nudge the angle; Left/Right stay with the deck */
@@ -416,25 +426,37 @@
       what: 'ลูกเบี้ยวรูปไข่กดวาล์วให้เปิดตามจังหวะที่ถูกต้อง',
       fact: 'หมุนครึ่งรอบ ต่อเพลาข้อเหวี่ยง 1 รอบ วาล์วแต่ละตัวจึงเปิดเพียงครั้งเดียวในทุก 2 รอบ', tryit: 'ลูกเบี้ยวชี้ลงหาวาล์วเมื่อวาล์วเปิดกว้างที่สุด' }
   };
-  /* close-up drawings for the explore panel: the same part drawings, bigger, with numbered call-outs */
+  /* close-up drawings for the explore panel: the same part drawings, bigger, with call-outs.
+     One frame for all (viewBox −310 −200 620 400); call-out = [x, y on the part, label x, label y, text, anchor] */
   function callouts(list) {
     return list.map(function (c, i) {
-      var tx = c[2], ty = c[3], right = tx > c[0];
-      return '<path class="draw cl" pathLength="1" style="--d:' + (250 + i * 120) + '" d="M' + c[0] + ' ' + c[1] + ' L' + (tx + (right ? -10 : 10)) + ' ' + ty + '"/>' +
-        '<circle class="cl-d" cx="' + c[0] + '" cy="' + c[1] + '" r="5"/>' +
-        '<text class="cl-t" x="' + tx + '" y="' + (ty + 8) + '" text-anchor="' + (right ? 'start' : 'end') + '">' + c[4] + '</text>';
+      var tx = c[2], ty = c[3], an = c[5] || (tx > c[0] ? 'start' : 'end');
+      var ex = an === 'start' ? tx - 10 : an === 'end' ? tx + 10 : tx, ey = an === 'middle' ? (ty < c[1] ? ty + 12 : ty - 30) : ty - 9;
+      return '<path class="draw cl" pathLength="1" style="--d:' + (250 + i * 110) + '" d="M' + c[0] + ' ' + c[1] + ' L' + ex + ' ' + ey + '"/>' +
+        '<circle class="cl-d" cx="' + c[0] + '" cy="' + c[1] + '" r="5.5"/>' +
+        '<text class="cl-t" x="' + tx + '" y="' + ty + '" text-anchor="' + an + '">' + c[4] + '</text>';
     }).join('');
   }
+  var CUT = '<clipPath id="cu-cut"><path d="M-170 -390 H170 V-176 C120 -160 60 -192 0 -176 S-120 -160 -170 -176 Z"/></clipPath>';
   var CLOSE = {
-    piston: ['-260 -200 520 330', '<g transform="scale(1.5)">' + pistonSVG() + pinSVG() + '</g>', [[-112, -74, -150, -150, 'แหวนอัด 2 วง'], [112, -46, 150, -100, 'แหวนกวาดน้ำมัน'], [0, 0, 150, 40, 'สลักลูกสูบ'], [-60, -87, -150, -40, 'หัวลูกสูบ']]],
-    rod: ['-250 -290 500 380', '<g transform="rotate(90) translate(115 0) scale(.95)">' + rodSVG() + '</g>', [[-110, 0, -150, -150, 'ปลายเล็ก → สลักลูกสูบ'], [0, 6, 40, -150, 'หน้าตัดรูปตัว I'], [110, 0, 150, 60, 'ปลายใหญ่ → ข้อเหวี่ยง'], [115, -34, 150, -110, 'โบลต์ยึดฝา']]],
-    crank: ['-240 -230 480 380', '<g class="spin" transform="scale(1.25)">' + crankSVG() + '</g>', [[0, -88, 120, -170, 'ข้อเหวี่ยง (crank pin)'], [-70, 80, -150, 130, 'ตุ้มถ่วง'], [0, 0, -150, -60, 'แกนเพลาหลัก']]],
-    ivalve: ['-250 -330 500 380', '<g transform="translate(0 -30) scale(1.2)"><path d="' + springD(0) + '" fill="none" stroke="#3B6E8F" stroke-width="3.2"/>' + valveSVG(false) + '</g>', [[0, -45, 120, -40, 'หัววาล์ว'], [0, -150, -120, -150, 'ก้านวาล์ว'], [18, -224, 120, -224, 'สปริงวาล์ว'], [0, -290, -120, -300, 'ถ้วยรับลูกเบี้ยว']]],
-    evalve: ['-250 -330 500 380', '<g transform="translate(0 -30) scale(1.2)"><path d="' + springD(0) + '" fill="none" stroke="#3B6E8F" stroke-width="3.2"/>' + valveSVG(true) + '</g>', [[0, -45, 120, -40, 'หัววาล์ว (ร้อนจัด)'], [0, -150, -120, -150, 'ก้านวาล์ว'], [18, -224, 120, -224, 'สปริงวาล์ว'], [0, -290, -120, -300, 'ถ้วยรับลูกเบี้ยว']]],
-    plug: ['-230 -330 460 380', '<g transform="translate(0 405) scale(1.05) translate(0 -70)"><g transform="translate(0 0)">' + plugSVG() + '<g class="spark-c">' + sparkSVG() + '</g></g></g>', [[0, -197, 110, -230, 'ขั้วต่อสายไฟ'], [0, -100, -110, -120, 'ฉนวนเซรามิก'], [19, -36, 110, -40, 'หกเหลี่ยมสำหรับขัน'], [-11, 10, -110, 20, 'เกลียว'], [3, 45, 110, 40, 'เขี้ยว (ช่องว่างราว 0.8 มม.)']]],
-    block: ['-230 -400 460 300', '<g transform="translate(0 6) scale(1)">' + blockSVG() + '</g>', [[-118, -280, -190, -380, 'ช่องน้ำหล่อเย็น'], [-82, -230, 130, -380, 'ปลอกสูบ (ผิวเรียบ)'], [-150, -200, -190, -150, 'เสื้อสูบ (เหล็กหล่อ)']]],
-    head: ['-290 -530 580 190', headSVG(), [[-100, -440, -200, -520, 'ช่องไอดี'], [100, -440, 200, -520, 'ช่องไอเสีย'], [0, -380, 120, -360, 'ห้องเผาไหม้']]],
-    cams: ['-180 -170 360 300', '<g class="spin2" transform="scale(2)">' + camSVG() + '</g>', [[0, -92, 100, -130, 'ยอดลูกเบี้ยว ดันวาล์วเปิด'], [-52, 0, -110, 60, 'วงฐาน วาล์วปิด'], [0, 0, 100, 80, 'เพลาลูกเบี้ยว']]]
+    piston: ['<g transform="scale(1.4)">' + pistonSVG() + pinSVG() + '</g>',
+      [[-42, -81, -140, -128, 'หัวลูกสูบ'], [-104, -64, -140, -52, 'แหวนอัด 2 วง'], [104, -41, 140, -80, 'แหวนน้ำมัน'], [0, 0, 140, 34, 'สลักลูกสูบ'], [-96, 44, -140, 92, 'กระโปรงลูกสูบ']]],
+    rod: ['<g transform="translate(0 105)">' + rodSVG() + '</g>',
+      [[-25, -125, -140, -120, 'ปลายเล็ก'], [8, -30, 140, -40, 'หน้าตัดรูปตัว I'], [-46, 105, -140, 128, 'ปลายใหญ่'], [38, 112, 140, 128, 'โบลต์ 2 ตัว']]],
+    crank: ['<g transform="translate(0 12) scale(1.2)">' + crankSVG() + '</g>',
+      [[0, -72, 140, -112, 'ข้อเหวี่ยง'], [0, 12, -140, -20, 'แกนเพลาหลัก'], [-70, 84, -140, 120, 'ตุ้มถ่วง'], [48, 89, 140, 120, 'รูถ่วงสมดุล']]],
+    ivalve: ['<g transform="translate(0 120) scale(1.05)"><path d="' + springD(0) + '" fill="none" stroke="#3B6E8F" stroke-width="3.2"/>' + valveSVG(false) + '</g>',
+      [[20, -101, 140, -110, 'ถ้วยรับลูกเบี้ยว'], [16, -48, 140, -36, 'สปริงวาล์ว'], [-5, 25, -140, 30, 'ก้านวาล์ว'], [-29, 116, -140, 128, 'หัววาล์ว']]],
+    evalve: ['<g transform="translate(0 120) scale(1.05)"><path d="' + springD(0) + '" fill="none" stroke="#3B6E8F" stroke-width="3.2"/>' + valveSVG(true) + '</g>',
+      [[20, -101, 140, -110, 'ถ้วยรับลูกเบี้ยว'], [16, -48, 140, -36, 'สปริงวาล์ว'], [-5, 25, -140, 30, 'ก้านวาล์ว'], [-29, 116, -140, 128, 'หัววาล์ว ร้อนจัด']]],
+    plug: ['<g transform="translate(0 581) scale(1.2)">' + plugSVG() + '<g class="spark-c">' + sparkSVG() + '</g></g>',
+      [[0, -118, 140, -116, 'ขั้วต่อสายไฟ'], [-12, -31, -140, -36, 'ฉนวนเซรามิก'], [23, 40, 140, 30, 'หกเหลี่ยมไว้ขัน'], [-13, 83, -140, 76, 'เกลียว'], [4, 116, -140, 136, 'เขี้ยว ห่าง 0.8 มม.']]],
+    block: [CUT + '<g transform="translate(0 236) scale(.85)"><g clip-path="url(#cu-cut)">' + blockSVG() + '</g><path d="M-170 -176 C120 -160 60 -192 0 -176" fill="none"/><path d="M-170 -176 C-120 -160 -60 -192 0 -176 S120 -160 170 -176" fill="none" stroke="#1F2429" stroke-width="2.2" stroke-dasharray="10 6"/></g>',
+      [[-101, -8, -140, -60, 'ช่องน้ำหล่อเย็น'], [70, -40, 140, -86, 'ปลอกสูบ'], [-120, 60, -140, 96, 'เสื้อสูบ'], [0, 30, 140, 40, 'รูสูบ ⌀ 80 มม.']]],
+    head: ['<g transform="translate(0 410) scale(.95)">' + headSVG() + '</g>',
+      [[-114, -18, -170, -112, 'ช่องไอดี', 'middle'], [114, -18, 170, -112, 'ช่องไอเสีย', 'middle'], [0, 46, 0, 138, 'ห้องเผาไหม้', 'middle'], [-41, -36, -40, -150, 'ช่องน้ำ', 'middle']]],
+    cams: ['<g transform="translate(0 12) scale(2.2)">' + camSVG() + '</g>',
+      [[0, -94, 140, -112, 'วาล์วเปิด'], [-57, 12, -140, 4, 'วาล์วปิด'], [0, 12, 140, 70, 'เพลาลูกเบี้ยว']]]
   };
   var e3s = $('#m3-eng');
   if (e3s) (function () {
@@ -446,12 +468,11 @@
       var P = PARTS[key]; if (!P) return;
       cur = key;
       e3s.classList.add('picking');
-      [].forEach.call(e3s.querySelectorAll('.xp'), function (g) { g.classList.toggle('sel', g.dataset.part === key || (key === 'block' && g.classList.contains('xp-sump'))); });
+      [].forEach.call(e3s.querySelectorAll('.xp'), function (g) { g.classList.toggle('sel', g.dataset.part === key); });
       list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.k === key ? 'true' : 'false'); });
       pName.textContent = P.th; pEn.textContent = P.en; pNo.textContent = (P.no < 10 ? '0' : '') + P.no; pWhat.textContent = P.what; pFact.textContent = P.fact; pTry.textContent = P.tryit;
       var C = CLOSE[key];
-      pSvg.setAttribute('viewBox', C[0]);
-      pSvg.innerHTML = C[1] + callouts(C[2]);
+      pSvg.innerHTML = '<g class="cu">' + C[0] + '</g>' + callouts(C[1]);
       panel.classList.remove('show'); void panel.offsetWidth; panel.classList.add('show');
     }
     [].forEach.call(e3s.querySelectorAll('.xp[data-part]'), function (g) {
@@ -508,8 +529,8 @@
   }
   var g4 = $('#m4-svg');
   if (g4) (function () {
-    var slide = g4.closest('.slide'), M = 12.5, OPTS = [10, 12, 15, 18, 20, 24, 30, 36];
-    var n1 = 12, n2 = 36, a1 = 0, cx1 = 400, cy = 470, dist = M * (n1 + n2) / 2, auto = false;
+    var slide = g4.closest('.slide'), M = 14, OPTS = [10, 12, 15, 18, 20, 24, 30, 36];
+    var n1 = 12, n2 = 36, a1 = 0, cx1 = 400, cy = 440, dist = M * (n1 + n2) / 2, auto = false;
     g4.setAttribute('viewBox', '0 0 1240 900');
     g4.innerHTML = '<g class="gl"><line class="gl-c" x1="0" y1="' + cy + '" x2="1240" y2="' + cy + '"/></g>' +
       '<g class="g-in" tabindex="0" role="slider" aria-label="เฟืองขับ ลากเพื่อหมุน"><g class="rot"></g><circle class="ghit" r="10" fill="transparent"/></g>' +
@@ -635,13 +656,14 @@
       $('.lv-grip', l5).setAttribute('cy', (-13 - want - 30).toFixed(1));
       [].forEach.call(eff.querySelectorAll('path[stroke-linecap]'), function (p) { p.setAttribute('transform', 'translate(0 ' + (-13 - want - 30 + 36).toFixed(1) + ')'); });
       /* the load's weight acts straight down from the rock's centre */
-      var pw = rot(xW, BY - 13);
-      warr.setAttribute('d', 'M' + pw.x.toFixed(1) + ' ' + (pw.y - 70).toFixed(1) + ' V' + (GY + 60).toFixed(1));
-      wt.setAttribute('x', (pw.x - 120).toFixed(1)); wt.setAttribute('y', (GY + 52).toFixed(1)); wt.textContent = 'W = ' + W + ' N';
+      var pw = rot(xW, BY + 13);   /* the rock presses down on the bar: W drawn from the underside of the bar */
+      warr.setAttribute('d', 'M' + pw.x.toFixed(1) + ' ' + (pw.y + 4).toFixed(1) + ' V' + (pw.y + 112).toFixed(1));
+      wt.setAttribute('x', (pw.x - 22).toFixed(1)); wt.setAttribute('y', (pw.y + 96).toFixed(1)); wt.textContent = 'W = ' + W + ' N';
       var dy = GY + 58;
       dmw.setAttribute('d', 'M' + xW.toFixed(1) + ' ' + dy + ' H' + FX); dme.setAttribute('d', 'M' + FX + ' ' + dy + ' H' + xE.toFixed(1));
-      dwt.setAttribute('x', ((xW + FX) / 2).toFixed(1)); dwt.setAttribute('y', dy + 46); dwt.textContent = f2(dW) + ' ม.';
-      det.setAttribute('x', ((xE + FX) / 2).toFixed(1)); det.setAttribute('y', dy + 46); det.textContent = f2(dE) + ' ม.';
+      var nearW = FX - xW < 190, nearE = xE - FX < 190;   /* short arms: the label moves outside its dimension line */
+      dwt.setAttribute('x', (nearW ? xW - 16 : (xW + FX) / 2).toFixed(1)); dwt.setAttribute('text-anchor', nearW ? 'end' : 'middle'); dwt.setAttribute('y', dy + (nearW ? 10 : 46)); dwt.textContent = f2(dW) + ' ม.';
+      det.setAttribute('x', (nearE ? xE + 16 : (xE + FX) / 2).toFixed(1)); det.setAttribute('text-anchor', nearE ? 'start' : 'middle'); det.setAttribute('y', dy + (nearE ? 10 : 46)); det.textContent = f2(dE) + ' ม.';
       dmx.setAttribute('d', 'M' + xW.toFixed(1) + ' ' + (BY + 16) + ' V' + (dy + 14) + ' M' + FX + ' ' + (GY) + ' V' + (dy + 14) + ' M' + xE.toFixed(1) + ' ' + (BY + 16) + ' V' + (dy + 14));
       oMA.textContent = f1(MA); oE.textContent = thai(Math.round(E)); oDW.textContent = f2(dW); oDE.textContent = f2(dE);
       oM1.textContent = thai(Math.round(E)) + ' × ' + f2(dE); oM2.textContent = W + ' × ' + f2(dW);
@@ -650,11 +672,13 @@
       var s = Math.sin(Math.abs(tilt) * D), show = Math.abs(tilt) > .5;
       [tvw, tve, tvwt, tvet].forEach(function (n) { n.style.opacity = show ? 1 : 0; });
       if (show) {
-        var a = rot(xW, BY - 13), b = rot(xE, BY - 13);
-        tvw.setAttribute('d', 'M' + (xW - 125) + ' ' + (BY - 13) + ' V' + a.y.toFixed(1)); tvwt.setAttribute('x', xW - 140); tvwt.setAttribute('y', ((BY - 13 + a.y) / 2 + 10).toFixed(1));
-        tvwt.textContent = 'ขึ้น ' + Math.round(dW * s * 100) + ' ซม.';
-        tve.setAttribute('d', 'M' + (xE + 100) + ' ' + (BY - 13) + ' V' + b.y.toFixed(1)); tvet.setAttribute('x', xE + 116); tvet.setAttribute('y', ((BY - 13 + b.y) / 2 + 10).toFixed(1));
-        tvet.textContent = 'ลง ' + Math.round(dE * s * 100) + ' ซม.';
+        var a = rot(xW, BY - 13), b = rot(xE, BY - 13), left = xE > 1450, tx = xE + (left ? -84 : 84);
+        tvw.setAttribute('d', 'M0 0');
+        tvwt.setAttribute('x', a.x.toFixed(1)); tvwt.setAttribute('y', (a.y - 150).toFixed(1)); tvwt.setAttribute('text-anchor', 'middle');
+        tvwt.textContent = '↑ หินขึ้น ' + f1(dW * s * 100) + ' ซม.';
+        tve.setAttribute('d', 'M' + tx + ' ' + (BY - 13) + ' V' + b.y.toFixed(1));
+        tvet.setAttribute('x', tx + (left ? -14 : 14)); tvet.setAttribute('y', ((BY - 13 + b.y) / 2 + 10).toFixed(1)); tvet.setAttribute('text-anchor', left ? 'end' : 'start');
+        tvet.textContent = '↓ มือกดลง ' + f1(dE * s * 100) + ' ซม.';
       }
     }
     function posDrag(g, which) {

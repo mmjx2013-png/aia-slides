@@ -1,0 +1,19 @@
+/* KruSlide sample · Simple tenses (English, M.1–3 EP) · style "minimal Swiss editorial"
+   A strict 12-column grid (margins 120 px, columns 118 px, gutters 24 px), hairline rules, very large tight type,
+   black on warm off-white and ONE accent colour (signal red) for what changes: endings, will, clue words, the time marker. */
+:root{--outside:#111;--paper:#F2F0EB;--ink:#111111;--mute:#6B6B66;--line:#111;--faint:#DAD6CC;--red:#E4321B;
+ --okc:#111;--noc:#E4321B;--green:#111;--lgreen:#E4E1D8;--lred:#FBE3DE;--blue:#111;--sun:#E4321B;--lsun:#F7E2DC;--pink:#E4321B;
+ --pen1:#111111;--pen2:#E4321B;--pen3:#6B6B66;--pen4:#2D5BFF;--pen5:#F2C230;--ctl:#111;--ctl-on:#E4321B}
+#stage{background:var(--paper)}
+/* the grid, faintly visible: 12 columns between the 120 px margins */
+.slide{background:repeating-linear-gradient(90deg,transparent 0 118px,rgba(17,17,17,.035) 118px 142px) 120px 0/1704px 100% no-repeat,var(--paper)}
+.meta{position:absolute;left:120px;right:120px;top:52px;height:44px;display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:10px;font:600 20px/1.2 Inter;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.meta span:nth-child(1){grid-column:1/5}.meta span:nth-child(2){grid-column:5/9;color:var(--mute)}.meta span:nth-child(3){grid-column:9/13;text-align:right}
+.meta b{color:var(--red);font-weight:700}
+h1,h2{position:absolute;font-family:Display;font-weight:800;color:var(--ink);letter-spacing:-.035em}
+h2{font-size:104px;line-height:.98}
+.kick{position:absolute;font:600 22px/1.3 Inter;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.kick b{color:var(--red);font-weight:700}
+.body{font:500 30px/1.4 Inter;color:var(--ink)}
+.rule{position:absolute;height:2px;background:var(--ink)}
+.foot{--foot-ink:var(--ink);--foot-mute:var(--mute)}

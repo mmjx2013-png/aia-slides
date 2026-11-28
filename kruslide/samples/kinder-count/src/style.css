@@ -1,0 +1,21 @@
+/* KruSlide sample · นับเลข รูปทรง สี (อนุบาล) · style "crayon kids"
+   White drawing paper; everything is drawn by kinder.js as wobbly hand-made lines with a waxy crayon grain
+   (SVG displacement + noise), scribble fills, no shadows. Huge tap targets (at least 140 px on the stage). */
+:root{--outside:#3A3A3A;--paper:#FFFDF6;--ink:#33302B;--mute:#6E675C;
+ --cred:#E8412E;--cyel:#F7C12D;--cblu:#2F6FE0;--cgrn:#3BA35A;--corg:#F28A2E;--cpur:#8E5BD6;--cpnk:#F06BA8;--cbrn:#8A5A35;
+ --okc:#2E8B4A;--noc:#D63A2A;--green:#3BA35A;--red:#E8412E;--lgreen:#DDF3E2;--lred:#FBDCD7;--sun:#F7C12D;--lsun:#FFF2C4;--blue:#2F6FE0;--pink:#F06BA8;
+ --pen1:#33302B;--pen2:#2F6FE0;--pen3:#E8412E;--pen4:#3BA35A;--pen5:#F7C12D;--ctl:#33302B;--ctl-on:#F7C12D;
+ --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .35  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#stage{background:var(--paper)}
+.slide{background:var(--grain),var(--paper)}
+.art{position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none}
+.art .hit,.art .tap{pointer-events:all;cursor:pointer}
+.kt{position:absolute;font-family:Display;font-weight:800;line-height:1.45;color:var(--ink)}
+.kt.big{font-size:112px}
+.ks{position:absolute;font:700 40px/1.45 Inter;color:var(--mute)}
+.crt{font-family:Display;font-weight:800}
+/* big crayon-style button */
+.kb{position:absolute;display:inline-flex;align-items:center;gap:14px;height:96px;padding:0 40px;border:0;border-radius:48px;background:var(--cyel);color:var(--ink);font:800 40px/1.45 Inter;cursor:pointer;touch-action:manipulation;box-shadow:inset 0 -8px 0 rgba(0,0,0,.12);transition:transform .15s}
+.kb:active{transform:scale(.95)}
+.kb:focus-visible{outline:5px dashed var(--cblu);outline-offset:6px}
+.foot{--foot-ink:var(--ink);--foot-mute:var(--mute)}

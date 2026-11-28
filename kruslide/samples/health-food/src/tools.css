@@ -1,0 +1,86 @@
+/* Widgets rendered by tools.js / kit.js (buttons, feedback, tap a choice, typed answer, sort cards) + the global pen.
+   The look comes from this deck's variables: --t-ink --t-bg --t-pri --t-pri-ink --t-ok --t-no --t-lok --t-lno --t-r --t-sh --t-bw --t-font */
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;min-height:56px}
+.tw-btns{display:flex;gap:12px;flex:none}
+.tw-btn{font:700 24px/1 var(--t-font,Inter),Inter,system-ui,sans-serif;height:56px;padding:0 22px;border-radius:var(--t-r,14px);border:var(--t-bw,3px) solid var(--t-ink);background:var(--t-bg);color:var(--t-ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;box-shadow:var(--t-sh,none);transition:transform .1s,box-shadow .1s,background .15s,filter .15s;-webkit-tap-highlight-color:transparent}
+.tw-btn:hover{filter:brightness(.97)}
+.tw-btn:active{transform:translateY(2px)}
+.tw-btn.pri{background:var(--t-pri);color:var(--t-pri-ink,#fff);border-color:var(--t-pri-b,var(--t-ink))}
+.tw-btn.show[aria-pressed="true"]{background:var(--t-ok);color:#fff}
+.tw-btn.show.nudge{background:var(--t-lok)}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:3px solid var(--t-pri);outline-offset:3px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 25px/1.4 Inter,system-ui,sans-serif;color:var(--t-mute,var(--mute))}
+.tw-fb.ok{color:var(--t-ok)}.tw-fb.no{color:var(--t-no)}.tw-fb.info{color:var(--t-pri)}
+.tw-fb .tw-ico{width:36px;height:36px;padding:6px;border-radius:50%;color:#fff;background:var(--t-ok)}
+.tw-fb.no .tw-ico{background:var(--t-no)}
+.tw-mark{display:none;flex:none;width:30px;height:30px;border-radius:50%;place-items:center;color:#fff;background:var(--t-ok)}
+.tw-mark .tw-ico{width:20px;height:20px}
+.tw-mark.ok,.tw-mark.no,.item.ok>.tw-mark,.item.no>.tw-mark{display:grid}
+.tw-mark.no,.item.no>.tw-mark{background:var(--t-no)}
+
+/* typed answer */
+.w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.45 Inter,system-ui,sans-serif;color:var(--t-ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-lab{display:block;font:700 28px/1.45 Inter,system-ui,sans-serif}
+.tw-in{font:800 44px/1 Inter,system-ui,sans-serif;height:84px;padding:0 22px;border-radius:var(--t-r,16px);border:var(--t-bw,3px) solid var(--t-ink);background:var(--t-bg);color:var(--t-ink);min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center;transition:background .2s}
+.tw-in:focus{outline:none;box-shadow:0 0 0 5px color-mix(in srgb,var(--t-pri) 35%,transparent)}
+.tw-in.ok{background:var(--t-lok);border-color:var(--t-ok)}
+.tw-in.no{background:var(--t-lno);border-color:var(--t-no)}
+.tw-unit{font:700 30px Inter,system-ui,sans-serif;color:var(--t-mute,var(--mute))}
+.tw-inrow{display:flex;align-items:center;gap:18px;min-height:84px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* tap a choice (data-mcq) + reveal on a beat (.r1 / .r2 = the right choice shows on beat 1 / 2) */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.c{display:flex;align-items:center;gap:16px;min-height:84px;padding:10px 20px;border-radius:var(--t-r,16px);background:var(--t-bg);border:var(--t-bw,3px) solid var(--t-ink);box-shadow:var(--t-sh,none);font:700 32px/1.35 Inter;transition:background .4s,filter .4s,transform .1s}
+.c b{flex:none;width:48px;height:48px;border-radius:calc(var(--t-r,16px) * .7);display:grid;place-items:center;background:var(--t-chip,#eee);color:var(--t-ink);font:800 26px Inter;transition:background .4s,color .4s}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:active{transform:translateY(2px)}
+.ch[data-mcq] .c:focus-visible{outline:4px solid var(--t-pri);outline-offset:3px}
+.ch .c.wrong{background:var(--t-lno)}
+.ch .c.wrong b{background:var(--t-no);color:#fff}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok,.on.b3 .ch.r3 .c.ok,.ch .c.ok.picked{background:var(--t-lok)}
+.on.b1 .ch.r1 .c.ok b,.on.b2 .ch.r2 .c.ok b,.on.b3 .ch.r3 .c.ok b,.ch .c.ok.picked b{background:var(--t-ok);color:#fff}
+.on.b1 .ch.r1 .c:not(.ok),.on.b2 .ch.r2 .c:not(.ok),.on.b3 .ch.r3 .c:not(.ok){filter:grayscale(1) opacity(.45)}
+
+/* sort cards into boxes */
+.w-sort{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:600 26px/1.45 Inter,system-ui,sans-serif;color:var(--t-ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-pool{flex:none;display:flex;flex-wrap:wrap;gap:12px;align-content:flex-start;min-height:70px;padding:12px;border-radius:var(--t-r,16px);background:var(--t-pool,rgba(0,0,0,.04));border:2px dashed transparent}
+.w-sort .tw-pool:empty{display:none}
+.tw-binrow{flex:1;min-height:0;display:flex;gap:16px}
+.w-sort .tw-foot{position:relative;z-index:6}
+.tw-bin{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:var(--t-r,16px);background:var(--t-bin0,#eef);border:2.5px dashed var(--t-binb,rgba(0,0,0,.25));cursor:default;transition:background .15s,border-color .15s}
+.tw-bin.b1{background:var(--t-bin1,#efe)}.tw-bin.b2{background:var(--t-bin2,#ffe)}.tw-bin.b3{background:var(--t-bin3,#fee)}
+.tw-bint{font:800 28px/1.4 Inter,system-ui,sans-serif;color:var(--t-ink);text-align:center}
+.tw-slot{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;justify-content:center}
+.tw-slot.scroll{overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
+.w-sort.dragging .tw-slot.scroll{overflow:visible}
+.w-sort.tight .tw-slot,.w-sort.tight .tw-pool{gap:7px}
+.w-sort.picking .tw-bin,.w-sort.picking .tw-pool{cursor:pointer}
+.w-sort.picking .tw-bin{border-style:solid}
+.tw-bin.over,.tw-pool.over{border-color:var(--t-pri);border-style:solid}
+.tw-bin:focus-visible,.w-sort .item:focus-visible{outline:3px solid var(--t-pri);outline-offset:2px}
+.w-sort .item{position:relative;display:inline-flex;max-width:100%;align-items:center;gap:10px;padding:10px 16px;border-radius:calc(var(--t-r,16px) * .8);background:var(--t-bg);border:2.5px solid var(--t-itemb,rgba(0,0,0,.15));box-shadow:0 6px 14px rgba(0,0,0,.10);font:700 26px/1.3 Inter,system-ui,sans-serif;cursor:grab;touch-action:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.w-sort .item.sel{border-color:var(--t-pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--t-pri) 30%,transparent)}
+.w-sort .item.drag{z-index:5;cursor:grabbing;pointer-events:none;box-shadow:0 22px 44px rgba(0,0,0,.25)}
+.w-sort .item.ok{border-color:var(--t-ok);background:var(--t-lok)}
+.w-sort .item.no{border-color:var(--t-no);background:var(--t-lno)}
+
+/* global pen */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:24px;background:#fff;border:3px solid #222;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:16px;border:3px solid transparent;background:transparent;color:#222;display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:#F1F3F9}
+#pen-bar .pb[aria-pressed="true"]{background:#FFF1C2;border-color:#222}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px #222}
+#pen-bar .ps{display:block;width:38px;height:3px;border-radius:2px;background:#E1E4F0;margin:2px 0}
+.shot #pen-bar{display:none!important}

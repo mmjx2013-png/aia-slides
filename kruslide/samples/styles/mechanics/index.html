@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8lFvQGFCMSaB7yPWQaW6hIHgu9esfcq0zaGywpyPLCc='; style-src 'unsafe-inline'; font-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>เครื่องยนต์ 4 จังหวะ · สไตล์สำรวจกลไก · KruSlide</title>
+<style>/* KruSlide styles sample F · Mechanism explorer (สำรวจกลไก) · look: "technical cutaway"
+   An engineer's drawing sheet: warm drafting ivory, a thin sheet frame with a title block (the footer), precise thin ink,
+   section hatching and soft brushed-metal parts. Colour has ONE meaning everywhere:
+   blue = fresh fuel/air mixture (ไอดี) · indigo = squeezed mixture · orange = spark, flame and power · warm grey = exhaust (ไอเสีย)
+   steel greys = metal parts · green = correct. Stage 1920x1080. */
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+
+:root{--ease:cubic-bezier(.22,.7,.2,1);
+ --paper:#EFECE5;--paper2:#E6E2D8;--ink:#1F2429;--mute:#5B636B;--line:#BFC3C4;--hair:#D3D3CE;
+ --steel:#AEB7C0;--steel-d:#6E7A86;--steel-l:#E3E7EB;
+ --mix:#3A9BD6;--dense:#3B5BCC;--fire:#F08C00;--power:#E8590C;--exh:#8B7E70;
+ --ok:#2F9E44;--okc:#237A35;--no:#D9480F;--noc:#B23A0B;--lok:#DDF1E0;--lno:#FBE3D6;
+ --card:#FBFAF7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#2A2E33;overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--paper)}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .45s ease,visibility 0s linear .45s;
+ background:radial-gradient(ellipse 80% 70% at 50% 45%,#F4F2EC 0%,var(--paper) 60%,var(--paper2) 100%)}
+.slide.on{visibility:visible;opacity:1;transition:opacity .45s ease}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ab{position:absolute}
+
+/* ---------- the drawing sheet: frame, corner ticks, zone marks, title block (= footer) ---------- */
+.sheet{position:absolute;inset:34px;border:2px solid var(--ink);pointer-events:none}
+.sheet::before{content:"";position:absolute;inset:8px;border:1px solid var(--line)}
+.sheet i{position:absolute;font:600 15px/1 Inter;color:var(--mute);letter-spacing:.08em}
+.sheet i.t{top:-25px}.sheet i.l{left:-24px}
+.foot{position:absolute;right:34px;bottom:34px;height:58px;display:flex;align-items:stretch;border:2px solid var(--ink);border-right:0;border-bottom:0;background:var(--card);font:600 21px/1 Inter;color:var(--mute)}
+.foot>span{display:flex;align-items:center;padding:0 22px;border-left:1px solid var(--line)}
+.foot>span:first-child{border-left:0}
+.foot .brand{gap:12px;color:var(--ink);font-weight:800}
+.foot .brand .logo{width:30px;height:30px;flex:none}
+.foot .brand span{font-weight:600;color:var(--mute)}
+.foot .ttl{font-weight:600;color:var(--ink)}
+.foot .pg{gap:16px}
+.foot .pg b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- type ---------- */
+.kick{position:absolute;display:flex;align-items:center;gap:14px;font:700 24px/1.3 Inter;letter-spacing:.01em;color:var(--power)}
+.kick b{display:grid;place-items:center;width:40px;height:40px;border:2px solid var(--power);border-radius:50%;font:800 19px Inter;letter-spacing:0}
+h2{position:absolute;font:700 62px/1.3 Display;letter-spacing:-.01em;color:var(--ink)}
+h2 em{font-style:normal;color:var(--power)}
+.lede{position:absolute;font:500 28px/1.5 Inter;color:var(--mute)}
+.lab{font:700 24px/1.3 Inter;color:var(--mute)}
+.mono{font-variant-numeric:tabular-nums}
+.en{font:600 17px/1 Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+
+/* ---------- spec cards ---------- */
+.card{position:absolute;background:var(--card);border:2px solid var(--ink);border-radius:6px;box-shadow:0 18px 40px -22px rgba(31,36,41,.45)}
+.card .hd{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 22px;border-bottom:1px solid var(--line);font:700 20px/1.3 Inter;letter-spacing:.01em;color:var(--mute)}
+.card .hd b{color:var(--ink);letter-spacing:.04em}
+
+/* ---------- buttons (technical, flat) ---------- */
+.tb{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;min-width:56px;padding:0 20px;border:2px solid var(--ink);border-radius:6px;background:var(--card);color:var(--ink);font:700 22px/1 Inter;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s,transform .12s}
+.tb:hover{background:#fff}
+.tb:active{transform:translateY(2px)}
+.tb[aria-pressed="true"]{background:var(--ink);color:#fff}
+.tb:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+.tb svg{width:22px;height:22px;flex:none}
+.tb.or{background:var(--power);border-color:var(--power);color:#fff}
+
+/* ---------- motion (one easing family) ----------
+   .in enters with the slide (--d ms) · .g1..g3 appear on beat 1..3 · .draw draws a path (pathLength=1) */
+.in{opacity:0}
+.on .in{animation:rise .65s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3{opacity:0;pointer-events:none}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
+.on.b1 .h1{animation:out .35s ease both;pointer-events:none}
+@keyframes out{to{opacity:0;transform:translateY(-12px)}}
+.fade{opacity:0}.on .fade{animation:fadein .7s ease both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.on .draw{animation:draw 1.2s var(--ease) both;animation-delay:calc(var(--d,300)*1ms)}
+.on :is(.g1,.g2) .draw{animation:none}
+.on.b1 .g1 .draw{animation:draw 1s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- control bar (engine) ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);gap:6px;align-items:center;padding:7px;border-radius:8px;background:var(--ink);box-shadow:0 8px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s;font:600 15px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.85;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:9px 13px;cursor:pointer;min-width:42px}
+#ctl button:hover{background:rgba(255,255,255,.12)}
+#ctl button[aria-pressed="true"]{background:var(--power);border-color:var(--power)}
+#ctl button:focus-visible{outline:2px solid var(--fire);outline-offset:2px}
+#pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+.shot #ctl{display:none!important}
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}
+
+/* deck F · per-slide styles */
+/* ---------- engine drawing (mech.js) ---------- */
+svg.eng{display:block;overflow:visible;font-family:Inter}
+#m3-eng,#m4-svg,#m5-svg{touch-action:none;-webkit-user-select:none;user-select:none}
+.eng .xp{transition:transform .7s var(--ease),opacity .4s ease}
+.eng .gas,.eng .xp-gasl,.eng .xl,.eng .plab,.eng .axis,.eng .xp-cover{pointer-events:none}
+.eng .pl-t{font:700 30px Inter;fill:var(--ink)}
+.eng .pl-e{font:600 15px Inter;letter-spacing:.1em;fill:var(--mute)}
+.eng .xl{font:700 30px Inter;fill:var(--power);opacity:0;transition:opacity .3s ease}
+.eng.exploded .xl{opacity:1;transition:opacity .45s ease .55s}
+.eng.exploded .xp-cover{transform:translate(0,-140px);opacity:0}
+.eng.exploded .cam-i{transform:translate(-262px,-150px)}
+.eng.exploded .cam-e{transform:translate(262px,-150px)}
+.eng .cam-i,.eng .cam-e{transition:transform .7s var(--ease)}
+.eng.exploded .xp-ivalve{transform:translate(-262px,-120px)}
+.eng.exploded .xp-evalve{transform:translate(262px,-120px)}
+.eng.exploded .xp-plug{transform:translate(0,-232px)}
+.eng.exploded .xp-head{transform:translate(0,-112px)}
+.eng.exploded .xp-piston,.eng.exploded .xp-rod,.eng.exploded .xp-pin{transform:translate(-470px,40px)}
+.eng.exploded .xp-crank{transform:translate(470px,40px)}
+.eng.exploded .xp-sump{transform:translate(0,132px)}
+.eng.exploded .xp-gasl,.eng.exploded .axis{opacity:0!important}
+/* picking a part on slide 3 */
+#m3-eng .xp[data-part]{cursor:pointer}
+#m3-eng.picking .xp:not(.sel){opacity:.42}
+#m3-eng.picking.exploded .xp:not(.sel){opacity:.5}
+#m3-eng .xp.sel :is(path,rect,circle)[stroke="#1F2429"]{stroke:var(--power)}
+#m3-eng .xp[data-part]:hover{opacity:1!important}
+
+/* ---------- 1 · title ---------- */
+#m1-t{font:800 124px/1.2 Display;letter-spacing:-.015em;color:var(--ink)}
+#m1-sub{font:500 32px/1.4 Inter;color:var(--mute)}
+#m1-sub b{color:var(--ink);font-weight:700}
+#m1-q{font:700 48px/1.42 Display;color:var(--ink)}
+#m1-q em{font-style:normal;color:var(--power)}
+#m1-facts{display:flex;align-items:center;gap:26px}
+.mf{display:flex;align-items:center;gap:16px;padding:18px 26px;border:2px solid var(--ink);border-radius:6px;background:var(--card)}
+.mf b{font:800 76px/1 Display;font-variant-numeric:tabular-nums;color:var(--ink);min-width:3.3ch;text-align:right}
+.mf span{font:700 26px/1.25 Inter;color:var(--ink)}
+.mf small{font:500 21px/1.3 Inter;color:var(--mute)}
+.mf.o b{color:var(--power)}
+.mf-eq{font:700 44px Inter;color:var(--mute);font-style:normal}
+#m1-strokes{display:flex;align-items:center;flex-wrap:wrap;gap:12px;width:880px}
+#m1-strokes .sk{display:inline-grid;place-items:center;height:62px;min-width:118px;padding:0 22px;border:2px solid var(--ink);border-radius:6px;font:700 30px/1 Inter;color:var(--mute);background:transparent;transition:background .35s ease,color .35s ease,border-color .35s ease}
+#m1-strokes i{font:600 30px Inter;font-style:normal;color:var(--line)}
+#m1-strokes small{flex-basis:100%;margin-top:6px;font:500 24px/1.45 Inter;color:var(--mute)}
+#m1-strokes .sk.lit{color:#fff}
+#m1-strokes .s0.lit{background:var(--mix);border-color:var(--mix)}#m1-strokes .s1.lit{background:var(--dense);border-color:var(--dense)}
+#m1-strokes .s2.lit{background:var(--power);border-color:var(--power)}#m1-strokes .s3.lit{background:var(--exh);border-color:var(--exh)}
+#m1-dim .dim{fill:none;stroke:var(--ink);stroke-width:2;marker-start:url(#m-tick);marker-end:url(#m-tick)}
+#m1-dim .dimx{fill:none;stroke:var(--mute);stroke-width:1.2}
+#m1-dim .dimt{font:700 22px Inter;fill:var(--ink)}
+
+/* ---------- 2 · strokes ---------- */
+#m2-sname{margin:34px 30px 0;font:800 104px/1.2 Display;transition:color .3s ease}
+#m2-sen{margin:6px 32px 0}
+#m2-say{margin:22px 30px 0;font:500 28px/1.5 Inter;color:var(--ink);min-height:126px}
+#m2-st{position:absolute;left:30px;right:30px;bottom:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+#m2-st div{border-top:2px solid var(--ink);padding-top:12px}
+#m2-st dt{font:600 21px/1.3 Inter;color:var(--mute)}
+#m2-st dd{font:800 34px/1.3 Inter;color:var(--ink)}
+#m2-st dd.open{color:var(--ok)}
+#m2-dial{display:block;width:240px;height:240px;margin:16px auto 0}
+.dl-r{fill:#fff;stroke:var(--ink);stroke-width:3}
+.dl-t{stroke:var(--ink);stroke-width:3}
+.dl-l{font:600 16px Inter;fill:var(--mute)}
+.dl-n{stroke:var(--steel-d);stroke-width:16;stroke-linecap:round}
+.dl-p{fill:var(--power);stroke:var(--ink);stroke-width:3}
+.dl-c{fill:var(--ink)}
+.lamps{display:flex;justify-content:center;gap:8px;margin-top:14px;padding:0 14px}
+.lp{flex:1;display:grid;place-items:center;height:44px;border:2px solid var(--line);border-radius:5px;font:700 17px/1.2 Inter;color:var(--mute);text-align:center;transition:background .2s,color .2s,border-color .2s}
+.lp.li.on{background:var(--mix);border-color:var(--mix);color:#fff}
+.lp.le.on{background:var(--exh);border-color:var(--exh);color:#fff}
+.lp.ls.on{background:var(--fire);border-color:var(--fire);color:#fff}
+#m2-big{display:flex;flex-direction:column;gap:10px}
+.bs{display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 20px;border:2px solid var(--ink);border-radius:6px;background:var(--card);transition:background .35s ease,color .35s ease}
+.bs b{font:800 30px/1 Inter}.bs span{font:600 20px/1 Inter;color:var(--mute);font-variant-numeric:tabular-nums;transition:color .35s}
+.bs.lit{color:#fff}.bs.lit span{color:rgba(255,255,255,.85)}
+.bs.b0.lit{background:var(--mix);border-color:var(--mix)}.bs.b1.lit{background:var(--dense);border-color:var(--dense)}.bs.b2.lit{background:var(--power);border-color:var(--power)}.bs.b3.lit{background:var(--exh);border-color:var(--exh)}
+#m2-ctl{display:flex;align-items:center;gap:12px;width:1660px}
+#m2-ctl .lab{margin-left:10px}
+#m2-speed{display:flex;gap:6px}
+#m2-speed .tb{min-width:72px;padding:0 12px}
+#m2-ctl .hint{margin-left:auto;font:500 23px/1.4 Inter;color:var(--mute)}
+#m2-scrub .ticks{position:relative;height:24px}
+#m2-scrub .ticks i{position:absolute;bottom:2px;transform:translateX(-50%);font:700 18px/1 Inter;font-style:normal;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+#m2-scrub .ticks i:first-child{transform:none}#m2-scrub .ticks i:last-child{transform:translateX(-100%)}
+#m2-scrub .ticks small{font:500 16px Inter;color:var(--mute);margin-left:6px}
+#m2-bar{position:relative;display:flex;height:78px;border:2px solid var(--ink);border-radius:6px;background:var(--card);cursor:ew-resize;touch-action:none;-webkit-user-select:none;user-select:none;overflow:hidden}
+#m2-bar:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+#m2-bar .seg{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;border-left:1px solid var(--line);font:700 26px/1 Inter;color:var(--mute);transition:background .3s,color .3s;padding-bottom:12px}
+#m2-bar .seg:first-child{border-left:0}
+#m2-bar .seg span{font:600 15px/1 Inter;letter-spacing:.1em}
+#m2-bar .seg.lit{color:#fff}
+#m2-bar .s0.lit{background:var(--mix)}#m2-bar .s1.lit{background:var(--dense)}#m2-bar .s2.lit{background:var(--power)}#m2-bar .s3.lit{background:var(--exh)}
+#m2-bar .ev{position:absolute;bottom:6px;height:7px;border-radius:4px;pointer-events:none}
+#m2-bar .evi0,#m2-bar .evi1{background:var(--mix);box-shadow:0 0 0 1.5px var(--card);bottom:15px}
+#m2-bar .eve{background:var(--exh);box-shadow:0 0 0 1.5px var(--card)}
+#m2-bar .spk{position:absolute;bottom:4px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--fire);border:2px solid var(--ink);pointer-events:none}
+#m2-head{position:absolute;top:0;bottom:0;width:0;pointer-events:none}
+#m2-head i{position:absolute;top:-2px;bottom:-2px;left:-3px;width:6px;background:var(--ink);border-radius:3px}
+#m2-head i::before{content:"";position:absolute;left:-11px;top:-4px;width:28px;height:14px;border-radius:4px;background:var(--ink)}
+#m2-sum p{margin:30px 30px 0;font:600 36px/1.5 Inter;color:var(--ink)}
+#m2-sum p b{font:800 52px/1 Display;color:var(--dense)}
+#m2-sum p b.or{color:var(--power)}
+#m2-sum p.sm{font:500 27px/1.5 Inter;color:var(--mute)}
+
+/* ---------- 3 · parts ---------- */
+#m3-list{display:flex;flex-direction:column}
+#m3-list .pk{display:flex;align-items:center;gap:16px;height:58px;padding:0 20px;border:0;border-top:1px solid var(--hair);background:transparent;font:700 25px/1 Inter;color:var(--ink);text-align:left;cursor:pointer;touch-action:manipulation;transition:background .2s,color .2s}
+#m3-list .pk:first-child{border-top:0}
+#m3-list .pk i{font:700 18px/1 Inter;font-style:normal;color:var(--mute);font-variant-numeric:tabular-nums}
+#m3-list .pk:hover{background:#fff}
+#m3-list .pk[aria-pressed="true"]{background:var(--ink);color:#fff}
+#m3-list .pk[aria-pressed="true"] i{color:var(--fire)}
+#m3-list .pk:focus-visible{outline:3px solid var(--power);outline-offset:-3px}
+#m3-btns{display:flex;flex-direction:column;gap:12px}
+#m3-btns .tb{width:100%;justify-content:flex-start}
+#m3-btns .tb:disabled{opacity:.4;cursor:default}
+.m3-nm{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin:16px 28px 0}
+#m3-name{font:800 54px/1.3 Display;color:var(--ink)}
+#m3-close{display:block;width:464px;height:300px;margin:4px auto 0;overflow:hidden}
+#m3-close .cl{fill:none;stroke:var(--ink);stroke-width:1.8}
+#m3-close .cl-d{fill:var(--power)}
+#m3-close .cl-t{font:700 26px Inter;fill:var(--ink)}
+#m3-panel.show #m3-close .cu{animation:pop .6s var(--ease) both}
+#m3-panel.show #m3-close .draw{animation:draw .7s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+#m3-panel.show #m3-close .cl-t{animation:fadein .5s ease both .55s}
+#m3-panel.show #m3-what,#m3-panel.show #m3-fact,#m3-panel.show .try{animation:rise .55s var(--ease) both}
+#m3-panel.show #m3-fact{animation-delay:.08s}#m3-panel.show .try{animation-delay:.16s}
+#m3-close .spark-c{animation:flick 1.6s steps(1) infinite}
+.rm #m3-close .spark-c{animation:none}
+@keyframes flick{0%,100%{opacity:1}30%{opacity:.15}36%{opacity:1}60%{opacity:.3}64%{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+#m3-what{margin:8px 28px 0;font:600 26px/1.48 Inter;color:var(--ink)}
+#m3-fact{margin:10px 28px 0;font:500 23px/1.48 Inter;color:var(--mute)}
+.try{position:absolute;left:28px;right:28px;bottom:24px;display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border:2px dashed var(--power);border-radius:6px;font:500 22px/1.45 Inter;color:var(--ink)}
+.try b{flex:none;font:800 20px/1.45 Inter;color:var(--power)}
+
+/* ---------- 4 · gears ---------- */
+#m4-svg{overflow:visible}
+#m4-svg .g-in,#m4-svg .g-out{cursor:grab;touch-action:none}
+#m4-svg.turning .g-in,#m4-svg.turning .g-out{cursor:grabbing}
+#m4-svg .g-in:focus-visible{outline:none}
+#m4-svg .g-in:focus-visible .rot>path:first-child{stroke:var(--power);stroke-width:4}
+#m4-svg .gl-c{stroke:#8C9298;stroke-width:1.4;stroke-dasharray:22 6 4 6}
+#m4-svg .gt-n{font:800 40px Inter;fill:var(--ink)}
+#m4-svg .gt-l{font:600 24px Inter;fill:var(--mute);transform:translateY(36px)}
+#m4-svg .g-hand{pointer-events:none}
+#m4-svg .gh-arc{animation:nudge 2.4s var(--ease) infinite}
+@keyframes nudge{0%,100%{opacity:.25}50%{opacity:1}}
+.gx{display:flex;flex-direction:column;gap:14px;margin:24px 28px 0}
+.gr{display:flex;align-items:center;gap:12px}
+.gr .gk{width:136px;font:700 25px/1.3 Inter}
+.gk.o{color:var(--power)}.gk.b{color:#2B7DB8}
+.gr b{width:84px;text-align:center;font:800 48px/1 Display;font-variant-numeric:tabular-nums}
+.gr .u{font:600 22px Inter;color:var(--mute)}
+.gr .tb{width:56px;padding:0;font-size:30px}
+.gturns{display:flex;align-items:center;gap:20px;margin:26px 28px 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.gturns div{display:flex;align-items:center;gap:12px}
+.gturns b{font:800 64px/1 Display;font-variant-numeric:tabular-nums;color:var(--power);min-width:2.6ch;text-align:right}
+.gturns b.b{color:#2B7DB8}
+.gturns span{font:600 20px/1.3 Inter;color:var(--mute)}
+.gturns i{font:700 36px Inter;font-style:normal;color:var(--line)}
+#m4-dir{margin:14px 28px 0;font:500 22px/1.45 Inter;color:var(--mute);min-height:64px}
+.gbars{margin:8px 28px 0;display:flex;flex-direction:column;gap:12px}
+.gbars div{display:grid;grid-template-columns:1fr 110px;grid-template-rows:auto 16px;column-gap:14px;align-items:center}
+.gbars span{grid-column:1/3;font:600 20px/1.4 Inter;color:var(--mute)}
+.gbars i{display:block;height:16px;border:1.5px solid var(--ink);border-radius:3px;overflow:hidden;background:#fff}
+.gbars s{display:block;height:100%;background:#3A9BD6;transform-origin:left;transition:transform .6s var(--ease);text-decoration:none}
+.gbars s.t{background:var(--power)}
+.gbars b{font:800 26px/1 Inter;text-align:right;font-variant-numeric:tabular-nums}
+.gbtn{position:absolute;left:28px;right:28px;bottom:24px;display:flex;gap:12px}
+.gbtn .tb{flex:1}
+#m4-rule{font:600 28px/1.5 Inter;color:var(--ink);white-space:nowrap}
+#m1-eng .dm-a{font:600 22px Inter;fill:var(--mute)}#m1-eng .dm-b{font:800 26px Inter;fill:var(--ink)}
+#m4-rule .mute{color:var(--mute);margin-left:14px;font-size:24px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .2em;line-height:1.3;font-size:.8em}
+.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 .2em .05em}
+.fr>span:last-child{padding:.05em .2em 0}
+
+/* ---------- 5 · lever ---------- */
+#m5-svg{pointer-events:none}
+#m5-svg .lv-load,#m5-svg .lv-eff{pointer-events:auto;cursor:grab;touch-action:none}
+#m5-svg .held{cursor:grabbing}
+#m5-svg .lv-load:focus-visible path:first-child,#m5-svg .lv-eff:focus-visible .lv-arrow{stroke:var(--power);stroke-width:4}
+#m5-svg .lv-load path:first-child,#m5-svg .lv-grip{transition:filter .2s}
+#m5-svg .held path:first-child{filter:brightness(1.06)}
+#m5-svg .lv-kg{font:800 28px Inter;fill:#fff;paint-order:stroke;stroke:#5E5244;stroke-width:4px}
+#m5-svg .lv-wt{font:800 28px Inter;fill:#5B636B;text-anchor:end}
+#m5-svg .dm{fill:none;stroke:var(--ink);stroke-width:2}
+#m5-svg .dm-x{fill:none;stroke:var(--mute);stroke-width:1.2;stroke-dasharray:6 5}
+#m5-svg .dm-t{font:800 30px Inter;fill:var(--ink)}
+#m5-svg .dm-et{fill:var(--power)}
+#m5-svg .tv{fill:none;stroke:var(--power);stroke-width:3;marker-start:url(#m-tick);marker-end:url(#m-tick);transition:opacity .3s}
+#m5-svg .tv-w{stroke:#5B636B}
+#m5-svg .tv-t{font:700 24px Inter;fill:var(--power);transition:opacity .3s}
+#m5-svg .tv-wt{fill:#5B636B}
+#m5-card{display:flex;align-items:stretch}
+.m5-ma,.m5-e{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 26px}
+.m5-e{border-left:1px solid var(--line)}
+.m5-ma>span,.m5-e>span{font:600 21px/1.35 Inter;color:var(--mute)}
+.m5-ma b{font:800 84px/1.05 Display;color:var(--ink);font-variant-numeric:tabular-nums}
+.m5-e b{font:800 50px/1.15 Display;color:var(--power);font-variant-numeric:tabular-nums}
+.m5-e small{font:500 18px/1.3 Inter;color:var(--mute)}
+#m5-arms{font:600 26px/1.4 Inter;color:var(--ink);display:flex;align-items:baseline;gap:10px}
+#m5-arms .k{font:600 22px Inter;color:var(--mute)}
+#m5-arms .k.e{margin-left:26px}
+#m5-arms b{font:800 34px Inter;font-variant-numeric:tabular-nums}
+#m5-arms b.e{color:var(--power)}
+#m5-row{display:flex;align-items:center;gap:24px}
+.mom{font:700 30px/1.4 Inter;color:var(--ink);font-variant-numeric:tabular-nums}
+.mom .e{color:var(--power)}
+#m5-rule{font:600 28px/1.5 Inter;color:var(--ink);white-space:nowrap}
+
+/* ---------- 6 · quiz ---------- */
+#m6-q1 .q,#m6-q2 .q{margin:22px 30px 0;font:700 32px/1.45 Inter;color:var(--ink)}
+#m6-eng{position:absolute;left:24px;top:150px;width:250px;height:350px}
+#m6-tag{position:absolute;left:79px;top:508px;min-width:140px;height:42px;padding:0 14px;display:grid;place-items:center;border-radius:5px;font:700 22px/1 Inter;color:#fff;background:var(--power);transition:background .3s}
+#m6-ch{position:absolute;left:300px;right:30px;top:196px;grid-template-columns:1fr 1fr}
+#m6-ch.ch{gap:14px}
+#m6-ch .c{height:96px}
+#m6-q2 .w-input{position:absolute;left:30px;right:30px;top:330px}
+#m6-gears{position:absolute;left:250px;top:170px;width:300px;height:150px}
+.ans{position:absolute;left:30px;right:30px;bottom:22px;padding:14px 20px;border-left:6px solid var(--ok);background:var(--lok);font:600 25px/1.5 Inter;color:var(--ink)}
+.ans b.or{color:var(--power)}
+.ans b.b{font:800 40px/1 Display;color:#2B7DB8}
+.ans small{display:block;font:500 21px/1.45 Inter;color:var(--mute)}
+#m6-a2{font-size:30px}
+
+/* Widgets from tools.js (tap a choice, typed answer with Check) + the global pen, in deck F's drawing-sheet look. */
+.w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.3 Inter,system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-lab{display:block;font:600 24px/1.4 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:56px}
+.tw-btns{display:flex;gap:10px;flex:none}
+.tw-btn{font:700 23px/1 Inter,system-ui,sans-serif;height:56px;padding:0 20px;border-radius:6px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,transform .1s}
+.tw-btn:hover{background:#fff}
+.tw-btn:active{transform:translateY(2px)}
+.tw-btn.pri{background:var(--ink);color:#fff}
+.tw-btn.show[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.tw-btn.show.nudge{background:#FFF1D6}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 25px/1.4 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-fb.ok{color:var(--okc)}.tw-fb.no{color:var(--noc)}.tw-fb.info{color:#2B7DB8}
+.tw-fb .tw-ico{width:34px;height:34px;padding:6px;border-radius:50%;color:#fff;background:var(--ok)}
+.tw-fb.no .tw-ico{background:var(--no)}
+.tw-in{font:800 44px/1 Inter,system-ui,sans-serif;height:80px;padding:0 20px;border-radius:6px;border:2px solid var(--ink);background:#fff;color:var(--ink);min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center;transition:background .2s}
+.tw-in:focus{outline:none;box-shadow:0 0 0 4px rgba(232,89,12,.3)}
+.tw-in.ok{background:var(--lok);border-color:var(--okc)}
+.tw-in.no{background:var(--lno);border-color:var(--noc)}
+.tw-unit{font:700 30px Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-inrow{display:flex;align-items:center;gap:18px;min-height:80px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* tap a choice (data-mcq) + reveal on a beat (.r1 = the right choice shows on beat 1) */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.c{display:flex;align-items:center;gap:18px;height:82px;padding:0 20px;border-radius:6px;background:var(--card);border:2px solid var(--ink);font:700 36px/1 Inter;transition:background .4s,filter .4s,transform .1s,border-color .4s}
+.c b{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--ink);font:800 24px Inter;transition:background .4s,color .4s}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:hover{background:#fff}
+.ch[data-mcq] .c:active{transform:translateY(2px)}
+.ch[data-mcq] .c:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+.ch .c.wrong{background:var(--lno);border-color:var(--noc)}
+.ch .c.wrong b{background:var(--no);color:#fff;border-color:var(--no)}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok,.ch .c.ok.picked{background:var(--lok);border-color:var(--okc)}
+.on.b1 .ch.r1 .c.ok b,.on.b2 .ch.r2 .c.ok b,.ch .c.ok.picked b{background:var(--ok);color:#fff;border-color:var(--ok)}
+.on.b1 .ch.r1 .c:not(.ok),.on.b2 .ch.r2 .c:not(.ok){filter:grayscale(1) opacity(.45)}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok{animation:pulse .6s var(--ease) both .2s}
+
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:52px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:8px;background:var(--card);border:2px solid var(--ink);box-shadow:0 18px 40px -20px rgba(31,36,41,.5)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:6px;border:2px solid transparent;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:#fff}
+#pen-bar .pb[aria-pressed="true"]{background:#FFF1D6;border-color:var(--ink)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+#pen-bar .ps{display:block;width:38px;height:2px;border-radius:2px;background:var(--line);margin:2px 0}
+.shot #pen-bar{display:none!important}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<pattern id="m-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#DAD6CC"/><line x1="0" y1="0" x2="0" y2="10" stroke="#A39E93" stroke-width="2"/></pattern>
+<pattern id="m-hatch2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="10" height="10" fill="#E1E3E3"/><line x1="0" y1="0" x2="0" y2="10" stroke="#A5ACB1" stroke-width="2"/></pattern>
+<linearGradient id="m-steel" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#7D8893"/><stop offset=".32" stop-color="#E9EDF0"/><stop offset=".55" stop-color="#B4BDC6"/><stop offset="1" stop-color="#6A7682"/></linearGradient>
+<linearGradient id="m-steel-v" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E9EDF0"/><stop offset=".45" stop-color="#AEB7C0"/><stop offset="1" stop-color="#6E7A86"/></linearGradient>
+<linearGradient id="m-alu" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#A9B1B8"/><stop offset=".3" stop-color="#F3F5F6"/><stop offset=".62" stop-color="#CDD3D8"/><stop offset="1" stop-color="#959EA7"/></linearGradient>
+<radialGradient id="m-steel-r" cx=".38" cy=".34" r=".75"><stop offset="0" stop-color="#F1F3F5"/><stop offset=".55" stop-color="#AEB7C0"/><stop offset="1" stop-color="#66727E"/></radialGradient>
+<radialGradient id="m-web" cx=".42" cy=".3" r=".9"><stop offset="0" stop-color="#C3CAD1"/><stop offset=".6" stop-color="#8D98A3"/><stop offset="1" stop-color="#5D6873"/></radialGradient>
+<radialGradient id="m-gear" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#E6EAEE"/><stop offset=".7" stop-color="#B9C1C9"/><stop offset="1" stop-color="#8E99A4"/></radialGradient>
+<linearGradient id="m-hot" x1="0" x2="1"><stop offset="0" stop-color="#8A6A5C"/><stop offset=".35" stop-color="#E9D2C2"/><stop offset=".6" stop-color="#C08F77"/><stop offset="1" stop-color="#7A5A4E"/></linearGradient>
+<radialGradient id="m-rock" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#C9BBA6"/><stop offset=".6" stop-color="#9F907C"/><stop offset="1" stop-color="#776A5A"/></radialGradient>
+<radialGradient id="m-flame" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF3C4"/><stop offset=".35" stop-color="#FFC24A"/><stop offset=".75" stop-color="#F08C00" stop-opacity=".95"/><stop offset="1" stop-color="#E8590C" stop-opacity=".9"/></radialGradient>
+<radialGradient id="m-flash" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFD866" stop-opacity=".8"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></radialGradient>
+<marker id="m-arr-b" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#3A9BD6"/></marker>
+<marker id="m-arr-g" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8B7E70"/></marker>
+<marker id="m-arr-o" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#E8590C"/></marker>
+<marker id="m-arr-k" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#5B636B"/></marker>
+<marker id="m-tick" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M2 8 L8 2" stroke="#1F2429" stroke-width="1.6"/></marker>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+<symbol id="cross" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></symbol>
+<symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+</defs></svg>
+
+<main id="stage" aria-roledescription="slide deck">
+
+<section class="slide" id="m-title" data-steps="1" data-title="เครื่องยนต์ 4 จังหวะ">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:118px;--d:80"><b>F</b>ตัวอย่างบทเรียน · ฟิสิกส์ / เทคโนโลยี ม.3–ม.4</div>
+ <h1 class="ab in" id="m1-t" style="left:122px;top:184px;--d:180">เครื่องยนต์<br>4 จังหวะ</h1>
+ <p class="ab in" id="m1-sub" style="left:130px;top:508px;--d:320"><b>Four-stroke engine</b> · และเครื่องกลอย่างง่าย</p>
+ <div class="ab in h1" id="m1-q" style="left:130px;top:592px;--d:520">ระเบิดเล็ก ๆ ในกระบอกสูบ<br>ทำให้<em>ล้อหมุน</em>ได้อย่างไร?</div>
+ <div class="ab g1" id="m1-facts" style="left:130px;top:584px">
+  <div class="mf"><b class="cnt" data-to="6000">6,000</b><span>รอบ/นาที<br><small>เพลาข้อเหวี่ยง</small></span></div>
+  <i class="mf-eq">→</i>
+  <div class="mf o"><b class="cnt" data-to="3000">3,000</b><span>ครั้ง/นาที<br><small>หัวเทียนจุดระเบิด</small></span></div>
+ </div>
+ <div class="ab in" id="m1-strokes" style="left:130px;top:806px;--d:700" aria-label="สี่จังหวะ">
+  <span class="sk s0">ดูด</span><i>›</i><span class="sk s1">อัด</span><i>›</i><span class="sk s2">ระเบิด</span><i>›</i><span class="sk s3">คาย</span>
+  <small>1 วัฏจักร = 4 จังหวะ = เพลาข้อเหวี่ยงหมุน 2 รอบ</small>
+ </div>
+ <svg class="ab in" id="m1-eng" style="left:1050px;top:60px;width:720px;height:910px;--d:250" role="img" aria-label="ภาพตัดเครื่องยนต์สี่จังหวะสูบเดียว กำลังทำงาน"></svg>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>01 / 06</b></span></div>
+ <aside class="notes">เปิดด้วยคำถาม: ระเบิดในกระบอกสูบ (เส้นตรง ขึ้น–ลง) กลายเป็นการหมุนของล้อได้อย่างไร ชี้ให้ดูภาพตัด: ไอดีสีฟ้าเข้าทางซ้าย ไอเสียสีเทาออกทางขวา ประกายไฟสีส้ม กด → ดูตัวเลข: ที่ 6,000 รอบต่อนาที สูบเดียวจุดระเบิด 3,000 ครั้งต่อนาที เพราะจุดหนึ่งครั้งทุก 2 รอบ (ภาพนี้คือเครื่องสูบเดียว กระบอกสูบ 80 มม. ช่วงชัก 70 มม. ราว 350 ซีซี)</aside>
+</section>
+
+
+<section class="slide" id="m-strokes" data-steps="1" data-title="4 จังหวะ">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:104px"><b>2</b>วัฏจักรสี่จังหวะ</div>
+ <h2 class="in" style="left:130px;top:142px;--d:100">4 จังหวะ <em>เพลาหมุน 2 รอบ</em></h2>
+ <div class="card in h1" id="m2-card" style="left:130px;top:262px;width:640px;height:520px;--d:200">
+  <div class="hd">จังหวะตอนนี้ <b id="m2-turn">รอบที่ 1</b></div>
+  <div id="m2-sname">ดูด</div><div id="m2-sen" class="en">Intake</div>
+  <p id="m2-say">ลูกสูบเลื่อนลง วาล์วไอดีเปิด ไอดี (อากาศผสมเชื้อเพลิง) ถูกดูดเข้ากระบอกสูบ</p>
+  <dl id="m2-st"><div><dt>ลูกสูบ</dt><dd id="m2-pis">ลง ↓</dd></div><div><dt>วาล์วไอดี</dt><dd id="m2-iv" class="open">เปิด</dd></div><div><dt>วาล์วไอเสีย</dt><dd id="m2-ev">ปิด</dd></div></dl>
+ </div>
+ <svg class="ab in" id="m2-eng" style="left:790px;top:46px;width:640px;height:790px;--d:150" role="img" aria-label="ภาพตัดเครื่องยนต์ ขยับตามมุมเพลาข้อเหวี่ยง"></svg>
+ <div class="card in" id="m2-dialc" style="left:1464px;top:104px;width:326px;height:404px;--d:300">
+  <div class="hd">มุมเพลา <b id="m2-deg">60°</b></div>
+  <svg id="m2-dial" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="92" class="dl-r"/><path class="dl-t" d="M0 -92 V-80 M92 0 H80 M0 92 V80 M-92 0 H-80"/><text y="-60" class="dl-l" text-anchor="middle">บน</text><text y="72" class="dl-l" text-anchor="middle">ล่าง</text>
+   <g id="m2-dial-n"><path d="M0 0 L0 -70" class="dl-n"/><circle cy="-70" r="11" class="dl-p"/></g><circle r="14" class="dl-c"/></svg>
+  <div class="lamps"><span id="m2-li" class="lp li">วาล์วไอดี</span><span id="m2-le" class="lp le">วาล์วไอเสีย</span><span id="m2-ls" class="lp ls">ประกายไฟ</span></div>
+ </div>
+ <div class="ab in" id="m2-big" style="left:1464px;top:530px;width:326px;--d:380">
+  <div class="bs b0"><b>ดูด</b><span>0–180°</span></div><div class="bs b1"><b>อัด</b><span>180–360°</span></div><div class="bs b2"><b>ระเบิด</b><span>360–540°</span></div><div class="bs b3"><b>คาย</b><span>540–720°</span></div>
+ </div>
+ <div class="ab in" id="m2-ctl" style="left:130px;top:806px;--d:450">
+  <button type="button" class="tb or" id="m2-play" aria-pressed="true"><svg class="ic-play" viewBox="0 0 24 24" style="display:none"><path d="M7 4 L20 12 L7 20 Z" fill="currentColor"/></svg><svg class="ic-pause" viewBox="0 0 24 24"><path d="M6 4 H10 V20 H6 Z M14 4 H18 V20 H14 Z" fill="currentColor"/></svg><span>หยุด</span></button>
+  <span class="lab">ความเร็ว</span>
+  <span id="m2-speed"><button type="button" class="tb" data-v="0.25" aria-pressed="false">×¼</button><button type="button" class="tb" data-v="0.5" aria-pressed="true">×½</button><button type="button" class="tb" data-v="1" aria-pressed="false">×1</button></span>
+  <span class="hint">ลากที่ไหนก็ได้บนแถบ เพื่อหมุนเพลาข้อเหวี่ยงเอง</span>
+ </div>
+ <div class="ab in" id="m2-scrub" style="left:130px;top:870px;width:1660px;--d:500">
+  <div class="ticks"><i style="left:0">0°<small>บนสุด</small></i><i style="left:25%">180°<small>ล่างสุด</small></i><i style="left:50%">360°<small>บนสุด</small></i><i style="left:75%">540°<small>ล่างสุด</small></i><i style="left:100%">720°</i></div>
+  <div id="m2-bar">
+   <div class="seg s0"><b>ดูด</b> <span>INTAKE</span></div><div class="seg s1"><b>อัด</b> <span>COMPRESSION</span></div><div class="seg s2"><b>ระเบิด</b> <span>POWER</span></div><div class="seg s3"><b>คาย</b> <span>EXHAUST</span></div>
+   <i class="ev evi1" style="left:0;width:31.67%"></i><i class="ev evi0" style="left:98.33%;width:1.67%"></i><i class="ev eve" style="left:68.33%;width:31.67%"></i><i class="ev eve" style="left:0;width:1.67%"></i>
+   <i class="spk" style="left:47.22%"></i>
+   <div id="m2-head"><i></i></div>
+  </div>
+ </div>
+ <div class="card g1" id="m2-sum" style="left:130px;top:262px;width:640px;height:520px">
+  <div class="hd">สรุป</div>
+  <p>ใน 1 วัฏจักร ลูกสูบขึ้น–ลง <b>4</b> ครั้ง เพลาข้อเหวี่ยงหมุน <b>2</b> รอบ ได้กำลังงานเพียง <b class="or">1</b> จังหวะ (ระเบิด)</p>
+  <p class="sm">อีก 3 จังหวะใช้พลังงานที่สะสมในล้อช่วยแรง (flywheel) หมุนต่อไป</p>
+ </div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>02 / 06</b></span></div>
+ <aside class="notes">ให้นักเรียนลากแถบเอง: 0° ลูกสูบบนสุด เริ่มดูด จนถึง 180° ล่างสุด จากนั้นอัด 180–360° หัวเทียนจุดที่ 340° (ก่อนบนสุด 20°) ระเบิด 360–540° คาย 540–720° เส้นบางใต้แถบคือช่วงที่วาล์วเปิดจริง: ไอดีเปิดก่อน 0° เล็กน้อยและปิดหลัง 180° ถึง 48° ไอเสียเปิดก่อน 540° 48° ปิดหลัง 720° 12° กด → ดูสรุป: 4 จังหวะ 2 รอบ ได้กำลัง 1 จังหวะ</aside>
+</section>
+
+
+<section class="slide" id="m-parts" data-steps="0" data-title="ชิ้นส่วน">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:104px"><b>3</b>สำรวจชิ้นส่วน</div>
+ <h2 class="in" style="left:130px;top:142px;--d:100">แตะชิ้นส่วน <em>ดูให้ลึก</em></h2>
+ <svg class="ab in" id="m3-eng" style="left:96px;top:232px;width:800px;height:800px;--d:150" role="img" aria-label="ภาพตัดเครื่องยนต์ แตะชิ้นส่วนเพื่อดูรายละเอียด"></svg>
+ <div class="card in" id="m3-bom" style="left:900px;top:262px;width:340px;--d:250">
+  <div class="hd">รายการชิ้นส่วน</div>
+  <div id="m3-list">
+   <button type="button" class="pk" data-k="piston"><i>01</i>ลูกสูบ</button><button type="button" class="pk" data-k="rod"><i>02</i>ก้านสูบ</button><button type="button" class="pk" data-k="crank"><i>03</i>เพลาข้อเหวี่ยง</button>
+   <button type="button" class="pk" data-k="ivalve"><i>04</i>วาล์วไอดี</button><button type="button" class="pk" data-k="evalve"><i>05</i>วาล์วไอเสีย</button><button type="button" class="pk" data-k="plug"><i>06</i>หัวเทียน</button>
+   <button type="button" class="pk" data-k="block"><i>07</i>กระบอกสูบ</button><button type="button" class="pk" data-k="head"><i>08</i>ฝาสูบ</button><button type="button" class="pk" data-k="cams"><i>09</i>เพลาลูกเบี้ยว</button>
+  </div>
+ </div>
+ <div class="ab in" id="m3-btns" style="left:900px;top:838px;width:340px;--d:350">
+  <button type="button" class="tb" id="m3-ex" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3 V9 M12 15 V21 M9 6 L12 3 L15 6 M9 18 L12 21 L15 18 M4 12 H20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>แยกชิ้นส่วน</span></button>
+  <button type="button" class="tb" id="m3-run" aria-pressed="true"><span>หยุดเครื่อง</span></button>
+ </div>
+ <div class="card in" id="m3-panel" style="left:1270px;top:104px;width:520px;height:858px;--d:300" aria-live="polite">
+  <div class="hd">สำรวจต่อ <b id="m3-no">01</b></div>
+  <div class="m3-nm"><span id="m3-name">ลูกสูบ</span><span id="m3-en" class="en">Piston</span></div>
+  <svg id="m3-close" viewBox="-310 -200 620 400" role="img" aria-label="ภาพขยายชิ้นส่วน"></svg>
+  <p id="m3-what"></p>
+  <p id="m3-fact"></p>
+  <div class="try"><b>ลองดู</b><span id="m3-try"></span></div>
+ </div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>03 / 06</b></span></div>
+ <aside class="notes">ให้นักเรียนออกมาแตะชิ้นส่วนบนภาพ หรือแตะในรายการ แผงขวาแสดงหน้าที่และภาพขยาย ปุ่ม "แยกชิ้นส่วน" หมุนเพลาไปที่จุดบนสุดก่อน แล้วแยกชิ้นส่วนออกจากกัน ถามต่อ: ชิ้นไหนเคลื่อนที่ขึ้น–ลง ชิ้นไหนหมุน (ลูกสูบ ขึ้น–ลง / เพลาข้อเหวี่ยงและเพลาลูกเบี้ยว หมุน / ก้านสูบ ทั้งสองอย่าง)</aside>
+</section>
+
+
+<section class="slide" id="m-gears" data-steps="1" data-title="เฟือง">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:104px"><b>4</b>เฟืองทด</div>
+ <h2 class="in" style="left:130px;top:142px;--d:100">ฟันมากกว่า <em>หมุนช้ากว่า</em></h2>
+ <svg class="ab in" id="m4-svg" style="left:690px;top:110px;width:1120px;height:812px;--d:200" role="img" aria-label="เฟืองสองตัวขบกัน"></svg>
+ <div class="card in" id="m4-ctl" style="left:130px;top:262px;width:540px;height:700px;--d:250">
+  <div class="hd">อัตราทด <b id="m4-ratio">3 : 1</b></div>
+  <div class="gx">
+   <div class="gr"><span class="gk o">เฟืองขับ</span><button type="button" class="tb" data-g="1" data-d="-1" aria-label="ลดฟันเฟืองขับ">−</button><b id="m4-n1">12</b><button type="button" class="tb" data-g="1" data-d="1" aria-label="เพิ่มฟันเฟืองขับ">+</button><span class="u">ฟัน</span></div>
+   <div class="gr"><span class="gk b">เฟืองตาม</span><button type="button" class="tb" data-g="2" data-d="-1" aria-label="ลดฟันเฟืองตาม">−</button><b id="m4-n2">36</b><button type="button" class="tb" data-g="2" data-d="1" aria-label="เพิ่มฟันเฟืองตาม">+</button><span class="u">ฟัน</span></div>
+  </div>
+  <div class="gturns"><div><b id="m4-t1">0.0</b><span>รอบ<br>เฟืองขับ</span></div><i>→</i><div><b id="m4-t2" class="b">0.0</b><span>รอบ<br>เฟืองตาม</span></div></div>
+  <p id="m4-dir">ลากเฟืองสีส้มเพื่อหมุน</p>
+  <div class="gbars">
+   <div><span>ความเร็วรอบของเฟืองตาม</span><i><s id="m4-sp"></s></i><b id="m4-spv">0.33×</b></div>
+   <div><span>แรงบิดของเฟืองตาม</span><i><s id="m4-tq" class="t"></s></i><b id="m4-tqv">3.00×</b></div>
+  </div>
+  <div class="gbtn"><button type="button" class="tb" id="m4-auto" aria-pressed="false">หมุนอัตโนมัติ</button><button type="button" class="tb" id="m4-reset">นับใหม่</button></div>
+ </div>
+ <div class="ab g1" id="m4-rule" style="left:720px;top:884px"><b>อัตราทด</b> = <span class="fr"><span>ฟันเฟืองตาม</span><span>ฟันเฟืองขับ</span></span> = <span class="fr"><span>รอบเฟืองขับ</span><span>รอบเฟืองตาม</span></span> <span id="m4-rd" class="mute"><span id="m4-ratio-d">ช้าลง 3.00 เท่า</span></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>04 / 06</b></span></div>
+ <aside class="notes">ให้นักเรียนลากเฟืองสีส้ม 3 รอบ เฟืองสีฟ้า (36 ฟัน) หมุน 1 รอบ เพราะฟันผ่านจุดสัมผัสเท่ากันทั้งสองเฟือง ลองเปลี่ยนจำนวนฟัน: เฟืองตามใหญ่กว่า → ช้าลงแต่แรงบิดมากขึ้น (เกียร์ 1 ของรถ) เฟืองตามเล็กกว่า → เร็วขึ้นแต่แรงบิดน้อยลง ทั้งสองเฟืองหมุนสวนทางกันเสมอ กด → ดูสูตร</aside>
+</section>
+
+
+<section class="slide" id="m-lever" data-steps="1" data-title="คาน">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:104px"><b>5</b>คาน</div>
+ <h2 class="in" style="left:130px;top:142px;--d:100">แขนยาวขึ้น <em>ออกแรงน้อยลง</em></h2>
+ <p class="lede in" style="left:130px;top:236px;--d:180">ลากก้อนหิน หรือมือ ไปตามคาน</p>
+ <svg class="ab in" id="m5-svg" style="left:0;top:0;width:1920px;height:1080px;--d:150" role="img" aria-label="คานอันดับหนึ่ง มีจุดหมุนอยู่ระหว่างก้อนหินกับแรงที่ออก"></svg>
+ <div class="card in" id="m5-card" style="left:1270px;top:96px;width:520px;height:168px;--d:250">
+  <div class="m5-ma"><span>การได้เปรียบเชิงกล</span><b id="m5-ma">2.5</b></div>
+  <div class="m5-e"><span>ต้องออกแรง</span><b><span id="m5-e">240</span> N</b><small>หิน 60 กก. ≈ 600 N</small></div>
+ </div>
+ <div class="ab in" id="m5-arms" style="left:130px;top:318px;--d:300"><span class="k">แขนน้ำหนัก</span><b id="m5-dw">0.60</b> ม. <span class="k e">แขนแรงพยายาม</span><b id="m5-de" class="e">1.50</b> ม.</div>
+ <div class="ab in" id="m5-row" style="left:130px;top:912px;--d:400">
+  <button type="button" class="tb or" id="m5-lift" aria-pressed="false"><span>ลองยก</span></button>
+  <span class="mom"><span class="e" id="m5-m1">240 × 1.50</span> = <span id="m5-m2">600 × 0.60</span></span>
+ </div>
+ <div class="ab g1" id="m5-rule" style="left:820px;top:912px"><b>MA</b> = <span class="fr"><span>แขนแรงพยายาม</span><span>แขนน้ำหนัก</span></span> = <span class="fr"><span>น้ำหนัก (W)</span><span>แรงพยายาม (E)</span></span></div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>05 / 06</b></span></div>
+ <aside class="notes">โมเมนต์รอบจุดหมุนเท่ากันเมื่อสมดุล: แรงพยายาม × แขนของแรงพยายาม = น้ำหนัก × แขนของน้ำหนัก ลองให้นักเรียนลากมือออกไปไกล ๆ: แขนยาว 3 เท่า ออกแรงแค่ 1 ใน 3 กด "ลองยก" ให้เห็นว่าแลกกันด้วยระยะ: มือต้องกดลงไกลกว่าที่หินขึ้น (งานที่ให้ = งานที่ได้ ถ้าไม่คิดแรงเสียดทาน)</aside>
+</section>
+
+
+<section class="slide" id="m-quiz" data-steps="2" data-title="เช็กความเข้าใจ">
+ <div class="sheet" aria-hidden="true"><i class="t" style="left:120px">1</i><i class="t" style="left:350px">2</i><i class="t" style="left:580px">3</i><i class="t" style="left:810px">4</i><i class="t" style="left:1040px">5</i><i class="t" style="left:1270px">6</i><i class="t" style="left:1500px">7</i><i class="t" style="left:1730px">8</i><i class="l" style="top:110px">A</i><i class="l" style="top:350px">B</i><i class="l" style="top:590px">C</i><i class="l" style="top:830px">D</i></div>
+ <div class="kick in" style="left:130px;top:104px"><b>6</b>เช็กความเข้าใจ</div>
+ <h2 class="in" style="left:130px;top:142px;--d:100">ตอบบนจอก่อน <em>แล้วค่อยเฉลย</em></h2>
+ <div class="card in" id="m6-q1" style="left:130px;top:262px;width:800px;height:700px;--d:200">
+  <div class="hd">ข้อ 1</div>
+  <p class="q">จังหวะใดที่วาล์วทั้งสองปิด และแก๊สร้อนดันลูกสูบลง?</p>
+  <svg id="m6-eng" role="img" aria-label="เครื่องยนต์ขนาดเล็กกำลังทำงาน"></svg><span id="m6-tag">ระเบิด</span>
+  <div class="ch ia r1" data-mcq id="m6-ch">
+   <div class="c"><b>ก</b>ดูด</div><div class="c"><b>ข</b>อัด</div><div class="c ok"><b>ค</b>ระเบิด</div><div class="c"><b>ง</b>คาย</div>
+  </div>
+  <div class="ans g1" id="m6-a1">จังหวะ <b class="or">ระเบิด</b>: ไอดีเผาไหม้ แก๊สขยายตัวดันลูกสูบลง (จังหวะอัดวาล์วก็ปิด แต่ลูกสูบเลื่อน<b>ขึ้น</b>)</div>
+ </div>
+ <div class="card in" id="m6-q2" style="left:990px;top:262px;width:800px;height:700px;--d:320">
+  <div class="hd">ข้อ 2</div>
+  <p class="q">เฟืองขับ 12 ฟัน ขบกับเฟืองตาม 36 ฟัน ถ้าเฟืองขับหมุน 90 รอบ เฟืองตามหมุนกี่รอบ?</p>
+  <svg id="m6-gears" role="img" aria-label="เฟือง 12 ฟัน ขบกับเฟือง 36 ฟัน"></svg>
+  <div class="w-input ia" id="m6-in" data-label="พิมพ์จำนวนรอบ" data-answer="30" data-unit="รอบ" data-accept="30.0" data-tol="0"></div>
+  <div class="ans g2" id="m6-a2">90 × <span class="fr"><span>12</span><span>36</span></span> = <b class="b" data-count="30" data-at="2">30</b> รอบ <small>(เฟืองตามใหญ่กว่า 3 เท่า จึงหมุนช้ากว่า 3 เท่า)</small></div>
+ </div>
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="ttl">เครื่องยนต์ 4 จังหวะ · เครื่องกล</span><span class="pg">© KruSlide<b>06 / 06</b></span></div>
+ <aside class="notes">ข้อ 1: ระเบิด (ตัวลวง: อัด วาล์วปิดเหมือนกันแต่ลูกสูบขึ้น) ข้อ 2: 90 × 12/36 = 30 รอบ ให้นักเรียนตอบบนจอก่อน กด → เพื่อเฉลยทีละข้อ</aside>
+</section>
+
+</main>
+<nav id="ctl" aria-label="ปุ่มควบคุมสไลด์">
+ <button id="pv" type="button" aria-label="ย้อนกลับ">‹</button>
+ <span id="pos"></span>
+ <button id="nx" type="button" aria-label="ถัดไป">›</button>
+ <button id="pen" type="button" aria-pressed="false" aria-label="ปากกา">✎ ปากกา</button>
+ <button id="fs" type="button" aria-label="เต็มจอ">⤢</button>
+</nav>
+<div id="live" class="sr" aria-live="polite"></div>
+<script>/* KruSlide styles sample: copy of teacher-slides/unit4/engine.js (via the calculus sample; Thai status text).
+   Deck engine: stage scaling, beats, navigation, lesson menu, control bar.
+   Slides: <section class="slide" data-steps="N" data-lesson="1" data-title="...">. Beats add .b1..b4 to the slide.
+   Only arrow keys, PageUp/PageDown and the ‹ › buttons change the slide; clicks, taps and swipes never do.
+   Events: document dispatches 'deck:change' {detail:{i,st,slide}} after every change; listens for 'deck:pen' (tools toggle).
+   Test hooks: window.__deck = {next, prev, jump(i, beat), state()}; ?still = no motion (screenshots). */
+(function () {
+  var root = document.documentElement, stage = document.getElementById('stage');
+  var slides = [].slice.call(stage.querySelectorAll('.slide')), N = slides.length, i = 0, st = 0;
+  var STEPS = slides.map(function (s) { return +s.dataset.steps || 0; });
+  var qs = new URLSearchParams(location.search);
+  if (qs.has('still')) root.classList.add('rm', 'shot');
+  else if (matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('rm');
+
+  /* Size from the visible area (clientWidth/Height), not innerWidth: on phones and tablets innerWidth can report a
+     larger layout viewport, which made the slide zoom in and get cut off. */
+  function vw() { return root.clientWidth || innerWidth; }
+  function vh() { return root.clientHeight || innerHeight; }
+  function fit() {
+    var s = Math.min(vw() / 1920, vh() / 1080);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+    root.style.setProperty('--scale', s);
+  }
+  addEventListener('resize', fit); addEventListener('orientationchange', fit);
+  if (window.visualViewport) visualViewport.addEventListener('resize', fit);
+  fit();
+
+  function count(el) {
+    var to = +el.dataset.count, dec = (el.dataset.count.split('.')[1] || '').length, t0 = null, tok = el._tok = {};
+    if (root.classList.contains('rm')) { el.textContent = to.toFixed(dec); return; }
+    function f(t) { if (el._tok !== tok) return; if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(f); }
+    el.textContent = (0).toFixed(dec); requestAnimationFrame(f);
+  }
+
+  var pos = document.getElementById('pos'), live = document.getElementById('live');
+  function lessonOf(k) { for (var j = k; j >= 0; j--) if (slides[j].dataset.lesson) return slides[j]; return null; }
+  function show(dir) {
+    slides.forEach(function (s, k) {
+      var on = k === i;
+      s.classList.toggle('on', on);
+      for (var b = 1; b <= 4; b++) s.classList.toggle('b' + b, on && st >= b);
+      if (on) { s.removeAttribute('inert'); s.setAttribute('aria-hidden', 'false'); }
+      else { s.setAttribute('inert', ''); s.setAttribute('aria-hidden', 'true'); }
+    });
+    var s = slides[i];
+    s.querySelectorAll('[data-count]').forEach(function (el) {
+      var at = +(el.dataset.at || 0);
+      if (st === at || (dir === 'jump' && st >= at)) count(el);
+      else if (st < at) { el._tok = null; el.textContent = ''; }
+    });
+    var L = lessonOf(i);
+    if (menuEl) [].forEach.call(menuEl.children, function (b) { b.setAttribute('aria-current', b._slide === L ? 'true' : 'false'); });
+    if (pos) pos.textContent = (i + 1) + ' / ' + N + (STEPS[i] ? '  ·  ขั้น ' + st + '/' + STEPS[i] : '');
+    if (live) live.textContent = (L ? L.dataset.title + '. ' : '') + 'สไลด์ ' + (i + 1) + ' จาก ' + N + (STEPS[i] ? ', ขั้น ' + st + ' จาก ' + STEPS[i] : '');
+    if (!qs.has('still')) try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('deck:change', { detail: { i: i, st: st, slide: s } }));
+  }
+  function next() { if (st < STEPS[i]) st++; else if (i < N - 1) { i++; st = 0; } else return; show('fwd'); }
+  function prev() { if (st > 0) st--; else if (i > 0) { i--; st = STEPS[i]; } else return; show('back'); }
+  function jump(k, b) { i = Math.max(0, Math.min(N - 1, k | 0)); st = Math.max(0, Math.min(b | 0, STEPS[i])); show('jump'); }
+
+  function busy(t) { return root.classList.contains('pen-on') || (t && t.closest && t.closest('.ia,a,button,input,textarea,select,label,#ctl,#menu,[contenteditable]')); }
+  /* The slide changes ONLY with the arrow keys (or a clicker's PageUp/PageDown) and the ‹ › buttons (owner, 27 Nov).
+     Clicking, tapping or swiping on the slide never changes it, so a wrong click at the board cannot skip ahead. */
+  if (matchMedia('(pointer: coarse)').matches) root.classList.add('touchy');   /* touch screens: the bar is visible from the start */
+  addEventListener('pointerdown', function (e) { if ((e.pointerType || 'mouse') !== 'mouse') root.classList.add('touchy'); }, true);
+  stage.addEventListener('click', function () { if (menuOpen()) closeMenu(); });
+  addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    var k = e.key, nav = k === 'PageDown' || k === 'PageUp' || ((k === 'ArrowRight' || k === 'ArrowLeft') && !typing);
+    if (menuOpen()) {   /* while the lesson menu is open, keys move inside it and never change the slide */
+      var items = [].slice.call(menuEl.children), at = items.indexOf(document.activeElement);
+      if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); e.stopPropagation(); items[Math.min(items.length - 1, at + 1)].focus(); }
+      else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); e.stopPropagation(); items[Math.max(0, at - 1)].focus(); }
+      else if (k === 'Escape' || k === 'm' || k === 'M') { e.preventDefault(); e.stopPropagation(); closeMenu(); }
+      else if (!(t && t.closest && t.closest('#menu'))) { e.preventDefault(); e.stopPropagation(); }
+      return;
+    }
+    if (!nav) return;
+    e.preventDefault(); e.stopPropagation();
+    if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+    (k === 'PageDown' || k === 'ArrowRight') ? next() : prev();
+  }, true);
+  addEventListener('keydown', function (e) {
+    var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    var k = e.key;
+    if ((k === ' ' || k === 'Enter') && t && t.closest && t.closest('button,.ia,a')) return;
+    if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+    else if (k === 'Home') jump(0); else if (k === 'End') jump(N - 1, 9);
+    else if (k === 'f' || k === 'F') fs();
+    else if (k === 'p' || k === 'P') document.dispatchEvent(new CustomEvent('deck:pen'));
+    else if (k === 'm' || k === 'M') menu();
+    else if (k === 'Escape') closeMenu();
+  });
+  /* control bar: shows on pointer move, hides after 2.5 s */
+  var ctl = document.getElementById('ctl'), hideT = null;
+  function wake() { if (!ctl) return; ctl.classList.add('show'); clearTimeout(hideT); hideT = setTimeout(function () { ctl.classList.remove('show'); }, 2500); }
+  addEventListener('pointermove', wake); addEventListener('touchstart', wake, { passive: true });
+  function fs() { if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); }
+  var menuEl = document.getElementById('menu');
+  function menuOpen() { return !!(menuEl && menuEl.classList.contains('open')); }
+  function closeMenu() {
+    if (!menuOpen()) return;
+    menuEl.classList.remove('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'false');
+    if (menuEl.contains(document.activeElement)) document.activeElement.blur();
+  }
+  function menu() {
+    if (!menuEl) return; if (menuOpen()) { closeMenu(); return; }
+    menuEl.classList.add('open'); var mb = document.getElementById('mn'); if (mb) mb.setAttribute('aria-expanded', 'true');
+    var cur = menuEl.querySelector('[aria-current="true"]') || menuEl.firstChild; if (cur) cur.focus();
+  }
+  if (menuEl) {
+    slides.forEach(function (s, k) {
+      if (!s.dataset.lesson) return;
+      var b = document.createElement('button'); b.type = 'button';
+      b.textContent = s.dataset.title; var sm = document.createElement('small'); sm.textContent = 'Slide ' + (k + 1); b.appendChild(sm); b._slide = s;
+      b.addEventListener('click', function () { closeMenu(); jump(k); });
+      menuEl.appendChild(b);
+    });
+  }
+  function on(id, f) { var el = document.getElementById(id); if (el) el.addEventListener('click', function (e) { e.stopPropagation(); f(); }); }
+  on('pv', prev); on('nx', next); on('mn', menu); on('fs', fs);
+  on('pen', function () { document.dispatchEvent(new CustomEvent('deck:pen')); });
+  document.addEventListener('pen:state', function (e) { var b = document.getElementById('pen'); if (b) b.setAttribute('aria-pressed', e.detail.on ? 'true' : 'false'); });
+
+  addEventListener('hashchange', function () { var n = parseInt((location.hash || '').slice(1), 10); if (n && n - 1 !== i) jump(n - 1); });
+  window.__deck = { next: next, prev: prev, jump: jump, state: function () { return { i: i, st: st, steps: STEPS[i], n: N, id: slides[i].id }; } };
+  var h = parseInt((location.hash || '').slice(1), 10);
+  jump(h ? h - 1 : (qs.has('s') ? +qs.get('s') : 0), h ? 0 : +(qs.get('b') || 0));
+})();
+
+/* KruSlide styles sample (mechanics): trimmed copy of teacher-slides/unit4/tools.js (via the calculus sample) with Thai labels.
+   Kept: tap a choice, typed answer with Check, sort cards into boxes, the global pen with auto-shapes, the tap guard.
+   Dropped (unused here): handwriting box and the chart builders.
+   Interactive tools for the Unit 4 deck (vanilla JS, no libraries, no network).
+   Renders every widget in CONTRACT.md + a global pen. Markup in, working tool out.
+   Widgets: .ch[data-mcq] .w-input .w-sort
+   Pen: toggled by the 'deck:pen' document event; adds .pen-on to <html>; dispatches 'pen:state' {detail:{on}}.
+   URL: ?still = default state, no motion · ?still&answers = Show answer on every widget (for checking).
+   Test hooks: every widget root has .__w (state + helpers); window.__tools = {widgets, showAll, resetAll, pen}. */
+(function () {
+  'use strict';
+  var root = document.documentElement, stage = document.getElementById('stage');
+  if (!stage) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var qs = new URLSearchParams(location.search);
+  var ANSWERS = qs.has('answers');
+  var INK = '#1F2429', BLUE = '#2B7DB8', VIOLET = '#3B5BCC', CORAL = '#E8590C', MINT = '#2F9E44', SUN = '#F5B700';   /* deck F colours */
+  var uid = 0, widgets = [];
+
+  /* ---------- helpers ---------- */
+  function still() { return root.classList.contains('rm'); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function sv(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
+  function ico(name, cls) { var s = sv('svg', { 'class': cls || 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' }); sv('use', { href: '#' + name }, s); return s; }
+  function num(v, d) { var n = parseFloat(v); return isFinite(n) ? n : d; }
+  function list(s) { return s == null || String(s).trim() === '' ? [] : String(s).split(',').map(function (x) { return x.trim(); }); }
+  function fmt(v) { return String(Math.round(v * 100) / 100); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function near(a, b) { return Math.abs(a - b) < 1e-6; }
+  function btn(label, cls, act, fn) {
+    var b = el('button', 'tw-btn' + (cls ? ' ' + cls : ''), label); b.type = 'button'; if (act) b.dataset.act = act;
+    b.addEventListener('click', function (e) { e.stopPropagation(); fn(e); });
+    return b;
+  }
+  function anim(node, frames, opt) { if (still() || !node.animate) return null; try { return node.animate(frames, opt); } catch (e) { return null; } }
+  /* runs step(0..1) with ease-out; always ends with step(1), even without animation frames */
+  function tween(dur, step, done) {
+    var fin = false, t0 = null;
+    function end() { if (fin) return; fin = true; step(1); if (done) done(); }
+    if (still()) { end(); return { cancel: function () {} }; }
+    function f(t) { if (fin) return; if (t0 === null) t0 = t; var p = (t - t0) / dur; if (p >= 1) return end(); step(1 - Math.pow(1 - p, 3)); requestAnimationFrame(f); }
+    requestAnimationFrame(f); setTimeout(end, dur + 120);
+    return { cancel: function () { fin = true; } };
+  }
+  /* pointer position inside a node, in the node's own (unscaled) pixels: the stage is scaled by a CSS transform */
+  function local(node, e, W, H) {
+    var r = node.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * (r.width ? W / r.width : 1), y: (e.clientY - r.top) * (r.height ? H / r.height : 1) };
+  }
+  function toClient(node, x, y, W, H) { var r = node.getBoundingClientRect(); return { x: r.left + x * r.width / W, y: r.top + y * r.height / H }; }
+  function scaleOf(node) { var r = node.getBoundingClientRect(); return node.offsetWidth ? r.width / node.offsetWidth : 1; }
+  function key(e, keys) { if (keys.indexOf(e.key) < 0) return false; e.preventDefault(); e.stopPropagation(); return true; }
+
+  var liveEl = el('div', 'sr'); liveEl.setAttribute('aria-live', 'polite'); document.body.appendChild(liveEl);
+  function announce(t) { liveEl.textContent = ''; setTimeout(function () { liveEl.textContent = t; }, 30); }
+
+  function say(fb, kind, msg) {
+    fb.className = 'tw-fb' + (kind ? ' ' + kind : '');
+    fb.textContent = '';
+    if (kind === 'ok') fb.appendChild(ico('check'));
+    if (kind === 'no') fb.appendChild(ico('cross'));
+    if (msg) fb.appendChild(el('span', '', msg));
+  }
+  /* footer: Check / Show answer / Reset + feedback (aria-live). o = {check, show, reset, hint} */
+  function foot(w, o) {
+    var f = el('div', 'tw-foot'), bs = el('div', 'tw-btns'), fb = el('div', 'tw-fb');
+    fb.setAttribute('role', 'status'); fb.setAttribute('aria-live', 'polite');
+    var api = { el: f, fb: fb };
+    if (o.check) bs.appendChild(api.bCheck = btn('ตรวจคำตอบ', 'pri', 'check', o.check));
+    if (o.show) { bs.appendChild(api.bShow = btn('ดูเฉลย', 'show', 'show', o.show)); api.bShow.setAttribute('aria-pressed', 'false'); }
+    if (o.reset) bs.appendChild(api.bReset = btn('เริ่มใหม่', '', 'reset', o.reset));
+    f.appendChild(bs); f.appendChild(fb);
+    api.say = function (kind, msg) { say(fb, kind, msg || (kind ? '' : o.hint || '')); };
+    api.say('');
+    if (w.clientWidth && w.clientWidth < (o.wide || 900)) w.classList.add('w-narrow');
+    return api;
+  }
+  /* "Show answer" is a deliberate toggle: it saves the student's work, shows the answer in a clear state
+     (mint frame + "Answer" tab), and "Hide answer" brings the student's work back. */
+  function answerCtl(w, ft, o) {
+    var saved = null, c = {
+      shown: false,
+      show: function () {
+        if (c.shown) return;
+        saved = o.snap(); c.shown = true; w.classList.add('w-shown');
+        ft.bShow.textContent = 'ซ่อนเฉลย'; ft.bShow.setAttribute('aria-pressed', 'true');
+        o.reveal(); ft.say('ok', 'แสดงเฉลยแล้ว');
+      },
+      /* back to the student's own work. Check and every edit call this first, so the revealed key is never graded
+         and never becomes the student's work. Only Reset drops the saved work (off). */
+      hide: function () { if (!c.shown) return; c.off(); o.restore(saved); ft.say(''); },
+      toggle: function () { if (c.shown) c.hide(); else c.show(); },
+      off: function () {
+        if (!c.shown) return;
+        c.shown = false; w.classList.remove('w-shown');
+        ft.bShow.textContent = 'ดูเฉลย'; ft.bShow.setAttribute('aria-pressed', 'false');
+      }
+    };
+    return c;
+  }
+  function register(w, api) { w.__w = api; api.el = w; widgets.push(api); return api; }
+
+  /* ================= shape recognition (Auto shapes) ================= */
+  function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+  function segDist(p, a, b) {
+    var dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy;
+    var t = l2 ? clamp(((p.x - a.x) * dx + (p.y - a.y) * dy) / l2, 0, 1) : 0;
+    return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy);
+  }
+  function pathLen(p) { var L = 0; for (var i = 1; i < p.length; i++) L += dist(p[i - 1], p[i]); return L; }
+  function resample(p, n) {
+    var L = pathLen(p), out = [{ x: p[0].x, y: p[0].y }];
+    if (!L) { while (out.length < n) out.push({ x: p[0].x, y: p[0].y }); return out; }
+    var stepL = L / (n - 1), acc = 0, i = 1, a = p[0];
+    while (out.length < n - 1 && i < p.length) {
+      var b = p[i], d = dist(a, b);
+      if (acc + d >= stepL && d > 0) { var t = (stepL - acc) / d; a = { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }; out.push(a); acc = 0; }
+      else { acc += d; a = b; i++; }
+    }
+    while (out.length < n) out.push({ x: p[p.length - 1].x, y: p[p.length - 1].y });
+    return out;
+  }
+  function rdp(p, eps) {
+    if (p.length < 3) return p.slice();
+    var keep = [0, p.length - 1], stack = [[0, p.length - 1]];
+    while (stack.length) {
+      var s = stack.pop(), md = 0, mi = -1;
+      for (var i = s[0] + 1; i < s[1]; i++) { var d = segDist(p[i], p[s[0]], p[s[1]]); if (d > md) { md = d; mi = i; } }
+      if (md > eps) { keep.push(mi); stack.push([s[0], mi], [mi, s[1]]); }
+    }
+    return keep.sort(function (a, b) { return a - b; }).map(function (k) { return p[k]; });
+  }
+  function area2(p) { var a = 0; for (var i = 0; i < p.length; i++) { var q = p[(i + 1) % p.length]; a += p[i].x * q.y - q.x * p[i].y; } return a; }
+  /* Returns {t:'line'|'ellipse'|'rect'|'tri', pts:[...polyline], closed} or null. Strict on purpose:
+     small strokes (handwriting) and anything not clearly a shape stay freehand. */
+  function recog(raw) {
+    var n = raw.length; if (n < 2) return null;
+    var L = pathLen(raw), a = raw[0], b = raw[n - 1], chord = dist(a, b), i, d;
+    var minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+    for (i = 0; i < n; i++) { minX = Math.min(minX, raw[i].x); maxX = Math.max(maxX, raw[i].x); minY = Math.min(minY, raw[i].y); maxY = Math.max(maxY, raw[i].y); }
+    var bw = maxX - minX, bh = maxY - minY, dim = Math.max(bw, bh);
+    /* straight line */
+    if (chord >= 110 && chord / L >= 0.93) {
+      var md = 0; for (i = 1; i < n - 1; i++) md = Math.max(md, segDist(raw[i], a, b));
+      if (md <= 4 + 0.045 * chord) {
+        var q = { x: b.x, y: b.y }, ang = Math.abs(Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI);
+        if (ang < 4 || ang > 176) q.y = a.y; else if (Math.abs(ang - 90) < 4) q.x = a.x;   /* nearly level or upright: make it exact */
+        return { t: 'line', pts: [{ x: a.x, y: a.y }, q], closed: false };
+      }
+      return null;
+    }
+    /* closed loops only from here */
+    if (n < 10 || dim < 110 || Math.min(bw, bh) < 56 || chord > Math.max(26, 0.2 * dim)) return null;
+    var p = resample(raw, 72);
+    /* frame: the rotation with the smallest bounding box */
+    var best = null;
+    for (var deg = 0; deg < 90; deg += 2) {
+      var th = deg * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+      for (i = 0; i < p.length; i++) { var u = p[i].x * c + p[i].y * s, v = -p[i].x * s + p[i].y * c; x0 = Math.min(x0, u); x1 = Math.max(x1, u); y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+      var ar = (x1 - x0) * (y1 - y0);
+      if (!best || ar < best.ar - 1e-6) best = { ar: ar, deg: deg };
+    }
+    var bdeg = best.deg > 45 ? best.deg - 90 : best.deg;
+    function frame(degr) {
+      var th = degr * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9, q = [];
+      for (var k = 0; k < p.length; k++) { var u = p[k].x * c + p[k].y * s, v = -p[k].x * s + p[k].y * c; q.push({ x: u, y: v }); x0 = Math.min(x0, u); x1 = Math.max(x1, u); y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+      var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, A = (x1 - x0) / 2, B = (y1 - y0) / 2, eE = 0, eR = 0, bins = [];
+      for (k = 0; k < q.length; k++) {
+        var x = q[k].x - cx, y = q[k].y - cy;
+        eE += Math.abs(Math.hypot(x / A, y / B) - 1);
+        eR += Math.min(A - Math.abs(x), B - Math.abs(y));
+        bins[Math.floor((Math.atan2(y / B, x / A) + Math.PI) / (2 * Math.PI) * 12) % 12] = 1;
+      }
+      var cover = 0; for (k = 0; k < 12; k++) if (bins[k]) cover++;
+      return { c: c, s: s, cx: cx, cy: cy, A: A, B: B, eE: eE / q.length, eR: eR / q.length / Math.min(A, B), cover: cover, q: q, deg: degr };
+    }
+    function out(f, x, y) { return { x: x * f.c - y * f.s, y: x * f.s + y * f.c }; }   /* frame -> page */
+    var f0 = frame(0), fr = Math.abs(bdeg) < 9 ? f0 : frame(bdeg);
+    var ccw = area2(p) < 0;
+    /* triangle: three real corners */
+    var vs = rdp(p, 0.075 * dim); vs.pop();
+    var changed = true;
+    while (changed && vs.length > 3) {
+      changed = false;
+      for (i = 0; i < vs.length; i++) {
+        var pa = vs[(i + vs.length - 1) % vs.length], pb = vs[i], pc = vs[(i + 1) % vs.length];
+        var a1 = Math.atan2(pa.y - pb.y, pa.x - pb.x), a2 = Math.atan2(pc.y - pb.y, pc.x - pb.x);
+        var turn = Math.abs(a1 - a2) * 180 / Math.PI; if (turn > 180) turn = 360 - turn;
+        if (turn > 150 || dist(pb, pc) < 0.16 * dim) { vs.splice(i, 1); changed = true; break; }
+      }
+    }
+    var eT = 9;
+    if (vs.length === 3) {
+      eT = 0;
+      for (i = 0; i < p.length; i++) eT += Math.min(segDist(p[i], vs[0], vs[1]), segDist(p[i], vs[1], vs[2]), segDist(p[i], vs[2], vs[0]));
+      eT = eT / p.length / dim;
+    }
+    var sE = (f0.cover === 12 ? Math.min(f0.eE, fr.eE) : 9) / 0.085, sR = (fr.cover === 12 ? fr.eR : 9) / 0.085, sT = eT / 0.03;
+    var m = Math.min(sE, sR, sT), pts = [], k;
+    if (m > 1) return null;
+    if (m === sT) {
+      pts = vs.map(function (v) { return { x: v.x, y: v.y }; }); pts.push({ x: pts[0].x, y: pts[0].y });
+      return { t: 'tri', pts: pts, closed: true };
+    }
+    if (m === sR) {
+      var cs = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(function (g) { return out(fr, fr.cx + g[0] * fr.A, fr.cy + g[1] * fr.B); });
+      if (area2(cs) < 0 !== ccw) cs.reverse();
+      var st = 0, bd = 1e9; for (k = 0; k < 4; k++) { d = dist(cs[k], a); if (d < bd) { bd = d; st = k; } }
+      for (k = 0; k <= 4; k++) pts.push(cs[(st + k) % 4]);
+      return { t: 'rect', pts: pts, closed: true };
+    }
+    var fe = f0.eE <= fr.eE * 1.15 || fr.A / fr.B < 1.25 && fr.B / fr.A < 1.25 ? f0 : fr;
+    var A = fe.A, B = fe.B;
+    if (A / B < 1.18 && B / A < 1.18) A = B = (A + B) / 2;   /* nearly round: a true circle */
+    var la = { x: a.x * fe.c + a.y * fe.s - fe.cx, y: -a.x * fe.s + a.y * fe.c - fe.cy }, t0 = Math.atan2(la.y / B, la.x / A), N = 72;
+    var dir = area2(fe.q) < 0 ? -1 : 1;
+    for (k = 0; k <= N; k++) { var t = t0 + dir * k / N * 2 * Math.PI; pts.push(out(fe, fe.cx + A * Math.cos(t), fe.cy + B * Math.sin(t))); }
+    return { t: A === B ? 'circle' : 'ellipse', pts: pts, closed: true };
+  }
+
+  /* ================= ink engine (w-write and the global pen) ================= */
+  function paint(ctx, s, pts) {
+    var p = pts || s.pts, n = p.length, i;
+    if (!n) return;
+    ctx.globalAlpha = s.alpha; ctx.strokeStyle = ctx.fillStyle = s.color; ctx.lineCap = ctx.lineJoin = 'round';
+    if (n === 1) { ctx.beginPath(); ctx.arc(p[0].x, p[0].y, s.size / 2, 0, 7); ctx.fill(); ctx.globalAlpha = 1; return; }
+    if (s.poly || pts) {
+      ctx.lineWidth = s.size; ctx.beginPath(); ctx.moveTo(p[0].x, p[0].y);
+      for (i = 1; i < n; i++) ctx.lineTo(p[i].x, p[i].y);
+      if (s.closed && !pts) ctx.closePath();
+      ctx.stroke();
+    } else if (!s.pr) {
+      ctx.lineWidth = s.size; ctx.beginPath(); ctx.moveTo(p[0].x, p[0].y);
+      for (i = 1; i < n - 1; i++) ctx.quadraticCurveTo(p[i].x, p[i].y, (p[i].x + p[i + 1].x) / 2, (p[i].y + p[i + 1].y) / 2);
+      ctx.lineTo(p[n - 1].x, p[n - 1].y); ctx.stroke();
+    } else {   /* stylus pressure: width changes along the stroke */
+      var ax = p[0].x, ay = p[0].y;
+      for (i = 1; i < n; i++) {
+        var lastp = i === n - 1, bx = lastp ? p[i].x : (p[i].x + p[i + 1].x) / 2, by = lastp ? p[i].y : (p[i].y + p[i + 1].y) / 2;
+        ctx.lineWidth = s.size * (0.45 + 1.1 * (p[i - 1].p + p[i].p) / 2);
+        ctx.beginPath(); ctx.moveTo(ax, ay);
+        if (lastp) ctx.lineTo(bx, by); else ctx.quadraticCurveTo(p[i].x, p[i].y, bx, by);
+        ctx.stroke(); ax = bx; ay = by;
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function Ink(host, W, H, maxRatio) {
+    var base = el('canvas', 'ink-c'), live = el('canvas', 'ink-c');
+    base.setAttribute('aria-hidden', 'true'); live.setAttribute('aria-hidden', 'true');
+    host.appendChild(base); host.appendChild(live);
+    var bc = base.getContext('2d'), lc = live.getContext('2d');
+    var self = { st: { strokes: [], hist: [] }, color: INK, size: 4, alpha: 1, mode: 'draw', enabled: true, auto: true, onchange: null, last: null };
+    var ratio = 0, cur = null, pid = null, erasing = false, morph = null;
+    function changed() { if (self.onchange) self.onchange(); }
+    function redraw() {
+      bc.setTransform(ratio, 0, 0, ratio, 0, 0); bc.clearRect(0, 0, W, H);
+      self.st.strokes.forEach(function (s) { if (!morph || morph.s !== s) paint(bc, s); });
+    }
+    function clearLive() { lc.setTransform(ratio, 0, 0, ratio, 0, 0); lc.clearRect(0, 0, W, H); }
+    function fit() {
+      var q = Math.min(maxRatio, Math.max(1, (window.devicePixelRatio || 1) * scaleOf(host)));
+      q = Math.ceil(q * 4) / 4;
+      if (q === ratio) return;
+      ratio = q;
+      [base, live].forEach(function (c) { c.width = Math.round(W * q); c.height = Math.round(H * q); });
+      redraw(); if (cur) { clearLive(); paint(lc, cur); }
+    }
+    function pos(e) { var p = local(host, e, W, H); p.p = e.pressure || 0; return p; }
+    function add(e) {
+      var p = pos(e), l = cur.pts[cur.pts.length - 1];
+      if (l && Math.hypot(p.x - l.x, p.y - l.y) < 1.2) return;
+      cur.pts.push(p);
+    }
+    function hit(s, p, R) {
+      var q = s.pts, r = R + s.size / 2;
+      if (q.length === 1) return dist(q[0], p) <= r;
+      for (var i = 1; i < q.length; i++) if (segDist(p, q[i - 1], q[i]) <= r) return true;
+      return s.closed && segDist(p, q[q.length - 1], q[0]) <= r;
+    }
+    function erase(e) {
+      var p = pos(e), gone = [], S = self.st.strokes;
+      for (var k = S.length - 1; k >= 0; k--) if (hit(S[k], p, 16)) { gone.push({ s: S[k], k: k }); S.splice(k, 1); }
+      if (gone.length) { self.st.hist.push({ t: 'del', items: gone }); redraw(); changed(); }
+    }
+    function endMorph() {
+      if (!morph) return;
+      var m = morph; morph = null; m.tw.cancel();
+      clearLive(); paint(bc, m.s);
+    }
+    function snapShape(s) {
+      var r = recog(s.pts); self.last = r ? r.t : 'free';
+      if (!r) return false;
+      var rawPts = s.pts, from = resample(rawPts, 48), to = resample(r.closed ? r.pts : r.pts, 48);
+      self.st.hist.push({ t: 'snap', s: s, raw: rawPts, pr: s.pr });
+      s.pts = r.pts; s.poly = true; s.closed = r.closed; s.pr = false; s.shape = r.t;
+      if (still()) return false;
+      morph = { s: s };
+      morph.tw = tween(150, function (t) {
+        clearLive();
+        paint(lc, s, from.map(function (a, i) { return { x: a.x + (to[i].x - a.x) * t, y: a.y + (to[i].y - a.y) * t }; }));
+      }, function () { if (morph && morph.s === s) { morph = null; clearLive(); paint(bc, s); } });
+      return true;
+    }
+    function finish() {
+      if (pid === null) return;
+      try { host.releasePointerCapture(pid); } catch (e) {}
+      pid = null; erasing = false;
+      if (cur) {
+        var s = cur; cur = null;
+        self.st.strokes.push(s); self.st.hist.push({ t: 'add', s: s });
+        var morphing = self.auto && snapShape(s);
+        if (!self.auto) self.last = 'free';
+        if (!morphing) { clearLive(); paint(bc, s); }
+        changed();
+      }
+    }
+    host.addEventListener('pointerdown', function (e) {
+      if (!self.enabled || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      if (pid !== null) finish();
+      endMorph();
+      pid = e.pointerId; try { host.setPointerCapture(pid); } catch (er) {}
+      if (e.cancelable) e.preventDefault();
+      if (self.mode === 'erase') { erasing = true; erase(e); return; }
+      cur = { color: self.color, size: self.size, alpha: self.alpha, pr: e.pointerType === 'pen' && e.pressure > 0 && self.alpha === 1, pts: [] };
+      add(e); clearLive(); paint(lc, cur);
+    });
+    host.addEventListener('pointermove', function (e) {
+      if (e.pointerId !== pid) return;
+      var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : null;
+      if (!evs || !evs.length) evs = [e];
+      if (erasing) { evs.forEach(erase); return; }
+      if (!cur) return;
+      evs.forEach(add); clearLive(); paint(lc, cur);
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { host.addEventListener(t, function (e) { if (e.pointerId === pid) finish(); }); });
+    self.finish = finish;
+    self.undo = function () {
+      endMorph();
+      var h = self.st.hist.pop(), S = self.st.strokes; if (!h) return;
+      if (h.t === 'add') { var k = S.indexOf(h.s); if (k >= 0) S.splice(k, 1); }
+      else if (h.t === 'snap') { h.s.pts = h.raw; h.s.poly = false; h.s.closed = false; h.s.pr = h.pr; h.s.shape = null; }
+      else if (h.t === 'del') for (var i = h.items.length - 1; i >= 0; i--) S.splice(Math.min(h.items[i].k, S.length), 0, h.items[i].s);
+      else if (h.t === 'clear') self.st.strokes = h.all;
+      redraw(); changed();
+    };
+    self.clear = function () {
+      endMorph();
+      if (!self.st.strokes.length) return;
+      self.st.hist.push({ t: 'clear', all: self.st.strokes }); self.st.strokes = [];
+      redraw(); changed();
+    };
+    self.swap = function (st) { finish(); endMorph(); self.st = st; redraw(); changed(); };
+    self.count = function () { return self.st.strokes.length; };
+    self.shapes = function () { return self.st.strokes.map(function (s) { return s.shape || 'free'; }); };
+    self.fit = fit;
+    /* the drawing area changed size (web font loaded, label wrapped...): same pixels, new canvas, ink kept as drawn */
+    self.resize = function (w2, h2) { finish(); endMorph(); W = w2; H = h2; ratio = 0; fit(); };
+    var rt = null; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fit, 120); });
+    fit();
+    return self;
+  }
+  var SHAPES_ICON = '<circle cx="8" cy="8.5" r="5.5"/><rect x="10.5" y="11" width="10.5" height="10" rx="1.5"/>';
+  function rawIcon(inner) {
+    var s = sv('svg', { 'class': 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    s.innerHTML = inner; return s;
+  }
+
+  /* ================= MCQ ================= */
+  function mcq(w) {
+    var cs = [].slice.call(w.querySelectorAll('.c'));
+    w.setAttribute('role', 'group');
+    cs.forEach(function (c) {
+      c.tabIndex = 0; c.setAttribute('role', 'button');
+      function pick() {
+        if (c.classList.contains('ok')) { c.classList.remove('wrong'); c.classList.add('picked'); announce('ถูกต้อง!'); return; }
+        c.classList.add('wrong'); announce('ยังไม่ใช่ ลองอีกครั้ง');
+        anim(c, [{ transform: 'translateX(0)' }, { transform: 'translateX(-10px)' }, { transform: 'translateX(10px)' }, { transform: 'translateX(-7px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(0)' }], { duration: 420 });
+        clearTimeout(c._t); c._t = setTimeout(function () { c.classList.remove('wrong'); }, 800);
+      }
+      c.addEventListener('click', pick);
+      c.addEventListener('keydown', function (e) { if (key(e, ['Enter', ' '])) pick(); });
+    });
+    return register(w, {
+      type: 'mcq',
+      show: function () { cs.forEach(function (c) { if (c.classList.contains('ok')) c.classList.add('picked'); }); },
+      reset: function () { cs.forEach(function (c) { c.classList.remove('picked', 'wrong'); }); }
+    });
+  }
+
+  /* ================= w-input ================= */
+  function clean(s) { return String(s).trim().toLowerCase().replace(/\s+/g, ' '); }
+  /* A typed number, or null. Commas (or spaces) count only as proper groups of three: "1,250" is 1250, but
+     "3,5", "1,00" or "1 2" are not numbers. A typed unit, "%", the degree sign, and the words "more" / "than ..." are
+     ignored: "6 more girls" is 6 when the unit is girls. */
+  function parseNum(s, unit) {
+    var t = clean(s).replace(/−/g, '-'), u = unit ? clean(unit) : '';
+    t = t.replace(/\s+than\b.*$/, '').replace(/(\d)\s*\bmore\b/g, '$1 ').replace(/\s+/g, ' ').trim();
+    if (u && t.length > u.length && t.slice(-u.length) === u) t = t.slice(0, -u.length).trim();
+    t = t.replace(/\s*[%°]$/, '').replace(/^\+/, '');
+    var m = /^(-?)(\d{1,3}(?:,\d{3})+|\d{1,3}(?: \d{3})+|\d+)?(\.\d*)?$/.exec(t);
+    if (!m || (!m[2] && !(m[3] && m[3].length > 1))) return null;
+    return parseFloat(m[1] + (m[2] || '0').replace(/[, ]/g, '') + (m[3] || ''));
+  }
+  function input(w) {
+    var d = w.dataset, answer = (d.answer || '').trim(), unit = d.unit || '', tol = num(d.tol, 0), tries = 0;
+    var acc = [answer].concat((d.accept || '').split(';')).map(function (s) { return s.trim(); }).filter(Boolean);
+    var numeric = parseNum(answer, unit) !== null, id = 'tw-in-' + (++uid);
+    w.textContent = '';
+    if (d.label) { var lab = el('label', 'tw-lab', d.label); lab.htmlFor = id; w.appendChild(lab); }
+    var row = el('div', 'tw-inrow'), inp = el('input', 'tw-in');
+    inp.type = 'text'; inp.id = id; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off');
+    if (numeric) inp.inputMode = 'decimal';
+    if (!d.label) inp.setAttribute('aria-label', 'คำตอบของคุณ');
+    inp.style.width = clamp(answer.length * 24 + 84, 170, 420) + 'px';
+    row.appendChild(inp);
+    if (unit) row.appendChild(el('span', 'tw-unit', unit));
+    w.appendChild(row);
+    var ft = foot(w, { check: check, show: function () { ac.toggle(); }, reset: reset, wide: 1 });
+    row.appendChild(ft.fb); w.appendChild(ft.el);
+    if (w.clientWidth && w.clientWidth < 540) { w.classList.add('w-narrow'); ft.el.appendChild(ft.fb); }
+    function match(v) {
+      var a = clean(v), an = parseNum(v, unit);
+      return acc.some(function (x) {
+        var b = clean(x);
+        if (a === b) return true;
+        /* spaces may differ ("110cups"), but never inside or between numbers: "1 2" is not "12" */
+        if (!/\d[\s,]+\d/.test(a) && a.replace(/\s/g, '') === b.replace(/\s/g, '')) return true;
+        var bn = parseNum(x, unit);
+        return an !== null && bn !== null && Math.abs(an - bn) <= tol + 1e-9;
+      });
+    }
+    function mark(k) { inp.classList.remove('ok', 'no'); if (k) inp.classList.add(k); }
+    function check() {
+      ac.hide();
+      if (!inp.value.trim()) { mark(''); ft.say('info', 'พิมพ์คำตอบก่อนนะ'); return; }
+      if (match(inp.value)) { mark('ok'); ft.say('ok', 'ถูกต้อง!'); return; }
+      tries++; mark('no');
+      anim(inp, [{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'translateX(0)' }], { duration: 300 });
+      ft.say('no', tries >= 2 ? 'ลองตรวจวิธีทำอีกครั้ง' : 'ยังไม่ถูก ลองอีกครั้ง');
+      if (tries >= 2) ft.bShow.classList.add('nudge');
+    }
+    function reset() { ac.off(); inp.readOnly = false; inp.value = ''; tries = 0; mark(''); ft.bShow.classList.remove('nudge'); ft.say(''); }
+    var ac = answerCtl(w, ft, {
+      snap: function () { return { v: inp.value, cls: inp.className }; },
+      reveal: function () { inp.value = answer; inp.readOnly = true; mark('ok'); },
+      restore: function (s) { inp.value = s.v; inp.readOnly = false; mark(''); }
+    });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); check(); inp.blur(); } });   /* blur: the arrows go back to the deck */
+    inp.addEventListener('input', function () { ac.hide(); mark(''); if (ft.fb.classList.contains('ok') || ft.fb.classList.contains('info')) ft.say(''); });
+    return register(w, { type: 'input', show: ac.show, hide: ac.hide, reset: reset, check: check, input: inp, tries: function () { return tries; } });
+  }
+
+  /* ================= w-sort ================= */
+  function sort(w) {
+    var bins = (w.dataset.bins || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean);
+    var items = [].slice.call(w.children).filter(function (c) { return c.classList && c.classList.contains('item'); });
+    var pool = el('div', 'tw-pool'), row = el('div', 'tw-binrow'), sel = null;
+    pool.setAttribute('role', 'button'); pool.tabIndex = -1; pool.setAttribute('aria-label', 'การ์ดที่ยังไม่ได้จัด');
+    w.textContent = '';
+    w.appendChild(pool); w.appendChild(row);
+    var binEls = bins.map(function (name, b) {
+      var bin = el('div', 'tw-bin b' + (b % 4)), slot = el('div', 'tw-slot');
+      bin.tabIndex = 0; bin.setAttribute('role', 'button'); bin.setAttribute('aria-label', 'กล่อง: ' + name);
+      bin.appendChild(el('div', 'tw-bint', name)); bin.appendChild(slot); bin._slot = slot; bin._b = b;
+      row.appendChild(bin); return bin;
+    });
+    var ft = foot(w, { check: check, show: function () { ac.toggle(); }, reset: reset, hint: 'ลากแต่ละภาพไปใส่กลุ่มที่ถูก' });
+    w.appendChild(ft.el);
+    function slotOf(t) { return t._slot || t; }
+    function where(it) { var b = it.parentNode && it.parentNode.parentNode; return b && b.classList.contains('tw-bin') ? b._b : -1; }
+    function unmark(it) { it.classList.remove('ok', 'no'); var m = it.querySelector('.tw-mark'); if (m) m.remove(); }
+    function mark(it, ok) { unmark(it); it.classList.add(ok ? 'ok' : 'no'); var m = el('span', 'tw-mark'); m.appendChild(ico(ok ? 'check' : 'cross')); it.appendChild(m); }
+    function select(it) {
+      if (sel) { sel.classList.remove('sel'); sel.setAttribute('aria-pressed', 'false'); }
+      sel = it === sel ? null : it;
+      if (sel) { sel.classList.add('sel'); sel.setAttribute('aria-pressed', 'true'); }
+      w.classList.toggle('picking', !!sel);
+    }
+    function move(it, target, quiet) {
+      var a = it.getBoundingClientRect();
+      it.style.transform = ''; it.classList.remove('drag');
+      unmark(it); slotOf(target).appendChild(it);
+      if (pool.children.length < items.length) pool.style.minHeight = '';
+      fitBins();
+      if (!quiet) {
+        var b = it.getBoundingClientRect(), k = scaleOf(it) || 1;
+        anim(it, [{ transform: 'translate(' + (a.left - b.left) / k + 'px,' + (a.top - b.top) / k + 'px)' }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      }
+    }
+    /* cards must stay inside their box: first tighten the cards, then let the box scroll */
+    function fitBins() {
+      w.classList.remove('tight');
+      binEls.forEach(function (b) { b._slot.classList.remove('scroll'); });
+      function over() { return binEls.some(function (b) { return b._slot.scrollHeight > b._slot.clientHeight + 2; }); }
+      if (!over()) return;
+      w.classList.add('tight');
+      binEls.forEach(function (b) { if (b._slot.scrollHeight > b._slot.clientHeight + 2) b._slot.classList.add('scroll'); });
+    }
+    function place(it, target) { ac.hide(); move(it, target); if (sel === it) select(it); ft.say(''); }
+    items.forEach(function (it, k) {
+      it._k = k; it.tabIndex = 0; it.setAttribute('role', 'button'); it.setAttribute('aria-pressed', 'false');
+      pool.appendChild(it);
+      var st = null, dragged = false;
+      it.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        if (st) { it.style.transform = ''; it.classList.remove('drag'); }
+        st = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+        try { it.setPointerCapture(e.pointerId); } catch (er) {}
+      });
+      it.addEventListener('pointermove', function (e) {
+        if (!st || e.pointerId !== st.id) return;
+        var dx = e.clientX - st.x, dy = e.clientY - st.y;
+        if (!st.moved && Math.hypot(dx, dy) < 8) return;
+        if (!st.moved) { st.moved = true; st.k = scaleOf(w) || 1; it.classList.add('drag'); w.classList.add('dragging'); }
+        it.style.transform = 'translate(' + dx / st.k + 'px,' + dy / st.k + 'px) rotate(2deg)';
+        var t = under(e); binEls.concat(pool).forEach(function (b) { b.classList.toggle('over', b === t); });
+      });
+      function up(e) {
+        if (!st || e.pointerId !== st.id) return;
+        var s = st; st = null;
+        try { it.releasePointerCapture(e.pointerId); } catch (er) {}
+        binEls.concat(pool).forEach(function (b) { b.classList.remove('over'); });
+        w.classList.remove('dragging');
+        if (!s.moved) return;
+        dragged = true; setTimeout(function () { dragged = false; }, 60);
+        var t = e.type === 'pointerup' ? under(e) : null;
+        if (t && slotOf(t) !== it.parentNode) place(it, t);
+        else { var a = it.style.transform; it.style.transform = ''; it.classList.remove('drag'); anim(it, [{ transform: a }, { transform: 'none' }], { duration: 200 }); }
+      }
+      it.addEventListener('pointerup', up); it.addEventListener('pointercancel', up);
+      it.addEventListener('click', function (e) { e.stopPropagation(); if (dragged) { dragged = false; return; } select(it); });
+      it.addEventListener('keydown', function (e) { if (key(e, ['Enter', ' '])) select(it); });
+    });
+    function under(e) {
+      var t = document.elementFromPoint(e.clientX, e.clientY);
+      t = t && t.closest ? t.closest('.tw-bin,.tw-pool') : null;
+      return t && w.contains(t) ? t : null;
+    }
+    binEls.concat(pool).forEach(function (b) {
+      function drop() { if (sel && slotOf(b) !== sel.parentNode) { var it = sel; place(it, b); announce('ย้ายแล้ว'); } else if (sel) select(sel); }
+      b.addEventListener('click', drop);
+      b.addEventListener('keydown', function (e) { if (e.target === b && key(e, ['Enter', ' '])) drop(); });
+    });
+    function check() {
+      ac.hide();
+      var placed = items.filter(function (it) { return where(it) >= 0; }), right = 0;
+      if (!placed.length) { ft.say('info', 'ลากภาพลงกลุ่มก่อนนะ'); return; }
+      placed.forEach(function (it) { var ok = where(it) === +it.dataset.bin; if (ok) right++; mark(it, ok); });
+      var np = placed.length, left = items.length - np;
+      if (right === items.length) ft.say('ok', 'ถูกทั้งหมด เยี่ยมมาก!');
+      else if (!left) ft.say('no', 'ถูก ' + right + ' จาก ' + items.length + ' ภาพ');
+      else ft.say(right === np ? 'info' : 'no', 'วางแล้ว ' + np + ' ภาพ ถูก ' + right + ' \u00B7 เหลืออีก ' + left);
+    }
+    function reset() { ac.off(); if (sel) select(sel); items.forEach(function (it) { move(it, pool, true); }); ft.say(''); }
+    var ac = answerCtl(w, ft, {
+      snap: function () { return binEls.concat(pool).map(function (b) { return [].slice.call(slotOf(b).children); }); },
+      reveal: function () { if (sel) select(sel); items.forEach(function (it) { var b = binEls[+it.dataset.bin]; if (b) { move(it, b); mark(it, true); } }); },
+      restore: function (s) { binEls.concat(pool).forEach(function (b, k) { s[k].forEach(function (it) { move(it, b, true); }); }); }
+    });
+    function lock() { if (pool.children.length === items.length) { pool.style.minHeight = ''; pool.style.minHeight = pool.offsetHeight + 'px'; } }
+    lock(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { lock(); fitBins(); });
+    return register(w, { type: 'sort', show: ac.show, hide: ac.hide, reset: reset, check: check, items: items, bins: binEls, pool: pool,
+      state: function () { return items.map(where); } });
+  }
+
+  /* ================= global pen ================= */
+  function pen() {
+    var layer = el('div'); layer.id = 'pen-layer'; stage.appendChild(layer);
+    var ink = Ink(layer, 1920, 1080, 1.5); ink.enabled = false;
+    var bar = el('div'); bar.id = 'pen-bar'; bar.setAttribute('role', 'toolbar'); bar.setAttribute('aria-label', 'เครื่องมือปากกา'); bar.setAttribute('aria-orientation', 'vertical');
+    stage.appendChild(bar);
+    var store = {}, cur = window.__deck ? window.__deck.state().i : 0, on = false, size = 'thin', tool = 'pen';
+    ink.st = store[cur] = { strokes: [], hist: [] };
+    var groups = { color: [], size: [], tool: [] };
+    function tb(label, inner, group, val, fn) {
+      var b = el('button', 'pb'); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; b.dataset.pen = val;
+      if (typeof inner === 'string') b.appendChild(rawIcon(inner)); else b.appendChild(inner);
+      if (group) { groups[group].push(b); b.setAttribute('aria-pressed', 'false'); }
+      b.addEventListener('click', function (e) { e.stopPropagation(); fn(); sync(); });
+      bar.appendChild(b); return b;
+    }
+    function sep() { bar.appendChild(el('i', 'ps')); }
+    var colors = [['หมึก', INK], ['น้ำเงิน', BLUE], ['ส้มแดง', CORAL], ['เขียว', MINT], ['เหลือง', SUN]];
+    var penColor = INK, hiColor = SUN;   /* the highlighter has its own colour: sun yellow by default */
+    colors.forEach(function (c) {
+      var sw = el('i', 'pc'); sw.style.background = c[1];
+      tb(c[0], sw, 'color', c[1], function () { if (tool === 'erase') tool = 'pen'; if (tool === 'hi') hiColor = c[1]; else penColor = c[1]; });
+    });
+    sep();
+    tb('เส้นบาง', '<path d="M4 16 Q9 6 13 12 T20 9" stroke-width="2"/>', 'size', 'thin', function () { size = 'thin'; });
+    tb('เส้นหนา', '<path d="M4 16 Q9 6 13 12 T20 9" stroke-width="5"/>', 'size', 'thick', function () { size = 'thick'; });
+    sep();
+    var u = sv('svg', { 'class': 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' }); sv('use', { href: '#pencil' }, u);
+    tb('ปากกา', u, 'tool', 'pen', function () { tool = 'pen'; });
+    tb('ปากกาเน้น', '<path d="M14 4l6 6-8 8H6v-6z"/><path d="M4 21h9" stroke-width="3"/>', 'tool', 'hi', function () { tool = 'hi'; });
+    tb('ยางลบ', '<path d="M8 20l-4.5-4.5a1.5 1.5 0 0 1 0-2.1L13 4l7 7-9 9z"/><path d="M8 20h12M9 8l7 7"/>', 'tool', 'erase', function () { tool = 'erase'; });
+    var bAuto = tb('จัดรูปทรงอัตโนมัติ', SHAPES_ICON, null, 'auto', function () { ink.auto = !ink.auto; });
+    sep();
+    var bUndo = tb('ย้อนกลับ', '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>', null, 'undo', function () { ink.undo(); });
+    var bClear = tb('ลบทั้งสไลด์นี้', '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>', null, 'clear', function () { ink.clear(); });
+    sep();
+    var x = sv('svg', { 'class': 'tw-ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' }); sv('use', { href: '#cross' }, x);
+    tb('ปิดปากกา', x, null, 'close', function () { set(false); });
+    function sync() {
+      ink.mode = tool === 'erase' ? 'erase' : 'draw';
+      ink.color = tool === 'hi' ? hiColor : penColor;
+      ink.alpha = tool === 'hi' ? (hiColor === SUN ? 0.5 : 0.32) : 1;
+      ink.size = tool === 'hi' ? (size === 'thin' ? 22 : 36) : (size === 'thin' ? 5 : 11);
+      groups.color.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === ink.color && tool !== 'erase' ? 'true' : 'false'); });
+      groups.size.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === size ? 'true' : 'false'); });
+      groups.tool.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.pen === tool ? 'true' : 'false'); });
+      bAuto.setAttribute('aria-pressed', ink.auto ? 'true' : 'false');
+      bUndo.disabled = !ink.st.hist.length; bClear.disabled = !ink.st.strokes.length;
+      layer.classList.toggle('erase', tool === 'erase');
+    }
+    ink.onchange = sync;
+    function set(v) {
+      v = !!v; if (v === on) return;
+      on = v; if (!on) ink.finish();
+      ink.enabled = on; root.classList.toggle('pen-on', on);
+      if (on) ink.fit();
+      document.dispatchEvent(new CustomEvent('pen:state', { detail: { on: on } }));
+      announce(on ? 'เปิดปากกา' : 'ปิดปากกา');
+    }
+    document.addEventListener('deck:pen', function () { set(!on); });
+    document.addEventListener('deck:change', function (e) {
+      var k = e.detail.i; if (k === cur) return;
+      cur = k; ink.swap(store[k] || (store[k] = { strokes: [], hist: [] }));
+    });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && on) set(false); });
+    sync();
+    return { ink: ink, set: set, on: function () { return on; }, store: store, bar: bar, layer: layer };
+  }
+
+  /* ================= tap guard =================
+     After a quick finger drag (a flick), Chrome can swallow the click of the next tap ("tap stops the fling").
+     On a classroom touch screen that means a dead Check button. If a finger or stylus goes down and up on a
+     button without moving and no click follows, send the click ourselves. */
+  (function () {
+    var down = null, lastClick = -1, synthAt = -1e9, synthT = null;
+    addEventListener('pointerdown', function (e) { down = e.pointerType === 'mouse' ? null : { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.target }; }, true);
+    addEventListener('click', function (e) {
+      if (!e.isTrusted) return;
+      if (synthT && synthT.contains(e.target) && performance.now() - synthAt < 250) { e.stopPropagation(); e.preventDefault(); return; }   /* late twin of a click we already sent */
+      lastClick = performance.now();
+    }, true);
+    /* A tap must never leave keyboard focus on a tool: the next Space / Enter / arrow from the clicker belongs to the deck.
+       Text inputs keep their focus. Elements reached with Tab keep working with the keyboard. */
+    function unfocus() {
+      var a = document.activeElement;
+      if (a && a !== document.body && a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA' && !a.isContentEditable && a.blur) a.blur();
+    }
+    ['pointerup', 'pointercancel'].forEach(function (t) { addEventListener(t, function () { unfocus(); setTimeout(unfocus, 0); }, true); });
+    addEventListener('click', function (e) { if (e.detail > 0) { unfocus(); setTimeout(unfocus, 0); } }, true);   /* detail 0 = pressed with the keyboard: keep focus */
+    addEventListener('pointerup', function (e) {
+      var d = down; down = null;
+      if (!d || d.id !== e.pointerId || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12) return;
+      var t = d.t && d.t.closest ? d.t.closest('button,input,[role="button"]') : null;
+      if (!t || t.disabled || !(stage.contains(t) || t.closest('#ctl'))) return;
+      var at = performance.now();
+      setTimeout(function () {
+        if (lastClick >= at || !t.isConnected || t.disabled) return;
+        synthAt = performance.now(); synthT = t;
+        if (t.tagName === 'INPUT') t.focus(); else { t.click(); unfocus(); }
+      }, 90);
+    }, true);
+  })();
+
+  /* ================= start ================= */
+  var kinds = [['.ch[data-mcq]', mcq], ['.w-input', input], ['.w-sort', sort]];
+  kinds.forEach(function (k) {
+    [].forEach.call(stage.querySelectorAll(k[0]), function (w) {
+      try { k[1](w); } catch (err) { if (window.console) console.error('tools.js: could not render ' + k[0], err); }
+    });
+  });
+  var penApi = pen();
+  window.__tools = {
+    widgets: widgets, pen: penApi, recog: recog,
+    showAll: function () { widgets.forEach(function (x) { if (x.show) x.show(); }); },
+    resetAll: function () { widgets.forEach(function (x) { if (x.reset) x.reset(); }); }
+  };
+  if (ANSWERS) window.__tools.showAll();
+})();
+
+/* KruSlide styles sample F · mechanism explorer. Our own SVG drawings with live kinematics (vanilla JS, no libraries).
+   Engine(svg): single-cylinder DOHC four-stroke in cutaway. Crank radius R, rod length L; piston pin height
+     y = -(R cos θ + sqrt(L² − R² sin² θ)); valves follow sin² lift curves with real timing (IVO 12° BTDC, IVC 48° ABDC,
+     EVO 48° BBDC, EVC 12° ATDC), cams turn at half crank speed, the spark fires 20° before top dead centre.
+   Gears: involute teeth (20° pressure angle), output angle = −(N1/N2)·input. Lever: moments, MA = effort arm / load arm.
+   Only arrow keys / PageUp / PageDown / ‹ › change the slide; every drag here uses pointer capture and touch-action:none.
+   Test hooks: window.__mech = {engines, scrub, explorer, gears, lever}. */
+(function () {
+  'use strict';
+  var root = document.documentElement, stage = document.getElementById('stage');
+  if (!stage) return;
+  var NS = 'http://www.w3.org/2000/svg', D = Math.PI / 180, uid = 0;
+  var qs = new URLSearchParams(location.search);
+  function still() { return root.classList.contains('rm'); }
+  function sv(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+  function rgb(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
+  function f1(v) { return (Math.round(v * 10) / 10).toFixed(1); }
+  function f2(v) { return (Math.round(v * 100) / 100).toFixed(2); }
+  function thai(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function ease(p) { return 1 - Math.pow(1 - p, 3); }
+  /* pointer -> SVG user units, for an svg with a viewBox and the default xMidYMid meet (the stage is CSS-scaled) */
+  function svgPt(svg, e) {
+    var vb = svg.viewBox.baseVal, r = svg.getBoundingClientRect(), s = Math.min(r.width / vb.width, r.height / vb.height);
+    return { x: vb.x + (e.clientX - r.left - (r.width - vb.width * s) / 2) / s, y: vb.y + (e.clientY - r.top - (r.height - vb.height * s) / 2) / s };
+  }
+  function tween(dur, step, done) {
+    var t0 = null, fin = false;
+    function end() { if (fin) return; fin = true; step(1); if (done) done(); }
+    if (still()) { end(); return { cancel: function () { fin = true; } }; }
+    function f(t) { if (fin) return; if (t0 === null) t0 = t; var p = (t - t0) / dur; if (p >= 1) return end(); step(ease(p)); requestAnimationFrame(f); }
+    requestAnimationFrame(f); setTimeout(end, dur + 200);
+    return { cancel: function () { fin = true; } };
+  }
+  /* drag helper: pointer capture, never changes the slide, works with mouse, pen and touch */
+  function drag(el, o) {
+    el.style.touchAction = 'none';
+    var id = null;
+    el.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (root.classList.contains('pen-on')) return;
+      e.preventDefault(); e.stopPropagation(); id = e.pointerId;
+      try { el.setPointerCapture(id); } catch (er) {}
+      el.classList.add('dragging'); if (o.down) o.down(e);
+    });
+    el.addEventListener('pointermove', function (e) { if (e.pointerId === id && o.move) o.move(e); });
+    function up(e) { if (e.pointerId !== id) return; id = null; el.classList.remove('dragging'); try { el.releasePointerCapture(e.pointerId); } catch (er) {} if (o.up) o.up(e); }
+    el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+    el.addEventListener('click', function (e) { e.stopPropagation(); });
+  }
+
+  /* ================= one animation clock for every live drawing ================= */
+  var comps = [];
+  function comp(slide, c) { c.slide = slide; c.on = false; comps.push(c); return c; }
+  var last = 0, running = false;
+  function loop(t) {
+    var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
+    var any = false;
+    comps.forEach(function (c) { if (c.on && c.tick) { if (c.tick(dt) !== false) any = true; } });
+    if (any) requestAnimationFrame(loop); else { running = false; last = 0; }
+  }
+  function wake() { if (!running) { running = true; last = 0; requestAnimationFrame(loop); } }
+  document.addEventListener('deck:change', function (e) {
+    comps.forEach(function (c) {
+      var on = c.slide === e.detail.slide;
+      if (on !== c.on) { c.on = on; if (c.active) c.active(on); }
+      if (on && c.beat) c.beat(e.detail.st);
+    });
+    wake();
+  });
+
+  /* ================= engine geometry (engine units; crank centre 0,0; y grows downward) ================= */
+  var R = 70, L = 230, LIFT = 22, TILT = 14, CROWN = 58, SKIRT = 50;
+  var IVO = -12, IVC = 228, EVO = 492, EVC = 732, SPARK = 340;
+  var TAN = Math.tan(TILT * D), SIN = Math.sin(TILT * D), COS = Math.cos(TILT * D);
+  var ROOF = -392, DECK = -372;
+  function roofY(x) { return ROOF + Math.abs(x) * TAN; }   /* pent roof: two faces at 14° */
+  var SI = { x: -42, y: roofY(42) }, SE = { x: 42, y: roofY(42) };
+  function pinY(th) { var t = th * D, s = R * Math.sin(t); return -(R * Math.cos(t) + Math.sqrt(L * L - s * s)); }
+  function crankPin(th) { var t = th * D; return { x: R * Math.sin(t), y: -R * Math.cos(t) }; }
+  function m720(th) { return ((th % 720) + 720) % 720; }
+  function liftAt(th, open, dur) { var x = m720(th - open); return x < dur ? LIFT * Math.pow(Math.sin(Math.PI * x / dur), 2) : 0; }
+  function liftI(th) { return liftAt(th, IVO, IVC - IVO); }
+  function liftE(th) { return liftAt(th, EVO, EVC - EVO); }
+  function strokeOf(th) { return Math.floor(m720(th) / 180); }
+  var MIX = [58, 155, 214], DENSE = [59, 91, 204], POWER = [232, 89, 12], HOT2 = [190, 86, 44], EXH = [139, 126, 112];
+  function gas(th) {
+    var t = m720(th), c, a, n = 1, fl = 0;
+    if (t < IVC) { c = MIX; a = .26; n = .3 + .7 * t / IVC; }
+    else if (t < SPARK) { var p = (t - IVC) / (SPARK - IVC); c = mix(MIX, DENSE, p); a = .26 + .32 * p; }
+    else if (t < 392) { c = DENSE; a = .58; fl = (t - SPARK) / 52; }
+    else if (t < EVO) { var q = (t - 392) / (EVO - 392); c = mix(POWER, HOT2, q); a = .62 - .14 * q; fl = 1; }
+    else { var r = (t - EVO) / (720 - EVO); c = mix(HOT2, EXH, Math.min(1, r * 3)); a = .48 - .3 * r; n = 1 - .7 * r; }
+    return { c: c, a: a, n: n, fl: fl, t: t };
+  }
+  var STROKES = [
+    { th: 'ดูด', en: 'Intake', col: 'var(--mix)', piston: 'ลง', iv: 'เปิด', ev: 'ปิด',
+      say: 'ลูกสูบเลื่อนลง วาล์วไอดีเปิด ไอดี (อากาศผสมเชื้อเพลิง) ถูกดูดเข้ากระบอกสูบ' },
+    { th: 'อัด', en: 'Compression', col: 'var(--dense)', piston: 'ขึ้น', iv: 'ปิด', ev: 'ปิด',
+      say: 'วาล์วทั้งสองปิด ลูกสูบเลื่อนขึ้น อัดไอดีให้เล็กลงราว 7 เท่า แล้วหัวเทียนจุดประกายไฟก่อนถึงจุดบนสุด' },
+    { th: 'ระเบิด', en: 'Power', col: 'var(--power)', piston: 'ลง', iv: 'ปิด', ev: 'ปิด',
+      say: 'ไอดีเผาไหม้ แก๊สร้อนขยายตัวดันลูกสูบลงอย่างแรง จังหวะเดียวที่ให้กำลังงาน' },
+    { th: 'คาย', en: 'Exhaust', col: 'var(--exh)', piston: 'ขึ้น', iv: 'ปิด', ev: 'เปิด',
+      say: 'วาล์วไอเสียเปิด ลูกสูบเลื่อนขึ้น ดันไอเสียออกทางท่อไอเสีย' }];
+
+  /* ---------- part drawings (strings in local units; reused by the explore close-ups) ---------- */
+  var INK = '#1F2429';
+  function pistonSVG() {
+    var rings = [-50, -41, -31].map(function (y, k) {
+      return '<rect x="-79" y="' + y + '" width="10" height="' + (k < 2 ? 4 : 5) + '"/><rect x="69" y="' + y + '" width="10" height="' + (k < 2 ? 4 : 5) + '"/>';
+    }).join('');
+    return '<path d="M-77 -52 Q-77 -58 -71 -58 H71 Q77 -58 77 -52 V44 Q77 50 71 50 H-71 Q-77 50 -77 44 Z" fill="url(#m-alu)" stroke="' + INK + '" stroke-width="2.5"/>' +
+      '<path d="M-61 -24 Q-61 -33 -52 -33 H52 Q61 -33 61 -24 V50 H-61 Z" fill="#BFC6CC" stroke="' + INK + '" stroke-width="1.6"/>' +
+      '<path d="M-70 -55 H70" stroke="#fff" stroke-width="2" opacity=".7"/>' +
+      '<g fill="#3B434B">' + rings + '</g>';
+  }
+  function pinSVG() { return '<circle r="16" fill="url(#m-steel-r)" stroke="' + INK + '" stroke-width="2"/><circle r="6" fill="#59636D"/>'; }
+  function rodSVG() {
+    var l = L;
+    return '<path d="M-12 ' + (-l + 21) + ' A25 25 0 1 1 12 ' + (-l + 21) + ' L19 -42 A46 46 0 1 1 -19 -42 Z" fill="url(#m-steel)" stroke="' + INK + '" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<path d="M-8 -54 L-5 ' + (-l + 34) + ' H5 L8 -54 Z" fill="#7F8A95" opacity=".75"/>' +
+      '<path d="M-46 0 H46" stroke="' + INK + '" stroke-width="2"/>' +
+      '<rect x="-38" y="-20" width="8" height="44" rx="2" fill="#59636D" stroke="' + INK + '" stroke-width="1.5"/><rect x="30" y="-20" width="8" height="44" rx="2" fill="#59636D" stroke="' + INK + '" stroke-width="1.5"/>' +
+      '<circle r="28" fill="#5A646E" stroke="' + INK + '" stroke-width="2"/><circle r="23" fill="url(#m-steel-r)" stroke="' + INK + '" stroke-width="1.5"/>' +
+      '<circle cy="' + (-l) + '" r="16" fill="#5A646E"/>';
+  }
+  function crankSVG() {
+    return '<path d="M-46 -70 A46 46 0 0 1 46 -70 L90.6 42.3 A100 100 0 0 1 -90.6 42.3 Z" fill="url(#m-web)" stroke="' + INK + '" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<circle cx="-40" cy="64" r="8" fill="#4B555E"/><circle cx="40" cy="64" r="8" fill="#4B555E"/>' +
+      '<circle cy="-70" r="24" fill="url(#m-steel-r)" stroke="' + INK + '" stroke-width="2"/>' +
+      '<circle r="31" fill="url(#m-steel-r)" stroke="' + INK + '" stroke-width="2.5"/><circle r="9" fill="#4B555E"/>' +
+      '<path d="M0 -24 V24 M-24 0 H24" stroke="' + INK + '" stroke-width="1" stroke-dasharray="6 3 2 3"/>';
+  }
+  function blockSVG() {
+    var outer = 'M-150 -372 H150 V-175 C150 -150 210 -140 210 -112 V120 H-210 V-112 C-210 -140 -150 -150 -150 -175 Z';
+    var inner = 'M-80 -372 V-165 C-80 -138 -188 -136 -188 -108 V120 H188 V-108 C188 -136 80 -138 80 -165 V-372 Z';
+    return '<path d="' + outer + '" fill="#E7E3DA"/>' +
+      '<path d="' + outer + ' ' + inner + '" fill="url(#m-hatch)" fill-rule="evenodd" stroke="' + INK + '" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<rect x="-137" y="-360" width="36" height="160" rx="9" fill="#CFE3F1" stroke="' + INK + '" stroke-width="1.6"/>' +
+      '<rect x="101" y="-360" width="36" height="160" rx="9" fill="#CFE3F1" stroke="' + INK + '" stroke-width="1.6"/>' +
+      '<rect x="-85" y="-372" width="5" height="208" fill="#8C96A0" stroke="' + INK + '" stroke-width="1"/><rect x="80" y="-372" width="5" height="208" fill="#8C96A0" stroke="' + INK + '" stroke-width="1"/>';
+  }
+  var PORT_I = 'M-175 -478 C-110 -478 -36 -462 -14.8 -388.3 L-69.2 -374.7 C-92 -412 -122 -428 -175 -428 Z';
+  var PORT_E = 'M175 -478 C110 -478 36 -462 14.8 -388.3 L69.2 -374.7 C92 -412 122 -428 175 -428 Z';
+  function headSVG() {
+    return '<path d="M-175 -500 H175 V-372 H-175 Z" fill="url(#m-hatch2)" stroke="' + INK + '" stroke-width="2.5"/>' +
+      '<path d="M-80 -372 L0 -392 L80 -372 Z" fill="#F4F1EA" stroke="' + INK + '" stroke-width="2"/>' +
+      '<path d="' + PORT_I + '" fill="#CFE5F3" stroke="' + INK + '" stroke-width="2"/>' +
+      '<path d="' + PORT_E + '" fill="#DED8CF" stroke="' + INK + '" stroke-width="2"/>' +
+      '<rect x="-26" y="-500" width="52" height="60" fill="#F4F1EA" stroke="' + INK + '" stroke-width="1.6"/>' +
+      '<rect x="-51" y="-494" width="15" height="70" rx="5" fill="#CFE3F1" stroke="' + INK + '" stroke-width="1.4"/><rect x="36" y="-494" width="15" height="70" rx="5" fill="#CFE3F1" stroke="' + INK + '" stroke-width="1.4"/>' +
+      '<path d="M-72 -373 L-64 -377 L-66 -370 Z M-17 -387 L-10 -390 L-12 -383 Z M72 -373 L64 -377 L66 -370 Z M17 -387 L10 -390 L12 -383 Z" fill="#3B434B"/>' +
+      '<rect x="-160" y="-375" width="320" height="5" fill="#3B434B"/>' +
+      '<g stroke="' + INK + '" stroke-width="2"><rect x="-262" y="-486" width="87" height="66" fill="#D6DBE0"/><rect x="-262" y="-478" width="87" height="50" fill="#CFE5F3" stroke="none"/><rect x="-185" y="-496" width="10" height="86" fill="#AEB7C0"/>' +
+      '<rect x="175" y="-486" width="87" height="66" fill="#D6DBE0"/><rect x="175" y="-478" width="87" height="50" fill="#DED8CF" stroke="none"/><rect x="175" y="-496" width="10" height="86" fill="#AEB7C0"/></g>';
+  }
+  function coverSVG() {
+    var l = 'M-169 -500 V-650 Q-169 -694 -125 -694 H-30', r = 'M30 -694 H125 Q169 -694 169 -650 V-500';
+    return '<g fill="none" stroke-linecap="butt"><path d="' + l + '" stroke="' + INK + '" stroke-width="15"/><path d="' + r + '" stroke="' + INK + '" stroke-width="15"/>' +
+      '<path d="' + l + '" stroke="#C9CFD5" stroke-width="10"/><path d="' + r + '" stroke="#C9CFD5" stroke-width="10"/>' +
+      '<path d="M-28 -697 V-500 M28 -697 V-500" stroke="' + INK + '" stroke-width="9"/><path d="M-28 -697 V-500 M28 -697 V-500" stroke="#C9CFD5" stroke-width="5"/></g>';
+  }
+  function camPath() {
+    var d = '';
+    for (var a = 0; a < 360; a += 3) {
+      var psi = a > 180 ? a - 360 : a, lf = Math.abs(psi) < 60 ? LIFT * Math.pow(Math.cos(Math.PI * psi / 120), 2) : 0, r = 26 + lf;
+      d += (a ? 'L' : 'M') + (r * Math.sin(a * D)).toFixed(2) + ' ' + (-r * Math.cos(a * D)).toFixed(2);
+    }
+    return d + 'Z';
+  }
+  var CAM = camPath();
+  function camSVG() { return '<path d="' + CAM + '" fill="url(#m-steel-r)" stroke="' + INK + '" stroke-width="2.2"/><circle r="13" fill="#5A646E" stroke="' + INK + '" stroke-width="1.5"/><circle cy="-6" r="3" fill="#E3E7EB"/>'; }
+  function valveSVG(hot) {
+    return '<path d="M-28 0 H28 L27 -4 C18 -8 9 -14 5.5 -30 H-5.5 C-9 -14 -18 -8 -27 -4 Z" fill="' + (hot ? 'url(#m-hot)' : 'url(#m-steel)') + '" stroke="' + INK + '" stroke-width="2"/>' +
+      '<rect x="-4.5" y="-202" width="9" height="174" fill="url(#m-steel)" stroke="' + INK + '" stroke-width="1.5"/>' +
+      '<path d="M-17 -195 H17 L11 -203 H-11 Z" fill="#7F8A95" stroke="' + INK + '" stroke-width="1.5"/>' +
+      '<rect x="-19" y="-222" width="38" height="22" rx="3" fill="url(#m-steel)" stroke="' + INK + '" stroke-width="1.8"/>';
+  }
+  function springD(lift) {   /* coil spring between the head (d = 125) and the retainer (d = 195 − lift) */
+    var y0 = -125, y1 = -(195 - lift), n = 7, d = 'M-15 ' + y0;
+    for (var k = 1; k <= n * 2; k++) d += ' L' + (k % 2 ? 15 : -15) + ' ' + (y0 + (y1 - y0) * k / (n * 2)).toFixed(2);
+    return d;
+  }
+  function plugSVG() {
+    var th = ''; for (var y = -437; y < -396; y += 5) th += 'M-11 ' + y + ' H11 ';
+    return '<rect x="-11" y="-440" width="22" height="46" fill="url(#m-steel)" stroke="' + INK + '" stroke-width="1.6"/>' +
+      '<path d="' + th + '" stroke="#5A646E" stroke-width="1.2"/>' +
+      '<path d="M-11 -394 V-384 H4" fill="none" stroke="#5A646E" stroke-width="4" stroke-linejoin="round"/>' +
+      '<rect x="-2.6" y="-398" width="5.2" height="8" fill="#5A646E"/>' +
+      '<rect x="-19" y="-462" width="38" height="22" fill="url(#m-steel)" stroke="' + INK + '" stroke-width="1.6"/><path d="M-7 -462 V-440 M7 -462 V-440" stroke="' + INK + '" stroke-width="1"/>' +
+      '<path d="M-10 -462 V-548 Q-10 -556 -7 -560 H7 Q10 -556 10 -548 V-462 Z" fill="#F7F7F4" stroke="' + INK + '" stroke-width="1.6"/>' +
+      '<path d="M-10 -520 H10 M-10 -530 H10 M-10 -540 H10" stroke="#C9CDD0" stroke-width="2"/>' +
+      '<rect x="-5" y="-578" width="10" height="18" fill="#8C96A0" stroke="' + INK + '" stroke-width="1.4"/><rect x="-8" y="-586" width="16" height="9" rx="2" fill="#8C96A0" stroke="' + INK + '" stroke-width="1.4"/>';
+  }
+  function sparkSVG() {
+    return '<circle cx="-1" cy="-387" r="22" fill="url(#m-flash)"/>' +
+      '<path d="M-1 -392 L3 -389 L-3 -387.5 L2 -385" fill="none" stroke="#FFF6D6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>';
+  }
+  function bez(p, t) {
+    var u = 1 - t;
+    return { x: u * u * u * p[0] + 3 * u * u * t * p[2] + 3 * u * t * t * p[4] + t * t * t * p[6], y: u * u * u * p[1] + 3 * u * u * t * p[3] + 3 * u * t * t * p[5] + t * t * t * p[7] };
+  }
+  var FLOW_I = [-262, -453, -150, -455, -60, -450, -44, -394], FLOW_E = [44, -394, 60, -450, 150, -455, 262, -453];
+
+  /* ================= Engine ================= */
+  /* exploded-view labels: [group, text, x, y, anchor] in the part's own (pre-explode) coordinates */
+  var XLAB = [['.xp-piston', 'ลูกสูบ', 0, -374, 'middle'], ['.xp-rod', 'ก้านสูบ', -62, -170, 'end'], ['.xp-crank', 'เพลาข้อเหวี่ยง', 0, 156, 'middle'],
+    ['.xp-ivalve', 'วาล์วไอดี', -128, -560, 'end'], ['.xp-evalve', 'วาล์วไอเสีย', 128, -560, 'start'], ['.xp-plug', 'หัวเทียน', 34, -505, 'start'],
+    ['.cam-i', 'ลูกเบี้ยวไอดี', -102, -690, 'middle'], ['.cam-e', 'ลูกเบี้ยวไอเสีย', 102, -690, 'middle'],
+    ['.xp-head', 'ฝาสูบ', -122, -338, 'middle'], ['.xp-block', 'กระบอกสูบ', 0, 196, 'middle']];
+  function Engine(svg, o) {
+    o = o || {};
+    var p = 'en' + (++uid), th = o.start || 0, prev = th;
+    svg.classList.add('eng');
+    svg.setAttribute('viewBox', o.vb || '-340 -720 680 980');
+    var g = function (cls, part, inner) { return '<g class="xp xp-' + cls + '"' + (part ? ' data-part="' + part + '"' : '') + '>' + inner + '</g>'; };
+    var chamber = '<g class="gas" clip-path="url(#' + p + '-c)"><path class="gas-f"/><circle class="flame" cx="0" cy="-388" r="0" fill="url(#m-flame)"/><g class="gp"></g></g>';
+    svg.innerHTML =
+      '<defs><clipPath id="' + p + '-c"><path class="gas-clip"/></clipPath></defs>' +
+      '<path class="axis" d="M0 -712 V250" stroke="#8C9298" stroke-width="1.2" stroke-dasharray="22 6 4 6" fill="none"/>' +
+      '<g class="zoom">' +
+      g('sump', 'block', '<path d="M-190 120 H190 V188 Q190 230 150 230 H-150 Q-190 230 -190 188 Z" fill="#E7E3DA" stroke="' + INK + '" stroke-width="2.5"/>' +
+        '<path d="M-180 178 Q-120 170 -60 178 T60 178 T180 178 V188 Q180 220 150 220 H-150 Q-180 220 -180 188 Z" fill="#E2B65A" opacity=".55"/>') +
+      g('block', 'block', blockSVG()) +
+      g('crank', 'crank', '<g class="crk">' + crankSVG() + '</g>') +
+      g('head', 'head', headSVG()) +
+      '<g class="xp xp-gasl">' + chamber + '<g class="pi"></g><g class="pe"></g></g>' +
+      g('piston', 'piston', '<g class="pst">' + pistonSVG() + '</g>') +
+      g('rod', 'rod', '<g class="rodg">' + rodSVG() + '</g>') +
+      g('pin', 'piston', '<g class="pinr">' + pinSVG() + '</g>') +
+      g('ivalve', 'ivalve', '<g transform="translate(' + SI.x + ' ' + SI.y + ') rotate(' + (-TILT) + ')"><path class="spr" fill="none" stroke="#3B6E8F" stroke-width="3.2" stroke-linejoin="round"/></g>' +
+        '<g class="vi">' + valveSVG(false) + '<path class="hitv" d="M0 4 V-222" stroke="transparent" stroke-width="46"/></g>') +
+      g('evalve', 'evalve', '<g transform="translate(' + SE.x + ' ' + SE.y + ') rotate(' + TILT + ')"><path class="spr" fill="none" stroke="#3B6E8F" stroke-width="3.2" stroke-linejoin="round"/></g>' +
+        '<g class="ve">' + valveSVG(true) + '<path class="hitv" d="M0 4 V-222" stroke="transparent" stroke-width="46"/></g>') +
+      g('plug', 'plug', plugSVG() + '<g class="spark" opacity="0">' + sparkSVG() + '</g><rect x="-22" y="-590" width="44" height="200" fill="transparent"/>') +
+      g('cams', 'cams', '<g class="cam-i"><g class="ci">' + camSVG() + '</g></g><g class="cam-e"><g class="ce">' + camSVG() + '</g></g>') +
+      g('cover', '', coverSVG()) +
+      (o.ports ? '<g class="plab"><text x="-300" y="-512" text-anchor="middle" class="pl-t">ไอดี</text><text x="-300" y="-382" text-anchor="middle" class="pl-e">AIR + FUEL</text>' +
+        '<path d="M-330 -453 H-276" stroke="#3A9BD6" stroke-width="5" marker-end="url(#m-arr-b)"/>' +
+        '<text x="300" y="-512" text-anchor="middle" class="pl-t">ไอเสีย</text><text x="300" y="-382" text-anchor="middle" class="pl-e">EXHAUST</text>' +
+        '<path d="M276 -453 H330" stroke="#8B7E70" stroke-width="5" marker-end="url(#m-arr-g)"/></g>' : '') +
+      (o.dims ? '<g class="dims"><path d="M160 -358 H266 M160 -218 H266" stroke="#5B636B" stroke-width="1.4"/>' +
+        '<path class="draw" pathLength="1" style="--d:1300" d="M252 -358 V-218" stroke="#1F2429" stroke-width="2.4" marker-start="url(#m-tick)" marker-end="url(#m-tick)"/>' +
+        '<text x="240" y="-298" text-anchor="end" class="dm-a">ช่วงชัก</text><text x="240" y="-266" text-anchor="end" class="dm-b">70 มม.</text></g>' : '') +
+      '<g class="xls"></g>' +
+      '</g>';
+    var q = function (s) { return svg.querySelector(s); };
+    var el = { pst: q('.pst'), rod: q('.rodg'), pin: q('.pinr'), crk: q('.crk'), vi: q('.vi'), ve: q('.ve'), si: q('.xp-ivalve .spr'), se: q('.xp-evalve .spr'),
+      ci: q('.ci'), ce: q('.ce'), gf: q('.gas-f'), gc: q('.gas-clip'), fl: q('.flame'), sp: q('.spark'), gp: q('.gp'), pi: q('.pi'), pe: q('.pe'), zoom: q('.zoom'), xls: q('.xls') };
+    /* gas particles: 18 in the chamber (normalised u,v that squeeze with the piston) and 11 in each port */
+    var cp = [], pI = [], pE = [], k;
+    function rnd(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+    for (k = 0; k < 18; k++) cp.push({ u: rnd(k) * 2 - 1, v: rnd(k + 50), du: 0, dv: 0, e: sv('circle', { r: 5.5 }, el.gp) });
+    for (k = 0; k < 11; k++) { pI.push({ s: k / 11, e: sv('circle', { r: 5, fill: rgb(MIX) }, el.pi) }); pE.push({ s: k / 11, e: sv('circle', { r: 5, fill: rgb(EXH) }, el.pe) }); }
+    function set(a) {
+      var d = a - prev; prev = a; th = a;
+      var py = pinY(a), c = crankPin(a), crown = py - CROWN;
+      el.pst.setAttribute('transform', 'translate(0 ' + py.toFixed(2) + ')');
+      el.pin.setAttribute('transform', 'translate(0 ' + py.toFixed(2) + ')');
+      el.crk.setAttribute('transform', 'rotate(' + a.toFixed(2) + ')');
+      var ang = Math.atan2(-c.x, -(py - c.y)) / D;
+      el.rod.setAttribute('transform', 'translate(' + c.x.toFixed(2) + ' ' + c.y.toFixed(2) + ') rotate(' + ang.toFixed(3) + ')');
+      var li = liftI(a), le = liftE(a);
+      el.vi.setAttribute('transform', 'translate(' + SI.x + ' ' + SI.y.toFixed(2) + ') rotate(' + (-TILT) + ') translate(0 ' + li.toFixed(2) + ')');
+      el.ve.setAttribute('transform', 'translate(' + SE.x + ' ' + SE.y.toFixed(2) + ') rotate(' + TILT + ') translate(0 ' + le.toFixed(2) + ')');
+      el.si.setAttribute('d', springD(li)); el.se.setAttribute('d', springD(le));
+      el.ci.setAttribute('transform', 'translate(' + (SI.x - 248 * SIN).toFixed(2) + ' ' + (SI.y - 248 * COS).toFixed(2) + ') rotate(' + (166 + (a - 108) / 2).toFixed(2) + ')');
+      el.ce.setAttribute('transform', 'translate(' + (SE.x + 248 * SIN).toFixed(2) + ' ' + (SE.y - 248 * COS).toFixed(2) + ') rotate(' + (194 + (a - 612) / 2).toFixed(2) + ')');
+      var ch = 'M-80 ' + roofY(80).toFixed(2) + ' L0 ' + ROOF + ' L80 ' + roofY(80).toFixed(2) + ' V' + crown.toFixed(2) + ' H-80 Z';
+      el.gc.setAttribute('d', ch); el.gf.setAttribute('d', ch);
+      var G = gas(a);
+      el.gf.setAttribute('fill', rgb(G.c)); el.gf.setAttribute('fill-opacity', G.a.toFixed(3));
+      var fr = G.fl * 190, fo = G.t < 392 ? (G.t >= SPARK ? 1 : 0) : Math.max(0, 1 - (G.t - 392) / 34);
+      el.fl.setAttribute('r', fr.toFixed(1)); el.fl.setAttribute('opacity', fo.toFixed(3));
+      var spk = G.t >= SPARK - 2 && G.t <= SPARK + 12;
+      el.sp.setAttribute('opacity', spk ? 1 : 0);
+      var step = Math.min(30, Math.abs(d)), show = Math.round(G.n * cp.length);
+      cp.forEach(function (P, i) {
+        if (step) {
+          P.du += (rnd(i + a * 0.37) - .5) * .02 * step; P.dv += (rnd(i * 3.1 + a * .29) - .5) * .02 * step;
+          P.du *= .85; P.dv *= .85; P.u = clamp(P.u + P.du, -1, 1); P.v = clamp(P.v + P.dv, 0, 1);
+          if (Math.abs(P.u) >= 1) P.du = -P.du; if (P.v <= 0 || P.v >= 1) P.dv = -P.dv;
+        }
+        var x = P.u * 70, top = roofY(x) + 8, y = top + P.v * Math.max(0, crown - 8 - top);
+        P.e.setAttribute('cx', x.toFixed(1)); P.e.setAttribute('cy', y.toFixed(1));
+        var inF = G.fl > 0 && Math.hypot(x, y + 388) < fr;
+        P.e.setAttribute('fill', rgb(inF ? POWER : G.c));
+        P.e.setAttribute('opacity', i < show ? 1 : 0);
+      });
+      pI.forEach(function (P) {
+        if (step && li > .4) P.s = (P.s + step * .0042 * (li / LIFT)) % 1;
+        var b = bez(FLOW_I, P.s); P.e.setAttribute('cx', b.x.toFixed(1)); P.e.setAttribute('cy', b.y.toFixed(1));
+        P.e.setAttribute('opacity', P.s > .9 ? ((1 - P.s) * 10).toFixed(2) : 1);
+      });
+      pE.forEach(function (P) {
+        if (step && le > .4) P.s = (P.s + step * .0042 * (le / LIFT)) % 1;
+        var b = bez(FLOW_E, P.s); P.e.setAttribute('cx', b.x.toFixed(1)); P.e.setAttribute('cy', b.y.toFixed(1));
+        P.e.setAttribute('opacity', (P.s < .1 ? P.s * 10 : P.s > .85 ? (1 - P.s) / .15 : 1).toFixed(2));
+      });
+      if (api.onset) api.onset(a);
+    }
+    /* exploded view: every part slides out along its own path (CSS transforms, 0.7 s), the drawing zooms out to fit */
+    var VB0 = (o.vb || '-340 -720 680 980').split(' ').map(Number), VB1 = [-700, -930, 1400, 1330], vbT = null, ex = false;
+    function setVB(v) { svg.setAttribute('viewBox', v.map(function (n) { return n.toFixed(1); }).join(' ')); }
+    function explode(on) {
+      on = !!on; if (on === ex) return; ex = on;
+      svg.classList.toggle('exploded', on);
+      var from = svg.getAttribute('viewBox').split(' ').map(Number), to = on ? VB1 : VB0;
+      if (vbT) vbT.cancel();
+      vbT = tween(700, function (t) { setVB(from.map(function (f, i) { return f + (to[i] - f) * t; })); });
+    }
+    /* labels for the exploded view: they ride with their part and fade in once the parts have moved */
+    XLAB.forEach(function (x) {
+      var grp = svg.querySelector(x[0]); if (!grp) return;
+      var t = sv('text', { x: x[2], y: x[3], 'text-anchor': x[4], 'class': 'xl' }, grp); t.textContent = x[1];
+    });
+    var api = { set: set, get: function () { return th; }, explode: explode, exploded: function () { return ex; }, svg: svg, el: el };
+    set(th);
+    return api;
+  }
+
+  /* ================= slide 1: title, an engine that runs by itself ================= */
+  var e1s = $('#m1-eng');
+  if (e1s) (function () {
+    var E = Engine(e1s, { start: 345, ports: true, dims: true });
+    var rpm = $('#m1-rpm'), chips = [].slice.call(document.querySelectorAll('#m1-strokes .sk'));
+    E.onset = function (a) { var s = strokeOf(a); chips.forEach(function (c, i) { c.classList.toggle('lit', i === s); }); };
+    E.set(345);
+    var cnts = [].slice.call(document.querySelectorAll('#m1-facts .cnt')), shown = false;
+    function counts(st) {   /* the two numbers count up on beat 1, with thousands separators */
+      if (st >= 1 && !shown) { shown = true; cnts.forEach(function (c) { var to = +c.dataset.to; tween(1100, function (t) { c.textContent = thai(Math.round(to * t)); }); }); }
+      if (st < 1) shown = false;
+    }
+    comp(e1s.closest('.slide'), {
+      beat: counts,
+      active: function (on) { if (on && still()) E.set(345); },
+      tick: function (dt) { if (still()) return false; E.set(E.get() + dt * 150); return true; }
+    });
+    window.__mech = window.__mech || {}; (window.__mech.engines = window.__mech.engines || {}).title = E;
+  })();
+
+  /* ================= slide 2: four strokes, crank-angle scrubber ================= */
+  var e2s = $('#m2-eng');
+  if (e2s) (function () {
+    var slide = e2s.closest('.slide'), E = Engine(e2s, { start: 60, ports: true });
+    var bar = $('#m2-bar'), head = $('#m2-head'), deg = $('#m2-deg'), bplay = $('#m2-play'), speeds = [].slice.call(document.querySelectorAll('#m2-speed .tb'));
+    var segs = [].slice.call(document.querySelectorAll('#m2-bar .seg')), big = [].slice.call(document.querySelectorAll('#m2-big .bs'));
+    var sName = $('#m2-sname'), sEn = $('#m2-sen'), sSay = $('#m2-say'), sPis = $('#m2-pis'), sIv = $('#m2-iv'), sEv = $('#m2-ev'), sTurn = $('#m2-turn');
+    var dial = $('#m2-dial-n'), lampI = $('#m2-li'), lampE = $('#m2-le'), lampS = $('#m2-ls');
+    var playing = !still(), speed = 0.5, lastS = -1;
+    function render(a) {
+      var t = m720(a), s = strokeOf(a);
+      head.style.left = (t / 720 * 100) + '%';
+      deg.textContent = Math.round(t) + '°';
+      segs.forEach(function (x, i) { x.classList.toggle('lit', i === s); });
+      big.forEach(function (x, i) { x.classList.toggle('lit', i === s); });
+      if (s !== lastS) {
+        lastS = s; var S = STROKES[s];
+        sName.textContent = S.th; sEn.textContent = S.en; sSay.textContent = S.say;
+        sName.style.color = S.col;
+        sPis.textContent = S.piston === 'ลง' ? 'ลง ↓' : 'ขึ้น ↑'; sIv.textContent = S.iv; sEv.textContent = S.ev;
+        sIv.classList.toggle('open', S.iv === 'เปิด'); sEv.classList.toggle('open', S.ev === 'เปิด');
+      }
+      sTurn.textContent = t < 360 ? 'รอบที่ 1' : 'รอบที่ 2';
+      dial.setAttribute('transform', 'rotate(' + (a % 360).toFixed(1) + ')');
+      lampI.classList.toggle('on', liftI(a) > .3); lampE.classList.toggle('on', liftE(a) > .3);
+      lampS.classList.toggle('on', t >= SPARK - 2 && t <= SPARK + 12);
+    }
+    E.onset = render;
+    function setPlay(v) { playing = v; bplay.setAttribute('aria-pressed', v ? 'true' : 'false'); bplay.querySelector('span').textContent = v ? 'หยุด' : 'เล่น'; bplay.querySelector('.ic-play').style.display = v ? 'none' : ''; bplay.querySelector('.ic-pause').style.display = v ? '' : 'none'; if (v) wake(); }
+    bplay.addEventListener('click', function (e) { e.stopPropagation(); setPlay(!playing); });
+    speeds.forEach(function (b) {
+      b.addEventListener('click', function (e) { e.stopPropagation(); speed = +b.dataset.v; speeds.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); if (!playing) setPlay(true); });
+    });
+    /* drag anywhere on the bar: the angle follows the finger across the whole 0–720° */
+    
+    function angAt(e) { var r = bar.getBoundingClientRect(); return clamp((e.clientX - r.left) / r.width, 0, 1) * 720; }
+    function setAng(t) { var cur = m720(E.get()); var nt = E.get() + (t - cur); E.set(nt); }
+    drag(bar, {
+      down: function (e) { setPlay(false); setAng(angAt(e)); },
+      move: function (e) { setAng(angAt(e)); },
+      up: function () {}   /* stay paused where the student left it; ▶ starts again */
+    });
+    bar.tabIndex = 0; bar.setAttribute('role', 'slider'); bar.setAttribute('aria-label', 'มุมเพลาข้อเหวี่ยง'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '720');
+    bar.addEventListener('keydown', function (e) {   /* Up/Down nudge the angle; Left/Right stay with the deck */
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); e.stopPropagation(); setPlay(false); setAng(m720(E.get() + (e.key === 'ArrowUp' ? 5 : -5))); }
+    });
+    E.set(still() ? 345 : 60);
+    comp(slide, {
+      active: function (on) { if (on) { setPlay(!still()); if (still()) E.set(345); } },
+      tick: function (dt) { if (!playing) return false; E.set(E.get() + dt * 180 * speed); bar.setAttribute('aria-valuenow', Math.round(m720(E.get()))); return true; }
+    });
+    window.__mech = window.__mech || {}; window.__mech.scrub = { E: E, bar: bar, play: setPlay, playing: function () { return playing; } };
+    (window.__mech.engines = window.__mech.engines || {}).strokes = E;
+  })();
+
+  /* ================= slide 3: tap a part, explore it, exploded view ================= */
+  var PARTS = {
+    piston: { th: 'ลูกสูบ', en: 'Piston', no: 1,
+      what: 'รับแรงดันจากแก๊สที่เผาไหม้ แล้วส่งแรงผ่านก้านสูบไปหมุนเพลาข้อเหวี่ยง แหวนลูกสูบกันแก๊สรั่วลงห้องข้อเหวี่ยง',
+      fact: 'ทำจากอะลูมิเนียม เบาแต่ทนร้อน เลื่อนขึ้น–ลงได้หลายสิบครั้งต่อวินาที', tryit: 'ลากแถบมุมในสไลด์ก่อน ดูว่าลูกสูบอยู่บนสุดที่ 0° และ 360°' },
+    rod: { th: 'ก้านสูบ', en: 'Connecting rod', no: 2,
+      what: 'เชื่อมลูกสูบกับเพลาข้อเหวี่ยง เปลี่ยนการเคลื่อนที่ขึ้น–ลงของลูกสูบ ให้กลายเป็นการหมุน',
+      fact: 'หน้าตัดเป็นรูปตัว I จึงแข็งแรงแต่เบา ปลายใหญ่ประกบข้อเหวี่ยงด้วยโบลต์ 2 ตัว', tryit: 'สังเกตก้านสูบเอียงมากที่สุดตอนข้อเหวี่ยงอยู่ด้านข้าง (90° และ 270°)' },
+    crank: { th: 'เพลาข้อเหวี่ยง', en: 'Crankshaft', no: 3,
+      what: 'หมุน 2 รอบต่อการทำงานครบ 4 จังหวะ ส่งกำลังต่อไปยังเกียร์และล้อ',
+      fact: 'ตุ้มถ่วงฝั่งตรงข้ามข้อเหวี่ยงช่วยถ่วงน้ำหนักลูกสูบ ทำให้หมุนเรียบ สั่นน้อย', tryit: 'เทียบ: ลูกสูบวิ่งขึ้นลง 2 ครั้ง ข้อเหวี่ยงหมุน 1 รอบ' },
+    ivalve: { th: 'วาล์วไอดี', en: 'Intake valve', no: 4,
+      what: 'เปิดให้ไอดี (อากาศผสมเชื้อเพลิง) ไหลเข้ากระบอกสูบในจังหวะดูด แล้วปิดสนิทเพื่อให้อัดได้',
+      fact: 'ลูกเบี้ยวกดให้เปิด สปริงดึงกลับให้ปิด เปิดก่อนจุดบนสุด 12° และปิดหลังจุดล่างสุด 48° เพื่อให้ไอดีเข้าได้มาก', tryit: 'หาช่วงที่วาล์วทั้งสองเปิดพร้อมกันเล็กน้อย (รอบ ๆ 0°)' },
+    evalve: { th: 'วาล์วไอเสีย', en: 'Exhaust valve', no: 5,
+      what: 'เปิดในจังหวะคาย ให้แก๊สที่เผาไหม้แล้วออกไปทางท่อไอเสีย',
+      fact: 'ร้อนที่สุดในเครื่องยนต์ (หลายร้อยองศาเซลเซียส) จึงทำจากเหล็กกล้าทนความร้อน', tryit: 'วาล์วไอเสียเริ่มเปิดก่อนจุดล่างสุดของจังหวะระเบิด 48°' },
+    plug: { th: 'หัวเทียน', en: 'Spark plug', no: 6,
+      what: 'สร้างประกายไฟข้ามเขี้ยวหัวเทียน จุดไอดีที่ถูกอัดไว้ ให้เริ่มเผาไหม้',
+      fact: 'จุดก่อนลูกสูบถึงจุดบนสุดราว 20° เพราะเปลวไฟต้องใช้เวลาลามทั่วห้องเผาไหม้', tryit: 'ลากแถบมุมไปที่ 340° แล้วดูประกายไฟ' },
+    block: { th: 'กระบอกสูบ', en: 'Cylinder', no: 7,
+      what: 'ท่อที่ลูกสูบเลื่อนขึ้น–ลง ผนังเรียบและกลมพอดีกับลูกสูบ แก๊สจึงไม่รั่ว',
+      fact: 'รอบผนังมีช่องน้ำหล่อเย็น (สีฟ้า) ระบายความร้อนจากการเผาไหม้', tryit: 'ปริมาตรเหนือลูกสูบเล็กที่สุดที่จุดบนสุด และใหญ่ที่สุดที่จุดล่างสุด' },
+    head: { th: 'ฝาสูบ', en: 'Cylinder head', no: 8,
+      what: 'ปิดด้านบนของกระบอกสูบ เป็นที่อยู่ของห้องเผาไหม้ ช่องไอดี ช่องไอเสีย วาล์ว และหัวเทียน',
+      fact: 'หลังคาห้องเผาไหม้เอียงสองข้าง (pent roof) ทำให้ใส่วาล์วใหญ่ได้และหัวเทียนอยู่ตรงกลาง', tryit: 'ดูไอดีสีฟ้าไหลผ่านช่องซ้าย และไอเสียสีเทาออกช่องขวา' },
+    cams: { th: 'เพลาลูกเบี้ยว', en: 'Camshafts', no: 9,
+      what: 'ลูกเบี้ยวรูปไข่กดวาล์วให้เปิดตามจังหวะที่ถูกต้อง',
+      fact: 'หมุนครึ่งรอบ ต่อเพลาข้อเหวี่ยง 1 รอบ วาล์วแต่ละตัวจึงเปิดเพียงครั้งเดียวในทุก 2 รอบ', tryit: 'ลูกเบี้ยวชี้ลงหาวาล์วเมื่อวาล์วเปิดกว้างที่สุด' }
+  };
+  /* close-up drawings for the explore panel: the same part drawings, bigger, with call-outs.
+     One frame for all (viewBox −310 −200 620 400); call-out = [x, y on the part, label x, label y, text, anchor] */
+  function callouts(list) {
+    return list.map(function (c, i) {
+      var tx = c[2], ty = c[3], an = c[5] || (tx > c[0] ? 'start' : 'end');
+      var ex = an === 'start' ? tx - 10 : an === 'end' ? tx + 10 : tx, ey = an === 'middle' ? (ty < c[1] ? ty + 12 : ty - 30) : ty - 9;
+      return '<path class="draw cl" pathLength="1" style="--d:' + (250 + i * 110) + '" d="M' + c[0] + ' ' + c[1] + ' L' + ex + ' ' + ey + '"/>' +
+        '<circle class="cl-d" cx="' + c[0] + '" cy="' + c[1] + '" r="5.5"/>' +
+        '<text class="cl-t" x="' + tx + '" y="' + ty + '" text-anchor="' + an + '">' + c[4] + '</text>';
+    }).join('');
+  }
+  var CUT = '<clipPath id="cu-cut"><path d="M-170 -390 H170 V-176 C120 -160 60 -192 0 -176 S-120 -160 -170 -176 Z"/></clipPath>';
+  var CLOSE = {
+    piston: ['<g transform="scale(1.4)">' + pistonSVG() + pinSVG() + '</g>',
+      [[-42, -81, -140, -128, 'หัวลูกสูบ'], [-104, -64, -140, -52, 'แหวนอัด 2 วง'], [104, -41, 140, -80, 'แหวนน้ำมัน'], [0, 0, 140, 34, 'สลักลูกสูบ'], [-96, 44, -140, 92, 'กระโปรงลูกสูบ']]],
+    rod: ['<g transform="translate(0 105)">' + rodSVG() + '</g>',
+      [[-25, -125, -140, -120, 'ปลายเล็ก'], [8, -30, 140, -40, 'หน้าตัดรูปตัว I'], [-46, 105, -140, 128, 'ปลายใหญ่'], [38, 112, 140, 128, 'โบลต์ 2 ตัว']]],
+    crank: ['<g transform="translate(0 12) scale(1.2)">' + crankSVG() + '</g>',
+      [[0, -72, 140, -112, 'ข้อเหวี่ยง'], [0, 12, -140, -20, 'แกนเพลาหลัก'], [-70, 84, -140, 120, 'ตุ้มถ่วง'], [48, 89, 140, 120, 'รูถ่วงสมดุล']]],
+    ivalve: ['<g transform="translate(0 120) scale(1.05)"><path d="' + springD(0) + '" fill="none" stroke="#3B6E8F" stroke-width="3.2"/>' + valveSVG(false) + '</g>',
+      [[20, -101, 140, -110, 'ถ้วยรับลูกเบี้ยว'], [16, -48, 140, -36, 'สปริงวาล์ว'], [-5, 25, -140, 30, 'ก้านวาล์ว'], [-29, 116, -140, 128, 'หัววาล์ว']]],
+    evalve: ['<g transform="translate(0 120) scale(1.05)"><path d="' + springD(0) + '" fill="none" stroke="#3B6E8F" stroke-width="3.2"/>' + valveSVG(true) + '</g>',
+      [[20, -101, 140, -110, 'ถ้วยรับลูกเบี้ยว'], [16, -48, 140, -36, 'สปริงวาล์ว'], [-5, 25, -140, 30, 'ก้านวาล์ว'], [-29, 116, -140, 128, 'หัววาล์ว ร้อนจัด']]],
+    plug: ['<g transform="translate(0 581) scale(1.2)">' + plugSVG() + '<g class="spark-c">' + sparkSVG() + '</g></g>',
+      [[0, -118, 140, -116, 'ขั้วต่อสายไฟ'], [-12, -31, -140, -36, 'ฉนวนเซรามิก'], [23, 40, 140, 30, 'หกเหลี่ยมไว้ขัน'], [-13, 83, -140, 76, 'เกลียว'], [4, 116, -140, 136, 'เขี้ยว ห่าง 0.8 มม.']]],
+    block: [CUT + '<g transform="translate(0 236) scale(.85)"><g clip-path="url(#cu-cut)">' + blockSVG() + '</g><path d="M-170 -176 C120 -160 60 -192 0 -176" fill="none"/><path d="M-170 -176 C-120 -160 -60 -192 0 -176 S120 -160 170 -176" fill="none" stroke="#1F2429" stroke-width="2.2" stroke-dasharray="10 6"/></g>',
+      [[-101, -8, -140, -60, 'ช่องน้ำหล่อเย็น'], [70, -40, 140, -86, 'ปลอกสูบ'], [-120, 60, -140, 96, 'เสื้อสูบ'], [0, 30, 140, 40, 'รูสูบ ⌀ 80 มม.']]],
+    head: ['<g transform="translate(0 410) scale(.95)">' + headSVG() + '</g>',
+      [[-114, -18, -170, -112, 'ช่องไอดี', 'middle'], [114, -18, 170, -112, 'ช่องไอเสีย', 'middle'], [0, 46, 0, 138, 'ห้องเผาไหม้', 'middle'], [-41, -36, -40, -150, 'ช่องน้ำ', 'middle']]],
+    cams: ['<g transform="translate(0 12) scale(2.2)">' + camSVG() + '</g>',
+      [[0, -94, 140, -112, 'วาล์วเปิด'], [-57, 12, -140, 4, 'วาล์วปิด'], [0, 12, 140, 70, 'เพลาลูกเบี้ยว']]]
+  };
+  var e3s = $('#m3-eng');
+  if (e3s) (function () {
+    var slide = e3s.closest('.slide'), E = Engine(e3s, { start: 100, ports: false });
+    var panel = $('#m3-panel'), pName = $('#m3-name'), pEn = $('#m3-en'), pNo = $('#m3-no'), pWhat = $('#m3-what'), pFact = $('#m3-fact'), pTry = $('#m3-try'), pSvg = $('#m3-close');
+    var bEx = $('#m3-ex'), bRun = $('#m3-run'), list = [].slice.call(document.querySelectorAll('#m3-list .pk'));
+    var cur = null, running = !still(), exT = null;
+    function pick(key) {
+      var P = PARTS[key]; if (!P) return;
+      cur = key;
+      e3s.classList.add('picking');
+      [].forEach.call(e3s.querySelectorAll('.xp'), function (g) { g.classList.toggle('sel', g.dataset.part === key); });
+      list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.k === key ? 'true' : 'false'); });
+      pName.textContent = P.th; pEn.textContent = P.en; pNo.textContent = (P.no < 10 ? '0' : '') + P.no; pWhat.textContent = P.what; pFact.textContent = P.fact; pTry.textContent = P.tryit;
+      var C = CLOSE[key];
+      pSvg.innerHTML = '<g class="cu">' + C[0] + '</g>' + callouts(C[1]);
+      panel.classList.remove('show'); void panel.offsetWidth; panel.classList.add('show');
+    }
+    [].forEach.call(e3s.querySelectorAll('.xp[data-part]'), function (g) {
+      g.addEventListener('click', function (e) { e.stopPropagation(); pick(g.dataset.part); });
+    });
+    list.forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); pick(b.dataset.k); }); });
+    function setRun(v) { running = v; bRun.setAttribute('aria-pressed', v ? 'true' : 'false'); bRun.querySelector('span').textContent = v ? 'หยุดเครื่อง' : 'เดินเครื่อง'; if (v) wake(); }
+    bRun.addEventListener('click', function (e) { e.stopPropagation(); if (E.exploded()) return; setRun(!running); });
+    bEx.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var on = !E.exploded();
+      bEx.setAttribute('aria-pressed', on ? 'true' : 'false'); bEx.querySelector('span').textContent = on ? 'ประกอบกลับ' : 'แยกชิ้นส่วน';
+      if (on) {   /* bring the crank to top dead centre first (the rod stands straight), then pull the parts apart */
+        setRun(false); bRun.disabled = true;
+        var a0 = E.get(), a1 = Math.ceil(a0 / 360) * 360; if (exT) exT.cancel();
+        exT = tween(Math.min(600, (a1 - a0) * 3 + 1), function (t) { E.set(a0 + (a1 - a0) * t); }, function () { E.explode(true); });
+      } else { E.explode(false); bRun.disabled = false; }
+    });
+    pick('piston');
+    comp(slide, {
+      active: function (on) { if (on) setRun(!still() && !E.exploded()); },
+      tick: function (dt) { if (!running) return false; E.set(E.get() + dt * 60); return true; }
+    });
+    window.__mech = window.__mech || {}; window.__mech.explorer = { E: E, pick: pick, cur: function () { return cur; } };
+  })();
+
+  /* ================= slide 4: gears ================= */
+  function inv(a) { return Math.tan(a) - a; }
+  function gearPath(N, m) {
+    var rp = m * N / 2, ra = rp + m, rf = rp - 1.25 * m, rb = rp * Math.cos(20 * D), r0 = Math.max(rb, rf);
+    var half = function (r) { return Math.PI / (2 * N) + inv(20 * D) - inv(Math.acos(Math.min(1, rb / r))); };
+    var P = function (r, a) { return (r * Math.cos(a)).toFixed(2) + ' ' + (r * Math.sin(a)).toFixed(2); };
+    var d = '', step = 2 * Math.PI / N;
+    for (var k = 0; k < N; k++) {
+      var c = k * step, i, r;
+      d += (k ? ' L' : 'M') + P(rf, c - half(r0));
+      for (i = 0; i <= 5; i++) { r = r0 + (ra - r0) * i / 5; d += ' L' + P(r, c - half(r)); }
+      d += ' A' + ra.toFixed(2) + ' ' + ra.toFixed(2) + ' 0 0 1 ' + P(ra, c + half(ra));
+      for (i = 5; i >= 0; i--) { r = r0 + (ra - r0) * i / 5; d += ' L' + P(r, c + half(r)); }
+      d += ' L' + P(rf, c + half(r0));
+      d += ' A' + rf.toFixed(2) + ' ' + rf.toFixed(2) + ' 0 0 1 ' + P(rf, c + step - half(r0));
+    }
+    return d + ' Z';
+  }
+  function gearBody(N, m, mark) {
+    var rp = m * N / 2, rf = rp - 1.25 * m, hub = Math.max(28, rf * .32), holes = '';
+    if (rf > 110) for (var k = 0; k < 6; k++) { var a = k * 60 * D + 30 * D, rr = (hub + rf - 18) / 2; holes += '<circle cx="' + (rr * Math.cos(a)).toFixed(1) + '" cy="' + (rr * Math.sin(a)).toFixed(1) + '" r="' + ((rf - hub - 30) / 2.6).toFixed(1) + '" fill="#E6E2D8" stroke="' + INK + '" stroke-width="2"/>'; }
+    var mk = (rp + m * .1) , mkw = Math.PI / N;
+    return '<path d="' + gearPath(N, m) + '" fill="url(#m-gear)" stroke="' + INK + '" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<circle r="' + rp.toFixed(1) + '" fill="none" stroke="#5B636B" stroke-width="1.4" stroke-dasharray="14 5 3 5" opacity=".8"/>' + holes +
+      '<circle r="' + hub.toFixed(1) + '" fill="url(#m-steel-r)" stroke="' + INK + '" stroke-width="2.2"/><circle r="' + (hub * .45).toFixed(1) + '" fill="#4B555E"/>' +
+      '<rect x="' + (-hub * .14).toFixed(1) + '" y="' + (-hub * .62).toFixed(1) + '" width="' + (hub * .28).toFixed(1) + '" height="' + (hub * .25).toFixed(1) + '" fill="#4B555E"/>' +
+      '<path d="M' + (rf - 6) + ' 0 L' + (rp + m * .6) + ' 0" stroke="' + mark + '" stroke-width="9" stroke-linecap="round"/>';
+  }
+  var g4 = $('#m4-svg');
+  if (g4) (function () {
+    var slide = g4.closest('.slide'), M = 14, OPTS = [10, 12, 15, 18, 20, 24, 30, 36];
+    var n1 = 12, n2 = 36, a1 = 0, cx1 = 400, cy = 440, dist = M * (n1 + n2) / 2, auto = false;
+    g4.setAttribute('viewBox', '0 0 1240 900');
+    g4.innerHTML = '<g class="gl"><line class="gl-c" x1="0" y1="' + cy + '" x2="1240" y2="' + cy + '"/></g>' +
+      '<g class="g-in" tabindex="0" role="slider" aria-label="เฟืองขับ ลากเพื่อหมุน"><g class="rot"></g><circle class="ghit" r="10" fill="transparent"/></g>' +
+      '<g class="g-out"><g class="rot"></g><circle class="ghit" r="10" fill="transparent"/></g>' +
+      '<g class="g-tag t1"><text class="gt-n" text-anchor="middle"></text><text class="gt-l" text-anchor="middle">เฟืองขับ</text></g>' +
+      '<g class="g-tag t2"><text class="gt-n" text-anchor="middle"></text><text class="gt-l" text-anchor="middle">เฟืองตาม</text></g>' +
+      '<g class="g-hand"><path d="M0 0" class="gh-arc" fill="none" stroke="#E8590C" stroke-width="5" stroke-linecap="round" marker-end="url(#m-arr-o)"/></g>';
+    var gin = $('.g-in', g4), gout = $('.g-out', g4), rin = $('.g-in .rot', g4), rout = $('.g-out .rot', g4), hin = $('.g-in .ghit', g4), hout = $('.g-out .ghit', g4);
+    var t1 = $('.t1', g4), t2 = $('.t2', g4), arc = $('.gh-arc', g4);
+    var oN1 = $('#m4-n1'), oN2 = $('#m4-n2'), oRatio = $('#m4-ratio'), oRd = $('#m4-ratio-d'), oT1 = $('#m4-t1'), oT2 = $('#m4-t2'), oSp = $('#m4-sp'), oTq = $('#m4-tq'), oSpv = $('#m4-spv'), oTqv = $('#m4-tqv'), oDir = $('#m4-dir');
+    function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+    function draw() {
+      rin.innerHTML = gearBody(n1, M, '#E8590C'); rout.innerHTML = gearBody(n2, M, '#3A9BD6');
+      hin.setAttribute('r', (M * n1 / 2 + M).toFixed(1)); hout.setAttribute('r', (M * n2 / 2 + M).toFixed(1));
+      var arcR = M * n1 / 2 + M + 26;
+      arc.setAttribute('d', 'M' + (-arcR * Math.cos(50 * D)).toFixed(1) + ' ' + (-arcR * Math.sin(50 * D)).toFixed(1) + ' A' + arcR + ' ' + arcR + ' 0 0 1 ' + (arcR * Math.cos(50 * D)).toFixed(1) + ' ' + (-arcR * Math.sin(50 * D)).toFixed(1));
+      var g = gcd(n1, n2);
+      oN1.textContent = n1; oN2.textContent = n2;
+      oRatio.textContent = (n2 / g) + ' : ' + (n1 / g);
+      oRd.textContent = (n2 / n1 >= 1 ? 'ช้าลง ' : 'เร็วขึ้น ') + f2(Math.max(n2 / n1, n1 / n2)) + ' เท่า';
+      oSpv.textContent = f2(n1 / n2) + '×'; oTqv.textContent = f2(n2 / n1) + '×';
+      var mx = Math.max(n1 / n2, n2 / n1, 1);
+      oSp.style.transform = 'scaleX(' + (n1 / n2 / mx).toFixed(3) + ')'; oTq.style.transform = 'scaleX(' + (n2 / n1 / mx).toFixed(3) + ')';
+      t1.querySelector('.gt-n').textContent = n1 + ' ฟัน'; t2.querySelector('.gt-n').textContent = n2 + ' ฟัน';
+    }
+    function place() {
+      var x2 = cx1 + dist;
+      gin.setAttribute('transform', 'translate(' + cx1 + ' ' + cy + ')'); gout.setAttribute('transform', 'translate(' + x2.toFixed(1) + ' ' + cy + ')');
+      var r1 = M * n1 / 2 + M, r2 = M * n2 / 2 + M;
+      t1.setAttribute('transform', 'translate(' + cx1 + ' ' + (cy + Math.max(r1, 90) + 66) + ')');
+      t2.setAttribute('transform', 'translate(' + x2.toFixed(1) + ' ' + (cy + r2 + 66) + ')');
+      $('.g-hand', g4).setAttribute('transform', 'translate(' + cx1 + ' ' + cy + ')');
+    }
+    function turn() {
+      var a2 = 180 - 180 / n2 - a1 * n1 / n2;
+      rin.setAttribute('transform', 'rotate(' + a1.toFixed(2) + ')'); rout.setAttribute('transform', 'rotate(' + a2.toFixed(2) + ')');
+      var T1 = a1 / 360, T2 = -a1 * n1 / n2 / 360;
+      oT1.textContent = f1(Math.abs(T1)); oT2.textContent = f1(Math.abs(T2));
+      oDir.textContent = Math.abs(T1) < .05 ? 'ลากเฟืองสีส้มเพื่อหมุน' : (T1 > 0 ? 'เฟืองขับหมุนตามเข็ม → เฟืองตามหมุนทวนเข็ม' : 'เฟืองขับหมุนทวนเข็ม → เฟืองตามหมุนตามเข็ม');
+    }
+    var mv = null;
+    function setTeeth(k1, k2) {
+      var d0 = dist, d1 = M * (k1 + k2) / 2;
+      n1 = k1; n2 = k2; a1 = Math.round(a1 / (360 / n1)) * (360 / n1);   /* keep a tooth on the centre line so the new pair meshes */
+      draw(); turn();
+      if (mv) mv.cancel();
+      mv = tween(600, function (t) { dist = d0 + (d1 - d0) * t; place(); });
+    }
+    [].forEach.call(document.querySelectorAll('#m4-ctl .tb[data-g]'), function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var w = b.dataset.g, dir = +b.dataset.d, k1 = n1, k2 = n2;
+        if (w === '1') k1 = OPTS[clamp(OPTS.indexOf(n1) + dir, 0, OPTS.length - 1)]; else k2 = OPTS[clamp(OPTS.indexOf(n2) + dir, 0, OPTS.length - 1)];
+        if (k1 !== n1 || k2 !== n2) setTeeth(k1, k2);
+      });
+    });
+    $('#m4-reset').addEventListener('click', function (e) { e.stopPropagation(); a1 = 0; turn(); });
+    var bAuto = $('#m4-auto');
+    bAuto.addEventListener('click', function (e) { e.stopPropagation(); auto = !auto; bAuto.setAttribute('aria-pressed', auto ? 'true' : 'false'); if (auto) wake(); });
+    /* drag: the input follows the finger's angle around its centre; dragging the output turns the pair backwards through the ratio */
+    function rotDrag(g, isIn) {
+      var lastA = null;
+      function ang(e) { var p = svgPt(g4, e), cx = isIn ? cx1 : cx1 + dist; return Math.atan2(p.y - cy, p.x - cx) / D; }
+      drag(g, {
+        down: function (e) { lastA = ang(e); auto = false; bAuto.setAttribute('aria-pressed', 'false'); g4.classList.add('turning'); },
+        move: function (e) {
+          var a = ang(e), d = a - lastA; if (d > 180) d -= 360; if (d < -180) d += 360; lastA = a;
+          a1 += isIn ? d : -d * n2 / n1; turn();
+        },
+        up: function () { g4.classList.remove('turning'); }
+      });
+    }
+    rotDrag(gin, true); rotDrag(gout, false);
+    gin.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); e.stopPropagation(); a1 += e.key === 'ArrowUp' ? 360 / n1 : -360 / n1; turn(); } });
+    draw(); place(); turn();
+    comp(slide, { tick: function (dt) { if (!auto) return false; a1 += dt * 60; turn(); return true; } });
+    window.__mech = window.__mech || {}; window.__mech.gears = { set: setTeeth, state: function () { return { n1: n1, n2: n2, a1: a1, dist: dist }; }, turnTo: function (v) { a1 = v; turn(); } };
+  })();
+
+  /* ================= slide 5: lever (first class), moments ================= */
+  var l5 = $('#m5-svg');
+  if (l5) (function () {
+    var PX = 500, X0 = 210, FUL = 1.0, W = 600, FX = X0 + FUL * PX, BY = 627, GY = 770;   /* 3.0 m beam, 500 px per metre, fulcrum 1.0 m from the left end */
+    var dW = 0.6, dE = 1.5, tilt = 0, lifted = false;
+    l5.setAttribute('viewBox', '0 0 1920 1080');
+    l5.innerHTML =
+      '<g class="lv-ground"><rect x="150" y="' + GY + '" width="1620" height="20" fill="url(#m-hatch)"/><line x1="150" y1="' + GY + '" x2="1770" y2="' + GY + '" stroke="' + INK + '" stroke-width="3"/></g>' +
+      '<g class="lv-ful"><path d="M' + FX + ' ' + (BY + 13) + ' L' + (FX - 70) + ' ' + GY + ' H' + (FX + 70) + ' Z" fill="url(#m-hatch2)" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/><circle cx="' + FX + '" cy="' + (BY + 13) + '" r="7" fill="' + INK + '"/></g>' +
+      '<g class="lv-beam"><rect x="' + X0 + '" y="' + (BY - 13) + '" width="' + 3 * PX + '" height="26" rx="5" fill="url(#m-steel-v)" stroke="' + INK + '" stroke-width="2.5"/>' +
+        '<g class="lv-ticks"></g>' +
+        '<g class="lv-load" tabindex="0" role="slider" aria-label="ตำแหน่งก้อนหิน (น้ำหนัก)"><path d="M-86 -12 C-96 -60 -70 -118 -18 -126 C34 -134 84 -108 90 -60 C94 -30 88 -14 80 -12 Z" fill="url(#m-rock)" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/>' +
+          '<path d="M-40 -96 C-20 -104 6 -104 24 -96 M-58 -56 C-48 -60 -36 -60 -28 -52 M30 -48 C42 -56 58 -56 66 -46" fill="none" stroke="#6E6152" stroke-width="2.4" stroke-linecap="round"/>' +
+          '<text class="lv-kg" y="-52" text-anchor="middle">60 กก.</text><rect x="-100" y="-150" width="200" height="164" fill="transparent"/></g>' +
+        '<g class="lv-eff" tabindex="0" role="slider" aria-label="ตำแหน่งที่ออกแรง"><path class="lv-arrow" fill="#E8590C" stroke="' + INK + '" stroke-width="2.5" stroke-linejoin="round"/><g class="lv-brk"><path d="M-30 0 L30 -14 M-30 14 L30 0" stroke="#EFECE5" stroke-width="9"/><path d="M-30 0 L30 -14 M-30 14 L30 0" stroke="' + INK + '" stroke-width="2.5"/></g>' +
+          '<circle class="lv-grip" r="30" cy="-36" fill="#fff" stroke="' + INK + '" stroke-width="3"/><path d="M-12 -36 H12 M-12 -44 H12 M-12 -28 H12" stroke="' + INK + '" stroke-width="2.5" stroke-linecap="round"/><rect class="lv-ehit" x="-70" width="140" fill="transparent"/></g>' +
+      '</g>' +
+      '<g class="lv-wl"><path class="lv-warr" d="M0 0" stroke="#5B636B" stroke-width="7" marker-end="url(#m-arr-k)"/><text class="lv-wt" text-anchor="middle"></text></g>' +
+      '<g class="lv-dims"><path class="dm dm-w" marker-start="url(#m-tick)" marker-end="url(#m-tick)"/><text class="dm-t dm-wt" text-anchor="middle"></text>' +
+        '<path class="dm dm-e" marker-start="url(#m-tick)" marker-end="url(#m-tick)"/><text class="dm-t dm-et" text-anchor="middle"></text>' +
+        '<path class="dm-x" d="M0 0"/></g>' +
+      '<g class="lv-travel"><path class="tv tv-w"/><text class="tv-t tv-wt" text-anchor="end"></text><path class="tv tv-e"/><text class="tv-t tv-et" text-anchor="start"></text></g>';
+    var beam = $('.lv-beam', l5), load = $('.lv-load', l5), eff = $('.lv-eff', l5), arrow = $('.lv-arrow', l5), brk = $('.lv-brk', l5), ehit = $('.lv-ehit', l5);
+    var warr = $('.lv-warr', l5), wt = $('.lv-wt', l5), dmw = $('.dm-w', l5), dme = $('.dm-e', l5), dwt = $('.dm-wt', l5), det = $('.dm-et', l5), dmx = $('.dm-x', l5);
+    var tvw = $('.tv-w', l5), tve = $('.tv-e', l5), tvwt = $('.tv-wt', l5), tvet = $('.tv-et', l5), ticks = $('.lv-ticks', l5);
+    var oMA = $('#m5-ma'), oE = $('#m5-e'), oDW = $('#m5-dw'), oDE = $('#m5-de'), oM1 = $('#m5-m1'), oM2 = $('#m5-m2'), bLift = $('#m5-lift');
+    var tk = ''; for (var m = 0; m <= 30; m++) { var x = X0 + m * PX / 10; tk += '<path d="M' + x + ' ' + (BY - 13) + ' v' + (m % 10 === 0 ? 12 : m % 5 === 0 ? 9 : 5) + '" stroke="' + INK + '" stroke-width="1.4"/>'; }
+    ticks.innerHTML = tk;
+    var eLen = 300, eT = null;
+    function rot(x, y) { var a = tilt * D, dx = x - FX, dy = y - (BY + 13); return { x: FX + dx * Math.cos(a) - dy * Math.sin(a), y: BY + 13 + dx * Math.sin(a) + dy * Math.cos(a) }; }
+    function arrowD(len) {   /* a downward force arrow whose tip touches the top of the beam */
+      var t = -13, sw = 14, hw = 34, hl = 56;
+      return 'M' + (-sw) + ' ' + (t - len) + ' H' + sw + ' V' + (t - hl) + ' H' + hw + ' L0 ' + t + ' L' + (-hw) + ' ' + (t - hl) + ' H' + (-sw) + ' Z';
+    }
+    function render() {
+      var xW = FX - dW * PX, xE = FX + dE * PX, E = W * dW / dE, MA = dE / dW;
+      beam.setAttribute('transform', 'rotate(' + tilt.toFixed(2) + ' ' + FX + ' ' + (BY + 13) + ')');
+      load.setAttribute('transform', 'translate(' + xW.toFixed(1) + ' ' + (BY - 13) + ')');
+      var want = clamp(80 + E / W * 220, 90, 360), capped = 80 + E / W * 220 > 360;
+      if (eT) eT.cancel();
+      var l0 = eLen; eT = tween(450, function (t) { eLen = l0 + (want - l0) * t; arrow.setAttribute('d', arrowD(eLen)); ehit.setAttribute('y', (-13 - eLen).toFixed(1)); ehit.setAttribute('height', (eLen + 30).toFixed(1)); });
+      eff.setAttribute('transform', 'translate(' + xE.toFixed(1) + ' ' + (BY) + ')');
+      brk.setAttribute('transform', 'translate(0 ' + (-13 - want * .55).toFixed(1) + ')'); brk.style.display = capped ? '' : 'none';
+      $('.lv-grip', l5).setAttribute('cy', (-13 - want - 30).toFixed(1));
+      [].forEach.call(eff.querySelectorAll('path[stroke-linecap]'), function (p) { p.setAttribute('transform', 'translate(0 ' + (-13 - want - 30 + 36).toFixed(1) + ')'); });
+      /* the load's weight acts straight down from the rock's centre */
+      var pw = rot(xW, BY + 13);   /* the rock presses down on the bar: W drawn from the underside of the bar */
+      warr.setAttribute('d', 'M' + pw.x.toFixed(1) + ' ' + (pw.y + 4).toFixed(1) + ' V' + (pw.y + 112).toFixed(1));
+      wt.setAttribute('x', (pw.x - 22).toFixed(1)); wt.setAttribute('y', (pw.y + 96).toFixed(1)); wt.textContent = 'W = ' + W + ' N';
+      var dy = GY + 58;
+      dmw.setAttribute('d', 'M' + xW.toFixed(1) + ' ' + dy + ' H' + FX); dme.setAttribute('d', 'M' + FX + ' ' + dy + ' H' + xE.toFixed(1));
+      var nearW = FX - xW < 190, nearE = xE - FX < 190;   /* short arms: the label moves outside its dimension line */
+      dwt.setAttribute('x', (nearW ? xW - 16 : (xW + FX) / 2).toFixed(1)); dwt.setAttribute('text-anchor', nearW ? 'end' : 'middle'); dwt.setAttribute('y', dy + (nearW ? 10 : 46)); dwt.textContent = f2(dW) + ' ม.';
+      det.setAttribute('x', (nearE ? xE + 16 : (xE + FX) / 2).toFixed(1)); det.setAttribute('text-anchor', nearE ? 'start' : 'middle'); det.setAttribute('y', dy + (nearE ? 10 : 46)); det.textContent = f2(dE) + ' ม.';
+      dmx.setAttribute('d', 'M' + xW.toFixed(1) + ' ' + (BY + 16) + ' V' + (dy + 14) + ' M' + FX + ' ' + (GY) + ' V' + (dy + 14) + ' M' + xE.toFixed(1) + ' ' + (BY + 16) + ' V' + (dy + 14));
+      oMA.textContent = f1(MA); oE.textContent = thai(Math.round(E)); oDW.textContent = f2(dW); oDE.textContent = f2(dE);
+      oM1.textContent = thai(Math.round(E)) + ' × ' + f2(dE); oM2.textContent = W + ' × ' + f2(dW);
+      load.setAttribute('aria-valuenow', f2(dW)); eff.setAttribute('aria-valuenow', f2(dE));
+      /* travel while lifting: the rock rises dW·sinα, the hand goes down dE·sinα (work in = work out) */
+      var s = Math.sin(Math.abs(tilt) * D), show = Math.abs(tilt) > .5;
+      [tvw, tve, tvwt, tvet].forEach(function (n) { n.style.opacity = show ? 1 : 0; });
+      if (show) {
+        var a = rot(xW, BY - 13), b = rot(xE, BY - 13), left = xE > 1450, tx = xE + (left ? -84 : 84);
+        tvw.setAttribute('d', 'M0 0');
+        tvwt.setAttribute('x', a.x.toFixed(1)); tvwt.setAttribute('y', (a.y - 150).toFixed(1)); tvwt.setAttribute('text-anchor', 'middle');
+        tvwt.textContent = '↑ หินขึ้น ' + f1(dW * s * 100) + ' ซม.';
+        tve.setAttribute('d', 'M' + tx + ' ' + (BY - 13) + ' V' + b.y.toFixed(1));
+        tvet.setAttribute('x', tx + (left ? -14 : 14)); tvet.setAttribute('y', ((BY - 13 + b.y) / 2 + 10).toFixed(1)); tvet.setAttribute('text-anchor', left ? 'end' : 'start');
+        tvet.textContent = '↓ มือกดลง ' + f1(dE * s * 100) + ' ซม.';
+      }
+    }
+    function posDrag(g, which) {
+      var off = 0;
+      drag(g, {
+        down: function (e) { var p = svgPt(l5, e); off = p.x - (which === 'w' ? FX - dW * PX : FX + dE * PX); g.classList.add('held'); },
+        move: function (e) {
+          var p = svgPt(l5, e), x = p.x - off;
+          if (which === 'w') dW = Math.round(clamp((FX - x) / PX, .2, 1.0) * 20) / 20; else dE = Math.round(clamp((x - FX) / PX, .2, 2.0) * 20) / 20;
+          render();
+        },
+        up: function () { g.classList.remove('held'); }
+      });
+      g.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return; e.preventDefault(); e.stopPropagation();
+        var d = e.key === 'ArrowUp' ? .05 : -.05;
+        if (which === 'w') dW = clamp(Math.round((dW + d) * 20) / 20, .2, 1); else dE = clamp(Math.round((dE + d) * 20) / 20, .2, 2); render();
+      });
+    }
+    posDrag(load, 'w'); posDrag(eff, 'e');
+    var lt = null;
+    bLift.addEventListener('click', function (e) {
+      e.stopPropagation(); lifted = !lifted; bLift.setAttribute('aria-pressed', lifted ? 'true' : 'false'); bLift.querySelector('span').textContent = lifted ? 'วางลง' : 'ลองยก';
+      var t0 = tilt, t1 = lifted ? 7 : 0; if (lt) lt.cancel();
+      lt = tween(700, function (t) { tilt = t0 + (t1 - t0) * t; render(); });
+    });
+    render();
+    window.__mech = window.__mech || {}; window.__mech.lever = { set: function (w, e) { dW = w; dE = e; render(); }, state: function () { return { dW: dW, dE: dE, MA: dE / dW, E: W * dW / dE, tilt: tilt }; } };
+  })();
+
+  /* ================= slide 6: quick check, a small engine looping its power stroke and two small gears ================= */
+  var e6s = $('#m6-eng');
+  if (e6s) (function () {
+    var slide = e6s.closest('.slide'), E = Engine(e6s, { start: 420 });
+    var tag = $('#m6-tag');
+    E.onset = function (a) { var S = STROKES[strokeOf(a)]; tag.textContent = S.th; tag.style.background = S.col; };
+    E.set(420);
+    var gs = $('#m6-gears'), ga = null, gb = null, aa = 0;
+    if (gs) {
+      gs.setAttribute('viewBox', '0 0 560 340');
+      gs.innerHTML = '<g transform="translate(150 170)"><g class="ga">' + gearBody(12, 9, '#E8590C') + '</g></g><g transform="translate(' + (150 + 9 * 24) + ' 170)"><g class="gb">' + gearBody(36, 9, '#3A9BD6') + '</g></g>';
+      ga = $('.ga', gs); gb = $('.gb', gs);
+    }
+    function gturn() { if (!ga) return; ga.setAttribute('transform', 'rotate(' + aa.toFixed(1) + ')'); gb.setAttribute('transform', 'rotate(' + (180 - 5 - aa / 3).toFixed(1) + ')'); }
+    gturn();
+    comp(slide, {
+      active: function (on) { if (on && still()) E.set(420); },
+      tick: function (dt) { if (still()) return false; E.set(E.get() + dt * 120); aa += dt * 45; gturn(); return true; }
+    });
+    (window.__mech = window.__mech || {}); (window.__mech.engines = window.__mech.engines || {}).quiz = E;
+  })();
+
+  window.__mech = window.__mech || {};
+  window.__mech.kin = { pinY: pinY, liftI: liftI, liftE: liftE, gas: gas, strokeOf: strokeOf, R: R, L: L };
+  wake();
+})();
+</script>
+</body></html>

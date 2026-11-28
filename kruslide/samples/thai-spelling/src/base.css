@@ -52,6 +52,8 @@ button{font-family:inherit}
 .on :is(.g1,.g2,.g3,.g4) :is(.draw,.pop){animation:none}
 .on.b1 .g1 .draw,.on.b2 .g2 .draw,.on.b3 .g3 .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,250)*1ms)}
 .on.b1 .g1 .pop,.on.b2 .g2 .pop,.on.b3 .g3 .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.o0,.o1,.o2{opacity:0;pointer-events:none;visibility:hidden;transition:opacity .3s ease,visibility 0s linear .3s}
+.on:not(.b1) .o0,.on.b1:not(.b2) .o1,.on.b2 .o2{opacity:1;pointer-events:auto;visibility:visible;transition:opacity .55s ease .25s}
 .rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
 
 /* ---------- footer (logo C + KruSlide ครูสไลด์ · © KruSlide NN / NN), colours from the style ---------- */

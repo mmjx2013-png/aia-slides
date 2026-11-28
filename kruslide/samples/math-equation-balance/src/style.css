@@ -1,0 +1,121 @@
+/* KruSlide sample · สมการกับตาชั่ง (ม.1) · style "playful balance scale"
+   Bold flat colour: big solid fields and circles, no outlines, no gradients, no shadows except flat offset blocks.
+   Colour has ONE meaning everywhere: teal = the unknown x (a box) · coral = a weight of 1 · navy = the scale and the text ·
+   yellow = an action you take on both sides.  Stage 1920x1080. */
+:root{--ease:cubic-bezier(.2,.7,.2,1);
+ --ink:#1F2A5C;--mute:#4A5585;--paper:#FFC93C;--outer:#141B3D;--bar:#1F2A5C;--acc:#FFC93C;
+ --teal:#0E9E9E;--coral:#FF6B57;--yel:#FFC93C;--pink:#FF8FAB;--sky:#7CCBF2;--lilac:#B9A7FF;--cream:#FFF8E7;
+ --okc:#0B7A54;--noc:#D6432F;--lgreen:#D5F5E8;--lred:#FFE1DB;--lsun:#FFF0BF;--blue:#3B5BDB;--green:#0B7A54;--red:#D6432F;--sun:#FFC93C;
+ --sh:10px 10px 0 rgba(31,42,92,.18)}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Inter-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-SemiBold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Display;src:url(../_shared/fonts/InterDisplay-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:400;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-400.woff2) format("woff2");font-weight:500;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Inter;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-600.woff2) format("woff2");font-weight:600;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:700;unicode-range:U+0E00-0E7F}
+@font-face{font-family:Display;src:url(../_shared/fonts/Anuphan-Thai-700.woff2) format("woff2");font-weight:800;unicode-range:U+0E00-0E7F}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--outer,#222);overflow:hidden;overscroll-behavior:none;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+body{position:fixed;inset:0;margin:0}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--paper)}
+.slide{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;transition:opacity .45s ease,visibility 0s linear .45s}
+.slide.on{visibility:visible;opacity:1;transition:opacity .45s ease}
+.notes{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ab{position:absolute}
+/* Thai needs room above and below the line: 1.45 everywhere text wraps */
+p,li,.body,.lab{line-height:1.45}
+
+/* ---------- footer (logo C), identical on every KruSlide sample ---------- */
+.foot{position:absolute;left:130px;right:130px;bottom:26px;height:34px;display:flex;align-items:center;justify-content:space-between;font:600 22px/1 Inter;color:var(--mute);z-index:3}
+.foot .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:800}
+.foot .brand .logo{width:30px;height:30px;flex:none}
+.foot .brand span{font-weight:600;color:var(--mute)}
+.foot .pg{display:flex;align-items:center;gap:18px}
+.foot .pg b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- motion (one easing family; calm 0.4–0.7 s) ----------
+   .in enters with the slide (--d ms) · .g1..g4 appear on beat 1..4 · .h1..h3 leave on beat 1..3 */
+.in{opacity:0}
+.on .in{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.g1,.g2,.g3,.g4{opacity:0;pointer-events:none}
+.on.b1 .g1,.on.b2 .g2,.on.b3 .g3,.on.b4 .g4{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms);pointer-events:auto}
+.on .h1,.on .h2,.on .h3{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .h1,.on.b2 .h2,.on.b3 .h3{animation:out .35s ease both;pointer-events:none}
+/* an element that appears on one beat and leaves on a later one (.g1.h2): hidden until its beat */
+.on:not(.b1) :is(.g1.h2,.g1.h3),.on:not(.b2) .g2.h3{animation:none}
+.fade{opacity:0}.on .fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
+.on.b1 .g1.fade,.on.b2 .g2.fade,.on.b3 .g3.fade{animation:fadein .6s ease both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-14px)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.on .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,300)*1ms)}
+.pop{opacity:0;transform-box:fill-box;transform-origin:center}
+.on .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,400)*1ms)}
+.on :is(.g1,.g2,.g3,.g4) :is(.draw,.pop){animation:none}
+.on.b1 .g1 .draw,.on.b2 .g2 .draw,.on.b3 .g3 .draw{animation:draw 1s ease both;animation-delay:calc(var(--d,250)*1ms)}
+.on.b1 .g1 .pop,.on.b2 .g2 .pop,.on.b3 .g3 .pop{animation:pop .5s var(--ease) both;animation-delay:calc(var(--d,250)*1ms)}
+.rm *,.rm *::before,.rm *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+
+/* ---------- control bar (engine) ---------- */
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;display:flex;max-width:calc(100vw - 16px);gap:6px;align-items:center;padding:7px;border-radius:16px;background:var(--bar,#1F1F24);box-shadow:0 8px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s;font:600 15px Inter}
+#ctl.show,#ctl:hover,#ctl:focus-within{opacity:1;pointer-events:auto}
+.touchy #ctl{opacity:.85;pointer-events:auto}
+.touchy #ctl button{padding:12px 16px;font-size:18px}
+#ctl button{font:inherit;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:9px 13px;cursor:pointer;min-width:42px}
+#ctl button:hover{background:rgba(255,255,255,.12)}
+#ctl button[aria-pressed="true"]{background:var(--acc,#FFC229);color:#111;border-color:var(--acc,#FFC229)}
+#ctl button:focus-visible{outline:2px solid var(--acc,#FFC229);outline-offset:2px}
+#pos{color:#fff;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+.shot #ctl{display:none!important}
+@media (max-height:780px){#ctl{top:8px;bottom:auto;left:auto;right:8px;transform:none}}
+
+/* ---------- flat backgrounds: one bold field per slide, with big plain shapes ---------- */
+.bg-y{background:var(--yel)}.bg-s{background:var(--sky)}.bg-p{background:#FFB3C6}
+.blob{position:absolute;border-radius:50%;pointer-events:none}
+.band{position:absolute;left:0;right:0;pointer-events:none}
+
+.card{position:absolute;background:var(--cream);border-radius:34px;box-shadow:var(--sh)}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:14px;height:54px;padding:0 24px 0 8px;border-radius:999px;background:var(--ink);color:var(--cream);font:700 25px/1 Inter}
+.chip b{display:grid;place-items:center;min-width:44px;height:40px;padding:0 10px;border-radius:20px;background:var(--yel);color:var(--ink);font:800 23px Inter}
+h1,h2{position:absolute;font-family:Display;font-weight:800;letter-spacing:-.015em;color:var(--ink);line-height:1.25}
+h2{font-size:64px}
+.lab{font:700 26px/1.45 Inter;color:var(--mute)}
+/* the unknown is always a teal x, never italic */
+.vx{font-style:normal;color:var(--teal)}
+.eq{font-family:Display;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* "not equal": an = sign with a slash through it (the font has no ≠) */
+.ne{position:relative;display:inline-block}
+.ne::after{content:"";position:absolute;left:50%;top:12%;width:.09em;height:76%;background:currentColor;border-radius:.05em;transform:translateX(-50%) rotate(28deg)}
+
+/* buttons: flat pills with a flat offset block */
+.fbtn{font:800 25px/1 Inter;height:60px;padding:0 24px;border-radius:30px;border:0;background:var(--ink);color:var(--cream);cursor:pointer;white-space:nowrap;touch-action:manipulation;box-shadow:0 6px 0 rgba(31,42,92,.35);transition:transform .1s,box-shadow .1s}
+.fbtn:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(31,42,92,.35)}
+.fbtn.y{background:var(--yel);color:var(--ink)}.fbtn.w{background:#fff;color:var(--ink)}
+.fbtn:disabled{opacity:.35;cursor:default;transform:none}
+.fbtn:focus-visible{outline:4px solid var(--teal);outline-offset:3px}
+.fb{font:700 28px/1.45 Inter;color:var(--mute)}
+.fb.ok{color:var(--okc)}.fb.no{color:var(--noc)}
+
+/* ---------- the scale (SVG, built by app.js) ---------- */
+svg.sc{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;touch-action:none;-webkit-user-select:none;user-select:none}
+.sc text{font-family:Inter;font-weight:800}
+.sc .it,.sc .bin{cursor:grab}
+.sc .it.drag{cursor:grabbing}
+.sc .binl{font:800 24px Inter;fill:var(--ink)}
+.shk{animation:shake .45s ease}

@@ -1,0 +1,73 @@
+/* ---------- per-slide layout ---------- */
+.ghost{z-index:40;pointer-events:none!important;transition:none!important}
+/* 1 · flashcards */
+#v1-title{left:110px;top:170px;width:700px;height:400px;padding:50px 46px;rotate:-2deg}
+#v1-h{position:static;font-size:88px;line-height:1.06}
+#v1-burst{left:628px;top:66px;width:230px;height:230px;rotate:8deg}
+#v1-burst span{font-size:31px;line-height:1.02}
+#v1-bub{left:150px;top:660px;width:560px}
+#v1-bub::after{right:70px;bottom:-34px;transform:rotate(45deg) skew(10deg,10deg)}
+.v1-grid{left:840px;top:110px;width:960px;height:830px;display:grid;grid-template-columns:repeat(3,300px);grid-template-rows:repeat(2,400px);gap:30px}
+.card{position:relative;perspective:1400px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.card:nth-child(odd){rotate:-1.5deg}.card:nth-child(even){rotate:1.5deg}
+.card .flip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.3,1.2,.5,1)}
+.card.flipped .flip{transform:rotateY(180deg)}
+.card .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:7px solid #fff;border-radius:22px;box-shadow:var(--stk);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.card .front{background:radial-gradient(circle,rgba(20,20,20,.09) 2px,transparent 2.5px) 0 0/14px 14px,var(--c)}
+.card .front .pic{width:240px;height:240px}
+.card .num{position:absolute;left:14px;top:12px;width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:800 24px/1 Inter}
+.card .tapme{position:absolute;right:14px;bottom:12px;padding:4px 12px;border-radius:10px;background:#fff;border:3px solid var(--ink);font:800 20px/1.2 Inter;text-transform:uppercase;rotate:-4deg}
+.card .back{transform:rotateY(180deg);background:#fff;padding:18px 20px;gap:4px;text-align:center}
+.card .back .mini{width:100px;height:100px}
+.card .word{font:800 62px/1.1 Display;color:var(--ink)}
+.card .syl{font:700 26px/1.3 Inter;color:var(--blue);letter-spacing:.04em}
+.card .sent{font:600 25px/1.3 Inter;color:var(--mute);margin-top:6px}
+.card:focus-visible .face{outline:5px solid var(--blue);outline-offset:4px}
+
+/* 2 · labels */
+.v2-say{left:122px;top:150px}
+.v2-page{left:120px;top:214px;width:1170px;height:720px}
+.v2-p{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:box-shadow .2s,background-color .2s}
+.v2-p.hot,.picking .v2-p:hover{box-shadow:0 0 0 6px var(--blue)}
+.v2-pic{width:216px;height:216px;margin-top:10px}
+.v2-slot{position:absolute;left:50%;bottom:16px;width:250px;height:84px;margin-left:-125px;border:4px dashed var(--ink);border-radius:16px;background:rgba(255,255,255,.7);display:grid;place-items:center}
+.v2-tray{left:1330px;top:214px;width:470px;height:720px;padding:22px 24px;background:#fff;border:7px solid var(--ink);border-radius:6px;display:flex;flex-direction:column;gap:16px;rotate:1deg}
+.v2-tt{font-size:54px}
+.v2-sts{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;min-height:300px;align-content:start}
+.sticker{position:relative;display:grid;place-items:center;height:76px;padding:0 14px;border-radius:16px;background:var(--cyan);border:6px solid #fff;box-shadow:var(--stk);font:800 38px/1 Display;color:var(--ink);cursor:grab;touch-action:none;transition:background .2s}
+.sticker:nth-child(3n){background:var(--yellow)}.sticker:nth-child(3n+1){background:#7DE3A8}
+.v2-sts .sticker:nth-child(odd){rotate:-3deg}.v2-sts .sticker:nth-child(even){rotate:2deg}
+.v2-slot .sticker{width:240px;height:76px;rotate:-2deg}
+.sticker.sel{box-shadow:0 0 0 3px var(--ink),0 0 0 10px var(--blue),0 16px 24px rgba(20,20,20,.2)}
+.sticker .mk{position:absolute;right:-16px;top:-16px;width:40px;height:40px;border-radius:50%;border:4px solid #fff;display:none;background:var(--green) center/26px no-repeat}
+.sticker.ok .mk,.sticker.no .mk{display:block}
+.sticker.ok{background:#9BF0C2}.sticker.no{background:var(--lred)}
+.sticker.ok .mk::before,.sticker.no .mk::before{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font:800 22px/1 Inter}
+.sticker.no .mk{background:var(--noc)}.sticker.no .mk::before{content:"✗"}
+.v2-foot{margin-top:auto}
+.v2-foot .tw-foot{flex-wrap:wrap;height:auto;gap:12px}
+.v2-foot .tw-fb{flex:1 0 100%;min-height:76px}
+
+/* 3 · sentence builder */
+.v3-scene{left:120px;top:214px;width:600px;height:720px;display:grid;place-items:center;rotate:-1deg}
+.v3-kid{position:absolute;left:90px;top:120px;width:420px;height:560px}
+.v3-tag{position:absolute;left:24px;top:22px;padding:6px 18px;border-radius:14px;background:var(--yellow);border:5px solid var(--ink);font:800 44px/1.1 Display;text-transform:uppercase;rotate:-6deg}
+.v3-bub{left:790px;top:214px;width:1010px;height:330px;transition:border-color .3s,background .3s}
+.v3-bub::after{left:-38px;top:150px;transform:rotate(135deg) skew(10deg,10deg)}
+.v3-bub.ok{background:#E3FBEE;border-color:var(--okc)}
+.v3-bub.ok::after{background:#E3FBEE;border-color:var(--okc)}
+.v3-b{left:790px;top:214px;width:1010px;height:740px}
+.v3-line{position:absolute;left:44px;top:34px;width:922px;height:262px;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:16px 14px;border-radius:20px}
+.v3-line:empty::before{content:"Drag the words here";font:700 34px/1 Inter;color:#9A9A9A;border-bottom:4px dashed #BDBDBD;padding:0 40px 14px}
+.v3-tray{position:absolute;left:0;top:356px;width:1010px;min-height:180px;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:18px 16px;padding:18px;border-radius:20px;background:rgba(255,255,255,.35);border:4px dashed rgba(20,20,20,.35)}
+.v3-foot{position:absolute;left:0;top:582px;width:1010px}
+.wt{display:inline-grid;place-items:center;height:84px;padding:0 24px;border-radius:16px;background:#fff;border:5px solid var(--ink);box-shadow:0 7px 0 var(--ink);font:800 44px/1 Inter;color:var(--ink);cursor:grab;touch-action:none;transition:background .2s,border-color .2s}
+.v3-tray .wt:nth-child(odd){rotate:-2deg}.v3-tray .wt:nth-child(even){rotate:2deg}
+.v3-line .wt{background:var(--yellow)}
+.wt.good{background:#9BF0C2}.wt.bad{background:var(--lred);border-color:var(--noc);box-shadow:0 7px 0 var(--noc)}
+.wt:focus-visible{outline:5px solid var(--blue);outline-offset:4px}
+.v3-caret{position:absolute;display:none;width:8px;border-radius:4px;background:var(--blue);pointer-events:none;z-index:5}
+.v3-great{left:1600px;top:16px;width:200px;height:200px;opacity:0;pointer-events:none;z-index:6}
+.v3-great.go{animation:v3go 1.8s var(--ease) both}
+@keyframes v3go{0%{opacity:0;transform:scale(.3) rotate(-30deg)}25%{opacity:1;transform:scale(1.1) rotate(6deg)}35%{transform:scale(1) rotate(0)}80%{opacity:1}100%{opacity:0;transform:scale(1)}}
+.v3-great span{font-size:36px}

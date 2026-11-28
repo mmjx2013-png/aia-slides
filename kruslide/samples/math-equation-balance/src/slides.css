@@ -1,0 +1,28 @@
+/* ---------- 1 · title ---------- */
+#e1-eq{left:110px;top:404px;font-size:84px;color:var(--ink)}
+#e1-q{left:110px;top:540px;width:660px;height:432px;padding:28px 34px}
+.e1-qt{font:700 30px/1.45 Inter;color:var(--ink);margin-bottom:16px}
+.e1-one{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--coral);color:#fff;font:800 26px/1 Inter}
+#e1-ch{grid-template-columns:1fr}
+.e1-cap{left:930px;top:92px;max-width:880px;padding:12px 30px;border-radius:40px;background:var(--ink);color:var(--cream);font:700 34px/1.45 Inter}
+.e1-cap b{color:var(--yel)}
+
+/* ---------- scratch paper (slides 2 and 3) ---------- */
+#e2-hint{left:110px;top:212px;color:var(--ink)}
+#e2-log{left:1340px;top:56px;width:470px;height:926px;padding:28px 32px;display:flex;flex-direction:column;gap:10px}
+.e-lt{font:800 24px/1.45 Inter;color:var(--mute);letter-spacing:.04em}
+.e-now{font-size:56px;color:var(--ink);line-height:1.2;min-height:68px}
+.e-tip{font:700 24px/1.45 Inter;color:var(--noc);min-height:36px}
+.e-tip.ok{color:var(--okc)}
+.e-steps{list-style:none;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:8px;border-top:4px solid var(--ink);padding-top:12px}
+.e-steps li{display:flex;align-items:center;justify-content:space-between;gap:10px;font:800 34px/1.3 Display;color:var(--ink);animation:rise .5s var(--ease) both}
+.e-steps li span{flex:none;padding:4px 14px;border-radius:20px;background:var(--yel);font:800 22px/1.3 Inter;color:var(--ink)}
+.e-steps li.first span{background:#E6E9F5;color:var(--mute)}
+.e-btns{display:flex;gap:12px}
+.e-btns .fbtn{flex:1;padding:0 12px}
+#e2-fb{min-height:40px;font-size:26px}
+#e3-log{left:110px;top:236px;width:520px;height:448px;padding:24px 30px;display:flex;flex-direction:column;gap:8px}
+#e3-log .e-now{font-size:50px}
+#e3-in-c{left:110px;top:712px;width:520px;height:270px;padding:24px 30px}
+#e3-rule{left:740px;top:52px;width:1070px;height:136px;padding:20px 32px;font:600 28px/1.45 Inter;color:var(--ink);background:#fff}
+#e3-rule b{color:var(--ink)}#e3-rule b.y{background:var(--yel);padding:0 8px;border-radius:8px;margin:0 6px;white-space:nowrap}

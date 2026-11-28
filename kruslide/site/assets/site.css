@@ -700,3 +700,5 @@ html.js .rv.in{opacity:1;transform:none}
  html.js .rv mark{background-size:100% 100%}
  .top.away{transform:none}
 }
+
+.gx-cred{display:inline;font-size:inherit;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px}

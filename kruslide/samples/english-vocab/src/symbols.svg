@@ -1,10 +1,73 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="s-int" viewBox="0 0 40 120"><path d="M35 12 C32 4 27 3 24 5 C20 8 20 16 20 24 L19 96 C19 106 17 113 13 115 C9 117 6 115 4 109"/></symbol>
-<symbol id="s-sig" viewBox="0 0 60 74"><path d="M53 8 V6 H7 L31 37 L7 68 H53 V66"/></symbol>
-<symbol id="s-inf" viewBox="0 0 110 56"><path d="M55 28 C46 13 38 7 27 7 C14 7 7 17 7 28 C7 39 14 49 27 49 C38 49 46 43 55 28 C64 13 72 7 83 7 C96 7 103 17 103 28 C103 39 96 49 83 49 C72 49 64 43 55 28 Z"/></symbol>
-<symbol id="s-apx" viewBox="0 0 60 52"><path d="M7 19 C15 9 24 9 30 15 C36 21 45 21 53 11"/><path d="M7 41 C15 31 24 31 30 37 C36 43 45 43 53 33"/></symbol>
 <symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/></symbol>
 <symbol id="cross" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round"/></symbol>
 <symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
-<symbol id="hand" viewBox="0 0 48 48"><path d="M17 26V9a3.5 3.5 0 0 1 7 0v12M24 20v-3a3.5 3.5 0 0 1 7 0v5M31 21a3.5 3.5 0 0 1 7 0v9c0 8-5 14-13 14h-2c-5 0-8-2-11-6l-6-8a3.4 3.4 0 0 1 5-4.6L17 26" style="fill:#fff;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round"/></symbol>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="1.9" fill="#141414" fill-opacity=".22"/></pattern>
+<path id="cloud" d="M58 152 C26 152 22 110 54 104 C52 72 92 58 114 80 C126 52 172 56 176 90 C208 88 220 128 196 144 C192 150 184 152 176 152 Z"/>
+
+<!-- our own comic weather pictures, 240x240, ink outlines -->
+<symbol id="w-sunny" viewBox="0 0 240 240"><g stroke="#141414" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+ <g fill="#FF8A1F"><path d="M120 18 L132 44 L108 44Z"/><path d="M120 222 L108 196 L132 196Z"/><path d="M18 120 L44 108 L44 132Z"/><path d="M222 120 L196 132 L196 108Z"/>
+ <path d="M48 48 L74 58 L58 74Z"/><path d="M192 192 L166 182 L182 166Z"/><path d="M192 48 L182 74 L166 58Z"/><path d="M48 192 L58 166 L74 182Z"/></g>
+ <circle cx="120" cy="120" r="64" fill="#FFD23F"/></g>
+ <path d="M168 150 A64 64 0 0 1 82 172 A70 70 0 0 0 168 150Z" fill="url(#ht)"/>
+ <ellipse cx="98" cy="110" rx="8" ry="11" fill="#141414"/><ellipse cx="142" cy="110" rx="8" ry="11" fill="#141414"/>
+ <path d="M94 138 Q120 160 146 138" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round"/>
+ <circle cx="84" cy="134" r="8" fill="#FF7AB8"/><circle cx="156" cy="134" r="8" fill="#FF7AB8"/></symbol>
+
+<symbol id="w-rainy" viewBox="0 0 240 240"><g stroke="#141414" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+ <use href="#cloud" transform="translate(0 -30)" fill="#B9CBE0"/>
+ <g fill="#1E8CFF"><path d="M70 150 C70 150 56 172 56 182 A14 14 0 0 0 84 182 C84 172 70 150 70 150Z"/><path d="M120 162 C120 162 106 184 106 194 A14 14 0 0 0 134 194 C134 184 120 162 120 162Z"/><path d="M170 150 C170 150 156 172 156 182 A14 14 0 0 0 184 182 C184 172 170 150 170 150Z"/></g></g>
+ <path d="M70 114 C110 126 160 126 196 108 C192 118 184 122 176 122 L58 122 C40 122 30 112 30 112Z" fill="url(#ht)"/></symbol>
+
+<symbol id="w-cloudy" viewBox="0 0 240 240"><g stroke="#141414" stroke-width="7" stroke-linejoin="round">
+ <use href="#cloud" transform="translate(40 -40) scale(.82)" fill="#93A6BC"/>
+ <use href="#cloud" transform="translate(-8 34)" fill="#FFFFFF"/></g>
+ <path d="M60 178 C100 192 160 192 196 172 C190 182 184 186 176 186 L58 186 C40 186 30 176 30 176Z" fill="url(#ht)"/></symbol>
+
+<symbol id="w-windy" viewBox="0 0 240 240"><g fill="none" stroke="#141414" stroke-width="9" stroke-linecap="round">
+ <path d="M24 92 H150 C176 92 186 62 164 52 C148 46 136 58 142 70"/>
+ <path d="M24 132 H186 C214 132 222 168 196 176 C178 182 168 166 176 156"/>
+ <path d="M40 172 H110 C128 172 134 196 118 202"/></g>
+ <g stroke="#141414" stroke-width="6" stroke-linejoin="round"><path d="M184 70 C200 52 226 58 228 72 C216 90 194 88 184 70Z" fill="#2BD47D"/><path d="M58 40 C70 24 94 28 96 40 C86 56 64 54 58 40Z" fill="#FF8A1F"/></g></symbol>
+
+<symbol id="w-stormy" viewBox="0 0 240 240"><g stroke="#141414" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+ <use href="#cloud" transform="translate(0 -36)" fill="#5D6E86"/>
+ <path d="M126 112 L92 170 L120 170 L104 224 L156 150 L126 150 L146 112Z" fill="#FFD23F"/>
+ <path d="M60 140 L50 166 M188 140 L178 166 M76 178 L68 198" fill="none" stroke="#1E8CFF"/></g>
+ <path d="M70 108 C110 120 160 120 196 102 C192 112 184 116 176 116 L58 116 C40 116 30 106 30 106Z" fill="url(#ht)"/></symbol>
+
+<symbol id="w-snowy" viewBox="0 0 240 240"><g stroke="#141414" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+ <use href="#cloud" transform="translate(0 -36)" fill="#E3EDF8"/></g>
+ <g fill="none" stroke="#1E6FFF" stroke-width="7" stroke-linecap="round">
+  <path d="M70 146 V190 M51 157 L89 179 M51 179 L89 157"/><path d="M168 146 V190 M149 157 L187 179 M149 179 L187 157"/><path d="M120 178 V222 M101 189 L139 211 M101 211 L139 189"/></g>
+ <path d="M70 108 C110 120 160 120 196 102 C192 112 184 116 176 116 L58 116 C40 116 30 106 30 106Z" fill="url(#ht)"/></symbol>
+
+<!-- comic kids for the sentence builder, 420x560 -->
+<symbol id="kid-rain" viewBox="0 0 420 560"><g stroke="#141414" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+ <path d="M300 90 L300 330 C300 350 280 352 276 334" fill="none"/>
+ <path d="M150 110 C160 30 300 0 390 60 C380 62 366 70 360 82 C350 66 330 62 318 80 C306 62 284 62 274 84 C262 66 240 66 230 88 C220 72 196 74 190 94 C180 84 160 92 150 110Z" fill="#FF4040"/>
+ <path d="M140 300 L100 500 L300 500 L262 300 Z" fill="#FFD23F"/>
+ <path d="M150 360 H250" fill="none"/><circle cx="200" cy="390" r="8" fill="#141414"/><circle cx="200" cy="440" r="8" fill="#141414"/>
+ <rect x="120" y="496" width="70" height="44" rx="14" fill="#FF4040"/><rect x="212" y="496" width="70" height="44" rx="14" fill="#FF4040"/>
+ <path d="M262 330 C286 330 300 316 300 300" fill="none"/>
+ <circle cx="200" cy="220" r="86" fill="#FFD23F"/><circle cx="200" cy="236" r="64" fill="#F6C9A0"/></g>
+ <circle cx="178" cy="228" r="8" fill="#141414"/><circle cx="222" cy="228" r="8" fill="#141414"/>
+ <path d="M178 258 Q200 276 222 258" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round"/>
+ <circle cx="160" cy="252" r="9" fill="#FF7AB8"/><circle cx="240" cy="252" r="9" fill="#FF7AB8"/>
+ <path d="M150 300 L262 300 L300 500 L100 500 Z" fill="url(#ht)" opacity=".7"/>
+ <g fill="#1E8CFF" stroke="#141414" stroke-width="5"><path d="M60 150 C60 150 48 170 48 178 A12 12 0 0 0 72 178 C72 170 60 150 60 150Z"/><path d="M80 300 C80 300 68 320 68 328 A12 12 0 0 0 92 328 C92 320 80 300 80 300Z"/><path d="M370 200 C370 200 358 220 358 228 A12 12 0 0 0 382 228 C382 220 370 200 370 200Z"/><path d="M350 380 C350 380 338 400 338 408 A12 12 0 0 0 362 408 C362 400 350 380 350 380Z"/></g></symbol>
+
+<symbol id="kid-snow" viewBox="0 0 420 560"><g stroke="#141414" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+ <path d="M130 310 L104 500 L296 500 L270 310 Z" fill="#1E6FFF"/>
+ <rect x="120" y="496" width="70" height="44" rx="14" fill="#5D3A1A"/><rect x="210" y="496" width="70" height="44" rx="14" fill="#5D3A1A"/>
+ <circle cx="200" cy="220" r="78" fill="#F6C9A0"/>
+ <path d="M118 196 C118 120 282 120 282 196 Z" fill="#FF4FA3"/><path d="M112 196 H288 V222 H112 Z" fill="#FFD23F"/>
+ <circle cx="200" cy="114" r="24" fill="#FFFFFF"/>
+ <path d="M126 292 C160 314 240 314 274 292 L282 326 C240 344 160 344 118 326 Z" fill="#FF4040"/><path d="M236 320 L250 400 L222 404 L214 326" fill="#FF4040"/></g>
+ <circle cx="176" cy="246" r="8" fill="#141414"/><circle cx="224" cy="246" r="8" fill="#141414"/>
+ <ellipse cx="200" cy="278" rx="14" ry="10" fill="#141414"/>
+ <circle cx="156" cy="268" r="9" fill="#FF7AB8"/><circle cx="244" cy="268" r="9" fill="#FF7AB8"/>
+ <path d="M140 340 L270 340 L296 500 L104 500 Z" fill="url(#ht)" opacity=".7"/>
+ <g fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"><path d="M60 120 V160 M43 130 L77 150 M43 150 L77 130"/><path d="M360 170 V210 M343 180 L377 200 M343 200 L377 180"/><path d="M70 330 V370 M53 340 L87 360 M53 360 L87 340"/><path d="M350 380 V420 M333 390 L367 410 M333 410 L367 390"/></g></symbol>
 </defs></svg>

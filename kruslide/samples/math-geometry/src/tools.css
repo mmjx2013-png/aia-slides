@@ -1,0 +1,51 @@
+/* Widgets rendered by tools.js (typed answer with Check) + the global pen, in this deck's drafting look. */
+.w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.45 Inter,system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-lab{display:block;font:700 30px/1.45 Inter,system-ui,sans-serif}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:62px}
+.tw-btns{display:flex;gap:12px;flex:none}
+.tw-btn{font:700 24px/1 Inter,system-ui,sans-serif;height:56px;padding:0 20px;border:2px solid var(--ink);background:#FBF8EF;color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;box-shadow:3px 3px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.tw-btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.tw-btn.pri{background:var(--ink);color:#F3EDDC}
+.tw-btn.show[aria-pressed="true"]{background:var(--green);color:#fff}
+.tw-btn.show.nudge{background:var(--lsun)}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+/* tap a choice */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.c{display:flex;align-items:center;justify-content:center;height:84px;background:#FBF8EF;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font:800 44px/1 Display;font-variant-numeric:tabular-nums;transition:background .3s,transform .1s,box-shadow .1s}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.ch[data-mcq] .c:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.ch .c.wrong{background:var(--lred);border-color:var(--noc)}
+.ch .c.ok.picked{background:var(--lgreen);border-color:var(--okc);color:var(--okc)}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 26px/1.45 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-fb.ok{color:var(--okc)}.tw-fb.no{color:var(--noc)}.tw-fb.info{color:var(--blue)}
+.tw-fb .tw-ico{width:36px;height:36px;padding:6px;border-radius:50%;color:#fff;background:var(--green)}
+.tw-fb.no .tw-ico{background:var(--red)}
+.tw-in{font:800 46px/1 Inter,system-ui,sans-serif;height:84px;padding:0 22px;border-radius:16px;border:0;background:#fff;color:var(--ink);min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center;
+ box-shadow:inset 0 4px 0 rgba(120,70,20,.18),inset 0 0 0 3px rgba(150,95,40,.35);transition:background .2s}
+.tw-in:focus{background:#FFFBEF;outline:none;box-shadow:inset 0 4px 0 rgba(120,70,20,.18),0 0 0 5px rgba(47,107,216,.35)}
+.tw-in.ok{background:var(--lgreen);box-shadow:inset 0 0 0 4px var(--okc)}
+.tw-in.no{background:var(--lred);box-shadow:inset 0 0 0 4px var(--noc)}
+.tw-unit{font:700 30px Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-inrow{display:flex;align-items:center;gap:18px;min-height:84px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;background:#FBF8EF;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(44,45,49,.15)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:16px;border:3px solid transparent;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:rgba(44,45,49,.08)}
+#pen-bar .pb[aria-pressed="true"]{background:var(--lsun);border-color:var(--ink)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+#pen-bar .ps{display:block;width:38px;height:3px;border-radius:2px;background:rgba(44,45,49,.2);margin:2px 0}
+.shot #pen-bar{display:none!important}

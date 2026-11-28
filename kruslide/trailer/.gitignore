@@ -1,0 +1,5 @@
+# Files over GitHub's 100 MB limit, or rebuildable intermediates (./build.sh makes them again).
+out/work/
+out/ayutthaya-4k.mp4
+out/ayutthaya-4k-novoice.mp4
+out/qa/smooth-5s-4k.mp4

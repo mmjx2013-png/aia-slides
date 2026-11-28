@@ -1,0 +1,38 @@
+/* KruSlide sample · Weather words (English, Primary 4–6 EP) · style "bright comic sticker"
+   Halftone dot fields in bright flat colours, comic panels with thick ink borders, speech bubbles and bursts,
+   and die-cut stickers (white border + thin ink line + soft lift shadow). Colour: yellow = pictures, cyan/blue = words,
+   green = correct, red = try again. */
+:root{--outside:#141414;--paper:#FFF8E7;--ink:#141414;--mute:#3D3D3D;--line:#141414;
+ --yellow:#FFD23F;--orange:#FF8A1F;--red:#FF4040;--cyan:#22C3F3;--blue:#1E6FFF;--magenta:#FF4FA3;--green:#18B865;--lgreen:#C9F5DC;--lred:#FFD0D0;
+ --okc:#0E8A48;--noc:#E02424;--sun:#FFD23F;--lsun:#FFF0B8;--pink:#FF4FA3;
+ --stk:0 0 0 3px var(--ink),0 10px 0 -2px rgba(20,20,20,.25),0 16px 24px rgba(20,20,20,.18);
+ --pen1:#141414;--pen2:#1E6FFF;--pen3:#FF4040;--pen4:#18B865;--pen5:#FFD23F;--ctl:#141414;--ctl-on:#FFD23F}
+#stage{background:var(--cyan)}
+.slide{--dot:rgba(255,255,255,.35);background:radial-gradient(circle,var(--dot) 2.4px,transparent 2.9px) 0 0/20px 20px,var(--bg,var(--cyan))}
+.s-cyan{--bg:#3CCBF4;--dot:rgba(255,255,255,.38)}
+.s-yellow{--bg:#FFD23F;--dot:rgba(255,138,31,.45)}
+.s-pink{--bg:#FF8CC4;--dot:rgba(255,255,255,.35)}
+
+/* comic type: white letters with an ink outline and a hard drop */
+.ct{font-family:Display;font-weight:800;text-transform:uppercase;line-height:1.02;letter-spacing:.005em;color:#fff;
+ text-shadow:-4px -4px 0 var(--ink),4px -4px 0 var(--ink),-4px 4px 0 var(--ink),4px 4px 0 var(--ink),0 -4px 0 var(--ink),0 4px 0 var(--ink),-4px 0 0 var(--ink),4px 0 0 var(--ink),9px 10px 0 var(--ink)}
+.ct.y{color:var(--yellow)}
+h1,h2{position:absolute}
+h2.ct{font-size:76px}
+.say{font:700 30px/1.3 Inter;color:var(--ink)}
+
+/* comic panel */
+.panel{position:absolute;background:#fff;border:7px solid var(--ink);border-radius:6px;overflow:hidden}
+.panel.ht{background:radial-gradient(circle,rgba(20,20,20,.10) 2px,transparent 2.5px) 0 0/14px 14px,var(--pbg,#fff)}
+/* sticker (die-cut) */
+.stk{background:#fff;border:7px solid #fff;border-radius:18px;box-shadow:var(--stk)}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:12px;height:58px;padding:0 22px 0 8px;border-radius:30px;background:var(--ink);color:#fff;font:800 24px/1 Inter;letter-spacing:.04em;text-transform:uppercase;border:5px solid #fff;box-shadow:0 0 0 3px var(--ink),0 8px 14px rgba(20,20,20,.25);rotate:-2deg}
+.chip b{display:grid;place-items:center;height:38px;padding:0 14px;border-radius:19px;background:var(--yellow);color:var(--ink);font:800 22px/1 Inter}
+/* speech bubble */
+.bub{position:absolute;background:#fff;border:7px solid var(--ink);border-radius:40px;padding:22px 30px}
+.bub::after{content:"";position:absolute;width:56px;height:56px;background:#fff;border-right:7px solid var(--ink);border-bottom:7px solid var(--ink);transform:rotate(45deg) skew(12deg,12deg)}
+/* burst */
+.burst{position:absolute;display:grid;place-items:center;text-align:center}
+.burst svg{position:absolute;inset:0;width:100%;height:100%}
+.burst span{position:relative;font:800 44px/1 Display;text-transform:uppercase;color:var(--ink);rotate:-8deg}
+.foot{--foot-ink:var(--ink);--foot-mute:#2B2B2B}

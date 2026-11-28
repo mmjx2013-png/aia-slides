@@ -1,0 +1,23 @@
+<!-- 2 · Parallel circuit: a 3 V battery feeds three branches; each branch has two slots and its own ammeter.
+     Bulbs in parallel each get the full 3 V (as bright as a single bulb) and the branch currents add up to the total.
+     A wire alone in a branch is a short circuit: the board warns and nothing lights. Beat 1 builds two branches; beat 2 opens branch 1's switch. -->
+<section class="slide" id="k-par" data-steps="2" data-title="วงจรขนาน">
+ <div class="kick in" style="left:96px;top:58px">วิทยาศาสตร์ ม.3 · ไฟฟ้า · แบบที่ 02</div>
+ <h2 class="in" style="left:92px;top:90px;--d:80">ต่อวงจรขนาน</h2>
+ <p class="sub in" style="left:560px;top:106px;width:780px;--d:160">แต่ละสาขามี 2 ช่อง ใส่หลอดกับสวิตช์ · แอมมิเตอร์เล็กวัดกระแสแต่ละสาขา</p>
+
+ <svg class="board ab in" id="k2-svg" viewBox="0 0 1240 780" style="left:96px;top:196px;width:1240px;height:780px;--d:200" role="application" aria-label="แผงต่อวงจรขนาน"></svg>
+
+ <aside class="tblock ab in" id="k2-side" style="left:1380px;top:196px;width:444px;--d:300">
+  <div class="tb-row big"><span class="tb-k">กระแสรวม <i>A</i></span><b class="tb-v num" data-r="a0">0.00 A</b></div>
+  <div class="tb-sum num"><span>A₁ <b data-r="a1">0.00</b></span><span>A₂ <b data-r="a2">0.00</b></span><span>A₃ <b data-r="a3">0.00</b></span></div>
+  <div class="tb-row big"><span class="tb-k">โวลต์มิเตอร์ <i data-r="vw">คร่อมแบตเตอรี่</i></span><b class="tb-v num" data-r="v">3.0 V</b></div>
+  <div class="tb-ohm" data-r="ohm"></div>
+  <div class="tb-st" data-r="st"></div>
+  <div class="tb-btns ia"><button type="button" class="tb" data-a="reset">ล้างแผง</button><button type="button" class="tb" data-a="demo">ต่อให้ดู</button></div>
+  <div class="tb-note g2">ปิดสาขาหนึ่ง <b>สาขาอื่นยังสว่าง</b> เหมือนไฟในบ้าน แต่ละดวงมีสวิตช์ของตัวเอง</div>
+ </aside>
+
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>02 / 03</b></span></div>
+ <aside class="notes">ใส่หลอดในสาขา 1 กับ 2 ปิดสวิตช์ทั้งสองสาขา แต่ละหลอดได้แรงดัน 3 V เต็ม กระแสสาขาละ 3/6 = 0.50 A กระแสรวม 1.00 A (เท่ากับผลรวมของแต่ละสาขา) หลอดสว่างเท่าหลอดเดียวกับแบตเตอรี่ 3 V ลองใส่สายไฟอย่างเดียวในสาขาหนึ่ง จะลัดวงจร: กระแสไม่ผ่านหลอด หลอดทุกดวงดับและแบตเตอรี่ร้อน อันตราย กด → ต่อให้ดู กด → อีกครั้ง เปิดสวิตช์สาขา 1 สาขา 2 ยังสว่างเหมือนเดิม</aside>
+</section>

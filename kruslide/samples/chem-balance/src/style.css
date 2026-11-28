@@ -1,0 +1,30 @@
+/* KruSlide sample · Balancing equations (เคมี ม.4) · style "dark slate chalkboard"
+   Matte charcoal slate with chalk dust (drawn once on a canvas), chalk-white writing and soft pastel chalks.
+   No glow, no neon: chalk is flat and a little rough (SVG noise filter on the big writing only).
+   Chalk colours have one meaning: white = atoms of H, pink = O, blue = N, grey = C, yellow = numbers you change, green = equal / balanced. */
+:root{--board:#2A2F2D;--chalk:#ECEAE2;--dim:#A4AAA5;--faint:#6E7571;--yel:#F1DB8C;--pink:#EE9A92;--blue:#9DC2E5;--grn:#A9D89D;--org:#F2B97F;--line:rgba(236,234,226,.28);
+ --ctl-bg:#1D2120;--ctl-fg:#ECEAE2;--ctl-acc:#F1DB8C;--foot-ink:#ECEAE2;--foot-mute:#A4AAA5;
+ --penbar-bg:#262B29;--penbar-line:#6E7571;--penbar-ink:#ECEAE2;
+ --pens:"ชอล์กขาว:#ECEAE2,ชอล์กเหลือง:#F1DB8C,ชอล์กชมพู:#EE9A92,ชอล์กฟ้า:#9DC2E5,ชอล์กเขียว:#A9D89D"}
+html,body{background:#151817;color:var(--chalk)}
+#stage{background:radial-gradient(120% 120% at 50% 45%,#323835 0%,#2A2F2D 55%,#222624 100%)}
+#dust{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none}
+.slide{background:transparent}
+.ck{filter:url(#chalk)}
+.ck2{filter:url(#chalk-soft)}
+.kick{position:absolute;font:600 22px/1.4 Inter;color:var(--yel);letter-spacing:.02em}
+h1,h2{position:absolute;font:700 66px/1.3 Display;color:var(--chalk);letter-spacing:.005em}
+h2{font-size:56px}
+.sub{position:absolute;font:500 26px/1.45 Inter;color:var(--dim)}
+.y{color:var(--yel)}.p{color:var(--pink)}.b{color:var(--blue)}.g{color:var(--grn)}.o{color:var(--org)}
+.num{font-variant-numeric:tabular-nums}
+sub{font-size:.62em;vertical-align:-.22em;line-height:0}
+
+/* chalk buttons: drawn outlines, never filled with colour */
+.cb{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 22px;border-radius:12px;border:2.5px solid rgba(236,234,226,.7);background:transparent;color:var(--chalk);font:600 22px/1 Inter;cursor:pointer;white-space:nowrap;transition:background .2s,border-color .2s,color .2s,opacity .3s}
+.cb:hover{background:rgba(236,234,226,.07)}
+.cb:active{background:rgba(236,234,226,.14)}
+.cb.pri{border-color:var(--yel);color:var(--yel)}
+.cb:disabled{opacity:.35;cursor:default;background:transparent}
+.cb:focus-visible{outline:2px dashed var(--yel);outline-offset:4px}
+.cb[aria-pressed="true"]{border-color:var(--grn);color:var(--grn)}

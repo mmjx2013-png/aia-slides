@@ -1,0 +1,104 @@
+/* ---------- the wall: plaster texture, baseboard, soft spotlights ---------- */
+.slide{background:
+  radial-gradient(ellipse 60% 55% at 50% 38%,rgba(255,236,204,.07),transparent 70%),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 3px,transparent 3px 7px),
+  linear-gradient(180deg,#24352F 0%,#21302B 70%,#1C2925 100%)}
+.slide::after{content:"";position:absolute;left:0;right:0;bottom:0;height:72px;background:linear-gradient(180deg,#151F1C,#121A18);border-top:2px solid #2E403A;pointer-events:none}
+.foot{color:var(--mute)}.foot .brand{color:var(--cream)}.foot .brand span{color:var(--mute)}.foot .pg b{color:var(--cream)}
+.spot{width:760px;height:760px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,232,190,.14),rgba(255,232,190,.05) 45%,transparent 70%);transition:transform 1.4s var(--ease),opacity 1s}
+.spot.s1{left:-80px;top:120px}.spot.s2{left:600px;top:60px}.spot.s3{left:1200px;top:140px}
+.on .spot{animation:fadein 1.6s ease both}
+.kicker{display:flex;align-items:center;gap:16px;font:700 22px/1.45 Inter;color:var(--mute)}
+.kicker span{padding:4px 12px;border:1.5px solid var(--brass);color:var(--brass);font-weight:700}
+h1,h2{position:absolute;font:700 72px/1.3 Display;color:var(--cream);letter-spacing:-.005em;white-space:nowrap}
+h1 b,h2 b{font-weight:800;color:var(--brass)}
+h2{font-size:64px}
+.lead{font:500 27px/1.5 Inter;color:var(--mute)}
+.k{font:800 22px/1.45 Inter;color:var(--brass)}
+
+/* ---------- slide 1: brass rail, stone slabs, label holders ---------- */
+#t1-rail text{font-family:Inter}
+.rail{fill:url(#brassg);stroke:#6E5530;stroke-width:1.5}
+.slab{stroke:rgba(0,0,0,.35);stroke-width:1.5}
+.slabt{font:800 26px Inter;fill:#fff;pointer-events:none}
+.slaby{font:600 17px Inter;fill:rgba(255,255,255,.85);pointer-events:none}
+.tick{stroke:var(--brass);stroke-width:2}
+.tickt{font:600 17px Inter;fill:var(--mute);text-anchor:middle}
+.pin{fill:var(--brass);stroke:#2A2622;stroke-width:2}
+.lead-l{stroke:var(--brass);stroke-width:2;stroke-dasharray:2 5;fill:none}
+.holder{position:absolute;width:250px;height:122px;border:2px dashed rgba(199,165,110,.55);background:rgba(10,16,14,.25);transition:background .3s,border-color .3s,box-shadow .5s}
+.holder .yr{position:absolute;left:-2px;right:-2px;top:-2px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--brass);color:#2A2622;font:800 20px/1 Inter;letter-spacing:.02em}
+.holder.over{border-color:var(--cream);background:rgba(255,236,204,.12)}
+.holder.full{border-style:solid;border-color:rgba(199,165,110,.3);box-shadow:0 0 0 0 transparent,0 -60px 90px -30px rgba(255,232,190,.25)}
+.tray{border:1.5px solid rgba(199,165,110,.35);background:rgba(8,14,12,.28)}
+.evt{position:absolute;width:246px;height:84px;padding:8px 14px 8px 16px;display:flex;align-items:center;background:var(--label);color:var(--lk);font:700 20px/1.4 Inter;box-shadow:0 10px 18px rgba(0,0,0,.4);border-left:6px solid var(--brass);cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;z-index:5;transition:box-shadow .2s,background .3s}
+.evt.drag{cursor:grabbing;z-index:30;pointer-events:none;box-shadow:0 26px 34px rgba(0,0,0,.5);transform:rotate(-1.5deg)}
+.evt.ok{background:#E2EEDD;border-left-color:var(--okc)}
+.evt.no{background:#F6DED6;border-left-color:var(--noc)}
+.evt .fix{position:absolute;left:-6px;right:0;bottom:-30px;height:30px;display:flex;align-items:center;padding-left:12px;background:var(--noc);color:#fff;font:700 17px/1 Inter}
+.evt .tw-mark{position:absolute;right:-12px;top:-12px;width:30px;height:30px}
+.evt.ok>.tw-mark,.evt.no>.tw-mark{display:grid}.evt.no>.tw-mark{background:var(--t-no)}
+.evt:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+#t1-ft .tw-foot{flex-wrap:wrap;row-gap:14px}
+#t1-ft .tw-fb{flex-basis:100%;color:var(--cream)}
+#t1-ft .tw-fb.ok{color:#9ED3A8}#t1-ft .tw-fb.no{color:#F2A58F}#t1-ft .tw-fb.info{color:var(--brass)}
+
+/* ---------- slide 2: zoomable case + comparison ---------- */
+.case{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:2px solid rgba(199,165,110,.55);box-shadow:inset 0 0 0 8px rgba(0,0,0,.12)}
+.case svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none;overflow:hidden}
+.case svg:active{cursor:grabbing}
+.zt{stroke:rgba(199,165,110,.45);stroke-width:1.5}
+.zt.m{stroke:var(--brass);stroke-width:2.5}
+.ztt{font:600 18px Inter;fill:var(--mute);text-anchor:middle}
+.zbar{stroke:rgba(0,0,0,.3);stroke-width:1.5}
+.zname{font:800 24px Inter;fill:#fff;pointer-events:none}
+.zsub{font:600 17px Inter;fill:rgba(255,255,255,.88);pointer-events:none}
+.zout{font:800 22px Inter;pointer-events:none}
+.zov{stroke:var(--cream);stroke-width:2;stroke-dasharray:6 5;opacity:0;transition:opacity .6s}
+.on.b2 .zov{opacity:1}
+.zovt{font:800 20px Inter;fill:var(--cream);opacity:0;transition:opacity .6s;text-anchor:middle}
+.on.b2 .zovt{opacity:1}
+.zoombar{display:flex;align-items:center;gap:30px;height:64px}
+.zchips{display:flex;gap:10px;flex:none}
+.zchips button{height:52px;padding:0 18px;border:2px solid rgba(199,165,110,.6);background:transparent;color:var(--cream);font:700 22px/1 Inter;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:10px}
+.zchips button i{width:16px;height:16px;flex:none}
+.zchips button[aria-pressed="true"]{background:var(--brass);color:#2A2622;border-color:var(--brass)}
+.zs{flex:1;display:flex;align-items:center;gap:18px;height:64px}
+.zl,.zv{font:800 22px Inter;color:var(--cream);white-space:nowrap}
+.zv{width:70px;text-align:right;font-variant-numeric:tabular-nums}
+.track{position:relative;flex:1;height:64px;cursor:pointer;touch-action:none}
+.track::before{content:"";position:absolute;left:0;right:0;top:29px;height:6px;background:rgba(199,165,110,.3)}
+.track .fill{position:absolute;left:0;top:29px;height:6px;background:var(--brass)}
+.track .knob{position:absolute;top:12px;width:40px;height:40px;margin-left:-20px;border-radius:50%;background:var(--cream);border:4px solid var(--brass);box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.track:focus-visible{outline:3px solid var(--cream);outline-offset:4px}
+.cmp .row{position:absolute;left:0;height:62px;width:100%}
+.cmp .nm{position:absolute;left:30px;top:0;height:62px;display:flex;align-items:center;font:800 28px/1.3 Inter;color:var(--cream)}
+.cmp .bar{position:absolute;left:290px;top:6px;height:50px;transform-origin:left center;box-shadow:0 8px 16px rgba(0,0,0,.35)}
+.cmp .yrs{position:absolute;top:0;height:62px;display:flex;align-items:center;font:800 32px/1 Inter;color:var(--cream);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cmp .yrs .u{margin-left:8px}
+.cmp .yrs small{font:600 20px Inter;color:var(--mute);margin-left:12px}
+.cmp .axis{position:absolute;left:290px;top:300px;height:2px;background:rgba(199,165,110,.4)}
+.overlap{border-left:4px solid var(--cream);padding:6px 0 6px 20px}
+.overlap p{font:500 25px/1.5 Inter;color:var(--cream)}
+.overlap .k{margin-bottom:4px}
+
+/* ---------- slide 3: plaques ---------- */
+.cone{top:0;width:520px;height:1010px;pointer-events:none;background:linear-gradient(180deg,rgba(255,236,204,.16),rgba(255,236,204,.04) 70%,transparent);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%)}
+.cone.c1{left:140px}.cone.c2{left:700px}.cone.c3{left:1260px}
+.on .cone{animation:fadein 1.2s ease both}
+.plaque{background:var(--label);color:var(--lk);padding:34px 36px;box-shadow:0 24px 40px rgba(0,0,0,.45);border-top:8px solid var(--brass)}
+.plaque .no{font:800 20px/1.4 Inter;color:var(--brass2);margin-bottom:6px}
+.plaque .q{font:700 32px/1.45 Inter;margin-bottom:22px;min-height:140px}
+.plaque .q b{color:var(--ka)}
+.plaque .ch.one{grid-template-columns:1fr 1fr;gap:12px}
+.plaque .c{min-height:76px;font-size:26px;padding:8px 14px;gap:12px}
+.plaque .c b{width:40px;height:40px;font-size:21px}
+.plaque .why{margin-top:18px;font:700 24px/1.45 Inter;color:var(--t-ok)}
+.plaque .hintq{font:500 24px/1.45 Inter;color:var(--mute2);margin:-6px 0 26px}
+.plaque .w-input .tw-foot{flex-wrap:wrap;row-gap:12px}
+.plaque .tw-btn{height:52px;padding:0 16px;font-size:22px}
+.plaque .tw-in{height:80px;width:220px!important}
+.plaque .tw-unit{color:var(--mute2)}
+.plaque .tw-fb{color:var(--mute2)}.plaque .tw-fb.ok{color:var(--t-ok)}.plaque .tw-fb.no{color:var(--t-no)}
+.try{border-left:4px solid var(--brass);padding:6px 0 6px 22px}
+.try p{font:500 27px/1.5 Inter;color:var(--cream)}.try b{color:var(--kt)}

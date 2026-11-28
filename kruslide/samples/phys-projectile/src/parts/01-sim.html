@@ -1,0 +1,23 @@
+<!-- 1 · The projectile simulator: angle and speed sliders (drag anywhere on the bar), kick, the path draws with a dot every 0.1 s,
+     the scoreboard shows range, max height and time measured from the flight, and the card puts the same numbers through the formulas.
+     Beat 1 shows the velocity components (vx stays, vy shrinks to 0 at the top). Beat 2 kicks 30° and 60°: same range. -->
+<section class="slide" id="j-sim" data-steps="2" data-title="โพรเจกไทล์">
+ <svg class="ab" id="j1-svg" viewBox="0 0 1920 1080" style="left:0;top:0;width:1920px;height:1080px" aria-hidden="true"></svg>
+ <div class="kick in" style="left:96px;top:58px">ฟิสิกส์ ม.4 · การเคลื่อนที่แบบโพรเจกไทล์</div>
+ <h1 class="in" style="left:92px;top:90px;--d:80">เตะบอลให้ไกลที่สุด</h1>
+ <p class="sub in" style="left:96px;top:178px;--d:160">ปรับมุมกับความเร็ว แล้วกดเตะ · g = 9.8 m/s² ไม่คิดแรงต้านอากาศ</p>
+ <div class="note ab g1 x2" style="left:96px;top:236px;width:830px">
+  <b>vₓ = v cos θ</b> คงที่ตลอด จุด (ทุก 0.1 s) จึงห่างเท่ากันในแนวนอน · <b>vᵧ = v sin θ</b> ลดลงจนเป็น <b>0</b> ที่จุดสูงสุด แล้วกลับทิศ
+ </div>
+ <div class="note ab g2" style="left:96px;top:236px;width:830px">
+  <b>30° กับ 60°</b> รวมกันได้ 90° ตกไกลเท่ากัน เพราะ sin 60° = sin 120° · แต่ 60° ลอย<b>สูงกว่าและนานกว่า</b>
+ </div>
+
+ <div class="sb ab in" id="j1-sb" style="left:1040px;top:40px;width:784px;height:222px;--d:200"></div>
+ <div class="fx ab in" id="j1-fx" style="left:1040px;top:282px;width:784px;--d:300"></div>
+
+ <div class="ctrl ab in" id="j1-ctrl" style="left:96px;top:872px;width:1728px;--d:350"></div>
+
+ <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="32" fill="#1C2A55"/><rect x="26" y="24" width="18" height="72" rx="7" fill="#fff"/><path d="M50 60 L86 26" stroke="#3D7BFF" stroke-width="18" stroke-linecap="round"/><path d="M52 52 L88 84 L68 82 L60 100 Z" fill="#FFC83D"/></svg>KruSlide <span>ครูสไลด์</span></span><span class="pg">© KruSlide<b>01 / 03</b></span></div>
+ <aside class="notes">ให้นักเรียนทายก่อนเตะ: มุมเท่าไรไปไกลสุด จุดสีขาวบนเส้นทางห่างกันทุก 0.1 วินาที สังเกตว่าในแนวนอนจุดห่างเท่ากันเสมอ (vx คงที่) ป้ายคะแนนแสดงค่าที่วัดจากการเคลื่อนที่ การ์ดด้านล่างคำนวณจากสูตร R = v² sin 2θ / g, H = v² sin² θ / 2g, T = 2v sin θ / g ค่าตรงกัน กด → ดูองค์ประกอบความเร็ว กด → อีกครั้ง เตะที่ 30° และ 60° ด้วย 20 m/s ตกที่ 35.3 m เท่ากัน</aside>
+</section>

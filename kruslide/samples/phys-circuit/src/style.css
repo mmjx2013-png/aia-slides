@@ -1,0 +1,30 @@
+/* KruSlide sample · Electric circuits (วิทยาศาสตร์ ม.3) · style "blueprint maker"
+   Blueprint blue with a drafting grid, white technical line work, standard schematic symbols, a title block for readouts.
+   Yellow only for light and moving current; orange only for danger (short circuit). */
+:root{--bp:#1C4A86;--bpD:#163C6E;--ln:#F2F7FF;--ln2:#A9C3E6;--ln3:rgba(242,247,255,.35);--lit:#FFD54A;--warn:#FF9E57;--okc:#9BE7B0;
+ --ctl-bg:#122F57;--ctl-fg:#F2F7FF;--ctl-acc:#FFD54A;--foot-ink:#F2F7FF;--foot-mute:#A9C3E6;
+ --penbar-bg:#163C6E;--penbar-line:rgba(242,247,255,.5);--penbar-ink:#F2F7FF;
+ --pens:"ขาว:#F2F7FF,เหลือง:#FFD54A,ส้ม:#FF9E57,ฟ้าอ่อน:#A9C3E6,เขียว:#9BE7B0"}
+html,body{background:#0F2647;color:var(--ln)}
+#stage{background:
+  linear-gradient(rgba(242,247,255,.13) 1.5px,transparent 1.5px) 0 0/120px 120px,
+  linear-gradient(90deg,rgba(242,247,255,.13) 1.5px,transparent 1.5px) 0 0/120px 120px,
+  linear-gradient(rgba(242,247,255,.055) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,rgba(242,247,255,.055) 1px,transparent 1px) 0 0/24px 24px,
+  radial-gradient(130% 120% at 40% 30%,#2052A0 0%,#1C4A86 55%,#173F74 100%)}
+.slide{background:transparent}
+/* drawing border with a margin, like a printed sheet */
+.slide::before{content:"";position:absolute;inset:28px 28px 72px;border:2px solid rgba(242,247,255,.55);pointer-events:none}
+.slide::after{content:"";position:absolute;inset:36px 36px 80px;border:1px solid rgba(242,247,255,.25);pointer-events:none}
+.kick{position:absolute;font:600 21px/1.4 Inter;color:var(--ln2);letter-spacing:.06em}
+h1,h2{position:absolute;font:700 62px/1.25 Display;color:var(--ln);letter-spacing:.01em}
+h2{font-size:54px}
+.sub{position:absolute;font:500 24px/1.45 Inter;color:var(--ln2)}
+.num{font-variant-numeric:tabular-nums}
+.y{color:var(--lit)}
+/* technical buttons: outlined, square corners */
+.tb{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 20px;border:2px solid var(--ln);border-radius:4px;background:rgba(15,38,71,.35);color:var(--ln);font:600 21px/1 Inter;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.tb:hover{background:rgba(242,247,255,.12)}
+.tb:active{background:rgba(242,247,255,.2)}
+.tb.pri{background:var(--ln);color:var(--bpD)}
+.tb:focus-visible{outline:2px dashed var(--lit);outline-offset:3px}

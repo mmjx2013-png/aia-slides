@@ -1,0 +1,16 @@
+/* Only the global pen comes from tools.js in this deck (no form widgets: the kids' tools are drawn in kinder.js). */
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:24px;background:#fff;border:4px dashed #C9C1B2}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:60px;height:60px;border-radius:16px;border:3px solid transparent;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:#F5F1E8}
+#pen-bar .pb[aria-pressed="true"]{background:var(--lsun);border-color:var(--cyel)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:34px;height:34px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px #C9C1B2}
+#pen-bar .ps{display:block;width:38px;height:3px;border-radius:2px;background:#E5DED0;margin:2px 0}
+.shot #pen-bar{display:none!important}

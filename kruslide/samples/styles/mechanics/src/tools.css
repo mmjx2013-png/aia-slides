@@ -1,0 +1,58 @@
+/* Widgets from tools.js (tap a choice, typed answer with Check) + the global pen, in deck F's drawing-sheet look. */
+.w-input{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;font:500 26px/1.3 Inter,system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tw-lab{display:block;font:600 24px/1.4 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-foot{flex:none;display:flex;align-items:center;gap:14px;height:56px}
+.tw-btns{display:flex;gap:10px;flex:none}
+.tw-btn{font:700 23px/1 Inter,system-ui,sans-serif;height:56px;padding:0 20px;border-radius:6px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,transform .1s}
+.tw-btn:hover{background:#fff}
+.tw-btn:active{transform:translateY(2px)}
+.tw-btn.pri{background:var(--ink);color:#fff}
+.tw-btn.show[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.tw-btn.show.nudge{background:#FFF1D6}
+.tw-btn:disabled{opacity:.4;cursor:default;transform:none}
+.tw-btn:focus-visible,.tw-in:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+.tw-ico{width:26px;height:26px;flex:none;display:block}
+.tw-fb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:44px;font:700 25px/1.4 Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-fb.ok{color:var(--okc)}.tw-fb.no{color:var(--noc)}.tw-fb.info{color:#2B7DB8}
+.tw-fb .tw-ico{width:34px;height:34px;padding:6px;border-radius:50%;color:#fff;background:var(--ok)}
+.tw-fb.no .tw-ico{background:var(--no)}
+.tw-in{font:800 44px/1 Inter,system-ui,sans-serif;height:80px;padding:0 20px;border-radius:6px;border:2px solid var(--ink);background:#fff;color:var(--ink);min-width:0;-webkit-user-select:text;user-select:text;font-variant-numeric:tabular-nums;text-align:center;transition:background .2s}
+.tw-in:focus{outline:none;box-shadow:0 0 0 4px rgba(232,89,12,.3)}
+.tw-in.ok{background:var(--lok);border-color:var(--okc)}
+.tw-in.no{background:var(--lno);border-color:var(--noc)}
+.tw-unit{font:700 30px Inter,system-ui,sans-serif;color:var(--mute)}
+.tw-inrow{display:flex;align-items:center;gap:18px;min-height:80px}
+.w-input .tw-foot .tw-fb{display:none}
+.w-input.w-narrow .tw-foot .tw-fb{display:flex}
+.w-input .tw-inrow .tw-fb{flex:1}
+
+/* tap a choice (data-mcq) + reveal on a beat (.r1 = the right choice shows on beat 1) */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.c{display:flex;align-items:center;gap:18px;height:82px;padding:0 20px;border-radius:6px;background:var(--card);border:2px solid var(--ink);font:700 36px/1 Inter;transition:background .4s,filter .4s,transform .1s,border-color .4s}
+.c b{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--ink);font:800 24px Inter;transition:background .4s,color .4s}
+.ch[data-mcq] .c{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ch[data-mcq] .c:hover{background:#fff}
+.ch[data-mcq] .c:active{transform:translateY(2px)}
+.ch[data-mcq] .c:focus-visible{outline:3px solid var(--power);outline-offset:3px}
+.ch .c.wrong{background:var(--lno);border-color:var(--noc)}
+.ch .c.wrong b{background:var(--no);color:#fff;border-color:var(--no)}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok,.ch .c.ok.picked{background:var(--lok);border-color:var(--okc)}
+.on.b1 .ch.r1 .c.ok b,.on.b2 .ch.r2 .c.ok b,.ch .c.ok.picked b{background:var(--ok);color:#fff;border-color:var(--ok)}
+.on.b1 .ch.r1 .c:not(.ok),.on.b2 .ch.r2 .c:not(.ok){filter:grayscale(1) opacity(.45)}
+.on.b1 .ch.r1 .c.ok,.on.b2 .ch.r2 .c.ok{animation:pulse .6s var(--ease) both .2s}
+
+/* ---------- global pen ---------- */
+#pen-layer{position:absolute;inset:0;z-index:40;pointer-events:none;touch-action:none}
+.pen-on #pen-layer{pointer-events:auto;cursor:crosshair}
+.pen-on #pen-layer.erase{cursor:cell}
+.ink-c{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#pen-bar{position:absolute;left:52px;top:50%;transform:translateY(-50%);z-index:41;display:none;flex-direction:column;align-items:center;gap:7px;padding:10px;border-radius:8px;background:var(--card);border:2px solid var(--ink);box-shadow:0 18px 40px -20px rgba(31,36,41,.5)}
+.pen-on #pen-bar{display:flex}
+#pen-bar .pb{width:58px;height:58px;border-radius:6px;border:2px solid transparent;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;touch-action:manipulation}
+#pen-bar .pb:hover{background:#fff}
+#pen-bar .pb[aria-pressed="true"]{background:#FFF1D6;border-color:var(--ink)}
+#pen-bar .pb:disabled{opacity:.35;cursor:default}
+#pen-bar .pb .tw-ico{width:30px;height:30px}
+#pen-bar .pc{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+#pen-bar .ps{display:block;width:38px;height:2px;border-radius:2px;background:var(--line);margin:2px 0}
+.shot #pen-bar{display:none!important}

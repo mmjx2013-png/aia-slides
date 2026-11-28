@@ -1,0 +1,27 @@
+/* KruSlide sample · Plant and animal cells (วิทยาศาสตร์ ม.1) · style "microscope view"
+   The dark of an eyepiece around a round, lit field of view with a soft lens vignette; everything inside is coloured
+   like a stained slide: eosin pink cytoplasm, hematoxylin purple nucleus, chlorophyll green, iodine amber, methylene blue.
+   Drawings are our own illustrations (not photographs). */
+:root{--dark:#0E0C0B;--dark2:#191512;--txt:#EFE7DA;--txt2:#B8AC9C;--line:rgba(239,231,218,.22);--hl:#F2C86B;
+ --eos:#F2BFCF;--eosD:#C2577A;--hem:#5B3A86;--chl:#5E9A45;--iod:#C88A2E;--mb:#3D6FB4;--vac:#E6E1F2;--wall:#C9A35E;
+ --ctl-bg:#1E1A17;--ctl-fg:#EFE7DA;--ctl-acc:#F2C86B;--foot-ink:#EFE7DA;--foot-mute:#B8AC9C;
+ --penbar-bg:#1E1A17;--penbar-line:rgba(239,231,218,.35);--penbar-ink:#EFE7DA;
+ --pens:"ดำ:#1B1410,ม่วง:#5B3A86,ชมพู:#C2577A,เขียว:#2F7A2B,ขาว:#FFFFFF"}
+html,body{background:#050404;color:var(--txt)}
+#stage{background:radial-gradient(90% 90% at 40% 50%,#1A1613 0%,#0E0C0B 70%)}
+.slide{background:transparent}
+.kick{position:absolute;font:600 21px/1.4 Inter;color:var(--hl);letter-spacing:.03em}
+h1,h2{position:absolute;font:700 64px/1.25 Display;color:var(--txt)}
+h2{font-size:54px}
+.sub{position:absolute;font:500 24px/1.5 Inter;color:var(--txt2)}
+/* the field of view: lit glass, lens vignette and a thin metal ring */
+.field{position:absolute;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 46% 42%,#FBF6EC 0%,#F3EADB 55%,#E4D6BF 100%)}
+.field>svg,.field>canvas{position:absolute;left:0;top:0;width:100%;height:100%}
+.lens{position:absolute;border-radius:50%;pointer-events:none;
+ background:radial-gradient(circle,rgba(14,12,11,0) 0%,rgba(14,12,11,0) 64%,rgba(30,20,12,.22) 80%,rgba(14,12,11,.78) 96%,#0E0C0B 100%);
+ box-shadow:0 0 0 3px #3A322B,0 0 0 9px #16120F,0 0 0 11px #3A322B}
+.pill{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 22px;border-radius:26px;border:1.5px solid var(--line);background:transparent;color:var(--txt);font:600 22px/1 Inter;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
+.pill:hover{border-color:var(--txt2)}
+.pill[aria-pressed="true"]{background:var(--txt);color:var(--dark);border-color:var(--txt)}
+.pill:focus-visible{outline:2px solid var(--hl);outline-offset:3px}
+.pill i{width:16px;height:16px;border-radius:50%;flex:none}
