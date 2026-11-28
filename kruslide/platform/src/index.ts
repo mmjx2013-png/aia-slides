@@ -80,7 +80,7 @@ async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<R
   const url = new URL(req.url);
   const ctx: Ctx = {
     req, env, exec, url, origin: publicOrigin(env, url), ip: clientIp(req), now: Math.floor(Date.now() / 1000),
-    params: {}, sessionId: null, teacher: null, isAdmin: false, csrf: '',
+    params: {}, sessionId: null, teacher: null, isAdmin: false, waiting: false, csrf: '',
   };
   try {
     if (url.pathname === '/app' || url.pathname === '/app/admin') return redirect(url.pathname + '/', 308);
@@ -96,6 +96,7 @@ async function handle(req: Request, env: Env, exec: ExecutionContext): Promise<R
         ctx.sessionId = s.id;
         ctx.teacher = s.teacher;
         ctx.isAdmin = s.teacher.status === 'active' && adminIds(env).has(s.teacher.line_user_id);
+        ctx.waiting = !ctx.isAdmin && s.teacher.approved_at === null;
         ctx.csrf = await csrfToken(env, s.id);
       }
     }

@@ -23,6 +23,9 @@ PAYMENT_PROVIDER = "manual"
 # Optional: "normal" or "aggressive" asks the teacher to add the LINE OA as a friend during login
 # (the OA must be linked to the LINE Login channel first). Empty = off.
 LINE_BOT_PROMPT = ""
+# "on" (default): a teacher's first LINE login waits as "รออนุมัติ" until the owner approves them on the members page.
+# "off": anyone who logs in with LINE becomes a member at once (they still need a subscription or a grant to open decks).
+NEW_MEMBER_APPROVAL = "on"
 
 [[d1_databases]]
 binding = "DB"

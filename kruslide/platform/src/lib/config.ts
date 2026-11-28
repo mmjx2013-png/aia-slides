@@ -28,6 +28,11 @@ export function adminIds(env: Env): Set<string> {
   return new Set((env.ADMIN_LINE_IDS || '').split(',').map((s) => s.trim()).filter((s) => /^U[0-9a-f]{32}$/.test(s)));
 }
 
+/** New members wait for approval unless NEW_MEMBER_APPROVAL is "off" (or "false" / "0"). On by default. */
+export function approvalRequired(env: Env): boolean {
+  return !/^(off|false|0|no)$/i.test((env.NEW_MEMBER_APPROVAL ?? 'on').trim());
+}
+
 export function isProduction(env: Env): boolean {
   return (env.ENVIRONMENT || 'production') === 'production';
 }

@@ -18,6 +18,8 @@ export interface Env {
   LINE_OA_ID?: string;
   PAYMENT_PROVIDER?: string;
   LINE_BOT_PROMPT?: string;
+  /** "on" (default): a teacher's first LINE login waits for the owner's approval ("รออนุมัติ"). "off": open sign-up. */
+  NEW_MEMBER_APPROVAL?: string;
 
   /** Local development only: point LINE Login at the mock server. Ignored when ENVIRONMENT is "production". */
   LINE_AUTH_ORIGIN?: string;
@@ -32,6 +34,9 @@ export interface Teacher {
   status: 'active' | 'blocked';
   created_at: number;
   last_login_at: number | null;
+  /** NULL = waiting for the owner's approval. */
+  approved_at: number | null;
+  approved_by: string | null;
 }
 
 export interface Book {
@@ -109,6 +114,18 @@ export interface BookRequest {
   submitted_at: number | null;
 }
 
+/** A deck (unit) the owner gave to one teacher. expires_at NULL = no expiry. */
+export interface UnitGrant {
+  id: number;
+  teacher_id: number;
+  unit_id: number;
+  granted_by: string;
+  expires_at: number | null;
+  note: string;
+  created_at: number;
+  updated_at: number;
+}
+
 /** Everything a route handler needs about the current request. */
 export interface Ctx {
   req: Request;
@@ -123,5 +140,7 @@ export interface Ctx {
   sessionId: string | null;
   teacher: Teacher | null;
   isAdmin: boolean;
+  /** Logged in, but the account still waits for the owner's approval (never true for an admin). */
+  waiting: boolean;
   csrf: string;
 }

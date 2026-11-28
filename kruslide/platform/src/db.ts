@@ -1,4 +1,4 @@
-import type { Book, BookRequest, Env, Payment, Subscription, Teacher, Unit } from './env';
+import type { Book, BookRequest, Env, Payment, Subscription, Teacher, Unit, UnitGrant } from './env';
 import type { Answers, Choice } from './lib/quiz';
 import { addMonths, monthlyPrice, totalPrice } from './lib/pricing';
 import { HttpError } from './lib/http';
@@ -6,17 +6,18 @@ import { HttpError } from './lib/http';
 /** All SQL lives here. Every query is parameterised with ?N placeholders and .bind(); no string building with input. */
 
 // ---------- teachers ----------
-export async function upsertTeacherFromLine(env: Env, lineId: string, name: string, now: number): Promise<{ teacher: Teacher; created: boolean }> {
+/** `approve`: a new member is approved at once (approval is off, or the LINE id is an admin's); otherwise they wait. */
+export async function upsertTeacherFromLine(env: Env, lineId: string, name: string, now: number, approve = true): Promise<{ teacher: Teacher; created: boolean }> {
   const existing = await env.DB.prepare('SELECT * FROM teachers WHERE line_user_id = ?1').bind(lineId).first<Teacher>();
   if (existing) {
     await env.DB.prepare('UPDATE teachers SET last_login_at = ?1 WHERE id = ?2').bind(now, existing.id).run();
     return { teacher: { ...existing, last_login_at: now }, created: false };
   }
   const teacher = await env.DB.prepare(
-    `INSERT INTO teachers (line_user_id, display_name, school, status, created_at, last_login_at)
-     VALUES (?1, ?2, '', 'active', ?3, ?3)
+    `INSERT INTO teachers (line_user_id, display_name, school, status, created_at, last_login_at, approved_at, approved_by)
+     VALUES (?1, ?2, '', 'active', ?3, ?3, ?4, ?5)
      ON CONFLICT (line_user_id) DO UPDATE SET last_login_at = excluded.last_login_at RETURNING *`,
-  ).bind(lineId, name, now).first<Teacher>();
+  ).bind(lineId, name, now, approve ? now : null, approve ? 'auto' : null).first<Teacher>();
   return { teacher: teacher!, created: true };
 }
 
@@ -37,7 +38,7 @@ export const ERASED_PREFIX = 'erased:';
 
 /**
  * PDPA erasure on request: the name, school and LINE user id are removed, the member is blocked and logged out,
- * open subscriptions end and unpaid requests are closed, and their book requests (with the quiz answers) are deleted. Payment amounts and dates stay (accounting records);
+ * open subscriptions end and unpaid requests are closed, and their deck grants and book requests (with the quiz answers) are deleted. Payment amounts and dates stay (accounting records);
  * the audit log only ever holds the row id. A later LINE login with the same account starts a fresh, empty member.
  */
 export async function eraseTeacher(env: Env, id: number, now: number): Promise<void> {
@@ -51,22 +52,26 @@ export async function eraseTeacher(env: Env, id: number, now: number): Promise<v
     env.DB.prepare(`UPDATE payments SET status = 'rejected', confirmed_by = 'erased', decided_at = ?1, ref = NULL WHERE teacher_id = ?2 AND status = 'pending'`)
       .bind(now, id),
     env.DB.prepare('DELETE FROM sessions WHERE teacher_id = ?1').bind(id),
+    env.DB.prepare('DELETE FROM unit_grants WHERE teacher_id = ?1').bind(id),
     env.DB.prepare('DELETE FROM book_request_answers WHERE request_id IN (SELECT id FROM book_requests WHERE teacher_id = ?1)').bind(id),
     env.DB.prepare('DELETE FROM book_requests WHERE teacher_id = ?1').bind(id),
   ]);
 }
 
-export interface TeacherRow extends Teacher { active_count: number; pending_count: number; }
-export async function listTeachers(env: Env, q: string, now: number, limit = 200): Promise<TeacherRow[]> {
+export interface TeacherRow extends Teacher { active_count: number; pending_count: number; grant_count: number; }
+/** filter: 'all', 'waiting' (approval), 'blocked'. */
+export async function listTeachers(env: Env, q: string, now: number, limit = 200, filter: 'all' | 'waiting' | 'blocked' = 'all'): Promise<TeacherRow[]> {
   const like = `%${q.replace(/[\\%_]/g, (c) => '\\' + c)}%`;
   const { results } = await env.DB.prepare(
     `SELECT t.*,
        (SELECT COUNT(*) FROM subscriptions s WHERE s.teacher_id = t.id AND s.status = 'active' AND s.period_end > ?2) AS active_count,
-       (SELECT COUNT(*) FROM payments p WHERE p.teacher_id = t.id AND p.status = 'pending') AS pending_count
+       (SELECT COUNT(*) FROM payments p WHERE p.teacher_id = t.id AND p.status = 'pending') AS pending_count,
+       (SELECT COUNT(*) FROM unit_grants g WHERE g.teacher_id = t.id AND (g.expires_at IS NULL OR g.expires_at > ?2)) AS grant_count
      FROM teachers t
      WHERE (?1 = '%%' OR t.display_name LIKE ?1 ESCAPE '\\' OR t.school LIKE ?1 ESCAPE '\\' OR t.line_user_id LIKE ?1 ESCAPE '\\')
-     ORDER BY t.created_at DESC LIMIT ?3`,
-  ).bind(like, now, limit).all<TeacherRow>();
+       AND (?4 = 'all' OR (?4 = 'waiting' AND t.approved_at IS NULL AND t.status = 'active') OR (?4 = 'blocked' AND t.status = 'blocked'))
+     ORDER BY t.approved_at IS NOT NULL, t.created_at DESC LIMIT ?3`,
+  ).bind(like, now, limit, filter).all<TeacherRow>();
   return results;
 }
 
@@ -102,6 +107,7 @@ export async function deleteBook(env: Env, id: number): Promise<string[]> {
   if ((subs?.n ?? 0) > 0) throw new HttpError(409, 'หนังสือเล่มนี้มีสมาชิกสมัครแล้ว ลบไม่ได้ ให้เปลี่ยนสถานะเป็น "เก็บถาวร" แทน');
   const { results } = await env.DB.prepare('SELECT r2_key FROM units WHERE book_id = ?1 AND r2_key IS NOT NULL').bind(id).all<{ r2_key: string }>();
   await env.DB.batch([
+    env.DB.prepare('DELETE FROM unit_grants WHERE unit_id IN (SELECT id FROM units WHERE book_id = ?1)').bind(id),
     env.DB.prepare('DELETE FROM units WHERE book_id = ?1').bind(id),
     env.DB.prepare('DELETE FROM books WHERE id = ?1').bind(id),
   ]);
@@ -150,7 +156,10 @@ export async function updateUnit(env: Env, unit: Unit, u: UnitInput, now: number
 }
 
 export async function deleteUnit(env: Env, unit: Unit, now: number): Promise<void> {
-  await env.DB.prepare('DELETE FROM units WHERE id = ?1').bind(unit.id).run();
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM unit_grants WHERE unit_id = ?1').bind(unit.id),
+    env.DB.prepare('DELETE FROM units WHERE id = ?1').bind(unit.id),
+  ]);
   await recalcBookSlides(env, unit.book_id, now);
 }
 
@@ -352,8 +361,137 @@ export async function counts(env: Env, now: number) {
             (SELECT COUNT(*) FROM subscriptions WHERE status = 'active' AND period_end > ?1) AS active,
             (SELECT COUNT(*) FROM payments WHERE status = 'pending') AS pending,
             (SELECT COALESCE(SUM(amount_satang), 0) FROM payments WHERE status = 'confirmed' AND decided_at > ?2) AS revenue30,
-            (SELECT COUNT(*) FROM book_requests WHERE status = 'new') AS new_requests`,
-  ).bind(now, now - 30 * 86400).first<{ teachers: number; active: number; pending: number; revenue30: number; new_requests: number }>();
+            (SELECT COUNT(*) FROM book_requests WHERE status = 'new') AS new_requests,
+            (SELECT COUNT(*) FROM teachers WHERE approved_at IS NULL AND status = 'active') AS waiting,
+            (SELECT COUNT(*) FROM unit_grants WHERE expires_at IS NULL OR expires_at > ?1) AS grants`,
+  ).bind(now, now - 30 * 86400).first<{ teachers: number; active: number; pending: number; revenue30: number; new_requests: number; waiting: number; grants: number }>();
+}
+
+// ---------- access: paid subscriptions per book + grants per unit ----------
+/**
+ * Where a teacher's right to open one unit comes from, right now.
+ * sub: end of an active subscription to the unit's book (not for a draft book), or null;
+ * grant: an active grant (expires null = no expiry), or null.
+ */
+export interface UnitAccess { sub: number | null; grant: { id: number; expires_at: number | null } | null; }
+export async function unitAccess(env: Env, teacherId: number, unit: Pick<Unit, 'id' | 'book_id'>, now: number): Promise<UnitAccess> {
+  const row = await env.DB.prepare(
+    `SELECT (SELECT s.period_end FROM subscriptions s JOIN books b ON b.id = s.book_id
+              WHERE s.teacher_id = ?1 AND s.book_id = ?2 AND s.status = 'active' AND s.period_end > ?4 AND b.status != 'draft') AS sub_end,
+            g.id AS grant_id, g.expires_at AS grant_end
+     FROM (SELECT 1) LEFT JOIN unit_grants g ON g.teacher_id = ?1 AND g.unit_id = ?3 AND (g.expires_at IS NULL OR g.expires_at > ?4)`,
+  ).bind(teacherId, unit.book_id, unit.id, now).first<{ sub_end: number | null; grant_id: number | null; grant_end: number | null }>();
+  return { sub: row?.sub_end ?? null, grant: row?.grant_id ? { id: row.grant_id, expires_at: row.grant_end } : null };
+}
+
+export function canOpen(a: UnitAccess): boolean {
+  return a.sub !== null || a.grant !== null;
+}
+
+export interface GrantRow extends UnitGrant { book_id: number; position: number; unit_title: string; book_title: string; }
+/** Every grant of one teacher (also expired ones), with its unit and book. */
+export async function grantsOfTeacher(env: Env, teacherId: number): Promise<GrantRow[]> {
+  const { results } = await env.DB.prepare(
+    `SELECT g.*, u.book_id, u.position, u.title AS unit_title, b.title AS book_title FROM unit_grants g
+     JOIN units u ON u.id = g.unit_id JOIN books b ON b.id = u.book_id WHERE g.teacher_id = ?1 ORDER BY b.title, u.position`,
+  ).bind(teacherId).all<GrantRow>();
+  return results;
+}
+
+/** Active subscriptions of one teacher: book id -> period end (draft books do not count). */
+export async function activeSubsOf(env: Env, teacherIds: number[], now: number): Promise<{ teacher_id: number; book_id: number; period_end: number }[]> {
+  if (!teacherIds.length) return [];
+  const { results } = await env.DB.prepare(
+    `SELECT s.teacher_id, s.book_id, s.period_end FROM subscriptions s JOIN books b ON b.id = s.book_id
+     WHERE s.teacher_id IN (SELECT value FROM json_each(?1)) AND s.status = 'active' AND s.period_end > ?2 AND b.status != 'draft'`,
+  ).bind(JSON.stringify(teacherIds), now).all<{ teacher_id: number; book_id: number; period_end: number }>();
+  return results;
+}
+
+/** Grants of many teachers (also expired ones). */
+export async function grantsOf(env: Env, teacherIds: number[]): Promise<(UnitGrant & { book_id: number })[]> {
+  if (!teacherIds.length) return [];
+  const { results } = await env.DB.prepare(
+    `SELECT g.*, u.book_id FROM unit_grants g JOIN units u ON u.id = g.unit_id WHERE g.teacher_id IN (SELECT value FROM json_each(?1))`,
+  ).bind(JSON.stringify(teacherIds)).all<UnitGrant & { book_id: number }>();
+  return results;
+}
+
+/** Every unit, grouped by book (all book statuses: the owner may give a deck that is not for sale). */
+export async function allBooksWithUnits(env: Env): Promise<{ book: Book; units: Unit[] }[]> {
+  const [books, units] = await Promise.all([
+    env.DB.prepare(`SELECT * FROM books ORDER BY status = 'archived', status = 'draft', grade, subject, title`).all<Book>(),
+    env.DB.prepare('SELECT * FROM units ORDER BY book_id, position').all<Unit>(),
+  ]);
+  return books.results.map((book) => ({ book, units: units.results.filter((u) => u.book_id === book.id) }));
+}
+
+export function isLive(g: Pick<UnitGrant, 'expires_at'>, now: number): boolean {
+  return g.expires_at === null || g.expires_at > now;
+}
+
+/**
+ * Give units to a teacher. A unit without a grant (or with an expired one) gets `expiresAt`;
+ * an active grant keeps its expiry unless `overwrite` is set. Returns the ids that were newly given.
+ */
+export async function grantUnits(env: Env, teacherId: number, unitIds: number[], expiresAt: number | null, by: string, now: number, overwrite = false, note = ''): Promise<number[]> {
+  if (!unitIds.length) return [];
+  const before = new Map((await env.DB.prepare(
+    'SELECT unit_id, expires_at FROM unit_grants WHERE teacher_id = ?1 AND unit_id IN (SELECT value FROM json_each(?2))',
+  ).bind(teacherId, JSON.stringify(unitIds)).all<{ unit_id: number; expires_at: number | null }>()).results.map((r) => [r.unit_id, r]));
+  await env.DB.batch(unitIds.map((u) => env.DB.prepare(
+    `INSERT INTO unit_grants (teacher_id, unit_id, granted_by, expires_at, note, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?6)
+     ON CONFLICT (teacher_id, unit_id) DO UPDATE SET expires_at = excluded.expires_at, granted_by = excluded.granted_by,
+       note = CASE WHEN excluded.note != '' THEN excluded.note ELSE unit_grants.note END, updated_at = excluded.updated_at
+     WHERE ?7 = 1 OR (unit_grants.expires_at IS NOT NULL AND unit_grants.expires_at <= ?6)`,
+  ).bind(teacherId, u, by, expiresAt, note, now, overwrite ? 1 : 0)));
+  return unitIds.filter((u) => { const b = before.get(u); return !b || !isLive(b, now); });
+}
+
+/** Take units away from a teacher (grants only; a paid subscription is not touched). Returns the removed unit ids. */
+export async function revokeUnits(env: Env, teacherId: number, unitIds: number[]): Promise<number[]> {
+  if (!unitIds.length) return [];
+  const { results } = await env.DB.prepare(
+    'DELETE FROM unit_grants WHERE teacher_id = ?1 AND unit_id IN (SELECT value FROM json_each(?2)) RETURNING unit_id',
+  ).bind(teacherId, JSON.stringify(unitIds)).all<{ unit_id: number }>();
+  return results.map((r) => r.unit_id);
+}
+
+export async function revokeGrant(env: Env, id: number) {
+  return env.DB.prepare('DELETE FROM unit_grants WHERE id = ?1 RETURNING *').bind(id).first<UnitGrant>();
+}
+
+export interface BookAccessRow { teacher_id: number; display_name: string; school: string; status: Teacher['status']; approved_at: number | null; }
+/** Who can open (or could open) a book's units: active subscribers and every grant (also expired), with teacher info. */
+export async function accessForBook(env: Env, bookId: number, now: number) {
+  const [subs, grants] = await Promise.all([
+    env.DB.prepare(
+      `SELECT s.teacher_id, s.period_end, t.display_name, t.school, t.status, t.approved_at FROM subscriptions s JOIN teachers t ON t.id = s.teacher_id
+       WHERE s.book_id = ?1 AND s.status = 'active' AND s.period_end > ?2 ORDER BY t.display_name`,
+    ).bind(bookId, now).all<BookAccessRow & { period_end: number }>(),
+    env.DB.prepare(
+      `SELECT g.*, u.position, u.title AS unit_title, t.display_name, t.school, t.status, t.approved_at FROM unit_grants g
+       JOIN units u ON u.id = g.unit_id JOIN teachers t ON t.id = g.teacher_id WHERE u.book_id = ?1 ORDER BY t.display_name, u.position`,
+    ).bind(bookId).all<UnitGrant & BookAccessRow & { position: number; unit_title: string }>(),
+  ]);
+  return { subs: subs.results, grants: grants.results };
+}
+
+export interface GrantExportRow extends UnitGrant { display_name: string; school: string; book_title: string; unit_title: string; position: number; }
+export async function listAllGrants(env: Env, limit = 100000): Promise<GrantExportRow[]> {
+  const { results } = await env.DB.prepare(
+    `SELECT g.*, t.display_name, t.school, b.title AS book_title, u.title AS unit_title, u.position FROM unit_grants g
+     JOIN teachers t ON t.id = g.teacher_id JOIN units u ON u.id = g.unit_id JOIN books b ON b.id = u.book_id
+     ORDER BY t.display_name, b.title, u.position LIMIT ?1`,
+  ).bind(limit).all<GrantExportRow>();
+  return results;
+}
+
+// ---------- approval of new members ----------
+export async function approveTeacher(env: Env, id: number, by: string, now: number): Promise<boolean> {
+  const r = await env.DB.prepare(`UPDATE teachers SET approved_at = ?2, approved_by = ?3 WHERE id = ?1 AND approved_at IS NULL AND status = 'active'`)
+    .bind(id, now, by).run();
+  return (r.meta.changes ?? 0) > 0;
 }
 
 // ---------- book requests (ขอทำหนังสือ) ----------
